@@ -7,7 +7,9 @@ import requests
 
 
 def main() -> bool:
-    widgets_json_url = "https://raw.githubusercontent.com/OpenBB-finance/widgets-library/main/widgets.json"
+    #widgets_json_url = "https://raw.githubusercontent.com/OpenBB-finance/widgets-library/main/widgets.json"
+    widgets_json_url = "https://pro.openbb.co/assets/data/widgets.json"
+
 
     response = requests.get(widgets_json_url, timeout=10)
     widgets_data: Dict[str, Dict[str, dict]] = response.json()
@@ -37,6 +39,7 @@ def main() -> bool:
                         "description": widget_info.get("description"),
                         "source": widget_info.get("source"),
                         "widgetId": widget_info.get("widgetId"),
+                        "imageURL": widget_info.get("imgUrl"),
                     }
                 )
 
@@ -51,6 +54,7 @@ def main() -> bool:
                         "description": widget_info.get("description"),
                         "source": widget_info.get("source"),
                         "widgetId": widget_info.get("widgetId"),
+                        "imageURL": widget_info.get("imgUrl"),
                     }
                 )
         else:
@@ -256,7 +260,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <img
     className="pro-border-gradient"
-    src="https://raw.githubusercontent.com/OpenBB-finance/widgets-library/main/{category_1.lower().replace(' ', '_')}/{widget['widgetId']}.png"
+    src="{widget['imageURL']}"
     alt="OpenBB Terminal Pro Widgets Library"
 />
 
@@ -272,6 +276,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
                 else:
                     # Create each individual widget file
+
                     for widget in widgets:
                         widget_path = (
                             base_path
@@ -299,7 +304,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <img
     className="pro-border-gradient"
-    src="https://raw.githubusercontent.com/OpenBB-finance/widgets-library/main/{category_1.lower().replace(' ', '_')}/{category_2.lower().replace(' ', '_')}/{widget['widgetId']}.png"
+    src="{widget['imageURL']}"
     alt="OpenBB Terminal Pro Widgets Library"
 />
 
