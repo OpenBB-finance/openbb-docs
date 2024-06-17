@@ -8,21 +8,27 @@ The final website can be found at [https://docs.openbb.co](https://docs.openbb.c
 ## Folder Structure
 
 ```bash
-website
 ├── content # Markdown files
-| ├── sdk # SDK markdown files
-| ├── bot # bot markdown files
-| ├── platform # platform markdown files
-| └── terminal # Terminal markdown files
+│   ├── bot
+│   ├── cli
+│   ├── excel
+│   ├── platform
+│   ├── pro
+│   ├── sdk
+│   └── terminal
+...
+├── scripts
+│   ├── generate_excel_markdown.py
+│   ├── generate_platform_markdown.py
+│   └── generate_widgets_library.py
+...
 ├── src # react stuff for website
-├── static # Static files
-├── generate_sdk_markdown.py # Script to generate markdown files for SDK
-└── generate_terminal_markdown.py # Script to generate markdown files for Terminal
+├── static # static files
 ```
 
 ### Markdown files
 
-The markdown files are used to generate the website. The markdown files are located in the `content` folder. The markdown files are generated using the `generate_sdk_markdown.py` and `generate_terminal_markdown.py` scripts. The markdown files are generated from the docstrings in the SDK and Terminal code. Files inside `content/sdk/reference` and `content/terminal/reference` should not be changed manually because they are generated automatically on every commit.
+The markdown files are used to generate the website. The markdown files are located in the `content` folder. These files are generated with python scripts that can be found in `scripts` and should not be edited manually.
 
 ### Syntax sugar
 
