@@ -3,13 +3,10 @@
 import json
 import re
 import shutil
-import subprocess
 from pathlib import Path
 from typing import Dict, List, Optional
 
 from openbb_core.provider import standard_models
-from poetry.core.constraints.version import Version, VersionConstraint, parse_constraint
-from poetry.core.pyproject.toml import PyProjectTOML
 
 # Number of spaces to substitute tabs for indentation
 TAB_WIDTH = 4
@@ -17,13 +14,8 @@ TAB_WIDTH = 4
 # Maximum number of commands to display on the cards
 MAX_COMMANDS = 8
 
-# Input paths
-PLATFORM_PATH = Path(__file__).parent.parent / "openbb_platform"
-PLATFORM_PYPROJECT_PATH = Path(PLATFORM_PATH / "pyproject.toml")
-REFERENCE_FILE_PATH = Path(PLATFORM_PATH / "openbb/assets/reference.json")
-
 # Output paths
-WEBSITE_PATH = Path(__file__).parent.absolute()
+WEBSITE_PATH = Path(__file__).parent.parent.absolute()
 SEO_METADATA_PATH = Path(WEBSITE_PATH / "metadata/platform_v4_seo_metadata.json")
 PLATFORM_CONTENT_PATH = Path(WEBSITE_PATH / "content/platform")
 PLATFORM_REFERENCE_PATH = Path(WEBSITE_PATH / "content/platform/reference")
@@ -672,101 +664,8 @@ def generate_platform_markdown(paths: Dict) -> None:
     console.log("\n[INFO] Markdown files generated successfully!")
 
 
-def read_reference() -> dict:
-    """Read the reference.json file."""
-    console.log(f"\n[INFO] Reading the {REFERENCE_FILE_PATH} file...")
-    # Load the reference.json file
-    try:
-        with open(REFERENCE_FILE_PATH) as f:
-            reference = json.load(f)
-    except FileNotFoundError as exc:
-        raise FileNotFoundError(
-            "File not found! Please ensure the file exists."
-        ) from exc
-
-    return reference
-
-
-def get_openbb_versions() -> Dict[str, VersionConstraint]:
-    """Get the openbb package version constraints from pyproject.toml."""
-    pyproject = PyProjectTOML(PLATFORM_PYPROJECT_PATH)
-    deps = pyproject.data["tool"]["poetry"]["dependencies"]
-    dep_spec = {}
-    for p, v in deps.items():
-        if p.startswith("openbb"):
-            if isinstance(v, str):
-                dep_spec[p] = parse_constraint(v)
-            elif isinstance(v, dict):
-                dep_spec[p] = parse_constraint(v["version"])
-    return dep_spec
-
-
-def check_installed(openbb_versions: Dict[str, VersionConstraint]) -> None:
-    """Check all the openbb packages are installed and have the correct version."""
-    console.log("\n[INFO] Ensuring all packages installed...")
-    pip_list_output = subprocess.run(
-        "pip list | grep openbb",  # noqa: S607
-        shell=True,  # noqa: S602
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    result = pip_list_output.stdout.splitlines()
-    installed = {
-        line.split()[0].lower(): Version.parse(line.split()[1]) for line in result
-    }
-
-    failures = set()
-    for o, v in openbb_versions.items():
-        if o not in installed:
-            console.log(f"[INFO] Package '{o}' not installed.")
-            failures.add(o)
-        elif not v.allows(installed[o]):
-            console.log(
-                f"[INFO] Version '{installed[o]}' of '{o}' not compatible. Expected '{v}'."
-            )
-            failures.add(o)
-
-    if failures:
-        raise ValueError(f"Failures: {failures}")
-
-
-def check_built(openbb_versions: Dict[str, VersionConstraint], reference: dict) -> None:
-    """Check all the openbb packages installed are in the reference file."""
-    console.log("\n[INFO] Ensuring all packages built...")
-    core_version = reference.get("info", {}).get("core", "")
-    extensions = reference.get("info", {}).get("extensions", {})
-    built = {}
-    built["openbb-core"] = Version.parse(core_version)
-    for value in extensions.values():
-        for v in value:
-            name, version = v.split("@")
-            if name.startswith("openbb_"):
-                name = name[7:]
-            name = "openbb-" + name.replace("_", "-")
-            built[name] = Version.parse(version)
-
-    failures = set()
-    for o, v in openbb_versions.items():
-        if o not in built:
-            console.log(f"[INFO] Package '{o}' not in reference file.")
-            failures.add(o)
-        elif not v.allows(built[o]):
-            console.log(
-                f"[INFO] Version '{built[o]}' of '{o}' not compatible. Expected '{v}'."
-            )
-            failures.add(o)
-
-    if failures:
-        raise ValueError(f"Failures: {failures}")
-
-
 if __name__ == "__main__":
 
-    openbb_versions = get_openbb_versions()
-    check_installed(openbb_versions)
+    from openbb import obb
 
-    reference = read_reference()
-    check_built(openbb_versions, reference)
-
-    generate_platform_markdown(reference.get("paths", {}))
+    generate_platform_markdown(obb.reference.get("paths", {}))

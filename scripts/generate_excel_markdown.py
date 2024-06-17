@@ -9,7 +9,7 @@ from typing import Any, Dict, List, Literal, Optional
 import requests
 
 # Paths
-WEBSITE_PATH = Path(__file__).parent.absolute()
+WEBSITE_PATH = Path(__file__).parent.parent.absolute()
 CONTENT_PATH = WEBSITE_PATH / "content"
 XL_FUNCS_PATH = CONTENT_PATH / "excel" / "functions.json"
 XL_OPENBB_FUNCS_PATH = CONTENT_PATH / "excel" / "openbb-functions.json"

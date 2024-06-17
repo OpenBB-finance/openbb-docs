@@ -60,7 +60,7 @@ def main() -> bool:
         else:
             print("SHOULD NEVER GET HERE BECAUSE CATEGORY_1 IS A MANDATORY FIELD!")
 
-    website_path = Path(__file__).parent.absolute()
+    website_path = Path(__file__).parent.parent.absolute()
     base_path = website_path / "content" / "pro" / "widgets-library"
 
     ## Handle category_root level

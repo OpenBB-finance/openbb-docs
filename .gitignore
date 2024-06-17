@@ -19,8 +19,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Reference files
+# Generated files (python scripts)
 content/excel/reference/*
 content/excel/reference/*/*
 content/platform/data_models/*
 content/platform/reference/*
+content/pro/widgets-library
