@@ -25,3 +25,6 @@ content/excel/reference/*/*
 content/platform/data_models/*
 content/platform/reference/*
 content/pro/widgets-library
+
+# Download Platform code from https://github.com/OpenBB-finance/OpenBBTerminal
+.openbb

@@ -42,7 +42,12 @@ jobs:
 
       - name: Generate Platform Markdown
         run: |
-          pip install 'openbb[all] @ git+https://github.com/OpenBB-finance/OpenBBTerminal.git@main#subdirectory=openbb_platform'
+          curl -sSL https://codeload.github.com/OpenBB-finance/OpenBBTerminal/zip/refs/heads/main -o /tmp/openbb.zip && \
+              unzip /tmp/openbb.zip -d /tmp/openbb && \
+              rm /tmp/openbb.zip && mkdir -p ./.openbb && \
+              mv /tmp/openbb/OpenBBTerminal-main/openbb_platform/* ./.openbb && \
+              rm -rf /tmp/openbb
+          python .openbb/dev_install.py -e
           python scripts/generate_platform_markdown.py
 
       - name: Generate Excel Docs
