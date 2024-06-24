@@ -52,6 +52,7 @@ jobs:
         run: |
           poetry install -C openbb_platform --no-interaction
           source openbb_platform/.venv/bin/activate
+          pip install tomlkit
           python openbb_platform/dev_install.py --extras
           python -c "import openbb; openbb.build()"
           python scripts/generate_platform_markdown.py
