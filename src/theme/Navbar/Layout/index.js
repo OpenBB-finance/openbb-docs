@@ -91,7 +91,7 @@ export default function NavbarLayout({ children }) {
         {
           header_docs_terminal: cleanedPath.startsWith("/terminal"),
           header_docs_pro: cleanedPath.startsWith("/pro"),
-          header_docs_excel: cleanedPath.startsWith("/excel"),
+          header_docs_excel: cleanedPath.startsWith("openbb-docs/excel"),
           header_docs_sdk:
             cleanedPath.startsWith("/sdk") || cleanedPath.startsWith("/cli") ||
             cleanedPath.startsWith("/platform"),
