@@ -27,4 +27,4 @@ content/platform/reference/*
 content/pro/widgets-library
 
 # Download Platform code from https://github.com/OpenBB-finance/OpenBBTerminal
-.openbb
+openbb_platform
