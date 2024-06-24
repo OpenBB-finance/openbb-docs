@@ -47,6 +47,7 @@ jobs:
               rm /tmp/openbb.zip && mkdir -p ./.openbb && \
               mv /tmp/openbb/OpenBBTerminal-main/openbb_platform/* ./.openbb && \
               rm -rf /tmp/openbb
+          pip install poetry
           python .openbb/dev_install.py -e
           python scripts/generate_platform_markdown.py
 
