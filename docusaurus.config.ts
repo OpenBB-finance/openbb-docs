@@ -13,7 +13,7 @@ export default {
   title: "OpenBB Docs",
   tagline: "OpenBB Docs",
   url: "https://openbb-finance.github.io", // Your website URL
-  baseUrl: "/docs",
+  baseUrl: "/openbb-docs",
   projectName: "OpenBBTerminal",
   organizationName: "OpenBB-finance",
   trailingSlash: false,
@@ -66,7 +66,7 @@ export default {
         docs: {
           sidebarPath: "./sidebars.js",
           editUrl:
-            "https://github.com/OpenBB-finance/OpenBBTerminal/edit/main/website/",
+            "https://github.com/OpenBB-finance/openbb-docs/edit/main/",
           showLastUpdateTime: true,
           showLastUpdateAuthor: true,
           routeBasePath: "/",
