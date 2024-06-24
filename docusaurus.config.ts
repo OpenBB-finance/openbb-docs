@@ -12,8 +12,8 @@ import tailwind from "tailwindcss";
 export default {
   title: "OpenBB Docs",
   tagline: "OpenBB Docs",
-  url: "https://openbb-finance.github.io", // Your website URL
-  baseUrl: "/openbb-docs",
+  url: "https://docs.openbb.co", // Your website URL
+  baseUrl: "/",
   projectName: "OpenBBTerminal",
   organizationName: "OpenBB-finance",
   trailingSlash: false,
