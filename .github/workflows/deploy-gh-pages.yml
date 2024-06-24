@@ -44,9 +44,21 @@ jobs:
               libgtk-3-dev \
               libwebkit2gtk-4.0-dev
 
+      - name: Download OpenBB Platform code
+        run: |
+          curl -sSL https://codeload.github.com/OpenBB-finance/OpenBBTerminal/zip/refs/heads/main -o /tmp/openbb.zip && \
+              unzip /tmp/openbb.zip -d /tmp/openbb && \
+              rm /tmp/openbb.zip && mkdir -p ./openbb_platform && \
+              mv /tmp/openbb/OpenBBTerminal-main/openbb_platform/* ./openbb_platform && \
+              rm -rf /tmp/openbb
+
       - name: Generate Platform Markdown
         run: |
-          pip install 'openbb[all] @ git+https://github.com/OpenBB-finance/OpenBBTerminal.git@main#subdirectory=openbb_platform'
+          poetry install -C openbb_platform --only-root --no-interaction
+          source openbb_platform/.venv/bin/activate
+          pip install -U poetry
+          python openbb_platform/dev_install.py --extras
+          python -c "import openbb; openbb.build()"
           python scripts/generate_platform_markdown.py
 
       - name: Generate Excel Docs
