@@ -4,8 +4,8 @@
   <ShortName>OpenBB Docs</ShortName>
   <Description>Search OpenBB Docs</Description>
   <InputEncoding>UTF-8</InputEncoding>
-  <Image width="16" height="16" type="image/x-icon">https://docs.openbb.co/img/favicon.ico</Image>
-  <Url type="text/html" method="get" template="https://docs.openbb.co/search?q={searchTerms}"/>
-  <Url type="application/opensearchdescription+xml" rel="self" template="https://docs.openbb.co/opensearch.xml" />
-  <moz:SearchForm>https://docs.openbb.co/</moz:SearchForm>
+  <Image width="16" height="16" type="image/x-icon">https://openbb-finance.github.io/docs/img/favicon.ico</Image>
+  <Url type="text/html" method="get" template="https://openbb-finance.github.io/docs/search?q={searchTerms}"/>
+  <Url type="application/opensearchdescription+xml" rel="self" template="https://openbb-finance.github.io/docs/opensearch.xml" />
+  <moz:SearchForm>https://openbb-finance.github.io/docs/</moz:SearchForm>
 </OpenSearchDescription>
