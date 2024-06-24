@@ -3,11 +3,11 @@ name: 📑 Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main
+      - '**'  # This will match pushes to any branch
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
-      - main
+      - '**'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
