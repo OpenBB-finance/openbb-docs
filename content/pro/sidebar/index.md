@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Architecture | OpenBB Terminal Pro Docs" />
+<HeadTitle title="Sidebar | OpenBB Terminal Pro Docs" />
 
 Welcome to the OpenBB Terminal Pro, your comprehensive tool for investment research.
 

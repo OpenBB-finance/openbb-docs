@@ -36,6 +36,10 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
   videoLegend="Short introduction to widgets"
 />
 
+## Overview
+
+(waiting on image with caption)
+
 ## Upper Tab
 
 <img className="pro-border-gradient" width="800" alt="Widget-rev" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/97943512-5488-4e94-8a06-b59ec6e51e4c" />

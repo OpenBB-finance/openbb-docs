@@ -1,6 +1,6 @@
 ---
-title: Data providers
-sidebar_position: 3
+title: Data source
+sidebar_position: 5
 description: OpenBB Terminal Pro remains a leading platform in aggregating and standardizing
   financial data. Be at the helm of choosing quality and affordable data vendors through
   OpenBB.
@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Data Provider | OpenBB Terminal Pro Docs" />
+<HeadTitle title="Data source | OpenBB Terminal Pro Docs" />
 
 <img className="pro-border-gradient" width="800" alt="mgmt team settings" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/d399331d-bfdb-40d3-8c99-595d97d1bf7b" />
 

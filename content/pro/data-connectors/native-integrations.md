@@ -1,6 +1,6 @@
 ---
 title: Native integrations
-sidebar_position: 3
+sidebar_position: 4
 description: Get in-depth documentation on Native Integrations provided by OpenBB
   Terminal Pro including API key connections to data providers and database/warehouse
   connections for an enhanced data analysis experience.
