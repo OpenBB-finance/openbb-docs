@@ -1,6 +1,6 @@
 ---
 title: OpenBB Copilot
-sidebar_position: 8
+sidebar_position: 31
 description: Learn how to use OpenBB Copilot to interact with the OpenBB Terminal Pro
 keywords:
 - OpenBB Copilot

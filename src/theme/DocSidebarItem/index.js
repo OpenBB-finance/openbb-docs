@@ -54,14 +54,93 @@ export default function DocSidebarItem({ item, ...props }) {
     return null;
   }
 
+  let addedHtml = null;
+  if (item.href?.startsWith("/pro")) {
+    if (item.label === "Overview") {
+      addedHtml = (
+        <DocSidebarItemHtml
+          item={{
+            type: "html",
+            className: "sidebar-title !mt-6",
+            value: "Getting Started",
+            defaultStyle: true,
+          }}
+        />
+      );
+    }
+    else if (item.label === "Structured Data") {
+      addedHtml = (
+        <DocSidebarItemHtml
+          item={{
+            type: "html",
+            className: "sidebar-title !mt-6",
+            value: "Input Data",
+            defaultStyle: true,
+          }}
+        />
+      );
+    }
+    else if (item.label === "Widgets") {
+      addedHtml = (
+        <DocSidebarItemHtml
+          item={{
+            type: "html",
+            className: "sidebar-title !mt-6",
+            value: "Visualization",
+            defaultStyle: true,
+          }}
+        />
+      );
+    }
+    else if (item.label === "OpenBB Copilot") {
+      addedHtml = (
+        <DocSidebarItemHtml
+          item={{
+            type: "html",
+            className: "sidebar-title !mt-6",
+            value: "AI Insights",
+            defaultStyle: true,
+          }}
+        />
+      );
+    }
+    else if (item.label === "Custom Onboarding") {
+      addedHtml = (
+        <DocSidebarItemHtml
+          item={{
+            type: "html",
+            className: "sidebar-title !mt-6",
+            value: "Enterprise Features",
+            defaultStyle: true,
+          }}
+        />
+      );
+    }
+  }
+
   switch (item.type) {
     case "category":
-      return <DocSidebarItemCategory item={item} {...props} />;
+      return (
+        <>
+          {addedHtml}
+          <DocSidebarItemCategory item={item} {...props} />
+        </>
+      );
     case "html":
-      return <DocSidebarItemHtml item={item} {...props} />;
+      return (
+        <>
+          {addedHtml}
+          <DocSidebarItemHtml item={item} {...props} />
+        </>
+      );
     case "link":
     default:
-      return <DocSidebarItemLink item={item} {...props} />;
+      return (
+        <>
+          {addedHtml}
+          <DocSidebarItemLink item={item} {...props} />
+        </>
+      );
   }
 }
 

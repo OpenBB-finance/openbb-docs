@@ -1,6 +1,6 @@
 ---
-title: Introduction
-sidebar_position: 0
+title: Custom Onboarding
+sidebar_position: 9999
 description: Learn about the Data Connectors feature of OpenBB Terminal Pro which
   allows integration of private datasets via different methods such as No code, Advanced
   and Third-party. For any further assistance, contact us at support@openbb.finance.

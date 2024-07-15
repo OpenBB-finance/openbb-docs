@@ -1,6 +1,6 @@
 ---
 title: Single Endpoint API
-sidebar_position: 2
+sidebar_position: 12
 description: Learn how to use the Single Widget of OpenBB Terminal Pro for seamless
   integration with your API Endpoints, enabling custom data to be fetched and displayed
   in an accessible format. Includes features like additional headers and addressing

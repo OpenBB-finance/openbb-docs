@@ -1,6 +1,6 @@
 ---
-title: Static files
-sidebar_position: 1
+title: Structured Data
+sidebar_position: 10
 description: Learn how to use the Single Widget of OpenBB Terminal Pro for seamless
   integration with your API Endpoints, enabling custom data to be fetched and displayed
   in an accessible format. Includes features like additional headers and addressing
