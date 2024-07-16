@@ -68,7 +68,7 @@ export default function DocSidebarItem({ item, ...props }) {
         />
       );
     }
-    else if (item.label === "Structured Data") {
+    else if (item.label === "Upload Documents") {
       addedHtml = (
         <DocSidebarItemHtml
           item={{

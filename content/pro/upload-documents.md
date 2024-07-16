@@ -1,5 +1,5 @@
 ---
-title: Structured Data
+title: Upload Documents
 sidebar_position: 10
 description: Learn how to use the Single Widget of OpenBB Terminal Pro for seamless
   integration with your API Endpoints, enabling custom data to be fetched and displayed
@@ -19,5 +19,12 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Static Files | OpenBB Terminal Pro Docs" />
+<HeadTitle title="Upload Documents | OpenBB Terminal Pro Docs" />
 
+## Structured Documents
+
+@TODO: Add info on what structured documents can be uploaded
+
+## Unstructured Documents
+
+@TODO: Add info on what unstructured documents can be uploaded

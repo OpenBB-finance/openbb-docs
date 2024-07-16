@@ -38,6 +38,8 @@ In addition, if your API endpoint doesn't return a a simple JSON but a nested ar
 
 If you want to do something more custom, you should look into creating [your own backend](/pro/data-connectors/integrate-your-own-backend), or reach out to OpenBB for support.
 
+## Examples
+
 Here's a list of public API endpoints that can be used for free:
 
 | Widget title | Public URL | Category | Subcategory | Source | Description |
