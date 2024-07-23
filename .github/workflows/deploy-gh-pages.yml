@@ -43,10 +43,10 @@ jobs:
 
       - name: Download OpenBB Platform code
         run: |
-          curl -sSL https://codeload.github.com/OpenBB-finance/OpenBBTerminal/zip/refs/heads/main -o /tmp/openbb.zip && \
+          curl -sSL https://codeload.github.com/OpenBB-finance/OpenBB/zip/refs/heads/main -o /tmp/openbb.zip && \
               unzip /tmp/openbb.zip -d /tmp/openbb && \
               rm /tmp/openbb.zip && mkdir -p ./openbb_platform && \
-              mv /tmp/openbb/OpenBBTerminal-main/openbb_platform/* ./openbb_platform && \
+              mv /tmp/openbb/OpenBB-main/openbb_platform/* ./openbb_platform && \
               rm -rf /tmp/openbb
 
       - name: Generate Platform Markdown

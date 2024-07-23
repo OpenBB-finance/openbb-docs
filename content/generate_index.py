@@ -40,12 +40,11 @@ def create_nested_subfolder_card(_folder: Path, url: str) -> str:
 
 # Looping through each topfolder to generate the index
 for topfolder in [
-    "terminal",
-    "platform",
     "bot",
-    "terminal/usage",
-    "terminal/menus",
+    "cli",
     "excel",
+    "platform",
+    "pro",
 ]:
     # Looping through each folder in the fold directory
     for folder in (Path(__file__).parent / topfolder).iterdir():
