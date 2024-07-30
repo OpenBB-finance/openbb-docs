@@ -21,6 +21,8 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Upload Documents | OpenBB Terminal Pro Docs" />
 
+Quickly visualize your data by adding it as a widget from any type of file. We currently support PDF, CSV, JSON, PNG, JPG. This flexibility ensures you can easily integrate various types of data into the platform.
+
 ## Structured Documents
 
 @TODO: Add info on what structured documents can be uploaded

@@ -30,28 +30,26 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
   videoLegend="Short introduction to integrating your own backend"
 />
 
-## Language-Agnostic API
+## Custom Backend
 
-The language-agnostic API approach offers flexibility by allowing you to use the programming language and tools that best suit your needs. You can host this API internally or externally, making it accessible to the Terminal Pro widgets. Here's how:
+An OpenBB Terminal Pro Custom Backend is a versatile way to connect your data to widgets inside OpenBB Terminal Pro. Whether your API is hosted internally or externally, this method provides a standardized structure that OpenBB Terminal Pro widgets can read and then display any data.
 
 1. **Design and implement your API**: Choose your preferred programming language and framework. Ensure that the API can return data in JSON format, which is required for widget integration.
 
-2. **Create widget definitions**: As with the OpenBB API approach, create corresponding definitions for your custom widgets in the `widgets.json` file. Specify the API endpoint, name, description, category, type, etc.
+2. **Create widgets.json file**: This file is your main configuration and defines widget properties such as name, description, category, type, endpoint, and other information. Each widget will be defined in this file. An example file structure might look like below. To view a sample `widgets.json` file head over to our [example backend repository](https://github.com/OpenBB-finance/backend-for-terminal-pro).
 
-3. **Connect widgets to your API**: Once your API is up and running, users can add the custom widgets using the Terminal Pro interface. They just need to input the endpoint details, and the widget will fetch and display the data from your API.
+```
+  backend/
+├── __pycache__/
+├── main.py
+├── README.md
+└── widgets.json
+```
 
-### Python and FastAPI
+3. **Create endpoints for each widgets.json entry**: Your `widgets.json` file lets OpenBB Terminal Pro know how to display the data but you need to build out the endpoint for each entry/widget.
+
+4. **Connect to your API**: Once your API is up and running, you can add the custom backend using the Terminal Pro interface. You will need to input your main endpoint. The system will hit the `/widgets.json` endpoint to fetch all the necessary settings and configurations. Once connected, all the widgets will appear in your search and ready to be added to any dashboard.
+
+### Examples
 
 Our team has created several examples that you can use to quickly get started with Python and FastAPI. For more information, check [this open source repository](https://github.com/OpenBB-finance/backend-for-terminal-pro/tree/main) for examples.
-
-## Cookie-Cutter
-
-The OpenBB cookie-cutter approach provides a standardized way to host your data and integrate it into widgets. This method is versatile and can be used whether your data is hosted internally or externally. Here's how to get started:
-
-1. **Prepare the `widgets.json` file**: This file defines widget properties such as name, description, category, type, endpoint, and more. Make sure it's well-structured. See an example below.
-
-2. **Set up the OpenBB API**: Follow the OpenBB API documentation to set up your API. Implement the necessary endpoints that align with the widget definitions in the `widgets.json` file.
-
-3. **Integrate endpoints**: Define the appropriate endpoint for each custom widget in the `widgets.json` file. This endpoint connects your API to the widget.
-
-4. **Configure widgets**: Users can add the custom widgets using the Terminal Pro interface by providing the relevant endpoint details.
