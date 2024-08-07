@@ -1,5 +1,6 @@
 ---
 title: Bring your own Copilot
+sidebar_position: 32
 description: Learn how to use your own Copilot with Terminal Pro
 keywords:
 - OpenBB Copilot
@@ -47,4 +48,4 @@ this, navigate to the "Add copilot" section and follow the prompts:
 - Confirm the addition.
 - You are now ready to use your custom copilot. 
 
-
+@TODO: Make sure that the text and images are the latest ones.

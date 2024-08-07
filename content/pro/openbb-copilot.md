@@ -1,6 +1,6 @@
 ---
 title: OpenBB Copilot
-sidebar_position: 8
+sidebar_position: 31
 description: Learn how to use OpenBB Copilot to interact with the OpenBB Terminal Pro
 keywords:
 - OpenBB Copilot
@@ -140,3 +140,5 @@ a PDF file containing a technical report from TSLA released in 2024, a good
 filename would be `tsla_technical_report_2024.pdf`.
 
 :::
+
+@TODO: Make sure that this is up-to-date with latest style of copilot
