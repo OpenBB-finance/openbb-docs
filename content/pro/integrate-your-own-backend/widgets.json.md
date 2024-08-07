@@ -49,9 +49,15 @@ Name of the widget in the list the user sees. Displayed on the top left of the w
 ---
 
 ## `description`
-`string` (optional)
 
 Description to show the user on the info button and on the search/add widget menu.
+
+---
+
+## `endpoint`
+`string`
+
+Endpoint on your API backend for the widget to get data from.
 
 ---
 
@@ -123,9 +129,9 @@ The data key is the most powerful section of the widgets.json configuration - he
 ### `columnsDefs`
 `object` (optional)
 
-- `field` (optional): Field name from the JSON we get from SDK. Type: string
-- `headerName` (optional): What we actually want the header to display as. Type: string
-- `chartDataType` (optional): Chart data type. - You must have at least one category and 1 series to be able to chart from the data. If you don't define this we assume a string value is a category and any number is a series. Allowed values: "category", "series", "time", "excluded"
+- `field` (optional): Field name returned from the JSON on the API. Type: string
+- `headerName` (optional): What the user will see as the header name for a column. Type: string
+- `chartDataType` (optional): Chart data type. - You must have at least one category and one series to be able to chart from the data. If you don't define this we assume any string value is a category and any number is a series. Allowed values: "category", "series", "time", "excluded"
 - `cellDataType` (optional): Base cell data type. Allowed values: "text", "number", "boolean", "date", "dateString", "object"
 - `formatterFn` (optional): Formatter function. Allowed values: "int", "none", "percent", "normalized", "normalizedPercent", "dateToYear"
     - `int` - Formats the number as an integer.
@@ -144,7 +150,7 @@ The data key is the most powerful section of the widgets.json configuration - he
 - `pinned` (optional): Pinned column. Allowed values: "left", "right"
 - `chartView` (optional): If you want the table to be a chart by default (Using our AgGrid chart Types) Type: object
     - `enabled` (optional): Indicates if the chart view is the default view. Type: boolean
-    - `chartType` (optional): Type of chart to display. Defined by ChartTypeSchema. Allowed values: "column", "groupedColumn", "stackedColumn", "normalizedColumn", "bar", "groupedBar", "stackedBar", "normalizedBar", "line", "scatter", "bubble", "pie", "donut", "doughnut", "area", "stackedArea", "normalizedArea", "histogram", "radarLine", "radarArea", "nightingale", "radialColumn", "radialBar", "sunburst", "rangeBar", "rangeArea", "boxPlot", "treemap", "heatmap", "waterfall"
+    - `chartType` (optional): Type of chart to display by default. Allowed values: "column", "groupedColumn", "stackedColumn", "normalizedColumn", "bar", "groupedBar", "stackedBar", "normalizedBar", "line", "scatter", "bubble", "pie", "donut", "doughnut", "area", "stackedArea", "normalizedArea", "histogram", "radarLine", "radarArea", "nightingale", "radialColumn", "radialBar", "sunburst", "rangeBar", "rangeArea", "boxPlot", "treemap", "heatmap", "waterfall"
 
 
 #### Example
@@ -155,10 +161,6 @@ The data key is the most powerful section of the widgets.json configuration - he
     ...
     "data": {
       "table": {
-        "chartView": {
-            "enabled": true,
-            "chartType": "line"
-        },
         "showAll": true,
         "columnsDefs": [
           {
@@ -178,6 +180,10 @@ The data key is the most powerful section of the widgets.json configuration - he
             "chartDataType": "category"
           }
         ]
+        },
+        "chartView": {
+            "enabled": true,
+            "chartType": "line"
       }
     }
     ...
@@ -189,61 +195,40 @@ The data key is the most powerful section of the widgets.json configuration - he
 ---
 
 ## `type`
+`string` (optional)
 
 Main widget type. Allowed values: `chart`, `table`, `note`, `custom`.
 
 ---
 
-## `endpoint`
-
-- Endpoint or endpoints for the widget data.
-- url: string;  URL for the endpoint.
-- method: "GET" | "POST"; Method for the endpoint.
-- headers?:  Headers for the endpoint. key: string : string; // Headers for the endpoint.
-- query?:  Query for the endpoint. key: string : string; // Query for the endpoint.
-
----
-
-## `connectionType`
-
-Connection type for the widget data. Allowed values: `single`, `advanced-backend`, `file`, `database`, `snowflake`. (optional)
-
----
-
 ## `source`
+`object` (optional)
 
 Source for the widget. Where the data for the widget is coming from. (optional)
 
 ---
 
-## `sourceName`
-
-Source name for the widget for external widgets. (optional)
-
----
-
-## `sourceDatabase`
-
-Source database for the widget. (optional)
-
----
-
 ## `defaultViz`
+`string` (optional)
 
-Default visualization for the widget. Allowed values: `chart`, `table`. (optional)
+Default visualization for the widget. Allowed values: `chart`, `table`. Default : `table`(optional)
 
 ---
 
 ## `dataKey`
+`string` (optional)
 
 Nested reference to the data. (optional)
 
 ---
 
 ## `category`
+`string` (optional)
+
 
 ---
 
 ## `subCategory`
+`string` (optional)
 
 ---
