@@ -6,7 +6,6 @@ description: Learn how to integrate your own backend with OpenBB Terminal Pro us
   and principles for handling widget.json files, APIs, interfaces, Python, FastAPI
   and more.
 keywords:
-- OpenBB cookie-cutter
 - widgets.json
 - OpenBB API
 - Endpoint integration
@@ -105,9 +104,40 @@ Parameters to send to your API - each parameter object will be a field on the wi
 - `field`: What the field is called. Type : string
 - `label`: Label for the input. Type: String
 - `optional`: If you want the parameter to show or not. Type: boolean
-- `options` (optional): If you want the table to be a chart by default, Type: object
-    - label Type: string
-    - value Type: string | number
+- `options` (optional): List of options to pass for a dropdown, Type: object
+    - `label`  Type: string
+    - `value` Type: string | number
+
+
+#### Example
+
+```json
+[
+  {
+    name: "start_date",
+    value: "$currentDate-2y",
+    label: "Start Date",
+    type: "date",
+  },
+  {
+    name: "end_date",
+    value: "$currentDate+1d",
+    label: "End Date",
+    type: "date",
+  },
+  {
+    name: "interval",
+    value: "1d",
+    label: "Interval",
+    options: [
+      { label: "Daily", value: "1d" },
+      { label: "Weekly", value: "1w" },
+      { label: "Monthly", value: "1m" },
+    ],
+    optional: true,
+  },
+]
+```
 
 ---
 
