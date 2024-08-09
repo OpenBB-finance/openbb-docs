@@ -48,8 +48,20 @@ Name of the widget in the list the user sees. Displayed on the top left of the w
 ---
 
 ## `description`
+`string` (optional)
 
 Description to show the user on the info button and on the search/add widget menu.
+
+---
+
+## `category`
+`string` (optional)
+
+
+---
+
+## `subCategory`
+`string` (optional)
 
 ---
 
@@ -57,6 +69,59 @@ Description to show the user on the info button and on the search/add widget men
 `string`
 
 Endpoint on your API backend for the widget to get data from.
+
+---
+
+---
+
+## `params`
+`object` (optional)
+
+Parameters to send to your API - each parameter object will be a field on the widget to enter in data.
+
+- `type`: Type of input for the user - Allowed values: "date" | "string" | "number" | "boolean" | "ticker"
+- `value`: Value to show by default in the input - Type : DateModifierValue | string | number | boolean
+    - note : DateModifierValue is to show a dynamic date - `$currentDate+` or `$currentDate-` "h" | "d" | "w" | "M" | "y" (ex. `$currentDate-1w` - for one week ago)
+- `name`: What the field is called. Type : string
+- `label`: Label for the input. Type: String
+- `show`: If you want the parameter to show or not. Type: boolean
+- `description`: Description for the parameter
+- `options` (optional): List of options to pass for a dropdown, Type: object
+    - `label`  Type: string
+    - `value` Type: string | number
+
+
+#### Example
+
+```json
+[
+  {
+    paramName: "start_date",
+    value: "$currentDate-2y",
+    label: "Start Date",
+    type: "date",
+  },
+  {
+    paramName: "end_date",
+    value: "$currentDate+1d",
+    label: "End Date",
+    type: "date",
+    description: "End Date for the stock price"
+  },
+  {
+    paramName: "interval",
+    value: "1d",
+    label: "Interval",
+    options: [
+      { label: "Daily", value: "1d" },
+      { label: "Weekly", value: "1w" },
+      { label: "Monthly", value: "1m" },
+    ],
+    optional: true,
+
+  },
+]
+```
 
 ---
 
@@ -89,54 +154,6 @@ Grid data for the widget. Used to set the positioning and size of the widget. Ca
     ...
   }
 }
-```
-
----
-
-## `params`
-`object` (optional)
-
-Parameters to send to your API - each parameter object will be a field on the widget to enter in data.
-
-- `type`: Type of input for the user - Allowed values: "date" | "string" | "number" | "boolean" | "ticker"
-- `default`: Value to show by default in the input - Type : DateModifierValue | string | number | boolean
-    - note : DateModifierValue is to show a dynamic date - `$currentDate+` or `$currentDate-` "h" | "d" | "w" | "M" | "y" (ex. `$currentDate-1w` - for one week ago)
-- `field`: What the field is called. Type : string
-- `label`: Label for the input. Type: String
-- `optional`: If you want the parameter to show or not. Type: boolean
-- `options` (optional): List of options to pass for a dropdown, Type: object
-    - `label`  Type: string
-    - `value` Type: string | number
-
-
-#### Example
-
-```json
-[
-  {
-    name: "start_date",
-    value: "$currentDate-2y",
-    label: "Start Date",
-    type: "date",
-  },
-  {
-    name: "end_date",
-    value: "$currentDate+1d",
-    label: "End Date",
-    type: "date",
-  },
-  {
-    name: "interval",
-    value: "1d",
-    label: "Interval",
-    options: [
-      { label: "Daily", value: "1d" },
-      { label: "Weekly", value: "1w" },
-      { label: "Monthly", value: "1m" },
-    ],
-    optional: true,
-  },
-]
 ```
 
 ---
@@ -250,15 +267,4 @@ Default visualization for the widget. Allowed values: `chart`, `table`. Default 
 
 Nested reference to the data. (optional)
 
----
 
-## `category`
-`string` (optional)
-
-
----
-
-## `subCategory`
-`string` (optional)
-
----
