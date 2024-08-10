@@ -8,13 +8,15 @@ on:
     types: [opened, synchronize, reopened, closed]
     branches:
       - '**'
+  workflow_dispatch:
 
 jobs:
   generate:
     name: Generate and Deploy documentation
     if: >
       github.event_name == 'push' ||
-      github.event_name == 'pull_request'
+      github.event_name == 'pull_request' ||
+      github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
       - name: Git checkout
