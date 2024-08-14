@@ -21,7 +21,7 @@ keywords:
 The widgets.json file is the bridge between your API and OpenBB Terminal Pro widgets. Below are all of the values you can set along with a description for each.
 
 ## `id`
-`string`
+`text`
 
 Unique identifier for the widget -> Each widget starts here and all other configurations start under each `id`. All `id` values must be unique throughout OpenBB Terminal Pro.
 
@@ -41,32 +41,32 @@ Unique identifier for the widget -> Each widget starts here and all other config
 ---
 
 ## `name`
-`string` (optional)
+`text` (optional)
 
 Name of the widget in the list the user sees. Displayed on the top left of the widget.
 
 ---
 
 ## `description`
-`string` (optional)
+`text` (optional)
 
 Description to show the user on the info button and on the search/add widget menu.
 
 ---
 
 ## `category`
-`string` (optional)
+`text` (optional)
 
 
 ---
 
 ## `subCategory`
-`string` (optional)
+`text` (optional)
 
 ---
 
 ## `endpoint`
-`string`
+`text`
 
 Endpoint on your API backend for the widget to get data from.
 
@@ -79,16 +79,16 @@ Endpoint on your API backend for the widget to get data from.
 
 Parameters to send to your API - each parameter object will be a field on the widget to enter in data.
 
-- `type`: Type of input for the user - Allowed values: "date" | "string" | "number" | "boolean" | "ticker"
-- `value`: Value to show by default in the input - Type : DateModifierValue | string | number | boolean
+- `paramName`: What the field is called. Type : text
+- `type`: Type of input for the user - Allowed values: "date" | "text" | "number" | "boolean" | "ticker"
+- `value`: Value to show by default in the input - Type : DateModifierValue | text | number | boolean
     - note : DateModifierValue is to show a dynamic date - `$currentDate+` or `$currentDate-` "h" | "d" | "w" | "M" | "y" (ex. `$currentDate-1w` - for one week ago)
-- `name`: What the field is called. Type : string
 - `label`: Label for the input. Type: String
 - `show`: If you want the parameter to show or not. Type: boolean
-- `description`: Description for the parameter
+- `description`: Description for the parameter (will show on hover for widget inside OpenBB Terminal Pro)
 - `options` (optional): List of options to pass for a dropdown, Type: object
-    - `label`  Type: string
-    - `value` Type: string | number
+    - `label`  Type: text
+    - `value` Type: text | number
 
 
 #### Example
@@ -100,6 +100,7 @@ Parameters to send to your API - each parameter object will be a field on the wi
     value: "$currentDate-2y",
     label: "Start Date",
     type: "date",
+    description: "Current Date for the stock price"
   },
   {
     paramName: "end_date",
@@ -117,6 +118,7 @@ Parameters to send to your API - each parameter object will be a field on the wi
       { label: "Weekly", value: "1w" },
       { label: "Monthly", value: "1m" },
     ],
+    type: "text"
     optional: true,
 
   },
@@ -164,7 +166,7 @@ Grid data for the widget. Used to set the positioning and size of the widget. Ca
 The data key is the most powerful section of the widgets.json configuration - here you set up the table and the columns in your table, along with a few other settings.
 
 - `hideControls`: Indicates if all controls should be hidden on the widget. Type: boolean
-- `dataKey`: Key for the data - If you have a nested JSON return you can set the key here on which data to grab. Type: string
+- `dataKey`: Key for the data - If you have a nested JSON return you can set the key here on which data to grab. Type: text
 
 ### `table`
 `object`
@@ -173,12 +175,16 @@ The data key is the most powerful section of the widgets.json configuration - he
 
 - `showAll`: Indicates if all data series should be shown regardless of columns defined in `columnsDefs`. If True shows all defined columns plus all other data that comes back. Type: boolean
 
+- `chartView` (optional): Will show chart view button if you pass this. If you leave it out we wont show the button. (Using our AgGrid chart Types) Type: object
+    - `enabled` (optional): Indicates if the chart view button is on or off by default.
+    - `chartType` (optional): Type of chart to display by default. Allowed values: "column", "groupedColumn", "stackedColumn", "normalizedColumn", "bar", "groupedBar", "stackedBar", "normalizedBar", "line", "scatter", "bubble", "pie", "donut", "doughnut", "area", "stackedArea", "normalizedArea", "histogram", "radarLine", "radarArea", "nightingale", "radialColumn", "radialBar", "sunburst", "rangeBar", "rangeArea", "boxPlot", "treemap", "heatmap", "waterfall"
+
 ### `columnsDefs`
 `object` (optional)
 
-- `field` (optional): Field name returned from the JSON on the API. Type: string
-- `headerName` (optional): What the user will see as the header name for a column. Type: string
-- `chartDataType` (optional): Chart data type. - You must have at least one category and one series to be able to chart from the data. If you don't define this we assume any string value is a category and any number is a series. Allowed values: "category", "series", "time", "excluded"
+- `field` (optional): Field name returned from the JSON on the API. Type: text
+- `headerName` (optional): What the user will see as the header name for a column. Type: text
+- `chartDataType` (optional): Chart data type. - You must have at least one category and one series to be able to chart from the data. If you don't define this we assume any text value is a category and any number is a series. Allowed values: "category", "series", "time", "excluded"
 - `cellDataType` (optional): Base cell data type. Allowed values: "text", "number", "boolean", "date", "dateString", "object"
 - `formatterFn` (optional): Formatter function. Allowed values: "int", "none", "percent", "normalized", "normalizedPercent", "dateToYear"
     - `int` - Formats the number as an integer.
@@ -193,11 +199,8 @@ The data key is the most powerful section of the widgets.json configuration - he
 - `minWidth` (optional): Minimum width of the column on the table. Type: number
 - `hide` (optional): Hide column on the table. Type: boolean
 - `rowGroup` (optional): Row group column. Type: boolean
-- `aggFunc` (optional): Aggregation function for the column. Type: string
+- `aggFunc` (optional): Aggregation function for the column. Type: text
 - `pinned` (optional): Pinned column. Allowed values: "left", "right"
-- `chartView` (optional): If you want the table to be a chart by default (Using our AgGrid chart Types) Type: object
-    - `enabled` (optional): Indicates if the chart view is the default view. Type: boolean
-    - `chartType` (optional): Type of chart to display by default. Allowed values: "column", "groupedColumn", "stackedColumn", "normalizedColumn", "bar", "groupedBar", "stackedBar", "normalizedBar", "line", "scatter", "bubble", "pie", "donut", "doughnut", "area", "stackedArea", "normalizedArea", "histogram", "radarLine", "radarArea", "nightingale", "radialColumn", "radialBar", "sunburst", "rangeBar", "rangeArea", "boxPlot", "treemap", "heatmap", "waterfall"
 
 
 #### Example
@@ -242,7 +245,7 @@ The data key is the most powerful section of the widgets.json configuration - he
 ---
 
 ## `type`
-`string` (optional)
+`text` (optional)
 
 Main widget type. Allowed values: `chart`, `table`, `note`, `custom`.
 
@@ -256,14 +259,14 @@ Source for the widget. Where the data for the widget is coming from. (optional)
 ---
 
 ## `defaultViz`
-`string` (optional)
+`text` (optional)
 
 Default visualization for the widget. Allowed values: `chart`, `table`. Default : `table`(optional)
 
 ---
 
 ## `dataKey`
-`string` (optional)
+`text` (optional)
 
 Nested reference to the data. (optional)
 
