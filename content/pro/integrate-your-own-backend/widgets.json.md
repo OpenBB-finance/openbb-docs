@@ -72,8 +72,6 @@ Endpoint on your API backend for the widget to get data from.
 
 ---
 
----
-
 ## `params`
 `object` (optional)
 
