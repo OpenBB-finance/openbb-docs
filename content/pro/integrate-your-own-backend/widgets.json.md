@@ -79,7 +79,7 @@ Endpoint on your API backend for the widget to get data from.
 
 Parameters to send to your API - each parameter object will be a field on the widget to enter in data.
 
-- `paramName`: What the field is called. Type : text
+- `paramName`: What the field is called on your backend. Type : text
 - `type`: Type of input for the user - Allowed values: "date" | "text" | "number" | "boolean" | "ticker"
 - `value`: Value to show by default in the input - Type : DateModifierValue | text | number | boolean
     - note : DateModifierValue is to show a dynamic date - `$currentDate+` or `$currentDate-` "h" | "d" | "w" | "M" | "y" (ex. `$currentDate-1w` - for one week ago)
@@ -119,7 +119,7 @@ Parameters to send to your API - each parameter object will be a field on the wi
       { label: "Monthly", value: "1m" },
     ],
     type: "text"
-    optional: true,
+    description: "Select the interval",
 
   },
 ]
@@ -178,6 +178,8 @@ The data key is the most powerful section of the widgets.json configuration - he
 - `chartView` (optional): Will show chart view button if you pass this. If you leave it out we wont show the button. (Using our AgGrid chart Types) Type: object
     - `enabled` (optional): Indicates if the chart view button is on or off by default.
     - `chartType` (optional): Type of chart to display by default. Allowed values: "column", "groupedColumn", "stackedColumn", "normalizedColumn", "bar", "groupedBar", "stackedBar", "normalizedBar", "line", "scatter", "bubble", "pie", "donut", "doughnut", "area", "stackedArea", "normalizedArea", "histogram", "radarLine", "radarArea", "nightingale", "radialColumn", "radialBar", "sunburst", "rangeBar", "rangeArea", "boxPlot", "treemap", "heatmap", "waterfall"
+
+- `columnsDefs` : See below
 
 ### `columnsDefs`
 `object` (optional)
