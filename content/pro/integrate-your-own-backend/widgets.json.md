@@ -163,7 +163,6 @@ Grid data for the widget. Used to set the positioning and size of the widget. Ca
 
 The data key is the most powerful section of the widgets.json configuration - here you set up the table and the columns in your table, along with a few other settings.
 
-- `hideControls`: Indicates if all controls should be hidden on the widget. Type: boolean
 - `dataKey`: Key for the data - If you have a nested JSON return you can set the key here on which data to grab. Type: text
 
 ### `table`
