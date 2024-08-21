@@ -178,7 +178,9 @@ DateModifierValue is to show a dynamic date - `$currentDate+` or `$currentDate-`
 
 ## ChartView chart types
 
-- `chartType` : Type of chart to display by default - These are charts provided using the AgGrid library. Custom charts can be created using plotly and there are examples of that (here - link to github) Allowed values: "column", "groupedColumn", "stackedColumn", "normalizedColumn", "bar", "groupedBar", "stackedBar", "normalizedBar", "line", "scatter", "bubble", "pie", "donut", "doughnut", "area", "stackedArea", "normalizedArea", "histogram", "radarLine", "radarArea", "nightingale", "radialColumn", "radialBar", "sunburst", "rangeBar", "rangeArea", "boxPlot", "treemap", "heatmap", "waterfall"
+- **`chartType`**: The type of chart to display by default. These charts are provided using the AgGrid library. Custom charts can also be created using Plotly. For examples, refer to the [GitHub repository](#link-to-github).
+  
+  **Allowed values:** **`column`**, **`groupedColumn`**, **`stackedColumn`**, **`normalizedColumn`**, **`bar`**, **`groupedBar`**, **`stackedBar`**, **`normalizedBar`**, **`line`**, **`scatter`**, **`bubble`**, **`pie`**, **`donut`**, **`doughnut`**, **`area`**, **`stackedArea`**, **`normalizedArea`**, **`histogram`**, **`radarLine`**, **`radarArea`**, **`nightingale`**, **`radialColumn`**, **`radialBar`**, **`sunburst`**, **`rangeBar`**, **`rangeArea`**, **`boxPlot`**, **`treemap`**, **`heatmap`**, **`waterfall`**
 
 ## formatterFn
 
