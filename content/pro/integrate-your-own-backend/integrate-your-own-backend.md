@@ -36,7 +36,7 @@ An OpenBB Terminal Pro Custom Backend is a versatile way to connect your data to
 
 1. **Design and implement your API**: Choose your preferred programming language and framework. Ensure that the API can return data in JSON format, which is required for widget integration.
 
-2. **Create widgets.json file**: This file is your main configuration and defines widget properties such as name, description, category, type, endpoint, and other information. Each widget will be defined in this file. An example file structure might look like below. To view a sample `widgets.json` file head over to our [example backend repository](https://github.com/OpenBB-finance/backend-for-terminal-pro).
+2. **Create widgets.json file**: This file is your main configuration and defines widget properties such as name, description, category, endpoint, and other information. Each widget will be defined in this file. To view a sample `widgets.json` file and learn more about what you can do check out the [widgets.json docs](https://docs.openbb.pro/#TODOaddme). An example structure in your backend might look like below.
 
 ```
   backend/
@@ -46,9 +46,9 @@ An OpenBB Terminal Pro Custom Backend is a versatile way to connect your data to
 └── widgets.json
 ```
 
-3. **Create endpoints for each widgets.json entry**: Your `widgets.json` file lets OpenBB Terminal Pro know how to display the data but you need to build out the endpoint for each entry/widget.
+3. **Create endpoints for each widgets.json entry**: Your `widgets.json` file lets OpenBB Terminal Pro know how to display the data but you need to build out the endpoint to supply the data for each widget.
 
-4. **Connect to your API**: Once your API is up and running, you can add the custom backend using the Terminal Pro interface. You will need to input your main endpoint. The system will hit the `/widgets.json` endpoint to fetch all the necessary settings and configurations. Once connected, all the widgets will appear in your search and ready to be added to any dashboard.
+4. **Connect to your API**: Once your API is up and running, you can add the custom backend using the OpenBB Terminal Pro interface (link to pro). You will need to input your main endpoint and the system will read the `/widgets.json` endpoint to fetch all the necessary settings and configurations. Once connected, all the widgets will appear in your search and ready to be added to any dashboard.
 
 ### Examples
 

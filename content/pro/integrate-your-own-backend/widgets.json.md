@@ -18,78 +18,132 @@ keywords:
 - Widget definitions
 ---
 
-The widgets.json file is the bridge between your API and OpenBB Terminal Pro widgets. Below are all of the values you can set along with a description for each.
+## widgets.json
 
-## `id`
-`text`
+### Welcome to the widgets.json configuration file
 
-Unique identifier for the widget -> Each widget starts here and all other configurations start under each `id`. All `id` values must be unique throughout OpenBB Terminal Pro.
+The widgets.json file is the bridge between your API and OpenBB Terminal Pro widgets. Each entry in your widgets.json file will directly map to a widget that can display in the app. You can find a full running example here (link to github).
 
-#### Example
+Below are all of the values you can set along with a description for each.
+
+| **Name**                           | **Type**                     | **Description**                                                                                                                                         |**Version**|
+|------------------------------------|------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|----|
+| `name`                             | `string` (required)          | The display name of the widget shown to the user. Example: `"Chains chart example"`.                                                                 | 1.0 |
+| `description`                      | `string` (required)          | A brief description of the widget for user info and selection menu. Example: `"Get current TVL of all chains and plot it!"`.                        | 1.0 |
+| `endpoint`                         | `string` (required)          | The backend API endpoint for retrieving data. Example: `"chains"`. Possible values: Any valid API endpoint path as a string.                         | 1.0 |
+| `category`                         | `string`                     | The category for organizing widgets. Example: `"crypto"`. Possible values: Any string representing a category.                                      | 1.0 |
+| `searchCategory`                   | `string`                     | Secondary category for refining search results. Example: `"crypto"`. Possible values: Similar to `category`.                                         | 1.0 |
+| `defaultViz`                       | `string`                     | Default visualization type for the widget. Possible values: `"chart"`, `"table"`. Default: `"table"`.                                                | 1.0 |
+| `gridData.w`                       | `number`                     | The width of the widget in grid units. Example: `20`. Possible values: Any positive integer. Maximum value : `40`                                    | 1.0 |
+| `gridData.h`                       | `number`                     | The height of the widget in grid units. Example: `9`. Possible values: Any positive integer. Maximum value : `100`                                  | 1.0 |
+| `data.dataKey`                     | `string`                     | A key to identify the data within the widget. Example: `"customDataKey"`. Possible values: Any string representing a data key.                       | 1.0 |
+| `data.table.enableCharts`          | `boolean`                    | Enables chart visualization for table data. Example: `true`. Possible values: `true`, `false`.                                                      | 1.0 |
+| `data.table.showAll`               | `boolean`                    | Displays all available data in the table. Example: `true`. Possible values: `true`, `false`.                                                        | 1.0 |
+| `data.table.chartView.enabled`     | `boolean`                    | Sets the chart view as the default view. Example: `true`. Possible values: `true`, `false`.                                                         | 1.0 |
+| `data.table.chartView.chartType`   | `string`                     | Specifies the type of chart to display. Example: `"column"`. Possible values: [ChartView chart types](#chartview-chart-types)                       | 1.0 |
+| `data.table.columnsDefs`           | `object[]`                   | A list of the column definitions to be configured for the widget. More info [here](#columnsdefs)                                                    | 1.0 |
+| `data.table.columnsDefs.field`     | `string`                     | The name of the field from the JSON data. Example: `"column1"`. Possible values: Any string matching a key in the data source.                       | 1.0 |
+| `data.table.columnsDefs.headerName` | `string`                    | The display name of the column header. Example: `"Column 1"`. Possible values: Any string.                                                          | 1.0 |
+| `data.table.columnsDefs.chartDataType` | `string`                 | Specifies how data is treated in a chart. Example: `"category"`. Possible values: `"category"`, `"series"`, `"time"`, `"excluded"`.                | 1.0 |
+| `data.table.columnsDefs.cellDataType` | `string`                  | Specifies the data type of the cell. Example: `"text"`. Possible values: `"text"`, `"number"`, `"boolean"`, `"date"`, `"dateString"`, `"object"`.   | 1.0 |
+| `data.table.columnsDefs.formatterFn` | `string`                   | Specifies how to format the data. Example: `"int"`. Possible values: [`formatterFn`](#formatterfn)                                                  | 1.0 |
+| `data.table.columnsDefs.renderFn`  | `string`                     | Specifies a rendering function for cell data. Example: `"titleCase"`. Possible values: `"greenRed"`, `"titleCase"`.                                 | 1.0 |
+| `data.table.columnsDefs.width`     | `number`                     | Specifies the width of the column in pixels. Example: `100`. Possible values: Any positive integer.                                                 | 1.0 |
+| `data.table.columnsDefs.maxWidth`  | `number`                     | Specifies the maximum width of the column in pixels. Example: `200`. Possible values: Any positive integer.                                         | 1.0 |
+| `data.table.columnsDefs.minWidth`  | `number`                     | Specifies the minimum width of the column in pixels. Example: `50`. Possible values: Any positive integer.                                          | 1.0 |
+| `data.table.columnsDefs.hide`      | `boolean`                    | Hides the column from the table. Example: `false`. Possible values: `true`, `false`.                                                                | 1.0 |
+| `data.table.columnsDefs.pinned`    | `string`                     | Pins the column to the left or right of the table. Example: `"left"`. Possible values: `"left"`, `"right"`.                                         | 1.0 |
+| `params`                           | `object[]`                   | A list of query parameters that can be configured for the widget - these will be passed to your API.                                                   | 1.0 |
+| `params.type`                      | `string`                     | The type of the parameter. Example: `"date"`. Possible values: `"date"`, `"text"`, `"ticker"`, `"number"`, `"boolean"`. (note: `ticker` will use our equity list)             | 1.0 |
+| `params.paramName`                 | `string`                     | The name of the parameter in the URL. Example: `"startDate"`. Possible values: Any string representing a query parameter name.                      | 1.0 |
+| `params.value`                     | `string`, `number`, `boolean`| The default value of the parameter. Example: `"2024-01-01"`. Possible values : `"text"`, `"number"`, `"boolean"`, [`DateModifierValue`](#date-modifier) | 1.0 |
+| `params.label`                     | `string`                     | The label to display in the UI for the parameter. Example: `"Start Date"`. Possible values: Any string.                                             | 1.0 |
+| `params.show`                      | `boolean`                    | Displays the parameter in the UI. Example: `true`. Possible values: `true`, `false`.                                                                | 1.0 |
+| `params.description`               | `string`                     | Description of the parameter, shown on hover. Example: `"The start date for the data"`. Possible values: Any string.                                 | 1.0 |
+| `params.options.label`             | `string`                     | The label for a dropdown option. Example: `"Option 1"`. Possible values: Any string.                                                                 | 1.0 |
+| `params.options.value`             | `string`, `number`, `boolean`| The value for a dropdown option. Example: `"option1"`. Possible values: A value corresponding to the `type`.                                         | 1.0 |
+| `source`                           | `array of strings`           | Specifies the data source(s) for the widget. Example: `["API", "Database"]`. Possible values: Any string describing a data source.                  | 1.0 |
+| `staleTime`                        | `number`                     | Time in milliseconds before the widget's data is considered stale and will refresh. Example: `300000`. Possible values: Any positive integer representing milliseconds. | 1.0 |
+
+## Example widgets.json
+
+Below is an example widgets.json with a single widget defined. This widget will default to a column chart but have the ability to switch between a table and chart view.
 
 ```json
 {
-  "id_widget_1": {
-    ...
-  },
-  "id_widget_2": {
-    ...
-  }
+    "custom_widget": {
+        "name": "Custom Widget Example",
+        "description": "A widget to demonstrate custom configuration",
+        "endpoint": "custom-endpoint",
+        "data": {
+            "dataKey": "customDataKey",
+            "table": {
+                "enableCharts": true,
+                "showAll": true,
+                "chartView": {
+                    "enabled": true,
+                    "chartType": "column"
+                },
+                "columnsDefs": [
+                    {
+                        "field": "column1",
+                        "headerName": "Column 1",
+                        "chartDataType": "category",
+                        "cellDataType": "text",
+                        "formatterFn": "none",
+                        "renderFn": "titleCase",
+                        "width": 100,
+                        "maxWidth": 200,
+                        "minWidth": 50,
+                        "hide": false,
+                        "pinned": "left"
+                    },
+                    {
+                        "field": "column2",
+                        "headerName": "Column 2",
+                        "chartDataType": "series",
+                        "cellDataType": "number",
+                        "formatterFn": "int",
+                        "renderFn": "greenRed",
+                        "width": 150
+                    }
+                ]
+            }
+        },
+        "params": [
+            {
+                "type": "date",
+                "paramName": "startDate",
+                "value": "2024-01-01",
+                "label": "Start Date",
+                "show": true,
+                "description": "The start date for the data",
+            },
+            {
+                "type": "text",
+                "paramName": "ticker",
+                "value": "AAPL",
+                "label": "Ticker",
+                "show": true,
+                "description": "Stock ticker symbol",
+            }
+        ],
+        "source": [
+            "API"
+        ],
+        "staleTime": 300000
+    }
 }
+
 ```
 
----
+## Date Modifier
 
-## `name`
-`text` (optional)
-
-Name of the widget in the list the user sees. Displayed on the top left of the widget.
-
----
-
-## `description`
-`text` (optional)
-
-Description to show the user on the info button and on the search/add widget menu.
-
----
-
-## `category`
-`text` (optional)
-
-
----
-
-## `subCategory`
-`text` (optional)
-
----
-
-## `endpoint`
-`text`
-
-Endpoint on your API backend for the widget to get data from.
-
----
-
-## `params`
 `object` (optional)
 
-Parameters to send to your API - each parameter object will be a field on the widget to enter in data.
+DateModifierValue is to show a dynamic date - `$currentDate+` or `$currentDate-` "h" | "d" | "w" | "M" | "y" (ex. `$currentDate-1w` - for one week ago)
 
-- `paramName`: What the field is called on your backend. Type : text
-- `type`: Type of input for the user - Allowed values: "date" | "text" | "number" | "boolean" | "ticker"
-- `value`: Value to show by default in the input - Type : DateModifierValue | text | number | boolean
-    - note : DateModifierValue is to show a dynamic date - `$currentDate+` or `$currentDate-` "h" | "d" | "w" | "M" | "y" (ex. `$currentDate-1w` - for one week ago)
-- `label`: Label for the input. Type: String
-- `show`: If you want the parameter to show or not. Type: boolean
-- `description`: Description for the parameter (will show on hover for widget inside OpenBB Terminal Pro)
-- `options` (optional): List of options to pass for a dropdown, Type: object
-    - `label`  Type: text
-    - `value` Type: text | number
-
-
-#### Example
+### Date Modifier Examples
 
 ```json
 [
@@ -118,155 +172,20 @@ Parameters to send to your API - each parameter object will be a field on the wi
     ],
     type: "text"
     description: "Select the interval",
-
   },
 ]
 ```
 
----
+## ChartView chart types
 
-### `gridData`
-`object` (optional)
+- `chartType` : Type of chart to display by default - These are charts provided using the AgGrid library. Custom charts can be created using plotly and there are examples of that (here - link to github) Allowed values: "column", "groupedColumn", "stackedColumn", "normalizedColumn", "bar", "groupedBar", "stackedBar", "normalizedBar", "line", "scatter", "bubble", "pie", "donut", "doughnut", "area", "stackedArea", "normalizedArea", "histogram", "radarLine", "radarArea", "nightingale", "radialColumn", "radialBar", "sunburst", "rangeBar", "rangeArea", "boxPlot", "treemap", "heatmap", "waterfall"
 
-Grid data for the widget. Used to set the positioning and size of the widget. Can also set the minimum and maximum sizes.
+## formatterFn
 
-- `x` (optional): Horizontal grid position. Type: `number`
-- `y` (optional): Vertical grid position. Type: `number`
-- `w` (optional): Width for the widget in the grid. Type: `number`
-- `h` (optional): Height for the widget in the grid. Type: `number`
-- `minH` (optional): Minimum height. Type: `number`
-- `minW` (optional): Minimum width. Type: `number`
-- `maxH` (optional): Maximum height. Type: `number`
-- `maxW` (optional): Maximum width. Type: `number`
-
-#### Example
-
-```json
-{
-  "id_widget_1": {
-    ...
-    "gridData": {
-        "w": 20,
-        "h": 5,
-        "minH": 10,
-        "maxH" : 30,
-    },
-    ...
-  }
-}
-```
-
----
-
-## `data`
-`object`
-
-The data key is the most powerful section of the widgets.json configuration - here you set up the table and the columns in your table, along with a few other settings.
-
-- `dataKey`: Key for the data - If you have a nested JSON return you can set the key here on which data to grab. Type: text
-
-### `table`
-`object`
-
-- `enableCharts`: Indicates if the table should have charts options enabled (selecting data to chart). Type: boolean
-
-- `showAll`: Indicates if all data series should be shown regardless of columns defined in `columnsDefs`. If True shows all defined columns plus all other data that comes back. Type: boolean
-
-- `chartView` (optional): Will show chart view button if you pass this. If you leave it out we wont show the button. (Using our AgGrid chart Types) Type: object
-    - `enabled` (optional): Indicates if the chart view button is on or off by default.
-    - `chartType` (optional): Type of chart to display by default. Allowed values: "column", "groupedColumn", "stackedColumn", "normalizedColumn", "bar", "groupedBar", "stackedBar", "normalizedBar", "line", "scatter", "bubble", "pie", "donut", "doughnut", "area", "stackedArea", "normalizedArea", "histogram", "radarLine", "radarArea", "nightingale", "radialColumn", "radialBar", "sunburst", "rangeBar", "rangeArea", "boxPlot", "treemap", "heatmap", "waterfall"
-
-- `columnsDefs` : See below
-
-### `columnsDefs`
-`object` (optional)
-
-- `field` (optional): Field name returned from the JSON on the API. Type: text
-- `headerName` (optional): What the user will see as the header name for a column. Type: text
-- `chartDataType` (optional): Chart data type. - You must have at least one category and one series to be able to chart from the data. If you don't define this we assume any text value is a category and any number is a series. Allowed values: "category", "series", "time", "excluded"
-- `cellDataType` (optional): Base cell data type. Allowed values: "text", "number", "boolean", "date", "dateString", "object"
-- `formatterFn` (optional): Formatter function. Allowed values: "int", "none", "percent", "normalized", "normalizedPercent", "dateToYear"
-    - `int` - Formats the number as an integer.
-    - `none` - Does not format the number
-    - `percent` - Adds `%` to the number.
-    - `normalized` - Multiplies the number by 100.
-    - `normalizedPercent` - Multiplies the number by 100 and adds `%` (e.g., `0.5` becomes `50 %`).
-    - `dateToYear` - Converts a date to a year.
-- `renderFn` (optional): Render function - will turn the text a color or put on titleCase. Allowed values: "green", "red", "titleCase"
-- `width` (optional): Width of the column on the table. Type: number
-- `maxWidth` (optional): Maximum width of the column on the table. Type: number
-- `minWidth` (optional): Minimum width of the column on the table. Type: number
-- `hide` (optional): Hide column on the table. Type: boolean
-- `rowGroup` (optional): Row group column. Type: boolean
-- `aggFunc` (optional): Aggregation function for the column. Type: text
-- `pinned` (optional): Pinned column. Allowed values: "left", "right"
-
-
-#### Example
-
-```json
-{
-  "id_widget_1": {
-    ...
-    "data": {
-      "table": {
-        "showAll": true,
-        "columnsDefs": [
-          {
-            "headerName": "Name",
-            "field": "name",
-            "chartDataType": "category"
-          },
-          {
-            "headerName": "Total Value Locked",
-            "field": "tvl",
-            "chartDataType": "series",
-            "formatterFn": "int"
-          },
-          {
-            "headerName": "Token Symbol",
-            "field": "tokenSymbol",
-            "chartDataType": "category"
-          }
-        ]
-        },
-        "chartView": {
-            "enabled": true,
-            "chartType": "line"
-      }
-    }
-    ...
-  },
-}
-
-```
-
----
-
-## `type`
-`text` (optional)
-
-Main widget type. Allowed values: `chart`, `table`, `note`, `custom`.
-
----
-
-## `source`
-`object` (optional)
-
-Source for the widget. Where the data for the widget is coming from. (optional)
-
----
-
-## `defaultViz`
-`text` (optional)
-
-Default visualization for the widget. Allowed values: `chart`, `table`. Default : `table`(optional)
-
----
-
-## `dataKey`
-`text` (optional)
-
-Nested reference to the data. (optional)
-
-
+- `formatterFn` (optional): Specifies the function used to format the data in the table. The following values are allowed:
+  - **`int`**: Formats the number as an integer.
+  - **`none`**: Does not format the number.
+  - **`percent`**: Adds `%` to the number.
+  - **`normalized`**: Multiplies the number by 100.
+  - **`normalizedPercent`**: Multiplies the number by 100 and adds `%` (e.g., `0.5` becomes `50 %`).
+  - **`dateToYear`**: Converts a date to just the year.
