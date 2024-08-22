@@ -39,7 +39,7 @@ Login by email & password is also possible.
 /account/login --email my@emailaddress.com --password n0Ts3CuR3L!kEPAT
 ```
 
-Find all data providers [here](https://docs.openbb.co/platform/extensions/data_extensions), and manage all your credentials directly on the [OpenBB Hub](https://my.openbb.co/app/platform/credentials).
+Find all data providers [here](https://docs.openbb.co/platform/user_guides/extensions#data-extensions), and manage all your credentials directly on the [OpenBB Hub](https://my.openbb.co/app/platform/credentials).
 
 ## Menus
 
