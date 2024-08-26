@@ -41,7 +41,7 @@ Below are all of the values you can set along with a description for each.
 | `data.table.showAll`               | `boolean`                    | Displays all available data in the table. Example: `true`. Possible values: `true`, `false`.                                                        | 1.0 |
 | `data.table.chartView.enabled`     | `boolean`                    | Sets the chart view as the default view. Example: `true`. Possible values: `true`, `false`.                                                         | 1.0 |
 | `data.table.chartView.chartType`   | `string`                     | Specifies the type of chart to display. Example: `"column"`. Possible values: [ChartView chart types](#chartview-chart-types)                       | 1.0 |
-| `data.table.columnsDefs`           | `object[]`                   | A list of the column definitions to be configured for the widget. More info [here](#columnsdefs)                                                    | 1.0 |
+| `data.table.columnsDefs`           | `object[]`                   | A list of the column definitions to be configured for the widget.                                                                                   | 1.0 |
 | `data.table.columnsDefs.field`     | `string`                     | The name of the field from the JSON data. Example: `"column1"`. Possible values: Any string matching a key in the data source.                       | 1.0 |
 | `data.table.columnsDefs.headerName` | `string`                    | The display name of the column header. Example: `"Column 1"`. Possible values: Any string.                                                          | 1.0 |
 | `data.table.columnsDefs.chartDataType` | `string`                 | Specifies how data is treated in a chart. Example: `"category"`. Possible values: `"category"`, `"series"`, `"time"`, `"excluded"`.                | 1.0 |
@@ -54,7 +54,7 @@ Below are all of the values you can set along with a description for each.
 | `data.table.columnsDefs.hide`      | `boolean`                    | Hides the column from the table. Example: `false`. Possible values: `true`, `false`.                                                                | 1.0 |
 | `data.table.columnsDefs.pinned`    | `string`                     | Pins the column to the left or right of the table. Example: `"left"`. Possible values: `"left"`, `"right"`.                                         | 1.0 |
 | `params`                           | `object[]`                   | A list of query parameters that can be configured for the widget - these will be passed to your API.                                                   | 1.0 |
-| `params.type`                      | `string`                     | The type of the parameter. Example: `"date"`. Possible values: `"date"`, `"text"`, `"ticker"`, `"number"`, `"boolean"`. (note: `ticker` will use our equity list)             | 1.0 |
+| `params.type`                      | `string`                     | The type of the parameter. Example: `"date"`. Possible values: `"date"`, `"text"`, `"ticker"`, `"number"`, `"boolean"`. (note: `ticker` will use our equity list)    | 1.0 |
 | `params.paramName`                 | `string`                     | The name of the parameter in the URL. Example: `"startDate"`. Possible values: Any string representing a query parameter name.                      | 1.0 |
 | `params.value`                     | `string`, `number`, `boolean`| The default value of the parameter. Example: `"2024-01-01"`. Possible values : `"text"`, `"number"`, `"boolean"`, [`DateModifierValue`](#date-modifier) | 1.0 |
 | `params.label`                     | `string`                     | The label to display in the UI for the parameter. Example: `"Start Date"`. Possible values: Any string.                                             | 1.0 |
@@ -148,31 +148,31 @@ DateModifierValue is to show a dynamic date - `$currentDate+` or `$currentDate-`
 ```json
 [
   {
-    paramName: "start_date",
-    value: "$currentDate-2y",
-    label: "Start Date",
-    type: "date",
-    description: "Current Date for the stock price"
+    "paramName": "start_date",
+    "value": "$currentDate-2y",
+    "label": "Start Date",
+    "type": "date",
+    "description": "Current Date for the stock price"
   },
   {
-    paramName: "end_date",
-    value: "$currentDate+1d",
-    label: "End Date",
-    type: "date",
-    description: "End Date for the stock price"
+    "paramName": "end_date",
+    "value": "$currentDate+1d",
+    "label": "End Date",
+    "type": "date",
+    "description": "End Date for the stock price"
   },
   {
-    paramName: "interval",
-    value: "1d",
-    label: "Interval",
-    options: [
-      { label: "Daily", value: "1d" },
-      { label: "Weekly", value: "1w" },
-      { label: "Monthly", value: "1m" },
+    "paramName": "interval",
+    "value": "1d",
+    "label": "Interval",
+    "options": [
+      { "label": "Daily", "value": "1d" },
+      { "label": "Weekly", "value": "1w" },
+      { "label": "Monthly", "value": "1m" }
     ],
-    type: "text"
-    description: "Select the interval",
-  },
+    "type": "text",
+    "description": "Select the interval"
+  }
 ]
 ```
 
