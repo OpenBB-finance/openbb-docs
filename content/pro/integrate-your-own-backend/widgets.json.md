@@ -63,7 +63,8 @@ Below are all of the values you can set along with a description for each.
 | `params.options.label`             | `string`                     | The label for a dropdown option. Example: `"Option 1"`. Possible values: Any string.                                                                 | 1.0 |
 | `params.options.value`             | `string`, `number`, `boolean`| The value for a dropdown option. Example: `"option1"`. Possible values: A value corresponding to the `type`.                                         | 1.0 |
 | `source`                           | `array of strings`           | Specifies the data source(s) for the widget. Example: `["API", "Database"]`. Possible values: Any string describing a data source.                  | 1.0 |
-| `staleTime`                        | `number`                     | Time in milliseconds before the widget's data is considered stale and will refresh. Example: `300000`. Possible values: Any positive integer representing milliseconds. | 1.0 |
+| `refetchInterval`                  | `number`                     | Time in milliseconds before the widget's data will refresh if on the page - default: `900000` (15m)                                                     | 1.0 |
+| `staleTime`                        | `number`                     | Time in milliseconds before the widget's data is considered stale and will refresh on the next visit to the dashboard. default: `300000`. milliseconds. (5m) | 1.0 |
 
 ## Example widgets.json
 
@@ -131,6 +132,7 @@ Below is an example widgets.json with a single widget defined. This widget will 
         "source": [
             "API"
         ],
+        "refetchInterval" : 900000,
         "staleTime": 300000
     }
 }
