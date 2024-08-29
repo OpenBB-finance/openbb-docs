@@ -60,6 +60,7 @@ Below are all of the values you can set along with a description for each.
 | `params.label`                     | `string`                     | The label to display in the UI for the parameter. Example: `"Start Date"`. Possible values: Any string.                                             | 1.0 |
 | `params.show`                      | `boolean`                    | Displays the parameter in the UI. Example: `true`. Possible values: `true`, `false`.                                                                | 1.0 |
 | `params.description`               | `string`                     | Description of the parameter, shown on hover. Example: `"The start date for the data"`. Possible values: Any string.                                 | 1.0 |
+| `params.multiSelect`               | `boolean`                    | If you want to allow multiple values to be selected from your parameter options Possible values: Possible values: `true`, `false`.                    | 1.0 |
 | `params.options.label`             | `string`                     | The label for a dropdown option. Example: `"Option 1"`. Possible values: Any string.                                                                 | 1.0 |
 | `params.options.value`             | `string`, `number`, `boolean`| The value for a dropdown option. Example: `"option1"`. Possible values: A value corresponding to the `type`.                                         | 1.0 |
 | `source`                           | `array of strings`           | Specifies the data source(s) for the widget. Example: `["API", "Database"]`. Possible values: Any string describing a data source.                  | 1.0 |
@@ -127,10 +128,24 @@ Below is an example widgets.json with a single widget defined. This widget will 
                 "label": "Ticker",
                 "show": true,
                 "description": "Stock ticker symbol",
+            },
+            {
+                "type": "text",
+                "paramName": "colors",
+                "value": "red",
+                "label": "Colors",
+                "show": true,
+                "description": "Stock ticker symbol",
+                "multiSelect": true,
+                "options": [
+                  { "label": "Red", "value": "red" },
+                  { "label": "Green", "value": "green" },
+                  { "label": "Blue", "value": "blue" }
+                ],
             }
         ],
         "source": [
-            "API"
+            "My First API"
         ],
         "refetchInterval" : 900000,
         "staleTime": 300000
