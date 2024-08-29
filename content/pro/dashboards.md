@@ -58,7 +58,7 @@ This allows to:
 On the sidebar, users have a plus icon where they are able to create a new dashboard or folder.
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="300" alt="add dash" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/5104df11-8cf4-4c80-b9ac-c6e831d28294" />
+  <img className="pro-border-gradient" width="300" alt="add dash" src="https://openbb-assets.s3.amazonaws.com/docs/pro/new-dashboard.png" />
 </div>
 
 Below is an example of a folder that contains multiple dashboards.
@@ -87,4 +87,10 @@ You can export a dashboard through the dashboard's settings on the sidebar.
 
 ## Sharing dashboards
 
-@TODO: Talk about how this is possible and add images
+For Enterprise users we allow you to share your dashboards with anyone in your company. By right clicking on any dashboard you can click the "Share" button. This will bring up the dialog below which will let you search for a user in your company to share with. If they don't have access to OpenBB Terminal Pro an email will be sent to them.
+<img className="pro-border-gradient" width="388" alt="dashboard sharing" src="https://openbb-assets.s3.amazonaws.com/docs/pro/share-menu.png" />
+
+Once you share the dashboard with a user they will see something like below in their side bar. They will have read only access to every dashboard. If a user would like to copy one of these to make their own edits they can right click on the dashboard and choose "Duplicate".
+<img className="pro-border-gradient" width="388" alt="dashboard share example" src="https://openbb-assets.s3.amazonaws.com/docs/pro/shared-dashboards.png" />
+
+
