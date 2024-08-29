@@ -48,12 +48,11 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
     <img width="300" alt="hover on title" src="https://github.com/user-attachments/assets/7d1ea855-e77a-4eab-9330-b8a4d9e58bf5" />
 </div>
 
-- **Staleness Indicator**: When the user hovers on the indicator it shows how recent the data is: Green if updated within the last 30 seconds; Yellow if updated between 30 seconds and 5 minutes ago; Red oif updated over 5 minutes ago. If the user wants to get latest data for a particular widget all that is needed is clicking in the indicator icon to fetch data.
+- **Staleness Indicator**: When the user hovers on the indicator it shows how recent the data is: Green if updated within the last 30 seconds; Yellow if updated between 30 seconds and 5 minutes ago; Red oif updated over 5 minutes ago. If the user wants to get latest data for a particular widget all that is needed is clicking in the indicator icon to fetch/refresh the data.
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
     <img width="300" alt="staleness indicator" src="https://github.com/user-attachments/assets/ca21f129-5c3d-4c33-9997-338f1180677b" />
 </div>
-
 
 - **Symbol**: Some widgets are associated with a symbol. Changing this symbol updates the table content to reflect the new symbol.
 
@@ -61,7 +60,7 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
     <img width="300" alt="click on symbol" src="https://github.com/user-attachments/assets/322668a5-1d6e-44df-9a8e-39cc51e49c41" />
 </div>
 
-- **Group**: If multiple widgets belong to the same group, updating the symbol in one will automatically update the symbol in the others. When you click on the group icon, you can set a new group for the current widget. 
+- **Group**: If multiple widgets belong to the same group, updating the symbol in one will automatically update the symbol in the others. When you click on the group icon, you can set a new group for the current widget.
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
     <img width="300" alt="click on group" src="https://github.com/user-attachments/assets/4c8f5fcd-4e44-4e1a-9723-d98c64f8294c" />
@@ -101,27 +100,38 @@ In the realm of investment research, financial data often comes in tabular form.
 
 ## Chart from raw data
 
-In the world of investment research, data is king. But raw, tabular data can be overwhelming and difficult to interpret. 
+In the world of investment research, data is king. But raw, tabular data can be overwhelming and difficult to interpret.
 That's where charts come in. They transform complex data sets into visual narratives, making it easier to spot trends, compare variables, and make informed decisions.
 
-With OpenBB Terminal Pro, you can create charts directly from your tabular data. Simply select the data you want to visualize, choose your preferred charting style, and let the software do the rest. It's a powerful tool for quants and analysts alike.
+With OpenBB Terminal Pro, you can create charts directly from your tabular data in two ways.
 
-Here are a few examples to get you started:
+1. Simply select the data you want to visualize, choose your preferred charting style, and let the software do the rest. It's a powerful tool for quants and analysts alike.
 
-<img className="pro-border-gradient" width="800" alt="example" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/1f521b0e-28c1-4126-bd13-658262745fc8" />
+2. If available pm the widget, you can click on the "ChartView" icon and we will generate a chart for you. The biggest advantage here is that the data will update automatically and be reflected in your chart.
 
-<img className="pro-border-gradient" width="800" alt="example" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/4829a4a0-5186-40f9-bcee-86e1a373d3c8" />
+<img className="pro-border-gradient" width="800" alt="selection-charting" src="https://openbb-assets.s3.amazonaws.com/docs/pro/selection-charting-1.png" />
+- In this example we've highlighted some data and with a simple "right-click" you can pick a line chart.
 
-<img className="pro-border-gradient" width="800" alt="example" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/5f02d6e8-6344-4dc2-8950-b925b5eba04f" />
+<img className="pro-border-gradient" width="800" alt="chartview" src="https://openbb-assets.s3.amazonaws.com/docs/pro/chartview-setting.png" />
+- In this example we're utilizing the "ChartView" highlighted in blue. This allows us to change the widget into a chart instead of a table.
+
+<img className="pro-border-gradient" width="800" alt="example" src="https://openbb-assets.s3.amazonaws.com/docs/pro/combo-chart.png" />
+- Finally we're customizing the chart to show a different way then a simple line.
 
 ## Charts
 
 @TODO: Get a similar cheatsheet for charts like shared above for tables
 
-@TODO: Talk about all customizability of charts (adding legend, subtitles, changing chart type, etc, ...)
+### Customizing Charts
 
-<img className="pro-border-gradient" width="800" alt="widget-revbiz" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/bbc0b737-ce03-4241-acaa-ad6b71c2a5ba" />
+When a chart is created you can customize almost anything within it by clicking on the three dots and then Chart Settings.
 
+<img className="pro-border-gradient" width="200" alt="example" src="https://openbb-assets.s3.amazonaws.com/docs/pro/chart-settings-small.png" />
+
+Once you bring up the "Customize" tab on your chart, you'll have a tab like below to change anything from title to colors. In the other tabs you'll also be able
+to change what series are shown on the chart in the "Set Up" tab and the chart type under the "Chart" tab. All of these customizations let you create beautiful visualizations.
+
+<img className="pro-border-gradient" width="800" alt="example" src="https://openbb-assets.s3.amazonaws.com/docs/pro/customization.png" />
 
 ## Custom widgets
 
@@ -131,19 +141,19 @@ The OpenBB team has built custom widgets based on the type of data that they wan
 
 ### Charting
 
-Our charting widget is powered by the renowned TradingView charting library, offering you a comprehensive and intuitive platform for financial analysis. With this feature, you can access all the functionalities typically available on TradingView. To get the most out of this feature, we recommend familiarizing yourself with TradingView's capabilities here: https://www.tradingview.com/charting-library-docs/latest/getting_started/
+Our charting widget is powered by the renowned TradingView charting library, offering you a comprehensive and intuitive platform for financial analysis. With this feature, you can access all the functionalities typically available on TradingView. To get the most out of this feature, we recommend familiarizing yourself with TradingView's capabilities here: [TradingView](https://www.tradingview.com/charting-library-docs/latest/getting_started)
 
 <img className="pro-border-gradient" width="800" alt="charting" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/0012510b-fb13-4dd5-9aef-cd5600a5684f" />
 
 Here's a quick rundown of what you can do with our charting feature:
 
-* Adjust the time interval and timeline based on your preferred data vendor
+- Adjust the time interval and timeline based on your preferred data vendor
 
-* Utilize TradingView's robust suite of technical analysis indicators for in-depth market insights
+- Utilize TradingView's robust suite of technical analysis indicators for in-depth market insights
 
-* Access a variety of editing tools for annotations, line drawings, measurements, Fibonacci retracements, and more
+- Access a variety of editing tools for annotations, line drawings, measurements, Fibonacci retracements, and more
 
-* Overlay charts of other tickers of interest, whether they're in forex, crypto, equity, or macroeconomics
+- Overlay charts of other tickers of interest, whether they're in forex, crypto, equity, or macroeconomics
 
 <img className="pro-border-gradient" width="800" alt="charting add" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/b94fe659-9b53-48df-aa58-fb33e2a24f51" />
 
@@ -161,10 +171,11 @@ If a user selects a new ticker in another widget that is grouped with the watchl
 
 ### News and ticker
 
-@TODO: Talk about the fact that users can hover on a ticker and select "create dashboard"
+When scrolling our news widgets, we allow you to quickly pull information for a company and create a dashboard to do more in depth research. Simply hover on the ticker and you will get a popup like below. Clicking on "Create dashboard for ..." will pull up our Equity or ETF Dashboard, allowing you to perform in depth research with just a few clicks.
+
+<img className="pro-border-gradient" width="800" alt="news-hover" src="https://openbb-assets.s3.amazonaws.com/docs/pro/news-hover.png" />
 
 @TODO: Think if there are other special widgets that are worth pointing out
-
 
 ## Analytics
 
@@ -172,7 +183,7 @@ OpenBB Terminal Pro allows you to run analytics on top of your data.
 
 Currently we only support running latest TimeGEN-1 timeseries forecasting from Nixtla. This is supported by having users creating a line chart and clicking on the Nixtla icon on the top right corner which will trigger the forecast.
 
-@TODO: Add an image about this
+<img className="pro-border-gradient" width="800" alt="news-hover" src="https://openbb-assets.s3.amazonaws.com/docs/pro/nxtla-forecast.png" />
 
 ## Data Source
 
@@ -181,4 +192,3 @@ OpenBB's primary role is to aggregate and standardize financial data. So, we emp
 Each widget in OpenBB is powered by a specific data provider. In some instances, multiple data vendors may supply the same type of data. You are in control to choose the right data vendor based on factors such as data quality, availability, trustworthiness, and cost.
 
 <img className="pro-border-gradient" width="800" alt="mgmt team settings" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/d399331d-bfdb-40d3-8c99-595d97d1bf7b" />
-
