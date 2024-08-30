@@ -17,22 +17,26 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 
+We prepare a list of template dashboard for OpenBB Terminal for you to get started quickly. 
+To see the list of templates available, click on the Template page on the top left. Then
+
+[ADD IMAGE]
+
 If you are looking for Excel templates, those can be found [here](/excel/templates).
 
-Otherwise the dashboard templates are highlighted below.
+Here are the list of templates available. 
 
-@TODO - I'm not sure we should show this here (The pic of all the templates)- maybe we just highlight them all below and say where we can get to them?
+
 <img className="pro-border-gradient" width="800" alt="charting financials" src="https://openbb-assets.s3.amazonaws.com/docs/pro/templates.png" />
 
 ## Charting
 
-@TODO write this blurb
+Visualize price action, perform technical analysis, and overlay multiple time series. Our platform supports a wide range of time series, including stocks, funds, ETFs, and economic data.
 
 <img className="pro-border-gradient" width="800" alt="charting financials" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/ae05f5d3-840e-49ac-bcbf-bb3cbf8ac07a" />
 
 ## News
-
-@TODO write this blurb
+Stay up-to-date with the latest global and industry news, featuring over 200 full-length stories and 1,000 content pieces added daily. Use our RSS feeds to manage and add custom feeds of your choice.
 
 <img className="pro-border-gradient" width="800" alt="1" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/7073b3e3-88f0-4ff4-b16a-36fdcdded679" />
 
@@ -66,7 +70,7 @@ Research ETFs with information on metadata, price performance, classification, a
 
 <img className="pro-border-gradient" width="800" alt="1" src="https://openbb-assets.s3.amazonaws.com/docs/pro/etf-template.png" />
 
-## Comparison
+## Comparison Analysis
 
 Quickly Compare any two companies’ performance, including valuation multiples, analyst estimates, price performance, and price targets
 

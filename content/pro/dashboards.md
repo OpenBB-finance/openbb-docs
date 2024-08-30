@@ -29,7 +29,20 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 ## Introduction
 
-Dashboards are a collection of widgets. In the image below you can see that there are 2 different dashboards and the one selected can be seen by the user.
+Think of a dashboard as your blank canvas, where you can add any type of content and data. A dashboard consists of multiple widgets that you can drag and rearrange.
+
+There are two types of widgets: Data Provider widgets and OpenBB Core widgets. The former comes with data from our curated list of Data Partners and third-party vendors.
+
+[Add image]
+
+In contrast, OpenBB Core widgets enable you to add your own data. They support various forms of content, including charts, graphs, tables, notes, websites, images, and PDFs, allowing you to design a layout that perfectly fits your workflow.
+
+[Add image]
+
+A dashboard can combine both OpenBB Core widgets with your own data and Data Provider widgets
+
+[Add image]
+
 
 <img className="pro-border-gradient" width="800" alt="dash" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/156b080a-e32b-4d56-baf6-bb04038f2d63" />
 
