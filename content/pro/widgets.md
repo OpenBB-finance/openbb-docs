@@ -36,11 +36,21 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
   videoLegend="Short introduction to widgets"
 />
 
-## Tables
+There are two types of widgets: Data widget and OpenBB Core widget. The former comes with data from our curated list of Data Partners and third-party vendors.
+
+[Add image]
+
+In contrast, OpenBB Core widgets enable you to add your own data. They support various forms of content, including tables, charts, notes, websites, images, and PDFs, allowing you to design a layout that perfectly fits your workflow.
+
+[Add image]
+
+## OpenBB Core widgets
+
+### Tables
 
 <img width="800" alt="Widget-rev" src="https://github.com/user-attachments/assets/d44a279f-fb47-44f0-87de-add2b20cec7c" />
 
-### Terminology
+#### Terminology
 
 - **Title**: The title identifies the widget. Hovering on top shows the description and the source of where the data comes from.
 
@@ -79,7 +89,7 @@ Here's a short introduction to the grouping concept.
   videoLegend="Short introduction to grouping"
 />
 
-### Manipulating data
+#### Manipulating data
 
 <TutorialVideo
   youtubeLink="https://www.youtube.com/embed/g_cdzenT6ck?si=wbCHt-Y5lQACeM9o"
@@ -98,12 +108,11 @@ In the realm of investment research, financial data often comes in tabular form.
 
 - **Transposing**: Our platform allows you to transpose tables, turning columns into rows and vice versa. This feature can be particularly useful for rendering time series from tabular data.
 
-## Chart from raw data
+#### Chart from raw data
 
-In the world of investment research, data is king. But raw, tabular data can be overwhelming and difficult to interpret.
-That's where charts come in. They transform complex data sets into visual narratives, making it easier to spot trends, compare variables, and make informed decisions.
+In the world of investment research, data is king. But raw, tabular data can be overwhelming and difficult to interpret. That's where charts come in. They transform complex data sets into visual narratives, making it easier to spot trends, compare variables, and make informed decisions.
 
-With OpenBB Terminal Pro, you can create charts directly from your tabular data in two ways.
+With OpenBB Terminal, you can create charts directly from your tabular data in two ways.
 
 1. Simply select the data you want to visualize, choose your preferred charting style, and let the software do the rest. It's a powerful tool for quants and analysts alike.
 
@@ -118,11 +127,11 @@ With OpenBB Terminal Pro, you can create charts directly from your tabular data 
 <img className="pro-border-gradient" width="800" alt="example" src="https://openbb-assets.s3.amazonaws.com/docs/pro/combo-chart.png" />
 - Finally we're customizing the chart to show a different way then a simple line.
 
-## Charts
+### Charts
 
 @TODO: Get a similar cheatsheet for charts like shared above for tables
 
-### Customizing Charts
+#### Customizing Charts
 
 When a chart is created you can customize almost anything within it by clicking on the three dots and then Chart Settings.
 
@@ -133,9 +142,43 @@ to change what series are shown on the chart in the "Set Up" tab and the chart t
 
 <img className="pro-border-gradient" width="800" alt="example" src="https://openbb-assets.s3.amazonaws.com/docs/pro/customization.png" />
 
-## Custom widgets
+### Note
+The Note Widget lets you quickly jot down notes, insights, and observations directly in your dashboard. It’s ideal for capturing key information during research, tracking important points, or storing prompts for the OpenBB Copilot.
 
-The OpenBB team has built custom widgets based on the type of data that they want to offer to users. These don't follow a standard table or chart format.
+[ADD IMAGE]
+
+Did you know that you can enhance your experience by adding Notes as context to OpenBB Copilot and using them as prompts? It’s a powerful way to track prompts and seamlessly integrate your insights into your workflow.
+
+[ADD IMAGE]
+
+### Website
+Often, during your research workflow, you need to browse multiple websites to extract data. The Website widget is a versatile tool that lets you embed and interact with websites directly within your dashboard, making it easy to access data from various sources all within the Terminal.
+
+Please note that some websites may disable this functionality. We will automatically check and display the website only if permitted by the site owner.
+
+[ADD IMAGE]
+
+### Clock
+Use our Clock Widget to track multiple time zones simultaneously. It lets you monitor the current time in key financial hubs worldwide, helping you stay on top of market hours and coordinate effectively with international teams.
+
+[ADD IMAGE]
+
+
+### RSS Feeds
+
+The RSS Feeds Widget is an excellent way to stay up-to-date with the latest news directly within your dashboard. We provide a curated list of top news sources right out of the box, but the true power lies in the ability to customize your RSS feeds. You can add any feeds that are relevant to your research workflow, ensuring you always have the most relevant information at your fingertips.
+
+[ADD IMAGE]
+
+### Navigation bar
+The Navigation Bar lets you add and manage multiple tabs within your dashboard, making it easier to organize and navigate through your information.
+
+[ADD IMAGE]
+
+
+## Data widgets
+
+Beyond the OpenBB Core widgets, the OpenBB team has created custom widgets tailored to the specific data they want to offer users. These widgets do not follow the standard table or chart formats mentioned above.
 
 <img className="pro-border-gradient" width="800" alt="newswidget" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/5ada7e7f-c619-46fb-850f-006c6e0d0cd2" />
 

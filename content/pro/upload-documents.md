@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="File Upload | OpenBB Terminal Docs" />
+<HeadTitle title="File Upload| OpenBB Terminal Docs" />
 
 Quickly visualize your data by adding it as a widget from any type of file. We currently support PDF, CSV, JSON, PNG, JPG. This flexibility ensures you can easily integrate various types of data into the platform.
 
