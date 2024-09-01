@@ -49,3 +49,4 @@ this, navigate to the "Add copilot" section and follow the prompts:
 - You are now ready to use your custom copilot. 
 
 @TODO: Make sure that the text and images are the latest ones.
+
