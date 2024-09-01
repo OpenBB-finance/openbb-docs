@@ -2,7 +2,7 @@
 title: Widgets
 sidebar_position: 21
 description: The page contains detailed information about the interactive elements
-  and functionalities of OpenBB Terminal Pro widgets. From grouping mechanisms to
+  and functionalities of OpenBB Terminal widgets. From grouping mechanisms to
   settings, these widgets offer an interactive dashboard experience for users to track
   and analyze their investments and data. The widgets support both raw data and chart
   interpretations for data visualization.

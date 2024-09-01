@@ -16,9 +16,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 In this workflow, you will bring your own data into Terminal Pro. This allows teams of quants and analysts total freedom as they are able to bring any dataset into our product.
 
-- Bring your data into Terminal Pro by adding a Single Widget
-- Bring your data into Terminal Pro by using OpenBB’s Native Integration
-- Bring your data into Terminal Pro by integrating your own backend
+- Bring your data into Terminal Pro via API endpoint
+- Bring your data into Terminal Pro via Database
+- Bring your data into Terminal Pro via Custom Backend
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
     <iframe
