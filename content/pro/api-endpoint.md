@@ -1,12 +1,11 @@
 ---
-title: Single Endpoint API
+title: API Endpoint
 sidebar_position: 12
-description: Learn how to use the Single Widget of OpenBB Terminal Pro for seamless
-  integration with your API Endpoints, enabling custom data to be fetched and displayed
+description: Learn how to use the API Endpoint Widget of OpenBB Terminal for seamless
+  integration with your APIs, enabling custom data to be fetched and displayed
   in an accessible format. Includes features like additional headers and addressing
   nested JSON data.
 keywords:
-- Single Widget
 - Data Connectors
 - API Endpoints
 - Data Integration
@@ -28,7 +27,7 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
   videoLegend="Short introduction to adding a single widget"
 />
 
-The single widget is the fastest way to integrate your custom data into OpenBB Terminal Pro. This method allows you to import data via a URL or endpoint that is directly rendered into a table format without the need for expensive APIs or custom code, providing a quick and easy way to visualize your data.
+API endpoint is the fastest way to integrate your custom data into OpenBB Terminal Pro. This method allows you to import data via a URL or endpoint that is directly rendered into a table format without the need for expensive APIs or custom code, providing a quick and easy way to visualize your data.
 
 To utilize this feature, enter your URL or API endpoint along with any required connection details. Once configured, you can add the widget to a dashboard via the search. It will then dynamically load and display your data within the Terminal Pro interface.
 
