@@ -19,9 +19,13 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Snowflake | OpenBB Terminal Pro Docs" />
 
+{/*
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 <TutorialVideo
   youtubeLink="https://www.youtube.com/embed/Xu4gPiftp0g?si=h7RyXWEfrUuCG-za"
   videoLegend="Short introduction to the Snowflake native integration"
 />
+*/}
+
+@TODO add more details around an example of how this integration works
