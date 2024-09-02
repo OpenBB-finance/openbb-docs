@@ -1,5 +1,5 @@
 ---
-title: API Endpoint
+title: API Endpoints
 sidebar_position: 12
 description: Learn how to use the API Endpoint Widget of OpenBB Terminal for seamless
   integration with your APIs, enabling custom data to be fetched and displayed
@@ -18,34 +18,32 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Single Endpoint API | OpenBB Terminal Pro Docs" />
+<HeadTitle title="API Endpoint | OpenBB Terminal Pro Docs" />
 
-import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
+{/* import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 <TutorialVideo
   youtubeLink="https://www.youtube.com/embed/gX63rYzqpL0?si=74No_7LgG2gYwnDg"
   videoLegend="Short introduction to adding a single widget"
-/>
+/> */}
 
-API endpoint is the fastest way to integrate your custom data into OpenBB Terminal Pro. This method allows you to import data via a URL or endpoint that is directly rendered into a table format without the need for expensive APIs or custom code, providing a quick and easy way to visualize your data.
+API endpoints are the fastest way to integrate your custom data into OpenBB Terminal Pro. This method allows you to import data via a URL or endpoint that is directly rendered into a table format providing a quick and easy way to visualize your data.
 
-To utilize this feature, enter your URL or API endpoint along with any required connection details. Once configured, you can add the widget to a dashboard via the search. It will then dynamically load and display your data within the Terminal Pro interface.
+Simply enter your API endpoint along with any required connection details. Once configured, you need to select the metadata and then a corresponding widget will be created. It will then dynamically load and display your data within the Terminal Pro interface.
 
-If you want to do something more custom, you should look into creating [your own backend](/pro/data-connectors/integrate-your-own-backend), or reach out to OpenBB for support.
+For something more custom, you should look into creating [your own backend](/pro/data-connectors/integrate-your-own-backend), or reach out for support.
 
 ## Common Issues and Solutions
 
-#### Q: Why can't I see my data in the table?
-**A:** Ensure that the endpoint or url you are using returns data in JSON format.
+**Why can't I see my data in the table?**
+> Ensure that the endpoint or url you are using returns data in JSON format
 
-#### Q: I'm getting an error that it can't fetch the url.
-**A:** Your endpoint might require additional headers to be passed, you can add them using the '+ Add Headers' button.
+**I'm getting an error that it can't fetch the url**
+> Your endpoint might require additional headers to be passed, you can add them using the '+ Add Headers' button.
 
-#### Q: My data isn't showing up correctly in the table.
-**A:** if your API endpoint doesn't return a a simple JSON but a nested architecture, you will be prompted with a "Data Key" parameter which you can use to grab the data of interest.
-  You may also need to use our [Custom Backend](/pro/integrate-your-own-backend) if you want to do anything else like processing the data.
-
-### Further Assistance
+**My data isn't showing up correctly in the table.**
+> If your API endpoint doesn't return a a simple JSON but a nested architecture, you will be prompted with a "Data Key" parameter which you can use to grab the data of interest.
+> You may also need to use our [Custom Backend](/pro/integrate-your-own-backend) if you want to do anything else like processing the data.
 
 If your issue is not listed above, please contact support at [support@openbb.finance](mailto:support@openbb.finance) with details of your problem.
 
