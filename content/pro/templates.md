@@ -17,15 +17,15 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 
-We prepare a list of template dashboard for OpenBB Terminal for you to get started quickly. 
-To see the list of templates available, click on the Template page on the top left. Then
+We prepare a list of template dashboard for OpenBB Terminal for you to get started quickly.
 
-[ADD IMAGE]
+To see the list of templates available, click on the Template page on the top left.
+
+@TODO ADD IMAGE
 
 If you are looking for Excel templates, those can be found [here](/excel/templates).
 
-Here are the list of templates available. 
-
+Here are the list of templates available.
 
 <img className="pro-border-gradient" width="800" alt="charting financials" src="https://openbb-assets.s3.amazonaws.com/docs/pro/templates.png" />
 

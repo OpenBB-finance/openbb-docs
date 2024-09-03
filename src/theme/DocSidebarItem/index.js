@@ -55,6 +55,7 @@ export default function DocSidebarItem({ item, ...props }) {
   }
 
   let addedHtml = null;
+  let afterHtml = null;
   if (item.href?.startsWith('/pro')) {
     if (item.label === 'Overview') {
       addedHtml = (
@@ -100,13 +101,13 @@ export default function DocSidebarItem({ item, ...props }) {
           }}
         />
       );
-    } else if (item.label === 'Custom Onboarding') {
-      addedHtml = (
+    } else if (item.label === 'Bring your own Copilot') {
+      afterHtml = (
         <DocSidebarItemHtml
           item={{
             type: 'html',
-            className: 'sidebar-title !mt-6',
-            value: 'Enterprise Features',
+            className: 'sidebar-title !mt-4',
+            value: '',
             defaultStyle: true,
           }}
         />
@@ -120,6 +121,7 @@ export default function DocSidebarItem({ item, ...props }) {
         <>
           {addedHtml}
           <DocSidebarItemCategory item={item} {...props} />
+          {afterHtml}
         </>
       );
     case 'html':
@@ -127,6 +129,7 @@ export default function DocSidebarItem({ item, ...props }) {
         <>
           {addedHtml}
           <DocSidebarItemHtml item={item} {...props} />
+          {afterHtml}
         </>
       );
     case 'link':
@@ -135,6 +138,7 @@ export default function DocSidebarItem({ item, ...props }) {
         <>
           {addedHtml}
           <DocSidebarItemLink item={item} {...props} />
+          {afterHtml}
         </>
       );
   }

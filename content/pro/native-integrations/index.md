@@ -1,5 +1,5 @@
 ---
-title: Native Integrations
+title: Database Integrations
 sidebar_position: 0
 description: Learn about common workflows that you can do with the OpenBB Terminal Pro.
 keywords:
@@ -11,7 +11,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Native Integrations | OpenBB Terminal Pro Docs" />
+<HeadTitle title="Database Integrations | OpenBB Terminal Pro Docs" />
 
 import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 

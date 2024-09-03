@@ -22,12 +22,12 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
+{/*
 <TutorialVideo
   youtubeLink="https://www.youtube.com/embed/kSZvLAPmwvo?si=O6FaSchvvxpBWtDR"
   videoLegend="Short introduction to dashboards"
 />
-
-## Introduction
+*/}
 
 Think of a dashboard as your blank canvas, where you can add any type of content and data. A dashboard consists of multiple widgets that you can drag and rearrange.
 
@@ -69,8 +69,16 @@ Below is an example of a folder that contains multiple dashboards.
 
 A dashboard can be moved into a folder through the dashboard settings with the "Move to", or by dragging the dashboard into the folder.
 
+## Navigation bar
+
+When adding the Navigation bar widget within the dashboard, that means that users will be able to have multiple tabs for each section of the dashboard. 
+For instance: Overview, Fundamentals, Comparison Analysis, Business Model, Estimates.
+
+@TODO ADD IMAGE
 
 ## Report
+
+This is an enterprise-only feature.
 
 <TutorialVideo
   youtubeLink="https://www.youtube.com/embed/vPp0gglCYg0?si=ZC6WgowxnF-Rk2BX"
@@ -87,10 +95,14 @@ You can export a dashboard through the dashboard's settings on the sidebar.
 
 ## Sharing dashboards
 
-For Enterprise users we allow you to share your dashboards with anyone in your company. By right clicking on any dashboard you can click the "Share" button. This will bring up the dialog below which will let you search for a user in your company to share with. If they don't have access to OpenBB Terminal Pro an email will be sent to them.
+This is an enterprise-only feature.
+
+We allow users to share dashboards with anyone in your company. By right clicking on any dashboard you can click the "Share" button. This will bring up the dialog below which will let you search for a user in your company to share with. If they don't have access to OpenBB Terminal Pro an email will be sent to them.
+
 <img className="pro-border-gradient" width="388" alt="dashboard sharing" src="https://openbb-assets.s3.amazonaws.com/docs/pro/share-menu.png" />
 
 Once you share the dashboard with a user they will see something like below in their side bar. They will have read only access to every dashboard. If a user would like to copy one of these to make their own edits they can right click on the dashboard and choose "Duplicate".
+
 <img className="pro-border-gradient" width="388" alt="dashboard share example" src="https://openbb-assets.s3.amazonaws.com/docs/pro/shared-dashboards.png" />
 
 

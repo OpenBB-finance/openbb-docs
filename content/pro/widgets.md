@@ -31,26 +31,41 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
+{/*
 <TutorialVideo
   youtubeLink="https://www.youtube.com/embed/_kg8bCTNM14?si=OLAa1ehCEm57SFjd"
   videoLegend="Short introduction to widgets"
-/>
+/> */}
 
-There are two types of widgets: Data widget and OpenBB Core widget. The former comes with data from our curated list of Data Partners and third-party vendors.
+Widgets are the unit that you will be using with OpenBB Terminal.
 
-[Add image]
+We consider something a widget when:
 
-In contrast, OpenBB Core widgets enable you to add your own data. They support various forms of content, including tables, charts, notes, websites, images, and PDFs, allowing you to design a layout that perfectly fits your workflow.
+- It has data, either static (e.g. document) or dynamic (e.g. API)
+- Metadata has been set (title, description, category, sub category and source)
+- It has an associated visual layer
 
-[Add image]
+@TODO ADD IMAGE
 
-## OpenBB Core widgets
+Having said that, there are two main type of widgets.
 
-### Tables
+## Types of Widgets
+
+We have **OpenBB Core widgets**. These widgets don't contain data by themselves, until you select the data you want to utilize.
+
+Once you do that, they may appear on the dashboard and be used by the OpenBB Copilot - e.g. Note widget with text.
+
+However, they don't become a real widget - that can be searched later on - until the metadata is filled in (the title at least).
+
+Examples of OpenBB Core widgets include: Table widget, Image widget, PDF widget, Note, RSS Feed, Website/Iframe, Navigation bar, and clock.
+
+As for the other type of widgets, these are called **Packaged data** and come from a specific data vendor.
+
+## Widget Structure
+
+This is the typical structure of a widget.
 
 <img width="800" alt="Widget-rev" src="https://github.com/user-attachments/assets/d44a279f-fb47-44f0-87de-add2b20cec7c" />
-
-#### Terminology
 
 - **Title**: The title identifies the widget. Hovering on top shows the description and the source of where the data comes from.
 
@@ -89,7 +104,9 @@ Here's a short introduction to the grouping concept.
   videoLegend="Short introduction to grouping"
 />
 
-#### Manipulating data
+
+
+### Manipulating data
 
 <TutorialVideo
   youtubeLink="https://www.youtube.com/embed/g_cdzenT6ck?si=wbCHt-Y5lQACeM9o"
@@ -108,7 +125,11 @@ In the realm of investment research, financial data often comes in tabular form.
 
 - **Transposing**: Our platform allows you to transpose tables, turning columns into rows and vice versa. This feature can be particularly useful for rendering time series from tabular data.
 
-#### Chart from raw data
+### Live Chart
+
+By utilizing the button on the top right corner, users are able to have access to the data in a chart form. And that chart is updated based on the data being updated.
+
+### Static Chart
 
 In the world of investment research, data is king. But raw, tabular data can be overwhelming and difficult to interpret. That's where charts come in. They transform complex data sets into visual narratives, making it easier to spot trends, compare variables, and make informed decisions.
 
@@ -127,11 +148,15 @@ With OpenBB Terminal, you can create charts directly from your tabular data in t
 <img className="pro-border-gradient" width="800" alt="example" src="https://openbb-assets.s3.amazonaws.com/docs/pro/combo-chart.png" />
 - Finally we're customizing the chart to show a different way then a simple line.
 
-### Charts
+## OpenBB Core Widgets
 
-@TODO: Get a similar cheatsheet for charts like shared above for tables
+### Table
 
-#### Customizing Charts
+The Table widget was highlighted previously, in the Widget Structure section.
+
+### Chart
+
+@TODO get a similar cheatsheet for charts like shared above for tables
 
 When a chart is created you can customize almost anything within it by clicking on the three dots and then Chart Settings.
 
@@ -143,40 +168,63 @@ to change what series are shown on the chart in the "Set Up" tab and the chart t
 <img className="pro-border-gradient" width="800" alt="example" src="https://openbb-assets.s3.amazonaws.com/docs/pro/customization.png" />
 
 ### Note
+
 The Note Widget lets you quickly jot down notes, insights, and observations directly in your dashboard. It’s ideal for capturing key information during research, tracking important points, or storing prompts for the OpenBB Copilot.
 
-[ADD IMAGE]
+@TODO ADD IMAGE
 
 Did you know that you can enhance your experience by adding Notes as context to OpenBB Copilot and using them as prompts? It’s a powerful way to track prompts and seamlessly integrate your insights into your workflow.
 
-[ADD IMAGE]
+@TODO ADD IMAGE
 
-### Website
+### Website and Iframe
+
 Often, during your research workflow, you need to browse multiple websites to extract data. The Website widget is a versatile tool that lets you embed and interact with websites directly within your dashboard, making it easy to access data from various sources all within the Terminal.
 
 Please note that some websites may disable this functionality. We will automatically check and display the website only if permitted by the site owner.
 
-[ADD IMAGE]
-
-### Clock
-Use our Clock Widget to track multiple time zones simultaneously. It lets you monitor the current time in key financial hubs worldwide, helping you stay on top of market hours and coordinate effectively with international teams.
-
-[ADD IMAGE]
-
+@TODO ADD IMAGE
 
 ### RSS Feeds
 
 The RSS Feeds Widget is an excellent way to stay up-to-date with the latest news directly within your dashboard. We provide a curated list of top news sources right out of the box, but the true power lies in the ability to customize your RSS feeds. You can add any feeds that are relevant to your research workflow, ensuring you always have the most relevant information at your fingertips.
 
-[ADD IMAGE]
+@TODO ADD IMAGE
 
 ### Navigation bar
+
 The Navigation Bar lets you add and manage multiple tabs within your dashboard, making it easier to organize and navigate through your information.
 
-[ADD IMAGE]
+@TODO ADD IMAGE
 
+### Clock
 
-## Data widgets
+Use our Clock Widget to track multiple time zones simultaneously. It lets you monitor the current time in key financial hubs worldwide, helping you stay on top of market hours and coordinate effectively with international teams.
+
+@TODO ADD IMAGE
+
+## Analytics
+
+OpenBB Terminal Pro allows you to run analytics on top of your data.
+
+Currently we only support running latest TimeGEN-1 timeseries forecasting from Nixtla. This is supported by having users creating a line chart and clicking on the Nixtla icon on the top right corner which will trigger the forecast.
+
+<img className="pro-border-gradient" width="800" alt="news-hover" src="https://openbb-assets.s3.amazonaws.com/docs/pro/nxtla-forecast.png" />
+
+More on this coming soon.
+
+## Packaged Data
+
+OpenBB Terminal will offer out-of-the-box widgets that have data from the following vendors:
+
+- Financial Modeling Prep
+- Benzinga
+- EconDB
+- TradingView
+- Intrinio (Enterprise only)
+- TradingEconomics (Enterprise only)
+
+## Special Widgets
 
 Beyond the OpenBB Core widgets, the OpenBB team has created custom widgets tailored to the specific data they want to offer users. These widgets do not follow the standard table or chart formats mentioned above.
 
@@ -218,20 +266,9 @@ When scrolling our news widgets, we allow you to quickly pull information for a 
 
 <img className="pro-border-gradient" width="800" alt="news-hover" src="https://openbb-assets.s3.amazonaws.com/docs/pro/news-hover.png" />
 
-@TODO: Think if there are other special widgets that are worth pointing out
 
-## Analytics
+### TradingView widgets
 
-OpenBB Terminal Pro allows you to run analytics on top of your data.
+TradingView widgets are not native, and therefore that means that the data within them won't be accessible to your AI copilot, unlike others.
 
-Currently we only support running latest TimeGEN-1 timeseries forecasting from Nixtla. This is supported by having users creating a line chart and clicking on the Nixtla icon on the top right corner which will trigger the forecast.
-
-<img className="pro-border-gradient" width="800" alt="news-hover" src="https://openbb-assets.s3.amazonaws.com/docs/pro/nxtla-forecast.png" />
-
-## Data Source
-
-OpenBB's primary role is to aggregate and standardize financial data. So, we empower data vendors by showcasing their data through our products, providing them with an application where they are able to monetize their offerings to OpenBB users.
-
-Each widget in OpenBB is powered by a specific data provider. In some instances, multiple data vendors may supply the same type of data. You are in control to choose the right data vendor based on factors such as data quality, availability, trustworthiness, and cost.
-
-<img className="pro-border-gradient" width="800" alt="mgmt team settings" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/d399331d-bfdb-40d3-8c99-595d97d1bf7b" />
+@TODO Think if there are other special widgets that are worth pointing out
