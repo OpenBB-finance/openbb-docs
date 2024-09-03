@@ -183,7 +183,13 @@ Often, during your research workflow, you need to browse multiple websites to ex
 
 Please note that some websites may disable this functionality. We will automatically check and display the website only if permitted by the site owner.
 
-@TODO ADD IMAGE
+[ADD IMAGE]
+
+### Clock
+
+Use our Clock Widget to track multiple time zones simultaneously. It lets you monitor the current time in key financial hubs worldwide, helping you stay on top of market hours and coordinate effectively with international teams.
+
+[ADD IMAGE]
 
 ### RSS Feeds
 
@@ -193,38 +199,12 @@ The RSS Feeds Widget is an excellent way to stay up-to-date with the latest news
 
 ### Navigation bar
 
+
 The Navigation Bar lets you add and manage multiple tabs within your dashboard, making it easier to organize and navigate through your information.
 
-@TODO ADD IMAGE
+[ADD IMAGE]
 
-### Clock
-
-Use our Clock Widget to track multiple time zones simultaneously. It lets you monitor the current time in key financial hubs worldwide, helping you stay on top of market hours and coordinate effectively with international teams.
-
-@TODO ADD IMAGE
-
-## Analytics
-
-OpenBB Terminal Pro allows you to run analytics on top of your data.
-
-Currently we only support running latest TimeGEN-1 timeseries forecasting from Nixtla. This is supported by having users creating a line chart and clicking on the Nixtla icon on the top right corner which will trigger the forecast.
-
-<img className="pro-border-gradient" width="800" alt="news-hover" src="https://openbb-assets.s3.amazonaws.com/docs/pro/nxtla-forecast.png" />
-
-More on this coming soon.
-
-## Packaged Data
-
-OpenBB Terminal will offer out-of-the-box widgets that have data from the following vendors:
-
-- Financial Modeling Prep
-- Benzinga
-- EconDB
-- TradingView
-- Intrinio (Enterprise only)
-- TradingEconomics (Enterprise only)
-
-## Special Widgets
+## Data widgets
 
 Beyond the OpenBB Core widgets, the OpenBB team has created custom widgets tailored to the specific data they want to offer users. These widgets do not follow the standard table or chart formats mentioned above.
 

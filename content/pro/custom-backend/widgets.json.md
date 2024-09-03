@@ -161,6 +161,7 @@ Below is an example `widgets.json` with a single widget defined. This widget wil
 This is used to display a dynamic date.
 
 The reference is `$currentDate` and if a user wants to add or substract they need to append to the variable:
+
 - h, for hour
 - d, for day
 - w, for week
@@ -211,9 +212,10 @@ For instance, `$currentDate-1w` stands for 1 week ago.
 ## formatterFn
 
 `formatterFn` (optional): Specifies the function used to format the data in the table. The following values are allowed:
-  - `int`: Formats the number as an integer.
-  - `none`: Does not format the number.
-  - `percent`: Adds `%` to the number.
-  - `normalized`: Multiplies the number by 100.
-  - `normalizedPercent`: Multiplies the number by 100 and adds `%` (e.g., `0.5` becomes `50 %`).
-  - `dateToYear`: Converts a date to just the year.
+
+- `int`: Formats the number as an integer.
+- `none`: Does not format the number.
+- `percent`: Adds `%` to the number.
+- `normalized`: Multiplies the number by 100.
+- `normalizedPercent`: Multiplies the number by 100 and adds `%` (e.g., `0.5` becomes `50 %`).
+- `dateToYear`: Converts a date to just the year.

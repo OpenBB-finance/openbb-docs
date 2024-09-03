@@ -36,6 +36,7 @@ Visualize price action, perform technical analysis, and overlay multiple time se
 <img className="pro-border-gradient" width="800" alt="charting financials" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/ae05f5d3-840e-49ac-bcbf-bb3cbf8ac07a" />
 
 ## News
+
 Stay up-to-date with the latest global and industry news, featuring over 200 full-length stories and 1,000 content pieces added daily. Use our RSS feeds to manage and add custom feeds of your choice.
 
 <img className="pro-border-gradient" width="800" alt="1" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/7073b3e3-88f0-4ff4-b16a-36fdcdded679" />

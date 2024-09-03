@@ -43,6 +43,7 @@ The most common file types for structured data are XLSX, JSON and CSV. Currently
 ## Unstructured Data
 
 There are 3 types of unstructured data that can be brought in:
+
 - Images (PNG and JPG)
 - PDF
 - Text (TXT and DOCX)

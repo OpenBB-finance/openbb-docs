@@ -16,37 +16,28 @@ import ReactPlayer from 'react-player'
 
 <HeadTitle title="Bring your own Copilot | OpenBB Terminal Pro Docs" />
 
-For scenarios where the default OpenBB Copilot does not meet the specialized
-needs of a financial institution, such as when proprietary data and tools are
-involved, Terminal Pro offers a solution. Our 'Bring Your Own Copilot' feature
-is structured to accommodate the integration of financial firms' custom Large
-Language Models (LLMs).
+When the default OpenBB Copilot isn't a perfect fit for your financial institution—especially when proprietary data and tools are involved—Terminal Pro offers the 'Bring Your Own Copilot' feature. This allows you to integrate your own custom Large Language Models (LLMs).
 
-This integration grants the use of Terminal Pro’s full suite of features, while
-also capitalizing on the firm's developments in proprietary LLMs. The result is
-an enhancement in the efficiency of analysts and researchers, aligning with the
-firm's unique data and modeling approaches. Additionally, it ensures that
-research queries and data remain within the firm's infrastructure.
+With this integration, you can use all of Terminal Pro’s features while leveraging your firm's proprietary LLMs. This enhances the efficiency of analysts and researchers by aligning with your unique data and models, all while keeping research queries and data securely within your firm's infrastructure.
 
 ## Defining a custom copilot
-Incorporating an existing proprietary LLM into Terminal Pro can be achieved by
-setting up an API endpoint. This endpoint enables Terminal Pro to interact with
-the custom copilot. To facilitate this process, we provide an open-source
-Example Copilot that illustrates the necessary steps for integration. 
+
+You can integrate your existing proprietary LLM into Terminal Pro by setting up an API endpoint. This allows Terminal Pro to interact with your custom copilot. To help you get started, we provide an open-source Example Copilot that guides you through the integration process.
 
 The example code is available [here](https://github.com/OpenBB-finance/copilot-for-terminal-pro).
 
 ## Adding a custom copilot to Terminal Pro
 
-<ReactPlayer width="70%" height="100%" playing loop muted='true' volume='0' url='https://github.com/OpenBB-finance/OpenBBTerminal/assets/14093308/15d2d827-715e-42f3-be62-b3c7f8b26fda' />
-
-After deploying your custom Copilot, you can add it to Terminal Pro.  To do
+After deploying your custom Copilot, you can add it to Terminal Pro. To do
 this, navigate to the "Add copilot" section and follow the prompts:
 
 - Click on the "Add copilot" button.
+
+<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/custom_copilot_add_button.jpg" alt="custom copilot add button" width="80%" height="80%" />
+
 - Enter the API endpoint of your custom copilot.
+
+<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/custom_copilot_add_endpoint.jpg" alt="custom copilot add endpoint" width="80%" height="80%" />
+
 - Confirm the addition.
-- You are now ready to use your custom copilot. 
-
-@TODO: Make sure that the text and images are the latest ones.
-
+- You are now ready to use your custom copilot.
