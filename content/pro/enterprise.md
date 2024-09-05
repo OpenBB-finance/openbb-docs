@@ -23,23 +23,28 @@ The enterprise plan, enables users to have access to the financial data directly
 
 For more information, check [OpenBB Add-in for Excel](http://docs.openbb.co/excel).
 
-@TODO - ADD IMAGE
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/excel_addin.png" />
+</div>
 
 ## Export Data
 
 Users are able to export any data from OpenBB, either in CSV, JSON, XLSX or other format. This is achieved by having redistribution rights on the data.
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/export_raw_data.png" />
+  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/export_data.png" />
 </div>
 
 ## Reporting
 
 Easily export your dashboards to PDF with a single click.
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/export_report.png" />
-</div>
+<img className="pro-border-gradient" width="800" alt="Report export" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/1d1de065-469d-4f8d-b847-6ffc82cadf19" />
+
+This is how the Report looks like.
+
+<img className="pro-border-gradient" width="488" alt="dash settings" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/dashboard_export.png
+" />
 
 ## Database Integrations
 
@@ -63,12 +68,12 @@ Keep your dashboards private and securely accessible only to your organization. 
 
 Gain access to a user management portal where you can manage access to your firm’s workspace. You can invite or remove members, export the entire user list, and view their last login times.
 
-@TODO - ADD IMAGE
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/team_management.png" />
+</div>
 
 ## AI Copilot resources
 
 You will have generous access to both file uploads and Copilot, with 100 requests per hour. If you need additional requests, you can bring your own OpenAI key or contact us.
 
 ---
-
-Needs to be revisited based on meeting Wednesday.
