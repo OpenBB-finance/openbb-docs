@@ -74,7 +74,16 @@ A dashboard can be moved into a folder through the dashboard settings with the "
 When adding the Navigation bar widget within the dashboard, that means that users will be able to have multiple tabs for each section of the dashboard. 
 For instance: Overview, Fundamentals, Comparison Analysis, Business Model, Estimates.
 
-@TODO ADD IMAGE
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="800" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/navigation_bar.png" />
+</div>
+
+Users can easily add new tabs, as well as remove or rename the existing ones.
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="300" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/navigation_bar_edit.png" />
+</div>
+
 
 ## Report
 
