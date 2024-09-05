@@ -20,17 +20,17 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Uploading files is the easiest way to import data into Terminal. You can add one or multiple files at once, with support for formats like PDF, CSV, JSON, PNG, and JPG. Simply select your files—whether in different formats or the same—or drag them into the Add Data pop-up.
 
-@TODO ADD IMAGE
+<!-- @TODO ADD IMAGE -->
 
 The current file size limit is 25MB. While we can support larger files, this is the maximum size that OpenBB Copilot can process effectively.
 
 Once you upload your files, we automatically generate part of the metadata (namely the **name** and **description**) for the widget that will be created from this data. You can still update these fields if needed. Note: Enterprise customers can turn off such feature.
 
-@TODO ADD IMAGE
+<!-- @TODO ADD IMAGE -->
 
 After uploading the data and deciding on the metadata, you can access the created widget through the Search feature or the Data Connector page.
 
-@TODO ADD IMAGE
+<!-- @TODO ADD IMAGE -->
 
 There are two main types of files supported
 
@@ -38,7 +38,7 @@ There are two main types of files supported
 
 The most common file types for structured data are XLSX, JSON and CSV. Currently, XLSX is only supported with a single sheet. Here are some examples of what a widget that is created from structured data looks like:
 
-@TODO ADD IMAGE
+<!-- @TODO ADD IMAGE -->
 
 ## Unstructured Data
 
@@ -50,4 +50,4 @@ There are 3 types of unstructured data that can be brought in:
 
 Here is how these widgets look in practice:
 
-@TODO ADD IMAGE
+<!-- @TODO ADD IMAGE -->

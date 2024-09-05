@@ -71,7 +71,7 @@ A dashboard can be moved into a folder through the dashboard settings with the "
 
 ## Navigation bar
 
-When adding the Navigation bar widget within the dashboard, that means that users will be able to have multiple tabs for each section of the dashboard. 
+When adding the Navigation bar widget within the dashboard, that means that users will be able to have multiple tabs for each section of the dashboard.
 For instance: Overview, Fundamentals, Comparison Analysis, Business Model, Estimates.
 
 <div style={{display: 'flex', justifyContent: 'center'}}>

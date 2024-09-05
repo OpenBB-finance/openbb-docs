@@ -27,56 +27,61 @@ OpenBB copilot is your companion to interact with the OpenBB Terminal Pro.
 To open OpenBB Copilot, click on the purple icon located at the center right of the
 Terminal Pro screen.
 
-Under most circumstances, you can treat OpenBB Copilot like your very
-own personal research assistant. OpenBB Copilot can answer general financial
-questions, use the data displayed in the dashboard to perform analytical tasks,
-obtain additional data from the OpenBB Platform API,
-and even interact with files that you choose to upload.
+Under most circumstances, you can treat OpenBB Copilot like your very own
+personal research assistant. OpenBB Copilot has access to the widgets on your
+dashboard, the OpenBB API and any custom endpoints you have added, as well as
+your uploaded files. Using all of these sources, OpenBB Copilot can assist you in 
+performing a wide variety of tasks.
 
 <img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/copilot_opened.jpg" alt="opened openbb copilot" width="70%" height="70%" />
 
 We'll be exploring each of these features in the following sections below.
 
-## Understanding chat history
+## Understanding chats
 
-OpenBB Copilot is a chat-based assistant that remembers previous messages to help answer your current questions.
-This means you can ask follow-up questions or guide it to perform specific tasks.
+OpenBB Copilot is a chat-based assistant that uses the conversation history to
+help answer your queries.  This allows you to ask follow-up questions or guide
+OpenBB Copilot while perform tasks.
 
-For example, if you ask about the price-to-earnings (P/E) ratio, and then follow up by asking
-about other important financial ratios, OpenBB Copilot will remember the context and suggest relevant ratios.
+For example, if you ask about the price-to-earnings (P/E) ratio, and then follow
+up by asking about other important financial ratios, OpenBB Copilot will
+remember the context and suggest relevant ratios:
 
 <img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/pe_ratio_chat_example.jpg" alt="chat history openbb copilot" width="40%" height="40%" />
 
-If you'd like to clear the history of the current conversation, you can do so by clicking on the trashcan icon in the OpenBB Copilot chatbox in the upper right corner. It is usually a good idea to clear the chat history when you have a new question that is unrelated to your current conversation.
-
-:::note
-
-OpenBB Copilot will name your chat based on your conversation's context. For example, if you ask about the P/E ratio, the chat will likely be named "P/E ratio." This makes it easier to keep track of your conversations.
-
-:::
+If you'd like to clear the history of the current conversation, you can do so by
+clicking on the trashcan icon in the OpenBB Copilot chatbox in the upper right
+corner. It is usually a good idea to clear the chat history when you have a new
+question that is unrelated to your current conversation.
 
 ## General question answering
 
-As seen in the previous section, OpenBB Copilot is capable of answering general
-financial questions and answers. For example, you can ask Copilot things like:
+OpenBB Copilot is capable of answering general financial questions and answers.
+For example, you can ask Copilot things like:
 
 - "What's the difference between stocks and bonds?"
 - "Explain inflation."
 - "Can you explain the concept of dollar-cost averaging?"
 
-For general financial questions, OpenBB Copilot will rely on the underlying
+For general financial questions, OpenBB Copilot will rely on its underlying
 model's extensive training data to formulate answers. We encourage users to
 explore this functionality with in-depth and varied questions.
 
-## Querying the dashboard
+## Using data from the dashboard
 
-By default, OpenBB Copilot can access the data shown on your active dashboard. This allows it to answer questions based on the information currently visible.
+By default, OpenBB Copilot can access the data shown on your currently-active
+dashboard.  This allows OpenBB Copilot to answer questions based on the
+information currently visible.
 
-For example, if you ask for a summary of the latest news about Apple, OpenBB Copilot will use the Company News widget on your dashboard (if it's displaying news for AAPL) to provide an accurate response.
+For example, if you ask for a summary of the latest news about Apple, OpenBB
+Copilot will retrieve the Company News widget data on your dashboard (provided
+the widget has been added to the dashboard) to provide an answer.
 
 <img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/aapl_+news_chat_example.jpg" alt="aapl news openbb copilot" width="80%" height="80%" />
 
-It's important to know which data OpenBB Copilot used for its answers. That's why it will always cite the data source it referenced when responding to your query. Sometimes, OpenBB Copilot will generate an artifact (such as text or table) it used to answer your question.
+When querying OpenBB Copilot, it is important to understand which data OpenBB
+Copilot used to answer your query. As a result, OpenBB Copilot will always cite the data
+source it referenced when responding to your query. 
 
 <img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/citation_chat_example.jpg" alt="citations openbb copilot" width="80%" height="80%" />
 
