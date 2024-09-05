@@ -35,7 +35,7 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 <TutorialVideo
   youtubeLink="https://www.youtube.com/embed/_kg8bCTNM14?si=OLAa1ehCEm57SFjd"
   videoLegend="Short introduction to widgets"
-/> */}
+/>*/}
 
 Widgets are the unit that you will be using with OpenBB Terminal.
 
@@ -45,7 +45,7 @@ We consider something a widget when:
 - Metadata has been set (title, description, category, sub category and source)
 - It has an associated visual layer
 
-@TODO ADD IMAGE
+<!-- @TODO ADD IMAGE -->
 
 Having said that, there are two main type of widgets.
 
@@ -103,8 +103,6 @@ Here's a short introduction to the grouping concept.
   youtubeLink="https://www.youtube.com/embed/cOH8qjOBWTI?si=I_NLm7UP4vgNBjo4"
   videoLegend="Short introduction to grouping"
 />
-
-
 
 ### Manipulating data
 
@@ -171,11 +169,11 @@ to change what series are shown on the chart in the "Set Up" tab and the chart t
 
 The Note Widget lets you quickly jot down notes, insights, and observations directly in your dashboard. It’s ideal for capturing key information during research, tracking important points, or storing prompts for the OpenBB Copilot.
 
-@TODO ADD IMAGE
+<!-- @TODO ADD IMAGE -->
 
 Did you know that you can enhance your experience by adding Notes as context to OpenBB Copilot and using them as prompts? It’s a powerful way to track prompts and seamlessly integrate your insights into your workflow.
 
-@TODO ADD IMAGE
+<!-- @TODO ADD IMAGE -->
 
 ### Website and Iframe
 
@@ -195,10 +193,9 @@ Use our Clock Widget to track multiple time zones simultaneously. It lets you mo
 
 The RSS Feeds Widget is an excellent way to stay up-to-date with the latest news directly within your dashboard. We provide a curated list of top news sources right out of the box, but the true power lies in the ability to customize your RSS feeds. You can add any feeds that are relevant to your research workflow, ensuring you always have the most relevant information at your fingertips.
 
-@TODO ADD IMAGE
+<!-- @TODO ADD IMAGE -->
 
 ### Navigation bar
-
 
 The Navigation Bar lets you add and manage multiple tabs within your dashboard, making it easier to organize and navigate through your information.
 
@@ -245,7 +242,6 @@ If a user selects a new ticker in another widget that is grouped with the watchl
 When scrolling our news widgets, we allow you to quickly pull information for a company and create a dashboard to do more in depth research. Simply hover on the ticker and you will get a popup like below. Clicking on "Create dashboard for ..." will pull up our Equity or ETF Dashboard, allowing you to perform in depth research with just a few clicks.
 
 <img className="pro-border-gradient" width="800" alt="news-hover" src="https://openbb-assets.s3.amazonaws.com/docs/pro/news-hover.png" />
-
 
 ### TradingView widgets
 
