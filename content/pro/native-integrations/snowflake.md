@@ -27,5 +27,3 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
   videoLegend="Short introduction to the Snowflake native integration"
 />
 */}
-
-@TODO add more details around an example of how this integration works
