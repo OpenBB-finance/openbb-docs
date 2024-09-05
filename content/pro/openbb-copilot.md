@@ -27,33 +27,32 @@ OpenBB copilot is your companion to interact with the OpenBB Terminal Pro.
 To open OpenBB Copilot, click on the purple icon located at the center right of the
 Terminal Pro screen.
 
-Under most circumstances, you can treat OpenBB Copilot like your very
-own personal research assistant. OpenBB Copilot can answer general financial
-questions, use the data displayed in the dashboard to perform analytical tasks,
-obtain additional data from the OpenBB Platform API,
-and even interact with files that you choose to upload.
+Under most circumstances, you can treat OpenBB Copilot like your very own
+personal research assistant. OpenBB Copilot has access to the widgets on your
+dashboard, the OpenBB API and any custom endpoints you have added, as well as
+your uploaded files. Using all of these sources, OpenBB Copilot can assist you in 
+performing a wide variety of tasks.
 
 <img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/copilot_opened.jpg" alt="opened openbb copilot" width="70%" height="70%" />
 
 We'll be exploring each of these features in the following sections below.
 
-## Understanding chat history
+## Understanding chats
 
-OpenBB Copilot is a chat-based assistant that remembers previous messages to help answer your current questions.
-This means you can ask follow-up questions or guide it to perform specific tasks.
+OpenBB Copilot is a chat-based assistant that uses the conversation history to
+help answer your queries.  This allows you to ask follow-up questions or guide
+OpenBB Copilot while perform tasks.
 
-For example, if you ask about the price-to-earnings (P/E) ratio, and then follow up by asking
-about other important financial ratios, OpenBB Copilot will remember the context and suggest relevant ratios.
+For example, if you ask about the price-to-earnings (P/E) ratio, and then follow
+up by asking about other important financial ratios, OpenBB Copilot will
+remember the context and suggest relevant ratios:
 
 <img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/pe_ratio_chat_example.jpg" alt="chat history openbb copilot" width="40%" height="40%" />
 
-If you'd like to clear the history of the current conversation, you can do so by clicking on the trashcan icon in the OpenBB Copilot chatbox in the upper right corner. It is usually a good idea to clear the chat history when you have a new question that is unrelated to your current conversation.
-
-:::note
-
-OpenBB Copilot will name your chat based on your conversation's context. For example, if you ask about the P/E ratio, the chat will likely be named "P/E ratio." This makes it easier to keep track of your conversations.
-
-:::
+If you'd like to clear the history of the current conversation, you can do so by
+clicking on the trashcan icon in the OpenBB Copilot chatbox in the upper right
+corner. It is usually a good idea to clear the chat history when you have a new
+question that is unrelated to your current conversation.
 
 ## General question answering
 
