@@ -170,6 +170,8 @@ The reference is `$currentDate` and if a user wants to add or substract they nee
 
 For instance, `$currentDate-1w` stands for 1 week ago.
 
+If you don't want to set a date you can omit the value parameter or pass ```null```.
+
 #### Examples
 
 ```json
@@ -184,6 +186,13 @@ For instance, `$currentDate-1w` stands for 1 week ago.
   {
     "paramName": "end_date",
     "value": "$currentDate+1d",
+    "label": "End Date",
+    "type": "date",
+    "description": "End Date for the stock price"
+  },
+    {
+    "paramName": "end_date",
+    "value": null,
     "label": "End Date",
     "type": "date",
     "description": "End Date for the stock price"
