@@ -365,7 +365,7 @@ def generate_reference_index_files(reference_content: Dict[str, str]) -> None:
         path: Path, parent_label: str = "Reference", position: int = 5
     ):
         # Check for sub-directories and markdown files in the current directory
-        sub_dirs = [d for d in path.iterdir() if d.is_dir()]
+        sub_dirs = sorted([d for d in path.iterdir() if d.is_dir()])
         markdown_files = [
             f for f in path.iterdir() if f.is_file() and f.suffix == ".md"
         ]
@@ -446,8 +446,9 @@ def generate_reference_top_level_index() -> None:
     """Generate the top-level index.mdx file for the reference directory."""
 
     # Get the sub-directories in the reference directory
-    reference_dirs = [d for d in PLATFORM_REFERENCE_PATH.iterdir() if d.is_dir()]
-    reference_dirs.sort()
+    reference_dirs = [
+        d for d in sorted(PLATFORM_REFERENCE_PATH.iterdir()) if d.is_dir()
+    ]
     reference_cards_content = ""
 
     for dir_path in reference_dirs:
