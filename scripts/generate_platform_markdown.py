@@ -179,6 +179,30 @@ def create_reference_markdown_tabular_section(
         # A `|` is added at the start and end of the row to create the table cell.
         rows = "\n".join([f"| {' | '.join(map(str, p.values()))} |" for p in filtered])
 
+        def sanitize_rows(content):
+            """Sanitize the rows to ensure that the table is rendered correctly."""
+            lines = content.split("\n")
+            processed_lines = []
+            current_line = ""
+
+            for line in lines:
+                if line.startswith("|"):
+                    if current_line:
+                        processed_lines.append(current_line)
+                    current_line = line
+                else:
+                    if current_line.endswith("."):
+                        current_line += " " + line.strip()
+                    else:
+                        current_line += "; " + line.strip()
+
+            if current_line:
+                processed_lines.append(current_line)
+
+            return "\n".join(processed_lines)
+
+        rows = sanitize_rows(rows)
+
         if heading == "Parameters":
             tables_list.append(
                 f"\n<TabItem value='{provider}' label='{provider}'>\n\n"
