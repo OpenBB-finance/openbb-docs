@@ -21,13 +21,12 @@ We prepare a list of template dashboard for OpenBB Terminal for you to get start
 
 To see the list of templates available, click on the Template page on the top left.
 
-<!-- @TODO ADD IMAGE -->
+  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/templates.png" />
+
 
 If you are looking for Excel templates, those can be found [here](/excel/templates).
 
 Here are the list of templates available.
-
-<img className="pro-border-gradient" width="800" alt="charting financials" src="https://openbb-assets.s3.amazonaws.com/docs/pro/templates.png" />
 
 ## Charting
 
