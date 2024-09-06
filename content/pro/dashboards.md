@@ -102,6 +102,10 @@ You can export a dashboard through the dashboard's settings on the sidebar.
 
 <img className="pro-border-gradient" width="488" alt="dash settings" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/0cacf0bd-296b-45fa-954b-2d013f9f1694" />
 
+This is how the Report will look.
+
+<img className="pro-border-gradient" width="488" alt="dash settings" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/dashboard_export.png" />
+
 ## Sharing dashboards
 
 This is an enterprise-only feature.
