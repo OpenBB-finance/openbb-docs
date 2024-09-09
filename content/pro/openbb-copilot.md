@@ -70,9 +70,19 @@ For general financial questions, OpenBB Copilot will rely on its underlying
 model's extensive training data to formulate answers. We encourage users to
 explore this functionality with in-depth and varied questions.
 
-## Retrieving data
+## Interacting with Data using OpenBB Copilot
 
-### From the dashboard
+### Adding widgets explicitly as context
+
+Sometimes, you might want OpenBB Copilot to analyze only specific widgets on your dashboard. For example, if you want to dive deep into an earnings transcript without considering other data, you can do that.
+
+To focus on certain widgets, click the "Add widgets as context" button on the widgets you want OpenBB Copilot to use. Once selected, OpenBB Copilot will only access data from those widgets, ignoring all others. This allows you to carry out a more targeted analysis while using OpenBB Copilot as usual.
+
+<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/add_specific_widget_context.jpg" alt="add widget context openbb copilot" width="80%" height="80%" />
+
+<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/aapl_earnings_transcript_chat_example.jpg" alt="query widget context openbb copilot" width="80%" height="80%" />
+
+### Automatically using data from the dashboard
 
 By default, OpenBB Copilot can access the data shown on your currently-active
 dashboard.  This allows OpenBB Copilot to answer questions based on the
@@ -91,17 +101,7 @@ experimenting with various queries.
 For example, OpenBB Copilot is particularly effective at summarizing earnings call transcripts
 from the "Earnings Transcripts" widget.
 
-### Explicitly as context
-
-Sometimes, you might want OpenBB Copilot to analyze only specific widgets on your dashboard. For example, if you want to dive deep into an earnings transcript without considering other data, you can do that.
-
-To focus on certain widgets, click the "Add widgets as context" button on the widgets you want OpenBB Copilot to use. Once selected, OpenBB Copilot will only access data from those widgets, ignoring all others. This allows you to carry out a more targeted analysis while using OpenBB Copilot as usual.
-
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/add_specific_widget_context.jpg" alt="add widget context openbb copilot" width="80%" height="80%" />
-
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/aapl_earnings_transcript_chat_example.jpg" alt="query widget context openbb copilot" width="80%" height="80%" />
-
-### Querying your own data
+### Using your own files
 
 OpenBB Copilot can also analyze and answer questions using files you provide, such as TXT, PDF, CSV, and XLSX files. To upload a file, simply drag and drop it into the OpenBB Copilot chatbox or click the paper clip icon.
 
@@ -118,11 +118,13 @@ For example, if you have a technical report from Tesla released in 2024, a good 
 
 <img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/custom_data_chat_example.jpg" alt="query custom data openbb copilot" width="80%" height="80%" />
 
-#### Adding custom data as a widget
+### Adding custom data as a widget
 
-You can also add custom data as a widget to your dashboard. This allows you to analyze the data in the same way you would with any other widget.
+You can also add custom data as a widget to your dashboard. This allows you to analyze the data in the same way you would with any other widget.  The custom data can either be your own files or an endpoint from a custom backend.
 
-To do this, in the lower right corner of you dashboard, press the blue `+` button and select the "Add data" option. Then either drag and drop the file or click the "Browse for file(s)" button. Once you have uploaded the file(s), click the "Continue" button.
+#### Files as widgets
+
+To add your file as a widget, in the lower right corner of you dashboard, press the blue `+` button and select the "Add data" option. Then either drag and drop the file or click the "Browse for file(s)" button. Once you have uploaded the file(s), click the "Continue" button.
 
 | ![add custom data button openbb copilot](https://openbb-assets.s3.amazonaws.com/docs/copilot/add_custom_data_button.jpg) | ![add custom data upload openbb copilot](https://openbb-assets.s3.amazonaws.com/docs/copilot/add_custom_data_uploaded_file.jpg) |
 |:-----------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------:|
@@ -135,7 +137,27 @@ Now, a widget with your data will be added to the dashboard.
 
 <img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/custom_data_widget_chat_example.jpg" alt="custom data widget openbb copilot" width="80%" height="80%" />
 
-### Direct retrieval
+#### Endpoints as widgets
+
+To add an endpoint as a widget, in the lower right corner of you dashboard, press the blue `+` button and select the "API Endpoint"
+menu option. Then, enter in the name and endpoint URL of your custom backend. You can also edit its metadata and add custom headers
+if needed.
+
+<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/custom_data_endpoint_add.jpg" alt="custom data add endpoint openbb copilot" width="80%" height="80%" />
+
+:::note
+
+This requires JSON output and CORS-enabled APIs to work.
+
+:::
+
+Once satisfied, click the "Test Source" button to verify the endpoint. If the test is successful, click the "Add" button to add the endpoint as a widget to your dashboard.
+
+<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/custom_data_endpoint_added.jpg" alt="custom data endpoint openbb copilot" width="80%" height="80%" />
+
+<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/custom_data_endpoint_chat_example.jpg" alt="custom data endpoint openbb copilot" width="50%" height="50%" />
+
+### Automatically using data sources available to Terminal Pro
 
 OpenBB Copilot can also access external data sources to provide additional insights. This allows you to ask questions that go beyond the data displayed on your dashboard.
 
@@ -157,7 +179,7 @@ To search the web, the user needs to be explicit in their query by adding the `@
 
 <img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/web_search_chat_example.jpg" alt="web search openbb copilot" width="80%" height="80%" />
 
-## Citations and status updates
+## Citations, Status Updates, and Artifacts
 
 When querying OpenBB Copilot, it is important to understand which data OpenBB
 Copilot used to answer your query. As a result, OpenBB Copilot will always cite the data
@@ -168,7 +190,7 @@ source it referenced when responding to your query.
 We go one step further by providing live status updates which notify the user on actions taken by the OpenBB Copilot.
 For example, if the OpenBB Copilot is querying your uploaded data, it will provide a status update saying "Querying user files".
 
-### Result artifacts
+### Artifacts
 
 A special kind of status update is the result artifact which has the final data used to answer the query. It either be a text or a table.
 The contents of the artifact are produced by the reasoning of the OpenBB Copilot.
@@ -188,13 +210,6 @@ Each time OpenBB Copilot generates a response, it will have an "Create widget fr
 
 | ![widget generate button openbb copilot](https://openbb-assets.s3.amazonaws.com/docs/copilot/table_widget_creation_button.jpg) | ![widget generate button openbb copilot](https://openbb-assets.s3.amazonaws.com/docs/copilot/table_widget_creation.jpg) | ![widget generate button openbb copilot](https://openbb-assets.s3.amazonaws.com/docs/copilot/table_widget_created.jpg) |
 |:-----------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------:|
-
-## Generating dashboard titles
-
-OpenBB Copilot can also generate titles for your dashboard based on the present widgets on the dashboard. To do this, on the left side of the screen click the three dots on the dashboard you wish to rename. Then click the purple OpenBB Copilot icon.
-
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/dashboard_title.jpg" alt="openbb copilot dashboard title generation" width="50%" height="50%" />
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/dashboard_title_renamed.jpg" alt="openbb copilot dashboard title generation" width="50%" height="50%" />
 
 ## Prompting guidelines
 
