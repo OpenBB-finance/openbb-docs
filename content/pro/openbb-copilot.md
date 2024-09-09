@@ -138,6 +138,8 @@ For example, if you have a technical report from Tesla released in 2024, a good 
 
 You can also add custom data as a widget to your dashboard. This allows you to analyze the data in the same way you would with any other widget.  The custom data can either be your own files or an endpoint from a custom backend.
 
+See [custom backend](https://docs.openbb.co/pro/custom-backend) for more details.
+
 #### Files as widgets
 
 To add your file as a widget, in the lower right corner of you dashboard, press the blue `+` button and select the "Add data" option. Then either drag and drop the file or click the "Browse for file(s)" button. Once you have uploaded the file(s), click the "Continue" button.
@@ -239,7 +241,7 @@ To ensure transparency and extend the analysis, OpenBB Copilot will also return 
 
 ## Creating widgets from OpenBB Copilot responses
 
-Each time OpenBB Copilot generates a response, it will have an "Create widget from text" or "Create widget from table" button. Clicking this button will create a new widget on your dashboard based on the response.
+Each time OpenBB Copilot generates a response, it will have a "Create widget from text" or "Create widget from table" button. Clicking this button will create a new widget on your dashboard based on the response.
 
 | ![widget generate button openbb copilot](https://openbb-assets.s3.amazonaws.com/docs/copilot/text_widget_creation_button.jpg) | ![widget generate button openbb copilot](https://openbb-assets.s3.amazonaws.com/docs/copilot/text_widget_creation.jpg) | ![widget generate button openbb copilot](https://openbb-assets.s3.amazonaws.com/docs/copilot/text_widget_created.jpg) |
 |:-----------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------:|
