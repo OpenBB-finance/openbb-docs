@@ -15,37 +15,47 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 <HeadTitle title="Documentation - Development | OpenBB Platform Docs" />
 
 
-The documentation and packages are kept in the `/website` folder, at the base of the repository. Navigate there to install the dependencies and start the development server.
+The documentation and packages are kept in a separate repository. Clone the repo with the URL below.
 
-### Generate Markdown Files
+## Installation
 
-Markdown files for the Reference and Data Models pages need to be generated.
-This will generate content based on what is actually installed and contained locally, so it may appear different than what is on this website.
+Clone the repo and then navigate into the project folder.
 
-Open a terminal command line to the `/OpenBBTerminal/website` folder, then enter:
-
-```bash
-python generate_platform_v4_markdown.py
+```sh
+git clone https://github.com/OpenBB-finance/openbb-docs.git
 ```
+
+Packages should be installed within your OpenBB Platform Python environment. 
 
 ### Node.js
 
 - [Node.js](https://nodejs.org/en/) >= 16.13.0
   To check if Node.js installed, run this command:
 
-```bash
+```sh
 node --version # should be v16.13.0 or higher
 ```
 
-#### Install Dependencies
+### Install Dependencies
 
-```bash
+```sh
 npm install
+```
+
+### Generate Markdown Files
+
+Markdown files for the Reference and Data Models pages need to be generated.
+This will generate content based on what is actually installed and contained locally, so it may appear different than what is on this website.
+
+Run the command below from the root of the repository.
+
+```sh
+python scripts/generate_platform_markdown.py
 ```
 
 #### Start Development Server
 
-```bash
+```sh
 npm start
 ```
 
@@ -55,7 +65,7 @@ Most changes are reflected live without having to restart the server.
 
 #### Build
 
-```bash
+```sh
 npm run build
 ```
 
