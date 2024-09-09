@@ -45,7 +45,7 @@ We'll be exploring each of these features in the following sections below.
 
 OpenBB Copilot is a chat-based assistant that uses the conversation history to
 help answer your queries.  This allows you to ask follow-up questions or guide
-OpenBB Copilot while perform tasks.
+OpenBB Copilot while performing tasks.
 
 For example, if you ask about the price-to-earnings (P/E) ratio, and then follow
 up by asking about other important financial ratios, OpenBB Copilot will
@@ -80,9 +80,9 @@ explore this functionality with in-depth and varied questions.
 
 ### Adding widgets explicitly as context
 
-Sometimes, you might want OpenBB Copilot to analyze only specific widgets on your dashboard. For example, if you want to dive deep into an earnings transcript without considering other data, you can do that.
+Sometimes, you might want OpenBB Copilot to analyze only specific widgets on your dashboard. For example, if you want to deep dive into an earnings transcript without considering other data, you can do that.
 
-To focus on certain widgets, click the "Add widgets as context" button on the widgets you want OpenBB Copilot to use. Once selected, OpenBB Copilot will only access data from those widgets, ignoring all others. This allows you to carry out a more targeted analysis while using OpenBB Copilot as usual.
+To focus on certain widgets, click the "Add widgets as context" button on the widgets you want OpenBB Copilot to use. Once selected, OpenBB Copilot will only access data from those widgets, ignoring all others. This allows you to carry out a more targeted analysis while using OpenBB Copilot.
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
 <img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/add_specific_widget_context.jpg" alt="add widget context openbb copilot" width="80%" height="80%" />
@@ -94,7 +94,7 @@ To focus on certain widgets, click the "Add widgets as context" button on the wi
 
 ### Automatically using data from the dashboard
 
-By default, OpenBB Copilot can access the data shown on your currently-active
+By default, OpenBB Copilot can access the data shown on your currently active
 dashboard.  This allows OpenBB Copilot to answer questions based on the
 information currently visible.
 
@@ -115,13 +115,13 @@ from the "Earnings Transcripts" widget.
 
 ### Using your own files
 
-OpenBB Copilot can also analyze and answer questions using files you provide, such as TXT, PDF, CSV, and XLSX files. To upload a file, simply drag and drop it into the OpenBB Copilot chatbox or click the paper clip icon.
+OpenBB Copilot can also analyze and answer questions using files you provide, such as TXT, PDF, CSV, and XLSX files. To upload a file, simply drag and drop it into the OpenBB Copilot chat box or click the paper clip icon.
 
-Once uploaded, OpenBB Copilot can use the data from these files to answer your questions. If it does, it will cite the specific files (and, for PDFs, the exact page) it referenced.
+Once uploaded, OpenBB Copilot can use the data from these files to answer your questions. If it does, it will cite the specific files (for PDFs, the exact page) it referenced.
 
 :::note
 
-OpenBB Copilot uses filenames to determine if a file is relevant to your query. For best results, use descriptive filenames.
+When uploading files directly to OpenBB Copilot, we use filenames to determine if a file is relevant to your query. For best results, use descriptive filenames.
 For example, if you have a technical report from Tesla released in 2024, a good filename would be `tsla_technical_report_2024.pdf`.
 
 :::
