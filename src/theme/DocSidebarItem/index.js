@@ -57,7 +57,7 @@ export default function DocSidebarItem({ item, ...props }) {
   let addedHtml = null;
   let afterHtml = null;
   if (item.href?.startsWith('/pro')) {
-    if (item.label === 'Overview') {
+    if (item.docId === 'pro/index') {
       addedHtml = (
         <DocSidebarItemHtml
           item={{
@@ -68,7 +68,7 @@ export default function DocSidebarItem({ item, ...props }) {
           }}
         />
       );
-    } else if (item.label === 'Upload Files') {
+    } else if (item.docId === 'pro/data-connector') {
       addedHtml = (
         <DocSidebarItemHtml
           item={{
@@ -79,7 +79,7 @@ export default function DocSidebarItem({ item, ...props }) {
           }}
         />
       );
-    } else if (item.label === 'Widgets') {
+    } else if (item.docId === 'pro/widgets') {
       addedHtml = (
         <DocSidebarItemHtml
           item={{
@@ -90,7 +90,7 @@ export default function DocSidebarItem({ item, ...props }) {
           }}
         />
       );
-    } else if (item.label === 'OpenBB Copilot') {
+    } else if (item.docId === 'pro/openbb-copilot') {
       addedHtml = (
         <DocSidebarItemHtml
           item={{
@@ -101,7 +101,7 @@ export default function DocSidebarItem({ item, ...props }) {
           }}
         />
       );
-    } else if (item.label === 'Bring your own Copilot') {
+    } else if (item.docId === 'pro/bring-your-own-copilot') {
       afterHtml = (
         <DocSidebarItemHtml
           item={{
