@@ -31,7 +31,7 @@ API endpoints are the fastest way to integrate your custom data into OpenBB Term
 
 Simply enter your API endpoint along with any required connection details. Once configured, you need to select the metadata and then a corresponding widget will be created. It will then dynamically load and display your data within the Terminal Pro interface.
 
-For something more custom, you should look into creating [your own backend](/pro/data-connectors/integrate-your-own-backend), or reach out for support.
+For something more custom, you should look into creating [your own backend](/pro/custom-backend), or reach out for support.
 
 ## Common Issues and Solutions
 
@@ -42,7 +42,7 @@ For something more custom, you should look into creating [your own backend](/pro
 > Your endpoint might require additional headers to be passed, you can add them using the '+ Add Headers' button.
 
 **My data isn't showing up correctly in the table.**
-> If your API endpoint doesn't return a a simple JSON but a nested architecture, you will be prompted with a "Data Key" parameter which you can use to grab the data of interest.
+> If your API endpoint doesn't return a simple JSON but a nested architecture, you will be prompted with a "Data Key" parameter which you can use to grab the data of interest.
 > You may also need to use our [Custom Backend](/pro/integrate-your-own-backend) if you want to do anything else like processing the data.
 
 If your issue is not listed above, please contact support at [support@openbb.finance](mailto:support@openbb.finance) with details of your problem.
