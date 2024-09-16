@@ -36,6 +36,45 @@ This is a versatile way to connect any data to the OpenBB Terminal. Whether your
 
 1. **Design and implement your API**: Choose your preferred programming language and framework. Ensure that the API can return data in JSON format, which is required for widget integration.
 
+:::note
+Guidelines for JSON Format:
+
+- The JSON data should be in a flat structure, meaning that there should be no nested dictionaries or arrays within the individual objects.
+- Each object should contain key-value pairs where the values are simple data types (e.g., strings, numbers, booleans).
+- Avoid nesting other objects or arrays inside any of the values.
+The JSON should resemble the following structure:
+
+<details>
+<summary mdxType="summary">Example JSON</summary>
+
+```json
+[
+  {
+    "title": "To Kill a Mockingbird",
+    "author": "Harper Lee",
+    "year": 1960,
+    "genre": "Fiction"
+  },
+  {
+    "title": "1984",
+    "author": "George Orwell",
+    "year": 1949,
+    "genre": "Dystopian"
+  },
+  {
+    "title": "The Great Gatsby",
+    "author": "F. Scott Fitzgerald",
+    "year": 1925,
+    "genre": "Classic"
+  }
+]
+```
+</details>
+
+:::
+
+
+
 2. **Create widgets.json file**: This file is your main configuration and defines widget properties such as name, description, category, endpoint, and other information. Each widget will be defined in this file. To view a sample `widgets.json` file and learn more about what you can do check out the [widgets.json docs](/pro/custom-backend/widgets.json).
 
 An example structure in your backend might look like below.
