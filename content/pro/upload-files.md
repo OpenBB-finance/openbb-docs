@@ -1,6 +1,6 @@
 ---
 title: Upload Files
-sidebar_position: 10
+sidebar_position: 11
 description: Learn how to upload both structured and unstructured data to OpenBB Terminal with just a few clicks.
 keywords:
 - Single Widget

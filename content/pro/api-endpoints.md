@@ -51,9 +51,9 @@ If your issue is not listed above, please contact support at [support@openbb.fin
 
 Here's a list of public API endpoints that can be used for free:
 
-| Widget title | Public URL | Category | Subcategory | Source | Description |
-| -------- | ------- | -------- | ------- | -------- | ------- |
-| Protocols | https://defillama-datasets.llama.fi/lite/v2/protocols | DeFi | TVL | DefiLLama | List of all protocols on DefiLlama along with their TVL |
-| Historical Chain TVL | https://api.llama.fi/v2/historicalChainTvl | DeFi | TVL | DefiLLama | Get historical TVL (excludes liquid staking and double counted tvl) on DeFi on all chains |
-| Chains | https://api.llama.fi/v2/chains | DeFi | TVL | DefiLLama | Get current TVL of all chains |
-| TAO stats | https://taostats.io/data.json | Crypto | | Tao | Latest $TAO token and subnet information |
+| Widget title | Public URL | Category | Subcategory | Source | Description | Add to Pro |
+| -------- | ------- | -------- | ------- | -------- | ------- | ------- |
+| Protocols | https://defillama-datasets.llama.fi/lite/v2/protocols | DeFi | TVL | DefiLLama | List of all protocols on DefiLlama along with their TVL | <a href="https://pro.openbb.co/app/data-connectors?modal=data-connectors&dcTab=single&endpoint=https://defillama-datasets.llama.fi/lite/v2/protocols&name=Protocols" target="_blank"> <button className="_btn text-xs">Add</button> </a> |
+| Historical Chain TVL | https://api.llama.fi/v2/historicalChainTvl | DeFi | TVL | DefiLLama | Get historical TVL (excludes liquid staking and double counted tvl) on DeFi on all chains | <a href="https://pro.openbb.co/app/data-connectors?modal=data-connectors&dcTab=single&endpoint=https://api.llama.fi/v2/historicalChainTvl&name=Historical Chain TVL" target="_blank"> <button className="_btn text-xs">Add</button> </a> |
+| Chains | https://api.llama.fi/v2/chains | DeFi | TVL | DefiLLama | Get current TVL of all chains | <a href="https://pro.openbb.co/app/data-connectors?modal=data-connectors&dcTab=single&endpoint=https://api.llama.fi/v2/chains&name=Chains" target="_blank"> <button className="_btn text-xs">Add</button> </a> |
+| TAO stats | https://taostats.io/data.json | Crypto | | Tao | Latest $TAO token and subnet information | <a href="https://pro.openbb.co/app/data-connectors?modal=data-connectors&dcTab=single&endpoint=https://taostats.io/data.json&name=TAO stats" target="_blank"> <button className="_btn text-xs">Add</button> </a> |
