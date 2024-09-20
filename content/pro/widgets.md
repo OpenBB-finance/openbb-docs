@@ -239,7 +239,10 @@ Beyond the OpenBB Core widgets, the OpenBB team has created custom widgets tailo
 Our charting widget is powered by the renowned TradingView charting library, offering you a comprehensive and intuitive platform for financial analysis. With this feature, you can access all the functionalities typically available on TradingView. To get the most out of this feature, we recommend familiarizing yourself with TradingView's capabilities here: [TradingView](https://www.tradingview.com/charting-library-docs/latest/getting_started)
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-<img className="pro-border-gradient" width="800" alt="charting" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/0012510b-fb13-4dd5-9aef-cd5600a5684f" />
+  <img className="pro-border-gradient" width="800" alt="charting" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/0012510b-fb13-4dd5-9aef-cd5600a5684f" />
+</div>
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  _The charting technology is provided by TradingView. Follow the most important cryptos like [bitcoin usd](https://www.tradingview.com/symbols/BTCUSD/), [eth usd](https://www.tradingview.com/symbols/ETHUSD/) and much more._
 </div>
 
 Here's a quick rundown of what you can do with our charting feature:
@@ -254,6 +257,7 @@ Here's a quick rundown of what you can do with our charting feature:
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
 <img className="pro-border-gradient" width="800" alt="charting add" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/b94fe659-9b53-48df-aa58-fb33e2a24f51" />
+
 </div>
 
 It also allows users to **Overlay Financials**:
