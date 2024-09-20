@@ -16,9 +16,9 @@ keywords:
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 import ReactPlayer from 'react-player'
 
-<HeadTitle title="Copilot | OpenBB Terminal Pro Docs" />
+<HeadTitle title="Copilot | OpenBB Terminal Docs" />
 
-OpenBB copilot is your companion to interact with the OpenBB Terminal Pro.
+OpenBB copilot is your companion to interact with the OpenBB Terminal.
 
 ## Introduction
 
@@ -27,7 +27,7 @@ OpenBB copilot is your companion to interact with the OpenBB Terminal Pro.
 </div>
 
 To open OpenBB Copilot, click on the purple icon located at the center right of the
-Terminal Pro screen.
+Terminal screen.
 
 Under most circumstances, you can treat OpenBB Copilot like your very own
 personal research assistant. OpenBB Copilot has access to the widgets on your
@@ -94,9 +94,7 @@ To focus on certain widgets, click the "Add widgets as context" button on the wi
 
 ### Automatically using data from the dashboard
 
-By default, OpenBB Copilot can access the data shown on your currently active
-dashboard.  This allows OpenBB Copilot to answer questions based on the
-information currently visible.
+OpenBB Copilot is incredibly powerful, as it can access information from all widgets on your current dashboards, the OpenBB API, and your uploaded data. It will begin by scanning your dashboard for relevant information based on your queries. If none is found, it will move on to the other available sources listed above.
 
 For example, if you ask for a summary of the latest news about Apple, OpenBB
 Copilot will retrieve the Company News widget data on your dashboard (provided
@@ -136,58 +134,13 @@ For example, if you have a technical report from Tesla released in 2024, a good 
 
 ### Adding custom data as a widget
 
-You can also add custom data as a widget to your dashboard. This allows you to analyze the data in the same way you would with any other widget.  The custom data can either be your own files or an endpoint from a custom backend.
+You can also add custom data as a widget to your dashboard. This allows you to analyze the data in the same way you would with any other widget.  The custom data can either be your own files, API endpoints, custom backends or databases.
 
-See [custom backend](https://docs.openbb.co/pro/custom-backend) for more details.
+See [Input Data](https://docs.openbb.co/pro/data-connector) for more details.
 
-#### Files as widgets
+### Automatically using data sources available to Terminal
 
-To add your file as a widget, in the lower right corner of you dashboard, press the blue `+` button and select the "Add data" option. Then either drag and drop the file or click the "Browse for file(s)" button. Once you have uploaded the file(s), click the "Continue" button.
-
-| ![add custom data button openbb copilot](https://openbb-assets.s3.amazonaws.com/docs/copilot/add_custom_data_button.jpg) | ![add custom data upload openbb copilot](https://openbb-assets.s3.amazonaws.com/docs/copilot/add_custom_data_uploaded_file.jpg) |
-|:-----------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------:|
-
-For each uploaded file, you can choose its widget name, and edit the metadata such as category, description, sub-category, and source. Once, satisfied, click the "Upload" button.
-
-<div style={{display: 'flex', justifyContent: 'center'}}>
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/custom_data_upload_button.jpg" alt="custom data upload openbb copilot" width="80%" height="80%" />
-</div>
-
-Now, a widget with your data will be added to the dashboard.
-
-<div style={{display: 'flex', justifyContent: 'center'}}>
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/custom_data_widget_chat_example.jpg" alt="custom data widget openbb copilot" width="80%" height="80%" />
-</div>
-
-#### Endpoints as widgets
-
-To add an endpoint as a widget, in the lower right corner of you dashboard, press the blue `+` button and select the "API Endpoint"
-menu option. Then, enter in the name and endpoint URL of your custom backend. You can also edit its metadata and add custom headers
-if needed.
-
-<div style={{display: 'flex', justifyContent: 'center'}}>
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/custom_data_endpoint_add.jpg" alt="custom data add endpoint openbb copilot" width="80%" height="80%" />
-</div>
-
-:::note
-
-This requires JSON output and CORS-enabled APIs to work.
-
-:::
-
-Once satisfied, click the "Test Source" button to verify the endpoint. If the test is successful, click the "Add" button to add the endpoint as a widget to your dashboard.
-
-<div style={{display: 'flex', justifyContent: 'center'}}>
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/custom_data_endpoint_added.jpg" alt="custom data endpoint openbb copilot" width="80%" height="80%" />
-</div>
-
-<div style={{display: 'flex', justifyContent: 'center'}}>
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/custom_data_endpoint_chat_example.jpg" alt="custom data endpoint openbb copilot" width="50%" height="50%" />
-</div>
-
-### Automatically using data sources available to Terminal Pro
-
-OpenBB Copilot can also access external data sources to provide additional insights. This allows you to ask questions that go beyond the data displayed on your dashboard.
+As mentioned earlier, OpenBB Copilot can also access external data sources to provide additional insights. This allows you to ask questions that go beyond the data displayed on your dashboard.
 
 External data can either be the OpenBB API or your own custom endpoints.
 
