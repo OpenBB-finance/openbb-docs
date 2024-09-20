@@ -94,7 +94,7 @@ To focus on certain widgets, click the "Add widgets as context" button on the wi
 
 ### Automatically using data from the dashboard
 
-OpenBB Copilot is incredibly powerful, as it can access information from all widgets on your current dashboards, the OpenBB API, and your uploaded data. It will begin by scanning your dashboard for relevant information based on your queries. If none is found, it will move on to the other available sources listed above.
+OpenBB Copilot is incredibly powerful, as it can access information from all widgets on your current dashboards, the OpenBB API, and your uploaded data. It will begin by scanning your dashboard for relevant information based on your queries. If one is not found, it will move on to the other available sources listed above.
 
 For example, if you ask for a summary of the latest news about Apple, OpenBB
 Copilot will retrieve the Company News widget data on your dashboard (provided
