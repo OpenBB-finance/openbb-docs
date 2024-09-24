@@ -30,14 +30,14 @@ Investment research tech is stuck in the 80s and limits what you can do.
 OpenBB introduces the first AI-powered Research Workspace, enabling firms and individuals to optimize their worklows with AI. 
 
 <div style={{position: 'relative', paddingBottom: '56.25%', height: '0', overflow: 'hidden', maxWidth: '100%'}}>
-    <iframe
-        style={{position: 'absolute', top: '0', left: '0', width: '100%', height: '100%', display: 'block', margin: '0 auto'}}
-        src="https://www.youtube.com/watch?v=rjqrUOXdpbs&list=PLXcRIKcHAUP7jkDYYyjD_L9O_9KRo5Amh&index=1&t=10s&ab_channel=OpenBB"
-        title="YouTube video player"
-        frameBorder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowFullScreen>
-    </iframe>
+    <iframe 
+    style={{position: 'absolute', top: '0', left: '0', width: '100%', height: '100%', display: 'block', margin: '0 auto'}} 
+    src="https://www.youtube.com/embed/rjqrUOXdpbs?si=0gOpYxZ1yXCsY45C" 
+    title="YouTube video player" 
+    frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+    referrerpolicy="strict-origin-when-cross-origin" 
+    allowfullscreen></iframe>
 </div>
 
 Gain an edge in the market, try Terminal for FREE now.
