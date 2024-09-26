@@ -1,0 +1,128 @@
+---
+title: Errors
+sidebar_position: 3
+description: This page contains some frequently asked questions about OpenBB Platform errors.
+keywords:
+  - provider
+  - data
+  - source
+  - error
+  - OpenBBError
+  - unknown error
+  - EmptyDataError
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Errors FAQ - FAQs | OpenBB Platform Docs" />
+
+
+<details>
+<summary mdxType="summary">[Arg] provider -> input: nasdaq -> Input should be 'fmp' or 'yfinance'</summary>
+
+There could be a few reasons for this message.
+
+1. The provider supplied is not installed, in which case install it and follow the next step.
+
+2. The provider extension is installed, but the static assets have not been refreshed. Rebuild the static assets from the command line with:
+
+```sh
+python -c "import openbb;openbb.build()"
+```
+
+An environment variable to auto-build the static assets on import - if there are changes to the installed configuration - can be defined as:
+
+```env
+OPENBB_AUTO_BUILD="true"
+```
+
+The expected behaviour is for this to be "true" by default, however can be situations where the flag does not trigger a build.
+Manually invoke the process from the command line if necessary.
+
+3. Not every endpoint is supported by every provider. To see the coverage of commands and data providers within the current installation, use `reference` property in the app. The docstring for each function contains the same information as the code block below. 
+
+```python
+from openbb import obb
+
+path = "/index/available"
+
+[d for d in obb.reference["paths"][path]["parameters"] if d != "standard"]
+```
+```sh
+['cboe', 'fmp', 'tmx', 'yfinance']
+```
+
+Complete breakdowns of query and return fields by provider and endpoint are available under the [Reference](/platform/reference)
+
+</details>
+
+<details>
+<summary mdxType="summary">AttributeError: 'App' object has no attribute 'some attribute'</summary>
+
+There could be a few reasons for this message that are similar to the issue above.
+
+1. The extension is not installed.
+  - Install it and rebuild the static files (described in the item above.)
+2. No installed provider extension services an endpoint within the router.
+  - Under these conditions, the router is excluded from the app factory.
+3. The extension is installed, a provider does service the router, but the static assets have not been rebuilt.
+  - Rebuild the static files (described in the item above.)
+
+</details>
+
+
+<details>
+<summary mdxType="summary">OpenBBError: [Error] -> Unexpected error.</summary>
+
+Also a 500 error from the API. It is the result of an unhandled exception.
+
+Traceback messages are truncated unless the debug environment variable is set.
+
+```python
+import os
+
+os.environ["OPENBB_DEBUG_MODE"] = "true"
+
+from openbb import obb
+
+# run the syntax that created the error and the full traceback will print to the console.
+```
+
+If the issue originates from OpenBB code, please open a bug issue on [GitHub](https://github.com/OpenBB-finance/OpenBB/issues/new?assignees=&labels=type%3Abug&projects=&template=bug_report.md&title=%5BBug%5D)
+
+Be sure to include the contents of the traceback, the operating system and version, Python version, and the syntax responsible for the error.
+
+</details>
+
+<details>
+<summary mdxType="summary">EmptyDataError: The request was returned empty.</summary>
+
+Also a 204 status code from the API. It means that the data was returned empty but the operation was a success.
+
+There might not be anything wrong, or it could be the result of parameter choices. In which case, widen the scope of the query to capture output.
+
+Some sources will return bad requests with a 200 status code and no message.
+
+If all parameter permutations are only capable of returning an empty response, please open a bug issue on [GitHub](https://github.com/OpenBB-finance/OpenBB/issues/new?assignees=&labels=type%3Abug&projects=&template=bug_report.md&title=%5BBug%5D) with the operating system and version, Python version, and the syntax responsible for the error.
+
+</details>
+
+<details>
+<summary mdxType="summary">How do I start in debug mode?</summary>
+
+Debug mode can be set as an environment variable, in `~/openbb_platform/.env`, as:
+
+```env
+OPENBB_DEBUG_MODE=true
+```
+
+It can be invoked for the current session only by adding this code before importing the OpenBB package.
+
+```python
+import os
+
+os.environ["OPENBB_DEBUG_MODE"] = "true"
+
+from openbb import obb
+```
+</details>
