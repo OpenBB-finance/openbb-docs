@@ -1,8 +1,8 @@
-import React from "react";
-import clsx from "clsx";
-import TOCItems from "@theme/TOCItems";
-import styles from "./styles.module.css";
 import { useLocation } from "@docusaurus/router";
+import TOCItems from "@theme/TOCItems";
+import clsx from "clsx";
+import React from "react";
+import styles from "./styles.module.css";
 // Using a custom className
 // This prevents TOCInline/TOCCollapsible getting highlighted by mistake
 const LINK_CLASS_NAME = "table-of-contents__link toc-highlight";
@@ -18,7 +18,7 @@ export default function TOC({ className, ...props }) {
         className
       )}
     >
-      {props?.toc?.some(item => item.level === 1 || item.level === 2 ||item.level === 3) && (
+      {props?.toc?.some( item => item.level === 1 || item.level === 2 ||item.level === 3) && (
         <>
           <p className="uppercase text-sm font-bold text-grey-600 dark:text-grey-200 tracking-widest mb-2">
             On this page

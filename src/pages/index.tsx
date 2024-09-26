@@ -95,15 +95,25 @@ export default function Home(): JSX.Element {
               </p>
             </Link>
           </div>
-          <div className="my-4 md:my-0" />
+          <div className="my-2 md:my-0" />
           <p className="z-20">
-            Looking for our website?{" "}
+            Our website can be found{" "}
             <a
               href="https://openbb.co"
               className="text-burgundy-300 !underline hover:text-burgundy-400 active:text-burgundy-500"
             >
-              Click here
+              here
             </a>
+            {" "}
+            and OpenBB Bot documentation can be found here
+            {" "}
+            <a
+              href="https://docs.openbb.co/bot"
+              className="text-burgundy-300 !underline hover:text-burgundy-400 active:text-burgundy-500"
+            >
+              here
+            </a>
+            .
           </p>
         </div>
       </article>
