@@ -137,13 +137,22 @@ With OpenBB Terminal, you can create charts directly from your tabular data in t
 
 2. If available pm the widget, you can click on the "ChartView" icon and we will generate a chart for you. The biggest advantage here is that the data will update automatically and be reflected in your chart.
 
+<div style={{display: 'flex', justifyContent: 'center'}}>
 <img className="pro-border-gradient" width="800" alt="selection-charting" src="https://openbb-assets.s3.amazonaws.com/docs/pro/selection-charting-1.png" />
+</div>
+
 - In this example we've highlighted some data and with a simple "right-click" you can pick a line chart.
 
+<div style={{display: 'flex', justifyContent: 'center'}}>
 <img className="pro-border-gradient" width="800" alt="chartview" src="https://openbb-assets.s3.amazonaws.com/docs/pro/chartview-setting.png" />
+</div>
+
 - In this example we're utilizing the "ChartView" highlighted in blue. This allows us to change the widget into a chart instead of a table.
 
+<div style={{display: 'flex', justifyContent: 'center'}}>
 <img className="pro-border-gradient" width="800" alt="example" src="https://openbb-assets.s3.amazonaws.com/docs/pro/combo-chart.png" />
+</div>
+
 - Finally we're customizing the chart to show a different way then a simple line.
 
 ## OpenBB Core Widgets
@@ -158,22 +167,30 @@ The Table widget was highlighted previously, in the Widget Structure section.
 
 When a chart is created you can customize almost anything within it by clicking on the three dots and then Chart Settings.
 
+<div style={{display: 'flex', justifyContent: 'center'}}>
 <img className="pro-border-gradient" width="200" alt="example" src="https://openbb-assets.s3.amazonaws.com/docs/pro/chart-settings-small.png" />
+</div>
 
 Once you bring up the "Customize" tab on your chart, you'll have a tab like below to change anything from title to colors. In the other tabs you'll also be able
 to change what series are shown on the chart in the "Set Up" tab and the chart type under the "Chart" tab. All of these customizations let you create beautiful visualizations.
 
+<div style={{display: 'flex', justifyContent: 'center'}}>
 <img className="pro-border-gradient" width="800" alt="example" src="https://openbb-assets.s3.amazonaws.com/docs/pro/customization.png" />
+</div>
 
 ### Note
 
 The Note Widget lets you quickly jot down notes, insights, and observations directly in your dashboard. It’s ideal for capturing key information during research, tracking important points, or storing prompts for the OpenBB Copilot.
 
-<!-- @TODO ADD IMAGE -->
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/note_widget.png" />
+</div>
 
 Did you know that you can enhance your experience by adding Notes as context to OpenBB Copilot and using them as prompts? It’s a powerful way to track prompts and seamlessly integrate your insights into your workflow.
 
-<!-- @TODO ADD IMAGE -->
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/note_context.png" />
+</div>
 
 ### Website and Iframe
 
@@ -181,37 +198,52 @@ Often, during your research workflow, you need to browse multiple websites to ex
 
 Please note that some websites may disable this functionality. We will automatically check and display the website only if permitted by the site owner.
 
-[ADD IMAGE]
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/website.png" />
+</div>
 
 ### Clock
 
 Use our Clock Widget to track multiple time zones simultaneously. It lets you monitor the current time in key financial hubs worldwide, helping you stay on top of market hours and coordinate effectively with international teams.
 
-[ADD IMAGE]
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/clock.png" />
+</div>
 
 ### RSS Feeds
 
 The RSS Feeds Widget is an excellent way to stay up-to-date with the latest news directly within your dashboard. We provide a curated list of top news sources right out of the box, but the true power lies in the ability to customize your RSS feeds. You can add any feeds that are relevant to your research workflow, ensuring you always have the most relevant information at your fingertips.
 
-<!-- @TODO ADD IMAGE -->
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/rss.png" />
+</div>
 
 ### Navigation bar
 
 The Navigation Bar lets you add and manage multiple tabs within your dashboard, making it easier to organize and navigate through your information.
 
-[ADD IMAGE]
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/navigation_bar.png" />
+</div>
 
 ## Data widgets
 
 Beyond the OpenBB Core widgets, the OpenBB team has created custom widgets tailored to the specific data they want to offer users. These widgets do not follow the standard table or chart formats mentioned above.
 
+<div style={{display: 'flex', justifyContent: 'center'}}>
 <img className="pro-border-gradient" width="800" alt="newswidget" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/5ada7e7f-c619-46fb-850f-006c6e0d0cd2" />
+</div>
 
 ### Charting
 
 Our charting widget is powered by the renowned TradingView charting library, offering you a comprehensive and intuitive platform for financial analysis. With this feature, you can access all the functionalities typically available on TradingView. To get the most out of this feature, we recommend familiarizing yourself with TradingView's capabilities here: [TradingView](https://www.tradingview.com/charting-library-docs/latest/getting_started)
 
-<img className="pro-border-gradient" width="800" alt="charting" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/0012510b-fb13-4dd5-9aef-cd5600a5684f" />
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="800" alt="charting" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/0012510b-fb13-4dd5-9aef-cd5600a5684f" />
+</div>
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  _The charting technology is provided by TradingView. Follow the most important cryptos like [bitcoin usd](https://www.tradingview.com/symbols/BTCUSD/), [eth usd](https://www.tradingview.com/symbols/ETHUSD/) and much more._
+</div>
 
 Here's a quick rundown of what you can do with our charting feature:
 
@@ -223,7 +255,10 @@ Here's a quick rundown of what you can do with our charting feature:
 
 - Overlay charts of other tickers of interest, whether they're in forex, crypto, equity, or macroeconomics
 
+<div style={{display: 'flex', justifyContent: 'center'}}>
 <img className="pro-border-gradient" width="800" alt="charting add" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/b94fe659-9b53-48df-aa58-fb33e2a24f51" />
+
+</div>
 
 It also allows users to **Overlay Financials**:
 
@@ -233,7 +268,9 @@ When analyzing equity data, you'll notice the "Financial" text above the chart. 
 
 The watchlist widget has a special property in relation to grouping. Since this widget doesn't have a single symbol but many, users can select the row of their ticker of interest, and widgets that are grouped with the watchlist will get updated accordingly.
 
+<div style={{display: 'flex', justifyContent: 'center'}}>
 <img className="pro-border-gradient" width="800" alt="watchlist" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/d36380df-743a-4676-bec4-6bd34567e661" />
+</div>
 
 If a user selects a new ticker in another widget that is grouped with the watchlist, that ticker will be added to the watchlist and will become the one selected by default.
 
@@ -241,10 +278,12 @@ If a user selects a new ticker in another widget that is grouped with the watchl
 
 When scrolling our news widgets, we allow you to quickly pull information for a company and create a dashboard to do more in depth research. Simply hover on the ticker and you will get a popup like below. Clicking on "Create dashboard for ..." will pull up our Equity or ETF Dashboard, allowing you to perform in depth research with just a few clicks.
 
+<div style={{display: 'flex', justifyContent: 'center'}}>
 <img className="pro-border-gradient" width="800" alt="news-hover" src="https://openbb-assets.s3.amazonaws.com/docs/pro/news-hover.png" />
+</div>
 
 ### TradingView widgets
 
 TradingView widgets are not native, and therefore that means that the data within them won't be accessible to your AI copilot, unlike others.
 
-@TODO Think if there are other special widgets that are worth pointing out
+<!-- @TODO Think if there are other special widgets that are worth pointing out -->

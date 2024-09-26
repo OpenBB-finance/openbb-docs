@@ -32,7 +32,7 @@ Below are all of the values you can set along with a description for each.
 | description                      | `string` (required)          | A brief description of the widget for user info and selection menu. Example: `"Get current TVL of all chains and plot it!"`.                        |
 | endpoint                         | `string` (required)          | The backend API endpoint for retrieving data. Example: `"chains"`. Possible values: Any valid API endpoint path as a string.                         |
 | category                         | `string`                     | The category for organizing widgets. Example: `"crypto"`. Possible values: Any string representing a category.                                      |
-| searchCategory                   | `string`                     | Secondary category for refining search results. Example: `"crypto"`. Possible values: Similar to `category`.                                         |
+| subCategory                      | `string`                     | Secondary category for refining search results. Example: `"fundamentals"`.                                   |
 | defaultViz                       | `string`                     | Default visualization type for the widget. Possible values: `"chart"`, `"table"`. Default: `"table"`.                                                |
 | gridData.w                       | `number`                     | The width of the widget in grid units. Example: `20`. Possible values: Any positive integer. Maximum value : `40`                                    |
 | gridData.h                       | `number`                     | The height of the widget in grid units. Example: `9`. Possible values: Any positive integer. Maximum value : `100`                                  |
@@ -170,6 +170,8 @@ The reference is `$currentDate` and if a user wants to add or substract they nee
 
 For instance, `$currentDate-1w` stands for 1 week ago.
 
+If you don't want to set a date you can omit the value parameter or pass ```null```.
+
 #### Examples
 
 ```json
@@ -184,6 +186,13 @@ For instance, `$currentDate-1w` stands for 1 week ago.
   {
     "paramName": "end_date",
     "value": "$currentDate+1d",
+    "label": "End Date",
+    "type": "date",
+    "description": "End Date for the stock price"
+  },
+    {
+    "paramName": "end_date",
+    "value": null,
     "label": "End Date",
     "type": "date",
     "description": "End Date for the stock price"
