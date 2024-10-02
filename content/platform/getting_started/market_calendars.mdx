@@ -312,7 +312,7 @@ obb.equity.calendar.ipo(provider="nasdaq", status="withdrawn").to_df().tail(3)
 
 ### SPO
 
-SPOs, secondary pubic offerings, are shares being sold by investors after an IPO. The money does not go to the company, but directly to the investor selling shares into the market. The `openbb-nasdaq` provider has an additional boolean parameter, `is_spo`. By default, year-to-date data is returned.
+SPOs, secondary public offerings, are shares being sold by investors after an IPO. The money does not go to the company, but directly to the investor selling shares into the market. The `openbb-nasdaq` provider has an additional boolean parameter, `is_spo`. By default, year-to-date data is returned.
 
 ```python
 obb.equity.calendar.ipo(provider="nasdaq", is_spo=True).to_df().tail(1)
