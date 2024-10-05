@@ -1,5 +1,5 @@
 ---
-title: Open source platform integration
+title: Open Source Platform Integration
 sidebar_position: 15
 description: Learn how to integrate the OpenBB Platform data to the OpenBB Terminal
 keywords:
@@ -59,7 +59,9 @@ Note: This assumes that the user has spent time setting up their API keys [here]
 
 ![image-3-89f316d9153aa91e108cebf5cf718609](https://github.com/user-attachments/assets/5015a675-7953-4807-98d2-94cdc041fd64)
 
-5. Finally, you simply need to set up the custom backend on Terminal Pro. You can do so by clicking on this [link](http://pro.openbb.co/app/data-connectors?tab=my-data&modal=data-connectors&dcTab=backend&name=OpenBB%20Platform&url=http://localhost:6900).
+5. Finally, you simply need to set up the custom backend on Terminal Pro.
+
+<!-- TODO - We cant do this yet - issue with localhost in name - You can do so by clicking on this [link](http://pro.openbb.co/app/data-connectors?tab=my-data&modal=data-connectors&dcTab=backend&name=OpenBB%20Platform&url=http://localhost:6900). -->
 
 ![image-4-bed5df262173615690d113584755b08a](https://github.com/user-attachments/assets/c3ee50ff-114c-4718-8471-ef8070356692)
 
@@ -75,7 +77,7 @@ If you run the steps above, you will have access to a dozen different data vendo
 
 This section will explore how you can filter the platform integration datasets that are made available on the Terminal.
 
-1. Go to the [widgets filter page](https://my.openbb.co/platform/widgets) where you can set the data vendors you are interested and also select the widgets within. Once you are happy you can download the `widget_settings.json` configuration file by clicking on **Download**.
+1. Go to the [widgets filter page](https://my.openbb.co/app/platform/widgets) where you can set the data vendors you are interested and also select the widgets within. Once you are happy you can download the `widget_settings.json` configuration file by clicking on **Download**.
 
 ![image-1-0e1a24b94a7c6ea08d41e30b53f8dc57](https://github.com/user-attachments/assets/c978c28d-e53a-4f83-9488-dcb524572b86)
 
@@ -84,7 +86,9 @@ This section will explore how you can filter the platform integration datasets t
 Now, similarly to the previous section, you should:
 - Run `OpenBB/openbb-api`
 - Set your PAT
-- Add the custom backend connection on the Terminal [here](http://pro.openbb.co/app/data-connectors?tab=my-data&modal=data-connectors&dcTab=backend&name=OpenBB%20Platform&url=http://localhost:6900)
+- Refresh the connection inside the ["My Data"](https://pro.openbb.co/app/data-connectors) tab or follow instructions above to add again.
+
+<!-- (http://pro.openbb.co/app/data-connectors?tab=my-data&modal=data-connectors&dcTab=backend&name=OpenBB%20Platform&url=http://localhost:6900) -->
 
 > Take into consideration that, if you change the default configurations on the OpenBB Platform settings, the URL (http://127.0.0.1:6900) might differ.
 
