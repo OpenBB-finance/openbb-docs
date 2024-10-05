@@ -15,7 +15,7 @@ Our product offers two different plans:
     - **OpenBB Terminal** - Free version for individuals
     - **OpenBB Terminal Pro** - Enterprise for teams and professionals
 
-The products, features and services that come with an enterprise are mentioned below.
+The products, features and services that come with an enterprise are highlighted below.
 
 ## Excel Add-In
 
@@ -52,9 +52,11 @@ This is how the Report will look.
 
 ## Database Integrations
 
-There are two ways to connect to your databases or data warehouses. The first is through [custom backends](https://github.com/OpenBB-finance/backend-for-terminal-pro/tree/main), which allow users to connect to platforms like Snowflake, Databricks, Elastic, Clickhouse, and others. However, the user experience may not be optimal.
+There are two ways to connect to your databases or data warehouses.
 
-To address this, we also provide a data connector that enables users to securely connect to their databases or data warehouses in seconds, rather than hours. Supported connections currently include Snowflake, SQLite, and MySQL, with more options coming soon.
+1. The first is through custom backends, which we have open source [here](https://github.com/OpenBB-finance/backend-for-terminal-pro/tree/main). This allows users to connect to platforms like Snowflake, Databricks, Elastic, Clickhouse, and others.
+
+2. The second is a native database/datawarehouse integration that enables firms to connect securely with their data, in seconds instead of hours. Supported connections currently include Snowflake, SQLite, and MySQL, with more options coming soon.
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
   <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/native_integration.png" />
@@ -78,8 +80,8 @@ Gain access to a user management portal where you can manage access to your firm
 
 ## AI Copilot resources
 
-You will have generous access to both file uploads and Copilot, with 100 requests per hour. If you need additional requests, you can bring your own OpenAI key or contact us.
+Users on the free tier will have access to 20 messages per day with the OpenBB Copilot, at which point they will need to insert their LLMs API keys. Enterprise users will benefit from far more generous limits, so they aren't limited.
 
----
+## File storage resources
 
-Needs to be revisited based on meeting Wednesday.
+Enterprise customers will benefit from up to 10 GB of file (structured/unstructured data) storage, as opposed to 1 GB available with the free tier.
