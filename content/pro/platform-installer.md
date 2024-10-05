@@ -49,11 +49,11 @@ Select the right installer based on your OS and architecture. Then install it.
 
 3. A terminal popup should be initiated, and you will be prompted to insert your personal access token (PAT), which can be retrieved from [here](https://my.openbb.co/app/platform/pat).
 
-PAT IMAGE
+<img width="1413" alt="Screenshot 2024-10-05 at 4 21 32 AM" src="https://github.com/user-attachments/assets/43ac8f94-a0ce-4c38-9589-94d03322cfd7">
 
 Note: This assumes that the user has spent time setting up their API keys [here](https://my.openbb.co/app/platform/credentials).
 
-API KEYS IMAGES
+<img width="1386" alt="Screenshot 2024-10-05 at 4 22 39 AM" src="https://github.com/user-attachments/assets/f3e565c7-d343-421a-bfee-6be7acb79042">
 
 4. The OpenBB Platform API should now be up and running.
 
@@ -61,11 +61,11 @@ API KEYS IMAGES
 
 5. Finally, you simply need to set up the custom backend on Terminal Pro. You can do so by clicking on this [link](http://pro.openbb.co/app/data-connectors?tab=my-data&modal=data-connectors&dcTab=backend&name=OpenBB%20Platform&url=http://localhost:6900).
 
-CUSTOM BACKEND IMAGE
+<img width="1417" alt="Screenshot 2024-10-05 at 4 27 52 AM" src="https://github.com/user-attachments/assets/692e8da3-57fb-4cff-b566-adf8d5539530">
 
 6. Voila. You are now ready to access 350+ data widgets from your OpenBB Terminal. For free.
 
-IMAGE OF PRO WiTH CUSTOM BACKEND
+<img width="1418" alt="Screenshot 2024-10-05 at 4 24 00 AM" src="https://github.com/user-attachments/assets/a48eb08c-6536-43c6-a055-0e46082c14c8">
 
 ## Advanced - Filter widgets
 
