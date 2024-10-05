@@ -49,11 +49,11 @@ Select the right installer based on your OS and architecture. Then install it.
 
 3. A terminal popup should be initiated, and you will be prompted to insert your personal access token (PAT), which can be retrieved from [here](https://my.openbb.co/app/platform/pat).
 
-<img width="1413" alt="Screenshot 2024-10-05 at 4 21 32 AM" src="https://github.com/user-attachments/assets/43ac8f94-a0ce-4c38-9589-94d03322cfd7">
+![image](https://github.com/user-attachments/assets/43ac8f94-a0ce-4c38-9589-94d03322cfd7)
 
 Note: This assumes that the user has spent time setting up their API keys [here](https://my.openbb.co/app/platform/credentials).
 
-<img width="1386" alt="Screenshot 2024-10-05 at 4 22 39 AM" src="https://github.com/user-attachments/assets/f3e565c7-d343-421a-bfee-6be7acb79042">
+![image](https://github.com/user-attachments/assets/f3e565c7-d343-421a-bfee-6be7acb79042)
 
 4. The OpenBB Platform API should now be up and running.
 
@@ -61,11 +61,15 @@ Note: This assumes that the user has spent time setting up their API keys [here]
 
 5. Finally, you simply need to set up the custom backend on Terminal Pro. You can do so by clicking on this [link](http://pro.openbb.co/app/data-connectors?tab=my-data&modal=data-connectors&dcTab=backend&name=OpenBB%20Platform&url=http://localhost:6900).
 
-<img width="1417" alt="Screenshot 2024-10-05 at 4 27 52 AM" src="https://github.com/user-attachments/assets/692e8da3-57fb-4cff-b566-adf8d5539530">
+![image-4-bed5df262173615690d113584755b08a](https://github.com/user-attachments/assets/c3ee50ff-114c-4718-8471-ef8070356692)
+
+![image-5-dde3ab955aed6e9e48f63a3f6f09c345](https://github.com/user-attachments/assets/9a05d247-8ef6-4279-9d3e-4b12124c51a3)
+
+![image](https://github.com/user-attachments/assets/692e8da3-57fb-4cff-b566-adf8d5539530)
 
 6. Voila. You are now ready to access 350+ data widgets from your OpenBB Terminal. For free.
 
-<img width="1418" alt="Screenshot 2024-10-05 at 4 24 00 AM" src="https://github.com/user-attachments/assets/a48eb08c-6536-43c6-a055-0e46082c14c8">
+![image](https://github.com/user-attachments/assets/a48eb08c-6536-43c6-a055-0e46082c14c8)
 
 ## Advanced - Filter widgets
 
@@ -86,9 +90,4 @@ Now, similarly to the previous section, you should:
 
 > Take into consideration that, if you change the default configurations on the OpenBB Platform settings, the URL (http://127.0.0.1:6900) might differ.
 
-![image-4-bed5df262173615690d113584755b08a](https://github.com/user-attachments/assets/c3ee50ff-114c-4718-8471-ef8070356692)
-
-![image-5-dde3ab955aed6e9e48f63a3f6f09c345](https://github.com/user-attachments/assets/9a05d247-8ef6-4279-9d3e-4b12124c51a3)
-
-![image-6-89f6dc05ff8f0a96f7488b9417d08679](https://github.com/user-attachments/assets/d7b89576-ed57-4681-98a7-eedf0d43e0c8)
-
+![image](https://github.com/user-attachments/assets/692e8da3-57fb-4cff-b566-adf8d5539530)
