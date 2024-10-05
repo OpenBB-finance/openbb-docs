@@ -63,9 +63,7 @@ Note: This assumes that the user has spent time setting up their API keys [here]
 
 ![image-4-bed5df262173615690d113584755b08a](https://github.com/user-attachments/assets/c3ee50ff-114c-4718-8471-ef8070356692)
 
-![image-5-dde3ab955aed6e9e48f63a3f6f09c345](https://github.com/user-attachments/assets/9a05d247-8ef6-4279-9d3e-4b12124c51a3)
-
-![image](https://github.com/user-attachments/assets/692e8da3-57fb-4cff-b566-adf8d5539530)
+![img](https://github.com/user-attachments/assets/770e6d6c-6cd7-4073-a874-af0850f404cc)
 
 6. Voila. You are now ready to access 350+ data widgets from your OpenBB Terminal. For free.
 
