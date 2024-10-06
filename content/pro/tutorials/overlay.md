@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Overlay time series | OpenBB Terminal Pro Docs" />
+<HeadTitle title="Overlay time series | OpenBB Terminal Docs" />
 
 This workflow involves overlaying time series from multiple asset classes. You will plot the price performance of the S&P 500 together with your favorite stock, overlay the Financials (Revenue / EBITDA / Net Income) of your favorite stock with its price, and overlay the GDP growth rate with the Unemployment rate of the US.
 

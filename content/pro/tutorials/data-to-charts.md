@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Charts from raw data | OpenBB Terminal Pro Docs" />
+<HeadTitle title="Charts from raw data | OpenBB Terminal Docs" />
 
 In this workflow, you will create a chart to visualize the EBITDA ratio trends over the past 5 years using the Income Statement widget. You will then update the Chart title to your liking and download the Chart to PNG. This allows you to leverage Excel-like capabilities right from the OpenBB Terminal Pro.
 
