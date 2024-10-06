@@ -1,7 +1,7 @@
 ---
 title: AI Insights
 
-sidebar_position: 6
+sidebar_position: -1
 description: This guide provides detailed instructions on how to leverage AI on your workflow. It also includes instructions on how to bring your own Copilot
 keywords:
 - AI insights
@@ -26,7 +26,7 @@ In this workflow, you will learn how to leverage OpenBB Copilot to speed up your
 <div style={{display: 'flex', justifyContent: 'center'}}>
     <iframe
         style={{width: '800px', height: '450px', display: 'block', margin: '0 auto'}}
-        src="https://www.youtube.com/watch?v=nt-JpWGCa3w&list=PLXcRIKcHAUP7jkDYYyjD_L9O_9KRo5Amh&index=2&ab_channel=OpenBB"
+        src="https://www.youtube.com/embed/nt-JpWGCa3w?si=Ej7fuc1fJVScEMfJ"
         title="YouTube video player"
         frameBorder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

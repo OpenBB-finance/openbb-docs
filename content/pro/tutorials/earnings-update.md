@@ -1,6 +1,6 @@
 ---
 title: Earnings Update 
-sidebar_position: 4
+sidebar_position: 0
 description: In this guide, you'll learn how to leverage OpenBB Terminal and Copilot to streamline your earnings update workflow. We'll walk you through extracting management guidance from transcripts, cross-referencing it with filings, and finally comparing it with market sentiment.
 keywords:
 - OpenBB Terminal
