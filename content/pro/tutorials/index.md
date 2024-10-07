@@ -11,7 +11,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Tutorials | OpenBB Terminal Pro Docs" />
+<HeadTitle title="Tutorials | OpenBB Terminal Docs" />
 
 import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 

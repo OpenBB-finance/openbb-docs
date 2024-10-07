@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Layouts and Watchlist | OpenBB Terminal Pro Docs" />
+<HeadTitle title="Layouts and Watchlist | OpenBB Terminal Docs" />
 
 This workflow involves researching a group of sector companies. You will create a new dashboard from the analyst template, add a new ticker to the Watchlist and then change the selection to the newly added ticker. This will allow you to understand how to load a template and interact with the watchlist widget.
 
