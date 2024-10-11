@@ -61,6 +61,10 @@ Note: This assumes that the user has spent time setting up their API keys [here]
 
 5. Finally, you simply need to set up the custom backend on Terminal Pro.
 
+:::note
+If you are using Brave/Safari you will need an HTTPS connection - see how [here](https://docs.openbb.co/pro/custom-backend#frequently-asked-questions)
+:::
+
 <!-- TODO - We cant do this yet - issue with localhost in name - You can do so by clicking on this [link](http://pro.openbb.co/app/data-connectors?tab=my-data&modal=data-connectors&dcTab=backend&name=OpenBB%20Platform&url=http://localhost:6900). -->
 
 ![image-4-bed5df262173615690d113584755b08a](https://github.com/user-attachments/assets/c3ee50ff-114c-4718-8471-ef8070356692)
