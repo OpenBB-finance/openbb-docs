@@ -3,11 +3,11 @@ name: 📑 Deploy to GitHub Pages
 on:
   push:
     branches:
-      - '**'  # This will match pushes to any branch
+      - "**" # This will match pushes to any branch
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
-      - '**'
+      - "**"
   workflow_dispatch:
 
 jobs:
@@ -17,7 +17,7 @@ jobs:
       github.event_name == 'push' ||
       github.event_name == 'pull_request' ||
       github.event_name == 'workflow_dispatch'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Git checkout
         uses: actions/checkout@v3 # actions/checkout v3.0.2

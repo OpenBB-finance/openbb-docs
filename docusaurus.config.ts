@@ -39,7 +39,11 @@ export default {
           {
             from: "/platform/development/contributing",
             to: "/platform/developer_guide/contributing",
-          }
+          },
+          {
+            from: "/pro/copilot/bring-your-own-copilot",
+            to: "/pro/bring-your-own-copilot",
+          },
         ],
       },
     ],
