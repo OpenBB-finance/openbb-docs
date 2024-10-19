@@ -1,7 +1,7 @@
 ---
 title: Native Installation
 description: Learn how to install and use OpenBB Terminal as a Progressive Web App (PWA) on your desktop and mobile devices.
-sidebar_position: 4
+sidebar_position: 2
 keywords:
 - OpenBB Terminal
 - PWA installation
