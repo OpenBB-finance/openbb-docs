@@ -113,7 +113,7 @@ from the "Earnings Transcripts" widget.
 
 ### Using your own files
 
-OpenBB Copilot can also analyze and answer questions using files you provide, such as TXT, PDF, CSV, and XLSX files. To upload a file, click the blue plus icon in the lower right part of your dashboard and select the "Add data" option.
+OpenBB Copilot can also analyze and answer questions using files you provide, such as PDF, CSV, and XLSX files. To add a file to OpenBB Copilot, first [add it to the currently-active dashboard](<link for adding files to Terminal>).
 
 Once you've uploaded a file, it will become a widget on your dashboard that you can interact with.
 
