@@ -113,7 +113,18 @@ from the "Earnings Transcripts" widget.
 
 ### Using your own files
 
-OpenBB Copilot can also analyze and answer questions using files you provide, such as PDF, CSV, and XLSX files. To add a file to OpenBB Copilot, first [add it to the currently-active dashboard](https://docs.openbb.co/pro/upload-files).
+OpenBB Copilot can also analyze and answer questions using files you provide, such as PDF, CSV, and XLSX files.
+
+To add a file to OpenBB Copilot, first [add it to the currently-active dashboard](https://docs.openbb.co/pro/upload-files) or click the paper clip icon.
+
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+ <img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/add_custom_data_chat_example.jpg" alt="add custom data openbb copilot" width="80%" height="80%" />
+ </div>
+
+ <div style={{display: 'flex', justifyContent: 'center'}}>
+ <img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/custom_data_chat_example.jpg" alt="query custom data openbb copilot" width="80%" height="80%" />
+ </div>
 
 Once the file widget has been added to your dashboard, you can add it to OpenBB Copilot explicitly by clicking the "add widget to context" button, or you can simply begin querying, and OpenBB Copilot will retrieve the data if it is relevant to your query.
 
