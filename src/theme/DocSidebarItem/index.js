@@ -101,7 +101,7 @@ export default function DocSidebarItem({ item, ...props }) {
           }}
         />
       );
-    } else if (item.docId === 'terminal/bring-your-own-copilot') {
+    } else if (item.docId === 'terminal/templates') {
       afterHtml = (
         <DocSidebarItemHtml
           item={{
