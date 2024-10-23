@@ -30,7 +30,7 @@ The OpenBB native integrations allows you to connect to Snowflake, MySQL, or SQL
 <NewReferenceCard
     title="Snowflake"
     description=""
-    url="/terminal/native-integrations/snowflake"
+    url="/terminal/database-integrations/snowflake"
 />
 
 </ul> -->
