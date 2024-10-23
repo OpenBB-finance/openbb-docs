@@ -23,14 +23,14 @@ The OpenBB native integrations allows you to connect to Snowflake, MySQL, or SQL
 
 3. **Connect inside the Terminal Pro**: Once your client is up and running, click [here](https://pro.openbb.co/app/data-connectors) to enable the connectors - it will ask you for the URL the port is running on - you can find that on the Data Connector Application at the top. Now feel free to enter login credentials for any Snowflake, MySQL, or SQLite database and begin to analyze your data inside of our terminal.
 
-## Current integrations
+<!-- ## Current integrations
 
 <ul className="grid grid-cols-1 gap-4 -ml-6">
 
 <NewReferenceCard
     title="Snowflake"
     description=""
-    url="/pro/native-integrations/snowflake"
+    url="/terminal/native-integrations/snowflake"
 />
 
-</ul>
+</ul> -->

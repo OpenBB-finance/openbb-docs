@@ -125,6 +125,6 @@ As a starting point, let's use the example above.
 
 1. Create a new text file with the name `routines_template.openbb` and copy and paste the routine above.
 
-2. Move the file inside the `routines` folder within the [OpenBBUserData](openbbuserdata) folder and, optionally, adjust the name to your liking.
+2. Move the file inside the `routines` folder within the [OpenBBUserData](/cli/openbbuserdata) folder and, optionally, adjust the name to your liking.
 
 3. Open up the CLI, and type `exe --file routines_template`.  If you changed the name of the file, then replace, `routines_template`, with that.  As long as the file remains in the `~/OpenBBUserData/routines` folder, the CLI's auto-completer will provide it as a choice.

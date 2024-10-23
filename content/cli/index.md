@@ -75,4 +75,4 @@ The CLI is the next iteration of the [OpenBB Terminal](/platform), and leverages
 
 ---
 
-Want to contribute? Check out our [Development section](/platform/development).
+Want to contribute? Check out our [Development section](/platform/developer_guide).
