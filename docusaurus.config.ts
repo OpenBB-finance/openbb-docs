@@ -133,8 +133,8 @@ export default {
 						to: "/terminal/custom-backend/widgets.json",
 					},
 					{
-						from: "/pro/terminal/platform-installer",
-						to: "/terminal/terminal/platform-installer",
+						from: "/pro/platform-installer",
+						to: "/terminal/platform-installer",
 					},
 					{
 						from: "/pro/widgets",
