@@ -48,6 +48,110 @@ export default {
 						from: "/pro/",
 						to: "/terminal/",
 					},
+					{
+						from: "/pro/enterprise",
+						to: "/terminal/enterprise",
+					},
+					{
+						from: "/pro/enterprise",
+						to: "/terminal/enterprise",
+					},
+					{
+						from: "/pro/native-installation",
+						to: "/terminal/native-installation",
+					},
+					{
+						from: "/pro/tutorials",
+						to: "/terminal/tutorials",
+					},
+					{
+						from: "/pro/tutorials/bring-data",
+						to: "/terminal/tutorials/bring-data",
+					},
+					{
+						from: "/pro/tutorials/customizability",
+						to: "/terminal/tutorials/customizability",
+					},
+					{
+						from: "/pro/tutorials/ai-insights",
+						to: "/terminal/tutorials/ai-insights",
+					},
+					{
+						from: "/pro/tutorials/earnings-update",
+						to: "/terminal/tutorials/earnings-update",
+					},
+					{
+						from: "/pro/tutorials/layouts-watchlist",
+						to: "/terminal/tutorials/layouts-watchlist",
+					},
+					{
+						from: "/pro/tutorials/report",
+						to: "/terminal/tutorials/report",
+					},
+					{
+						from: "/pro/tutorials/ai",
+						to: "/terminal/tutorials/ai",
+					},
+					{
+						from: "/pro/tutorials/data-to-charts",
+						to: "/terminal/tutorials/data-to-charts",
+					},
+					{
+						from: "/pro/tutorials/overlay",
+						to: "/terminal/tutorials/overlay",
+					},
+					{
+						from: "/pro/openbb-copilot",
+						to: "/terminal/openbb-copilot",
+					},
+					{
+						from: "/pro/data-connector",
+						to: "/terminal/data-connector",
+					},
+					{
+						from: "/pro/upload-files",
+						to: "/terminal/upload-files",
+					},
+					{
+						from: "/pro/api-endpoints",
+						to: "/terminal/api-endpoints",
+					},
+					{
+						from: "/pro/database-integrations",
+						to: "/terminal/database-integrations",
+					},
+					{
+						from: "/pro/database-integrations/snowflake",
+						to: "/terminal/database-integrations/snowflake",
+					},
+					{
+						from: "/pro/custom-backend",
+						to: "/terminal/custom-backend",
+					},
+					{
+						from: "/pro/custom-backend/widgets.json",
+						to: "/terminal/custom-backend/widgets.json",
+					},
+					{
+						from: "/pro/terminal/platform-installer",
+						to: "/terminal/terminal/platform-installer",
+					},
+					{
+						from: "/pro/widgets",
+						to: "/terminal/widgets",
+					},
+					{
+						from: "/pro/dashboards",
+						to: "/terminal/dashboards",
+					},
+					{
+						from: "/pro/templates",
+						to: "/terminal/templates",
+					},
+					{
+						from: "/pro/bring-your-own-copilot",
+						to: "/terminal/bring-your-own-copilot",
+					},
 				],
 				createRedirects: (existingPath) => {
 					if (existingPath.startsWith("/pro/")) {
