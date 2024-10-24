@@ -75,7 +75,7 @@ The JSON should resemble the following structure:
 
 
 
-2. **Create widgets.json file**: This file is your main configuration and defines widget properties such as name, description, category, endpoint, and other information. Each widget will be defined in this file. To view a sample `widgets.json` file and learn more about what you can do check out the [widgets.json docs](/pro/custom-backend/widgets.json).
+2. **Create widgets.json file**: This file is your main configuration and defines widget properties such as name, description, category, endpoint, and other information. Each widget will be defined in this file. To view a sample `widgets.json` file and learn more about what you can do check out the [widgets.json docs](/terminal/custom-backend/widgets.json).
 
 An example structure in your backend might look like below.
 

@@ -1,6 +1,6 @@
 ---
 title: Bring your own Copilot
-sidebar_position: 32
+sidebar_position: 9
 description: Learn how to use your own Copilot with Terminal Pro
 keywords:
 - OpenBB Copilot

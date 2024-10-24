@@ -161,7 +161,7 @@ For example, you can ask OpenBB Copilot to fetch the latest stock price for a sp
 <img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/news_openbb_api_chat_example.jpg" alt="openbb copilot api" width="50%" height="50%" />
 </div>
 
-To query a custom endpoint, please explore the [Custom Backend](/pro/custom-backend/custom-backend) documentation.
+To query a custom endpoint, please explore the [Custom Backend](/terminal/custom-backend) documentation.
 
 ### Searching the Web
 

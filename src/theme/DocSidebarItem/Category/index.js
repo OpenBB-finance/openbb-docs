@@ -1,24 +1,24 @@
-import Link from "@docusaurus/Link";
-import { translate } from "@docusaurus/Translate";
-import { useLocation } from "@docusaurus/router";
+import Link from '@docusaurus/Link';
+import { translate } from '@docusaurus/Translate';
+import { useLocation } from '@docusaurus/router';
 import {
   Collapsible,
   ThemeClassNames,
   useCollapsible,
   usePrevious,
   useThemeConfig,
-} from "@docusaurus/theme-common";
+} from '@docusaurus/theme-common';
 import {
   // findFirstCategoryLink,
   isActiveSidebarItem,
   isSamePath,
   useDocSidebarItemsExpandedState,
-} from "@docusaurus/theme-common/internal";
-import useIsBrowser from "@docusaurus/useIsBrowser";
-import DocSidebarItems from "@theme/DocSidebarItems";
-import clsx from "clsx";
-import React, { useEffect, useMemo } from "react";
-import { useIFrameContext } from "../../Root.tsx";
+} from '@docusaurus/theme-common/internal';
+import useIsBrowser from '@docusaurus/useIsBrowser';
+import DocSidebarItems from '@theme/DocSidebarItems';
+import clsx from 'clsx';
+import React, { useEffect, useMemo } from 'react';
+import { useIFrameContext } from '../../Root.tsx';
 // If we navigate to a category and it becomes active, it should automatically
 // expand itself
 function useAutoExpandActiveCategory({ isActive, collapsed, updateCollapsed }) {
@@ -57,12 +57,12 @@ function CollapseButton({ categoryLabel, onClick }) {
     <button
       aria-label={translate(
         {
-          id: "theme.DocSidebarItem.toggleCollapsedCategoryAriaLabel",
+          id: 'theme.DocSidebarItem.toggleCollapsedCategoryAriaLabel',
           message: "Toggle the collapsible sidebar category '{label}'",
           description:
-            "The ARIA label to toggle the collapsible sidebar category",
+            'The ARIA label to toggle the collapsible sidebar category',
         },
-        { label: categoryLabel }
+        { label: categoryLabel },
       )}
       type="button"
       className="clean-btn menu__caret"
@@ -80,12 +80,12 @@ export default function DocSidebarItemCategory({
 }) {
   const { items, label, collapsible, className, href } = item;
   const labelToHrefMap = {
-    "OpenBB Terminal": "/terminal",
-    "OpenBB Platform": "/platform",
-    "OpenBB Bot": "/bot",
-    "OpenBB Terminal Pro": "/pro",
-    "OpenBB Add-in for Excel": "/excel",
-    "OpenBB Platform CLI": "/cli",
+    'OpenBB Terminal': '/terminal',
+    'OpenBB Platform': '/platform',
+    'OpenBB Bot': '/bot',
+    'OpenBB Terminal Pro': '/pro',
+    'OpenBB Add-in for Excel': '/excel',
+    'OpenBB Platform CLI': '/cli',
   };
   const newHref = labelToHrefMap[label] || href;
   const {
@@ -125,11 +125,11 @@ export default function DocSidebarItemCategory({
   }, [collapsible, expandedItem, index, setCollapsed, autoCollapseCategories]);
   const { isIFrame } = useIFrameContext();
   const dontShowLink =
-    isIFrame && ["OpenBB Terminal", "OpenBB SDK", "OpenBB Bot"].includes(label);
+    isIFrame && ['OpenBB Terminal', 'OpenBB SDK', 'OpenBB Bot'].includes(label);
 
   const location = useLocation();
-  const isProPage = location.pathname.startsWith("/pro");
-  const isExcelPage = location.pathname.startsWith("/excel");
+  const isProPage = location.pathname.startsWith('/terminal');
+  const isExcelPage = location.pathname.startsWith('/excel');
 
   // Hide the OpenBB Terminal Pro section if we're not on a /pro or /excel page
   if (item.customProps?.hiddenByDefault && !(isProPage || isExcelPage)) {
@@ -146,23 +146,23 @@ export default function DocSidebarItemCategory({
       className={clsx(
         ThemeClassNames.docs.docSidebarItemCategory,
         ThemeClassNames.docs.docSidebarItemCategoryLevel(level),
-        "menu__list-item",
+        'menu__list-item',
         {
-          "menu__list-item--collapsed": collapsed,
+          'menu__list-item--collapsed': collapsed,
         },
-        className
+        className,
       )}
     >
       <div
-        className={clsx("menu__list-item-collapsible", {
-          "menu__list-item-collapsible--active": isCurrentPage,
+        className={clsx('menu__list-item-collapsible', {
+          'menu__list-item-collapsible--active': isCurrentPage,
         })}
       >
         <Link
-          className={clsx("menu__link", {
-            "menu__link--sublist": collapsible,
-            "menu__link--sublist-caret": !newHref && collapsible,
-            "menu__link--active": isActive,
+          className={clsx('menu__link', {
+            'menu__link--sublist': collapsible,
+            'menu__link--sublist-caret': !newHref && collapsible,
+            'menu__link--active': isActive,
           })}
           onClick={
             collapsible
@@ -185,9 +185,9 @@ export default function DocSidebarItemCategory({
                   onItemClick?.(item);
                 }
           }
-          aria-current={isCurrentPage ? "page" : undefined}
+          aria-current={isCurrentPage ? 'page' : undefined}
           aria-expanded={collapsible ? !collapsed : undefined}
-          href={collapsible ? hrefWithSSRFallback ?? "#" : hrefWithSSRFallback}
+          href={collapsible ? hrefWithSSRFallback ?? '#' : hrefWithSSRFallback}
           {...props}
         >
           {label}

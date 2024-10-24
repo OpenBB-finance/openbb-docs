@@ -28,7 +28,7 @@ function shouldHideItem(item, productPath) {
 export default function DocSidebarItem({ item, ...props }) {
   const { isIFrame } = useIFrameContext();
   const { pathname } = useLocation();
-  const isPro = pathname.startsWith('/pro');
+  const isPro = pathname.startsWith('/terminal');
   const isExcel = pathname.startsWith('/excel');
 
   // Check if the item is the OpenBB Terminal Pro section
@@ -48,7 +48,7 @@ export default function DocSidebarItem({ item, ...props }) {
     return null;
   } else if (
     !(isPro || isExcel) &&
-    item.href?.startsWith('/pro') &&
+    item.href?.startsWith('/terminal') &&
     item.href?.startsWith('/excel')
   ) {
     return null;
@@ -56,8 +56,8 @@ export default function DocSidebarItem({ item, ...props }) {
 
   let addedHtml = null;
   let afterHtml = null;
-  if (item.href?.startsWith('/pro')) {
-    if (item.docId === 'pro/index') {
+  if (item.href?.startsWith('/terminal')) {
+    if (item.docId === 'terminal/index') {
       addedHtml = (
         <DocSidebarItemHtml
           item={{
@@ -68,7 +68,7 @@ export default function DocSidebarItem({ item, ...props }) {
           }}
         />
       );
-    } else if (item.docId === 'pro/data-connector') {
+    } else if (item.docId === 'terminal/data-connector') {
       addedHtml = (
         <DocSidebarItemHtml
           item={{
@@ -79,7 +79,7 @@ export default function DocSidebarItem({ item, ...props }) {
           }}
         />
       );
-    } else if (item.docId === 'pro/widgets') {
+    } else if (item.docId === 'terminal/widgets') {
       addedHtml = (
         <DocSidebarItemHtml
           item={{
@@ -90,7 +90,7 @@ export default function DocSidebarItem({ item, ...props }) {
           }}
         />
       );
-    } else if (item.docId === 'pro/openbb-copilot') {
+    } else if (item.docId === 'terminal/openbb-copilot') {
       addedHtml = (
         <DocSidebarItemHtml
           item={{
@@ -101,7 +101,7 @@ export default function DocSidebarItem({ item, ...props }) {
           }}
         />
       );
-    } else if (item.docId === 'pro/bring-your-own-copilot') {
+    } else if (item.docId === 'terminal/templates') {
       afterHtml = (
         <DocSidebarItemHtml
           item={{
@@ -150,7 +150,9 @@ function checkIfAnyChildIsProExcel(item) {
   }
 
   if (item.type === 'link') {
-    return item.href?.startsWith('/pro') || item.href?.startsWith('/excel');
+    return (
+      item.href?.startsWith('/terminal') || item.href?.startsWith('/excel')
+    );
   }
 
   if (item.type === 'category') {

@@ -237,7 +237,7 @@ Additionally, the `Fetcher` class uses a custom `classproperty` decorator to def
 The `require_credentials` class variable indicates whether credentials are needed to fetch data from the provider. This can be overridden by subclasses as needed.
 
 :::info
-The `Fetcher` class implementation is based on the [TET pattern](/platform/development/developer-guidelines/architectural_considerations#the-tet-pattern). This pattern imposes a standardized structure, namely:
+The `Fetcher` class implementation is based on the [TET pattern](/platform/developer_guide/architecture_overview#the-tet-pattern). This pattern imposes a standardized structure, namely:
 
 - Transform the query: the output of this method should be `QueryParams` child.
 - Extract the data: the output of this method can be `Any` but it's recommended to be a `Dict` (will facilitate the next step of the fetcher's action, the data transformation).
