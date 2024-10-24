@@ -58,6 +58,23 @@ A couple of notable differences between data and toolkit extension are:
 - Utility functions don't need their own sub-folder.
 - `__init__.py` files are all empty.
 
+:::important When an extension is installed or uninstalled, the Python interface will need to rebuild the static assets for the app to fully reflect the changes.
+
+To invoke the build process, enter the line below from the command line:
+
+```sh
+openbb-build
+```
+
+Or
+
+```sh
+python -c "import openbb;openbb.build()"
+```
+
+This is not necessary when using the API, changes will be reflected on the next run.
+:::
+
 ## Data Extensions
 
 <details>
@@ -101,6 +118,10 @@ These packages are what will be installed when `pip install openbb` is run
 | Extension Name | Description | Installation Command | Minimum Subscription Type Required |
 |----------------|-------------|----------------------|------------------------------------|
 | openbb-benzinga | [Benzinga](https://www.benzinga.com/apis/en-ca/) data connector | pip install openbb-benzinga | Paid |
+| openbb-bls | [Bureau of Labor Statistics](https://www.bls.gov/developers/home.htm) data connector | pip install openbb-bls | Free |
+| openbb-cftc | [Commodity Futures Trading Commission](https://publicreporting.cftc.gov/stories/s/r4w3-av2u) data connector | pip install openbb-cftc | Free |
+| openbb-econdb | [EconDB](https://econdb.com) data connector | pip install openbb-econdb | None |
+| openbb-imf | [IMF](https://data.imf.org) data connector | pip install openbb-imf | None |
 | openbb-fmp | [FMP](https://site.financialmodelingprep.com/developer/) data connector | pip install openbb-fmp | Free |
 | openbb-fred | [FRED](https://fred.stlouisfed.org/) data connector | pip install openbb-fred | Free |
 | openbb-intrinio | [Intrinio](https://intrinio.com/pricing) data connector | pip install openbb-intrinio | Paid |
@@ -131,6 +152,7 @@ These packages are not installed when `pip install openbb` is run.  They are ava
 | openbb-tmx | [TMX](https://money.tmx.com) data connector | pip install openbb-tmx | None |
 | openbb-tradier | [Tradier](https://tradier.com) data connector | pip install openbb-tradier | None |
 | openbb-wsj | [Wall Street Journal](https://www.wsj.com/) data connector | pip install openbb-wsj | None |
+
 
 Have you published a data provider extension and want it featured on this list? Tell us about it! Open a pull request on [GitHub](https://github.com/OpenBB-finance/OpenBBTerminal/) to submit an extension for inclusion. Code contributions, for new and existing, data providers are always welcome.
 
