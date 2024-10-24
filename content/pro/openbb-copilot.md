@@ -113,9 +113,26 @@ from the "Earnings Transcripts" widget.
 
 ### Using your own files
 
-OpenBB Copilot can also analyze and answer questions using files you provide, such as TXT, PDF, CSV, and XLSX files. To upload a file, simply drag and drop it into the OpenBB Copilot chat box or click the paper clip icon.
+OpenBB Copilot can also analyze and answer questions using files you provide, such as PDF, CSV, and XLSX files.
 
-Once uploaded, OpenBB Copilot can use the data from these files to answer your questions. If it does, it will cite the specific files (for PDFs, the exact page) it referenced.
+To add a file to OpenBB Copilot, first [add it to the currently-active dashboard](https://docs.openbb.co/pro/upload-files) or click the paper clip icon.
+
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+ <img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/add_custom_data_chat_example.jpg" alt="add custom data openbb copilot" width="80%" height="80%" />
+ </div>
+
+ <div style={{display: 'flex', justifyContent: 'center'}}>
+ <img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/custom_data_chat_example.jpg" alt="query custom data openbb copilot" width="80%" height="80%" />
+ </div>
+
+Once the file widget has been added to your dashboard, you can add it to OpenBB Copilot explicitly by clicking the "add widget to context" button, or you can simply begin querying, and OpenBB Copilot will retrieve the data if it is relevant to your query.
+
+If OpenBB Copilot uses your file widget to answer any part of you query, it will show citations after its answer.  
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/custom_pdf_chat_example.jpg" alt="custom pdf copilot chat" width="80%" height="80%" />
+</div>
 
 :::note
 
@@ -124,17 +141,9 @@ For example, if you have a technical report from Tesla released in 2024, a good 
 
 :::
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/add_custom_data_chat_example.jpg" alt="add custom data openbb copilot" width="80%" height="80%" />
-</div>
+### Adding custom data sources
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/custom_data_chat_example.jpg" alt="query custom data openbb copilot" width="80%" height="80%" />
-</div>
-
-### Adding custom data as a widget
-
-You can also add custom data as a widget to your dashboard. This allows you to analyze the data in the same way you would with any other widget.  The custom data can either be your own files, API endpoints, custom backends or databases.
+The custom data can either be your own files, API endpoints, custom backends or databases.
 
 See [Input Data](https://docs.openbb.co/pro/data-connector) for more details.
 
