@@ -106,7 +106,7 @@ export default function Home(): JSX.Element {
 						>
 							here
 						</a>{" "}
-						and OpenBB Bot documentation can be found here{" "}
+						and OpenBB Bot documentation can be found {" "}
 						<a
 							href="https://docs.openbb.co/bot"
 							className="text-burgundy-300 !underline hover:text-burgundy-400 active:text-burgundy-500"
