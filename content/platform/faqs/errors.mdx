@@ -56,8 +56,9 @@ Complete breakdowns of query and return fields by provider and endpoint are avai
 
 </details>
 
+
 <details>
-<summary mdxType="summary">AttributeError: 'App' object has no attribute 'some attribute'</summary>
+<summary mdxType="summary">Attribute Error: 'App' object has no attribute 'some attribute'</summary>
 
 There could be a few reasons for this message that are similar to the issue above.
 
@@ -72,11 +73,40 @@ There could be a few reasons for this message that are similar to the issue abov
 
 
 <details>
-<summary mdxType="summary">OpenBBError: [Error] -> Unexpected error.</summary>
+<summary mdxType="summary">Unauthorized Error - HTTP Status Code 502</summary>
 
-Also a 500 error from the API. It is the result of an unhandled exception.
+This error is raised when provider credentials are supplied but is invalid for the particular endpoint.
 
-Traceback messages are truncated unless the debug environment variable is set.
+Verify your credentials, access level, and subscription status directly with the provider.
+
+</details>
+
+<details>
+<summary mdxType="summary">Unprocessable Entity (OpenBBError) - HTTP Status Code 422</summary>
+
+This error is raised for handled exceptions. An abbreviated traceback message will display, and the full message is enabled via debug mode.
+
+A common reason for this error is because a required parameter was not supplied, or was an incorrect choice. It may also be raised during parsing and transformation, post-request.
+
+</details>
+
+<details>
+<summary mdxType="summary">Empty Data Error - HTTP Status Code 204</summary>
+
+Also a 204 status code from the API. It means that the data was returned empty but the operation was a success.
+
+There might not be anything wrong, or it could be the result of parameter choices. In which case, widen the scope of the query to capture output.
+
+Some sources will return bad requests with a 200 status code and no message.
+
+If all parameter permutations are only capable of returning an empty response, please open a bug issue on [GitHub](https://github.com/OpenBB-finance/OpenBB/issues/new?assignees=&labels=type%3Abug&projects=&template=bug_report.md&title=%5BBug%5D) with the operating system and version, Python version, and the syntax responsible for the error.
+
+</details>
+
+<details>
+<summary mdxType="summary">Unexpected Error - HTTP Status Code 500</summary>
+
+An unhandled exception. Traceback messages are truncated unless the debug environment variable is set.
 
 ```python
 import os
@@ -91,19 +121,6 @@ from openbb import obb
 If the issue originates from OpenBB code, please open a bug issue on [GitHub](https://github.com/OpenBB-finance/OpenBB/issues/new?assignees=&labels=type%3Abug&projects=&template=bug_report.md&title=%5BBug%5D)
 
 Be sure to include the contents of the traceback, the operating system and version, Python version, and the syntax responsible for the error.
-
-</details>
-
-<details>
-<summary mdxType="summary">EmptyDataError: The request was returned empty.</summary>
-
-Also a 204 status code from the API. It means that the data was returned empty but the operation was a success.
-
-There might not be anything wrong, or it could be the result of parameter choices. In which case, widen the scope of the query to capture output.
-
-Some sources will return bad requests with a 200 status code and no message.
-
-If all parameter permutations are only capable of returning an empty response, please open a bug issue on [GitHub](https://github.com/OpenBB-finance/OpenBB/issues/new?assignees=&labels=type%3Abug&projects=&template=bug_report.md&title=%5BBug%5D) with the operating system and version, Python version, and the syntax responsible for the error.
 
 </details>
 
