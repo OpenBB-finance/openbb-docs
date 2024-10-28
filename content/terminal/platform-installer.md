@@ -20,8 +20,6 @@ This section will highlight how you can run the [OpenBB Platform](https://github
 
 If you want to learn more about the open source platform, check [our documentation](https://docs.openbb.co/platform).
 
-## Connecting Platform API to Terminal
-
 Here's a video that you can use to follow step-by-step instructions.
 
 <div style={{position: 'relative', paddingBottom: '56.25%', height: '0', overflow: 'hidden', maxWidth: '100%'}}>
@@ -34,6 +32,8 @@ Here's a video that you can use to follow step-by-step instructions.
     referrerpolicy="strict-origin-when-cross-origin" 
     allowfullscreen></iframe>
 </div>
+
+## Step by step
 
 The steps are also described below:
 
@@ -74,6 +74,38 @@ If you are using Brave/Safari you will need an HTTPS connection - see how [here]
 6. Voila. You are now ready to access 350+ data widgets from your OpenBB Terminal. For free.
 
 ![image](https://github.com/user-attachments/assets/a48eb08c-6536-43c6-a055-0e46082c14c8)
+
+## Advanced - Access this data on mobile
+
+This section will use `ngrok` as the proxy between our platform API endpoints running locally and the internet. You can do this in ngrok free plan.
+
+1. Install ngrok by following [these](https://ngrok.com/docs/getting-started/) instructions.
+
+2. Open a terminal and run `ngrok http 6900`. This assume that the open source platform API is running on http://localhost:6900.
+
+If that runs correctly, you'll get an output similar to the following.
+
+![image](https://github.com/user-attachments/assets/e938b28b-359b-41e7-b822-6fc400e36819)
+
+Note the **Forwarding** row. That will contain a public URL that has access to your endpoint.
+
+3. Update your localhost endpoint with the public URL provided by ngrok.
+
+![image](https://github.com/user-attachments/assets/1ceed65b-3601-4a7c-8fd5-ee79cdde3917)
+
+4. Add a request header as authentication.
+
+Click on "Add Authentication" button, and add the following:
+
+Key: ngrok-skip-browser-warning
+Value: x
+Location: Header
+
+You have to include the request header `ngrok-skip-browser-warning` with any value in the request header, to bypass the Ngrok Browser Warning.
+
+![image](https://github.com/user-attachments/assets/03968960-e09a-46d8-98b9-718b6ae1b0db)
+
+You are now ready to access this data on your phone, just ensure that you keep running the API endpoint and ngrok locally.
 
 ## Advanced - Filter widgets
 
