@@ -213,6 +213,16 @@ export default {
 			contextualSearch: false,
 		},
 	} satisfies ThemeConfig,
+	headTags: [
+		{
+			tagName: "meta",
+			attributes: {
+				"http-equiv": "Content-Security-Policy",
+				content:
+					"object-src 'self'; img-src * blob: data:; connect-src *; script-src 'self' 'unsafe-eval' 'unsafe-inline';",
+			},
+		},
+	],
 	stylesheets: [
 		{
 			href: "/katex/katex.min.css",
