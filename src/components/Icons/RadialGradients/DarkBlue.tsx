@@ -1,15 +1,15 @@
-import React, { SVGProps } from "react"
+import type { SVGProps } from "react"
 interface SVGRProps {
   title?: string
   titleId?: string
 }
 
 const DarkBlueRadialGradient = ({
-  title,
-  titleId,
+  title = "Dark blue radial gradient",
+  titleId = "darkBlueGradientTitle",
   ...props
 }: SVGProps<SVGSVGElement> & SVGRProps) => {
-  const id = Math.random() + ""
+  const id = `${Math.random()}`
   return (
     <svg
       viewBox="0 0 1677 1676"
@@ -20,7 +20,7 @@ const DarkBlueRadialGradient = ({
       aria-labelledby={titleId}
       {...props}
     >
-      {title ? <title id={titleId}>{title}</title> : null}
+      <title id={titleId}>{title}</title>
       <ellipse
         cx={838.735}
         cy={837.743}
@@ -38,7 +38,7 @@ const DarkBlueRadialGradient = ({
           gradientUnits="userSpaceOnUse"
           gradientTransform="rotate(92.768 20.26 818.452) scale(633.303 633.695)"
         >
-          <stop stopColor="#1451A0" stopOpacity={0.8} />
+          <stop stopColor="#0097DE" stopOpacity={0.8} />
           <stop offset={1} stopOpacity={0} />
         </radialGradient>
       </defs>
