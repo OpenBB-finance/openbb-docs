@@ -18,7 +18,7 @@ export default function Home(): JSX.Element {
 						</h1>
 						<p className="mx-6 w-[315px] md:w-[880px] text-sm lg:text-lg xl:text-xl text-center text-grey-900 dark:text-white">
 							All the documentation for the tools you need for your investment
-							research
+							research.
 						</p>
 					</div>
 					<div className="flex flex-col md:flex-row w-full container items-center justify-center gap-6 px-6 sm:mx-0 my-8 lg:!my-10">
