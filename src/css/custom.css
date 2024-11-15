@@ -65,6 +65,9 @@
   .tw-transition {
     @apply transition duration-150 ease-out;
   }
+  ._login-button {
+    @apply _btn-common bg-[#0088CC] text-white hover:bg-[#006699];
+  }
   ._btn-common {
     @apply inline-flex w-full items-center justify-center gap-2 rounded py-2 px-6 text-center !no-underline transition duration-150 ease-out md:w-fit;
   }
@@ -172,10 +175,10 @@
 }
 
 .DocSearch-Button {
-  border-radius: 4px !important;
-  border-radius: 4px !important;
-  border: 1px solid #a2a2a2ff !important;
-  background-color: #070707ff !important;
+  border-radius: 6px !important;
+  border-radius: 6px !important;
+  border: 1px solid #303038 !important;
+  background-color: #212126 !important;
 }
 
 @media (max-width: 440px) {
@@ -357,19 +360,22 @@
 
 /* convert to css tag */
 .header_docs_pro {
-  background: rgb(2,0,36);background: rgb(2,0,36);
+  background: rgb(2, 0, 36);
+  background: rgb(2, 0, 36);
   background: linear-gradient(
     90deg,
-    rgba(2,0,36,1) 0%,
-    rgba(36,108,155,1) 13%,
-    rgba(66,154,205,1) 22%,
-    rgba(43,85,107,1) 42%,
-    rgba(12,36,53,1) 61%,
-    rgba(6,6,6,1) 100%);
+    rgba(2, 0, 36, 1) 0%,
+    rgba(36, 108, 155, 1) 13%,
+    rgba(66, 154, 205, 1) 22%,
+    rgba(43, 85, 107, 1) 42%,
+    rgba(12, 36, 53, 1) 61%,
+    rgba(6, 6, 6, 1) 100%
+  );
 }
 
 .header_docs_excel {
-  background: rgb(2, 24, 11);background: rgb(2, 24, 11);
+  background: rgb(2, 24, 11);
+  background: rgb(2, 24, 11);
   background: linear-gradient(
     90deg,
     rgb(2, 24, 11) 0%,
@@ -377,7 +383,8 @@
     rgb(21, 128, 61, 1) 22%,
     rgb(22, 101, 52, 1) 42%,
     rgb(20, 83, 45, 1) 61%,
-    rgb(6, 43, 21) 100%);
+    rgb(6, 43, 21) 100%
+  );
 }
 
 table {
@@ -396,35 +403,7 @@ table :is(tr, td, th, thead) {
 }
 
 .header_docs {
-  background: rgb(21, 20, 21);
-  background: -moz-linear-gradient(
-    90deg,
-    rgba(21, 20, 21, 1) 0%,
-    rgba(38, 38, 39, 1) 15%,
-    rgba(73, 73, 73, 1) 40%,
-    rgba(76, 77, 76, 255) 64%,
-    rgba(46, 47, 46, 1) 82%,
-    rgba(16, 16, 17, 1) 100%
-  );
-  background: -webkit-linear-gradient(
-    90deg,
-    rgba(21, 20, 21, 1) 0%,
-    rgba(38, 38, 39, 1) 15%,
-    rgba(73, 73, 73, 1) 40%,
-    rgba(76, 77, 76, 255) 64%,
-    rgba(46, 47, 46, 1) 82%,
-    rgba(16, 16, 17, 1) 100%
-  );
-  background: linear-gradient(
-    90deg,
-    rgba(21, 20, 21, 1) 0%,
-    rgba(38, 38, 39, 1) 15%,
-    rgba(73, 73, 73, 1) 40%,
-    rgba(76, 77, 76, 255) 64%,
-    rgba(46, 47, 46, 1) 82%,
-    rgba(16, 16, 17, 1) 100%
-  );
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#151415", endColorstr="#101011", GradientType=1);
+  background: #151518;
 }
 
 pre[class*="language-"] {
@@ -482,14 +461,13 @@ details summary {
   margin-bottom: 20px !important;
 }
 
-
 .sidebar-divider {
   border-top: 1px solid var(--ifm-color-gray-200);
   display: block;
   margin: 0.5rem 0 0.25rem 1rem;
 }
 
-html[data-theme='dark'] .sidebar-divider {
+html[data-theme="dark"] .sidebar-divider {
   border-top: 1px solid var(--ifm-color-gray-800);
 }
 
@@ -501,7 +479,7 @@ html[data-theme='dark'] .sidebar-divider {
   color: var(--ifm-color-gray-600);
 }
 
-html[data-theme='dark'] .sidebar-divider {
+html[data-theme="dark"] .sidebar-divider {
   color: var(--ifm-color-gray-200);
 }
 
@@ -519,7 +497,7 @@ html[data-theme='dark'] .sidebar-divider {
 }
 
 .pro-border-gradient {
-  background: linear-gradient(to right, #66CCFF, #005CA9);
+  background: linear-gradient(to right, #66ccff, #005ca9);
   border-radius: 6px;
   overflow: hidden;
   display: inline-block;
@@ -527,4 +505,37 @@ html[data-theme='dark'] .sidebar-divider {
   align-items: center;
   padding: 3px;
   position: relative;
+}
+
+/* Theme toggle button */
+button[aria-haspopup="dialog"] {
+  background-color: #303038 !important;
+  border: none !important;
+}
+
+/* Theme dropdown menu */
+div[role="dialog"][data-state="open"] {
+  background-color: #212126 !important;
+  border: 1px solid #303038 !important;
+  border-radius: 6px !important;
+  padding: 16px !important;
+  margin-top: 8px !important;
+}
+
+/* Theme menu items */
+div[role="dialog"][data-state="open"] button {
+  color: #a2a2a2 !important;
+  padding: 8px 12px !important;
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  border-radius: 4px !important;
+  border: none !important;
+}
+
+/* Hover state for menu items */
+div[role="dialog"][data-state="open"] button:hover {
+  background-color: #303038 !important;
+  color: white !important;
 }
