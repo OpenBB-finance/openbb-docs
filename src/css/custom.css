@@ -167,6 +167,8 @@
     var(--aa-text-color-alpha)
   ) !important;
   --aa-background-color-rgb: 0, 0, 0 !important;
+  --docs-color-border: #b8b9bc;
+  --ifm-table-border-color: var(--docs-color-border);
 }
 
 .cls-1,
@@ -205,8 +207,8 @@
   --ifm-color-primary-lighter: #32d8b4;
   --ifm-color-primary-lightest: #4fddbf;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);*/
-  --ifm-navbar-background-color: #070707ff;
-  --docs-color-border: #2e2e2e;
+  --ifm-navbar-background-color: #151518;
+  --docs-color-border: #474747;
   --aa-primary-color-rgb: rgba(
     var(--aa-text-color-rgb),
     var(--aa-text-color-alpha)
@@ -259,64 +261,62 @@
 }
 
 .header_docs_bot {
+  background: #151518;
   background: -moz-linear-gradient(
     90deg,
-    rgb(78, 23, 65) 0%,
-    rgb(62, 29, 78) 15%,
-    rgba(55, 29, 76, 1) 45%,
-    rgb(68, 39, 87) 64%,
-    rgb(46, 34, 65) 82%,
-    rgba(16, 9, 0, 1) 100%
+    rgb(45, 15, 38) 0%,
+    rgb(38, 18, 48) 25%,
+    rgb(35, 20, 45) 64%,
+    rgb(28, 21, 39) 82%,
+    #151518 100%
   ) !important;
   background: -webkit-linear-gradient(
     90deg,
-    rgb(78, 23, 65) 0%,
-    rgb(62, 29, 78) 15%,
-    rgba(55, 29, 76, 1) 45%,
-    rgb(68, 39, 87) 64%,
-    rgb(46, 34, 65) 82%,
-    rgba(16, 9, 0, 1) 100%
+    rgb(45, 15, 38) 0%,
+    rgb(38, 18, 48) 25%,
+    rgb(35, 20, 45) 64%,
+    rgb(28, 21, 39) 82%,
+    #151518 100%
   ) !important;
   background: linear-gradient(
     90deg,
-    rgb(78, 23, 65) 0%,
-    rgb(62, 29, 78) 15%,
-    rgba(55, 29, 76, 1) 45%,
-    rgb(68, 39, 87) 64%,
-    rgb(46, 34, 65) 82%,
-    rgba(16, 9, 0, 1) 100%
+    rgb(45, 15, 38) 0%,
+    rgb(38, 18, 48) 25%,
+    rgb(35, 20, 45) 64%,
+    rgb(28, 21, 39) 82%,
+    #151518 100%
   );
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#170806",endColorstr="#100900",GradientType=1) !important;
 }
 
 .header_docs_sdk {
-  background: rgb(23, 8, 6);
+  background: #151518;
   background: -moz-linear-gradient(
     90deg,
-    rgba(23, 8, 6, 1) 0%,
-    rgba(64, 21, 16, 1) 15%,
-    rgba(84, 29, 19, 1) 45%,
-    rgba(67, 26, 9, 1) 64%,
-    rgba(37, 15, 5, 1) 82%,
-    rgba(16, 9, 0, 1) 100%
+    rgba(21, 21, 24, 1) 0%,
+    rgba(38, 13, 10, 1) 10%,
+    rgba(52, 18, 12, 1) 35%,
+    rgba(38, 15, 6, 1) 55%,
+    rgba(27, 11, 3, 1) 75%,
+    rgba(21, 21, 24, 1) 100%
   );
   background: -webkit-linear-gradient(
     90deg,
-    rgba(23, 8, 6, 1) 0%,
-    rgba(64, 21, 16, 1) 15%,
-    rgba(84, 29, 19, 1) 45%,
-    rgba(67, 26, 9, 1) 64%,
-    rgba(37, 15, 5, 1) 82%,
-    rgba(16, 9, 0, 1) 100%
+    rgba(21, 21, 24, 1) 0%,
+    rgba(38, 13, 10, 1) 10%,
+    rgba(52, 18, 12, 1) 35%,
+    rgba(38, 15, 6, 1) 55%,
+    rgba(27, 11, 3, 1) 75%,
+    rgba(21, 21, 24, 1) 100%
   );
   background: linear-gradient(
     90deg,
-    rgba(23, 8, 6, 1) 0%,
-    rgba(64, 21, 16, 1) 15%,
-    rgba(84, 29, 19, 1) 45%,
-    rgba(67, 26, 9, 1) 64%,
-    rgba(37, 15, 5, 1) 82%,
-    rgba(16, 9, 0, 1) 100%
+    rgba(21, 21, 24, 1) 0%,
+    rgba(38, 13, 10, 1) 10%,
+    rgba(52, 18, 12, 1) 35%,
+    rgba(38, 15, 6, 1) 55%,
+    rgba(27, 11, 3, 1) 75%,
+    rgba(21, 21, 24, 1) 100%
   );
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#170806",endColorstr="#100900",GradientType=1);
 }
@@ -327,33 +327,33 @@
 
 /* convert to css tag */
 .header_docs_terminal {
-  background: rgb(6, 45, 72);
+  background: #151518;
   background: -moz-linear-gradient(
     90deg,
-    rgba(6, 45, 72, 1) 0%,
-    rgba(11, 48, 84, 1) 15%,
-    rgba(14, 56, 108, 1) 45%,
-    rgba(11, 32, 61, 1) 64%,
-    rgba(6, 16, 26, 1) 82%,
-    rgba(6, 7, 9, 1) 100%
+    rgb(4, 35, 58) 0%,
+    rgb(6, 28, 48) 15%,
+    rgb(8, 32, 62) 45%,
+    rgb(6, 20, 36) 64%,
+    #151518 82%,
+    #151518 100%
   );
   background: -webkit-linear-gradient(
     90deg,
-    rgba(6, 45, 72, 1) 0%,
-    rgba(11, 48, 84, 1) 15%,
-    rgba(14, 56, 108, 1) 45%,
-    rgba(11, 32, 61, 1) 64%,
-    rgba(6, 16, 26, 1) 82%,
-    rgba(6, 7, 9, 1) 100%
+    rgb(4, 35, 58) 0%,
+    rgb(6, 28, 48) 15%,
+    rgb(8, 32, 62) 45%,
+    rgb(6, 20, 36) 64%,
+    #151518 82%,
+    #151518 100%
   );
   background: linear-gradient(
     90deg,
-    rgba(6, 45, 72, 1) 0%,
-    rgba(11, 48, 84, 1) 15%,
-    rgba(14, 56, 108, 1) 45%,
-    rgba(11, 32, 61, 1) 64%,
-    rgba(6, 16, 26, 1) 82%,
-    rgba(6, 7, 9, 1) 100%
+    rgb(4, 35, 58) 0%,
+    rgb(6, 28, 48) 15%,
+    rgb(8, 32, 62) 45%,
+    rgb(6, 20, 36) 64%,
+    #151518 82%,
+    #151518 100%
   );
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#062d48", endColorstr="#060709", GradientType=1);
 }
@@ -374,16 +374,15 @@
 }
 
 .header_docs_excel {
-  background: rgb(2, 24, 11);
-  background: rgb(2, 24, 11);
+  background: #151518;
   background: linear-gradient(
     90deg,
-    rgb(2, 24, 11) 0%,
-    rgb(22, 163, 74, 1) 13%,
-    rgb(21, 128, 61, 1) 22%,
-    rgb(22, 101, 52, 1) 42%,
-    rgb(20, 83, 45, 1) 61%,
-    rgb(6, 43, 21) 100%
+    #151518 0%,
+    rgb(13, 77, 37) 13%,
+    rgb(11, 61, 30) 22%,
+    rgb(10, 48, 25) 42%,
+    rgb(9, 39, 21) 61%,
+    #151518 100%
   );
 }
 
@@ -450,7 +449,7 @@ details summary {
 }
 
 [data-theme="dark"] #__docusaurus {
-  background-color: #131313ff !important;
+  background-color: #070707 !important;
 }
 
 .main-wrapper main {
@@ -538,4 +537,57 @@ div[role="dialog"][data-state="open"] button {
 div[role="dialog"][data-state="open"] button:hover {
   background-color: #303038 !important;
   color: white !important;
+}
+
+/* Sidebar styles */
+.sidebar_node_modules-\@docusaurus-theme-classic-lib-theme-DocSidebar-Desktop-styles-module
+  nav.menu {
+  @apply !px-10 text-sm !pb-10;
+}
+
+.theme-doc-sidebar-item-link .menu__link,
+.theme-doc-sidebar-item-category .menu__link,
+.menu__list-item-collapsible {
+  @apply text-[#717177] dark:text-[#B8B9BC] hover:text-black dark:hover:text-white hover:bg-[#EBEBED] dark:hover:bg-[#212126] rounded-md transition-colors;
+}
+
+.menu__list-item-collapsible {
+  @apply hover:bg-[#EBEBED] dark:hover:bg-[#212126];
+}
+
+.menu__link--active,
+.menu__link.menu__link--active[aria-current="page"],
+.menu__list-item-collapsible--active {
+  @apply bg-[#EBEBED] dark:bg-[#212126] text-black dark:text-white;
+}
+
+.menu__link.menu__link--active[aria-current="page"] {
+  @apply bg-[#EBEBED] dark:bg-[#212126] text-black dark:text-white;
+}
+
+.menu__list-item-collapsible--active .menu__link--sublist.menu__link--active {
+  @apply bg-[#EBEBED] dark:bg-[#212126] text-black dark:text-white;
+}
+
+.menu__link:hover,
+.menu__list-item-collapsible:hover .menu__link--sublist {
+  @apply bg-[#EBEBED] dark:bg-[#212126] text-black dark:text-white;
+}
+
+.menu__list-item-collapsible .menu__link--sublist {
+  @apply text-[#717177] dark:text-[#B8B9BC] hover:text-black dark:hover:text-white hover:bg-[#EBEBED] dark:hover:bg-[#212126] rounded-md transition-colors;
+}
+
+/* Sidebar background color */
+.sidebar_node_modules-\@docusaurus-theme-classic-lib-theme-DocSidebar-Desktop-styles-module
+  nav.menu {
+  @apply !px-10 text-sm !pb-10 mt-[40px] bg-[#F5F5F6] dark:bg-[#151518] border-r border-[#E5E5E5] dark:border-[#474747];
+}
+
+.menu.thin-scrollbar {
+  @apply !mt-0;
+}
+
+.theme-doc-sidebar-menu > li:first-child {
+  @apply !mt-10;
 }
