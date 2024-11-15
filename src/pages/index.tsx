@@ -32,7 +32,7 @@ export default function Home(): JSX.Element {
               alt="OpenBB Logo"
               className="mb-6 w-[200px] md:w-[250px] !shadow-none !border-none"
             />
-            <p className="mx-6 text-sm lg:text-lg xl:text-xl text-center text-[#2A2A2A] dark:text-white max-w-[315px] md:max-w-[880px]">
+            <p className="mx-6 text-base text-center text-[#2A2A2A] dark:text-white max-w-[315px] md:max-w-[880px]">
               All the documentation for the tools you need for your investment
               research.
             </p>
@@ -144,7 +144,7 @@ export default function Home(): JSX.Element {
           <div className="my-4 md:my-0" />
 
           <div className="my-2 md:my-0" />
-          <p className="z-20 text-[#2A2A2A] dark:text-grey-100">
+          <p className="z-20 text-base text-[#2A2A2A] dark:text-grey-100 text-center md:text-left px-6">
             Our website can be found{" "}
             <a
               href="https://openbb.co"
