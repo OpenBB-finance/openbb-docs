@@ -24,13 +24,13 @@ export default function NewReferenceCard({
   return (
     <Link
       className={clsx(
-        "self-stretch h-[90px] p-5 rounded !no-underline cursor-pointer flex-col justify-start items-start gap-4 flex transition-all duration-300 ease-in-out",
+        "self-stretch min-h-[90px] h-full p-5 rounded !no-underline cursor-pointer flex-col justify-start items-start gap-4 flex transition-all duration-300 ease-in-out",
         "dark:bg-[#151518] dark:hover:bg-[#212126] dark:!text-white",
         "bg-[#F5F5F6] hover:bg-[#DCDDE0] !text-black"
       )}
       to={url}
     >
-      <div className="self-stretch h-[50px] flex-col justify-center items-start gap-1.5 flex">
+      <div className="self-stretch flex-col justify-center items-start gap-1.5 flex">
         <div className="self-stretch justify-between items-center inline-flex">
           <div className="!text-red text-sm font-bold font-['Inter'] leading-snug">
             {title}

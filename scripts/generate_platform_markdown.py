@@ -477,7 +477,7 @@ def generate_reference_top_level_index() -> None:
     index_content = (
         "# Reference\n\n"
         f"{PLATFORM_REFERENCE_IMPORT}\n\n"
-        "<ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6'>\n"
+        "<ul className="grid grid-cols-1 gap-4 -ml-6>\n"
         f"{reference_cards_content}"
         "</ul>\n"
     )
@@ -532,7 +532,7 @@ def generate_data_models_index_files(content: str) -> None:
     index_content = (
         "# Data Models\n\n"
         f"{PLATFORM_REFERENCE_IMPORT}\n\n"
-        "<ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6'>\n"
+        "<ul className="grid grid-cols-1 gap-4 -ml-6>\n"
         f"{content}\n"
         "</ul>\n"
     )
