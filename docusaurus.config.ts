@@ -193,7 +193,16 @@ export default {
 			} satisfies Options,
 		],
 	],
-
+	headTags: [
+		{
+			tagName: "meta",
+			attributes: {
+				"http-equiv": "Content-Security-Policy",
+				content:
+					"object-src 'self'; img-src * blob: data:; connect-src *; script-src 'self' 'unsafe-eval' 'unsafe-inline';",
+			},
+		},
+	],
 	themeConfig: {
 		image: "img/banner.png",
 		prism: {
