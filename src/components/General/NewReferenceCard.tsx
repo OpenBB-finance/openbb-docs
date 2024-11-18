@@ -1,7 +1,5 @@
 import Link from "@docusaurus/Link";
 import clsx from "clsx";
-import React from "react";
-
 import { useLocation } from "@docusaurus/router";
 import ChevronRightIcon from "../Icons/ChevronRight";
 
@@ -16,8 +14,6 @@ export default function NewReferenceCard({
   description: string;
   command: string;
 }) {
-  // TODO: Waiting for mockup of how to display the command vs menu item
-  const something = command ? "" : "";
   const { pathname } = useLocation();
   const cleanedPath = pathname.replace(/\/v\d+/, "");
   const chevron =
@@ -28,43 +24,29 @@ export default function NewReferenceCard({
   return (
     <Link
       className={clsx(
-        "rounded border-2 hover:!text-black dark:hover:!text-white !no-underline p-6 cursor-pointer relative overflow-hidden hover:-translate-y-2 transform transition-all duration-300 ease-in-out font-bold shadow-md",
-        {
-          "hover:bg-[#669DCB] border-[#669DCB] dark:hover:bg-[#004A87] dark:border-[#004A87]":
-            cleanedPath.startsWith("/terminal") ||
-            cleanedPath.startsWith("/pro"),
-          "hover:bg-[#b186bb] border-[#b186bb] dark:hover:bg-[#3a204f] dark:border-[#3a204f]":
-            cleanedPath.startsWith("/bot"),
-          "hover:bg-[#F5B166] border-[#F5B166] dark:hover:bg-[#511d11] dark:border-[#511d11]":
-            cleanedPath.startsWith("/sdk") || cleanedPath.startsWith("/cli") ||
-            cleanedPath.startsWith("/platform"),
-          "hover:bg-[#16A34A] border-[#16A34A] dark:hover:bg-[#14532D] dark:border-[#14532D]":
-            cleanedPath.startsWith("/excel"),
-          header_docs:
-            !cleanedPath.startsWith("/terminal") &&
-            !cleanedPath.startsWith("/pro") &&
-            !cleanedPath.startsWith("/excel") &&
-            !cleanedPath.startsWith("/sdk") &&
-            !cleanedPath.startsWith("/platform") &&
-            !cleanedPath.startsWith("/bot") &&
-            !cleanedPath.startsWith("/cli"),
-        },
+        "self-stretch min-h-[90px] h-full p-5 rounded !no-underline cursor-pointer flex-col justify-start items-start gap-4 flex transition-all duration-300 ease-in-out",
+        "dark:bg-[#151518] dark:hover:bg-[#212126] dark:!text-white",
+        "bg-[#F5F5F6] hover:bg-[#DCDDE0] !text-black"
       )}
       to={url}
     >
-      <div className="absolute top-0 right-0 left-0 bottom-0" />
-      <div className="flex items-center">
-        <p className={"py-2 font-bold text-lg my-0"}>
-          {title}
-          {something}
-        </p>
-        {chevron && <ChevronRightIcon className="ml-auto mr-4" />}
+      <div className="self-stretch flex-col justify-center items-start gap-1.5 flex">
+        <div className="self-stretch justify-between items-center inline-flex">
+          <div className="!text-red text-sm font-bold font-['Inter'] leading-snug">
+            {title}
+          </div>
+          {chevron && (
+            <div className="justify-start items-start gap-2.5 flex">
+              <ChevronRightIcon className="w-4 h-4" />
+            </div>
+          )}
+        </div>
+        {description && (
+          <div className="dark:text-[#ebebed] text-[#2A2A2A] text-sm font-normal font-['Inter'] leading-snug">
+            {description}
+          </div>
+        )}
       </div>
-      {description ? (
-        <p className="text-grey-900 dark:text-grey-200 text-xs font-medium mt-2 mb-0">
-          {description}
-        </p>
-      ) : null}
     </Link>
   );
 }

@@ -9,6 +9,7 @@ import clsx from "clsx";
 import React, { useEffect } from "react";
 import { useIFrameContext } from "../../Root.tsx";
 import styles from "./styles.module.css";
+
 function NavbarBackdrop(props) {
   return (
     <div
@@ -18,6 +19,7 @@ function NavbarBackdrop(props) {
     />
   );
 }
+
 export default function NavbarLayout({ children }) {
   const { isIFrame } = useIFrameContext();
   const {
@@ -26,9 +28,10 @@ export default function NavbarLayout({ children }) {
   const { pathname } = useLocation();
   const mobileSidebar = useNavbarMobileSidebar();
   const { navbarRef, isNavbarVisible } = useHideableNavbar(hideOnScroll);
-  const cleanedPath = pathname.replace(/\/v\d+/, "");
 
   useEffect(() => {
+    const cleanedPath = pathname.replace(/\/v\d+/, "");
+
     if (cleanedPath.startsWith("/terminal") || cleanedPath.startsWith("/pro")) {
       if (document.documentElement.getAttribute("data-theme") === "dark") {
         document.documentElement.style.setProperty(
@@ -42,7 +45,8 @@ export default function NavbarLayout({ children }) {
         );
       }
     } else if (
-      cleanedPath.startsWith("/sdk") || cleanedPath.startsWith("/cli") ||
+      cleanedPath.startsWith("/sdk") ||
+      cleanedPath.startsWith("/cli") ||
       cleanedPath.startsWith("/platform")
     ) {
       if (document.documentElement.getAttribute("data-theme") === "dark") {
@@ -83,27 +87,31 @@ export default function NavbarLayout({ children }) {
     } else {
     }
   }, [pathname]);
+
+  const cleanedPathForClassName = pathname.replace(/\/v\d+/, "");
+
   return (
     <nav
       ref={navbarRef}
       className={clsx(
-        "border-b border-grey-600 lg:px-12",
+        "border-b border-grey-700 lg:px-12",
         {
-          header_docs_terminal: cleanedPath.startsWith("/terminal"),
-          header_docs_pro: cleanedPath.startsWith("/pro"),
-          header_docs_excel: cleanedPath.startsWith("/excel"),
+          header_docs_terminal: cleanedPathForClassName.startsWith("/terminal"),
+          header_docs_pro: cleanedPathForClassName.startsWith("/pro"),
+          header_docs_excel: cleanedPathForClassName.startsWith("/excel"),
           header_docs_sdk:
-            cleanedPath.startsWith("/sdk") || cleanedPath.startsWith("/cli") ||
-            cleanedPath.startsWith("/platform"),
-          header_docs_bot: cleanedPath.startsWith("/bot"),
+            cleanedPathForClassName.startsWith("/sdk") ||
+            cleanedPathForClassName.startsWith("/cli") ||
+            cleanedPathForClassName.startsWith("/platform"),
+          header_docs_bot: cleanedPathForClassName.startsWith("/bot"),
           header_docs:
-            !cleanedPath.startsWith("/terminal") &&
-            !cleanedPath.startsWith("/sdk") &&
-            !cleanedPath.startsWith("/platform") &&
-            !cleanedPath.startsWith("/bot") &&
-            !cleanedPath.startsWith("/pro") &&
-            !cleanedPath.startsWith("/excel") &&
-            !cleanedPath.startsWith("/cli"),
+            !cleanedPathForClassName.startsWith("/terminal") &&
+            !cleanedPathForClassName.startsWith("/sdk") &&
+            !cleanedPathForClassName.startsWith("/platform") &&
+            !cleanedPathForClassName.startsWith("/bot") &&
+            !cleanedPathForClassName.startsWith("/pro") &&
+            !cleanedPathForClassName.startsWith("/excel") &&
+            !cleanedPathForClassName.startsWith("/cli"),
         },
         "navbar",
         "navbar--fixed-top",
