@@ -399,7 +399,7 @@ class Editor:
         """Write the group of index.mdx and _category_.json to create a sidebar."""
 
         CARD = "import ReferenceCard from '@site/src/components/General/NewReferenceCard';\n\n"
-        OPEN_UL = "<ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6'>\n"
+        OPEN_UL = '<ul className="grid grid-cols-1 gap-4 -ml-6">\n'
         CLOSE_UL = "\n</ul>\n\n"
 
         def get_card(title: str, description: str, url: str, command: bool):
