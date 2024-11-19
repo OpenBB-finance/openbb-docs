@@ -174,27 +174,21 @@ pip uninstall openbb[all]
 ### Docker
 
 <details>
-You can install and run the Platform from [GitHub Container Registry](https://github.com/OpenBB-finance/OpenBB/pkgs/container/openbb-platform) with:
-
-```bash
-docker run --rm -p 8000:8000 -v ~/.openbb_platform:/root/.openbb_platform ghcr.io/openbb-finance/openbb-platform:latest
-```
-
-Alternatively, we provide a `platform.dockerfile` on [GitHub](https://github.com/OpenBB-finance/OpenBB).
+We provide a `platformAPI.Dockerfile` on [GitHub](https://raw.githubusercontent.com/OpenBB-finance/OpenBB/refs/heads/develop/build/docker/platformAPI.Dockerfile).
 
 Run the following command from the repo root to build the image:
 
 ```bash
-docker build -f build/docker/platform.dockerfile -t openbb-platform:latest .
+docker build -f build/docker/platformAPI.Dockerfile -t openbb-platform:latest .
 ```
 
 To run it:
 
 ```bash
-docker run --rm -p 8000:8000 -v ~/.openbb_platform:/root/.openbb_platform openbb-platform:latest
+docker run -it --rm -p 6900:6900 -v ~/.openbb_platform:/root/.openbb_platform openbb-platform:latest
 ```
 
-This will mount the local `~/.openbb_platform` directory into the Docker container to use with the API keys and preferences from there, and it will expose the API on port `8000`.
+This will mount the local `~/.openbb_platform` directory into the Docker container to use with the API keys and preferences from there, and it will expose the API on port `6900`.
 
 </details>
 
