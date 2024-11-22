@@ -30,7 +30,7 @@ Here's a video that you can use to follow step-by-step instructions.
     frameborder="0" 
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
     referrerpolicy="strict-origin-when-cross-origin" 
-    allowfullscreen></iframe>
+    allowFullScreen></iframe>
 </div>
 
 ## Step by step
