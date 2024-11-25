@@ -33,7 +33,7 @@ Below are all of the values you can set along with a description for each.
 | endpoint                         | `string` (required)          | The backend API endpoint for retrieving data. Example: `"chains"`. Possible values: Any valid API endpoint path as a string.                         |
 | category                         | `string`                     | The category for organizing widgets. Example: `"crypto"`. Possible values: Any string representing a category.                                      |
 | subCategory                      | `string`                     | Secondary category for refining search results. Example: `"fundamentals"`.                                   |
-| defaultViz                       | `string`                     | Default visualization type for the widget. Possible values: `"chart"`, `"table"`. Default: `"table"`.                                                |
+| type                           | `string`                     | Default visualization type for the widget. Possible values: `"chart"`, `"table"`. Default: `"table"`.                                                |
 | gridData.w                       | `number`                     | The width of the widget in grid units. Example: `20`. Possible values: Any positive integer. Maximum value : `40`                                    |
 | gridData.h                       | `number`                     | The height of the widget in grid units. Example: `9`. Possible values: Any positive integer. Maximum value : `100`                                  |
 | data.dataKey                     | `string`                     | A key to identify the data within the widget. Example: `"customDataKey"`. Possible values: Any string representing a data key.                       |
@@ -54,10 +54,11 @@ Below are all of the values you can set along with a description for each.
 | data.table.columnsDefs.hide      | `boolean`                    | Hides the column from the table. Example: `false`. Possible values: `true`, `false`.                                                                |
 | data.table.columnsDefs.pinned    | `string`                     | Pins the column to the left or right of the table. Example: `"left"`. Possible values: `"left"`, `"right"`.                                         |
 | params                           | `object[]`                   | A list of query parameters that can be configured for the widget - these will be passed to your API.                                                   |
-| params.type                      | `string`                     | The type of the parameter. Example: `"date"`. Possible values: `"date"`, `"text"`, `"ticker"`, `"number"`, `"boolean"`. (note: `ticker` will use our equity list)    |
+| params.type                      | `string`                     | The type of the parameter. Example: `"date"`. Possible values: `"date"`, `"text"`, `"ticker"`, `"number"`, `"boolean"`, `"endpoint"`. (note: `ticker` will use our equity list)    |
 | params.paramName                 | `string`                     | The name of the parameter in the URL. Example: `"startDate"`. Possible values: Any string representing a query parameter name.                      |
 | params.value                     | `string`, `number`, `boolean`| The default value of the parameter. Example: `"2024-01-01"`. Possible values : `"text"`, `"number"`, `"boolean"`, [`DateModifierValue`](#date-modifier) |
 | params.label                     | `string`                     | The label to display in the UI for the parameter. Example: `"Start Date"`. Possible values: Any string.                                             |
+| params.optionsEndpoint           | `string`                     | Endpoint to fetch options for the parameter - only works if params.type is `"endpoint"`. Example: `"v1/test/values"`. Possible values: Any valid API endpoint in your backend.  [`optionsEndpoint`](#optionsEndpoint)  |
 | params.show                      | `boolean`                    | Displays the parameter in the UI. Example: `true`. Possible values: `true`, `false`.                                                                |
 | params.description               | `string`                     | Description of the parameter, shown on hover. Example: `"The start date for the data"`. Possible values: Any string.                                 |
 | params.multiSelect               | `boolean`                    | If you want to allow multiple values to be selected from your parameter options Possible values: Possible values: `true`, `false`.                    |
@@ -228,3 +229,49 @@ If you don't want to set a date you can omit the value parameter or pass ```null
 - `normalized`: Multiplies the number by 100.
 - `normalizedPercent`: Multiplies the number by 100 and adds `%` (e.g., `0.5` becomes `50 %`).
 - `dateToYear`: Converts a date to just the year.
+
+## optionsEndpoint
+
+This is used to fetch options for a parameter. This is only available if the parameter type is `"endpoint"`.
+
+This endpoint should return a list of strings or a list of objects with `label` and `value` properties. This will be used to populate the dropdown options for the parameter.
+
+An example of how to implement this in your backend can be found below:
+
+```python
+@app.get("/get_chains_list")
+def get_chains_list():
+    """Get list of chains using Defi LLama"""
+    response = requests.get("https://api.llama.fi/v2/chains")
+
+    if response.status_code == 200:
+        data = response.json()
+        # can pass as list of {label, value} for dropdown or list of strings
+        #  [
+        #   {"label": chain.get("name"), "value": chain.get("name")}
+        #   for chain in data if chain.get("name")
+        #  ]
+        return [chain.get("name") for chain in data if chain.get("name")]
+
+    print(f"Request error {response.status_code}: {response.text}")
+    return JSONResponse(
+        content={"error": response.text}, status_code=response.status_code
+    )
+```
+
+This endpoint can now be used in the `widgets.json` file as follows in another widget parameter:
+
+```jsonc
+    "params": [
+      {
+        "paramName": "chain",
+        "description": "Select a chain to get historical TVL",
+        "value": "Ethereum",
+        "label": "Chain",
+        "type": "endpoint",
+        "optionsEndpoint": "get_chains_list"
+      }
+    ]
+```
+
+Now when the user selects the dropdown on the widget they configured, the `get_chains_list` endpoint will be called and the options will be populated in the dropdown.
