@@ -199,7 +199,21 @@ export default {
 			attributes: {
 				"http-equiv": "Content-Security-Policy",
 				content:
-					"object-src 'self'; img-src * blob: data:; connect-src *; script-src 'self' 'unsafe-eval' 'unsafe-inline';",
+					"object-src 'self'; img-src * blob: data:; connect-src *; script-src 'self' 'unsafe-eval' 'unsafe-inline'; frame-ancestors 'self' 'https://pro.openbb.co' 'https://openbb.co' 'https://my.openbb.co'",
+			},
+		},
+		{
+			tagName: "meta",
+			attributes: {
+				"http-equiv": "Cache-Control",
+				content: "max-age=3600, must-revalidate",
+			},
+		},
+		{
+			tagName: "meta",
+			attributes: {
+				"http-equiv": "X-Content-Type-Options",
+				content: "nosniff",
 			},
 		},
 	],
@@ -209,6 +223,19 @@ export default {
 			theme: themes.vsLight,
 			darkTheme: themes.vsDark,
 		},
+		// csp: {
+		// 	"default-src": ["'self'"],
+		// 	"script-src": ["self"],
+		// 	"style-src": ["'self'"],
+		// 	"img-src": ["*", "data:", "blob:"],
+		// 	"connect-src": ["*"],
+		// 	"frame-ancestors": [
+		// 		"'self'",
+		// 		"https://pro.openbb.co",
+		// 		"https://openbb.co",
+		// 		"https://my.openbb.co",
+		// 	],
+		// },
 		// TODO - Jose can you make this so we get lighter color on main view - like bot docs
 		colorMode: {
 			defaultMode: "dark",

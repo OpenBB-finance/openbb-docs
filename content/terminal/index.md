@@ -35,7 +35,7 @@ OpenBB introduces the first AI-powered Research and Analytics workspace.
     frameborder="0" 
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
     referrerpolicy="strict-origin-when-cross-origin" 
-    allowfullscreen></iframe>
+    allowFullScreen></iframe>
 </div>
 
 Optimized for teams. Free for individuals.
