@@ -193,11 +193,69 @@ For example:
 HTTP_PROXY="http://10.10.10.10:8000"
 ```
 
-## Disabling Logging Service
+## System Settings
 
-The OpenBB Platform logs anonymized records of function calls, and any error messages produced, to a unique file for the session. They are written to `~/OpenBBUserData/logs`. 
+An additional configuration file, `system_settings.json`, is located in the same folder as `user_settings.json`, and can be created manually if it does not exist. The items below can be configured via this file.
 
-The logging service can be disabled by setting "key":"value" pairs in `system_settings.json`. This file is located in the same folder as `user_settings.json`. Create the file if it does not exist.
+### Python Settings
+
+This configuration allows the user to include specific elements of the docstrings. Useful for reducing the context length when incorporating LLMs and function calling. The settings below are for the complete docstring, and are the default state.
+
+```json
+{
+    "python_settings": {
+        "docstring_sections": ["description", "parameters", "returns", "examples"],
+        "docstring_max_length": null
+    }
+}
+```
+
+### API Settings
+
+This dictionary is passed to the instance of FastAPI. 
+
+```json
+{
+    "api_settings": {
+        "version": "1",
+        "title": "OpenBB Platform API",
+        "description": "This is the OpenBB Platform API.",
+        "terms_of_service": "http://example.com/terms/",
+        "contact_name": "OpenBB Team",
+        "contact_url": "https://openbb.co",
+        "contact_email": "hello@openbb.co",
+        "license_name": "AGPLv3",
+        "license_url": "https://github.com/OpenBB-finance/OpenBB/blob/develop/LICENSE",
+        "servers": [
+            {
+                "url": "",
+                "description": "Local OpenBB development server"
+            }
+        ],
+        "cors": {
+            "allow_origins": [
+                "*"
+            ],
+            "allow_methods": [
+                "*"
+            ],
+            "allow_headers": [
+                "*"
+            ]
+        },
+        "prefix": "/api/v1"
+    }
+}
+```
+
+### Logging Service
+
+The OpenBB Platform logs anonymized records of function calls, and any error messages produced, to a unique file for the session, written to `~/OpenBBUserData/logs`.
+
+There are two settings that can be applied:
+
+- log_collect: Set as false to disable telemetry while still logging locally to file.
+- logging_suppress: Disables the file handler in the logging service and no log records are created.
 
 ```json
 {
@@ -205,6 +263,3 @@ The logging service can be disabled by setting "key":"value" pairs in `system_se
     "log_collect": false
 }
 ```
-
-- log_collect: Set as false to disable telemetry while still logging locally to file.
-- logging_suppress: Disables the file handler in the logging service and no log records are created.
