@@ -23,7 +23,11 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Custom backend | OpenBB Terminal Pro Docs" />
 
-{/*
+## Introduction to Custom Backend
+
+The custom backend feature in OpenBB Terminal Pro allows users to integrate their own data sources and APIs into the platform. This enables the creation of personalized widgets that can display data from any API, whether hosted internally or externally. By using a standardized JSON structure, users can seamlessly connect their data to OpenBB widgets. The custom backend allows users to take full advantage of the OpenBB Copilot and our interface.
+
+{/* TODO - make new video
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 <TutorialVideo
@@ -32,9 +36,37 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 />
 */}
 
-This is a versatile way to connect any data to the OpenBB Terminal. Whether your API is hosted internally or externally, this method provides a standardized structure that OpenBB Terminal Pro widgets can render.
+## Widget Types
 
-1. **Design and implement your API**: Choose your preferred programming language and framework. Ensure that the API can return data in JSON format, which is required for widget integration.
+OpenBB Terminal Pro supports various ways to visualize data through widgets. Each method offers unique features and can be configured to suit different data presentation needs. Below are the different visualization methods available:
+
+1. **Table Widget**:
+   - Provides a structured view of data in rows and columns.
+   - Ideal for displaying detailed datasets.
+   - Can be configured to display charts with built in AgGrid Charting.
+   - [Learn more about Table Widgets](./table.md)
+
+2. **Chart Widget**:
+   - Offers graphical representation of data.
+   - Supports Plotly charts and can be configured to display different types of charts. (More types are coming soon.)
+   - [Learn more about Chart Widgets](./chart.md)
+
+3. **Metric Widget**:
+   - Displays a single value or metric.
+   - Useful for highlighting key performance indicators.
+   - [Learn more about Metric Widgets](./metric.md)
+
+4. **Markdown Widget**:
+   - Displays formatted text and images.
+   - [Learn more about Markdown Widgets](./markdown.md)
+
+5. **Note Widget**:
+   - Displays a note with additional information.
+   - [Learn more about Note Widgets](./note.md)
+
+## Design and implement your API
+
+Choose your preferred programming language and framework. Ensure that the API can return data in JSON format, which is required for widget integration.
 
 :::note
 Guidelines for JSON Format:
@@ -69,17 +101,20 @@ The JSON should resemble the following structure:
   }
 ]
 ```
+
 </details>
 
 :::
 
+You can create your own backend by following these steps:
 
+1. **Create a backend to return JSON data**: This can be done in any language. We will use Python and FastAPI in our examples.
 
-2. **Create widgets.json file**: This file is your main configuration and defines widget properties such as name, description, category, endpoint, and other information. Each widget will be defined in this file. To view a sample `widgets.json` file and learn more about what you can do check out the [widgets.json docs](/terminal/custom-backend/widgets.json).
+2. **Create widgets.json file**: This file is your main configuration and defines widget properties such as name, description, category, endpoint, type of widget, and other information. Each widget will be defined in this file. To view a sample `widgets.json` file and learn more about what you can do check out the [widgets.json docs](/terminal/custom-backend/widgets.json).
 
 An example structure in your backend might look like below.
 
-```
+```text
   backend/
   ├── main.py
   └── widgets.json

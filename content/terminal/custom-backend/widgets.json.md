@@ -1,6 +1,6 @@
 ---
 title: widgets.json
-sidebar_position: 13
+sidebar_position: 7
 description: Learn how to integrate your own backend with OpenBB Terminal Pro using
   the cookie-cutter or language-agnostic API approaches, with illustrative guides
   and principles for handling widget.json files, APIs, interfaces, Python, FastAPI
@@ -21,6 +21,17 @@ keywords:
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Widgets.json | OpenBB Terminal Pro Docs" />
+
+# Widgets.json Overview
+
+The `widgets.json` file is essential for integrating custom widgets into the OpenBB Terminal Pro. It serves as a configuration file that connects your backend data to the widgets displayed in the application. Key components include:
+
+- **Basic Information**: Defines the widget's name, description, and API endpoint.
+- **Categorization**: Organizes widgets using primary and secondary categories.
+- **Display Settings**: Specifies visualization type and grid dimensions.
+- **Data Configuration**: Details how data is displayed, including table and chart settings.
+- **Parameters**: Lists configurable query parameters for the widget.
+- **Data Source and Refresh Settings**: Identifies data sources and sets refresh intervals.
 
 The `widgets.json` file is the bridge between your backend and OpenBB Terminal widgets. Each entry in this file will directly map to a widget in the app. You can find examples [here](https://github.com/OpenBB-finance/backend-for-terminal-pro/tree/main).
 
