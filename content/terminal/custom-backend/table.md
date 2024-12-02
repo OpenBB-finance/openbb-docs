@@ -129,7 +129,7 @@ Open the `widgets.json` file and add the following JSON data. This configuration
 }
 ```
 
-In the chains_table section of the widgets.json file, we're crafting a widget that showcases the current Total Value Locked (TVL) for various blockchain chains using data from the Defi Llama API. We've set it up under the "crypto" category. We're defining the columnsDefs to further configure the table. We'll also set gridData to determine the widget's size on the dashboard. This setup ensures that users can easily access and analyze key blockchain metrics right within the OpenBB Terminal Pro, making it a handy tool for anyone interested in crypto data.
+In the widgets.json file, we're creating a widget that shows the current Total Value Locked (TVL) for various blockchain chains using data from the Defi Llama API. We've set it up under the "crypto" category and defining the columnsDefs to further configure the table. We'll also set gridData to determine the widget's size on the dashboard.
 
 For more information on the `widgets.json` file, see the [Widgets.json](/content/terminal/custom-backend/widgets.json) page.
 
