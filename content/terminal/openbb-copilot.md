@@ -5,12 +5,10 @@ description: Learn how to use OpenBB Copilot to interact with the OpenBB Termina
 keywords:
 - OpenBB Copilot
 - copilot
-- voice command
+- AI
 - agent
 - assistant
-- Natural language processing
 - Large language model
-- OpenAI
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
@@ -35,19 +33,20 @@ With OpenBB Copilot, you can:
 
 ## Introduction
 
+To use OpenBB Copilot, click on the purple icon located at the center right of the
+Terminal screen:
+
 <div style={{display: 'flex', justifyContent: 'center'}}>
 <img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/open_copilot.jpg" alt="open openbb copilot" width="70%" height="70%" />
 </div>
 
-To use OpenBB Copilot, click on the purple icon located at the center right of the
-Terminal screen.
-
 Under most circumstances, you can treat OpenBB Copilot like a personal research
-assistant. OpenBB Copilot has access to the widgets (including your uploaded files) on your currently-active
-dashboard, the OpenBB API and any custom backend endpoints you have added. 
+assistant. OpenBB Copilot has access to the widgets (including your uploaded
+files) on your currently-active dashboard, the OpenBB API and any custom backend
+endpoints you have added to OpenBB Terminal. 
 
-Using all of these sources of data, OpenBB Copilot can assist you in performing a wide
-variety of tasks.
+By utilizing all of these sources of data, OpenBB Copilot can assist you in
+performing a wide variety of research and analysis tasks.
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
 <img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/copilot_opened.jpg" alt="opened openbb copilot" width="70%" height="70%" />
@@ -86,8 +85,8 @@ confusing OpenBB Copilot:
 
 ## General question answering
 
-The simplest functionality of OpenBB Copilot is general question answering. For
-example, you can ask Copilot things like:
+The simplest functionality of OpenBB Copilot is its general question answering
+capability. For example, you can ask Copilot things like:
 
 - "What's the difference between stocks and bonds?"
 - "Explain inflation."
@@ -99,8 +98,8 @@ exploring this functionality with a range of questions across different topics
 to get a feel for how OpenBB Copilot works and behaves.
 
 ## Interacting with data using OpenBB Copilot
-OpenBB Copilot really becomes powerful when you start interacting with data.
-There are three primary ways to interact with data using OpenBB Copilot:
+OpenBB Copilot becomes powerful when you start interacting with data. There are
+three primary ways to interact with data using OpenBB Copilot:
 
 1. Analyzing specific widgets added to the context explicitly
 2. OpenBB Copilot automatically using data from the dashboard
@@ -110,17 +109,17 @@ There are three primary ways to interact with data using OpenBB Copilot:
 ### Analyze specific widgets only
 
 Sometimes, you might want OpenBB Copilot to analyze data from only a specific
-widget (or set of widgets) on your dashboard. For example, if you want to deep dive
-into an earnings transcript, and ignore all other widgets on your dashboard, you can
-do that by clicking on the "Add widgets as context" button on the widgets you want OpenBB
-Copilot to use. Once selected, OpenBB Copilot will only access data from those widgets,
-ignoring all others:
+widget (or set of widgets) on your dashboard. For example, if you want to deep
+dive into an earnings transcript, and ignore all other widgets on your
+dashboard, you can do so by clicking on the "Add widgets as context" button on
+the widgets you want OpenBB Copilot to use:
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
 <img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/add_specific_widget_context.png" alt="add widget context openbb copilot" width="80%" height="80%" />
 </div>
 
-The OpenBB Copilot window will also show you which widgets are currently selected as explicitly-added context:
+The OpenBB Copilot chat window will also show you which widgets are currently
+selected as explicitly-added context:
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
 <img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/copilot_window_explicit_context.png" alt="query widget context openbb copilot" width="80%" height="80%" />
@@ -132,6 +131,13 @@ OpenBB Copilot can access information from all widgets you have added to your
 currently-active dashboard. If no widgets have been explicitly added to the
 context, OpenBB Copilot can automatically retrieve data from your
 widgets on the dashboard that it requires in order to answer your query.
+
+:::note
+
+If you have added widgets to the context explicitly, OpenBB Copilot will not
+automatically retrieve data from the dashboard.
+
+:::
 
 For example, if you add the "Historical Stock Price" widget to your dashboard,
 you can ask OpenBB Copilot to give you the monthly highs for a particular year
@@ -163,14 +169,13 @@ Steps](#reasoning-steps) and [Citations](#citations) sections below.
 Sometimes, you might need to be more specific with your query when you want
 Copilot to use one or more widgets from your dashboard, since vague queries
 might lead OpenBB Copilot to retrieve the data automatically from all of the
-available data sources it has access to (See more about this in the
-[Automatically using data sources available to
-Terminal](#automatically-using-data-sources-available-to-terminal) section
+available data sources it has access to (See more about this capability in the
+[Automatically using data sources available to OpenBB Terminal](#automatically-using-data-sources-available-to-openbb-terminal) section
 below).
 
-To remedy this, simply adding "Use the widgets on my dashboard" to the end of
-your query will be sufficient to get OpenBB Copilot to retrieve the data from
-the relevant widgets on your dashboard.
+To remedy this, simply add a phrase such as "Use the widgets on my dashboard" to
+the end of your query to "nudge" OpenBB Copilot to retrieve the data from the
+relevant widgets on your dashboard.
 
 :::
 
@@ -252,17 +257,20 @@ For charts, OpenBB Copilot can currently produce the following plot types:
 
 To produce a chart or a table, mention the output that you want in your query.
 For example, to produce a chart of the latest stock price for Apple, you can
-ask OpenBB Copilot to "Create a chart of the latest stock price for Apple".
+ask OpenBB Copilot to "Create a chart of the latest stock price for Apple":
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
 <img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/chart_artifact.png" alt="chart artifact openbb copilot" width="60%" height="60%" />
 </div>
 
-If you wanted a table instead, you can just modify your query slightly to ask for a table:
+If you want a table instead, you can just modify your query slightly to ask for
+a table:
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
 <img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/table_artifact.png" alt="table artifact openbb copilot" width="60%" height="60%" />
 </div>
+
+This behaviour works across all structured data.
 
 ### Converting artifacts to widgets
 Every artifact that OpenBB Copilot generates can be converted to a widget. To do
@@ -279,7 +287,8 @@ This will create a new widget on your dashboard containing the artifact.
 The newly-created widget contains all of the data in the artifact, so you can
 interact with it just like any other widget on your dashboard (including
 switching between different types of charts, or toggling between chart and table
-views).
+views, or adding it as explicitly-added context to OpenBB Copilot for further
+analysis).
 
 :::
 
