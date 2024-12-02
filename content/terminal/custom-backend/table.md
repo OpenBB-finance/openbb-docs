@@ -137,8 +137,8 @@ For more information on the `widgets.json` file, see the [Widgets.json](/content
 
 Start the FastAPI Server: Use Uvicorn to run your FastAPI application.
 
-```python
-Run `uvicorn main:app --port 5050`
+```bash
+uvicorn main:app --port 5050
 ```
 
 ## Step 4: Add to OpenBB Pro
