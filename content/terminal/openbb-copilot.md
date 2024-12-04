@@ -205,7 +205,7 @@ OpenBB Copilot in this manner will **not** be persisted between sessions:
 
 When uploading files directly to OpenBB Copilot, we use filenames to determine
 if a file is relevant to your query. For best results, use descriptive
-filenames.  For example, if you have a technical report from Tesla released in
+filenames. For example, if you have a technical report from Tesla released in
 2024, a good filename would be `tsla_technical_report_2024.pdf`.
 
 :::
