@@ -54,6 +54,17 @@ An installer package is available for Mac and Windows machines. Files are availa
 
 It will handle the installation of Python, environment setup, and OpenBB packages with the latest versions.
 
+:::danger
+Users with v1.0.0 installations need to follow the steps below to update the version of OpenBB.
+
+1. In Finder/Explorer, open the folder where it was installed - probably in a folder, named "OpenBB", at the root of the operating system user account.
+2. From the main installation folder, navigate into the subdirectory, "extensions/openbb_platform_installer".
+3. Open, "pyproject.toml", in any text editor, and update line 21:
+  - From: openbb-core = "^1"
+  - To: openbb-core = ">=1.3.5"
+4. Save the file, close it, and then run the "Update" shortcut.
+:::
+
 ## Supported Environments
 
 The OpenBB Platform is installed within a Python virtual environment. It is compatible with versions of Python between 3.9 and 3.12, inclusively. The method for creating the environment will be a matter of user preference, from the command line - [Conda](https://docs.conda.io/projects/miniconda/en/latest/miniconda-install.html), [venv](https://docs.python.org/3/library/venv.html), etc. - or in a code editor and IDE - [VS Code](https://code.visualstudio.com/docs/languages/python), [PyCharm](https://www.jetbrains.com/pycharm/), [Jupyter](https://jupyter.org/).
@@ -74,7 +85,7 @@ Before installation, update the package manager so that `pip` is current, then c
 Installing packages directly to the system Python or `base` environment is not recommended. Create a new environment first (can be any name, using openbb here for example).
 
 ```bash
-conda create -n openbb python=3.11
+conda create -n openbb python=3.12
 conda activate openbb
 ```
 
