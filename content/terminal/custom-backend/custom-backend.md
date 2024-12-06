@@ -44,25 +44,31 @@ OpenBB Terminal Pro supports various ways to visualize data through widgets. Eac
    - Provides a structured view of data in rows and columns.
    - Ideal for displaying detailed datasets.
    - Can be configured to display charts with built in AgGrid Charting.
-   - [Learn more about Table Widgets](Widgets/table.md)
+   - [Learn more about Table Widgets](Widgets/table/table.md)
+
+<img className="pro-border-gradient" width="600" alt="table" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/simple-table.png" />
+
 
 2. **Chart Widget**:
    - Offers graphical representation of data.
    - Supports Plotly charts and can be configured to display different types of charts. (More types are coming soon.)
    - [Learn more about Chart Widgets](Widgets/chart.md)
 
-3. **Metric Widget**:
+<img className="pro-border-gradient" width="600" alt="chart" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/plotly-chart.png" />
+
+3. **Markdown Widget**:
+   - Displays formatted text and images.
+   - [Learn more about Markdown Widgets](Widgets/markdown.md)
+
+<img className="pro-border-gradient" width="600" alt="markdown" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/markdown-widget.png" />
+
+4. **Metric Widget**:
    - Displays a single value or metric.
    - Useful for highlighting key performance indicators.
    - [Learn more about Metric Widgets](Widgets/metric.md)
 
-4. **Markdown Widget**:
-   - Displays formatted text and images.
-   - [Learn more about Markdown Widgets](Widgets/markdown.md)
+<img className="pro-border-gradient" width="600" alt="metric" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/metric-widget.png" />
 
-5. **Note Widget**:
-   - Displays a note with additional information.
-   - [Learn more about Note Widgets](Widgets/note.md)
 
 ## Design and implement your API
 

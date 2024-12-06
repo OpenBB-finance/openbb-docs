@@ -6,6 +6,8 @@ In the `widgets.json` configuration, you can specify parameters/inputs that can 
 
 Parameters are used to pass dynamic values to your API endpoints, allowing for customizable data queries. Each parameter is defined in the `params` array and can include the following fields:
 
+<img className="pro-border-gradient" width="700" alt="widget-parameters" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/parameters.png" />
+
 - **type**: The data type of the parameter. Possible values include `"date"`, `"text"`, `"ticker"`, `"number"`, `"boolean"`, `"endpoint"`.
 - **paramName**: The name of the parameter as it appears in the URL. Example: `"startDate"`.
 - **value**: The default value for the parameter. This can be a string, number, or boolean.
@@ -17,6 +19,8 @@ Parameters are used to pass dynamic values to your API endpoints, allowing for c
 - **optionsEndpoint**: An endpoint to fetch options dynamically, used when `type` is `"endpoint"`.
 
 When using `type: "endpoint"`, you'll need to specify an `optionsEndpoint` that returns the available options. This is useful for dynamic dropdowns where the options need to be fetched from an API:
+
+<img className="pro-border-gradient" width="300" alt="dropdown" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/dropdown.png" />
 
 - **optionsEndpoint**: The API endpoint that returns the options for the parameter. The endpoint should return an array of objects with `label` and `value` properties.
 - **optionsParams**: (Optional) Additional parameters to pass to the options endpoint.
@@ -46,13 +50,44 @@ Here's an example using an endpoint parameter:
 }
 ```
 
-The `optionsEndpoint` should return data in this format:
+The `optionsEndpoint` should return data in this format for a simple dropdown:
 
 ```json
 [
     { "label": "Apple Inc.", "value": "AAPL" },
     { "label": "Microsoft Corporation", "value": "MSFT" },
     { "label": "Google", "value": "GOOGL" }
+]
+```
+
+You can also return a dropdown with some advanced options passed.
+
+```json
+[
+    {
+        "label": "Apple Inc.",
+        "value": "AAPL",
+        "extraInfo": {
+            "description": "Technology Company",
+            "rightOfDescription": "NASDAQ"
+        }
+    },
+    {
+        "label": "Microsoft Corporation",
+        "value": "MSFT",
+        "extraInfo": {
+            "description": "Software Company",
+            "rightOfDescription": "NASDAQ"
+        }
+    },
+    {
+        "label": "Google",
+        "value": "GOOGL",
+        "extraInfo": {
+            "description": "Search Engine",
+            "rightOfDescription": "NASDAQ"
+        }
+    }
 ]
 ```
 
@@ -63,6 +98,9 @@ Widget grouping is a powerful feature that allows multiple widgets to share and 
 1. **Endpoint Parameters**: If multiple widgets use the same `optionsEndpoint` and `endpoint` parameter configuration, they can be grouped together. This allows users to select a value once and have it apply to all related widgets. Currently, this grouping works for only the first parameter in the `params` array specified this way.
 
 Example of widgets that will be automatically grouped due to shared endpoint parameters:
+
+<img className="pro-border-gradient" width="600" alt="grouping" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/grouping.png" />
+
 
 ```json
 {
@@ -106,7 +144,9 @@ Example of widgets that will be grouped using the ticker parameter:
             {
                 "type": "ticker",
                 "paramName": "symbol",
-                "label": "Symbol"
+                "label": "Symbol",
+                "value": "AAPL",
+                "description": "Stock ticker symbol"
             }
         ]
     },
@@ -117,105 +157,11 @@ Example of widgets that will be grouped using the ticker parameter:
             {
                 "type": "ticker",
                 "paramName": "symbol",
-                "label": "Symbol"
-            }
-        ]
-    }
-}
-```
-
-### Example
-
-Here's an example of how grouping and parameters might be configured in a `widgets.json` entry:
-
-```json
-{
-    "custom_widget": {
-        "name": "Custom Widget Example",
-        "description": "A widget to demonstrate custom configuration",
-        "endpoint": "custom-endpoint",
-        "category": "finance",
-        "subCategory": "stocks",
-        "params": [
-            {
-                "type": "date",
-                "paramName": "startDate",
-                "value": "2024-01-01",
-                "label": "Start Date",
-                "show": true,
-                "description": "The start date for the data"
-            },
-            {
-                "type": "text",
-                "paramName": "ticker",
+                "label": "Symbol",
                 "value": "AAPL",
-                "label": "Ticker",
-                "show": true,
                 "description": "Stock ticker symbol"
             }
         ]
     }
 }
 ```
-
-This configuration allows users to filter data by start date and ticker symbol, with the widget organized under the "finance" category and "stocks" subcategory.
-
-
-
-### Example
-
-Here's an example of how grouping and parameters might be configured in a `widgets.json` entry with multiple widgets:
-
-```json
-{
-    "stock_performance_widget": {
-        "name": "Stock Performance",
-        "description": "Track stock performance over time",
-        "endpoint": "stock-performance",
-        "category": "finance",
-        "subCategory": "stocks",
-        "params": [
-            {
-                "type": "date",
-                "paramName": "startDate",
-                "value": "2024-01-01",
-                "label": "Start Date",
-                "show": true,
-                "description": "The start date for the data"
-            },
-            {
-                "type": "endpoint",
-                "paramName": "company",
-                "label": "Company",
-                "show": true,
-                "description": "Select a company to analyze",
-                "optionsEndpoint": "/api/companies",
-                "optionsParams": {
-                    "market": "US",
-                    "active": true
-                }
-            }
-        ]
-    },
-    "market_overview_widget": {
-        "name": "Market Overview",
-        "description": "General market statistics and trends",
-        "endpoint": "market-overview",
-        "category": "finance",
-        "subCategory": "market-analysis",
-        "params": [
-            {
-                "type": "endpoint",
-                "paramName": "marketIndex",
-                "label": "Market Index",
-                "show": true,
-                "description": "Select market index to analyze",
-                "optionsEndpoint": "/api/market-indices",
-                "multiSelect": true
-            }
-        ]
-    }
-}
-```
-
-This example shows two widgets organized under the "finance" category but with different subcategories. The first widget uses an endpoint parameter for company selection, while the second widget demonstrates a multi-select endpoint parameter for market indices.
