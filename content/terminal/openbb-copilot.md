@@ -70,7 +70,7 @@ up by asking about other important financial ratios, OpenBB Copilot will
 understand the context and suggest relevant ratios:
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/pe_ratio_chat_example.jpg" alt="chat history openbb copilot" width="40%" height="40%" />
+<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/copilot_chat_history.png" alt="chat history openbb copilot" width="60%" height="60%" />
 </div>
 
 If you'd like to clear the history of the current conversation, you can do so by
