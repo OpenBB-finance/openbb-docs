@@ -324,7 +324,7 @@ uploaded, or external data sources), OpenBB Copilot will always cite the data
 source it referenced when responding to your query:
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/citations.png" alt="citations openbb copilot" width="80%" height="80%" />
+<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/citation_example.png" alt="citations openbb copilot" width="80%" height="80%" />
 </div>
 
 If the widget that was cited by OpenBB Copilot is present on your dashboard,
