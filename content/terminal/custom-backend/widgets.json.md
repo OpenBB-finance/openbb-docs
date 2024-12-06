@@ -44,7 +44,7 @@ Below are all of the values you can set along with a description for each.
 | endpoint                         | `string` (required)          | The backend API endpoint for retrieving data. Example: `"chains"`. Possible values: Any valid API endpoint path as a string.                         |
 | category                         | `string`                     | The category for organizing widgets. Example: `"crypto"`. Possible values: Any string representing a category.                                      |
 | subCategory                      | `string`                     | Secondary category for refining search results. Example: `"fundamentals"`.                                   |
-| type                           | `string`                     | Default visualization type for the widget. Possible values: `"chart"`, `"table"`. Default: `"table"`.                                                |
+| type                           | `string`                     | Default visualization type for the widget. Possible values: `"chart"`, `"table"`, `"markdown"`, `"metric"`, `"note"`. Default: `"table"`.                                                |
 | gridData.w                       | `number`                     | The width of the widget in grid units. Example: `20`. Possible values: Any positive integer. Maximum value : `40`                                    |
 | gridData.h                       | `number`                     | The height of the widget in grid units. Example: `9`. Possible values: Any positive integer. Maximum value : `100`                                  |
 | data.dataKey                     | `string`                     | A key to identify the data within the widget. Example: `"customDataKey"`. Possible values: Any string representing a data key.                       |
@@ -286,3 +286,73 @@ This endpoint can now be used in the `widgets.json` file as follows in another w
 ```
 
 Now when the user selects the dropdown on the widget they configured, the `get_chains_list` endpoint will be called and the options will be populated in the dropdown.
+
+## Grouping and Parameters
+
+In the `widgets.json` configuration, you can define how widgets are grouped and specify parameters that can be used to customize the data retrieval and display. This section will guide you through setting up these features.
+
+### Grouping
+
+Grouping allows you to organize widgets into categories and subcategories, making it easier for users to find and interact with them. This is done using the `category` and `subCategory` fields.
+
+- **category**: A primary category for the widget. Example: `"crypto"`.
+- **subCategory**: A secondary category for more refined organization. Example: `"fundamentals"`.
+
+### Parameters
+
+Parameters are used to pass dynamic values to your API endpoints, allowing for customizable data queries. Each parameter is defined in the `params` array and can include the following fields:
+
+- **type**: The data type of the parameter. Possible values include `"date"`, `"text"`, `"ticker"`, `"number"`, `"boolean"`, `"endpoint"`.
+- **paramName**: The name of the parameter as it appears in the URL. Example: `"startDate"`.
+- **value**: The default value for the parameter. This can be a string, number, or boolean.
+- **label**: The label displayed in the UI for the parameter. Example: `"Start Date"`.
+- **show**: A boolean indicating whether the parameter should be visible in the UI.
+- **description**: A brief description of the parameter, shown on hover.
+- **multiSelect**: A boolean indicating if multiple values can be selected (only applicable for certain types).
+- **options**: An array of options for dropdown parameters, each with a `label` and `value`.
+- **optionsEndpoint**: An endpoint to fetch options dynamically, used when `type` is `"endpoint"`.
+
+### Example
+
+Here's an example of how grouping and parameters might be configured in a `widgets.json` entry, including the use of `optionsEndpoint`:
+
+```json
+{
+    "custom_widget": {
+        "name": "Custom Widget Example",
+        "description": "A widget to demonstrate custom configuration",
+        "endpoint": "custom-endpoint",
+        "category": "finance",
+        "subCategory": "stocks",
+        "params": [
+            {
+                "type": "date",
+                "paramName": "startDate",
+                "value": "2024-01-01",
+                "label": "Start Date",
+                "show": true,
+                "description": "The start date for the data"
+            },
+            {
+                "type": "text",
+                "paramName": "ticker",
+                "value": "AAPL",
+                "label": "Ticker",
+                "show": true,
+                "description": "Stock ticker symbol"
+            },
+            {
+                "type": "endpoint",
+                "paramName": "chain",
+                "value": "Ethereum",
+                "label": "Chain",
+                "show": true,
+                "description": "Select a chain to get historical TVL",
+                "optionsEndpoint": "get_chains_list"
+            }
+        ]
+    }
+}
+```
+
+This configuration allows users to filter data by start date, ticker symbol, and select a blockchain chain using a dynamically populated dropdown. The widget is organized under the "finance" category and "stocks" subcategory.
