@@ -274,7 +274,7 @@ This behaviour works across all structured data.
 
 ### Converting artifacts to widgets
 Every artifact that OpenBB Copilot generates can be converted to a widget. To do
-this, click the "Create widget from text" or "Create widget from table" button:
+this, click the "Create widget from [text, table, or chart]" button:
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
 <img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/create_widget_from_artifact.png" alt="create widget from artifact openbb copilot" width="60%" height="60%" />
