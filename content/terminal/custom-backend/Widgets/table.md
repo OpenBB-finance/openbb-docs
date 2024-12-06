@@ -30,49 +30,15 @@ To get started, create the main application file and the widget configuration fi
 
 ## Step 2: Create the Backend
 
+The backend will use the same FastAPIsetup and structure as described in the [Custom Backend](/content/terminal/custom-backend/custom-backend.md) page.
+
 ### Edit the Main Application File
 
 Edit the `main.py` file and add the following code. This code sets up a FastAPI application with an endpoint to serve the widget configuration and data for a table:
 
 ```python
-import json
-from pathlib import Path
-import requests
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
-
-app = FastAPI()
-
-# Define allowed origins for CORS
-origins = [
-    "https://pro.openbb.co",
-    "https://excel.openbb.co"
-]
-
-# Add CORS middleware to the application
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-ROOT_PATH = Path(__file__).parent.resolve()
-
-@app.get("/")
-def read_root():
-    """Root endpoint providing basic information."""
-    return {"Info": "Full example for OpenBB Custom Backend"}
-
-@app.get("/widgets.json")
-def get_widgets():
-    """Endpoint to serve the widgets configuration file."""
-    return JSONResponse(
-        content=json.load((ROOT_PATH / "widgets.json").open())
-    )
-
+...
+# Table endpoint
 @app.get("/chains_table")
 def chains_table():
     """Endpoint to fetch the current TVL of all chains using Defi Llama."""

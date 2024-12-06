@@ -30,51 +30,15 @@ To get started, create the main application file and the widget configuration fi
 
 ## Step 2: Create the Backend
 
+The backend will use the same FastAPI setup and structure as described in the [Custom Backend](/content/terminal/custom-backend/custom-backend.md) page.
+
 ### Edit the Main Application File
 
 Edit the `main.py` file and add the following code. This code sets up a FastAPI application with an endpoint to serve the widget configuration and data for a chart:
 
 ```python
-import json
-from pathlib import Path
-import requests
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
-import pandas as pd
-import plotly.graph_objects as go
-
-app = FastAPI()
-
-# Define allowed origins for CORS
-origins = [
-    "https://pro.openbb.co",
-    "https://excel.openbb.co"
-]
-
-# Add CORS middleware to the app
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-ROOT_PATH = Path(__file__).parent.resolve()
-
-@app.get("/")
-def read_root():
-    """Root endpoint providing basic information."""
-    return {"Info": "Full example for OpenBB Custom Backend"}
-
-@app.get("/widgets.json")
-def get_widgets():
-    """Serve the widgets configuration file for the OpenBB Custom Backend."""
-    return JSONResponse(
-        content=json.load((ROOT_PATH / "widgets.json").open())
-    )
-
+...
+# Chart endpoint
 @app.get("/chains")
 def get_chains():
     """Fetch and display the current TVL of all chains using Defi Llama."""
