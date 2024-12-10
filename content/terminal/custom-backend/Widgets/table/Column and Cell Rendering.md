@@ -17,7 +17,7 @@ When creating a table widget, you can customize the columns and cells to create 
 
 ## Column Definitions
 
-Each widgets.json entry for your table widget, has a `columnsDefs` property. This property is an array of column definitions, each defined with specific properties to control its appearance and behavior. While we try to automatically detect the correct settings, you can override them here. Here are the main properties you can set for each column:
+Each widgets.json entry for your table widget can have a `columnsDefs` property that defines the columns for the table. This property is an array of column definitions, each defined with specific properties to control its appearance and behavior. While we try to automatically detect the correct settings, you can override them here. Here are the main properties you can set for each column:
 
 - **field**: The name of the field from the JSON data. This is required and should match a key in the data source.
 - **headerName**: The display name of the column header. This is what users will see in the widget.
@@ -84,8 +84,3 @@ The `formatterFn` property specifies a function used to format the data in the t
 - **normalized**: Multiplies the number by 100, which can be useful for normalizing data to a percentage scale.
 - **normalizedPercent**: Multiplies the number by 100 and adds a percentage sign, converting a decimal to a percentage (e.g., `0.5` becomes `50%`).
 - **dateToYear**: Converts a date to just the year, which is useful for summarizing date data to a yearly level.
-
-
-
-
-

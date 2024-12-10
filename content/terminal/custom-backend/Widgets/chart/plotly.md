@@ -1,5 +1,5 @@
 ---
-title: Chart Example
+title: Plotly Charting Example
 sidebar_position: 2
 description: Learn how to integrate your own backend with OpenBB Terminal Pro using the cookie-cutter or language-agnostic API approaches, with illustrative guides and principles for handling widget.json files, APIs, interfaces, Python, FastAPI, and more.
 keywords:
