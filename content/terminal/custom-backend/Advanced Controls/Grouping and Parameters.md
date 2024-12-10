@@ -165,3 +165,41 @@ Example of widgets that will be grouped using the ticker parameter:
     }
 }
 ```
+
+
+3. **Render Functions**: You can also use render functions when you group data.
+
+Let's say you want to group by the symbol in this widget and you want other widgets to change when you click on a cell in the table. You can do this by adding to your `columnsDefs` the render function `cellOnClick` and the `actionType` of `groupBy`. This will group the data by the symbol and update the other widgets that are grouped by the same parameter.
+
+```json
+    "params": [
+      {
+        "paramName": "symbol",
+        "description": "The symbol to get details for",
+        "value": "AXXI",
+        "label": "Symbol",
+        "type": "endpoint",
+        "show": false,
+        "optionsEndpoint": "get_tickers_list"
+      }
+    ],
+    "data": {
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "Symbol",
+            "headerName": "Symbol",
+            "renderFn": "cellOnClick",
+            "renderFnParams": {
+              "actionType": "groupBy"
+            }
+          }
+        ]
+      }
+    },
+    "gridData": {
+      "w": 20,
+      "h": 9
+    }
+```
