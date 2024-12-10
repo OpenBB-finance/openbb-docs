@@ -22,11 +22,14 @@ Any table widget can be converted to a chart widget by adding the `chartView` pr
 
 This guide will walk you through the process using the same example as the [table widget](/content/terminal/custom-backend/Widgets/table.md).
 
-## Step 1: Edit your `widgets.json` file
+## Step 1: Create a table widget
 
-1. **Review the `table` Section**: The `table` section of the `widgets.json` file is structured as follows:
+Copy the Table Widget from the [Table Widget](/content/terminal/custom-backend/Widgets/table.md)
+
+**Review/Create Widget**: The `table` section of the `widgets.json` file should be structured as follows:
 
     ```json
+    ...
     "table": {
         "showAll": true,
         "columnsDefs": [
@@ -50,7 +53,7 @@ This guide will walk you through the process using the same example as the [tabl
 
 ## Step 2: **Add the `chartView` Property**
 
-To enable a chart widget add the `chartView` property to the `table` section. Set the `chartType` to `line` and `enabled` to `true` to activate the chart by default.
+To enable the chart view for the widget add the `chartView` property to the `table` section. Set the `chartType` to `line` and `enabled` to `true` to activate the chart by default.
 
     ```json
     "table": {

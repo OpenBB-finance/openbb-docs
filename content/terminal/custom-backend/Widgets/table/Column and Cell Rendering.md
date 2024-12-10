@@ -23,7 +23,8 @@ Each widgets.json entry for your table widget can have a `columnsDefs` property 
 - **headerName**: The display name of the column header. This is what users will see in the widget.
 - **cellDataType**: Defines the data type of the cell. Options include `"text"`, `"number"`, `"boolean"`, `"date"`, `"dateString"`, and `"object"`.
 - **formatterFn**: Specifies a function to format the data. Options include `"int"`, `"none"`, `"percent"`, `"normalized"`, `"normalizedPercent"`, and `"dateToYear"`.
-- **renderFn**: Specifies a rendering function for cell data. Options include `"greenRed"` and `"titleCase"`.
+- **renderFn**: Specifies a rendering function for cell data. Options include `"greenRed"`, `"titleCase"`, `"cellOnClick"`.
+- **renderFnParams**: Required if `renderFn` cellOnClick is used. Specifies the parameters for the render function. Options include `{"actionType": "groupBy"}`.
 - **width**: The width of the column in pixels.
 - **maxWidth**: The maximum width of the column in pixels.
 - **minWidth**: The minimum width of the column in pixels.
@@ -61,7 +62,7 @@ Below is an example of how you might configure your columns in the `widgets.json
 
 ## Customizing Cell Rendering
 
-Cell rendering can be customized using the `renderFn` property, which allows you to apply specific styles or transformations to the data. For example, using `"greenRed"` can visually indicate positive or negative values, while `"titleCase"` can format text data to title case.
+Cell rendering can be customized using the `renderFn` property, which allows you to apply specific styles or transformations to the data. For example, using `"greenRed"` can visually indicate positive or negative values, while `"titleCase"` can format text data to title case. You can also use the `cellOnClick` render function to group data by the cell value - see the [Grouping and Parameters](/terminal/custom-backend/Advanced Controls/Grouping and Parameters) section for more details on this.
 
 ## Cell Data Type
 
