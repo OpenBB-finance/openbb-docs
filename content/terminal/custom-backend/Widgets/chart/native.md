@@ -20,11 +20,11 @@ This guide will walk you through the process of creating a simple chart widget u
 
 Any table widget can be converted to a chart widget by adding the `chartView` property to the `table` section - this allows you to seamlessly switch between table and chart views.
 
-This guide will walk you through the process using the same example as the [table widget](/content/terminal/custom-backend/Widgets/table.md).
+This guide will walk you through the process using the same example as the [table widget](/content/terminal/custom-backend/Widgets/table/table.md).
 
 ## Step 1: Create a table widget
 
-Copy the Table Widget from the [Table Widget](/content/terminal/custom-backend/Widgets/table.md)
+Copy/Use the Table Widget from the [Table Widget](/content/terminal/custom-backend/Widgets/table/table.md)
 
 **Review/Create Widget**: The `table` section of the `widgets.json` file should be structured as follows:
 
@@ -53,15 +53,15 @@ Copy the Table Widget from the [Table Widget](/content/terminal/custom-backend/W
 
 ## Step 2: **Add the `chartView` Property**
 
-To enable the chart view for the widget add the `chartView` property to the `table` section. Set the `chartType` to `line` and `enabled` to `true` to activate the chart by default.
+To enable the chart view for the widget add the `chartView` property to the `table` section. Set the `chartType` to `bar` and `enabled` to `true` to activate the chart by default.
 
     ```json
     "table": {
         "chartView": {
             "enabled": true,
-            "chartType": "line"
+            "chartType": "bar"
         },
-        "showAll": true,
+        "showAll": false,
         "columnsDefs": [
             {
                 "headerName": "Name",
@@ -81,7 +81,11 @@ To enable the chart view for the widget add the `chartView` property to the `tab
     }
     ```
 
-You can now switch between table and chart views by clicking the Chart View icon in the top right corner of the widget.
+You should now have a chart widget that looks like this:
+
+<img className="pro-border-gradient" width="600" alt="chart" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/bar+example.png" />
+
+You can now switch between table and chart views by clicking the Chart View icon in the top right corner of the widget (blue highlighted icon top right).
 
 ### Available Chart Types
 

@@ -30,11 +30,11 @@ To get started, create the main application file and the widget configuration fi
 
 ## Step 2: Create the Backend
 
-The backend will use the same FastAPIsetup and structure as described in the [Custom Backend](/content/terminal/custom-backend/custom-backend.md) page.
+The backend will use the same FastAPI setup and structure as described in the [Custom Backend](/content/terminal/custom-backend/custom-backend.md#create-your-own-backend) page.
 
 ### Edit the Main Application File
 
-Edit the `main.py` file and add the following code. This code sets up a FastAPI application with an endpoint to serve the widget configuration and data for a table:
+Edit the `main.py` file and add the following code. This code sets up an endpoint to serve the widget configuration, in this case we are using the api.llama.fi/v2/chains endpoint to fetch the data for the table :
 
 ```python
 ...
@@ -95,9 +95,9 @@ Open the `widgets.json` file and add the following JSON data. This configuration
 }
 ```
 
-In the widgets.json file, we're creating a widget that shows the current Total Value Locked (TVL) for various blockchain chains using data from the Defi Llama API. We've set it up under the "crypto" category and defining the columnsDefs to further configure the table. We'll also set gridData to determine the widget's size on the dashboard.
+In the widgets.json file, we're creating a widget that shows the current Total Value Locked (TVL) for various blockchain chains using data from the Defi Llama API. We've set it up under the "crypto" category and defining some of the columnsDefs to further configure the table - you'll notice we have set showAll to true - so it will still return all of the data from the endpoints as columns, we just wanted to configure some to have a different header and other data. We'll also set gridData to set the widget's size on the dashboard.
 
-For more information on the `widgets.json` file, see the [Widgets.json](/content/terminal/custom-backend/widgets.json) page.
+For more information on the `widgets.json` file, see the [Widgets.json](../widgets.json) or [Column and Cell Rendering](Column%20and%20Cell%20Rendering.md).
 
 ## Step 3: Run the Application
 
@@ -112,6 +112,8 @@ uvicorn main:app --port 5050
 Navigate to https://pro.openbb.co/app/data-connectors and add your backend by clicking on the `+ Add Data` button in the top right corner. Once there select `Custom Backend` and fill in the details. Your URL will be `http://127.0.0.1:5050`.
 
 Once you have added your backend you can find the widget in the `Crypto` category with the name `Chains table example`.
+
+<img className="pro-border-gradient" width="600" alt="table" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/simple-table.png" />
 
 ## Additional Resources
 

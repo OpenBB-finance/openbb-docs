@@ -82,6 +82,8 @@ Navigate to [OpenBB Pro Data Connectors](https://pro.openbb.co/app/data-connecto
 
 Once you have added your backend, you can find the widget in the `Test` category with the name `Test Metric`.
 
+<img className="pro-border-gradient" width="600" alt="metric" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/metric-widget.png" />
+
 ## Additional Resources
 
 You can find more examples of how to set up your own backend in the [Backend for Terminal Pro GitHub](https://github.com/OpenBB-finance/backend-for-terminal-pro).

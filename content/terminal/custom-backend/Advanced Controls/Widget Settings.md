@@ -38,7 +38,7 @@ Widgets use a grid-based layout system where you can specify their width and hei
 - **Width (w)**: Determines the horizontal span of the widget
   - Maximum value: 40 units
   - Recommended range: 10-30 units for most widgets
-  - Full-width widgets typically use 40 units
+  - Full-width widgets - 40 units
 
 - **Height (h)**: Sets the vertical span of the widget
   - Maximum value: 100 units
@@ -79,7 +79,7 @@ The `staleTime` setting controls when data is considered outdated and needs refr
 - Should typically be less than or equal to `refetchInterval`
 - Set higher for data that updates infrequently
 
-## Example Configuration
+#### Example Configuration
 
 Here's a complete example combining all these settings:
 
@@ -98,6 +98,15 @@ Here's a complete example combining all these settings:
     }
 }
 ```
+
+## Search Category Settings
+
+In the `widgets.json` configuration, you can define how widgets are organized using categories and subcategories. This helps users easily find and interact with widgets by grouping them logically.
+
+- **category**: A primary category for the widget. Example: `"crypto"`.
+- **subCategory**: A secondary category for more refined organization. Example: `"fundamentals"`.
+
+These fields allow you to structure your widgets in a way that enhances user experience by making it easier to navigate through different types of widgets based on their purpose or data source.
 
 ## Best Practices
 
