@@ -6,15 +6,17 @@ In the `widgets.json` configuration, you can specify parameters/inputs that can 
 
 Parameters are used to pass dynamic values to your API endpoints, allowing for customizable data queries from the widget. Each parameter is defined in the `params` array within your widgets.json file and can include the following fields:
 
-- **type**: The data type of the parameter. Possible values include `"date"`, `"text"`, `"ticker"`, `"number"`, `"boolean"`, `"endpoint"`.
-- **paramName**: The name of the parameter as it appears in the URL. Example: `"startDate"`.
-- **value**: The default value for the parameter. This can be a string, number, or boolean.
-- **label**: The label displayed in the UI for the parameter. Example: `"Start Date"`.
-- **show**: A boolean indicating whether the parameter should be visible in the UI.
-- **description**: A brief description of the parameter, shown on hover.
-- **multiSelect**: A boolean indicating if multiple values can be selected (only applicable for certain types).
-- **options**: An array of options for dropdown parameters, each with a `label` and `value`.
-- **optionsEndpoint**: An endpoint to fetch options dynamically, used when `type` is `"endpoint"`.
+| Field | Description |
+|-------|-------------|
+| `type` | The data type of the parameter. Possible values include `"date"`, `"text"`, `"ticker"`, `"number"`, `"boolean"`, `"endpoint"` |
+| `paramName` | The name of the parameter as it appears in the URL. Example: `"startDate"` |
+| `value` | The default value for the parameter. This can be a string, number, or boolean |
+| `label` | The label displayed in the UI for the parameter. Example: `"Start Date"` |
+| `show` | A boolean indicating whether the parameter should be visible in the UI |
+| `description` | A brief description of the parameter, shown on hover |
+| `multiSelect` | A boolean indicating if multiple values can be selected (only applicable for certain types) |
+| `options` | An array of options for dropdown parameters, each with a `label` and `value` |
+| `optionsEndpoint` | An endpoint to fetch options dynamically, used when `type` is `"endpoint"` |
 
 <img className="pro-border-gradient" width="700" alt="widget-parameters" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/parameters.png" />
 
@@ -89,7 +91,6 @@ Parameters are used to pass dynamic values to your API endpoints, allowing for c
 ```
 
 </details>
-
 
 ### Passing custom dropdown options
 

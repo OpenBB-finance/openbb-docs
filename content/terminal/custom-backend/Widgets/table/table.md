@@ -19,8 +19,6 @@ keywords:
 
 This guide will walk you through the process of creating a table widget for OpenBB Terminal Pro. By the end of this guide, you will have a working table widget that you can add to OpenBB Terminal Pro.
 
-> **Prerequisite:** Ensure you have Python > 3.11 installed on your system before proceeding.
-
 ## Step 1: Set Up Your Project
 
 To get started, create the main application file and the widget configuration file. You will only need these two files:
@@ -28,11 +26,9 @@ To get started, create the main application file and the widget configuration fi
 - `main.py`: This file will contain your FastAPI application code.
 - `widgets.json`: This file will define the configuration for your widget.
 
-## Step 2: Create the Backend
+The backend will use the same FastAPI setup and structure as described in the [Custom Backend](/content/terminal/custom-backend/custom-backend.md) page.
 
-The backend will use the same FastAPI setup and structure as described in the [Custom Backend](/content/terminal/custom-backend/custom-backend.md#create-your-own-backend) page.
-
-### Edit the Main Application File
+## Step 2: Create your Table Endpoint
 
 Edit the `main.py` file and add the following code. This code sets up an endpoint to serve the widget configuration, in this case we are using the api.llama.fi/v2/chains endpoint to fetch the data for the table :
 
@@ -69,49 +65,30 @@ Open the `widgets.json` file and add the following JSON data. This configuration
     "gridData": {
       "w": 20,
       "h": 9
-    },
-    "data": {
-      "table": {
-        "showAll": true,
-        "columnsDefs": [
-          {
-            "headerName": "Name",
-            "field": "name",
-            "chartDataType": "category"
-          },
-          {
-            "headerName": "Total Value Locked",
-            "field": "tvl"
-          },
-          {
-            "headerName": "Token Symbol",
-            "field": "tokenSymbol",
-            "chartDataType": "category"
-          }
-        ]
-      }
     }
   }
 }
 ```
 
-In the widgets.json file, we're creating a widget that shows the current Total Value Locked (TVL) for various blockchain chains using data from the Defi Llama API. We've set it up under the "crypto" category and defining some of the columnsDefs to further configure the table - you'll notice we have set showAll to true - so it will still return all of the data from the endpoints as columns, we just wanted to configure some to have a different header and other data. We'll also set gridData to set the widget's size on the dashboard.
+In the widgets.json file, we're creating a widget that shows the current Total Value Locked (TVL) for various blockchain chains using data from the Defi Llama API.
 
-For more information on the `widgets.json` file, see the [Widgets.json](../widgets.json) or [Column and Cell Rendering](Column%20and%20Cell%20Rendering.md).
+For more information on the `widgets.json` file, see the [Widgets.json](../widgets.json).
 
 ## Step 3: Run the Application
 
 Start the FastAPI Server: Use Uvicorn to run your FastAPI application.
 
 ```bash
-uvicorn main:app --port 5050
+uvicorn main:app --host localhost --port 5050
 ```
 
 ## Step 4: Add to OpenBB Pro
 
-Navigate to https://pro.openbb.co/app/data-connectors and add your backend by clicking on the `+ Add Data` button in the top right corner. Once there select `Custom Backend` and fill in the details. Your URL will be `http://127.0.0.1:5050`.
+Navigate to https://pro.openbb.co/app/data-connectors and add your backend by clicking on the `+ Add Data` button in the top right corner. Once there select `Custom Backend` and fill in the details. Your URL will be `http://localhost:5050`.
 
 Once you have added your backend you can find the widget in the `Crypto` category with the name `Chains table example`.
+
+To further configure the columns and headers in your table you can set the `columnsDefs` property in the `widgets.json` file - see [Column and Cell Rendering](Column%20and%20Cell%20Rendering.md).
 
 <img className="pro-border-gradient" width="600" alt="table" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/simple-table.png" />
 

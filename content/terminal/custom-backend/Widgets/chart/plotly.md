@@ -19,8 +19,6 @@ keywords:
 
 This guide will walk you through the process of creating a chart widget for OpenBB Terminal Pro. We will be using Plotly to create the chart in our example. By the end of this guide, you will have a working chart widget that you can add to OpenBB Terminal Pro.
 
-> **Prerequisite:** Ensure you have Python > 3.11 installed on your system before proceeding.
-
 ## Step 1: Set Up Your Project
 
 To get started, create the main application file and the widget configuration file. You will only need these two files:
@@ -28,11 +26,9 @@ To get started, create the main application file and the widget configuration fi
 - `main.py`: This file will contain your FastAPI application code.
 - `widgets.json`: This file will define the configuration for your widget.
 
-## Step 2: Create the Backend
-
 The backend will use the same FastAPI setup and structure as described in the [Custom Backend](/content/terminal/custom-backend/custom-backend.md) page.
 
-### Edit the Main Application File
+## Step 2: Create the Chart Endpoint
 
 Edit the `main.py` file and add the following code. This code sets up a FastAPI application with an endpoint to serve the widget configuration and data for a chart:
 
@@ -62,7 +58,8 @@ def get_chains():
             )
         )
 
-        # Return the Plotly JSON
+        # Convert the Plotly figure to JSON format for frontend rendering
+        # This is a crucial step that allows the figure to be displayed in OpenBB Terminal Pro
         return json.loads(figure.to_json())
 
     print(f"Request error {response.status_code}: {response.text}")
@@ -70,6 +67,8 @@ def get_chains():
         content={"error": response.text}, status_code=response.status_code
     )
 ```
+
+Because we are using Plotly, we need to convert the figure to JSON format for frontend rendering. Returning the figure directly will not work - so utilizing the `figure.to_json()` method is crucial.
 
 ### Edit the widgets.json File
 
@@ -99,12 +98,12 @@ For more information on the `widgets.json` file, see the [Widgets.json](/content
 Start the FastAPI Server using Uvicorn. This will host your backend locally:
 
 ```bash
-uvicorn main:app --port 5050
+uvicorn main:app --host localhost --port 5050
 ```
 
 ## Step 4: Add to OpenBB Pro
 
-Navigate to [OpenBB Pro Data Connectors](https://pro.openbb.co/app/data-connectors) and add your backend by clicking on the `+ Add Data` button in the top right corner. Select `Custom Backend` and fill in the details. Your URL will be `http://127.0.0.1:5050`.
+Navigate to [OpenBB Pro Data Connectors](https://pro.openbb.co/app/data-connectors) and add your backend by clicking on the `+ Add Data` button in the top right corner. Select `Custom Backend` and fill in the details. Your URL will be `http://localhost:5050`.
 
 Once you have added your backend, you can find the widget in the `Crypto` category with the name `Chains chart example`.
 

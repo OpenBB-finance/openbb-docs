@@ -25,7 +25,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 ## Introduction to Custom Backend
 
-The custom backend feature in OpenBB Terminal Pro allows users to integrate their own data sources and APIs into the platform. This enables the creation of personalized widgets that can display data from any API, whether hosted internally or externally. By using a standardized JSON structure, users can seamlessly connect their data to OpenBB widgets. The custom backend allows users to take full advantage of the OpenBB Copilot and our interface.
+The custom backend feature in OpenBB Terminal Pro allows users to integrate their own data sources and APIs into the platform. This enables the creation of personalized widgets that can display data from any API, whether hosted internally or externally. By using a standardized JSON configuration, users can expose their data as widgets in OpenBB. The custom backend allows users to take full advantage of the OpenBB Copilot and our interface.
 
 {/* TODO - make new video
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
@@ -51,7 +51,7 @@ OpenBB Terminal Pro supports various ways to visualize data through widgets. Eac
 
 2. **Chart Widgets**:
    - Offers graphical representation of data.
-   - Supports Plotly charts and can be configured to display different types of charts. (More types are coming soon.)
+   - Supports Plotly charts and can be configured to display different types of charts. Support for more charting frameworks will be coming soon.
    - [Learn more about Chart Widgets](Widgets/chart.md)
 
 <img className="pro-border-gradient" width="600" alt="chart" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/plotly-chart.png" />
@@ -73,7 +73,7 @@ OpenBB Terminal Pro supports various ways to visualize data through widgets. Eac
 
 ## Design and implement your API
 
-Choose your preferred programming language and framework. Ensure that the API can return data in JSON format, which is required for widget integration.
+Choose your preferred programming language and framework. Ensure that the API returns data in JSON format.
 
 :::note
 Guidelines for JSON Format:

@@ -19,8 +19,6 @@ keywords:
 
 This guide will walk you through the process of creating a markdown widget for OpenBB Terminal Pro. By the end of this guide, you will have a working markdown widget that you can add to OpenBB Terminal Pro.
 
-> **Prerequisite:** Ensure you have Python > 3.11 installed on your system before proceeding.
-
 ## Step 1: Set Up Your Project
 
 To get started, create the main application file and the widget configuration file. You will only need these two files:
@@ -28,11 +26,11 @@ To get started, create the main application file and the widget configuration fi
 - `main.py`: This file will contain your FastAPI application code.
 - `widgets.json`: This file will define the configuration for your widget.
 
-## Step 2: Create the Backend
+The backend will use the same FastAPI setup and structure as described in the [Custom Backend](/content/terminal/custom-backend/custom-backend.md) page.
 
-### Edit the Main Application File
+## Step 2: Create the Markdown Endpoint
 
-Edit the `main.py` file and add the following code. This code sets up a FastAPI application with an endpoint to serve the widget configuration and data for a markdown display:
+Edit the `main.py` file and add the following code. This code sets up a FastAPI application with an endpoint to serve the widget configuration and data for a markdown widget to display:
 
 ```python
 ...
@@ -108,12 +106,12 @@ Open the `widgets.json` file and add the following JSON data. This configuration
 Start the FastAPI Server using Uvicorn. This will host your backend locally:
 
 ```bash
-uvicorn main:app --port 5050
+uvicorn main:app --host localhost --port 5050
 ```
 
 ## Step 4: Add to OpenBB Pro
 
-Navigate to [OpenBB Pro Data Connectors](https://pro.openbb.co/app/data-connectors) and add your backend by clicking on the `+ Add Data` button in the top right corner. Select `Custom Backend` and fill in the details. Your URL will be `http://127.0.0.1:5050`.
+Navigate to [OpenBB Pro Data Connectors](https://pro.openbb.co/app/data-connectors) and add your backend by clicking on the `+ Add Data` button in the top right corner. Select `Custom Backend` and fill in the details. Your URL will be `http://localhost:5050`.
 
 Once you have added your backend, you can find the widget in the `Crypto` category with the name `Defi Llama Protocol Details`.
 
