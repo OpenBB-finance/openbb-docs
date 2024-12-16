@@ -83,7 +83,7 @@ Open the `widgets.json` file and add the following JSON data. This configuration
   "defi_llama_protocol_details": {
     "name": "Defi Llama Protocol Details",
     "description": "Details for a given protocol",
-    "category": "crypto",
+    "category": "Crypto",
     "defaultViz": "markdown",
     "endpoint": "defi_llama_protocol_details",
     "gridData": {"w": 20, "h": 9},

@@ -134,7 +134,7 @@ The `optionsEndpoint` should return data in this format for a simple dropdown:
 ]
 ```
 
-You can also return a dropdown with some advanced options passed.
+You can also return a dropdown with some advanced options passed - Your returned data on the endpoint should be in this format:
 
 ```json
 [

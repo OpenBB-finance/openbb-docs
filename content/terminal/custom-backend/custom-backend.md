@@ -78,9 +78,10 @@ Choose your preferred programming language and framework. Ensure that the API re
 :::note
 Guidelines for JSON Format:
 
-- The JSON data should be in a flat structure, meaning that there should be no nested dictionaries or arrays within the individual objects.
+- The JSON data should be in a flat structure, meaning that there should be no nested dictionaries or arrays within the individual objects unless you specify the dataKey in your `widgets.json` file.
 - Each object should contain key-value pairs where the values are simple data types (e.g., strings, numbers, booleans).
 - Avoid nesting other objects or arrays inside any of the values.
+
 The JSON should resemble the following structure:
 
 <details>
@@ -88,31 +89,33 @@ The JSON should resemble the following structure:
 
 ```json
 [
-  {
-    "title": "To Kill a Mockingbird",
-    "author": "Harper Lee",
-    "year": 1960,
-    "genre": "Fiction"
-  },
-  {
-    "title": "1984",
-    "author": "George Orwell",
-    "year": 1949,
-    "genre": "Dystopian"
-  },
-  {
-    "title": "The Great Gatsby",
-    "author": "F. Scott Fitzgerald",
-    "year": 1925,
-    "genre": "Classic"
-  }
+      {
+        "ticker": "AAPL",
+        "name": "Apple Inc.",
+        "price": 150.5,
+        "marketCap": 2500000000,
+        "change": 1.25
+      },
+      {
+        "ticker": "GOOGL",
+        "name": "Alphabet Inc.",
+        "price": 2800.75,
+        "marketCap": 1900000000,
+        "change": -0.75
+      },
+      {
+        "ticker": "MSFT",
+        "name": "Microsoft Corporation",
+        "price": 300.25,
+        "marketCap": 220000000,
+        "change": 0.98
+      }
 ]
 ```
 
 </details>
 
 :::
-
 
 ## Create your own backend
 
@@ -128,12 +131,9 @@ Each backend will use the same setup and structure as below.
 ```python
 import json
 from pathlib import Path
-import requests
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-import pandas as pd
-import plotly.graph_objects as go
 
 app = FastAPI()
 

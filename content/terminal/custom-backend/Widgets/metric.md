@@ -61,9 +61,9 @@ Edit the `widgets.json` file and add the following JSON data. This configuration
 ```json
 {
   "test_metric": {
-    "name": "Test Metric",
-    "description": "Test Metric",
-    "category": "test",
+    "name": "Metric Widget",
+    "description": "A metric widget example",
+    "category": "Test",
     "endpoint": "test_metric",
     "type": "metric"
   }

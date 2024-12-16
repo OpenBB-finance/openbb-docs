@@ -59,8 +59,7 @@ Open the `widgets.json` file and add the following JSON data. This configuration
   "chains_table": {
     "name": "Chains table example",
     "description": "Get current TVL of all chains using Defi LLama",
-    "category": "crypto",
-    "searchCategory": "crypto",
+    "category": "Crypto",
     "endpoint": "chains_table",
     "gridData": {
       "w": 20,

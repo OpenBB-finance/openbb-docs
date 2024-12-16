@@ -80,7 +80,6 @@ Edit the `widgets.json` file and add the following JSON data. This configuration
     "name": "Chains chart example",
     "description": "Get current TVL of all chains and plot it!",
     "category": "crypto",
-    "searchCategory": "crypto",
     "type": "chart",
     "endpoint": "chains",
     "gridData": {
