@@ -95,15 +95,16 @@ In the `templates.json` file, each widget's layout is defined using specific pro
 
   ```jsonc
     "Widget1": { (Widget ID)
-    "name": "Widget 1",
-    "description": "Widget 1",
-    "category": "stocks",
-    "searchCategory": "stocks",
-    "endpoint": "chains_table",
-    "gridData": {
-      "w": 20,
-      "h": 9
-    },
+        "name": "Widget 1",
+        "description": "Widget 1",
+        "category": "stocks",
+        "searchCategory": "stocks",
+        "endpoint": "chains_table",
+        "gridData": {
+        "w": 20,
+        "h": 9
+        },
+    }
   ```
 
   - It links the layout configuration in the `templates.json` file with the actual widget configuration in the `widgets.json` file.
