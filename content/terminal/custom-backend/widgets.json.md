@@ -24,18 +24,29 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 # Widgets.json Overview
 
-The `widgets.json` file is essential for integrating custom widgets into the OpenBB Terminal Pro. It serves as a configuration file that connects your backend data to the widgets displayed in the application. Key components include:
+The `widgets.json` file is your configuration file that connects custom backend data to the widgets displayed in the application. Key components include:
 
-- **Basic Information**: Defines the widget's name, description, and API endpoint.
-- **Categorization**: Organizes widgets using primary and secondary categories.
-- **Display Settings**: Specifies visualization type and grid dimensions.
-- **Data Configuration**: Details how data is displayed, including table and chart settings.
-- **Parameters**: Lists configurable query parameters for the widget.
-- **Data Source and Refresh Settings**: Identifies data sources and sets refresh intervals.
+- **Basic Information**: Defines the widget's name, description, and API endpoint that the data comes from.
+- **Metadata**: Provide categories for organization and AI enhancement.
+- **Display Settings**: Specifies widget type and grid dimensions.
+- **Data Configuration**:  Details table and chart settings, including column level information and data types.
+- **Parameters**: Details query parameters that can be passed to the API endpoint for customization.
 
-The `widgets.json` file is the bridge between your backend and OpenBB Terminal widgets. Each entry in this file will directly map to a widget in the app. You can find examples [here](https://github.com/OpenBB-finance/backend-for-terminal-pro/tree/main).
+Each entry in this file will directly map to a widget in the app. You can find example backends [here](https://github.com/OpenBB-finance/backend-for-terminal-pro/tree/main), where each folder contains a `widgets.json` file specifying the available widgets.
 
-Below are all of the values you can set along with a description for each.
+Below are all of the configurable fields and their descriptions. When you see a period in a field name (like `data.table.chartView.chartType`), it represents nested JSON objects. For example:
+
+```json
+{
+  "data": {
+    "table": {
+      "chartView": {
+        "chartType": "column"
+      }
+    }
+  }
+}
+```
 
 | Name                           | **Type**                     | **Description**                                                                                                                                         |
 |------------------------------------|------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -82,7 +93,7 @@ Below are all of the values you can set along with a description for each.
 
 ## Example widgets.json
 
-Below is an example `widgets.json` with a single widget defined. This widget will default to a column chart but have the ability to switch between a table and chart view.
+Below is an example `widgets.json` with a single widget defined. This widget will default to a column chart but have the ability to switch between a table and chart view.  The widget will have a start date parameter, a ticker parameter, and a colors parameter, all of which will be able to be selected on the widget in the application.
 
 ```json
 {
