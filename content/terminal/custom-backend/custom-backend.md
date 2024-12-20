@@ -25,7 +25,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 ## Introduction to Custom Backend
 
-The custom backend feature in OpenBB Terminal Pro allows users to integrate their own data sources and APIs into the platform. A custom backend is an API that returns JSON data with a standardized JSON configuration. This enables the creation of personalized widgets that can display data from any API, whether hosted internally or externally. By using a standardized JSON configuration, users can expose their data as widgets in OpenBB. The custom backend allows users to take full advantage of the OpenBB Copilot and our interface.
+The custom backend feature in OpenBB Terminal Pro allows users to integrate their own data sources and APIs into the platform. A custom backend is an API that returns JSON data with a standardized JSON configuration. This enables the creation of personalized widgets that can display data from any API. The custom backend allows users to take full advantage of the OpenBB Copilot and our interface.
 
 {/* TODO - make new video
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
@@ -82,13 +82,11 @@ The JSON should resemble the following structure:
 
 :::
 
-## Create your own custom backend
+## Creating your own custom backend
 
-You can create your own backend by following these steps:
+To integrate your own backend with OpenBB, follow these steps:
 
-1. **Develop an API to return JSON data**: This can be done in any language. In our examples, we will use Python and FastAPI.
-2. 
-Each backend will start with the same setup and structure as below.  We enable CORS for OpenBB domains so that the backend can be accessed from the application, and we serve the `widgets.json` file from the backend.
+1. **Develop an API to return JSON data**: Use any language to create an API that returns JSON data. We recommend Python with FastAPI. Ensure CORS is enabled for OpenBB domains.
 
 <details>
 
@@ -146,14 +144,13 @@ An example structure in your backend might look like below.
   └── widgets.json
 ```
 
-1. **Create endpoints for each widgets.json entry**: Your `widgets.json` file lets the frontend know how to display your data, but you need to build out the endpoint to supply the data for each widget. Following the structure above, these endpoints would live in the `main.py` file.
+3. **Build Endpoints**: Develop endpoints in main.py for each widget defined in widgets.json.
 
-2. **Connect to your API**: Once your API is up and running, you can add the custom backend using the OpenBB Terminal Pro interface. You will need to input your main endpoint and the system will read the `/widgets.json` endpoint to fetch all the necessary settings and configurations. Once connected, all the widgets will appear in your search and ready to be added to any dashboard.
+4. **Connect to your API**: Use the OpenBB Terminal Pro interface to connect your API. Input your main endpoint, and the system will read /widgets.json to add your widgets to OpenBB.
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
   <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/backend.png" />
 </div>
-
 
 ## Widget Types
 
