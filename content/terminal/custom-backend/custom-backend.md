@@ -25,7 +25,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 ## Introduction to Custom Backend
 
-The custom backend feature in OpenBB Terminal Pro allows users to integrate their own data sources and APIs into the platform. This enables the creation of personalized widgets that can display data from any API, whether hosted internally or externally. By using a standardized JSON configuration, users can expose their data as widgets in OpenBB. The custom backend allows users to take full advantage of the OpenBB Copilot and our interface.
+The custom backend feature in OpenBB Terminal Pro allows users to integrate their own data sources and APIs into the platform. A custom backend is an API that returns JSON data with a standardized JSON configuration. This enables the creation of personalized widgets that can display data from any API. The custom backend allows users to take full advantage of the OpenBB Copilot and our interface.
 
 {/* TODO - make new video
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
@@ -36,44 +36,9 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 />
 */}
 
-## Widget Types
-
-OpenBB Terminal Pro supports various ways to visualize data through widgets. Each method offers unique features and can be configured to suit different data presentation needs. Below are the different visualization methods available:
-
-1. **Table Widget**:
-   - Provides a structured view of data in rows and columns.
-   - Ideal for displaying detailed datasets.
-   - Can be configured to display charts with Native Charting.
-   - [Learn more about Table Widgets](Widgets/table/table.md)
-
-<img className="pro-border-gradient" width="600" alt="table" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/simple-table.png" />
-
-
-2. **Chart Widgets**:
-   - Offers graphical representation of data.
-   - Supports Plotly charts and can be configured to display different types of charts. Support for more charting frameworks will be coming soon.
-   - [Learn more about Chart Widgets](Widgets/chart.md)
-
-<img className="pro-border-gradient" width="600" alt="chart" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/plotly-chart.png" />
-
-3. **Markdown Widget**:
-   - Displays formatted text and images.
-   - Can be used to display markdown, txt, and docx files.
-   - [Learn more about Markdown Widgets](Widgets/markdown.md)
-
-<img className="pro-border-gradient" width="600" alt="markdown" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/markdown-widget.png" />
-
-4. **Metric Widget**:
-   - Displays a single value or metric.
-   - Useful for highlighting key performance indicators.
-   - [Learn more about Metric Widgets](Widgets/metric.md)
-
-<img className="pro-border-gradient" width="600" alt="metric" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/metric-widget.png" />
-
-
 ## Design and implement your API
 
-Choose your preferred programming language and framework. Ensure that the API returns data in JSON format.
+You can build your API using any language and framework of your choice.  The only requirements are that there must be endpoints returning data in JSON format, and that CORS is supported for OpenBB domains.
 
 :::note
 Guidelines for JSON Format:
@@ -117,12 +82,11 @@ The JSON should resemble the following structure:
 
 :::
 
-## Create your own backend
+## Creating your own custom backend
 
-You can create your own backend by following these steps:
+To integrate your own backend with OpenBB, follow these steps:
 
-1. **Create a backend to return JSON data**: This can be done in any language. We will use Python and FastAPI in our examples.
-Each backend will use the same setup and structure as below.
+1. **Develop an API to return JSON data**: Use any language to create an API that returns JSON data. We recommend Python with FastAPI. Ensure CORS is enabled for OpenBB domains.
 
 <details>
 
@@ -180,17 +144,53 @@ An example structure in your backend might look like below.
   └── widgets.json
 ```
 
-3. **Create endpoints for each widgets.json entry**: Your `widgets.json` file lets OpenBB Terminal know how to display the data but you need to build out the endpoint to supply the data for each widget. Following the structure above, these endpoints would live in the `main.py` file.
+3. **Build Endpoints**: Develop endpoints in main.py for each widget defined in widgets.json.
 
-4. **Connect to your API**: Once your API is up and running, you can add the custom backend using the OpenBB Terminal Pro interface. You will need to input your main endpoint and the system will read the `/widgets.json` endpoint to fetch all the necessary settings and configurations. Once connected, all the widgets will appear in your search and ready to be added to any dashboard.
+4. **Connect to your API**: Use the OpenBB Terminal Pro interface to connect your API. Input your main endpoint, and the system will read /widgets.json to add your widgets to OpenBB.
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
   <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/backend.png" />
 </div>
 
+## Widget Types
+
+OpenBB Terminal Pro supports various ways to visualize data through widgets. Each method offers unique features and can be configured to suit different data presentation needs. Below are the different visualization methods available:
+
+1. **Table Widget**:
+   - Provides a structured view of data in rows and columns.
+   - Ideal for displaying detailed datasets.
+   - Can be configured to display charts with Native Charting.
+   - [Learn more about Table Widgets](Widgets/table/table.md)
+
+<img className="pro-border-gradient" width="600" alt="table" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/simple-table.png" />
+
+
+2. **Chart Widgets**:
+   - Offers graphical representation of data.
+   - Supports Plotly charts and can be configured to display different types of charts. Support for more charting frameworks will be coming soon.
+   - [Learn more about Chart Widgets](Widgets/chart.md)
+
+<img className="pro-border-gradient" width="600" alt="chart" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/plotly-chart.png" />
+
+3. **Markdown Widget**:
+   - Displays formatted text and images.
+   - Can be used to display markdown, txt, and docx files.
+   - [Learn more about Markdown Widgets](Widgets/markdown.md)
+
+<img className="pro-border-gradient" width="600" alt="markdown" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/markdown-widget.png" />
+
+4. **Metric Widget**:
+   - Displays a single value or metric.
+   - Useful for highlighting key performance indicators.
+   - [Learn more about Metric Widgets](Widgets/metric.md)
+
+<img className="pro-border-gradient" width="600" alt="metric" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/metric-widget.png" />
+
+
+
 ### Examples
 
-Our team has created several examples that you can use to quickly get started with Python and FastAPI. For more information, check [this open source repository](https://github.com/OpenBB-finance/backend-for-terminal-pro/tree/main) for examples.
+Our team has created several examples that you can use to quickly get started with Python and FastAPI. For more information, check out [this open source repository](https://github.com/OpenBB-finance/backend-for-terminal-pro/tree/main).
 
 
 ## Frequently Asked Questions
