@@ -152,42 +152,6 @@ An example structure in your backend might look like below.
   <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/backend.png" />
 </div>
 
-## Widget Types
-
-OpenBB Terminal Pro supports various ways to visualize data through widgets. Each method offers unique features and can be configured to suit different data presentation needs. Below are the different visualization methods available:
-
-1. **Table Widget**:
-   - Provides a structured view of data in rows and columns.
-   - Ideal for displaying detailed datasets.
-   - Can be configured to display charts with Native Charting.
-   - [Learn more about Table Widgets](Widgets/table/table.md)
-
-<img className="pro-border-gradient" width="600" alt="table" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/simple-table.png" />
-
-
-2. **Chart Widgets**:
-   - Offers graphical representation of data.
-   - Supports Plotly charts and can be configured to display different types of charts. Support for more charting frameworks will be coming soon.
-   - [Learn more about Chart Widgets](Widgets/chart.md)
-
-<img className="pro-border-gradient" width="600" alt="chart" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/plotly-chart.png" />
-
-3. **Markdown Widget**:
-   - Displays formatted text and images.
-   - Can be used to display markdown, txt, and docx files.
-   - [Learn more about Markdown Widgets](Widgets/markdown.md)
-
-<img className="pro-border-gradient" width="600" alt="markdown" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/markdown-widget.png" />
-
-4. **Metric Widget**:
-   - Displays a single value or metric.
-   - Useful for highlighting key performance indicators.
-   - [Learn more about Metric Widgets](Widgets/metric.md)
-
-<img className="pro-border-gradient" width="600" alt="metric" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/metric-widget.png" />
-
-
-
 ### Examples
 
 Our team has created several examples that you can use to quickly get started with Python and FastAPI. For more information, check out [this open source repository](https://github.com/OpenBB-finance/backend-for-terminal-pro/tree/main).

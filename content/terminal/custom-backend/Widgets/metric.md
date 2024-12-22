@@ -1,6 +1,6 @@
 ---
 title: Metric Example
-sidebar_position: 3
+sidebar_position: 5
 description: Learn how to integrate your own backend with OpenBB Terminal Pro using the cookie-cutter or language-agnostic API approaches, with illustrative guides and principles for handling widget.json files, APIs, interfaces, Python, FastAPI, and more.
 keywords:
 - widgets.json

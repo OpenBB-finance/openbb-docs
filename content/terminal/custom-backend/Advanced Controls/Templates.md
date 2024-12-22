@@ -1,7 +1,7 @@
 ---
-title: Custom Templates
+title: Templates
 sidebar_position: 6
-description: Learn how to configure and use custom templates in OpenBB Terminal Pro, including setting up endpoints and structuring templates.json files.
+description: Learn how to configure and use custom templates in OpenBB, including setting up endpoints and structuring templates.json files.
 keywords:
 - custom templates
 - OpenBB API
@@ -12,7 +12,7 @@ keywords:
 
 # Custom Templates
 
-This guide provides an overview of how to set up and use custom templates in OpenBB Terminal Pro. Custom templates allow you to define and manage the layout and behavior of widgets on your dashboard.
+This guide provides an overview of how to set up and use custom templates in OpenBB. Custom templates allow you to define and manage the layout and behavior of widgets on your dashboard.
 
 ## Setting Up the Templates Endpoint
 
