@@ -105,7 +105,7 @@ This allows you to treat a widget as a data that can return data for multiple ti
 Widgets have the following priority:
 
 1. Widgets added to the context explicitly
-2. Widgets in the dashboard
+2. Widgets in the currently-active dashboard
 3. Any widget available to be added to the dashboard, including widgets from custom backends or API endpoints
 
 You can toggle on/off global widgets (option 3) the button highlighted in the image below.
