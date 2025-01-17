@@ -79,7 +79,7 @@ new question that is unrelated to your current conversation, to prevent
 confusing OpenBB Copilot:
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/copilot_trash_can_icon.png" alt="clear chat button openbb copilot" width="80%" height="80%" />
+<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/ada_trash_can_icon.png" alt="clear chat button openbb copilot" width="100%" height="100%" />
 </div>
 
 ## General question answering
