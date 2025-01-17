@@ -135,8 +135,8 @@ selected as explicitly-added context:
 
 OpenBB Copilot can access information from all widgets you have added to your
 currently-active dashboard. If no widgets have been explicitly added to the
-context, OpenBB Copilot will fallback to retrieve data from your
-widgets on the dashboard if they are useful to answer your query.
+context, OpenBB Copilot will fallback to retrieve data from
+widgets on the currently-active dashboard if they are required to answer your query.
 
 For example, if you add the "Historical Stock Price" widget to your dashboard,
 you can ask OpenBB Copilot to give you the monthly highs for a particular year
