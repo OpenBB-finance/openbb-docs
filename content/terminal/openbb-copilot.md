@@ -98,7 +98,9 @@ to get a feel for how OpenBB Copilot works and behaves.
 
 ## Interacting with data sources using OpenBB Copilot
 
-For OpenBB Copilot widgets are data sources that can be used to get data relevant to answer your queries. Copilot takes the current values of widget parameters (e.g. symbol, start date, etc.) as suggestions to answer your query, but it can also change them if he deems necessary.
+For OpenBB Copilot, widgets are data sources that can be used to retrieve data relevant to answer your queries. OpenBB Copilot uses the current values of widget parameters (e.g. symbol, start date, etc.) as suggestions to answer your query, but it can also change them if required.
+
+This allows you to treat a widget as a data that can return data for multiple tickers and inputs, rather than just the data that is currently being displayed.
 
 These data sources are used in the following priority order:
 
