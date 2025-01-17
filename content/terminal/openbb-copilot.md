@@ -102,7 +102,7 @@ For OpenBB Copilot, widgets are data sources that can be used to retrieve data r
 
 This allows you to treat a widget as a data that can return data for multiple tickers and inputs, rather than just the data that is currently being displayed.
 
-These data sources are used in the following priority order:
+Widgets have the following priority:
 
 1. Widgets added to the context explicitly
 2. Widgets in the dashboard
