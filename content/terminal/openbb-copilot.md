@@ -106,7 +106,7 @@ These data sources are used in the following priority order:
 2. Widgets in the dashboard
 3. Any widget available to be added to the dashboard, including widgets from custom backends or API endpoints
 
-To enable/disable 3. you can toggle the button highlighted in the image below.
+You can toggle on/off global widgets (option 3) the button highlighted in the image below.
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
 <img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/ada_extra_toggle.png" alt="toggle extra data" width="80%" height="80%" />
