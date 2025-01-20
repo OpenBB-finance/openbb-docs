@@ -21,7 +21,7 @@ export default function NotFound() {
 					<h1 className="hero__title mb-4">Page Not Found</h1>
 					<p className="mb-2">We couldn't find what you were looking for.</p>
 					<p>
-						Please contact support@openbb.finance to report this broken link
+						Please contact support@openbb.finance to report this broken link.
 					</p>
 					<Link className="button button--primary mt-8" to="/">
 						Go back to homepage
