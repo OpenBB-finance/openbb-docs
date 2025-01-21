@@ -2,7 +2,7 @@
 title: Widgets
 sidebar_position: 21
 description: The page contains detailed information about the interactive elements
-  and functionalities of OpenBB Terminal widgets. From grouping mechanisms to
+  and functionalities of OpenBB Workspace widgets. From grouping mechanisms to
   settings, these widgets offer an interactive dashboard experience for users to track
   and analyze their investments and data. The widgets support both raw data and chart
   interpretations for data visualization.
@@ -27,7 +27,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Widgets | OpenBB Terminal Pro Docs" />
+<HeadTitle title="Widgets | OpenBB Workspace Docs" />
 
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
@@ -37,7 +37,7 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
   videoLegend="Short introduction to widgets"
 />*/}
 
-Widgets are the unit that you will be using with OpenBB Terminal.
+Widgets are the unit that you will be using with OpenBB Workspace.
 
 We consider something a widget when:
 
@@ -131,7 +131,7 @@ By utilizing the button on the top right corner, users are able to have access t
 
 In the world of investment research, data is king. But raw, tabular data can be overwhelming and difficult to interpret. That's where charts come in. They transform complex data sets into visual narratives, making it easier to spot trends, compare variables, and make informed decisions.
 
-With OpenBB Terminal, you can create charts directly from your tabular data in two ways.
+With OpenBB Workspace, you can create charts directly from your tabular data in two ways.
 
 1. Simply select the data you want to visualize, choose your preferred charting style, and let the software do the rest. It's a powerful tool for quants and analysts alike.
 
@@ -194,7 +194,7 @@ Did you know that you can enhance your experience by adding Notes as context to 
 
 ### Website and Iframe
 
-Often, during your research workflow, you need to browse multiple websites to extract data. The Website widget is a versatile tool that lets you embed and interact with websites directly within your dashboard, making it easy to access data from various sources all within the Terminal.
+Often, during your research workflow, you need to browse multiple websites to extract data. The Website widget is a versatile tool that lets you embed and interact with websites directly within your dashboard, making it easy to access data from various sources all within OpenBB.
 
 Please note that some websites may disable this functionality. We will automatically check and display the website only if permitted by the site owner.
 

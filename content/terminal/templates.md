@@ -1,10 +1,10 @@
 ---
 title: Templates
 sidebar_position: 23
-description: This page allows users to manage their Terminal Pro and Excel templates.
+description: This page allows users to manage their OpenBB Workspace and Excel templates.
 keywords:
 - Templates
-- Terminal Pro
+- OpenBB Workspace
 - Excel Add-in
 - Automated
 - Download
@@ -13,11 +13,11 @@ keywords:
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Templates | OpenBB Terminal Pro Docs" />
+<HeadTitle title="Templates | OpenBB Workspace Docs" />
 
 import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 
-We prepare a list of template dashboard for OpenBB Terminal for you to get started quickly.
+We've prepared a list of template dashboards for OpenBB Workspace so you can get started quickly.
 
 To see the list of templates available, click on the Template page on the top left.
 

@@ -1,7 +1,7 @@
 ---
 title: Upload Files
 sidebar_position: 11
-description: Learn how to upload both structured and unstructured data to OpenBB Terminal with just a few clicks.
+description: Learn how to upload both structured and unstructured data to OpenBB Workspace with just a few clicks.
 keywords:
 - Single Widget
 - Data Connectors
@@ -16,9 +16,9 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="File Upload| OpenBB Terminal Docs" />
+<HeadTitle title="File Upload| OpenBB Workspace Docs" />
 
-Uploading files is the easiest way to import data into Terminal. You can add one or multiple files at once, with support for formats like PDF, CSV, JSON, PNG, and JPG. Simply select your files — whether in different formats or the same — or drag them into the Add Data pop-up.
+Uploading files is the easiest way to import data into OpenBB. You can add one or multiple files at once, with support for formats like PDF, CSV, JSON, PNG, and JPG. Simply select your files — whether in different formats or the same — or drag them into the Add Data pop-up.
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
   <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/upload_file.png" />

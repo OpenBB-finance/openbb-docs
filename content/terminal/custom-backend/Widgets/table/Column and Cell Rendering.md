@@ -1,7 +1,7 @@
 ---
 title: Column and Cell Rendering
 sidebar_position: 5
-description: Learn how to configure column and cell rendering for widgets in OpenBB Terminal Pro using the widgets.json file.
+description: Learn how to configure column and cell rendering for widgets in OpenBB Workspace using the widgets.json file.
 keywords:
 - widgets.json
 - OpenBB API

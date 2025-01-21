@@ -1,7 +1,7 @@
 ---
 title: API Endpoints
 sidebar_position: 12
-description: Learn how to use the API Endpoint Widget of OpenBB Terminal for seamless
+description: Learn how to use the API Endpoint Widget of OpenBB Workspace for seamless
   integration with your APIs, enabling custom data to be fetched and displayed
   in an accessible format. Includes features like additional headers and addressing
   nested JSON data.
@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="API Endpoint | OpenBB Terminal Pro Docs" />
+<HeadTitle title="API Endpoint | OpenBB Workspace Docs" />
 
 {/* import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
@@ -27,9 +27,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
   videoLegend="Short introduction to adding a single widget"
 /> */}
 
-API endpoints are the fastest way to integrate your custom data into OpenBB Terminal Pro. This method allows you to import data via a URL or endpoint that is directly rendered into a table format providing a quick and easy way to visualize your data.
+API endpoints are the fastest way to integrate your custom data into OpenBB. This method allows you to import data via a URL or endpoint that is directly rendered into a table format providing a quick and easy way to visualize your data.
 
-Simply enter your API endpoint along with any required connection details. Once configured, you need to select the metadata and then a corresponding widget will be created. It will then dynamically load and display your data within the Terminal Pro interface.
+Simply enter your API endpoint along with any required connection details. Once configured, you need to select the metadata and then a corresponding widget will be created. It will then dynamically load and display your data within the OpenBB workspace interface.
 
 For something more custom, you should look into creating [your own backend](/terminal/custom-backend), or reach out for support.
 

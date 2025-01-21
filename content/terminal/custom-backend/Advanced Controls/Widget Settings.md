@@ -1,7 +1,7 @@
 ---
 title: Widget Settings
 sidebar_position: 5
-description: Learn how to integrate your own backend with OpenBB Terminal Pro using
+description: Learn how to integrate your own backend with OpenBB Workspace using
   the cookie-cutter or language-agnostic API approaches, with illustrative guides
   and principles for handling widget.json files, APIs, interfaces, Python, FastAPI
   and more.
@@ -14,13 +14,13 @@ keywords:
 - API implementation
 - Python
 - FastAPI
-- Terminal Pro widgets
+- Workspace widgets
 - Widget definitions
 ---
 
 # Widget Settings
 
-This guide covers the essential settings for configuring widget appearance, positioning, and data refresh behavior in OpenBB Terminal Pro.
+This guide covers the essential settings for configuring widget appearance, positioning, and data refresh behavior in OpenBB Workspace.
 
 ## Grid Dimensions
 

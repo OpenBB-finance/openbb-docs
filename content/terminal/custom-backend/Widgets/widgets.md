@@ -1,7 +1,7 @@
 ---
 title: Widgets
 sidebar_position: 4
-description: OpenBB Terminal Pro supports various ways to visualize data through widgets. Each method offers unique features and can be configured to suit different data presentation needs.
+description: OpenBB Workspace supports various ways to visualize data through widgets. Each method offers unique features and can be configured to suit different data presentation needs.
 keywords:
 - widgets.json
 - OpenBB API
@@ -11,13 +11,13 @@ keywords:
 - API implementation
 - Python
 - FastAPI
-- Terminal Pro widgets
+- Workspace widgets
 - Widget definitions
 ---
 
 # Widget Types
 
-OpenBB Terminal Pro supports various ways to visualize data through widgets. Each method offers unique features and can be configured to suit different data presentation needs. Below are the different visualization methods available:
+OpenBB Workspace supports various ways to visualize data through widgets. Each method offers unique features and can be configured to suit different data presentation needs. Below are the different visualization methods available:
 
 1. **Table Widget**:
    - Provides a structured view of data in rows and columns.

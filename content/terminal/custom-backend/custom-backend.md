@@ -1,7 +1,7 @@
 ---
 title: Custom Backend
 sidebar_position: 14
-description: Learn how to integrate your own backend with OpenBB Terminal Pro using
+description: Learn how to integrate your own backend with OpenBB Workspace using
   the cookie-cutter or language-agnostic API approaches, with illustrative guides
   and principles for handling widget.json files, APIs, interfaces, Python, FastAPI
   and more.
@@ -15,17 +15,17 @@ keywords:
 - API implementation
 - Python
 - FastAPI
-- Terminal Pro widgets
+- Workspace widgets
 - Widget definitions
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Custom backend | OpenBB Terminal Pro Docs" />
+<HeadTitle title="Custom backend | OpenBB Workspace Docs" />
 
 ## Introduction to Custom Backend
 
-The custom backend feature in OpenBB Terminal Pro allows users to integrate their own data sources and APIs into the platform. A custom backend is an API that returns JSON data with a standardized JSON configuration. This enables the creation of personalized widgets that can display data from any API. The custom backend allows users to take full advantage of the OpenBB Copilot and our interface.
+The custom backend feature in OpenBB Workspace allows users to integrate their own data sources and APIs into the platform. A custom backend is an API that returns JSON data with a standardized JSON configuration. This enables the creation of personalized widgets that can display data from any API. The custom backend allows users to take full advantage of the OpenBB Copilot and our interface.
 
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
@@ -144,7 +144,7 @@ An example structure in your backend might look like below.
 
 3. **Build Endpoints**: Develop endpoints in main.py for each widget defined in widgets.json.
 
-4. **Connect to your API**: Use the OpenBB Terminal Pro interface to connect your API. Input your main endpoint, and the system will read /widgets.json to add your widgets to OpenBB.
+4. **Connect to your API**: Use the OpenBB Workspace interface to connect your API. Input your main endpoint, and the system will read /widgets.json to add your widgets to OpenBB.
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
   <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/backend.png" />

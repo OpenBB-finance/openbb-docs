@@ -11,7 +11,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="AI Insights| OpenBB Terminal Docs" />
+<HeadTitle title="AI Insights| OpenBB Workspace Docs" />
 
 This guide provides detailed instructions on how to leverage AI on your workflow. It also includes instructions on how to bring your own Copilot
 

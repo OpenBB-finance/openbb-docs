@@ -1,7 +1,7 @@
 ---
 title: Table Example
 sidebar_position: 1
-description: Learn how to integrate your own backend with OpenBB Terminal Pro using the cookie-cutter or language-agnostic API approaches, with illustrative guides and principles for handling widget.json files, APIs, interfaces, Python, FastAPI, and more.
+description: Learn how to integrate your own backend with OpenBB Workspace using the cookie-cutter or language-agnostic API approaches, with illustrative guides and principles for handling widget.json files, APIs, interfaces, Python, FastAPI, and more.
 keywords:
 - widgets.json
 - OpenBB API
@@ -11,13 +11,13 @@ keywords:
 - API implementation
 - Python
 - FastAPI
-- Terminal Pro widgets
+- Workspace widgets
 - Widget definitions
 ---
 
 # Introduction
 
-This guide will walk you through the process of creating a table widget for OpenBB Terminal Pro. By the end of this guide, you will have a working table widget that you can add to OpenBB Terminal Pro.
+This guide will walk you through the process of creating a table widget for OpenBB Workspace. By the end of this guide, you will have a working table widget that you can add to OpenBB.
 
 ## Step 1: Set Up Your Project
 
@@ -52,7 +52,7 @@ def chains_table():
 
 ### Edit the widgets.json File
 
-Open the `widgets.json` file and add the following JSON data. This configuration defines the widget's properties and how it should be displayed in the OpenBB Terminal Pro.
+Open the `widgets.json` file and add the following JSON data. This configuration defines the widget's properties and how it should be displayed in OpenBB Workspace.
 
 ```json
 {
@@ -93,4 +93,4 @@ To further configure the columns and headers in your table you can set the `colu
 
 ## Additional Resources
 
-You can find more examples of how to set up your own backend in the [Backend for Terminal Pro GitHub](https://github.com/OpenBB-finance/backend-for-terminal-pro).
+You can find more examples of how to set up your own backend in the [Backend for OpenBB Workspace GitHub](https://github.com/OpenBB-finance/backend-for-terminal-pro).

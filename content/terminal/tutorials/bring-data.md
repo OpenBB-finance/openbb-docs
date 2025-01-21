@@ -1,10 +1,10 @@
 ---
 title: Bring your own data
 sidebar_position: -3
-description: This guide provides detailed instructions on how to import your own data into Terminal using various methods. This allows for greater flexibility and customization in data analysis.
+description: This guide provides detailed instructions on how to import your own data into OpenBB using various methods. This allows for greater flexibility and customization in data analysis.
 keywords:
 - Import data
-- Terminal
+- Workspace
 - Custom data integration
 - Data analysis
 - Data import methods
@@ -12,9 +12,9 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Bring your own data | OpenBB Terminal Docs" />
+<HeadTitle title="Bring your own data | OpenBB Workspace Docs" />
 
-In this workflow, you will bring your own data into Terminal Pro. This allows teams of quants and analysts total freedom as they are able to bring any dataset into our product.
+In this workflow, you will bring your own data into OpenBB Workspace. This allows teams of quants and analysts total freedom as they are able to bring any dataset into our product.
 
 - API endpoint
 - Files

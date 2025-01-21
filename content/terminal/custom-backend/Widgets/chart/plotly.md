@@ -1,7 +1,7 @@
 ---
 title: Plotly Charting Example
 sidebar_position: 2
-description: Learn how to integrate your own backend with OpenBB Terminal Pro using the cookie-cutter or language-agnostic API approaches, with illustrative guides and principles for handling widget.json files, APIs, interfaces, Python, FastAPI, and more.
+description: Learn how to integrate your own backend with OpenBB Workspace using the cookie-cutter or language-agnostic API approaches, with illustrative guides and principles for handling widget.json files, APIs, interfaces, Python, FastAPI, and more.
 keywords:
 - widgets.json
 - OpenBB API
@@ -11,13 +11,13 @@ keywords:
 - API implementation
 - Python
 - FastAPI
-- Terminal Pro widgets
+- Workspace widgets
 - Widget definitions
 ---
 
 # Introduction
 
-This guide will walk you through the process of creating a chart widget for OpenBB Terminal Pro. We will be using Plotly to create the chart in our example. By the end of this guide, you will have a working chart widget that you can add to OpenBB Terminal Pro.
+This guide will walk you through the process of creating a chart widget for OpenBB Workspace. We will be using Plotly to create the chart in our example. By the end of this guide, you will have a working chart widget that you can add to OpenBB.
 
 ## Step 1: Set Up Your Project
 
@@ -59,7 +59,7 @@ def get_chains():
         )
 
         # Convert the Plotly figure to JSON format for frontend rendering
-        # This is a crucial step that allows the figure to be displayed in OpenBB Terminal Pro
+        # This is a crucial step that allows the figure to be displayed in OpenBB Workspace
         return json.loads(figure.to_json())
 
     print(f"Request error {response.status_code}: {response.text}")
@@ -110,4 +110,4 @@ Once you have added your backend, you can find the widget in the `Crypto` catego
 
 ## Additional Resources
 
-You can find more examples of how to set up your own backend in the [Backend for Terminal Pro GitHub](https://github.com/OpenBB-finance/backend-for-terminal-pro).
+You can find more examples of how to set up your own backend in the [Backend for OpenBB Workspace GitHub](https://github.com/OpenBB-finance/backend-for-terminal-pro).

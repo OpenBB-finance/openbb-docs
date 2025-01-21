@@ -1,7 +1,7 @@
 ---
 title: widgets.json
 sidebar_position: 7
-description: Learn how to integrate your own backend with OpenBB Terminal Pro using
+description: Learn how to integrate your own backend with OpenBB Workspace using
   the cookie-cutter or language-agnostic API approaches, with illustrative guides
   and principles for handling widget.json files, APIs, interfaces, Python, FastAPI
   and more.
@@ -14,13 +14,13 @@ keywords:
 - API implementation
 - Python
 - FastAPI
-- Terminal Pro widgets
+- Workspace widgets
 - Widget definitions
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Widgets.json | OpenBB Terminal Pro Docs" />
+<HeadTitle title="Widgets.json | OpenBB Workspace Docs" />
 
 # Widgets.json Overview
 

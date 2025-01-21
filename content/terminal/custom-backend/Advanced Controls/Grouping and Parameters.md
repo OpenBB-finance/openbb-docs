@@ -169,7 +169,7 @@ These values can also be grouped which we will cover below.
 
 ### Grouping
 
-Widget grouping is a powerful feature that allows multiple widgets to share and respond to the same parameter input. When widgets are grouped, users only need to select a value once (such as a ticker symbol or chain name) to update all related widgets simultaneously. This is particularly useful when building dashboards where multiple widgets need to display different aspects of the same data source. OpenBB Terminal Pro automatically handles this grouping in two ways: through shared endpoint parameters and through ticker parameters. This means you don't need any additional configuration to enable grouping - simply using the same parameter types and configurations across widgets will trigger the automatic grouping behavior.
+Widget grouping is a powerful feature that allows multiple widgets to share and respond to the same parameter input. When widgets are grouped, users only need to select a value once (such as a ticker symbol or chain name) to update all related widgets simultaneously. This is particularly useful when building dashboards where multiple widgets need to display different aspects of the same data source. OpenBB Workspace automatically handles this grouping in two ways: through shared endpoint parameters and through ticker parameters. This means you don't need any additional configuration to enable grouping - simply using the same parameter types and configurations across widgets will trigger the automatic grouping behavior.
 
 1. **Endpoint Parameters**: If multiple widgets use the same `optionsEndpoint` and `endpoint` parameter configuration, they can be grouped together. This allows users to select a value once and have it apply to all related widgets. Currently, this grouping works for only the first parameter in the `params` array specified this way.
 
@@ -207,7 +207,7 @@ Example of widgets that will be automatically grouped due to shared endpoint par
 }
 ```
 
-2. **Ticker Parameters**: If multiple widgets use the same `ticker` parameter configuration, they can be grouped together. The widgets will then use the same built in security list we provide in OpenBB Terminal Pro. This allows users to select a value once and have it apply to all related widgets.
+2. **Ticker Parameters**: If multiple widgets use the same `ticker` parameter configuration, they can be grouped together. The widgets will then use the same built in security list we provide in OpenBB Workspace. This allows users to select a value once and have it apply to all related widgets.
 
 Example of widgets that will be grouped using the ticker parameter:
 

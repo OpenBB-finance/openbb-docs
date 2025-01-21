@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Leverage AI | OpenBB Terminal Docs" />
+<HeadTitle title="Leverage AI | OpenBB Workspace Docs" />
 
 This workflow is about leveraging AI to enhance your workflow. You will chat with a News article and ask it to summarize the main points, use OpenBB copilot to change the theme from light to dark or vice versa, and chat with the Earning Transcript to compare a company’s performance with the last quarter.
 

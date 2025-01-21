@@ -1,7 +1,7 @@
 ---
 title: OpenBB Copilot
 sidebar_position: 8
-description: Learn how to use OpenBB Copilot to interact with the OpenBB Terminal Pro
+description: Learn how to use OpenBB Copilot to interact with the OpenBB Workspace
 keywords:
 - OpenBB Copilot
 - copilot
@@ -14,10 +14,10 @@ keywords:
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 import ReactPlayer from 'react-player'
 
-<HeadTitle title="Copilot | OpenBB Terminal Docs" />
+<HeadTitle title="Copilot | OpenBB Workspace Docs" />
 
-OpenBB Copilot is your AI companion that helps you interact with the OpenBB
-Terminal, and perform a wide variety of research and analysis tasks.
+OpenBB Copilot is your AI companion that helps you interact with OpenBB
+Workspace, and perform a wide variety of research and analysis tasks.
 
 With OpenBB Copilot, you can:
 
@@ -34,7 +34,7 @@ With OpenBB Copilot, you can:
 ## Introduction
 
 To use OpenBB Copilot, click on the purple icon located at the center right of the
-Terminal screen:
+Workspace screen:
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
 <img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/open_copilot.jpg" alt="open openbb copilot" width="70%" height="70%" />
@@ -43,7 +43,7 @@ Terminal screen:
 Under most circumstances, you can treat OpenBB Copilot like a personal research
 assistant. OpenBB Copilot has access to the widgets (including your uploaded
 files) on your currently-active dashboard, the OpenBB API and any custom backend
-endpoints you have added to OpenBB Terminal. 
+endpoints you have added to OpenBB Workspace. 
 
 By utilizing all of these sources of data, OpenBB Copilot can assist you in
 performing a wide variety of research and analysis tasks.
@@ -170,7 +170,7 @@ Sometimes, you might need to be more specific with your query when you want
 Copilot to use one or more widgets from your dashboard, since vague queries
 might lead OpenBB Copilot to retrieve the data automatically from all of the
 available data sources it has access to (See more about this capability in the
-[Automatically using data sources available to OpenBB Terminal](#automatically-using-data-sources-available-to-openbb-terminal) section
+[Automatically using data sources available to OpenBB Workspace](#automatically-using-data-sources-available-to-openbb-terminal) section
 below).
 
 To remedy this, simply add a phrase such as "Use the widgets on my dashboard" to
@@ -210,13 +210,13 @@ filenames. For example, if you have a technical report from Tesla released in
 
 :::
 
-### Automatically using data sources available to OpenBB Terminal
+### Automatically using data sources available to OpenBB Workspace
 
 OpenBB Copilot can also access external data sources to provide additional
 insights. This allows you to ask questions that go beyond the data displayed on
 your dashboard.
 
-External data can be retrieved from all data sources available to the Terminal,
+External data can be retrieved from all data sources available to OpenBB,
 including the OpenBB API (which powers first-party widgets), and any custom
 backend endpoints that you have added.
 

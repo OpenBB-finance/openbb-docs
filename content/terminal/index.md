@@ -1,7 +1,7 @@
 ---
 title: Overview
 sidebar_position: -1
-description: OpenBB Terminal offers advanced investment research capabilities
+description: OpenBB Workspace offers advanced investment research capabilities
   with powerful features like high-quality financial data, customizability, collaborative
   tools, generative AI, and more.
 keywords:
@@ -23,7 +23,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="OpenBB Terminal Docs" />
+<HeadTitle title="OpenBB Workspace Docs" />
 
 OpenBB introduces the first AI-powered Research and Analytics workspace.
 

@@ -1,7 +1,7 @@
 ---
 title: Tutorials
 sidebar_position: -1
-description: Learn about common workflows that you can do with the OpenBB Terminal Pro.
+description: Learn about common workflows that you can do with the OpenBB Workspace.
 keywords:
 - workflows
 - AI
@@ -11,7 +11,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Tutorials | OpenBB Terminal Docs" />
+<HeadTitle title="Tutorials | OpenBB Workspace Docs" />
 
 import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 
@@ -19,25 +19,25 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 
 <NewReferenceCard
     title="Bring your own data"
-    description="This guide provides detailed instructions on how to import your own data into Terminal Pro using various methods. This allows for greater flexibility and customization in data analysis."
+    description="This guide provides detailed instructions on how to import your own data into OpenBB using various methods. This allows for greater flexibility and customization in data analysis."
     url="/terminal/tutorials/bring-data"
 />
 
 <NewReferenceCard
     title="Customizability"
-    description="Learn how to customize your Terminal Pro experience to suit your specific needs and preferences."
+    description="Learn how to customize your Workspace experience to suit your specific needs and preferences."
     url="/terminal/tutorials/customizability"
 />
 
 <NewReferenceCard
     title="AI Insights"
-    description="Discover how to leverage AI-powered insights to enhance your analysis and decision-making process in Terminal Pro."
+    description="Discover how to leverage AI-powered insights to enhance your analysis and decision-making process in OpenBB."
     url="/terminal/tutorials/ai-insights"
 />
 
 <NewReferenceCard
     title="Earnings Update"
-    description="Learn how to efficiently track and analyze earnings updates for your selected companies using Terminal Pro."
+    description="Learn how to efficiently track and analyze earnings updates for your selected companies using OpenBB Workspace."
     url="/terminal/tutorials/earnings-update"
 />
 
@@ -49,7 +49,7 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 
 <NewReferenceCard
     title="Create a custom report"
-    description="In this guide, learn how to create a custom report using OpenBB Terminal Pro, including creating a new dashboard, adding widgets, creating a group, and exporting to PDF."
+    description="In this guide, learn how to create a custom report using OpenBB Workspace, including creating a new dashboard, adding widgets, creating a group, and exporting to PDF."
     url="/terminal/tutorials/report"
 />
 
@@ -61,7 +61,7 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 
 <NewReferenceCard
     title="Charts from raw data"
-    description="In this guide, learn how to build your own charts from raw data using OpenBB Terminal Pro. You will create a chart to visualize the EBITDA ratio trends over the past 5 years using the Income Statement widget, update the Chart title, and download the Chart to PNG."
+    description="In this guide, learn how to build your own charts from raw data using OpenBB Workspace. You will create a chart to visualize the EBITDA ratio trends over the past 5 years using the Income Statement widget, update the Chart title, and download the Chart to PNG."
     url="/terminal/tutorials/data-to-charts"
 />
 

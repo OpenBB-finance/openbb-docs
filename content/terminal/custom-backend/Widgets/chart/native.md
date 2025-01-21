@@ -1,7 +1,7 @@
 ---
 title: Native Charting Example
 sidebar_position: 2
-description: Learn how to integrate your own backend with OpenBB Terminal Pro using cookie-cutter or language-agnostic API approaches. This guide includes illustrative examples and principles for handling `widget.json` files, APIs, interfaces, Python, FastAPI, and more.
+description: Learn how to integrate your own backend with OpenBB Workspace using cookie-cutter or language-agnostic API approaches. This guide includes illustrative examples and principles for handling `widget.json` files, APIs, interfaces, Python, FastAPI, and more.
 keywords:
 - widgets.json
 - OpenBB API
@@ -11,12 +11,12 @@ keywords:
 - API implementation
 - Python
 - FastAPI
-- Terminal Pro widgets
+- Workspace widgets
 - Widget definitions
 ---
 # Introduction
 
-This guide will walk you through the process of creating a simple chart widget using the native charting already available in OpenBB Terminal Pro.
+This guide will walk you through the process of creating a simple chart widget using the native charting already available in OpenBB Workspace.
 
 Any table widget can be converted to a chart widget by adding the `chartView` property to the `table` section - this allows you to seamlessly switch between table and chart views.
 

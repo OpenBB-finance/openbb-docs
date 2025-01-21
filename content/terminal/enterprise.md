@@ -4,16 +4,16 @@ sidebar_position: 1
 description: test
 keywords:
 - Simple research
-- OpenBB Terminal Pro
+- OpenBB Workspace
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Enterprise | OpenBB Terminal Pro Docs" />
+<HeadTitle title="Enterprise | OpenBB Workspace Pro Docs" />
 
 Our product offers two different plans:
-    - **OpenBB Terminal** - Free version for individuals
-    - **OpenBB Terminal Pro** - Enterprise for teams and professionals
+    - **OpenBB Workspace** - Free version for individuals
+    - **OpenBB Enterprise** - Our offering for teams and professionals
 
 The products, features and services that come with an enterprise are highlighted below.
 

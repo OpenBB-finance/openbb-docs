@@ -1,22 +1,22 @@
 ---
 title: Open Source Platform Integration
 sidebar_position: 15
-description: Learn how to integrate the OpenBB Platform data to the OpenBB Terminal
+description: Learn how to integrate the OpenBB Platform data to OpenBB Workspace
 keywords:
 - widgets.json
 - OpenBB API
 - Endpoint integration
 - widget configuration
-- Terminal Pro widgets
+- Workspace widgets
 - OpenBB Platform Installer
 - Widget filtering
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Open source platform integration | OpenBB Terminal Pro Docs" />
+<HeadTitle title="Open source platform integration | OpenBB Workspace Docs" />
 
-This section will highlight how you can run the [OpenBB Platform](https://github.com/OpenBB-finance/OpenBB) locally and integrate 350+ different datasets into the OpenBB Terminal in under 5 minutes.
+This section will highlight how you can run the [OpenBB Platform](https://github.com/OpenBB-finance/OpenBB) locally and integrate 350+ different datasets into the OpenBB Workspace in under 5 minutes.
 
 If you want to learn more about the open source platform, check [our documentation](https://docs.openbb.co/platform).
 
@@ -47,7 +47,7 @@ Select the right installer based on your OS and architecture. Then install it.
 
 ![image-2-e88086c0317861808057d4dcbd47f93d](https://github.com/user-attachments/assets/baba4613-8253-431c-bce2-f9764533de41)
 
-3. A terminal popup should be initiated, and you will be prompted to insert your personal access token (PAT), which can be retrieved from [here](https://my.openbb.co/app/platform/pat).
+3. A popup should be initiated, and you will be prompted to insert your personal access token (PAT), which can be retrieved from [here](https://my.openbb.co/app/platform/pat).
 
 ![image](https://github.com/user-attachments/assets/43ac8f94-a0ce-4c38-9589-94d03322cfd7)
 
@@ -59,7 +59,7 @@ Note: This assumes that the user has spent time setting up their API keys [here]
 
 ![image-3-89f316d9153aa91e108cebf5cf718609](https://github.com/user-attachments/assets/5015a675-7953-4807-98d2-94cdc041fd64)
 
-5. Finally, you simply need to set up the custom backend on Terminal Pro.
+5. Finally, you simply need to set up the custom backend on OpenBB Workspace.
 
 :::note
 If you are using Brave/Safari you will need an HTTPS connection - see how [here](https://docs.openbb.co/pro/custom-backend#frequently-asked-questions)
@@ -71,7 +71,7 @@ If you are using Brave/Safari you will need an HTTPS connection - see how [here]
 
 ![img](https://github.com/user-attachments/assets/770e6d6c-6cd7-4073-a874-af0850f404cc)
 
-6. Voila. You are now ready to access 350+ data widgets from your OpenBB Terminal. For free.
+6. Voila. You are now ready to access 350+ data widgets from your OpenBB. For free.
 
 ![image](https://github.com/user-attachments/assets/a48eb08c-6536-43c6-a055-0e46082c14c8)
 
@@ -109,9 +109,9 @@ You are now ready to access this data on your phone, just ensure that you keep r
 
 ## Advanced - Filter widgets
 
-If you run the steps above, you will have access to a dozen different data vendors and hundreds of different widgets. However, some of these may not work because you haven't set up the API key for the data vendor or you may not be interested to bring some of those widgets into your OpenBB Terminal.
+If you run the steps above, you will have access to a dozen different data vendors and hundreds of different widgets. However, some of these may not work because you haven't set up the API key for the data vendor or you may not be interested to bring some of those widgets into your OpenBB Workspace.
 
-This section will explore how you can filter the platform integration datasets that are made available on the Terminal.
+This section will explore how you can filter the platform integration datasets that are made available on OpenBB.
 
 1. Go to the [widgets filter page](https://my.openbb.co/app/platform/widgets) where you can set the data vendors you are interested and also select the widgets within. Once you are happy you can download the `widget_settings.json` configuration file by clicking on **Download**.
 

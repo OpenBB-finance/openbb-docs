@@ -1,7 +1,7 @@
 ---
 title: Charting
 sidebar_position: 2
-description: Learn how to integrate your own backend with OpenBB Terminal Pro using the cookie-cutter or language-agnostic API approaches, with illustrative guides and principles for handling widget.json files, APIs, interfaces, Python, FastAPI, and more.
+description: Learn how to integrate your own backend with OpenBB Workspace using the cookie-cutter or language-agnostic API approaches, with illustrative guides and principles for handling widget.json files, APIs, interfaces, Python, FastAPI, and more.
 keywords:
 - widgets.json
 - OpenBB API
@@ -11,13 +11,13 @@ keywords:
 - API implementation
 - Python
 - FastAPI
-- Terminal Pro widgets
+- Workspace widgets
 - Widget definitions
 ---
 
 # Introduction
 
-Currently, OpenBB Terminal Pro supports two types of charts for the custom backends. Check out the examples below to see how to create them.
+Currently, OpenBB Workspace supports two types of charts for the custom backends. Check out the examples below to see how to create them.
 
 - [Native charts](/content/terminal/custom-backend/Widgets/chart/native.md)
 

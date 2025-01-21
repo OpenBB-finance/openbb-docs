@@ -1,9 +1,9 @@
 ---
 title: Charts from raw data
 sidebar_position: 4
-description: In this guide, learn how to build your own charts from raw data using OpenBB Terminal. You will create a chart to visualize the EBITDA ratio trends over the past 5 years using the Income Statement widget, update the Chart title, and download the Chart to PNG.
+description: In this guide, learn how to build your own charts from raw data using OpenBB Workspace. You will create a chart to visualize the EBITDA ratio trends over the past 5 years using the Income Statement widget, update the Chart title, and download the Chart to PNG.
 keywords:
-- OpenBB Terminal Pro
+- OpenBB Workspace
 - Build charts
 - Raw data
 - EBITDA ratio trends
@@ -14,9 +14,9 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Charts from raw data | OpenBB Terminal Docs" />
+<HeadTitle title="Charts from raw data | OpenBB Workspace Docs" />
 
-In this workflow, you will create a chart to visualize the EBITDA ratio trends over the past 5 years using the Income Statement widget. You will then update the Chart title to your liking and download the Chart to PNG. This allows you to leverage Excel-like capabilities right from the OpenBB Terminal Pro.
+In this workflow, you will create a chart to visualize the EBITDA ratio trends over the past 5 years using the Income Statement widget. You will then update the Chart title to your liking and download the Chart to PNG. This allows you to leverage Excel-like capabilities right from the OpenBB Workspace.
 
 - Create a chart to visualize the EBITDA ratio trends over the past 5 years in the Income Statement widget
 - Update the Chart title to your liking
