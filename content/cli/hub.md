@@ -73,7 +73,7 @@ The CLI will need to be restarted, or refreshed, when changes are made on the Hu
 
 ## Theme Styles
 
-Theme styles correspond to the ability to change the terminal "skin" (i.e. coloring of the `menu`, `commands`, `data source`, `parameters`, `information` and `help`), as well as the chart and table styles.
+Theme styles correspond to the ability to change the "skin" (i.e. coloring of the `menu`, `commands`, `data source`, `parameters`, `information` and `help`), as well as the chart and table styles.
 
 In the OpenBB Hub, you can select the text colours for the CLI. After customizing:
 - Download the theme to your styles directory (`/home/your-user/OpenBBUserData/styles/user`).
