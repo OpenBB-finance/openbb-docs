@@ -50,7 +50,7 @@ This is a known Excel issue. Currently, there is no definitive fix for the probl
 </details>
 
 <details>
-<summary mdxType="summary">Cannot retrieve the data added to Terminal Pro through custom backend using OBB.BYOD</summary>
+<summary mdxType="summary">Cannot retrieve the data added to OpenBB Workspace through custom backend using OBB.BYOD</summary>
 
 - Make sure your backend is running and accessible
 - If you are using Mac or Safari make sure your backend is using HTTPS and has a valid SSL certificate
