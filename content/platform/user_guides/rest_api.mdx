@@ -36,6 +36,10 @@ Activate the Python environment and then start the server from a Terminal comman
 uvicorn openbb_core.api.rest_api:app
 ```
 
+:::info
+See [User Settings & Environment Variables](/platform/settings_and_environment_variables#uvicorn) for details on configuring settings in `system_settings.json`
+:::
+
 You can add arguments that are supported by `uvicorn` to customize how the API is launched.
 For example this command will be useful if you are developing. It will launch the API in a way it's reachable on your local network and reload every time the code changes:
 
@@ -64,7 +68,7 @@ The API Docs provide interactive descriptions of all available endpoints that yo
 
 The API keys to your data providers are loaded from the `~/.openbb_platform/user_settings.json` file.
 
-You can find more information about the structure of the file and environment variables in the [Local Environment](/platform/getting_started/api_keys) section.
+You can find more information about the structure of the file and environment variables in the [Local Environment](/platform/api_keys) section.
 
 </details>
 
@@ -107,6 +111,11 @@ response.json()
 
 
 ## Advanced API Settings
+
+:::info
+See [User Settings & Environment Variables](/platform/settings_and_environment_variables#api-settings) for details on configuring settings in `system_settings.json`
+:::
+
 
 <details>
 
