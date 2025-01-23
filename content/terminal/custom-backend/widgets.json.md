@@ -1,6 +1,6 @@
 ---
 title: widgets.json
-sidebar_position: 13
+sidebar_position: 7
 description: Learn how to integrate your own backend with OpenBB Terminal Pro using
   the cookie-cutter or language-agnostic API approaches, with illustrative guides
   and principles for handling widget.json files, APIs, interfaces, Python, FastAPI
@@ -22,9 +22,31 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Widgets.json | OpenBB Terminal Pro Docs" />
 
-The `widgets.json` file is the bridge between your backend and OpenBB Terminal widgets. Each entry in this file will directly map to a widget in the app. You can find examples [here](https://github.com/OpenBB-finance/backend-for-terminal-pro/tree/main).
+# Widgets.json Overview
 
-Below are all of the values you can set along with a description for each.
+The `widgets.json` file is your configuration file that connects custom backend data to the widgets displayed in the application. Key components include:
+
+- **Basic Information**: Defines the widget's name, description, and API endpoint that the data comes from.
+- **Metadata**: Provide categories for organization and AI enhancement.
+- **Display Settings**: Specifies widget type and grid dimensions.
+- **Data Configuration**:  Details table and chart settings, including column level information and data types.
+- **Parameters**: Details query parameters that can be passed to the API endpoint for customization.
+
+Each entry in this file will directly map to a widget in the app. You can find example backends [here](https://github.com/OpenBB-finance/backend-for-terminal-pro/tree/main), where each folder contains a `widgets.json` file specifying the available widgets.
+
+Below are all of the configurable fields and their descriptions. When you see a period in a field name (like `data.table.chartView.chartType`), it represents nested JSON objects. For example:
+
+```json
+{
+  "data": {
+    "table": {
+      "chartView": {
+        "chartType": "column"
+      }
+    }
+  }
+}
+```
 
 | Name                           | **Type**                     | **Description**                                                                                                                                         |
 |------------------------------------|------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -33,13 +55,13 @@ Below are all of the values you can set along with a description for each.
 | endpoint                         | `string` (required)          | The backend API endpoint for retrieving data. Example: `"chains"`. Possible values: Any valid API endpoint path as a string.                         |
 | category                         | `string`                     | The category for organizing widgets. Example: `"crypto"`. Possible values: Any string representing a category.                                      |
 | subCategory                      | `string`                     | Secondary category for refining search results. Example: `"fundamentals"`.                                   |
-| type                           | `string`                     | Default visualization type for the widget. Possible values: `"chart"`, `"table"`. Default: `"table"`.                                                |
+| type                           | `string`                     | Default visualization type for the widget. Possible values: `"chart"`, `"table"`, `"markdown"`, `"metric"`, `"note"`. Default: `"table"`.                                                |
 | gridData.w                       | `number`                     | The width of the widget in grid units. Example: `20`. Possible values: Any positive integer. Maximum value : `40`                                    |
 | gridData.h                       | `number`                     | The height of the widget in grid units. Example: `9`. Possible values: Any positive integer. Maximum value : `100`                                  |
 | data.dataKey                     | `string`                     | A key to identify the data within the widget. Example: `"customDataKey"`. Possible values: Any string representing a data key.                       |
 | data.table.enableCharts          | `boolean`                    | Enables chart visualization for table data. Example: `true`. Possible values: `true`, `false`.                                                      |
 | data.table.showAll               | `boolean`                    | Displays all available data in the table. Example: `true`. Possible values: `true`, `false`.                                                        |
-| data.table.chartView.enabled     | `boolean`                    | Sets the chart view as the default view. Example: `true`. Possible values: `true`, `false`.                                                         |
+| data.table.chartView.enabled     | `boolean`                    | Sets the chart view as the default view. Only set with a `type` of `"table"`. Example: `true`. Possible values: `true`, `false`.                                                         |
 | data.table.chartView.chartType   | `string`                     | Specifies the type of chart to display. Example: `"column"`. Possible values: [ChartView chart types](#chartview-chart-types)                       |
 | data.table.columnsDefs           | `object[]`                   | A list of the column definitions to be configured for the widget.                                                                                   |
 | data.table.columnsDefs.field     | `string`                     | The name of the field from the JSON data. Example: `"column1"`. Possible values: Any string matching a key in the data source.                       |
@@ -47,7 +69,8 @@ Below are all of the values you can set along with a description for each.
 | data.table.columnsDefs.chartDataType | `string`                 | Specifies how data is treated in a chart. Example: `"category"`. Possible values: `"category"`, `"series"`, `"time"`, `"excluded"`.                |
 | data.table.columnsDefs.cellDataType | `string`                  | Specifies the data type of the cell. Example: `"text"`. Possible values: `"text"`, `"number"`, `"boolean"`, `"date"`, `"dateString"`, `"object"`.   |
 | data.table.columnsDefs.formatterFn | `string`                   | Specifies how to format the data. Example: `"int"`. Possible values: [`formatterFn`](#formatterfn)                                                  |
-| data.table.columnsDefs.renderFn  | `string`                     | Specifies a rendering function for cell data. Example: `"titleCase"`. Possible values: `"greenRed"`, `"titleCase"`.                                 |
+| data.table.columnsDefs.renderFn  | `string`                     | Specifies a rendering function for cell data. Example: `"titleCase"`. Possible values: `"greenRed"`, `"cellOnClick"`, `"titleCase"`.                                 |
+| data.table.columnsDefs.renderFnParams | `object`                  | Required if `renderFn` cellOnClick is used. Specifies the parameters for the render function. Example: `{"actionType": "groupBy"}`.                                 |
 | data.table.columnsDefs.width     | `number`                     | Specifies the width of the column in pixels. Example: `100`. Possible values: Any positive integer.                                                 |
 | data.table.columnsDefs.maxWidth  | `number`                     | Specifies the maximum width of the column in pixels. Example: `200`. Possible values: Any positive integer.                                         |
 | data.table.columnsDefs.minWidth  | `number`                     | Specifies the minimum width of the column in pixels. Example: `50`. Possible values: Any positive integer.                                          |
@@ -70,7 +93,7 @@ Below are all of the values you can set along with a description for each.
 
 ## Example widgets.json
 
-Below is an example `widgets.json` with a single widget defined. This widget will default to a column chart but have the ability to switch between a table and chart view.
+Below is an example `widgets.json` with a single widget defined. This widget will default to a column chart but have the ability to switch between a table and chart view.  The widget will have a start date parameter, a ticker parameter, and a colors parameter, all of which will be able to be selected on the widget in the application.
 
 ```json
 {
@@ -229,49 +252,3 @@ If you don't want to set a date you can omit the value parameter or pass ```null
 - `normalized`: Multiplies the number by 100.
 - `normalizedPercent`: Multiplies the number by 100 and adds `%` (e.g., `0.5` becomes `50 %`).
 - `dateToYear`: Converts a date to just the year.
-
-## optionsEndpoint
-
-This is used to fetch options for a parameter. This is only available if the parameter type is `"endpoint"`.
-
-This endpoint should return a list of strings or a list of objects with `label` and `value` properties. This will be used to populate the dropdown options for the parameter.
-
-An example of how to implement this in your backend can be found below:
-
-```python
-@app.get("/get_chains_list")
-def get_chains_list():
-    """Get list of chains using Defi LLama"""
-    response = requests.get("https://api.llama.fi/v2/chains")
-
-    if response.status_code == 200:
-        data = response.json()
-        # can pass as list of {label, value} for dropdown or list of strings
-        #  [
-        #   {"label": chain.get("name"), "value": chain.get("name")}
-        #   for chain in data if chain.get("name")
-        #  ]
-        return [chain.get("name") for chain in data if chain.get("name")]
-
-    print(f"Request error {response.status_code}: {response.text}")
-    return JSONResponse(
-        content={"error": response.text}, status_code=response.status_code
-    )
-```
-
-This endpoint can now be used in the `widgets.json` file as follows in another widget parameter:
-
-```jsonc
-    "params": [
-      {
-        "paramName": "chain",
-        "description": "Select a chain to get historical TVL",
-        "value": "Ethereum",
-        "label": "Chain",
-        "type": "endpoint",
-        "optionsEndpoint": "get_chains_list"
-      }
-    ]
-```
-
-Now when the user selects the dropdown on the widget they configured, the `get_chains_list` endpoint will be called and the options will be populated in the dropdown.

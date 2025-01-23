@@ -114,22 +114,6 @@ In a macOS `zsh` Terminal shell, add quotation marks around the library name.
 `"openbb[all]"`
 :::
 
-To install a single extension:
-
-```console
-pip install openbb-charting
-```
-
-```console
-pip install openbb-technical
-```
-
-Or install a single provider:
-
-```console
-pip install openbb-yfinance
-```
-
 From your python interpreter, import the OpenBB Platform:
 
 ```console
@@ -154,7 +138,30 @@ Currently if you wish to have the bare-bones openbb package with no extensions o
 pip install openbb-core && pip install openbb --no-deps
 ```
 
+To install single extensions:
+
+```console
+pip install openbb-charting
+```
+
+```console
+pip install openbb-technical
+```
+
+Or install a single provider:
+
+```console
+pip install openbb-yfinance
+```
+
+Providers are fully functional by themselves, but the interface routes are only added when the router extensions are installed.
+
+```console
+pip install openbb-equity openbb-index openbb-derivatives
+```
+
 :::
+
 
 To update the package:
 
