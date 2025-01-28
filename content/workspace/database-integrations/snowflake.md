@@ -2,7 +2,7 @@
 title: Snowflake
 sidebar_position: 1
 description: Get in-depth documentation on Native Integrations provided by OpenBB
-  Terminal Pro including API key connections to data providers and database/warehouse
+  Pro including API key connections to data providers and database/warehouse
   connections for an enhanced data analysis experience.
 keywords:
 - Native Integrations
@@ -16,7 +16,7 @@ keywords:
 ---
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Snowflake | OpenBB Terminal Pro Docs" />
+<HeadTitle title="Snowflake | OpenBB Pro Docs" />
 
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 

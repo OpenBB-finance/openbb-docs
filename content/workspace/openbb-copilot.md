@@ -171,7 +171,7 @@ Sometimes, you might need to be more specific with your query when you want
 Copilot to use one or more widgets from your dashboard, since vague queries
 might lead OpenBB Copilot to retrieve the data automatically from all of the
 available data sources it has access to (See more about this capability in the
-[Automatically using data sources available to OpenBB Workspace](#automatically-using-data-sources-available-to-openbb-terminal) section
+[Automatically using data sources available to OpenBB Workspace](#automatically-using-data-sources-available-to-openbb-workspace) section
 below).
 
 To remedy this, simply add a phrase such as "Use the widgets on my dashboard" to

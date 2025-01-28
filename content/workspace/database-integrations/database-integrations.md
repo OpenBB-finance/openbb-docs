@@ -15,7 +15,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 
-The OpenBB native integrations allows you to connect to Snowflake, MySQL, or SQLite databases directly. You can run any query against your database directly from OpenBB Workspace.
+OpenBB native integrations allows you to connect to Snowflake, MySQL, or SQLite databases directly. You can run any query against your database directly from OpenBB Workspace.
 
 1. **Install our Client**: Download our free client for [Mac](https://openbb-installers.s3.amazonaws.com/data_connector_0.0.2.dmg) or [Windows](https://openbb-installers.s3.amazonaws.com/OpenBB+Data+Connector_0.0.2_x64_en-US.msi) to get started.
 
@@ -30,7 +30,7 @@ The OpenBB native integrations allows you to connect to Snowflake, MySQL, or SQL
 <NewReferenceCard
     title="Snowflake"
     description=""
-    url="/terminal/database-integrations/snowflake"
+    url="/workspace/database-integrations/snowflake"
 />
 
 </ul> -->

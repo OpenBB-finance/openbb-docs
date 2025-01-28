@@ -26,7 +26,7 @@ To get started, create the main application file and the widget configuration fi
 - `main.py`: This file will contain your FastAPI application code.
 - `widgets.json`: This file will define the configuration for your widget.
 
-The backend will use the same FastAPI setup and structure as described in the [Custom Backend](/content/terminal/custom-backend/custom-backend.md) page.
+The backend will use the same FastAPI setup and structure as described in the [Custom Backend](/content/workspace/custom-backend/custom-backend.md) page.
 
 ## Step 2: Create your Table Endpoint
 

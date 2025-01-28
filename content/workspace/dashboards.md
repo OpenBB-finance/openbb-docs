@@ -110,7 +110,7 @@ This is how the Report will look.
 
 This is an enterprise-only feature.
 
-We allow users to share dashboards with anyone in your company. By right clicking on any dashboard you can click the "Share" button. This will bring up the dialog below which will let you search for a user in your company to share with. If they don't have access to OpenBB Terminal Pro an email will be sent to them.
+We allow users to share dashboards with anyone in your company. By right clicking on any dashboard you can click the "Share" button. This will bring up the dialog below which will let you search for a user in your company to share with. If they don't have access to OpenBB Pro an email will be sent to them.
 
 <img className="pro-border-gradient" width="388" alt="dashboard sharing" src="https://openbb-assets.s3.amazonaws.com/docs/pro/share-menu.png" />
 

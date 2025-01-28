@@ -10,7 +10,7 @@ keywords:
 - global commands
 - command recording
 - routine script
-- terminal main menu
+- workspace main menu
 - exe --file
 - OpenBBUserData
 - routines folder
