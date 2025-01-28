@@ -13,7 +13,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 ## Requirements
 - The OpenBB Add-in for Excel is available on the following platforms: Windows (Microsoft 365), Mac (Microsoft 365), Excel on the web.
-- Access to the OpenBB Terminal Pro. If you don't have access you can sign up for the waitlist [here](https://my.openbb.co/app/pro).
+- Access to OpenBB Workspace. If you don't have access you can sign up [here](https://my.openbb.co/app/pro).
 
 ## Installation
 

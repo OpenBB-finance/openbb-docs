@@ -15,7 +15,7 @@ The final website can be found at [https://docs.openbb.co](https://docs.openbb.c
 │   ├── platform
 │   ├── pro
 │   ├── sdk
-│   └── terminal
+│   └── workspace
 ...
 ├── scripts
 │   ├── generate_excel_markdown.py

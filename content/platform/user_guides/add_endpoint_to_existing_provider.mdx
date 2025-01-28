@@ -131,7 +131,7 @@ The rule must be clearly communicated and each provider's output should be verif
 We're going to map this new endpoint in the interface to, `obb.currency.snapshots()`. We'll name the model accordingly, `CurrencySnapshots`, and create a file, `currency_snapshots.py`. The file should be created here:
 
 ```console
-~/OpenBBTerminal/openbb_platform/core/openbb_core/provider/standard_models/
+~/OpenBB/openbb_platform/core/openbb_core/provider/standard_models/
 ```
 
 The first line of the file should be a docstring, the second line should be empty, and the import statements follow.
@@ -312,7 +312,7 @@ Sample output data from the source is pasted below, and we can see that there ar
 We need to create a new file in the FMP provider extension. This will have the same name as our standard model.
 
 ```console
-~/OpenBBTerminal/openbb_platform/providers/fmp/openbb_fmp/models/currency_snapshots.py
+~/OpenBB/openbb_platform/providers/fmp/openbb_fmp/models/currency_snapshots.py
 ```
 
 The first line in the file will always be a docstring, with the import statements beginning below an empty line.
@@ -499,7 +499,7 @@ class FMPCurrencySnapshotsFetcher(
 
 The last four code blocks combined are the entire contents of the new provider model file.
 
-Next, open `~/OpenBBTerminal/openbb_platform/providers/fmp/openbb_fmp/__init__.py`, import the new model, and map it in the Provider class.
+Next, open `~/OpenBB/openbb_platform/providers/fmp/openbb_fmp/__init__.py`, import the new model, and map it in the Provider class.
 
 Step 3 is now done.
 
@@ -510,7 +510,7 @@ Step 3 is now done.
 To use our new function, we need to create a router command. The currency router is located here:
 
 ```python
-~/OpenBBTerminal/openbb_platform/extensions/currency/openbb_currency/currency_router.py
+~/OpenBB/openbb_platform/extensions/currency/openbb_currency/currency_router.py
 ```
 
 It's as simple as copying and pasting the function above and modifying details to suit.
@@ -583,7 +583,7 @@ We'll need to create a unit test for the FMP provider, and then integration test
 This is located in the `openbb-fmp` extension:
 
 ```console
-~/OpenBBTerminal/openbb_platform/providers/fmp/tests/test_fmp_fetchers.py
+~/OpenBB/openbb_platform/providers/fmp/tests/test_fmp_fetchers.py
 ```
 
 - Import the new fetcher with the rest of the imports (keep them alphabetically sorted).
@@ -608,7 +608,7 @@ def test_fmp_currency_snapshots_fetcher(credentials=test_credentials):
 This will generate a new file:
 
 ```console
-~/OpenBBTerminal/openbb_platform/providers/fmp/tests/record/test_fmp_currency_snapshots_fetcher.yaml
+~/OpenBB/openbb_platform/providers/fmp/tests/record/test_fmp_currency_snapshots_fetcher.yaml
 ```
 
 Check the file for any obvious errors, like a bad HTTP request status code.
@@ -622,7 +622,7 @@ The Python interface and Fast API each require a new integration test. Again, em
 Open the file below, and go to the last test in the file.
 
 ```console
-~/OpenBBTerminal/openbb_platform/extensions/currency/integration/test_currency_api.py
+~/OpenBB/openbb_platform/extensions/currency/integration/test_currency_api.py
 ```
 
 We can copy this one:
@@ -675,7 +675,7 @@ def test_currency_snapshots(params, headers):
 The `@parameterize` section can be copied directly to the Python integration test.
 
 ```console
-~/OpenBBTerminal/openbb_platform/extensions/currency/integration/test_currency_python.py
+~/OpenBB/openbb_platform/extensions/currency/integration/test_currency_python.py
 ```
 
 ```python
@@ -729,19 +729,19 @@ Fix all items, and valid fixes for `pylint` can be disabling on that line. It wo
 
 Here are all the files we touched in this process:
 
-- `/OpenBBTerminal/openbb_platform/core/openbb_core/provider/standard_models/currency_snapshots.py`
-- `/OpenBBTerminal/openbb_platform/providers/fmp/openbb_fmp/models/currency_snapshots.py`
-- `/OpenBBTerminal/openbb_platform/providers/fmp/tests/test_fmp_fetchers.py`
-- `/OpenBBTerminal/openbb_platform/providers/fmp/tests/record/test_fmp_currency_snapshots_fetcher.yaml`
-- `/OpenBBTerminal/openbb_platform/extensions/currency/openbb_currency/currency_router.py`
-- `/OpenBBTerminal/openbb_platform/extensions/currency/integration/test_currency_api.py`
-- `/OpenBBTerminal/openbb_platform/extensions/currency/integration/test_currency_python.py`
-- `/OpenBBTerminal/openbb_platform/openbb/assets/module_map.json`
-- `/OpenBBTerminal/openbb_platform/openbb/package/currency.py`
+- `/OpenBB/openbb_platform/core/openbb_core/provider/standard_models/currency_snapshots.py`
+- `/OpenBB/openbb_platform/providers/fmp/openbb_fmp/models/currency_snapshots.py`
+- `/OpenBB/openbb_platform/providers/fmp/tests/test_fmp_fetchers.py`
+- `/OpenBB/openbb_platform/providers/fmp/tests/record/test_fmp_currency_snapshots_fetcher.yaml`
+- `/OpenBB/openbb_platform/extensions/currency/openbb_currency/currency_router.py`
+- `/OpenBB/openbb_platform/extensions/currency/integration/test_currency_api.py`
+- `/OpenBB/openbb_platform/extensions/currency/integration/test_currency_python.py`
+- `/OpenBB/openbb_platform/openbb/assets/module_map.json`
+- `/OpenBB/openbb_platform/openbb/package/currency.py`
 
 ### Install Pre-Commit Hooks
 
-The pre-commit hooks will run the testing suite locally before the commit is made. Install them from the root of the GitHub project folder, `OpenBBTerminal`.
+The pre-commit hooks will run the testing suite locally before the commit is made. Install them from the root of the GitHub project folder, `OpenBB`.
 
 ```console
 pre-commit install

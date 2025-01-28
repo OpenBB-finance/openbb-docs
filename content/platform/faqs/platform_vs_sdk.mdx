@@ -22,9 +22,9 @@ We needed to refresh the architecture to make it modular, resilient, and scalabl
 
 The result is a much smoother installation procedure, with the tradeoff being some breaking changes for those transitioning from V3 SDK to the V4 Platform. The major differences are described below.
 
-### Terminal Application
+### Platform CLI
 
-The OpenBB Terminal is not installed with the Platform. The Terminal will be reimagined with the new extension framework, it won't get left behind for long!
+The Platform CLI is not installed with the Platform. The Platform CLI will be reimagined with the new extension framework, it won't get left behind for long!
 
 ### Extension Framework
 
@@ -78,7 +78,7 @@ Some asset classes have been renamed:
 V3 SDK users should note that the `source` parameter is now, `provider`.
 
 :::note
-OpenBB Hub Preferences for default sources do not currently sync with V4 Platform, and some API keys not used in the Terminal application are not able to be saved to the Hub.
+OpenBB Hub Preferences for default sources do not currently sync with V4 Platform, and some API keys not used in the Platform CLI are not able to be saved to the Hub.
 :::
 
 ### API Key Management
@@ -137,7 +137,7 @@ pip install jupyter-lab
 
 Most of the development has been on the core architecture and data providers.
 
-Most views from the V3 SDK and Terminal have yet to be ported over to the V4 Platform, although some charts are already available with the `openbb-charting` toolkit extension - which includes PyWry for window creation.
+Most views from the V3 SDK and Platform CLI have yet to be ported over to the V4 Platform, although some charts are already available with the `openbb-charting` toolkit extension - which includes PyWry for window creation.
 
 Install the charting extension with:
 

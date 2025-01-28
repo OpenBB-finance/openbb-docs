@@ -224,7 +224,7 @@ Let's get on with the fun stuff and start building!
 The first step is to create a new file in the provider extension folder:
 
 ```console
-~/OpenBBTerminal/openbb_platform/providers/alpha_vantage/openbb_alpha_vantage/models
+~/OpenBB/openbb_platform/providers/alpha_vantage/openbb_alpha_vantage/models
 ```
 
 We will call this file: `historical_eps.py`
@@ -559,7 +559,7 @@ Adding tests doesn't take a lot of effort. In most cases, copying and pasting fr
 Unit tests are located in the provider extension folder.
 
 ```console
-~/OpenBBTerminal/openbb_platform/providers/alpha_vantage/tests
+~/OpenBB/openbb_platform/providers/alpha_vantage/tests
 ```
 
 There will be one test file dedicated to testing each fetcher in the provider extension. Our file is:
@@ -637,7 +637,7 @@ Step 7 is done.
 Integration tests are even easier to add here, we just need to add a set of parameters for the new provider to the existing test. These tests are located in the `extensions` folder, where the routers are, under `integration`.
 
 ```console
-~/OpenBBTerminal/openbb_platform/extensions/equity/integration
+~/OpenBB/openbb_platform/extensions/equity/integration
 ```
 
 There are two files here, one for the Python interface, and the other for the Fast API.
@@ -810,7 +810,7 @@ When preparing to commit changes to the local branch, only add the files directl
 
 ### Install Pre-Commit Hooks
 
-The pre-commit hooks will run the testing suite locally before the commit is made. Install them from the root of the GitHub project folder, `OpenBBTerminal`.
+The pre-commit hooks will run the testing suite locally before the commit is made. Install them from the root of the GitHub project folder, `OpenBB`.
 
 ```console
 pre-commit install
