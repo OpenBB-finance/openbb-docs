@@ -27,7 +27,7 @@ A: Follow the structure outlined in the [Getting Started with Custom Backend](/c
 
 **Q: What is the `widgets.json` file, and why is it important?**
 
-A: The `widgets.json` file is a configuration file that connects your custom backend data to the widgets displayed in OpenBB Terminal Pro. It defines widget properties such as name, description, category, endpoint, and more. See the [Widgets Configuration](/content/terminal/custom-backend/widgets.json%20Reference.md#widgets-configuration) section for details.
+A: The `widgets.json` file is a configuration file that connects your custom backend data to the widgets displayed in OpenBB Terminal Pro. It defines widget properties such as name, description, category, endpoint, and more. See the [Widgets Configuration](/content/terminal/custom-backend/widgets-json-reference.md#widgets-configuration) section for details.
 
 **Q: How do I add Authorization to my custom backend?**
 
