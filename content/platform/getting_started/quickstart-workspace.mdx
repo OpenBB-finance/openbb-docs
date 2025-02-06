@@ -75,7 +75,7 @@ from openbb import obb
 
 
 @app.get("/company_description")
-async def company_description(symbol: str = "ASML.AS") -> str:
+async def company_description(symbol: str = "AAPL") -> str:
     """Reference data for the given company using yFinance."""
     response = obb.equity.profile(symbol, provider="yfinance")
 
@@ -102,3 +102,5 @@ Launch the backend by including the path to the Python file as the `--app` argum
 ```sh
 openbb-api --app /Users/path/to/some/folder/some_file.py --exclude '"/api/v1/*"' --reload
 ```
+
+<img width="514" alt="Screenshot 2025-02-06 at 1 40 43 PM" src="https://github.com/user-attachments/assets/150b214e-468e-45bf-b28e-6fb1e1a7a5c2" />
