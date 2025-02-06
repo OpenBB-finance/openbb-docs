@@ -16,7 +16,7 @@ In the `widgets.json` configuration, you can specify render functions to customi
 **actionType**  
 _Type:_ `string`  
 Specifies the action type for the render function.  
-_Possible values:_ `"openUrl"`, `"openModal"`, `"openWidget"`, `"groupBy"`  
+_Possible values:_ `"groupBy"`  
 _Used with:_ `cellOnClick` render function
 
 **hoverCardData**  
