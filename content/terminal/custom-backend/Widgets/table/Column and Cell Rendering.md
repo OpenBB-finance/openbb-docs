@@ -21,19 +21,64 @@ Each widgets.json entry for your table widget can have a `columnsDefs` property 
 
 When defined, columnsDefs is an array of column definitions, each with the following properties:
 
-| Property | Type | Description | Options/Default |
-|----------|------|-------------|-----------------|
-| field | string | The name of the field from the JSON data. Must match a key in the data source. | - |
-| headerName | string | The display name of the column header shown in the widget. | Defaults to field name |
-| cellDataType | string | Defines the data type of the cell. | `"text"`, `"number"`, `"boolean"`, `"date"`, `"dateString"`, `"object"`. Defaults to `"text"` |
-| formatterFn | string | Specifies a function to format the data. | `"int"`, `"none"`, `"percent"`, `"normalized"`, `"normalizedPercent"`, `"dateToYear"`. Defaults to `"none"` |
-| renderFn | string | Specifies a rendering function for cell data. | `"greenRed"`, `"titleCase"`, `"cellOnClick"` |
-| renderFnParams | object | Parameters for the render function. | Example: `{"actionType": "groupBy"}` |
-| width | number | The width of the column in pixels. | - |
-| maxWidth | number | The maximum width of the column in pixels. | - |
-| minWidth | number | The minimum width of the column in pixels. | - |
-| hide | boolean | Whether to hide the column from the table. | Defaults to `false` |
-| pinned | string | Pins the column to the left or right of the table. | `"left"` or `"right"` |
+<details>
+<summary mdxType="summary">Column and Cell Properties</summary>
+
+**field**  
+_Type:_ `string`  
+The name of the field from the JSON data. Must match a key in the data source.  
+_Example:_ `"strike_price"`
+
+**headerName**  
+_Type:_ `string`  
+The display name of the column header shown in the widget. 
+_Example:_ `"Strike Price"`
+
+**cellDataType**  
+_Type:_ `string`  
+Defines the data type of the cell.  
+_Possible values:_ `"text"`, `"number"`, `"boolean"`, `"date"`, `"dateString"`, `"object"`  
+_Default:_ `"text"`
+
+**formatterFn**  
+_Type:_ `string`  
+Specifies a function to format the data.  
+_Possible values:_ `"int"`, `"none"`, `"percent"`, `"normalized"`, `"normalizedPercent"`, `"dateToYear"`  
+_Default:_ `"none"`
+
+**renderFn**  
+_Type:_ `string`
+Specifies a rendering function for cell data.  
+_Possible values:_ `"greenRed"`, `"titleCase"`, `"cellOnClick"`
+
+**renderFnParams**  
+_Type:_ `object`  
+Parameters for the render function.  
+_Example:_ `{"actionType": "groupBy"}`
+
+**width**  
+_Type:_ `number`  
+The width of the column in pixels.
+
+**maxWidth**  
+_Type:_ `number`  
+The maximum width of the column in pixels.  
+
+**minWidth**  
+_Type:_ `number`  
+The minimum width of the column in pixels.  
+
+**hide**  
+_Type:_ `boolean`  
+Whether to hide the column from the table.  
+_Default:_ `false`
+
+**pinned**  
+_Type:_ `string`  
+Pins the column to the left or right of the table.  
+_Possible values:_ `"left"`, `"right"`
+
+</details>
 
 
 ## Example Configuration
@@ -67,7 +112,7 @@ Below is an example of how you might configure your columns in the `widgets.json
 
 ## Customizing Cell Rendering
 
-Cell rendering can be customized using the `renderFn` property, which allows you to apply specific styles or transformations to the data. For example, using `"greenRed"` can visually indicate positive or negative values, while `"titleCase"` can format text data to title case. You can also use the `cellOnClick` render function to group data by the cell value - see the [Grouping and Parameters](/terminal/custom-backend/Advanced Controls/Grouping and Parameters) section for more details on this.
+Cell rendering can be customized using the `renderFn` property, which allows you to apply specific styles or transformations to the data. For example, using `"greenRed"` can visually indicate positive or negative values, while `"titleCase"` can format text data to title case. You can also use the `cellOnClick` render function to group data by the cell value - see the [Grouping and Parameters](/terminal/custom-backend/Advanced%20Controls/Grouping%20and%20Parameters) section for more details on this.
 
 ## Cell Data Type
 

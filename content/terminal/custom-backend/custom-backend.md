@@ -25,7 +25,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 ## Introduction to Custom Backend
 
-The custom backend feature in OpenBB Terminal Pro allows users to integrate their own data sources and APIs into the platform. A custom backend is an API that returns JSON data with a standardized JSON configuration. This enables the creation of personalized widgets that can display data from any API. The custom backend allows users to take full advantage of the OpenBB Copilot and our interface.
+A custom backend in OpenBB Terminal Pro allows users to integrate their own data sources into the platform using an API. This enables the creation of personalized widgets, dashboards, and templates that can display your data in many different ways. The custom backend allows users to take full advantage of the OpenBB Copilot and our interface.
 
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
@@ -39,9 +39,9 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 You can build your API using any language and framework of your choice.  The only requirements are that there must be endpoints returning data in JSON format, and that CORS is supported for OpenBB domains.
 
 :::note
-Guidelines for JSON Format:
+Guidelines for JSON Format in Tables:
 
-- The JSON data should be in a flat structure, meaning that there should be no nested dictionaries or arrays within the individual objects unless you specify the dataKey in your `widgets.json` file.
+- The JSON data for tables should be in a flat structure, meaning that there should be no nested dictionaries or arrays within the individual objects unless you specify the dataKey in your `widgets.json` file.
 - Each object should contain key-value pairs where the values are simple data types (e.g., strings, numbers, booleans).
 - Avoid nesting other objects or arrays inside any of the values.
 
@@ -132,7 +132,7 @@ def get_widgets():
 
 </details>
 
-2. **Create widgets.json file**: This file is your main configuration and defines widget properties such as name, description, category, endpoint, type of widget, and other information. Each widget will be defined in this file. To view a sample `widgets.json` file and learn more about what you can do check out the [widgets.json docs](/terminal/custom-backend/widgets.json).
+2. **Create widgets.json file**: This file is your main configuration and defines widget properties such as name, description, category, endpoint, type of widget, and other information. Each widget will be defined in this file. To view a sample `widgets.json` file and learn more about what you can do check out the [widgets.json docs](/terminal/custom-backend/widgets.json%20Reference).
 
 An example structure in your backend might look like below.
 
@@ -140,11 +140,14 @@ An example structure in your backend might look like below.
   backend/
   ├── main.py
   └── widgets.json
+  └── templates.json (optional)
 ```
 
-3. **Build Endpoints**: Develop endpoints in main.py for each widget defined in widgets.json.
+3. **Build Endpoints**: Develop endpoints in `main.py` for each widget defined in `widgets.json`.
 
-4. **Connect to your API**: Use the OpenBB Terminal Pro interface to connect your API. Input your main endpoint, and the system will read /widgets.json to add your widgets to OpenBB.
+4. **Create Templates** (optional): You can use this to create a layout for your widgets to be displayed in OpenBB Workspace. This lets users easily add widgets in a predefined layout. To view a sample `templates.json` file and learn more about what you can do check out the [templates.json docs](/terminal/custom-backend/templates.json).
+
+5. **Connect to your API**: Use the OpenBB Terminal Pro interface to connect your API. Input your main endpoint, and the system will read the `/widgets.json` and `/templates.json` endpoints to add them to OpenBB.
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
   <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/backend.png" />

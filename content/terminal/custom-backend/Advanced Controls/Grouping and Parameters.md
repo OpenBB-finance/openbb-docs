@@ -6,17 +6,55 @@ In the `widgets.json` configuration, you can specify parameters/inputs that can 
 
 Parameters are used to pass dynamic values to your API endpoints, allowing for customizable data queries from the widget. Each parameter is defined in the `params` array within your widgets.json file and can include the following fields:
 
-| Field | Description |
-|-------|-------------|
-| `type` | The data type of the parameter. Possible values include `"date"`, `"text"`, `"ticker"`, `"number"`, `"boolean"`, `"endpoint"` |
-| `paramName` | The name of the parameter as it appears in the URL. Example: `"startDate"` |
-| `value` | The default value for the parameter. This can be a string, number, or boolean |
-| `label` | The label displayed in the UI for the parameter. Example: `"Start Date"` |
-| `show` | A boolean indicating whether the parameter should be visible in the UI |
-| `description` | A brief description of the parameter, shown on hover |
-| `multiSelect` | A boolean indicating if multiple values can be selected (only applicable for certain types) |
-| `options` | An array of options for dropdown parameters, each with a `label` and `value` |
-| `optionsEndpoint` | An endpoint to fetch options dynamically, used when `type` is `"endpoint"` |
+<details>
+<summary mdxType="summary">Parameter values</summary>
+
+**type**  
+_Type:_ `string`  
+The data type of the parameter.  
+_Possible values:_ `"date"`, `"text"`, `"ticker"`, `"number"`, `"boolean"`, `"endpoint"`
+
+**paramName**  
+_Type:_ `string`  
+The name of the parameter as it appears in the URL.  
+_Example:_ `"startDate"`
+
+**value**  
+_Type:_ `string`, `number`, `boolean`  
+The default value for the parameter.  
+_Example:_ `"2024-01-01"`
+
+**label**  
+_Type:_ `string`  
+The label displayed in the UI for the parameter.  
+_Example:_ `"Start Date"`
+
+**show**  
+_Type:_ `boolean`  
+Indicates whether the parameter should be visible in the UI.  
+_Default:_ `true`
+
+**description**  
+_Type:_ `string`  
+A brief description of the parameter, shown on hover.  
+_Example:_ `"The start date for the data"`
+
+**multiSelect**  
+_Type:_ `boolean`  
+Indicates if multiple values can be selected (only applicable for certain types).  
+_Default:_ `false`
+
+**options**  
+_Type:_ list of objects  
+An array of options for dropdown parameters, each with a `label` and `value`.  
+_Example:_ `[{"label": "Option 1", "value": "option1"}]`
+
+**optionsEndpoint**  
+_Type:_ `string`  
+An endpoint to fetch options dynamically, used when `type` is `"endpoint"`.  
+_Example:_ `"/api/companies"`
+
+</details>
 
 <img className="pro-border-gradient" width="700" alt="widget-parameters" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/parameters.png" />
 
@@ -100,9 +138,6 @@ By using `type: "endpoint"`, you'll need to specify an `optionsEndpoint` that re
 
 <img className="pro-border-gradient" width="300" alt="dropdown" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/dropdown.png" />
 
-- **optionsEndpoint**: The API endpoint that returns the options for the parameter. The endpoint should return an array of objects with `label` and `value` properties.
-- **optionsParams**: (Optional) Additional parameters to pass to the options endpoint.
-
 Here's an example using an endpoint parameter:
 
 ```json
@@ -117,7 +152,7 @@ Here's an example using an endpoint parameter:
                 "label": "Company",
                 "show": true,
                 "description": "Select a company",
-                "optionsEndpoint": "/api/companies",
+                "optionsEndpoint": "/api/companies"
             }
         ]
     }
@@ -169,7 +204,7 @@ These values can also be grouped which we will cover below.
 
 ### Grouping
 
-Widget grouping is a powerful feature that allows multiple widgets to share and respond to the same parameter input. When widgets are grouped, users only need to select a value once (such as a ticker symbol or chain name) to update all related widgets simultaneously. This is particularly useful when building dashboards where multiple widgets need to display different aspects of the same data source. OpenBB Terminal Pro automatically handles this grouping in two ways: through shared endpoint parameters and through ticker parameters. This means you don't need any additional configuration to enable grouping - simply using the same parameter types and configurations across widgets will trigger the automatic grouping behavior.
+Widget grouping allows multiple widgets to share and respond to the same parameter input. When widgets are grouped, you only need to select a value once to update all related widgets simultaneously. This is useful for dashboards where multiple widgets display different aspects of the same data source.
 
 1. **Endpoint Parameters**: If multiple widgets use the same `optionsEndpoint` and `endpoint` parameter configuration, they can be grouped together. This allows users to select a value once and have it apply to all related widgets. Currently, this grouping works for only the first parameter in the `params` array specified this way.
 

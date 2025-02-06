@@ -1,5 +1,5 @@
 ---
-title: Plotly Charting Example
+title: Plotly Chart
 sidebar_position: 2
 description: Learn how to integrate your own backend with OpenBB Terminal Pro using the cookie-cutter or language-agnostic API approaches, with illustrative guides and principles for handling widget.json files, APIs, interfaces, Python, FastAPI, and more.
 keywords:
@@ -15,7 +15,7 @@ keywords:
 - Widget definitions
 ---
 
-# Introduction
+# Plotly Chart
 
 This guide will walk you through the process of creating a chart widget for OpenBB Terminal Pro. We will be using Plotly to create the chart in our example. By the end of this guide, you will have a working chart widget that you can add to OpenBB Terminal Pro.
 
@@ -90,7 +90,7 @@ Edit the `widgets.json` file and add the following JSON data. This configuration
 }
 ```
 
-For more information on the `widgets.json` file, see the [Widgets.json](/content/terminal/custom-backend/widgets.json) page.
+For more information on the `widgets.json` file, see the [Widgets.json](/content/terminal/custom-backend/widgets.json%20Reference) page.
 
 ## Step 3: Run the Application
 
