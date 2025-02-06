@@ -70,7 +70,7 @@ Edit the `widgets.json` file and add the following JSON data. This configuration
 }
 ```
 
-For more information on the `widgets.json` file, see the [Widgets.json](/content/terminal/custom-backend/widgets.json%20Reference) page.
+For more information on the `widgets.json` file, see the [Widgets.json](/content/terminal/custom-backend/widgets-json-reference) page.
 
 ## Step 3: Run the Application
 

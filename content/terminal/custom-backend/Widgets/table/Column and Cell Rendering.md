@@ -112,7 +112,7 @@ Below is an example of how you might configure your columns in the `widgets.json
 
 ## Customizing Cell Rendering
 
-Cell rendering can be customized using the `renderFn` property, which allows you to apply specific styles or transformations to the data. For example, using `"greenRed"` can visually indicate positive or negative values, while `"titleCase"` can format text data to title case. You can also use the `cellOnClick` render function to group data by the cell value - see the [Grouping and Parameters](/terminal/custom-backend/Advanced%20Controls/Grouping%20and%20Parameters) section for more details on this.
+Cell rendering can be customized using the `renderFn` property, which allows you to apply specific styles or transformations to the data. For example, using `"greenRed"` can visually indicate positive or negative values, while `"titleCase"` can format text data to title case. You can also use the `cellOnClick` render function to group data by the cell value - see the [Grouping and Parameters](/terminal/custom-backend/advanced-controls/grouping-and-parameters) section for more details on this.
 
 ## Cell Data Type
 

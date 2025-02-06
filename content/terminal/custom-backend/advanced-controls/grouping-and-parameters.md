@@ -1,3 +1,14 @@
+---
+title: Grouping and Parameters
+sidebar_position: 6
+description: Learn how to configure and use grouping and parameters in OpenBB Workspace.
+keywords:
+- grouping
+- parameters
+- OpenBB API
+- widget configuration
+---
+
 ## Grouping and Parameters
 
 In the `widgets.json` configuration, you can specify parameters/inputs that can be used to customize the data retrieval and display. Widgets can also be grouped if you have multiple widgets on the same dashboard that share a parameter. This section will guide you through setting up these features.

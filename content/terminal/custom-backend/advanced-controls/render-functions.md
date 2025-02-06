@@ -1,3 +1,13 @@
+---
+title: Render Functions
+sidebar_position: 6
+description: Learn how to configure and use custom render functions in OpenBB Workspace.
+keywords:
+- custom render functions
+- OpenBB API
+- widget configuration
+---
+
 ## Render Functions
 
 In the `widgets.json` configuration, you can specify render functions to customize how the data is displayed in the widget - These functions are only compatible with widgets that use a `columnsDefs`.
