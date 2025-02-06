@@ -157,36 +157,4 @@ An example structure in your backend might look like below.
 
 Our team has created several examples that you can use to quickly get started with Python and FastAPI. For more information, check out [this open source repository](https://github.com/OpenBB-finance/backend-for-terminal-pro/tree/main).
 
-
-## Frequently Asked Questions
-
-<details>
-<summary mdxType="summary">Q: I'm using Safari/Brave and I can't connect to my backend</summary>
-
-A: OpenBB Platform API Over HTTPS
-
-To run the API over the HTTPS protocol, you must first create a self-signed certificate and the associated key. After steps 1 & 2 above, you can generate the files by entering this to the command line:
-
-```sh
-openssl req -x509 -days 3650 -out localhost.crt -keyout localhost.key   -newkey rsa:4096 -nodes -sha256   -subj '/CN=localhost' -extensions EXT -config <( \
-   printf "[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth")
-```
-
-Two files will be created, in the current working directory, that are passed as keyword arguments to the `openbb-api` entry point.
-
-```sh
-openbb-api --ssl_keyfile localhost.key --ssl_certfile localhost.crt
-```
-
-**Note**: Adjust the command to include the full path to the file if the current working directory is not where they are located.
-
-
-The certificate - `localhost.crt` - will need to be added to system's trust store. The process for this will depend on the operating system and the user account privilege.
-
-A quick solution is to visit the server's URL, show the details of the warning, and choose to continue anyways.
-
-Contact the system administrator if you are using a work device and require additional permissions to complete the configuration.
-
-![This Connection Is Not Private](https://in.norton.com/content/dam/blogs/images/norton/am/this_connection_not_is_private.png)
-
-</details>
+Still have questions? Check out the [FAQs](/terminal/custom-backend/faqs) section.
