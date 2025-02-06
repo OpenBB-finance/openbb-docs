@@ -1,0 +1,104 @@
+---
+title: Quickstart - Workspace Custom Backend
+sidebar_position: 1
+description: Get started using the OpenBB Platform as a custom Workspace backend.
+keywords:
+- OpenBB Platform
+- investment research infrastructure
+- data connectors
+- financial reports
+- OpenBB team
+- quickstart
+- getting started
+- Workspace
+- custom backend
+- backend
+- FastAPI
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Quickstart - Workspace Custom Backend | OpenBB Platform Docs" />
+
+The OpenBB Platform can be used as a [Workspace custom backend](/terminal/custom-backend), both as a fully-loaded data source, or as the bare shell and launcher of a FastAPI application.
+
+The sections below will outline a few scenarios.
+
+## Launch Platform App
+
+To include all installed OpenBB extensions as widgets in the custom backend connector:
+
+:::info
+Open a terminal, activate the environment where `openbb` was installed, then enter:
+
+```sh
+openbb-api
+```
+:::
+
+- Next, open your browswer and login to [pro.openbb.co](https://pro.openbb.co).
+
+- From the sidebar, click "Data Connectors".
+
+- Then, click the "Add Data" button.
+
+![Add Data](https://github.com/user-attachments/assets/770e6d6c-6cd7-4073-a874-af0850f404cc)
+
+- Enter a name for the connection, and use the server address displayed in the console.
+
+- Then, click the "Test" button.
+
+:::tip
+If a connection error displays after pressing the "Test" button, your browser might be blocking access because of "mixed content". Browsers such as Safari, and Brave, do not permit HTTP connections.
+
+Try using Chrome, specifically, or start the server over HTTPS.
+
+See the page [here](/terminal/custom-backend#frequently-asked-questions) for the steps to do it.
+:::
+
+- Finally, click the "Add" button.
+
+All data endpoints are now configured to use and are available to the Search.
+
+## Launch Custom Platform App
+
+Let's say, you want to create a custom backend that presents data differently, and you don't want any of the built-in widgets to populate.
+
+In this scenario, we can use the `--exclude` argument to ignore the entire `/api/*` path.
+
+Widgets will now only populate from endpoints added to the imported `app` instance.
+
+```python
+from openbb_platform_api.main import app
+
+from openbb import obb
+
+
+@app.get("/company_description")
+async def company_description(symbol: str = "ASML.AS") -> str:
+    """Reference data for the given company using yFinance."""
+    response = obb.equity.profile(symbol, provider="yfinance")
+
+    description = response.results[0].long_description
+
+    md = f"""
+
+# **{response.results[0].name}**
+## **{response.results[0].sector}**
+### **{response.results[0].industry_category}**
+
+<details>
+<summary mdxType="summary">Company Description</summary>
+{description}
+</details>
+
+{response.results[0].company_url}
+"""
+    return md
+```
+
+Launch the backend by including the path to the Python file as the `--app` argument.
+
+```sh
+openbb-api --app /Users/path/to/some/folder/some_file.py --exclude '"/api/v1/*"' --reload
+```
