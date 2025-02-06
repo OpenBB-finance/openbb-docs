@@ -130,7 +130,7 @@ export default {
 					},
 					{
 						from: "/pro/custom-backend/widgets.json Reference",
-						to: "/terminal/custom-backend/widgets.json Reference",
+						to: "/terminal/custom-backend/widgets-json-reference",
 					},
 					{
 						from: "/pro/platform-installer",
