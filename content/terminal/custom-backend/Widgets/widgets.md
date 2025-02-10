@@ -48,3 +48,9 @@ OpenBB Terminal Pro supports various ways to visualize data through widgets. Eac
    - [Create your own Metric Widget](metric.md)
 
 <img className="pro-border-gradient" width="600" alt="metric" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/metric-widget.png" />
+
+5. **PDF Viewer Widget**:
+   - Displays a PDF file.
+   - [Create your own PDF Viewer Widget](pdf.md)
+
+<img className="pro-border-gradient" width="600" alt="pdf" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/pdf-widget.png" />
