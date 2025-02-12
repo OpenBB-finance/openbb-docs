@@ -22,12 +22,109 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Economic Indicators - User Guides | OpenBB Platform Docs" />
 
-This page provides a tutorial for getting started using the `obb.economy.indicators` endpoint, with the `openbb-econdb` provider extension.
-The command provides access to over 100 standardized indicator symbols, covering countries around the world.
+This page provides a tutorial for getting started using the `obb.economy.indicators` endpoint, with the `openbb-econdb` and `openbb-imf` provider extensions.
+
+
+## IMF
+
+There are currently two IMF databases accessible by this command, and a third (Direction of Trade) is available via `obb.economy.direction_of_trade`.
+
+- International Reserves & Foreign Currency Liquidity
+- Financial Soundness Indicators
+
+<details>
+<summary mdxType="summary">IMF Indicators</summary>
+
+The `obb.economy.indicators` endpoint provides direct access to over 2600 IMF time series, allowing selection of both multiple series and countries.
+
+### Available Symbols
+
+The complete list of individual series is returned by the `available_indicators` endpoint.
+
+It allows a text query, where ";" is an AND operator and "|" is an OR operator.
+
+```python
+obb.economy.available_indicators(provider="imf", query="gold")
+```
+
+<details>
+<summary mdxType="summary">Results</summary>
+
+| symbol        | symbol_root   | description                                                                                                                                          | dataset   | table                              |   level |   order | children                                                  | unit   |
+|:--------------|:--------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------|:----------|:-----------------------------------|--------:|--------:|:----------------------------------------------------------|:-------|
+| RAFA_USD      | RAF_USD       | Official Reserve Assets, US Dollars                                                                                                                  | IRFCL     | reserve_assets_and_other_fx_assets |       2 |       2 | RAFAFX_USD,RAFAIMF_USD,RAFASDR_USD,RAFAGOLD_USD,RAFAO_USD | usd    |
+| RAFAGOLD_USD  | RAFA_USD      | Official Reserve Assets, Gold (Including Gold Deposits and, If Appropriate, Gold Swapped) , US Dollars                                               | IRFCL     | reserve_assets_and_other_fx_assets |       3 |      14 | RAFAGOLDV_OZT                                             | usd    |
+| RAFAGOLDV_OZT | RAFAGOLD_USD  | Official Reserve Assets, Gold (Including Gold Deposits and, If Appropriate, Gold Swapped), Volume in Millions of Fine Troy Ounces , Fine Troy Ounces | IRFCL     | reserve_assets_and_other_fx_assets |       4 |      15 | -                                                       | ozt    |
+| RAOFAG_USD    | RAOFA_USD     | Other Foreign Currency Assets (Specify), Gold Not Included in Official Reserve Assets, US Dollars                                                    | IRFCL     | reserve_assets_and_other_fx_assets |       3 |      25 | -                                                       | usd    |
+
+</details>
+
+```python
+obb.economy.available_indicators(provider="imf", query="gold|gdp;usd")
+```
+
+<details>
+<summary mdxType="summary">Results</summary>
+
+| symbol                      | symbol_root   | description                                                                                                                                                                                                                                                                         | dataset   | table                              |   level | order   | children                                                  | unit   |
+|:----------------------------|:--------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------|:-----------------------------------|--------:|:--------|:----------------------------------------------------------|:-------|
+| RAFA_USD                    | RAF_USD       | Official Reserve Assets, US Dollars                                                                                                                                                                                                                                                 | IRFCL     | reserve_assets_and_other_fx_assets |       2 | 2.0     | RAFAFX_USD,RAFAIMF_USD,RAFASDR_USD,RAFAGOLD_USD,RAFAO_USD | usd    |
+| RAFAGOLD_USD                | RAFA_USD      | Official Reserve Assets, Gold (Including Gold Deposits and, If Appropriate, Gold Swapped) , US Dollars                                                                                                                                                                              | IRFCL     | reserve_assets_and_other_fx_assets |       3 | 14.0    | RAFAGOLDV_OZT                                             | usd    |
+| RAFAGOLDV_OZT               | RAFAGOLD_USD  | Official Reserve Assets, Gold (Including Gold Deposits and, If Appropriate, Gold Swapped), Volume in Millions of Fine Troy Ounces , Fine Troy Ounces                                                                                                                                | IRFCL     | reserve_assets_and_other_fx_assets |       4 | 15.0    | -                                                         | ozt    |
+| RAOFAG_USD                  | RAOFA_USD     | Other Foreign Currency Assets (Specify), Gold Not Included in Official Reserve Assets, US Dollars                                                                                                                                                                                   | IRFCL     | reserve_assets_and_other_fx_assets |       3 | 25.0    | -                                                         | usd    |
+| FSDHG_USD                   | -             | Financial, Financial Soundness Indicators, Encouraged Set, Households, Household Debt to GDP, Gross Domestic Product (GDP), US Dollars                                                                                                                                              | FSI       | fsi_other                          |       2 | -       | -                                                         | usd    |
+| FSNFAG_USD                  | -             | Financial, Financial Soundness Indicators, Encouraged Set, Other Financial Corporations, Assets to Gross Domestic Product (GDP), Assets, US Dollars                                                                                                                                 | FSI       | fsi_other                          |       2 | -       | -                                                         | usd    |
+| FSDFAG_USD                  | -             | Financial, Financial Soundness Indicators, Encouraged Set, Other Financial Corporations, Assets to Gross Domestic Product (GDP), Gross Domestic Product (GDP), US Dollars                                                                                                           | FSI       | fsi_other                          |       2 | -       | -                                                         | usd    |
+| FS_NFC_LD_FSTDGDP_USD       | -             | Monetary and Financial Accounts, Financial Soundness Indicators, Balance Sheets and Income Statements, Non-financial corporations, Balance Sheet, Liabilities, Debt, Total debt to GDP, US Dollars                                                                                  | FSI       | fsi_other                          |       2 | -       | -                                                         | usd    |
+| FS_OFM_IPF_IC_A_FSGDPIC_USD | -             | Monetary and Financial Accounts, Financial Soundness Indicators, Balance Sheets and Income Statements, Other financial corporations, Total financial system assets, Total Assets, Insurance corporations, OFCs assets to gross domestic product: Insurance Corporations, US Dollars | FSI       | fsi_other                          |       2 | -       | -                                                         | usd    |
+| FS_OFM_MMF_A_FSGDPMMF_USD   | -             | Monetary and Financial Accounts, Financial Soundness Indicators, Balance Sheets and Income Statements, Other financial corporations, Total financial system assets, Total Assets, Money market funds, OFCs assets to gross domestic product:  Money Market funds, US Dollars        | FSI       | fsi_other                          |       2 | -       | -                                                         | usd    |
+| FS_OFM_IPF_PF_A_FSGDPPF_USD | -             | Monetary and Financial Accounts, Financial Soundness Indicators, Balance Sheets and Income Statements, Other financial corporations, Total financial system assets, Total Assets, Pension funds, OFCs assets to gross domestic product: Pension Funds, US Dollars                   | FSI       | fsi_other                          |       2 | -       | -                                                         | usd    |
+| NGDP_USD                    | -             | National Accounts, Expenditure, Gross Domestic Product, US Dollars                                                                                                                                                                                                                  | FSI       | fsi_other                          |       2 | -       | -                                                         | usd    |
+
+</details>
+
+
+### Presets
+
+Presets are a collection of symbols, typically complete tables from sections of each database.
+
+- 'IRFCL': All the data from the set of indicators. Not compatible with multiple countries.
+- 'irfcl_top_lines': The default, top line items from the IRFCL data. Compatible with multiple countries.
+- 'reserve_assets_and_other_fx_assets': Table I of the IRFCL data. Not compatible with multiple countries.
+- 'predetermined_drains_on_fx_assets': Table II of the IRFCL data. Not compatible with multiple countries.
+- 'contingent_drains_fx_assets': Table III of the IRFCL data. Not compatible with multiple countries.
+- 'memorandum_items': The memorandum items table of the IRFCL data. Not compatible with multiple countries.
+- 'gold_reserves': Gold reserves as value in USD and Fine Troy Ounces. Compatible with multiple countries.
+- 'derivative_assets': Net derivative assets as value in USD. Compatible with multipile countries.
+- 'fsi_core': The core Financial Soundness Indicators. Compatible with multiple countries.
+- 'fsi_core_underlying': The core FSIs underlying series data. Not compatible with country='all'.
+- 'fsi_encouraged_set': The encouraged set of Financial Soundness Indicators. Not compatible with country='all'.
+- 'fsi_other': The other Financial Soundness Indicators. Not compatible with country='all'.
+- 'fsi_balance_sheets': Data categorized as Balance Sheets and Income Statements. Not compatible with country='all'.
+- 'fsi_all': All the Financial Soundness Indicators. Not compatible with multiple countries.
+
+### Entering Countries
+
+Countries can be entered as a list, or a comma-separated string. A country can be either, the full name in lower_snake_case, or the two-letter ISO country code.
+
+```python
+obb.economy.indicators(provider="imf", symbol="irfcl_top_lines", country="us,italy,france,DE")
+```
+
+When the number of symbols being requested is low, setting the parameter to, "all", will return all countries available for each symbol.
+
+</details>
+
+
+
+## EconDB
 
 :::note
 **OpenBB is not affiliated with EconDB. All service is provided "AS IS" and without warranty.**
 :::
+
+The `obb.economy.indicators` function provides access to over 100 standardized indicator symbols, covering countries around the world.
+
 
 ## Authorization
 
@@ -37,7 +134,7 @@ Leaving the key as None will attempt to retrieve a temporary token that is assig
 This is a workaround and can be blocked by Cloudflare. In this instance, the temporary token can be viewed by opening any indicator in your browser,
 then selecting 'Python' from the 'Export' drop-down.
 
-![Temporary Token](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/d2d4c6a7-e8b1-4345-b28f-0693ddb8dcf1)
+![Temporary Token](https://github.com/OpenBB-finance/OpenBB/assets/85772166/d2d4c6a7-e8b1-4345-b28f-0693ddb8dcf1)
 
 The best method is to support the service by registering an account.
 
@@ -46,7 +143,7 @@ from openbb import obb
 obb.user.credentials.econdb_api_key = REPLACE_WITH_KEY
 ```
 
-See the [API keys](api_keys) page for more information on credentials.
+See the [API keys](/platform/api_keys) page for more information on credentials.
 
 ## Important Considerations
 
