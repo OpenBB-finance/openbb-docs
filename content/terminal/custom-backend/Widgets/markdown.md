@@ -1,5 +1,5 @@
 ---
-title: Markdown Example
+title: Markdown
 sidebar_position: 4
 description: Learn how to integrate your own backend with OpenBB Terminal Pro using the cookie-cutter or language-agnostic API approaches, with illustrative guides and principles for handling widget.json files, APIs, interfaces, Python, FastAPI, and more.
 keywords:
@@ -15,7 +15,7 @@ keywords:
 - Widget definitions
 ---
 
-# Introduction
+# Markdown Widget
 
 This guide will walk you through the process of creating a markdown widget for OpenBB Terminal Pro. By the end of this guide, you will have a working markdown widget that you can add to OpenBB Terminal Pro.
 
