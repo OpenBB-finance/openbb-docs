@@ -1,6 +1,6 @@
 ---
-title: Authorization and API Keys
-sidebar_position: 2
+title: API Keys & Credentials
+sidebar_position: 3
 description: An overview for setting up the OpenBB Platform Python client and Fast API with data provider API keys.
 keywords:
 - tutorial
@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="API Keys - Usage | OpenBB Platform Docs" />
+<HeadTitle title="API Keys & Credentials | OpenBB Platform Docs" />
 
 By default, authorization is not required to initialize and use the core services. Most data providers, however, require an API key to access their data. Keys can be stored locally and they can also be securely saved to your OpenBB Hub [account](https://my.openbb.co/app/hub) for convenient remote access.
 
@@ -79,7 +79,7 @@ Credentials and user preferences are stored locally, `~/.openbb_platform/`, as a
     "tradier_account_type": "sandbox OR live",
     "tradingeconomics_api_key": "REPLACE",
     "tiingo_token": "REPLACE"
-}
+  }
 }
 ```
 
@@ -88,3 +88,9 @@ To set keys from the Python client for the current session only, access the Cred
 ```python
 obb.user.credentials.intrinio_api_key = "my_api_key"
 ```
+
+:::info
+See [User Settings & Environment Variables](settings_and_environment_variables) for more information on configuring the installation via `user_settings.json`.
+
+See [Extensions](user_guides/extensions) for a current list of data provider extensions.
+:::

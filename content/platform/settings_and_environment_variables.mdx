@@ -1,6 +1,6 @@
 ---
 title: User Settings & Environment Variables
-sidebar_position: 3
+sidebar_position: 2
 description: This section details configuring the OpenBB Platform settings and environment variables.
 keywords:
   - OpenBB Platform
@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-<HeadTitle title="User Settings & Environment Variables - Usage | OpenBB Platform Docs" />
+<HeadTitle title="User Settings & Environment Variables | OpenBB Platform Docs" />
 
 This page outlines configuring the OpenBB Platform with user settings and environment variables.
 
@@ -23,7 +23,7 @@ User settings are stored locally, `~/.openbb_platform/`, as a JSON file, `user_s
 
 This file stores:
 
-- [credentials](/platform/getting_started/api_keys#local-environment)
+- [credentials](api_keys#local-environment)
 - [preferences](#preferences)
 - [defaults](#defaults)
 
@@ -38,7 +38,6 @@ This is an example of how it might look after setup:
     "preferences": {
         "data_directory": "~/OpenBBUserData",
         "export_directory": "~/OpenBBUserData/exports",
-        "request_timeout": 15,
         "metadata": true,
         "output_type": "OBBject"
     },
@@ -70,14 +69,13 @@ This is an example of how it might look after setup:
 | charting_extension    | openbb_charting                  | ["openbb_charting"]                                                 | Name of the charting extension to be used with the application.                                                                                                                                                                                                                                                          |
 | chart_style           | dark                             | ["dark", "light"]                                                   | The default color style to use with the OpenBB Charting Extension plots. Options include "dark", and "light".                                                                                                                                                                                                             |
 | table_style           | dark                             | ["dark", "light"]                                                   | "The default color style to use with the OpenBB Charting Extension tables. Options are "dark", and "light""                                                                                                                                                                                                               |
-| request_timeout       | 15                               | Any positive integer.                                               | Specifies the timeout duration for HTTP requests.                                                                                                                                                                                                                                                                        |
 | metadata              | true                             | [true, false]                                                       | Enables or disables the collection of metadata which provides information about operations including arguments duration route and timestamp. Disabling this feature may improve performance in cases where contextual information is not needed, or when the additional computation time and storage space are a concern. |
 | output_type           | OBBject                          | ["OBBject", "dataframe", "numpy", "dict", "chart", "polars", "llm"] | Specifies the type of data the application will output when a command or endpoint is accessed. Note that choosing data formats only available in Python such as `dataframe`, `numpy`, or `polars` will render the application's API non-functional.                                                                       |
 | show_warnings         | true                             | [true, false]                                                       | Enables or disables the display of warnings.                                                                                                                                                                                                                                                                             |
 
 :::note
 
-- If a `OpenBBUserData` folder in not in the home directory, the application will create one on first run. The user preferences with paths all default to this folder - exports, styles, or data - and can be changed at any time to suit.
+- If an `OpenBBUserData` folder is not in the home directory, the application will create one on first run. The user preferences with paths all default to this folder - exports, styles, or data - and can be changed at any time to suit.
 - The `OpenBBUserData` will still be created even if preferences are not pointing to it, this is because the application needs a place to store logs and other artifacts.
 - One way to export files or images from the OpenBB Platform is to leverage that functionality from the OpenBB Charting Extension. The `export_directory` preference is the location where the extension will attempt to save CSV and image files.
 
@@ -95,14 +93,12 @@ Here you can define provider defaults, and other parameters, for Python commands
     ...
     "defaults": {
         "commands": {
-            // single provider //
             "/equity/price/historical": {
-                "provider": "fmp"
+                "provider": "yfinance"
             },
-            # priority list
             "/equity/fundamental/balance": {
                 "provider": [
-                    "intrinio",
+                    "yfinance",
                     "fmp",
                     "polygon"
                 ]
@@ -181,38 +177,15 @@ from openbb import obb
 
 ### Proxy Networks
 
-An environment variable can be set, in the `.env` file, to direct the Requests library to a specific address and port.
-
-```env
-HTTP_PROXY="<ADDRESS>" or HTTPS_PROXY="<ADDRESS>”
-```
-
-For example:
-
-```env
-HTTP_PROXY="http://10.10.10.10:8000"
-```
+See the [HTTP settings](settings_and_environment_variables#http) below for how to define the proxy url.
 
 ## System Settings
 
-An additional configuration file, `system_settings.json`, is located in the same folder as `user_settings.json`, and can be created manually if it does not exist. The items below can be configured via this file.
+An additional configuration file, `system_settings.json`, is located in the same folder as `user_settings.json`, and can be created manually if it does not exist. The items below can be configured via this file, as a JSON dictionary.
 
-### Python Settings
+## API Settings
 
-This configuration allows the user to include specific elements of the docstrings. Useful for reducing the context length when incorporating LLMs and function calling. The settings below are for the complete docstring, and are the default state.
-
-```json
-{
-    "python_settings": {
-        "docstring_sections": ["description", "parameters", "returns", "examples"],
-        "docstring_max_length": null
-    }
-}
-```
-
-### API Settings
-
-This dictionary is passed to the instance of FastAPI. 
+The, `"api_settings"`, key is a nested dictionary, and is passed to the instance of FastAPI. 
 
 ```json
 {
@@ -248,7 +221,7 @@ This dictionary is passed to the instance of FastAPI.
 }
 ```
 
-### Logging Service
+## Logging Service
 
 The OpenBB Platform logs anonymized records of function calls, and any error messages produced, to a unique file for the session, written to `~/OpenBBUserData/logs`.
 
@@ -263,3 +236,89 @@ There are two settings that can be applied:
     "log_collect": false
 }
 ```
+
+
+## Python Settings
+
+The `python_settings` key is a nested dictionary. It contains configurations for the docstring elements within the Python interface, as well as global HTTP and Uvicorn settings.
+
+Additional keys and values can be supplied, however, unless they are specifically implemented by custom code, they will be ignored.
+
+### Docstring Sections
+
+This configuration allows the user to include specific elements of the docstrings. Useful for reducing the context length when incorporating LLMs and function calling. The settings below are for the complete docstring, and are the default state.
+
+```json
+{
+    "python_settings": {
+        "docstring_sections": ["description", "parameters", "returns", "examples"],
+        "docstring_max_length": null
+    }
+}
+```
+
+### HTTP
+
+:::important
+This section refers to settings available beginning OpenBB v4.4.0
+:::
+
+Configurations within, `python_settings["http"]`, apply to both, the requests, and aiohttp, libraries.
+
+The settings are passed into the `requests.Session` object and the `aiohttp.ClientSession` object by:
+- `openbb_core.provider.utils.helpers.make_request` - Sync
+- `openbb_core.provider.utils.helpers.amake_request` - Async
+- `openbb_core.provider.utils.helpers.amake_requests` - Async (multiple requests)
+- Inserted to use with YFinance & Finviz library implementations.
+
+Return a session object with the settings applied by:
+- `openbb_core.provider.utils.helpers.get_requests_session`
+- `openbb_core.provider.utils.helpers.get_async_requests_session`
+
+:::tip
+To use this configuration directly with the yFinance library, pass the session object, returned by `get_requests_session`,
+to the function's `session` parameter.
+
+```python
+import yfinance as yf
+from openbb_core.provider.utils.helpers import get_requests_session
+
+session = get_requests_session()
+ticker = yf.Ticker("AAPL", session=session)
+```
+:::
+
+#### Available settings:
+
+| Key | Type | Description |
+|:----|:----:|------------:|
+|cafile| str | Path to a CA certificate file.|
+|certfile| str | Path to a client certificate file.|
+|keyfile| str | Path to a client key file.|
+|password| str | Password for the client key file (aiohttp only).|
+|verify_ssl| bool | Verify SSL certificates.|
+|fingerprint| str | SSL fingerprint (aiohttp only).|
+|proxy| str | Proxy URL.|
+|proxy_auth| str, list | Proxy basic authentication (aiohttp only).|
+|proxy_headers| dict | Proxy headers (aiohttp only).|
+|timeout| int | Request timeout.|
+|auth| str, list | Basic authentication.|
+|headers| dict | Request headers.|
+|cookies| dict | Dictionary of session cookies.|
+
+Any additional keys supplied will be ignored unless explicitly implemented via custom code.
+
+### Uvicorn
+
+The, `python_settings["uvicorn"]`, key covers the launch of FastAPI when using the following entry points:
+
+- Running the FastAPI as a Python module script.
+    - python -m openbb_core.api.rest_api
+- Running the `openbb-api` command.
+    - openbb-api
+
+All settings are passed directly to `uvicorn.run`, and can be found in the Uvicorn [documentation](https://www.uvicorn.org/settings/)
+
+:::important
+Keyword arguments supplied to the command line will take priority over the settings in this configuration.
+:::
