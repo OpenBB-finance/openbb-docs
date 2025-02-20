@@ -54,3 +54,9 @@ OpenBB Terminal Pro supports various ways to visualize data through widgets. Eac
    - [Create your own PDF Viewer Widget](pdf.md)
 
 <img className="pro-border-gradient" width="600" alt="pdf" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/pdf-widget.png" />
+
+6. **Live Grid Widget**:
+   - Display updates in real-time on your table.
+   - [Create your own Live Grid Widget](live_grid.md)
+
+<img className="pro-border-gradient" width="600" alt="live-feed" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/live_grid.png" />

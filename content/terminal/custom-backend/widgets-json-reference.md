@@ -57,6 +57,11 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
   _Example:_ `"chains"`  
   _Possible values:_ Any valid API endpoint path as a string.
 
+- **wsEndpoint**  
+  _Type:_ `string`  
+  Specifies the WebSocket endpoint for live data updates. Only used with the Live Grid Widget.
+  _Example:_ `"ws"`
+
 - **category**  
   _Type:_ `string`  
   Defines the category for organizing widgets.  
@@ -102,6 +107,12 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
     _Type:_ `string`  
     A key to identify the data within the widget.  
     _Example:_ `"customDataKey"`
+
+  - **wsRowIdColumn**  
+    _Type:_ `string`  
+    The column that will be used to identify the row. This is important to set correctly to ensure the live updates are displayed correctly. 
+    This the key between your ws and the initial data. Only used with the Live Grid Widget.
+    _Example:_ `"symbol"`
 
   - **table**  
     _Type:_ object containing the following keys:
@@ -160,6 +171,12 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
         _Example:_ `"text"`  
         _Possible values:_ `"text"`, `"number"`, `"boolean"`, `"date"`, `"dateString"`, `"object"`
 
+      - **enableCellChangeWs**  
+        _Type:_ `boolean`  
+        Controls whether the cell can be updated via WebSocket messages. Only used with the Live Grid Widget.
+        _Default:_ `true`  
+        _Example:_ `false`
+
       - **formatterFn**  
         _Type:_ `string`  
         Specifies how to format the data.  
@@ -170,7 +187,7 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
         _Type:_ `string`  
         Specifies a rendering function for cell data. See [Render Functions](/content/terminal/custom-backend/advanced-controls/render-functions.md) for more information.  
         _Example:_ `"titleCase"`  
-        _Possible values:_ `"greenRed"`, `"titleCase"`, `"hoverCard"`, `"cellOnClick"`, `"columnColor"`
+        _Possible values:_ `"greenRed"`, `"titleCase"`, `"hoverCard"`, `"cellOnClick"`, `"columnColor"`, `"showCellChange"`
 
       - **renderFnParams**  
         _Type:_ `object`  
