@@ -71,7 +71,7 @@ Widgets use a grid-based layout system where you can specify their width and hei
 
 Control how and when widget data updates using these two key settings:
 
-### Refresh Interval
+### Refetch Interval
 
 The `refetchInterval` determines how often the widget updates its data while visible on screen:
 
@@ -81,10 +81,11 @@ The `refetchInterval` determines how often the widget updates its data while vis
 }
 ```
 
-- Default: 900000 (15 minutes)
-- Set to `0` to disable automatic refreshing
+- Default: 900000 (15 minutes) (minimum 1000)
+- Set to `false` to disable automatic refreshing
 - Use lower values for real-time data (e.g., 60000 for 1-minute updates)
 - Higher values recommended for static or slowly changing data
+- Use the `runButton` if you want to refresh the widget manually (note: You can set the `refetchInterval` with a run button as well.)
 
 ### Stale Time
 

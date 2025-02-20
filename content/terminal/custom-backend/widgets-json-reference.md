@@ -288,8 +288,8 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
   _Example:_ `["API", "Database"]`
 
 - **refetchInterval**  
-  _Type:_ `number`  
-  Time in milliseconds before the widget's data will refresh if on the page.  
+  _Type:_ `number` or `false`
+  Time in milliseconds before the widget's data will refresh if on the page.  Minimum value is `1000`.
   _Default:_ `900000` (15m)
 
 - **staleTime**  
