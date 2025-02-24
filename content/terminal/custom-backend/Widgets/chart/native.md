@@ -1,5 +1,5 @@
 ---
-title: Native Charting Example
+title: Native Chart
 sidebar_position: 2
 description: Learn how to integrate your own backend with OpenBB Terminal Pro using cookie-cutter or language-agnostic API approaches. This guide includes illustrative examples and principles for handling `widget.json` files, APIs, interfaces, Python, FastAPI, and more.
 keywords:
@@ -14,7 +14,7 @@ keywords:
 - Terminal Pro widgets
 - Widget definitions
 ---
-# Introduction
+# Native Chart
 
 This guide will walk you through the process of creating a simple chart widget using the native charting already available in OpenBB Terminal Pro.
 
@@ -100,12 +100,12 @@ The built-in charts support a variety of types. Here are the allowed values:
 
 By following these steps, you can create a chart widget with ease. Experiment with different chart types to best visualize your data.
 
-## Changing the Chart Settings
+## Changing the Chart Settings / Visualization
 
 You can change the chart settings by clicking on the three dots and then the `Chart Settings` in the dropdown menu.
 
 <img className="pro-border-gradient" width="400" alt="chart" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/chart+settings.png" />
 
-Here you can change the chart type, the chart settings, and the some other settings.
+Here you can change the chart type, the chart settings, and the some other settings in each tab.
 
 <img className="pro-border-gradient" width="400" alt="chart" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/chart+settings+2.png" />

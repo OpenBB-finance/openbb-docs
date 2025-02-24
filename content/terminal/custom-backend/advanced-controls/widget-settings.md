@@ -22,6 +22,28 @@ keywords:
 
 This guide covers the essential settings for configuring widget appearance, positioning, and data refresh behavior in OpenBB Terminal Pro.
 
+## Run Button
+
+The run button allows you to run a widget by clicking it rather then having it run automatically when you change a parameter. It is located in the top right corner of the widget and replaces the refresh button.
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="200" alt="run button" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/run+button.png" />
+</div>
+
+```json
+  "testWidget": {
+    "name": "Run Button",
+    "description": "Run Button Widget Example",
+    "category": "Equity",
+    "searchCategory": "Equity",
+    "endpoint": "data",
+    "runButton": true,
+    ...
+}
+```
+
+Setting the refreshInterval in the `widgets.json` will allow you still refresh the widget automatically but it is off by default when using the run button. A Ctrl-click on the run button performs a hard refresh, while a regular click runs the new parameters.
+
 ## Grid Dimensions
 
 Widgets use a grid-based layout system where you can specify their width and height. Configure these in the `gridData` object:

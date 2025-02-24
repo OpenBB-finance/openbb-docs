@@ -137,10 +137,12 @@ The class can have a dictionary, `__alias_dict__`, which can be used to map the 
 
 The `__json_schema_extra__` dictionary can be used to define whether multiple items are accepted by a parameter.
 
+Additionally, "choices", is a list of accepted vales for the parameter. Adding them here ensures they are included in `openapi.json`.
+
 ``` python
 __json_schema_extra__ = {
-    "symbol": ["multiple_items_allowed"],
-    "category": ["multiple_items_allowed"],
+    "symbol": {"multiple_items_allowed": True, "choices": SOME_SYMBOL_LIST},
+    "category": {"multiple_items_allowed": False},  # No need to define this, it is the default behaviour. 
 }
 ```
 
