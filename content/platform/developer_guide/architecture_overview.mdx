@@ -451,6 +451,20 @@ class SomeFetcher(Fetcher[SomeQueryParams, list[SomeData]]):
 - All parameters for these methods are positional and should be defined as described above.
 :::
 
+### Execution Method
+
+A `Fetcher` can be executed without initialization, as an async function. It requires two positional arguments as dictionaries:
+
+- `query` - a dictionary to be converted into the QueryParams class.
+- `credentials` - a dictionary of credentials required for the provider and endpoint.
+  - Pass as an empty dictionary when no credentials are required.
+
+```python
+results = await SomeFetcher.fetch_data({"symbol": "btcusd"}, {})
+```
+
+The return is the output of `SomeFetcher.tranform_data`
+
 ### Router Definition
 
 To implement the `ProviderInterface` as a `Router` endpoint, follow the pattern below in the extension's `router` file.
