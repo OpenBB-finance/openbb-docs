@@ -281,6 +281,7 @@ from openbb_core.provider.abstract.query_params import QueryParams
 
 from datetime import date as dateType
 from typing import Optional
+from warnings import warn
 
 from openbb_core.provider.abstract.query_params import QueryParams
 from pydantic import Field, field_validator
@@ -315,9 +316,25 @@ class SomeQueryParams(QueryParams):
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
-    def to_upper(cls, v: str) -> str:
-        """Convert field to uppercase."""
-        return v.upper()
+    def _validate_symbol(cls, v) -> str:
+        """Validate the symbol."""
+        if not v:
+            raise ValueError("Please enter a symbol.")
+        symbol = v if isinstance(v, list) else v.upper().split(",")
+
+        new_symbols: list = []
+
+        for s in symbol:
+            if s not in SOME_SYMBOL_LIST:
+                msg = f"Invalid symbol provided {s}"
+                warn(msg)
+                continue
+            new_symbols.append(s)
+
+        if not new_symbols:
+            raise ValueError(f"No valid symbols supplied. Choices are: {SOME_SYMBOL_LIST}")
+
+        return ",".join(new_symbols)
 ```
 
 ## ProviderInterface
