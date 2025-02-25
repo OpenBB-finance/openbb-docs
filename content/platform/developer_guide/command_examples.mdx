@@ -1,5 +1,5 @@
 ---
-title: Add Examples to Commands
+title: Adding Example Syntax
 sidebar_position: 12
 description: This guide provides detailed instructions for including command examples in the router endpoints of the OpenBB Platform.
 keywords:
@@ -11,21 +11,23 @@ keywords:
   - Examples
   - Usage
   - Parameters
-  - contributing
-  - requirements
 ---
 
 import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-<HeadTitle title="Add Examples to Commands - How-To | OpenBB Platform Docs" />
+<HeadTitle title="Adding Example Syntax To Commands | OpenBB Platform Docs" />
 
 Usage examples are defined in the router and are expected to provide working syntax, with descriptions for complex functions requiring many parameters.
 
-> When a provider is not installed, its example will be excluded from `openapi.json` and Python docstrings
+:::info FYI
+When a provider is not installed, its example will be excluded from `openapi.json` and Python docstrings
+:::
 
 ## Requirements
 
-All router endpoints must have examples.
+It is encouraged to include examples for every endpoint.
+
+Submissions to our repository require:
 
 - If any endpoint is excluded from the schema it only needs to contain a Python example.
 - POST method examples should have both API and Python examples, unless they are excluded from the schema.
@@ -44,6 +46,8 @@ All router endpoints must have examples.
 There are two models for defining examples, `APIEx` and `PythonEx`. `
 
 `APIEx` is more structured aiming to be language agnostic - provides less freedom - while `PythonEx` gives more freedom to create complex examples.
+
+### Imports
 
 ```python
 from openbb_core.app.model.example import APIEx, PythonEx
