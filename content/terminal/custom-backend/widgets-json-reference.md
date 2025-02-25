@@ -232,7 +232,7 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
     _Type:_ `string`  
     The type of the parameter.  
     _Example:_ `"date"`  
-    _Possible values:_ `"date"`, `"text"`, `"ticker"`, `"number"`, `"boolean"`, `"endpoint"`
+    _Possible values:_ `"date"`, `"text"`, `"ticker"`, `"number"`, `"boolean"`, `"endpoint"`, `"form"`
 
   - **paramName**  
     _Type:_ `string`  

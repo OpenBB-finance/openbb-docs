@@ -9,11 +9,9 @@ keywords:
 - widget configuration
 ---
 
-## Grouping and Parameters
-
 In the `widgets.json` configuration, you can specify parameters/inputs that can be used to customize the data retrieval and display. Widgets can also be grouped if you have multiple widgets on the same dashboard that share a parameter. This section will guide you through setting up these features.
 
-### Parameters
+## Parameters
 
 Parameters are used to pass dynamic values to your API endpoints, allowing for customizable data queries from the widget. Each parameter is defined in the `params` array within your widgets.json file and can include the following fields:
 
@@ -23,7 +21,7 @@ Parameters are used to pass dynamic values to your API endpoints, allowing for c
 **type**  
 _Type:_ `string`  
 The data type of the parameter.  
-_Possible values:_ `"date"`, `"text"`, `"ticker"`, `"number"`, `"boolean"`, `"endpoint"`
+_Possible values:_ `"date"`, `"text"`, `"ticker"`, `"number"`, `"boolean"`, `"endpoint"`, `"form"`
 
 **paramName**  
 _Type:_ `string`  
@@ -141,7 +139,82 @@ _Example:_ `"/api/companies"`
 
 </details>
 
-### Passing custom dropdown options
+## Form Parameter
+
+The form parameter type (`"type": "form"`) allows you to create complex input forms within widgets. This is useful when you need to collect multiple related inputs before submitting data to your backend.
+
+Forms require a dedicated endpoint and are always sent with a POST request. This endpoint will be called when the form is submitted.
+
+You can see a full example of this in the [Form Example](https://github.com/OpenBB-finance/backend-examples-for-openbb-workspace/tree/main/advanced_examples/form_parameter) section.
+
+<img className="pro-border-gradient" width="500" alt="form-parameter" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/form-parameter.png" />
+
+A form can include various input types:
+
+- **Date**: Select a specific date for the data
+- **Number**: Numeric input field
+- **Dropdown**: Selection menu (can be populated dynamically from an API)
+- **Text**: Text input field
+- **Button**: Button to trigger the data submission
+
+<details>
+<summary mdxType="summary">Example form parameter configuration</summary>
+
+```json
+{
+  "form_example_widget": {
+    "name": "Form Example",
+    "description": "Demonstrates form parameter usage",
+    "endpoint": "form-example",
+    "params": [
+      {
+        "paramName": "formData",
+        "type": "form",
+        "label": "Data Input Form",
+        "description": "Enter the required information",
+        "value": {},
+        "formFields": [
+          {
+            "name": "date",
+            "label": "Date",
+            "type": "date",
+            "required": true
+          },
+          {
+            "name": "amount",
+            "label": "Amount",
+            "type": "number",
+            "required": true
+          },
+          {
+            "name": "chain",
+            "label": "Blockchain",
+            "type": "dropdown",
+            "options": "get_chains_list",
+            "required": true
+          },
+          {
+            "name": "notes",
+            "label": "Notes",
+            "type": "text",
+            "required": false
+          }
+        ],
+        "submitButton": {
+          "label": "Submit Data",
+          "color": "primary"
+        }
+      }
+    ]
+  }
+}
+```
+</details>
+
+When the form is submitted, the data is sent to the specified endpoint as a JSON object containing all the form field values.
+
+
+## Passing custom dropdown options
 
 Sometimes you may want to pass a list from an endpoint rather then specify the options in the `widgets.json` file.
 
@@ -213,7 +286,7 @@ You can also return a dropdown with some advanced options passed - Your returned
 
 These values can also be grouped which we will cover below.
 
-### Grouping
+## Grouping
 
 Widget grouping allows multiple widgets to share and respond to the same parameter input. When widgets are grouped, you only need to select a value once to update all related widgets simultaneously. This is useful for dashboards where multiple widgets display different aspects of the same data source.
 
@@ -289,7 +362,7 @@ Example of widgets that will be grouped using the ticker parameter:
 
 3. **Render Functions**: You can also use render functions when you group data.
 
-Let's say you want to group by the symbol in a widget and you want other widgets to change when you click on a cell in the table. You can do this by adding to your `columnsDefs` the render function `cellOnClick` and the `actionType` of `groupBy`. This will group the data by the symbol and update the other widgets that are grouped by the same parameter.
+Let's say you want to group by the symbol in a widget and you want other widgets to change when you click on a cell in the table. You can do this by adding to your `columnsDefs` the render function `cellOnClick` and the `actionType` of `groupBy` along with the `paramName` of the parameter you want to group by. This will group the data by the symbol and update the other widgets that are grouped by the same parameter.
 
 ```json
     "params": [
@@ -312,7 +385,8 @@ Let's say you want to group by the symbol in a widget and you want other widgets
             "headerName": "Symbol",
             "renderFn": "cellOnClick",
             "renderFnParams": {
-              "actionType": "groupBy"
+              "actionType": "groupBy",
+              "groupByParamName": "symbol"
             }
           }
         ]
