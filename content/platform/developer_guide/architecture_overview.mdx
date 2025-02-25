@@ -441,7 +441,7 @@ class SomeFetcher(Fetcher[SomeQueryParams, list[SomeData]]):
         raise NotImplementedError
 
     @staticmethod
-    def transform_data(query: SomeQueryParams, data: dict, **kwargs: Any) -> Union[R, AnnotatedResult[R]]:
+    def transform_data(query: SomeQueryParams, data: dict, **kwargs: Any) -> list[SomeData]:
         """Transform the provider-specific data."""
         raise NotImplementedError
 ```
