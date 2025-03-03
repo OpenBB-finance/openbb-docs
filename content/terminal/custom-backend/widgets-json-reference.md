@@ -271,7 +271,7 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
 
   - **style**  
     _Type:_ `object`  
-    Styling options for the parameter. Only popupWidth is currently supported.  
+    Styling options for the parameter. Only popupWidth is currently supported minimum value is 200px max value is 1000px.  
     _Example:_ `{"popupWidth": 450}`
 
   - **options**  

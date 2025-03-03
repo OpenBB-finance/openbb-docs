@@ -65,7 +65,7 @@ _Example:_ `"/api/companies"`
 
 **style**  
 _Type:_ `object`  
-Styling options for the parameter.  
+Styling options for the parameter. Only popupWidth is currently supported minimum value is 200px max value is 1000px. 
 _Example:_ `{"popupWidth": 450}`
 
 </details>
