@@ -63,6 +63,11 @@ _Type:_ `string`
 An endpoint to fetch options dynamically, used when `type` is `"endpoint"`.  
 _Example:_ `"/api/companies"`
 
+**style**  
+_Type:_ `object`  
+Styling options for the parameter.  
+_Example:_ `{"popupWidth": 450}`
+
 </details>
 
 <img className="pro-border-gradient" width="700" alt="widget-parameters" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/parameters.png" />
@@ -317,7 +322,10 @@ Widget grouping allows multiple widgets to share and respond to the same paramet
                 "type": "endpoint",
                 "paramName": "chain",
                 "label": "Chain",
-                "optionsEndpoint": "get_chains_list"
+                "optionsEndpoint": "get_chains_list",
+                "style": {
+                  "popupWidth": 450
+                }
             }
         ]
     }

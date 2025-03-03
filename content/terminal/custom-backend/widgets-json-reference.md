@@ -269,6 +269,11 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
     Allows multiple values to be selected from your parameter options.  
     _Example:_ `true`
 
+  - **style**  
+    _Type:_ `object`  
+    Styling options for the parameter. Only popupWidth is currently supported.  
+    _Example:_ `{"popupWidth": 450}`
+
   - **options**  
     _Type:_ list of objects, each containing the following keys:
 
