@@ -18,7 +18,6 @@ Our product offers two different plans:
 The products, features and services that come with an enterprise are highlighted below.
 
 ## Excel Add-In
-
 The enterprise plan, enables users to have access to the financial data directly from Excel, or export any dataset into an Excel format.
 
 For more information, check [OpenBB Add-in for Excel](http://docs.openbb.co/excel).
