@@ -60,3 +60,9 @@ OpenBB Terminal Pro supports various ways to visualize data through widgets. Eac
    - [Create your own Live Grid Widget](live_grid.md)
 
 <img className="pro-border-gradient" width="600" alt="live-feed" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/live_grid.png" />
+
+7. **Multi File Viewer Widget**:
+   - Displays a list of files and allows you to view and compare them.
+   - [Create your own Multi File Viewer Widget](multi-file-viewer.md)
+
+<img className="pro-border-gradient" width="600" alt="multi-file-viewer" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/multi-file-viewer.png" />

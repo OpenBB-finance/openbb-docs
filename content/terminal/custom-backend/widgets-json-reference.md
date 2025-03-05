@@ -47,8 +47,8 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
 
 - **description**  
   _Type:_ `string` (required)  
-  Provides a brief description of the widget for user info and selection menu. 
-  This is important for Copilot to understand what the widget does. 
+  Provides a brief description of the widget for user info and selection menu.
+  This is important for Copilot to understand what the widget does.
   _Example:_ `"Provides EOD data for all options chains for a given ticker."`
 
 - **endpoint**  
@@ -76,7 +76,7 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
 - **type**  
   _Type:_ `string`  
   Sets the default visualization type for the widget.  
-  _Possible values:_ `"chart"`, `"table"`, `"markdown"`, `"metric"`, `"note"`  
+  _Possible values:_ `"chart"`, `"table"`, `"markdown"`, `"metric"`, `"note"`,  `"multi_file_viewer"`
   _Default:_ `"table"`
 
 - **runButton**  
@@ -254,6 +254,11 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
     Endpoint to fetch options for the parameter.  
     _Example:_ `"v1/test/values"`
 
+  - **optionsParams**  
+    _Type:_ `object`  
+    Parameters to pass to the options endpoint. You can use the parameter name from the `params` array to pass a value to the options endpoint.
+    _Example:_ `{"type": "$type"}`
+    
   - **show**  
     _Type:_ `boolean`  
     Displays the parameter in the UI.  
@@ -286,6 +291,8 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
       _Type:_ `string`, `number`, `boolean`  
       The value for a dropdown option.  
       _Example:_ `"option1"`
+
+
 
 - **source**  
   _Type:_ array of strings  
