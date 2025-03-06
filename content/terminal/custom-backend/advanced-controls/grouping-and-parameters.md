@@ -178,7 +178,7 @@ A form can include various input types:
         "label": "Data Input Form",
         "description": "Enter the required information",
         "value": {},
-        "formFields": [
+        "inputParams": [
           {
             "name": "date",
             "label": "Date",
@@ -217,7 +217,6 @@ A form can include various input types:
 </details>
 
 When the form is submitted, the data is sent to the specified endpoint as a JSON object containing all the form field values.
-
 
 ## Passing custom dropdown options
 
