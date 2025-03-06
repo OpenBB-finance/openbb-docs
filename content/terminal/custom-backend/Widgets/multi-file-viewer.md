@@ -59,36 +59,36 @@ app = FastAPI()
 # - name: The name of the whitepaper
 # - location: The location of the whitepaper on the server
 # - url: The URL to the whitepaper
-# - type: The type of whitepaper
+# - category: The type of whitepaper
 whitepapers = [
     {
         "name": "Sample_1",
         "location": "sample.pdf",
         "url": "http://localhost:5011/random/whitepapers/Sample_1",
-        "type": "l1",
+        "category": "l1",
     },
     {
         "name": "Sample_2",
         "location": "other-sample.pdf",
         "url": "http://localhost:5011/random/whitepapers/Sample_2",
-        "type": "oracles",
+        "category": "oracles",
     },
     {
         "name": "Sample_3",
         "location": "other-sample.pdf",
         "url": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
-        "type": "defi",
+        "category": "defi",
     }
 ]
 
 # Endpoint to get available whitepapers
-# This endpoint returns a list of whitepapers with their names and types
+# This endpoint returns a list of whitepapers with their names and category
 # We use the same label and value we do on our dropdown to show the list of files.
 @app.get("/random/whitepapers")
-async def get_whitepapers(type: str = Query("all")):
-    if type == "all":
+async def get_whitepapers(category: str = Query("all")):
+    if category == "all":
         return [{"label": wp["name"], "value": wp["name"]} for wp in whitepapers]
-    return [{"label": wp["name"], "value": wp["name"]} for wp in whitepapers if wp["type"] == type]
+    return [{"label": wp["name"], "value": wp["name"]} for wp in whitepapers if wp["category"] == category]
 
 # Endpoint to view whitepaper using base64 encoding
 @app.get("/random/whitepapers/view-base64")
