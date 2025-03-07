@@ -18,7 +18,6 @@ Our product offers two different plans:
 The products, features and services that come with an enterprise are highlighted below.
 
 ## Excel Add-In
-
 The enterprise plan, enables users to have access to the financial data directly from Excel, or export any dataset into an Excel format.
 
 For more information, check [OpenBB Add-in for Excel](http://docs.openbb.co/excel).
@@ -48,18 +47,6 @@ This is how the Report will look.
 <div style={{display: 'flex', justifyContent: 'center'}}>
 <img className="pro-border-gradient" width="488" alt="dash settings" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/dashboard_export.png
 " />
-</div>
-
-## Database Integrations
-
-There are two ways to connect to your databases or data warehouses.
-
-1. The first is through custom backends, which we have open source [here](https://github.com/OpenBB-finance/backend-for-terminal-pro/tree/main). This allows users to connect to platforms like Snowflake, Databricks, Elastic, Clickhouse, and others.
-
-2. The second is a native database/datawarehouse integration that enables firms to connect securely with their data, in seconds instead of hours. Supported connections currently include Snowflake, SQLite, and MySQL, with more options coming soon.
-
-<div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/native_integration.png" />
 </div>
 
 ## Dashboard Sharing

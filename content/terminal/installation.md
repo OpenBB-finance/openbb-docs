@@ -1,5 +1,5 @@
 ---
-title: Native Installation
+title: Installation
 description: Learn how to install and use OpenBB Terminal as a Progressive Web App (PWA) on your desktop and mobile devices.
 sidebar_position: 2
 keywords:
@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Native Installation | OpenBB Terminal Pro Docs" />
+<HeadTitle title="Installation | OpenBB Terminal Pro Docs" />
 
 # Installing OpenBB Terminal on your devices
 

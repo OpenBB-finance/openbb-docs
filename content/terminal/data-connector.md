@@ -4,7 +4,6 @@ sidebar_position: 10
 description: Learn how to upload both structured and unstructured data to OpenBB Terminal with just a few clicks.
 keywords:
 - Single Widget
-- Data Connectors
 - API Endpoints
 - Data Integration
 - User-friendly Table Format
@@ -31,7 +30,3 @@ API endpoints provide a fast way to integrate custom data into OpenBB Terminal P
 ## Custom Backend
 
 Integrate your own backend using our example or any language-agnostic API approach. Design and implement your API, create a widgets.json file, and connect your API to OpenBB Terminal Pro to dynamically load and display your data.
-
-## Database Integrations
-
-OpenBB Terminal Pro allows you to connect directly to Snowflake, MySQL, or SQLite databases. By installing and running the OpenBB Data Connector, you can enable these integrations which allows you to run queries and analyze your data directly within OpenBB Terminal Pro.
