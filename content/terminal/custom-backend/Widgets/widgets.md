@@ -66,3 +66,11 @@ OpenBB Terminal Pro supports various ways to visualize data through widgets. Eac
    - [Create your own Multi File Viewer Widget](multi-file-viewer.md)
 
 <img className="pro-border-gradient" width="600" alt="multi-file-viewer" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/multi-file-viewer.png" />
+
+8. **Advanced Charting Widget**:
+   - Displays TradingView chart with advanced features.
+   - [Create your own Advanced Charting Widget](advanced_charting.md)
+
+<img className="pro-border-gradient" width="600" alt="advanced-charting" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/advanced_charting.png"/>
+
+
