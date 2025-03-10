@@ -229,7 +229,7 @@ This is the base class for all data returned via the `ProviderInterface`, and is
 ### Import
 
 ```python
-from openbb_core.app.model.abstract.data import Data
+from openbb_core.provider.abstract.data import Data
 ```
 
 Key Features:
@@ -256,6 +256,12 @@ class SomeData(Data):
         "output_field": "someWhackyInputName",
     }
     output_field: str = Field(description="My Output")
+
+SomeData(someWhackyInputName="Some Output")
+```
+Output:
+```sh
+SomeData(output_field=Some Output)
 ```
 
 ## QueryParams Class
@@ -603,3 +609,4 @@ class SomeExtension:
 ```
 
 An example of this type of extension is, [`openbb-charting`](https://pypi.org/project/openbb-charting/).
+
