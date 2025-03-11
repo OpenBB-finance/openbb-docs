@@ -397,11 +397,14 @@ Edit the `widgets.json` file and add the following JSON data. This configuration
             "h": 20
         },
         "data": {
-            "defaultSymbol": "XBTUSDC"
+            "defaultSymbol": "XBTUSDC",
+            "updateFrequency" : 60000
         }
     }
 }
 ```
+
+`updateFrequency` is the frequency in milliseconds that the chart widget will update the data.
 
 ## Step 4: Add to OpenBB Pro
 
