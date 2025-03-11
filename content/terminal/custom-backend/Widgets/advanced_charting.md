@@ -404,7 +404,7 @@ Edit the `widgets.json` file and add the following JSON data. This configuration
 }
 ```
 
-`updateFrequency` is the frequency in milliseconds that the chart widget will update the data.
+`updateFrequency` is the frequency in milliseconds that the chart widget will update the data. Default is 60000 (1 minute).
 
 ## Step 4: Add to OpenBB Pro
 
