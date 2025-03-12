@@ -55,6 +55,9 @@ app = FastAPI()
 
 # ... existing code ...
 
+
+# You can find these files in the OpenBB GitHub repository in the backend-examples-for-openbb-workspace folder.
+# https://github.com/OpenBB-finance/backend-examples-for-openbb-workspace
 # Sample whitepaper data for the multi-file viewer widget
 # This is a list of dictionaries, each representing a whitepaper
 # Each whitepaper has the following properties:
@@ -64,36 +67,46 @@ app = FastAPI()
 # - category: The type of whitepaper
 whitepapers = [
     {
-        "name": "Sample_1",
-        "location": "sample.pdf",
-        "url": "http://localhost:5011/random/whitepapers/Sample_1",
+        "name": "Bitcoin",
+        "location": "bitcoin.pdf",
+        "url": "https://openbb-assets.s3.us-east-1.amazonaws.com/testing/bitcoin.pdf",
         "category": "l1",
     },
     {
-        "name": "Sample_2",
-        "location": "other-sample.pdf",
-        "url": "http://localhost:5011/random/whitepapers/Sample_2",
+        "name": "Ethereum",
+        "location": "ethereum.pdf",
+        "url": "https://openbb-assets.s3.us-east-1.amazonaws.com/testing/ethereum.pdf",
+        "category": "l1",
+    },
+    {
+        "name": "ChainLink",
+        "location": "chainlink.pdf",
+        "url": "https://openbb-assets.s3.us-east-1.amazonaws.com/testing/chainlink.pdf",
         "category": "oracles",
     },
     {
-        "name": "Sample_3",
-        "location": "other-sample.pdf",
-        "url": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
-        "category": "defi",
-    }
+        "name": "Solana",
+        "location": "solana.pdf",
+        "url": "https://openbb-assets.s3.us-east-1.amazonaws.com/testing/solana.pdf",
+        "category": "l1",
+    },
 ]
 
 # Endpoint to get available whitepapers
 # This endpoint returns a list of whitepapers with their names and category
 # We use the same label and value we do on our dropdown to show the list of files.
-@app.get("/random/whitepapers")
+@app.get("/whitepapers")
 async def get_whitepapers(category: str = Query("all")):
     if category == "all":
         return [{"label": wp["name"], "value": wp["name"]} for wp in whitepapers]
-    return [{"label": wp["name"], "value": wp["name"]} for wp in whitepapers if wp["category"] == category]
+    return [
+        {"label": wp["name"], "value": wp["name"]}
+        for wp in whitepapers
+        if wp["category"] == category
+    ]
 
 # Endpoint to view whitepaper using base64 encoding
-@app.get("/random/whitepapers/view-base64")
+@app.get("/whitepapers/view-base64")
 async def view_whitepaper_base64(whitepaper: str):
     wp = next((wp for wp in whitepapers if wp["name"] == whitepaper), None)
     if not wp:
@@ -104,34 +117,39 @@ async def view_whitepaper_base64(whitepaper: str):
         raise HTTPException(status_code=404, detail="Whitepaper file not found")
 
     with open(file_path, "rb") as file:
-        base64_content = base64.b64encode(file.read()).decode('utf-8')
+        base64_content = base64.b64encode(file.read()).decode("utf-8")
 
-    return JSONResponse(content={
-        "headers": {"Content-Type": "application/json"},
-        "data_format": {"data_type": "pdf", "filename": f"{wp['name']}.pdf"},
-        "content": base64_content
-    })
+    return JSONResponse(
+        content={
+            "headers": {"Content-Type": "application/json"},
+            "data_format": {"data_type": "pdf", "filename": f"{wp['name']}.pdf"},
+            "content": base64_content,
+        }
+    )
 
 # Alternative endpoint to view whitepaper using URL reference 
 # This is useful if you are using a cloud storage service like AWS S3 with presigned URLs
-@app.get("/random/whitepapers/view-url")
+@app.get("/whitepapers/view-url")
 async def view_whitepaper_url(whitepaper: str):
     wp = next((wp for wp in whitepapers if wp["name"] == whitepaper), None)
     if not wp:
         raise HTTPException(status_code=404, detail="Whitepaper not found")
-    
-    # In a real implementation, you would generate a presigned URL here
+
+    # Fetch the presigned url and return it for the `file_reference`.
+    # In the code below, we are simulating the presigned url by returning the url directly.
     presigned_url = wp["url"]
 
     file_path = Path.cwd() / wp["location"]
     if not file_path.exists():
         raise HTTPException(status_code=404, detail="Whitepaper file not found")
 
-    return JSONResponse(content={
-        "headers": {"Content-Type": "application/json"},
-        "data_format": {"data_type": "pdf", "filename": f"{wp['name']}.pdf"},
-        "file_reference": presigned_url
-    })
+    return JSONResponse(
+        content={
+            "headers": {"Content-Type": "application/json"},
+            "data_format": {"data_type": "pdf", "filename": f"{wp['name']}.pdf"},
+            "file_reference": presigned_url,
+        }
+    )
 ```
 
 The multi-file viewer widget supports two methods for serving files:
