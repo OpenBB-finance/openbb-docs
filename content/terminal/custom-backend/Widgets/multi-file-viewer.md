@@ -192,8 +192,8 @@ Edit the widgets.json file and add the following JSON data. This configuration d
   "whitepapers": {
     "type": "multi_file_viewer",
     "name": "Whitepapers",
-    "description": "List of available whitepapers",
-    "endpoint": "/random/whitepapers/view-base64",
+    "description": "A collection of crypto whitepapers.",
+    "endpoint": "/whitepapers/view-base64",
     "gridData": {
       "w": 40,
       "h": 10
@@ -202,22 +202,21 @@ Edit the widgets.json file and add the following JSON data. This configuration d
       {
         "type": "endpoint",
         "paramName": "whitepaper",
-        "value": "http://localhost:5011/random/whitepapers",
+        "value": "http://localhost:5011/whitepapers",
         "label": "Whitepaper",
         "description": "Whitepaper to display.",
-        "category": "Other",
-        "optionsEndpoint": "/random/whitepapers",
+        "optionsEndpoint": "/whitepapers",
         "show": false,
         "optionsParams": {
-          "type": "$type"
+          "category": "$category"
         }
       },
       {
         "type": "text",
-        "paramName": "type",
+        "paramName": "category",
         "value": "all",
-        "label": "Type of whitepaper",
-        "description": "Type of whitepaper to fetch.",
+        "label": "Category",
+        "description": "Category of whitepaper to fetch.",
         "options": [
           {
             "label": "All",
@@ -252,7 +251,7 @@ Key configuration elements:
 - `endpoint`: The endpoint that will return the file content
 - `params`: Parameters for filtering and selecting files to display
 - The `whitepaper` parameter uses an endpoint to dynamically load options
-- The `type` parameter allows filtering by category
+- The `category` parameter allows filtering by category
 
 For more information on the widgets.json file, see the Widgets.json page.
 
