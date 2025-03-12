@@ -17,7 +17,9 @@ keywords:
 
 # Multi File Viewer Widget
 
-This guide will walk you through the process of creating a multi-file viewer widget for OpenBB Terminal Pro. By the end of this guide, you will have a working multi-file viewer widget that allows users to view and compare multiple files, such as PDFs.
+This guide will walk you through the process of creating a multi-file viewer widget for OpenBB Terminal Pro. By the end of this guide, you will have a working multi-file viewer widget that allows users to view and compare multiple files.
+
+**Note : For now, this widget only supports PDF files.**
 
 This guide will walk you through the process of creating a metric widget for OpenBB Terminal Pro. By the end of this guide, you will have a working metric widget that you can add to OpenBB Terminal Pro.
 
