@@ -634,7 +634,7 @@ def generate_platform_markdown(paths: Dict) -> None:
             )
 
         reference_markdown_content += create_reference_markdown_returns_section(
-            path_data["returns"]["OBBject"]
+            path_data["returns"]["OBBject"] if "OBBject" in path_data["returns"] else path_data["returns"]
         )
 
         if path_data_fields := path_data["data"]:
