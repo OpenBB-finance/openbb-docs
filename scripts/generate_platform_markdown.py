@@ -244,8 +244,11 @@ def create_reference_markdown_returns_section(returns: List[Dict[str, str]]) -> 
     returns_str = ""
 
     for params in returns:
-        returns_str += f"{TAB_WIDTH*' '}{params['name']} : {params['type']}\n"
-        returns_str += f"{TAB_WIDTH*' '}{TAB_WIDTH*' '}{params['description']}\n\n"
+        if isinstance(params, dict):
+            returns_str += f"{TAB_WIDTH*' '}{params['name']} : {params['type']}\n"
+            returns_str += f"{TAB_WIDTH*' '}{TAB_WIDTH*' '}{params['description']}\n\n"
+        elif isinstance(params, str):
+            returns_str += f"{TAB_WIDTH*' '}{params}\n"
 
     # Remove the last two newline characters to render Returns section properly
     returns_str = returns_str.rstrip("\n\n")
