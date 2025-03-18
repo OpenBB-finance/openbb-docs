@@ -19,6 +19,7 @@ In the `widgets.json` configuration, you can specify render functions to customi
 - **`hoverCard`**: Displays additional information when hovering over a cell.
 - **`cellOnClick`**: Triggers an action when a cell is clicked.
 - **`columnColor`**: Changes the color of a column based on specified rules.
+- **`showCellChange`**: Highlights cells when their values change via WebSocket updates. Only used with the [Live Grid Widget](/content/terminal/custom-backend/widgets/live_grid.md)
 
 <details>
 <summary mdxType="summary">Render Function Parameters</summary>
@@ -28,6 +29,12 @@ _Type:_ `string`
 Specifies the action type for the render function.  
 _Possible values:_ `"groupBy"`  
 _Used with:_ `cellOnClick` render function
+
+**colorValueKey**  
+_Type:_ `string`  
+Specifies which field to use for determining the color when showing cell changes.  
+_Used with:_ `showCellChange` render function  
+_Example:_ `"change"`
 
 **hoverCardData**  
 _Type:_ `array of strings`  
