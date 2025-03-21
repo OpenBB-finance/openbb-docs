@@ -150,79 +150,103 @@ def create_reference_markdown_tabular_section(
         Tabular section for the markdown file
     """
 
-    tables_list = []
+    sections_list = []
 
-    # params_list is a list of dictionaries containing the
-    # information for all the parameters of the provider.
     for provider, params_list in parameters.items():
-
         if provider != "standard":
-            result = {v.get("name"): v for v in parameters["standard"]}
+            result = {v.get("name"): v for v in parameters.get("standard", [])}
             provider_params = {v.get("name"): v for v in params_list}
             result.update(provider_params)
             params = [{**{"name": k}, **v} for k, v in result.items()]
         else:
             params = params_list
 
-        # Exclude default and optional columns in the Data section
-        filtered = (
-            [
-                {k: v for k, v in p.items() if k not in ["default", "optional"]}
-                for p in params
-            ]
+        # Filter parameters based on heading
+        allowed_keys = (
+            ["name", "type", "description"]
             if heading == "Data"
-            else params
+            else ["name", "type", "description", "default", "optional", "choices"]
         )
 
-        # Parameter information for every provider is extracted from the dictionary
-        # and joined to form a row of the table.
-        # A `|` is added at the start and end of the row to create the table cell.
-        rows = "\n".join([f"| {' | '.join(map(str, p.values()))} |" for p in filtered])
+        filtered = [{k: v for k, v in p.items() if k in allowed_keys} for p in params]
 
-        def sanitize_rows(content):
-            """Sanitize the rows to ensure that the table is rendered correctly."""
-            lines = content.split("\n")
-            processed_lines = []
-            current_line = ""
+        # Build the content using a more flexible format that doesn't affect TOC
+        content = f"\n<TabItem value='{provider}' label='{provider}'>\n\n"
 
-            for line in lines:
-                if line.startswith("|"):
-                    if current_line:
-                        processed_lines.append(current_line)
-                    current_line = line
-                else:
-                    if current_line.endswith("."):
-                        current_line += " " + line.strip()
+        for i, param in enumerate(filtered):
+            name = param.get("name", "")
+            param_type = param.get("type", "")
+            description = param.get("description", "")
+
+            # Use bold and code formatting instead of headings
+            content += f"**`{name}`**: `{param_type}`\n\n"
+
+            # Format the description to preserve newlines and indentation
+            if "\n" in description:
+                # For multi-line descriptions, use a collapsible details section
+                content += "<details>\n"
+                content += '<summary mdxType="summary">Description</summary>\n\n'
+
+                # Replace newlines with <br/> tags to preserve formatting in HTML
+                formatted_description = description.replace("\n", "<br/>\n")
+                content += f"{formatted_description}\n\n"
+                content += "</details>\n\n"
+            else:
+                # For single-line descriptions, use regular paragraph formatting
+                content += f"{description}\n\n"
+
+            # Add default and optional information if needed
+            if heading == "Parameters":
+                options = param.get("options", param.get("choices", None))
+                if (
+                    options
+                    and options not in (None, "", "None")
+                    and "literal" not in param_type.lower()
+                ):
+                    # Use details/summary tags to make options collapsible
+                    content += "<details>\n"
+                    content += '<summary mdxType="summary">Choices</summary>\n\n'
+
+                    # Handle different formats of options
+                    if isinstance(options, list):
+                        # List format
+                        for option in options:
+                            content += f"- `{option}`\n"
+                    elif isinstance(options, str):
+                        # String format - might be comma-separated or already formatted
+                        if "," in options:
+                            for option in options.split(","):
+                                content += f"- `{option.strip()}`\n"
+                        else:
+                            content += f"- `{options}`\n"
+
+                    content += "</details>\n\n"
+
+                default = param.get("default", "")
+                optional = param.get("optional", "")
+
+                # Only show default if it exists
+                if default not in (None, "", "None"):
+                    content += f" • *Default:* `{default}`\n\n"
+
+                    # Add optional status on the same line if both exist
+                    if optional not in (None, "", "None"):
+                        content += f" • *Optional:* `{optional}`\n\n"
                     else:
-                        current_line += "; " + line.strip()
+                        content += "\n\n"
+                # Show optional status alone if no default
+                elif optional not in (None, "", "None"):
+                    content += f" • *Optional:* `{optional}`\n\n"
 
-            if current_line:
-                processed_lines.append(current_line)
+                if i < len(filtered) - 1:
+                    content += "---\n\n"
 
-            return "\n".join(processed_lines)
-
-        rows = sanitize_rows(rows)
-
-        if heading == "Parameters":
-            tables_list.append(
-                f"\n<TabItem value='{provider}' label='{provider}'>\n\n"
-                "| Name | Type | Description | Default | Optional |\n"
-                "| ---- | ---- | ----------- | ------- | -------- |\n"
-                f"{rows}\n"
-                "</TabItem>\n"
-            )
-        elif heading == "Data":
-            tables_list.append(
-                f"\n<TabItem value='{provider}' label='{provider}'>\n\n"
-                "| Name | Type | Description |\n"
-                "| ---- | ---- | ----------- |\n"
-                f"{rows}\n"
-                "</TabItem>\n"
-            )
+        content += "</TabItem>\n"
+        sections_list.append(content)
 
     # For easy debugging of the created strings
-    tables = "".join(tables_list)
-    markdown = f"---\n\n## {heading}\n\n<Tabs>\n{tables}\n</Tabs>\n\n"
+    sections = "".join(sections_list)
+    markdown = f"\n\n## {heading}\n\n<Tabs>\n{sections}</Tabs>\n\n"
 
     return markdown
 
@@ -241,22 +265,36 @@ def create_reference_markdown_returns_section(returns: List[Dict[str, str]]) -> 
         Returns section for the markdown file
     """
 
-    returns_str = ""
+    # For easy debugging of the created strings
+    markdown = "---\n\n## Returns\n\n"
 
+    # Handle different types of return objects
+    returns = [returns] if isinstance(returns, str) else returns
+
+    # Process each return item
     for params in returns:
         if isinstance(params, dict):
-            returns_str += f"{TAB_WIDTH*' '}{params['name']} : {params['type']}\n"
-            returns_str += f"{TAB_WIDTH*' '}{TAB_WIDTH*' '}{params['description']}\n\n"
+            name = params.get("name", "")
+            type_str = params.get("type", "")
+            description = params.get("description", "")
+
+            # Use bold and code formatting similar to parameters
+            markdown += f"**`{name}`**: `{type_str}`\n\n"
+
+            # Format the description to preserve newlines and indentation
+            if "\n" in description:
+                # For multi-line descriptions, use a code block to preserve formatting
+                markdown += "```\n"
+                markdown += description + "\n"
+                markdown += "```\n\n"
+            else:
+                # For single-line descriptions, use regular paragraph formatting
+                markdown += f"{description}\n\n"
+
+            markdown += "---\n\n"
         elif isinstance(params, str):
-            returns_str += f"{TAB_WIDTH*' '}{params}\n"
-
-    # Remove the last two newline characters to render Returns section properly
-    returns_str = returns_str.rstrip("\n\n")
-
-    # For easy debugging of the created strings
-    markdown = (
-        f"---\n\n## Returns\n\n```python wordwrap\nOBBject\n{returns_str}\n```\n\n"
-    )
+            # For simple string returns, just add them directly
+            markdown += f"{params}\n\n"
 
     return markdown
 
@@ -628,7 +666,6 @@ def generate_platform_markdown(paths: Dict) -> None:
         reference_markdown_content += create_reference_markdown_intro(
             path[1:], description, path_data["deprecated"]
         )
-        # reference_markdown_content += create_reference_markdown_examples(path_data["examples"])
         reference_markdown_content += path_data["examples"]
 
         if path_parameters_fields := path_data["parameters"]:
@@ -637,7 +674,9 @@ def generate_platform_markdown(paths: Dict) -> None:
             )
 
         reference_markdown_content += create_reference_markdown_returns_section(
-            path_data["returns"]["OBBject"] if "OBBject" in path_data["returns"] else path_data["returns"]
+            path_data["returns"]["OBBject"]
+            if "OBBject" in path_data["returns"]
+            else path_data["returns"]
         )
 
         if path_data_fields := path_data["data"]:
