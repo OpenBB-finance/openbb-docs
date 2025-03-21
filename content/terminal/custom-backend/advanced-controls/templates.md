@@ -105,10 +105,23 @@ The `templates.json` file should be structured to define templates, including th
         "groups": [
             {
                 "name": "Group 1",
-                "groupById": "get_chains_list",
+                "paramName": "chain",
+                "type" : "endpoint",
                 "defaultValue": "Ethereum",
-                "widgetIds": ["Widget1", "Widget2", "Widget3"]
-            }
+                "widgetIds": [
+                    "historical_chains_table",
+                    "historical_chains_table_advanced_dropdown"
+                ]
+            },
+            {
+                "name": "Group 2",
+                "paramName": "test",
+                "defaultValue": "all",
+                "widgetIds": [
+                    "historical_chains_table",
+                    "historical_chains_table_advanced_dropdown"
+                ]
+            },
         ],
         "prompts": [
             "What is the price of Ethereum?",
