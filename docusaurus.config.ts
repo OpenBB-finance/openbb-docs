@@ -117,14 +117,6 @@ export default {
 						to: "/workspace/api-endpoints",
 					},
 					{
-						from: "/pro/database-integrations",
-						to: "/workspace/database-integrations",
-					},
-					{
-						from: "/pro/database-integrations/snowflake",
-						to: "/workspace/database-integrations/snowflake",
-					},
-					{
 						from: "/pro/custom-backend",
 						to: "/workspace/custom-backend",
 					},
