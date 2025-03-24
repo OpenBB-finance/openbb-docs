@@ -1,7 +1,7 @@
 ---
 title: Advanced Charting
 sidebar_position: 4
-description: Learn how to integrate your own backend with OpenBB Terminal Pro using the cookie-cutter or language-agnostic API approaches, with illustrative guides and principles for handling widget.json files, APIs, interfaces, Python, FastAPI, and more.
+description: Learn how to integrate your own backend with OpenBB Workspace using the cookie-cutter or language-agnostic API approaches, with illustrative guides and principles for handling widget.json files, APIs, interfaces, Python, FastAPI, and more.
 keywords:
 - widgets.json
 - OpenBB API
@@ -11,13 +11,13 @@ keywords:
 - API implementation
 - Python
 - FastAPI
-- Terminal Pro widgets
+- Workspace widgets
 - Widget definitions
 ---
 
 # Advanced Charting Widget
 
-This guide will walk you through the process of creating an advanced charting widget for OpenBB Terminal Pro using TradingView UDF (Universal Data Feed) protocol with Kraken cryptocurrency data. By the end of this guide, you will have a working advanced charting widget that can display interactive price charts.
+This guide will walk you through the process of creating an advanced charting widget for OpenBB Workspace using TradingView UDF (Universal Data Feed) protocol with Kraken cryptocurrency data. By the end of this guide, you will have a working advanced charting widget that can display interactive price charts.
 
 ## Step 1: Set Up Your Project
 

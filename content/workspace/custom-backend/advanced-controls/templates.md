@@ -188,4 +188,4 @@ In the `templates.json` file, each widget's layout is defined using specific pro
 - **Groups**: This will group the widgets together automatically if they share the same parameter.
 - **Prompts**: This will allow you to add a prompt to the template to use in the OpenBB Copilot.
 
-An example of a template can be found [here](https://github.com/OpenBB-finance/backend-for-terminal-pro/tree/main).
+An example of a template can be found [here](https://github.com/OpenBB-finance/backend-examples-for-openbb-workspace/tree/main).

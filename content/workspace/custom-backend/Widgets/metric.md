@@ -90,4 +90,4 @@ Once you have added your backend, you can find the widget in the `Test` category
 
 ## Additional Resources
 
-You can find more examples of how to set up your own backend in the [Backend for OpenBB Workspace GitHub](https://github.com/OpenBB-finance/backend-for-terminal-pro).
+You can find more examples of how to set up your own backend in the [Backend for OpenBB Workspace GitHub](https://github.com/OpenBB-finance/backend-examples-for-openbb-workspace).

@@ -54,7 +54,7 @@ This is how the Report will look.
 
 There are two ways to connect to your databases or data warehouses.
 
-1. The first is through custom backends, which we have open source [here](https://github.com/OpenBB-finance/backend-for-terminal-pro/tree/main). This allows users to connect to platforms like Snowflake, Databricks, Elastic, Clickhouse, and others.
+1. The first is through custom backends, which we have open source [here](https://github.com/OpenBB-finance/backend-examples-for-openbb-workspace/tree/main). This allows users to connect to platforms like Snowflake, Databricks, Elastic, Clickhouse, and others.
 
 2. The second is a native database/datawarehouse integration that enables firms to connect securely with their data, in seconds instead of hours. Supported connections currently include Snowflake, SQLite, and MySQL, with more options coming soon.
 

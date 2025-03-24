@@ -1,7 +1,7 @@
 ---
 title: Data connectors
 sidebar_position: 3
-description: Access your data connectors from OpenBB Terminal Pro inside OpenBB Add-in for Excel.
+description: Access your data connectors from OpenBB Workspace inside OpenBB Add-in for Excel.
 keywords:
   - Microsoft Excel
   - Add-in
@@ -17,7 +17,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Data connectors | OpenBB Add-in for Excel Docs" />
 
-OpenBB Add-In for Excel allows you to access your [data connectors](https://docs.openbb.co/pro/data-connectors) from OpenBB Terminal Pro inside Microsoft Excel. This can be done using the [OBB.BYOD](https://docs.openbb.co/excel/reference/byod) function.
+OpenBB Add-In for Excel allows you to access your [data connectors](https://docs.openbb.co/pro/data-connectors) from OpenBB Workspace inside Microsoft Excel. This can be done using the [OBB.BYOD](https://docs.openbb.co/excel/reference/byod) function.
 
 ## [Single widget](https://docs.openbb.co/pro/data-connectors/single-widget)
 
@@ -27,7 +27,7 @@ OpenBB Add-In for Excel allows you to access your [data connectors](https://docs
 
 :::info
 
-- Make sure your widget is setup in the OpenBB Terminal Pro.
+- Make sure your widget is setup in the OpenBB Workspace.
 
 :::
 
@@ -67,7 +67,7 @@ Supported native integrations:
 
 :::info
 
-- Make sure your OpenBB Data Connector is properly configured and the widget is setup in the OpenBB Terminal Pro.
+- Make sure your OpenBB Data Connector is properly configured and the widget is setup in the OpenBB Workspace.
 - Native integrations are available only for Excel on the web or Windows.
 
 :::

@@ -1,7 +1,7 @@
 ---
 title: Multi File Viewer
 sidebar_position: 6
-description: Learn how to integrate your own backend with OpenBB Terminal Pro using the cookie-cutter or language-agnostic API approaches, with illustrative guides and principles for handling widget.json files, APIs, interfaces, Python, FastAPI, and more.
+description: Learn how to integrate your own backend with OpenBB Workspace using the cookie-cutter or language-agnostic API approaches, with illustrative guides and principles for handling widget.json files, APIs, interfaces, Python, FastAPI, and more.
 keywords:
 - widgets.json
 - OpenBB API
@@ -11,17 +11,17 @@ keywords:
 - API implementation
 - Python
 - FastAPI
-- Terminal Pro widgets
+- Workspace widgets
 - Widget definitions
 ---
 
 # Multi File Viewer Widget
 
-This guide will walk you through the process of creating a multi-file viewer widget for OpenBB Terminal Pro. By the end of this guide, you will have a working multi-file viewer widget that allows users to view and compare multiple files.
+This guide will walk you through the process of creating a multi-file viewer widget for OpenBB Workspace. By the end of this guide, you will have a working multi-file viewer widget that allows users to view and compare multiple files.
 
 **Note : For now, this widget only supports PDF files.**
 
-This guide will walk you through the process of creating a metric widget for OpenBB Terminal Pro. By the end of this guide, you will have a working metric widget that you can add to OpenBB Terminal Pro.
+This guide will walk you through the process of creating a metric widget for OpenBB Workspace. By the end of this guide, you will have a working metric widget that you can add to OpenBB Workspace.
 
 ## Step 1: Set Up Your Project
 
@@ -273,4 +273,4 @@ Once you have added your backend, you can find the widget in the `Other` categor
 
 ## Additional Resources
 
-You can find more examples of how to set up your own backend in the [Backend for Terminal Pro GitHub](https://github.com/OpenBB-finance/backend-for-terminal-pro).
+You can find more examples of how to set up your own backend in the [Backend for OpenBB Workspace GitHub](https://github.com/OpenBB-finance/backend-examples-for-openbb-workspace).

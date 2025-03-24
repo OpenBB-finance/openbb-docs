@@ -24,7 +24,7 @@ With this integration, you can use all of OpenBB's features while leveraging you
 
 You can integrate your existing proprietary LLM into OpenBB Workspace by setting up an API endpoint. This allows OpenBB to interact with your custom copilot. To help you get started, we provide an open-source Example Copilot that guides you through the integration process.
 
-The example code is available [here](https://github.com/OpenBB-finance/copilot-for-terminal-pro).
+The example code is available [here](https://github.com/OpenBB-finance/copilot-for-openbb).
 
 ## Adding a custom copilot to OpenBB Workspace
 

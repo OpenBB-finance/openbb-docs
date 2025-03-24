@@ -155,6 +155,6 @@ An example structure in your backend might look like below.
 
 ### Examples
 
-Our team has created several examples that you can use to quickly get started with Python and FastAPI. For more information, check out [this open source repository](https://github.com/OpenBB-finance/backend-for-terminal-pro/tree/main).
+Our team has created several examples that you can use to quickly get started with Python and FastAPI. For more information, check out [this open source repository](https://github.com/OpenBB-finance/backend-examples-for-openbb-workspace/tree/main).
 
 Still have questions? Check out the [FAQs](/workspace/custom-backend/faqs) section.

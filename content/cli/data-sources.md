@@ -3,7 +3,7 @@ title: Data Sources
 sidebar_position: 7
 description: This page explains how to select a provider for any specific command, and set a default source for a route.
 keywords:
-- Terminal
+- Workspace
 - CLI
 - provider
 - API keys

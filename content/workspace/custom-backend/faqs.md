@@ -1,7 +1,7 @@
 ---
 title: FAQs
 sidebar_position: 16
-description: Frequently asked questions about the OpenBB Terminal Pro Custom Backend.
+description: Frequently asked questions about the OpenBB Workspace Custom Backend.
 keywords:
 - FAQs
 - Custom Backend
@@ -11,9 +11,9 @@ keywords:
 
 ### General
 
-**Q: What is the purpose of a custom backend in OpenBB Terminal Pro?**
+**Q: What is the purpose of a custom backend in OpenBB Workspace?**
 
-A: A custom backend allows you to integrate your own data sources into OpenBB Terminal Pro, enabling the creation of personalized widgets, dashboards, and templates that display your data in various ways. For more details, see the [Custom Backend Overview](/content/workspace/custom-backend/custom-backend.md) section.
+A: A custom backend allows you to integrate your own data sources into OpenBB Workspace, enabling the creation of personalized widgets, dashboards, and templates that display your data in various ways. For more details, see the [Custom Backend Overview](/content/workspace/custom-backend/custom-backend.md) section.
 
 **Q: What technologies are required to set up a custom backend?**
 
@@ -27,7 +27,7 @@ A: Follow the structure outlined in the [Getting Started with Custom Backend](/c
 
 **Q: What is the `widgets.json` file, and why is it important?**
 
-A: The `widgets.json` file is a configuration file that connects your custom backend data to the widgets displayed in OpenBB Terminal Pro. It defines widget properties such as name, description, category, endpoint, and more. See the [Widgets Configuration](/content/workspace/custom-backend/widgets-json-reference.md#widgets-configuration) section for details.
+A: The `widgets.json` file is a configuration file that connects your custom backend data to the widgets displayed in OpenBB Workspace. It defines widget properties such as name, description, category, endpoint, and more. See the [Widgets Configuration](/content/workspace/custom-backend/widgets-json-reference.md#widgets-configuration) section for details.
 
 **Q: How do I add Authorization to my custom backend?**
 

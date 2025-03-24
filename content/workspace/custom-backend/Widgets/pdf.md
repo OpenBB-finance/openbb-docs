@@ -1,7 +1,7 @@
 ---
 title: PDF Viewer
 sidebar_position: 6
-description: Learn how to integrate your own backend with OpenBB Terminal Pro using the cookie-cutter or language-agnostic API approaches, with illustrative guides and principles for handling widget.json files, APIs, interfaces, Python, FastAPI, and more.
+description: Learn how to integrate your own backend with OpenBB Workspace using the cookie-cutter or language-agnostic API approaches, with illustrative guides and principles for handling widget.json files, APIs, interfaces, Python, FastAPI, and more.
 keywords:
 - widgets.json
 - OpenBB API
@@ -11,13 +11,13 @@ keywords:
 - API implementation
 - Python
 - FastAPI
-- Terminal Pro widgets
+- Workspace widgets
 - Widget definitions
 ---
 
 # PDF Viewer Widget
 
-This guide will walk you through the process of creating a PDF Viewer widget for OpenBB Terminal Pro. By the end of this guide, you will have a working PDF Viewer widget that you can add to OpenBB Terminal Pro.
+This guide will walk you through the process of creating a PDF Viewer widget for OpenBB Workspace. By the end of this guide, you will have a working PDF Viewer widget that you can add to OpenBB Workspace.
 
 ## Step 1: Set Up Your Project
 
@@ -83,7 +83,7 @@ def get_files_url(name: str):
 
 ### Edit the widgets.json File
 
-Open the `widgets.json` file and add the following JSON data. This configuration defines the widget's properties and how it should be displayed in the OpenBB Terminal Pro.
+Open the `widgets.json` file and add the following JSON data. This configuration defines the widget's properties and how it should be displayed in the OpenBB Workspace.
 
 ```json
 {
@@ -157,4 +157,4 @@ Once you have added your backend, you can find the widget in the `Documents` cat
 
 ## Additional Resources
 
-You can find more examples of how to set up your own backend in the [Backend for Terminal Pro GitHub](https://github.com/OpenBB-finance/backend-for-terminal-pro).
+You can find more examples of how to set up your own backend in the [Backend for OpenBB Workspace GitHub](https://github.com/OpenBB-finance/backend-examples-for-openbb-workspace).

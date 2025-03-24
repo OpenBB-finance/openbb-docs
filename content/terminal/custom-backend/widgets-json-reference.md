@@ -1,7 +1,7 @@
 ---
 title: widgets.json Reference
 sidebar_position: 7
-description: Learn how to integrate your own backend with OpenBB Terminal Pro using
+description: Learn how to integrate your own backend with OpenBB Workspace using
   the cookie-cutter or language-agnostic API approaches, with illustrative guides
   and principles for handling widget.json files, APIs, interfaces, Python, FastAPI
   and more.
@@ -14,13 +14,13 @@ keywords:
 - API implementation
 - Python
 - FastAPI
-- Terminal Pro widgets
+- Workspace widgets
 - Widget definitions
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Widgets.json | OpenBB Terminal Pro Docs" />
+<HeadTitle title="Widgets.json | OpenBB Workspace Docs" />
 
 # Widgets.json Overview
 
@@ -32,7 +32,7 @@ The `widgets.json` file is your configuration file that connects custom backend 
 - **Data Configuration**:  Details table and chart settings, including column level information and data types.
 - **Parameters**: Details query parameters that can be passed to the API endpoint for customization.
 
-Each entry in this file will directly map to a widget in the app. You can find example backends [here](https://github.com/OpenBB-finance/backend-for-terminal-pro/tree/main), where each folder contains a `widgets.json` file specifying the available widgets.
+Each entry in this file will directly map to a widget in the app. You can find example backends [here](https://github.com/OpenBB-finance/backend-examples-for-openbb-workspace/tree/main), where each folder contains a `widgets.json` file specifying the available widgets.
 
 Below are all of the configurable fields and their descriptions.
 
@@ -457,7 +457,7 @@ If you don't want to set a date you can omit the value parameter or pass ```null
 
 ### ChartView chart types
 
-**`chartType`**: The type of chart to display by default. These charts are provided using the AgGrid library. Custom charts can also be created using Plotly. For examples, refer to the [GitHub repository](https://github.com/OpenBB-finance/backend-for-terminal-pro/tree/main).
+**`chartType`**: The type of chart to display by default. These charts are provided using the AgGrid library. Custom charts can also be created using Plotly. For examples, refer to the [GitHub repository](https://github.com/OpenBB-finance/backend-examples-for-openbb-workspace/tree/main).
   
 **Allowed values:** column, groupedColumn, stackedColumn, normalizedColumn, bar, groupedBar, stackedBar, normalizedBar, line, scatter, bubble, pie, donut, doughnut, area, stackedArea, normalizedArea, histogram, radarLine, radarArea, nightingale, radialColumn, radialBar, sunburst, rangeBar, rangeArea, boxPlot, treemap, heatmap, waterfall
 

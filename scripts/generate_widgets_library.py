@@ -61,7 +61,7 @@ def main() -> bool:
             print("SHOULD NEVER GET HERE BECAUSE CATEGORY_1 IS A MANDATORY FIELD!")
 
     website_path = Path(__file__).parent.parent.absolute()
-    base_path = website_path / "content" / "terminal" / "widgets-library"
+    base_path = website_path / "content" / "workspace" / "widgets-library"
 
     ## Handle category_root level
     index_path = base_path / "index.mdx"
@@ -247,7 +247,7 @@ title: {widget['name']}
 description: {widget['description']}
 keywords:
 - OpenBB
-- Terminal Pro
+- OpenBB Workspace
 - Investment Research
 - Widgets
 - {widget['name']}
@@ -256,12 +256,12 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="{widget['name']} - {category_1} | OpenBB Terminal Pro Docs" />
+<HeadTitle title="{widget['name']} - {category_1} | OpenBB Workspace Docs" />
 
 <img
     className="pro-border-gradient"
     src="{widget['imageURL']}"
-    alt="OpenBB Terminal Pro Widgets Library"
+    alt="OpenBB Workspace Widgets Library"
 />
 
 {widget['description']}.
@@ -290,7 +290,7 @@ title: {widget['name']}
 description: {widget['description']}
 keywords:
 - OpenBB
-- Terminal Pro
+- Workspace
 - Investment Research
 - Widgets
 - {widget['name']}
@@ -300,12 +300,12 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="{widget['name']} - {category_2} - {category_1} | OpenBB Terminal Pro Docs" />
+<HeadTitle title="{widget['name']} - {category_2} - {category_1} | OpenBB Workspace Docs" />
 
 <img
     className="pro-border-gradient"
     src="{widget['imageURL']}"
-    alt="OpenBB Terminal Pro Widgets Library"
+    alt="OpenBB Workspace Widgets Library"
 />
 
 {widget['description']}.
