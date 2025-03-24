@@ -145,7 +145,7 @@ An example structure in your backend might look like below.
 
 3. **Build Endpoints**: Develop endpoints in `main.py` for each widget defined in `widgets.json`.
 
-4. **Create Templates** (optional): You can use this to create a layout for your widgets to be displayed in OpenBB Workspace. This lets users easily add widgets in a predefined layout. To view a sample `templates.json` file and learn more about what you can do check out the [templates.json docs](/terminal/custom-backend/advanced-controls/templates).
+4. **Create Templates** (optional): You can use this to create a layout for your widgets to be displayed in OpenBB Workspace. This lets users easily add widgets in a predefined layout. To view a sample `templates.json` file and learn more about what you can do check out the [templates.json docs](/workspace/custom-backend/advanced-controls/templates).
 
 4. **Connect to your API**: Use the OpenBB Workspace interface to connect your API. Input your main endpoint, and the system will read /widgets.json to add your widgets to OpenBB.
 
@@ -157,4 +157,4 @@ An example structure in your backend might look like below.
 
 Our team has created several examples that you can use to quickly get started with Python and FastAPI. For more information, check out [this open source repository](https://github.com/OpenBB-finance/backend-for-terminal-pro/tree/main).
 
-Still have questions? Check out the [FAQs](/terminal/custom-backend/faqs) section.
+Still have questions? Check out the [FAQs](/workspace/custom-backend/faqs) section.

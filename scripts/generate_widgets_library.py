@@ -90,7 +90,7 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 <NewReferenceCard
     title="{category_1}"
     description="{', '.join(l_elements)}"
-    url="/terminal/widgets-library/{category_1.lower().replace(' ', '-')}"
+    url="/workspace/widgets-library/{category_1.lower().replace(' ', '-')}"
 />"""
     text += "\n</ul>"
 
@@ -125,7 +125,7 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 <NewReferenceCard
     title="{category_1}"
     description="{', '.join(l_elements)}"
-    url="/terminal/widgets-library/{category_1.lower().replace(' ', '-')}"
+    url="/workspace/widgets-library/{category_1.lower().replace(' ', '-')}"
 />"""
 
         text += "\n</ul>"
@@ -159,7 +159,7 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 <NewReferenceCard
     title="{category_2}"
     description="{', '.join([k['name'] for k in widgets])}"
-    url="/terminal/widgets-library/{category_1.lower().replace(' ', '-')}/{category_2.lower().replace(' ', '-')}"
+    url="/workspace/widgets-library/{category_1.lower().replace(' ', '-')}/{category_2.lower().replace(' ', '-')}"
 />"""
                 else:
                     # Iterate through all the widgets to create 1 command reference for each
@@ -168,7 +168,7 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 <NewReferenceCard
     title="{w['name']}"
     description="{w['description']}"
-    url="/terminal/widgets-library/{category_1.lower().replace(' ', '-')}/{w['widgetId']}"
+    url="/workspace/widgets-library/{category_1.lower().replace(' ', '-')}/{w['widgetId']}"
     command
 />"""
 
@@ -208,7 +208,7 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 <NewReferenceCard
     title="{w['name']}"
     description="{w['description']}"
-    url="/terminal/widgets-library/{category_1.lower().replace(' ', '-')}/{category_2.lower().replace(' ', '-')}/{w['widgetId']}"
+    url="/workspace/widgets-library/{category_1.lower().replace(' ', '-')}/{category_2.lower().replace(' ', '-')}/{w['widgetId']}"
     command
 />"""
 
