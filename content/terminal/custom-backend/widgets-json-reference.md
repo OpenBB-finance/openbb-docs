@@ -47,8 +47,8 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
 
 - **description**  
   _Type:_ `string` (required)  
-  Provides a brief description of the widget for user info and selection menu. 
-  This is important for Copilot to understand what the widget does. 
+  Provides a brief description of the widget for user info and selection menu.
+  This is important for Copilot to understand what the widget does.
   _Example:_ `"Provides EOD data for all options chains for a given ticker."`
 
 - **endpoint**  
@@ -56,6 +56,11 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
   Specifies the backend API endpoint for retrieving data.  
   _Example:_ `"chains"`  
   _Possible values:_ Any valid API endpoint path as a string.
+
+- **wsEndpoint**  
+  _Type:_ `string`  
+  Specifies the WebSocket endpoint for live data updates. Only used with the Live Grid Widget.
+  _Example:_ `"ws"`
 
 - **category**  
   _Type:_ `string`  
@@ -71,7 +76,7 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
 - **type**  
   _Type:_ `string`  
   Sets the default visualization type for the widget.  
-  _Possible values:_ `"chart"`, `"table"`, `"markdown"`, `"metric"`, `"note"`  
+  _Possible values:_ `"chart"`, `"table"`, `"markdown"`, `"metric"`, `"note"`,  `"multi_file_viewer"`
   _Default:_ `"table"`
 
 - **runButton**  
@@ -102,6 +107,12 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
     _Type:_ `string`  
     A key to identify the data within the widget.  
     _Example:_ `"customDataKey"`
+
+  - **wsRowIdColumn**  
+    _Type:_ `string`  
+    The column that will be used to identify the row. This is important to set correctly to ensure the live updates are displayed correctly. 
+    This the key between your ws and the initial data. Only used with the Live Grid Widget.
+    _Example:_ `"symbol"`
 
   - **table**  
     _Type:_ object containing the following keys:
@@ -160,6 +171,12 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
         _Example:_ `"text"`  
         _Possible values:_ `"text"`, `"number"`, `"boolean"`, `"date"`, `"dateString"`, `"object"`
 
+      - **enableCellChangeWs**  
+        _Type:_ `boolean`  
+        Controls whether the cell can be updated via WebSocket messages. Only used with the Live Grid Widget.
+        _Default:_ `true`  
+        _Example:_ `false`
+
       - **formatterFn**  
         _Type:_ `string`  
         Specifies how to format the data.  
@@ -170,7 +187,7 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
         _Type:_ `string`  
         Specifies a rendering function for cell data. See [Render Functions](/content/terminal/custom-backend/advanced-controls/render-functions.md) for more information.  
         _Example:_ `"titleCase"`  
-        _Possible values:_ `"greenRed"`, `"titleCase"`, `"hoverCard"`, `"cellOnClick"`, `"columnColor"`
+        _Possible values:_ `"greenRed"`, `"titleCase"`, `"hoverCard"`, `"cellOnClick"`, `"columnColor"`, `"showCellChange"`
 
       - **renderFnParams**  
         _Type:_ `object`  
@@ -215,7 +232,7 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
     _Type:_ `string`  
     The type of the parameter.  
     _Example:_ `"date"`  
-    _Possible values:_ `"date"`, `"text"`, `"ticker"`, `"number"`, `"boolean"`, `"endpoint"`
+    _Possible values:_ `"date"`, `"text"`, `"ticker"`, `"number"`, `"boolean"`, `"endpoint"`, `"form"`
 
   - **paramName**  
     _Type:_ `string`  
@@ -237,6 +254,11 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
     Endpoint to fetch options for the parameter.  
     _Example:_ `"v1/test/values"`
 
+  - **optionsParams**  
+    _Type:_ `object`  
+    Parameters to pass to the options endpoint. You can use the parameter name from the `params` array to pass a value to the options endpoint.
+    _Example:_ `{"type": "$type"}`
+    
   - **show**  
     _Type:_ `boolean`  
     Displays the parameter in the UI.  
@@ -252,6 +274,11 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
     Allows multiple values to be selected from your parameter options.  
     _Example:_ `true`
 
+  - **style**  
+    _Type:_ `object`  
+    Styling options for the parameter. Only popupWidth is currently supported minimum value is 200px max value is 1000px.  
+    _Example:_ `{"popupWidth": 450}`
+
   - **options**  
     _Type:_ list of objects, each containing the following keys:
 
@@ -265,14 +292,16 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
       The value for a dropdown option.  
       _Example:_ `"option1"`
 
+
+
 - **source**  
   _Type:_ array of strings  
   Specifies the data source(s) for the widget.  
   _Example:_ `["API", "Database"]`
 
 - **refetchInterval**  
-  _Type:_ `number`  
-  Time in milliseconds before the widget's data will refresh if on the page.  
+  _Type:_ `number` or `false`
+  Time in milliseconds before the widget's data will refresh if on the page.  Minimum value is `1000`.
   _Default:_ `900000` (15m)
 
 - **staleTime**  
