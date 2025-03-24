@@ -44,7 +44,7 @@ for topfolder in [
     "cli",
     "excel",
     "platform",
-    "terminal",
+    "workspace",
 ]:
     # Looping through each folder in the fold directory
     for folder in (Path(__file__).parent / topfolder).iterdir():

@@ -66,12 +66,12 @@ The `__init__.py` file where models are mapped to the router is under, `/openbb_
 
 To get started:
 
-- Unpack the downloaded [zip](ttps://github.com/OpenBB-finance/OpenBBTerminal/files/14519701/provider_extension_template.zip) file.
+- Unpack the downloaded [zip](ttps://github.com/OpenBB-finance/OpenBB/files/14519701/provider_extension_template.zip) file.
 
   - If working with a cloned GitHub repo, the folder is:
 
   ```console
-  ~/OpenBBTerminal/openbb_platform/providers
+  ~/OpenBB/openbb_platform/providers
   ```
 
 - Rename everything, "template", to suit. File names, models, import statements, docstrings.
@@ -137,7 +137,7 @@ template = "openbb_template:template_provider"
 
 The last line (poetry.plugins) maps to the provider defined in the `__init__.py` file.
 
-Additionally, for local extensions, you can add this line in the `LOCAL_DEPS` variable in the `dev_install.py` file, located in `~/OpenBBTerminal/openbb_platform/`:
+Additionally, for local extensions, you can add this line in the `LOCAL_DEPS` variable in the `dev_install.py` file, located in `~/OpenBB/openbb_platform/`:
 
 ```toml
 # If this is a community dependency, add this under "Community dependencies",
