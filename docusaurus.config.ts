@@ -129,8 +129,8 @@ export default {
 						to: "/workspace/custom-backend",
 					},
 					{
-						from: "/pro/custom-backend/widgets.json",
-						to: "/workspace/custom-backend/widgets.json",
+						from: "/pro/custom-backend/widgets-json-reference",
+						to: "/workspace/custom-backend/widgets-json-reference",
 					},
 					{
 						from: "/pro/platform-installer",
@@ -222,6 +222,7 @@ export default {
 		prism: {
 			theme: themes.vsLight,
 			darkTheme: themes.vsDark,
+			additionalLanguages: ["json"],
 		},
 		// csp: {
 		// 	"default-src": ["'self'"],

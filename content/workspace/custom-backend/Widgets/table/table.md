@@ -1,5 +1,5 @@
 ---
-title: Table Example
+title: Table
 sidebar_position: 1
 description: Learn how to integrate your own backend with OpenBB Workspace using the cookie-cutter or language-agnostic API approaches, with illustrative guides and principles for handling widget.json files, APIs, interfaces, Python, FastAPI, and more.
 keywords:
@@ -15,7 +15,7 @@ keywords:
 - Widget definitions
 ---
 
-# Introduction
+# Table Widget
 
 This guide will walk you through the process of creating a table widget for OpenBB Workspace. By the end of this guide, you will have a working table widget that you can add to OpenBB.
 

@@ -39,9 +39,9 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 You can build your API using any language and framework of your choice.  The only requirements are that there must be endpoints returning data in JSON format, and that CORS is supported for OpenBB domains.
 
 :::note
-Guidelines for JSON Format:
+Guidelines for JSON Format in Tables:
 
-- The JSON data should be in a flat structure, meaning that there should be no nested dictionaries or arrays within the individual objects unless you specify the dataKey in your `widgets.json` file.
+- The JSON data for tables should be in a flat structure, meaning that there should be no nested dictionaries or arrays within the individual objects unless you specify the dataKey in your `widgets.json` file.
 - Each object should contain key-value pairs where the values are simple data types (e.g., strings, numbers, booleans).
 - Avoid nesting other objects or arrays inside any of the values.
 
@@ -132,7 +132,7 @@ def get_widgets():
 
 </details>
 
-2. **Create widgets.json file**: This file is your main configuration and defines widget properties such as name, description, category, endpoint, type of widget, and other information. Each widget will be defined in this file. To view a sample `widgets.json` file and learn more about what you can do check out the [widgets.json docs](/workspace/custom-backend/widgets.json).
+2. **Create widgets.json file**: This file is your main configuration and defines widget properties such as name, description, category, endpoint, type of widget, and other information. Each widget will be defined in this file. To view a sample `widgets.json` file and learn more about what you can do check out the [widgets.json docs](/workspace/custom-backend/widgets-json-reference).
 
 An example structure in your backend might look like below.
 
@@ -140,9 +140,12 @@ An example structure in your backend might look like below.
   backend/
   ├── main.py
   └── widgets.json
+  └── templates.json (optional)
 ```
 
-3. **Build Endpoints**: Develop endpoints in main.py for each widget defined in widgets.json.
+3. **Build Endpoints**: Develop endpoints in `main.py` for each widget defined in `widgets.json`.
+
+4. **Create Templates** (optional): You can use this to create a layout for your widgets to be displayed in OpenBB Workspace. This lets users easily add widgets in a predefined layout. To view a sample `templates.json` file and learn more about what you can do check out the [templates.json docs](/terminal/custom-backend/advanced-controls/templates).
 
 4. **Connect to your API**: Use the OpenBB Workspace interface to connect your API. Input your main endpoint, and the system will read /widgets.json to add your widgets to OpenBB.
 
@@ -154,36 +157,4 @@ An example structure in your backend might look like below.
 
 Our team has created several examples that you can use to quickly get started with Python and FastAPI. For more information, check out [this open source repository](https://github.com/OpenBB-finance/backend-for-terminal-pro/tree/main).
 
-
-## Frequently Asked Questions
-
-<details>
-<summary mdxType="summary">Q: I'm using Safari/Brave and I can't connect to my backend</summary>
-
-A: OpenBB Platform API Over HTTPS
-
-To run the API over the HTTPS protocol, you must first create a self-signed certificate and the associated key. After steps 1 & 2 above, you can generate the files by entering this to the command line:
-
-```sh
-openssl req -x509 -days 3650 -out localhost.crt -keyout localhost.key   -newkey rsa:4096 -nodes -sha256   -subj '/CN=localhost' -extensions EXT -config <( \
-   printf "[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth")
-```
-
-Two files will be created, in the current working directory, that are passed as keyword arguments to the `openbb-api` entry point.
-
-```sh
-openbb-api --ssl_keyfile localhost.key --ssl_certfile localhost.crt
-```
-
-**Note**: Adjust the command to include the full path to the file if the current working directory is not where they are located.
-
-
-The certificate - `localhost.crt` - will need to be added to system's trust store. The process for this will depend on the operating system and the user account privilege.
-
-A quick solution is to visit the server's URL, show the details of the warning, and choose to continue anyways.
-
-Contact the system administrator if you are using a work device and require additional permissions to complete the configuration.
-
-![This Connection Is Not Private](https://in.norton.com/content/dam/blogs/images/norton/am/this_connection_not_is_private.png)
-
-</details>
+Still have questions? Check out the [FAQs](/terminal/custom-backend/faqs) section.

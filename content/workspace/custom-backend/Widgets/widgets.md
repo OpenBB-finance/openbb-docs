@@ -48,3 +48,29 @@ OpenBB Workspace supports various ways to visualize data through widgets. Each m
    - [Create your own Metric Widget](metric.md)
 
 <img className="pro-border-gradient" width="600" alt="metric" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/metric-widget.png" />
+
+5. **PDF Viewer Widget**:
+   - Displays a PDF file.
+   - [Create your own PDF Viewer Widget](pdf.md)
+
+<img className="pro-border-gradient" width="600" alt="pdf" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/pdf-widget.png" />
+
+6. **Live Grid Widget**:
+   - Display updates in real-time on your table.
+   - [Create your own Live Grid Widget](live_grid.md)
+
+<img className="pro-border-gradient" width="600" alt="live-feed" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/live_grid.png" />
+
+7. **Multi File Viewer Widget**:
+   - Displays a list of files and allows you to view and compare them.
+   - [Create your own Multi File Viewer Widget](multi-file-viewer.md)
+
+<img className="pro-border-gradient" width="600" alt="multi-file-viewer" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/multi-file-viewer.png" />
+
+8. **Advanced Charting Widget**:
+   - Displays TradingView chart with advanced features.
+   - [Create your own Advanced Charting Widget](advanced_charting.md)
+
+<img className="pro-border-gradient" width="600" alt="advanced-charting" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/advanced_charting.png"/>
+
+

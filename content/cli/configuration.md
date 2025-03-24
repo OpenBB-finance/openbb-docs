@@ -18,7 +18,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Configuration & Settings - | OpenBB Platform CLI Docs" />
 
-In addition to the OpenBB Platform's `user_settings.json` file, described [here](/platform/user_guides/settings_and_environment_variables), there are settings and environment variables affecting the CLI only.
+In addition to the OpenBB Platform's `user_settings.json` file, described [here](/platform/settings_and_environment_variables), there are settings and environment variables affecting the CLI only.
 
 :::important
 API credentials are defined in the `user_settings.json` file.

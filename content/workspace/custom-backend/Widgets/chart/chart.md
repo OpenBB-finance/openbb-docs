@@ -1,5 +1,5 @@
 ---
-title: Charting
+title: Chart
 sidebar_position: 2
 description: Learn how to integrate your own backend with OpenBB Workspace using the cookie-cutter or language-agnostic API approaches, with illustrative guides and principles for handling widget.json files, APIs, interfaces, Python, FastAPI, and more.
 keywords:
@@ -15,7 +15,7 @@ keywords:
 - Widget definitions
 ---
 
-# Introduction
+# Chart Widget
 
 Currently, OpenBB Workspace supports two types of charts for the custom backends. Check out the examples below to see how to create them.
 

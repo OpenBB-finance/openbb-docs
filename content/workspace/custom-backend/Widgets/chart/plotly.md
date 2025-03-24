@@ -1,5 +1,5 @@
 ---
-title: Plotly Charting Example
+title: Plotly Chart
 sidebar_position: 2
 description: Learn how to integrate your own backend with OpenBB Workspace using the cookie-cutter or language-agnostic API approaches, with illustrative guides and principles for handling widget.json files, APIs, interfaces, Python, FastAPI, and more.
 keywords:
@@ -15,7 +15,7 @@ keywords:
 - Widget definitions
 ---
 
-# Introduction
+# Plotly Chart
 
 This guide will walk you through the process of creating a chart widget for OpenBB Workspace. We will be using Plotly to create the chart in our example. By the end of this guide, you will have a working chart widget that you can add to OpenBB.
 
@@ -90,7 +90,7 @@ Edit the `widgets.json` file and add the following JSON data. This configuration
 }
 ```
 
-For more information on the `widgets.json` file, see the [Widgets.json](/content/workspace/custom-backend/widgets.json) page.
+For more information on the `widgets.json` file, see the [Widgets.json](/content/workspace/custom-backend/widgets-json-reference) page.
 
 ## Step 3: Run the Application
 
@@ -107,6 +107,20 @@ Navigate to [OpenBB Pro Data Connectors](https://pro.openbb.co/app/data-connecto
 Once you have added your backend, you can find the widget in the `Crypto` category with the name `Chains chart example`.
 
 <img className="pro-border-gradient" width="600" alt="chart" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/plotly-chart.png" />
+
+### Theme
+
+You can also switch the layout to light or dark mode by adding the "theme" parameter to the function. We send the current theme automatically to the backend and you can use it to switch the layout.
+
+```python
+# Chart endpoint
+@app.get("/chains")
+def get_chains(theme: str = "dark"):
+
+    ...
+    figure.update_layout(template="plotly_dark" if theme == "dark" else "plotly_white")
+    return json.loads(figure.to_json())
+```
 
 ## Additional Resources
 
