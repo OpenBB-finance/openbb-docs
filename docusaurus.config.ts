@@ -57,10 +57,6 @@ export default {
 						to: "/workspace/enterprise",
 					},
 					{
-						from: "/pro/native-installation",
-						to: "/workspace/native-installation",
-					},
-					{
 						from: "/pro/tutorials",
 						to: "/workspace/tutorials",
 					},
