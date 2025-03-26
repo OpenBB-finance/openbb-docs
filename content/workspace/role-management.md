@@ -122,5 +122,3 @@ Each log entry includes the timestamp of the action, the name of the user who pe
 <div style={{display: 'flex', justifyContent: 'center'}}>
   <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/activity-log.png" />
 </div>
-
-
