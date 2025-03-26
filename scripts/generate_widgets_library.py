@@ -61,7 +61,7 @@ def main() -> bool:
             print("SHOULD NEVER GET HERE BECAUSE CATEGORY_1 IS A MANDATORY FIELD!")
 
     website_path = Path(__file__).parent.parent.absolute()
-    base_path = website_path / "content" / "terminal" / "widgets-library"
+    base_path = website_path / "content" / "workspace" / "widgets-library"
 
     ## Handle category_root level
     index_path = base_path / "index.mdx"
@@ -90,7 +90,7 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 <NewReferenceCard
     title="{category_1}"
     description="{', '.join(l_elements)}"
-    url="/terminal/widgets-library/{category_1.lower().replace(' ', '-')}"
+    url="/workspace/widgets-library/{category_1.lower().replace(' ', '-')}"
 />"""
     text += "\n</ul>"
 
@@ -125,7 +125,7 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 <NewReferenceCard
     title="{category_1}"
     description="{', '.join(l_elements)}"
-    url="/terminal/widgets-library/{category_1.lower().replace(' ', '-')}"
+    url="/workspace/widgets-library/{category_1.lower().replace(' ', '-')}"
 />"""
 
         text += "\n</ul>"
@@ -159,7 +159,7 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 <NewReferenceCard
     title="{category_2}"
     description="{', '.join([k['name'] for k in widgets])}"
-    url="/terminal/widgets-library/{category_1.lower().replace(' ', '-')}/{category_2.lower().replace(' ', '-')}"
+    url="/workspace/widgets-library/{category_1.lower().replace(' ', '-')}/{category_2.lower().replace(' ', '-')}"
 />"""
                 else:
                     # Iterate through all the widgets to create 1 command reference for each
@@ -168,7 +168,7 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 <NewReferenceCard
     title="{w['name']}"
     description="{w['description']}"
-    url="/terminal/widgets-library/{category_1.lower().replace(' ', '-')}/{w['widgetId']}"
+    url="/workspace/widgets-library/{category_1.lower().replace(' ', '-')}/{w['widgetId']}"
     command
 />"""
 
@@ -208,7 +208,7 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 <NewReferenceCard
     title="{w['name']}"
     description="{w['description']}"
-    url="/terminal/widgets-library/{category_1.lower().replace(' ', '-')}/{category_2.lower().replace(' ', '-')}/{w['widgetId']}"
+    url="/workspace/widgets-library/{category_1.lower().replace(' ', '-')}/{category_2.lower().replace(' ', '-')}/{w['widgetId']}"
     command
 />"""
 
@@ -247,7 +247,7 @@ title: {widget['name']}
 description: {widget['description']}
 keywords:
 - OpenBB
-- Terminal Pro
+- OpenBB Workspace
 - Investment Research
 - Widgets
 - {widget['name']}
@@ -256,12 +256,12 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="{widget['name']} - {category_1} | OpenBB Terminal Pro Docs" />
+<HeadTitle title="{widget['name']} - {category_1} | OpenBB Workspace Docs" />
 
 <img
     className="pro-border-gradient"
     src="{widget['imageURL']}"
-    alt="OpenBB Terminal Pro Widgets Library"
+    alt="OpenBB Workspace Widgets Library"
 />
 
 {widget['description']}.
@@ -290,7 +290,7 @@ title: {widget['name']}
 description: {widget['description']}
 keywords:
 - OpenBB
-- Terminal Pro
+- Workspace
 - Investment Research
 - Widgets
 - {widget['name']}
@@ -300,12 +300,12 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="{widget['name']} - {category_2} - {category_1} | OpenBB Terminal Pro Docs" />
+<HeadTitle title="{widget['name']} - {category_2} - {category_1} | OpenBB Workspace Docs" />
 
 <img
     className="pro-border-gradient"
     src="{widget['imageURL']}"
-    alt="OpenBB Terminal Pro Widgets Library"
+    alt="OpenBB Workspace Widgets Library"
 />
 
 {widget['description']}.

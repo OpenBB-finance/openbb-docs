@@ -42,120 +42,112 @@ export default {
 					},
 					{
 						from: "/pro/copilot/bring-your-own-copilot",
-						to: "/terminal/bring-your-own-copilot",
+						to: "/workspace/bring-your-own-copilot",
 					},
 					{
 						from: "/pro/",
-						to: "/terminal/",
+						to: "/workspace/",
 					},
 					{
 						from: "/pro/enterprise",
-						to: "/terminal/enterprise",
+						to: "/workspace/enterprise",
 					},
 					{
 						from: "/pro/enterprise",
-						to: "/terminal/enterprise",
+						to: "/workspace/enterprise",
 					},
 					{
 						from: "/pro/native-installation",
-						to: "/terminal/native-installation",
+						to: "/workspace/native-installation",
 					},
 					{
 						from: "/pro/tutorials",
-						to: "/terminal/tutorials",
+						to: "/workspace/tutorials",
 					},
 					{
 						from: "/pro/tutorials/bring-data",
-						to: "/terminal/tutorials/bring-data",
+						to: "/workspace/tutorials/bring-data",
 					},
 					{
 						from: "/pro/tutorials/customizability",
-						to: "/terminal/tutorials/customizability",
+						to: "/workspace/tutorials/customizability",
 					},
 					{
 						from: "/pro/tutorials/ai-insights",
-						to: "/terminal/tutorials/ai-insights",
+						to: "/workspace/tutorials/ai-insights",
 					},
 					{
 						from: "/pro/tutorials/earnings-update",
-						to: "/terminal/tutorials/earnings-update",
+						to: "/workspace/tutorials/earnings-update",
 					},
 					{
 						from: "/pro/tutorials/layouts-watchlist",
-						to: "/terminal/tutorials/layouts-watchlist",
+						to: "/workspace/tutorials/layouts-watchlist",
 					},
 					{
 						from: "/pro/tutorials/report",
-						to: "/terminal/tutorials/report",
+						to: "/workspace/tutorials/report",
 					},
 					{
 						from: "/pro/tutorials/ai",
-						to: "/terminal/tutorials/ai",
+						to: "/workspace/tutorials/ai",
 					},
 					{
 						from: "/pro/tutorials/data-to-charts",
-						to: "/terminal/tutorials/data-to-charts",
+						to: "/workspace/tutorials/data-to-charts",
 					},
 					{
 						from: "/pro/tutorials/overlay",
-						to: "/terminal/tutorials/overlay",
+						to: "/workspace/tutorials/overlay",
 					},
 					{
 						from: "/pro/openbb-copilot",
-						to: "/terminal/openbb-copilot",
+						to: "/workspace/openbb-copilot",
 					},
 					{
 						from: "/pro/data-connector",
-						to: "/terminal/data-connector",
+						to: "/workspace/data-connector",
 					},
 					{
 						from: "/pro/upload-files",
-						to: "/terminal/upload-files",
+						to: "/workspace/upload-files",
 					},
 					{
 						from: "/pro/api-endpoints",
-						to: "/terminal/api-endpoints",
-					},
-					{
-						from: "/pro/database-integrations",
-						to: "/terminal/database-integrations",
-					},
-					{
-						from: "/pro/database-integrations/snowflake",
-						to: "/terminal/database-integrations/snowflake",
+						to: "/workspace/api-endpoints",
 					},
 					{
 						from: "/pro/custom-backend",
-						to: "/terminal/custom-backend",
+						to: "/workspace/custom-backend",
 					},
 					{
-						from: "/pro/custom-backend/widgets.json Reference",
-						to: "/terminal/custom-backend/widgets-json-reference",
+						from: "/pro/custom-backend/widgets-json-reference",
+						to: "/workspace/custom-backend/widgets-json-reference",
 					},
 					{
 						from: "/pro/platform-installer",
-						to: "/terminal/platform-installer",
+						to: "/workspace/platform-installer",
 					},
 					{
 						from: "/pro/widgets",
-						to: "/terminal/widgets",
+						to: "/workspace/widgets",
 					},
 					{
 						from: "/pro/dashboards",
-						to: "/terminal/dashboards",
+						to: "/workspace/dashboards",
 					},
 					{
 						from: "/pro/templates",
-						to: "/terminal/templates",
+						to: "/workspace/templates",
 					},
 					{
 						from: "/pro/bring-your-own-copilot",
-						to: "/terminal/bring-your-own-copilot",
+						to: "/workspace/bring-your-own-copilot",
 					},
 				],
 				createRedirects: (existingPath) => {
 					if (existingPath.startsWith("/pro/")) {
-						return existingPath.replace("/pro/", "/terminal/");
+						return existingPath.replace("/pro/", "/workspace/");
 					}
 					return undefined;
 				},
