@@ -7,6 +7,8 @@ keywords:
 - Role Management
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
 <HeadTitle title="Role Management | OpenBB Workspace Docs" />
 
 This section covers how to create roles, assign users to roles, and set permissions.
