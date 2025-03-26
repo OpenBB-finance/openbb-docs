@@ -44,7 +44,12 @@ For bulk invitations, download the provided template, remove the sample data, an
   <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/user-invitation-bulk.png" />
 </div>
 
-<!-- TODO: Add user permission view when this is ready -->
+## User Profile
+When clicking on a user, you can perform advanced actions such as deleting the user or changing their user type between Normal User and Admin. Additionally, you'll see a detailed summary of their final permissions. This is especially useful when a user is assigned to multiple roles with overlapping or conflicting permissions. The aggregated view allows you to review the complete list of widgets, prompts, and templates the user has access to, and make any necessary adjustments.
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/permission-preview.png" />
+</div>
 
 ## Exporting users
 

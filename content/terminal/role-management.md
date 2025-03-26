@@ -94,10 +94,33 @@ If any widgets lack the necessary permissions, we will detect them and notify yo
 ### 3. Prompts
 In the Prompt section, you can grant access to prompts, whether they are set up via the custom backend or manually within the Workspace.
 
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/set-prompts.png" />
+</div>
 
-// TODO include link to custom backend where they can associate prompts
-//TODO: A sscreenshot on how the prompt sharing looks like
+Then, in the Admin Portal, go to Role Management and select Edit Permissions under Prompts tab to control which prompts are accessible to each role.
 
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/prompt-sharing.png" />
+</div>
+
+To ensure all permissions are correctly granted, you can review the final set of permissions for each user in their profile, under the [User Management](/terminal/user-management) tab.
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/permission-preview.png" />
+</div>
 
 ## Activity Log
-<!-- TODO: finish the documentation once Henrique finishes -->
+As an Admin, you can view a detailed activity log that tracks all changes related to roles, groups, and permissions.
+
+The log captures activities such as:
+- Creation, modification (name/description), and deletion of roles
+- User assignments to roles (add/remove)
+- Updates to permissions
+
+Each log entry includes the timestamp of the action, the name of the user who performed it, the type of action (e.g., "Created Group" or "Modified Permission"), and specific details about the change. To enhance usability, the log supports filtering and searching by activity type, making it easy to find relevant entries quickly.
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/activity-log.png" />
+</div>
+
+

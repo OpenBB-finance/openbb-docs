@@ -12,8 +12,8 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 <HeadTitle title="Enterprise | OpenBB Terminal Pro Docs" />
 
 Our product offers two different plans:
-    - **OpenBB Terminal** - Free version for individuals
-    - **OpenBB Terminal Pro** - Enterprise for teams and professionals
+    - **OpenBB Workspace** - Free version for individuals
+    - **OpenBB Workspace Enterprise** - Enterprise for teams and professionals
 
 The products, features and services that come with an enterprise are highlighted below.
 
@@ -57,9 +57,9 @@ Keep your dashboards private and securely accessible only to your organization. 
   <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/sharing_dashboard.png" />
 </div>
 
-## Team Management
+## Admin Portal & Role-Based Access Control (RBAC)
 
-Gain access to a user management portal where you can manage access to your firm’s workspace. You can invite or remove members, export the entire user list, and view their last login times.
+Gain access to a [user management](/terminal/user-management) portal where you can manage your firm’s workspace, including inviting or removing members and viewing user details. You’ll also have access to [Role-Based Access Control (RBAC)](/terminal/role-management), allowing you to assign the appropriate access levels to groups of users.
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
   <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/team_management.png" />
