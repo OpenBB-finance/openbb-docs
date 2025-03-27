@@ -43,8 +43,6 @@ export default function Home(): JSX.Element {
 						<Link
 							style={{ backgroundSize: "100% 130%" }}
 							to="/platform"
-							target="_blank"
-							rel="noopener noreferrer"
 							className="!bg-white dark:!bg-[#151518] bg-no-repeat shadow-sm group !no-underline text-white relative w-full h-[240px] max-w-full p-8 rounded flex flex-col items-start justify-start overflow-hidden"
 						>
 							<div
@@ -77,8 +75,6 @@ export default function Home(): JSX.Element {
 						<Link
 							style={{ backgroundSize: "100% 130%" }}
 							to="/workspace"
-							target="_blank"
-							rel="noopener noreferrer"
 							className="!bg-white dark:!bg-[#151518] bg-no-repeat shadow-sm group !no-underline text-white relative w-full h-[240px] max-w-full p-8 rounded flex flex-col items-start justify-start overflow-hidden"
 						>
 							<div
@@ -111,8 +107,6 @@ export default function Home(): JSX.Element {
 						<Link
 							style={{ backgroundSize: "100% 130%" }}
 							to="/excel"
-							target="_blank"
-							rel="noopener noreferrer"
 							className="!bg-white dark:!bg-[#151518] bg-no-repeat shadow-sm group !no-underline text-white relative w-full h-[240px] max-w-full p-8 rounded flex flex-col items-start justify-start overflow-hidden"
 						>
 							<div
