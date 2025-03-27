@@ -1,6 +1,6 @@
 ---
 title: Role Management
-sidebar_position: 1
+sidebar_position: 4
 description: test
 keywords:
 - OpenBB Workspace Enterprise

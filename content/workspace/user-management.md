@@ -1,6 +1,6 @@
 ---
 title: User Management
-sidebar_position: 1
+sidebar_position: 5
 description: test
 keywords:
 - OpenBB Workspace Enterprise

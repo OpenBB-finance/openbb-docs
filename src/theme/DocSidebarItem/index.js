@@ -68,6 +68,17 @@ export default function DocSidebarItem({ item, ...props }) {
 					}}
 				/>
 			);
+		} else if (item.docId === "workspace/enterprise") {
+			addedHtml = (
+				<DocSidebarItemHtml
+					item={{
+						type: "html",
+						className: "sidebar-title !mt-6",
+						value: "Enterprise",
+						defaultStyle: true,
+					}}
+				/>
+			);
 		} else if (item.docId === "workspace/data-connector") {
 			addedHtml = (
 				<DocSidebarItemHtml
