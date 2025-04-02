@@ -71,7 +71,7 @@ This is an example of how it might look after setup:
 | table_style           | dark                             | ["dark", "light"]                                                   | "The default color style to use with the OpenBB Charting Extension tables. Options are "dark", and "light""                                                                                                                                                                                                               |
 | metadata              | true                             | [true, false]                                                       | Enables or disables the collection of metadata which provides information about operations including arguments duration route and timestamp. Disabling this feature may improve performance in cases where contextual information is not needed, or when the additional computation time and storage space are a concern. |
 | output_type           | OBBject                          | ["OBBject", "dataframe", "numpy", "dict", "chart", "polars", "llm"] | Specifies the type of data the application will output when a command or endpoint is accessed. Note that choosing data formats only available in Python such as `dataframe`, `numpy`, or `polars` will render the application's API non-functional.                                                                       |
-| show_warnings         | true                             | [true, false]                                                       | Enables or disables the display of warnings.                                                                                                                                                                                                                                                                             |
+| show_warnings         | false                             | [true, false]                                                       | Enables or disables the display of warnings.                                                                                                                                                                                                                                                                             |
 
 :::note
 
@@ -161,6 +161,7 @@ The default will be ignored when the parameter is passed in the function call.
 Environment variables are defined in a `.env` file. If this file does not exist, create it inside the same folder `user_settings.json` is located.
 
 - `OPENBB_DEBUG_MODE`: enables verbosity while running the program
+- `OPENBB_DEV_MODE`: applicable to the API; exposes, /system and /user, paths.
 - `OPENBB_AUTO_BUILD`: enables automatic SDK package build on import
 - `OPENBB_API_AUTH_EXTENSION`: specifies which API authentication extension to use
 - `OPENBB_API_AUTH`: enables API authentication for command endpoints
@@ -276,8 +277,7 @@ Return a session object with the settings applied by:
 - `openbb_core.provider.utils.helpers.get_async_requests_session`
 
 :::tip
-To use this configuration directly with the yFinance library, pass the session object, returned by `get_requests_session`,
-to the function's `session` parameter.
+Pass the session object, returned by `get_requests_session`, to use this configuration directly with the yFinance library.
 
 ```python
 import yfinance as yf
