@@ -1,7 +1,7 @@
 {
   "functions": [
     {
-      "description": "Bring Your Own Data: single widget, own backend or native integration setup in OpenBB Terminal Pro.",
+      "description": "Bring Your Own Data: single widget, own backend or native integration setup in OpenBB Workspace.",
       "helpUrl": "https://docs.openbb.co/excel/data-connectors",
       "id": "BYOD",
       "name": "BYOD",

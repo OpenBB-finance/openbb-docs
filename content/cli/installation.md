@@ -86,7 +86,7 @@ Welcome to OpenBB Platform CLI v1.0.0
 
 Follow the instructions [here](/platform/installation#source) to clone the GitHub repo and install the OpenBB Platform from the source code.
 
-Next, navigate into the folder: `~/OpenBBTerminal/openbb_platform`
+Next, navigate into the folder: `~/OpenBB/openbb_platform`
 
 :::tip
 The Python environment should have `poetry` installed.

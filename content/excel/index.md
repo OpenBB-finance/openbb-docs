@@ -29,7 +29,7 @@ Data standardization is at the core of OpenBB Add-in for Excel, offering you a c
         <button
             className="bg-grey-200 hover:bg-grey-400 dark:bg-[#303038] dark:hover:bg-grey-600 text-grey-900 dark:text-grey-200 text-sm font-medium py-2 px-4 rounded"
         >
-            Access OpenBB Terminal for free
+            Access OpenBB Workspace for free
         </button>
     </a>
 </div>
@@ -40,7 +40,7 @@ If interested in the Excel Add-in, reach out for an enterprise license to [hello
 
 - **Features**
 
-  - Access to the same datasets available in Terminal Pro
+  - Access to the same datasets available in OpenBB Workspace
   - Standardization across financial data providers
   - Auto-refresh data within your spreadsheets
   - Ready-made Excel Templates
