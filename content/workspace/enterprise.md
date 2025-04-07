@@ -1,6 +1,6 @@
 ---
-title: Enterprise
-sidebar_position: 1
+title: Overview
+sidebar_position: 3
 description: test
 keywords:
 - Simple research
@@ -18,7 +18,6 @@ Our product offers two different plans:
 The products, features and services that come with an enterprise are highlighted below.
 
 ## Excel Add-In
-
 The enterprise plan, enables users to have access to the financial data directly from Excel, or export any dataset into an Excel format.
 
 For more information, check [OpenBB Add-in for Excel](http://docs.openbb.co/excel).
@@ -70,9 +69,9 @@ Keep your dashboards private and securely accessible only to your organization. 
   <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/sharing_dashboard.png" />
 </div>
 
-## Team Management
+## Admin Portal & Role-Based Access Control (RBAC)
 
-Gain access to a user management portal where you can manage access to your firm’s workspace. You can invite or remove members, export the entire user list, and view their last login times.
+Gain access to a [user management](/workspace/user-management) portal where you can manage your firm’s workspace, including inviting or removing members and viewing user details. You’ll also have access to [Role-Based Access Control (RBAC)](/workspace/role-management), allowing you to assign the appropriate access levels to groups of users.
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
   <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/team_management.png" />
