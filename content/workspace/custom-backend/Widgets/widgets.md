@@ -73,4 +73,8 @@ OpenBB Workspace supports various ways to visualize data through widgets. Each m
 
 <img className="pro-border-gradient" width="600" alt="advanced-charting" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/advanced_charting.png"/>
 
+9. **Newsfeed Widget**:
+   - Displays a list of news articles.
+   - [Create your own Newsfeed Widget](newsfeed.md)
 
+<img className="pro-border-gradient" width="600" alt="newsfeed" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/newsfeed.png"/>
