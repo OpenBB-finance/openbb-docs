@@ -148,8 +148,8 @@ Edit the `widgets.json` file and add the following JSON data. This configuration
 ```json
 {
   "chains_highchart": {
-    "name": "Chains chart example Highchart",
-    "description": "Get current TVL of all chains and plot it with Highchart",
+    "name": "Chains chart example Highcharts",
+    "description": "Get current TVL of all chains and plot it with Highcharts",
     "category": "crypto",
     "type": "chart-highcharts",
     "endpoint": "chains-highchart",
