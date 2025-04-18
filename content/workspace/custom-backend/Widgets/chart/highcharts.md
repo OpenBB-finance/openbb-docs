@@ -165,15 +165,7 @@ Note that for Highcharts, the `type` field is set to `"chart-highcharts"` instea
 
 For more information on the `widgets.json` file, see the [Widgets.json](/content/workspace/custom-backend/widgets-json-reference) page.
 
-## Step 4: Install Required Dependencies
-
-Before running your application, make sure to install the required dependencies:
-
-```bash
-pip install fastapi uvicorn pandas requests highcharts-core
-```
-
-## Step 5: Run the Application
+## Step 4: Run the Application
 
 Start the FastAPI Server using Uvicorn. This will host your backend locally:
 
@@ -181,7 +173,7 @@ Start the FastAPI Server using Uvicorn. This will host your backend locally:
 uvicorn main:app --host localhost --port 5050
 ```
 
-## Step 6: Add to OpenBB Pro
+## Step 5: Add to OpenBB Pro
 
 Navigate to [OpenBB Pro Data Connectors](https://pro.openbb.co/app/data-connectors) and add your backend by clicking on the `+ Add Data` button in the top right corner. Select `Custom Backend` and fill in the details. Your URL will be `http://localhost:5050`.
 
@@ -191,7 +183,7 @@ Once you have added your backend, you can find the widget in the `Crypto` catego
 
 ### Theme Support
 
-The example includes theme support, automatically adapting the chart's appearance based on the current theme in OpenBB Workspace. The `theme` parameter is passed to the endpoint, allowing you to customize colors and styles for both light and dark modes.
+The example doesn't include theme support, but you can easily add it by adapting the endpoint to include the `theme` parameter.
 
 ## Additional Resources
 
