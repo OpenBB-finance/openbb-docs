@@ -170,7 +170,7 @@ For more information on the `widgets.json` file, see the [Widgets.json](/content
 Start the FastAPI Server using Uvicorn. This will host your backend locally:
 
 ```bash
-uvicorn main:app --host localhost --port 5050
+uvicorn main:app --port 5050
 ```
 
 ## Step 5: Add to OpenBB Pro
