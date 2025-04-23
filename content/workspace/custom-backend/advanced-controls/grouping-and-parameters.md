@@ -63,6 +63,11 @@ _Type:_ `string`
 An endpoint to fetch options dynamically, used when `type` is `"endpoint"`.  
 _Example:_ `"/api/companies"`
 
+**optionsParams**  
+_Type:_ `object`  
+Parameters to pass to your `optionsEndpoint`. This allows you to create dynamic, filtered dropdowns based on other parameter selections.
+_Example:_ `{"category": "$category"}`
+
 **style**  
 _Type:_ `object`  
 Styling options for the parameter. Only popupWidth is currently supported minimum value is 200px max value is 1000px. 
@@ -431,6 +436,53 @@ You can also return a dropdown with some advanced options passed - Your returned
     }
 ]
 ```
+
+### Using optionsParams
+
+You can also pass values from other parameters to your `optionsEndpoint` using the `optionsParams` property. This allows you to create dynamic, filtered dropdowns based on other parameter selections.
+
+For example, if you want to filter a list of documents by category:
+
+```json
+{
+  "document_viewer": {
+    "name": "Document Viewer",
+    "endpoint": "/documents/view",
+    "params": [
+      {
+        "type": "endpoint",
+        "paramName": "document",
+        "label": "Document",
+        "description": "Document to display",
+        "optionsEndpoint": "/documents/list",
+        "optionsParams": {
+          "category": "$category"
+        }
+      },
+      {
+        "type": "text",
+        "paramName": "category",
+        "value": "all",
+        "label": "Category",
+        "description": "Category of documents to fetch",
+        "options": [
+          { "label": "All", "value": "all" },
+          { "label": "Reports", "value": "reports" },
+          { "label": "Presentations", "value": "presentations" }
+        ]
+      }
+    ]
+  }
+}
+```
+
+In this example:
+
+- The `optionsParams` property passes the value of the `category` parameter to the `/documents/list` endpoint
+- The `$category` syntax indicates that the value should be taken from the parameter named "category"
+- You can include multiple parameters in `optionsParams` to filter by multiple criteria
+
+This creates a cascading selection where changing the category will automatically update the available documents in the document dropdown.
 
 These values can also be grouped which we will cover below.
 
