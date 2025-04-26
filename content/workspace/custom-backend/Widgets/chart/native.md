@@ -20,11 +20,11 @@ This guide will walk you through the process of creating a simple chart widget u
 
 Any table widget can be converted to a chart widget by adding the `chartView` property to the `table` section - this allows you to seamlessly switch between table and chart views.
 
-This guide will walk you through the process using the same example as the [table widget](/content/workspace/custom-backend/widgets/table/table.md).
+This guide will walk you through the process using the same example as the [table widget](/content/workspace/custom-backend/Widgets/table/table.md).
 
 ## Step 1: Create a table widget
 
-Copy/Use the Table Widget from the [Table Widget](/content/workspace/custom-backend/widgets/table/table.md)
+Copy/Use the Table Widget from the [Table Widget](/content/workspace/custom-backend/Widgets/table/table.md)
 
 **Review/Create Widget**: The `table` section of the `widgets.json` file should be structured as follows:
 
