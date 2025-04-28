@@ -40,276 +40,276 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
 
 ### Attributes
 
-- **name**  
-  _Type:_ `string` (required)  
-  Sets the display name of the widget shown to the user.  
+- **name**
+  _Type:_ `string` (required)
+  Sets the display name of the widget shown to the user.
   _Example:_ `"Options EOD Data"`
 
-- **description**  
-  _Type:_ `string` (required)  
+- **description**
+  _Type:_ `string` (required)
   Provides a brief description of the widget for user info and selection menu.
   This is important for Copilot to understand what the widget does.
   _Example:_ `"Provides EOD data for all options chains for a given ticker."`
 
-- **endpoint**  
-  _Type:_ `string` (required)  
-  Specifies the backend API endpoint for retrieving data.  
-  _Example:_ `"chains"`  
+- **endpoint**
+  _Type:_ `string` (required)
+  Specifies the backend API endpoint for retrieving data.
+  _Example:_ `"chains"`
   _Possible values:_ Any valid API endpoint path as a string.
 
-- **wsEndpoint**  
-  _Type:_ `string`  
+- **wsEndpoint**
+  _Type:_ `string`
   Specifies the WebSocket endpoint for live data updates. Only used with the Live Grid Widget.
   _Example:_ `"ws"`
 
-- **category**  
-  _Type:_ `string`  
-  Defines the category for organizing widgets.  
-  _Example:_ `"Equity"`  
+- **category**
+  _Type:_ `string`
+  Defines the category for organizing widgets.
+  _Example:_ `"Equity"`
   _Possible values:_ Any string representing a category.
 
-- **subCategory**  
-  _Type:_ `string`  
-  Provides a secondary category for refining search results.  
+- **subCategory**
+  _Type:_ `string`
+  Provides a secondary category for refining search results.
   _Example:_ `"Options"`
 
 - **type**  
   _Type:_ `string`  
   Sets the default visualization type for the widget.  
-  _Possible values:_ `"chart"`, `"table"`, `"markdown"`, `"metric"`, `"note"`,  `"multi_file_viewer"`
+  _Possible values:_ `"chart"`, `"table"`, `"markdown"`, `"metric"`, `"note"`,  `"multi_file_viewer"`, `"newsfeed"`
   _Default:_ `"table"`
 
-- **runButton**  
-  _Type:_ `boolean`  
-  If true, a run button will be displayed instead of the refresh button.  
-  _Possible values:_ `true`, `false`  
+- **runButton**
+  _Type:_ `boolean`
+  If true, a run button will be displayed instead of the refresh button.
+  _Possible values:_ `true`, `false`
   _Default:_ `false`
 
-- **gridData**  
+- **gridData**
   _Type:_ object containing the following keys:
 
-  - **w**  
-    _Type:_ `number`  
-    Sets the width of the widget in grid units.  
-    _Example:_ `20`  
+  - **w**
+    _Type:_ `number`
+    Sets the width of the widget in grid units.
+    _Example:_ `20`
     _Maximum value:_ `40`
 
-  - **h**  
-    _Type:_ `number`  
-    Sets the height of the widget in grid units.  
-    _Example:_ `9`  
+  - **h**
+    _Type:_ `number`
+    Sets the height of the widget in grid units.
+    _Example:_ `9`
     _Maximum value:_ `100`
 
-- **data**  
+- **data**
   _Type:_ object containing the following keys:
 
-  - **dataKey**  
-    _Type:_ `string`  
-    A key to identify the data within the widget.  
+  - **dataKey**
+    _Type:_ `string`
+    A key to identify the data within the widget.
     _Example:_ `"customDataKey"`
 
-  - **wsRowIdColumn**  
-    _Type:_ `string`  
-    The column that will be used to identify the row. This is important to set correctly to ensure the live updates are displayed correctly. 
+  - **wsRowIdColumn**
+    _Type:_ `string`
+    The column that will be used to identify the row. This is important to set correctly to ensure the live updates are displayed correctly.
     This the key between your ws and the initial data. Only used with the Live Grid Widget.
     _Example:_ `"symbol"`
 
-  - **table**  
+  - **table**
     _Type:_ object containing the following keys:
 
-    - **enableCharts**  
-      _Type:_ `boolean`  
-      Enables chart visualization for table data.  
+    - **enableCharts**
+      _Type:_ `boolean`
+      Enables chart visualization for table data.
       _Example:_ `true`
 
-    - **showAll**  
-      _Type:_ `boolean`  
-      Displays all available data in the table.  
+    - **showAll**
+      _Type:_ `boolean`
+      Displays all available data in the table.
       _Example:_ `true`
 
-    - **chartView**  
+    - **chartView**
       _Type:_ object containing the following keys:
 
-      - **enabled**  
-        _Type:_ `boolean`  
-        Sets the chart view as the default view.  
+      - **enabled**
+        _Type:_ `boolean`
+        Sets the chart view as the default view.
         _Example:_ `true`
 
-      - **chartType**  
-        _Type:_ `string`  
-        Specifies the type of chart to display.  
-        _Example:_ `"column"`  
+      - **chartType**
+        _Type:_ `string`
+        Specifies the type of chart to display.
+        _Example:_ `"column"`
         _Possible values:_ see [ChartView chart types](#chartview-chart-types)
 
-      - **ignoreCellRange**  
-        _Type:_ `boolean`  
-        Ignores stored cell range for the chart.  
+      - **ignoreCellRange**
+        _Type:_ `boolean`
+        Ignores stored cell range for the chart.
         _Example:_ `false`
 
-    - **columnsDefs**  
+    - **columnsDefs**
       _Type:_ list of objects, each containing the following keys:
 
-      - **field**  
-        _Type:_ `string`  
-        The name of the field from the JSON data.  
+      - **field**
+        _Type:_ `string`
+        The name of the field from the JSON data.
         _Example:_ `"column1"`
 
-      - **headerName**  
-        _Type:_ `string`  
-        The display name of the column header.  
+      - **headerName**
+        _Type:_ `string`
+        The display name of the column header.
         _Example:_ `"Column 1"`
 
-      - **chartDataType**  
-        _Type:_ `string`  
-        Specifies how data is treated in a chart.  
-        _Example:_ `"category"`  
+      - **chartDataType**
+        _Type:_ `string`
+        Specifies how data is treated in a chart.
+        _Example:_ `"category"`
         _Possible values:_ `"category"`, `"series"`, `"time"`, `"excluded"`
 
-      - **cellDataType**  
-        _Type:_ `string`  
-        Specifies the data type of the cell.  
-        _Example:_ `"text"`  
+      - **cellDataType**
+        _Type:_ `string`
+        Specifies the data type of the cell.
+        _Example:_ `"text"`
         _Possible values:_ `"text"`, `"number"`, `"boolean"`, `"date"`, `"dateString"`, `"object"`
 
-      - **enableCellChangeWs**  
-        _Type:_ `boolean`  
+      - **enableCellChangeWs**
+        _Type:_ `boolean`
         Controls whether the cell can be updated via WebSocket messages. Only used with the Live Grid Widget.
-        _Default:_ `true`  
+        _Default:_ `true`
         _Example:_ `false`
 
-      - **formatterFn**  
-        _Type:_ `string`  
-        Specifies how to format the data.  
-        _Example:_ `"int"`  
+      - **formatterFn**
+        _Type:_ `string`
+        Specifies how to format the data.
+        _Example:_ `"int"`
         _Possible values:_ see [`formatterFn`](#formatterfn)
 
-      - **renderFn**  
-        _Type:_ `string`  
-        Specifies a rendering function for cell data. See [Render Functions](/content/workspace/custom-backend/advanced-controls/render-functions.md) for more information.  
-        _Example:_ `"titleCase"`  
+      - **renderFn**
+        _Type:_ `string`
+        Specifies a rendering function for cell data. See [Render Functions](/content/workspace/custom-backend/advanced-controls/render-functions.md) for more information.
+        _Example:_ `"titleCase"`
         _Possible values:_ `"greenRed"`, `"titleCase"`, `"hoverCard"`, `"cellOnClick"`, `"columnColor"`, `"showCellChange"`
 
-      - **renderFnParams**  
-        _Type:_ `object`  
-        Required if `renderFn` is used. Specifies the parameters for the render function.  
+      - **renderFnParams**
+        _Type:_ `object`
+        Required if `renderFn` is used. Specifies the parameters for the render function.
         _Example:_ `{"actionType": "groupBy"}`
 
-      - **width**  
-        _Type:_ `number`  
-        Specifies the width of the column in pixels.  
+      - **width**
+        _Type:_ `number`
+        Specifies the width of the column in pixels.
         _Example:_ `100`
 
-      - **maxWidth**  
-        _Type:_ `number`  
-        Specifies the maximum width of the column in pixels.  
+      - **maxWidth**
+        _Type:_ `number`
+        Specifies the maximum width of the column in pixels.
         _Example:_ `200`
 
-      - **minWidth**  
-        _Type:_ `number`  
-        Specifies the minimum width of the column in pixels.  
+      - **minWidth**
+        _Type:_ `number`
+        Specifies the minimum width of the column in pixels.
         _Example:_ `50`
 
-      - **hide**  
-        _Type:_ `boolean`  
-        Hides the column from the table.  
+      - **hide**
+        _Type:_ `boolean`
+        Hides the column from the table.
         _Example:_ `false`
 
-      - **pinned**  
-        _Type:_ `string`  
-        Pins the column to the left or right of the table.  
-        _Example:_ `"left"`  
+      - **pinned**
+        _Type:_ `string`
+        Pins the column to the left or right of the table.
+        _Example:_ `"left"`
         _Possible values:_ `"left"`, `"right"`
 
-      - **headerTooltip**  
-        _Type:_ `string`  
-        Tooltip text for the column header.  
+      - **headerTooltip**
+        _Type:_ `string`
+        Tooltip text for the column header.
         _Example:_ `"This is a tooltip"`
 
-- **params**  
+- **params**
   _Type:_ list of objects, each containing the following keys:
 
-  - **type**  
-    _Type:_ `string`  
-    The type of the parameter.  
-    _Example:_ `"date"`  
+  - **type**
+    _Type:_ `string`
+    The type of the parameter.
+    _Example:_ `"date"`
     _Possible values:_ `"date"`, `"text"`, `"ticker"`, `"number"`, `"boolean"`, `"endpoint"`, `"form"`
 
-  - **paramName**  
-    _Type:_ `string`  
-    The name of the parameter in the URL.  
+  - **paramName**
+    _Type:_ `string`
+    The name of the parameter in the URL.
     _Example:_ `"startDate"`
 
-  - **value**  
-    _Type:_ `string`, `number`, `boolean`  
-    The default value of the parameter.  
+  - **value**
+    _Type:_ `string`, `number`, `boolean`
+    The default value of the parameter.
     _Example:_ `"2024-01-01"`
 
-  - **label**  
-    _Type:_ `string`  
-    The label to display in the UI for the parameter.  
+  - **label**
+    _Type:_ `string`
+    The label to display in the UI for the parameter.
     _Example:_ `"Start Date"`
 
-  - **optionsEndpoint**  
-    _Type:_ `string`  
-    Endpoint to fetch options for the parameter.  
+  - **optionsEndpoint**
+    _Type:_ `string`
+    Endpoint to fetch options for the parameter.
     _Example:_ `"v1/test/values"`
 
-  - **optionsParams**  
-    _Type:_ `object`  
+  - **optionsParams**
+    _Type:_ `object`
     Parameters to pass to the options endpoint. You can use the parameter name from the `params` array to pass a value to the options endpoint.
     _Example:_ `{"type": "$type"}`
-    
-  - **show**  
-    _Type:_ `boolean`  
-    Displays the parameter in the UI.  
+
+  - **show**
+    _Type:_ `boolean`
+    Displays the parameter in the UI.
     _Example:_ `true`
 
-  - **description**  
-    _Type:_ `string`  
-    Description of the parameter, shown on hover.  
+  - **description**
+    _Type:_ `string`
+    Description of the parameter, shown on hover.
     _Example:_ `"The start date for the data"`
 
-  - **multiSelect**  
-    _Type:_ `boolean`  
-    Allows multiple values to be selected from your parameter options.  
+  - **multiSelect**
+    _Type:_ `boolean`
+    Allows multiple values to be selected from your parameter options.
     _Example:_ `true`
 
-  - **style**  
-    _Type:_ `object`  
-    Styling options for the parameter. Only popupWidth is currently supported minimum value is 200px max value is 1000px.  
+  - **style**
+    _Type:_ `object`
+    Styling options for the parameter. Only popupWidth is currently supported minimum value is 200px max value is 1000px.
     _Example:_ `{"popupWidth": 450}`
 
-  - **options**  
+  - **options**
     _Type:_ list of objects, each containing the following keys:
 
-    - **label**  
-      _Type:_ `string`  
-      The label for a dropdown option.  
+    - **label**
+      _Type:_ `string`
+      The label for a dropdown option.
       _Example:_ `"Option 1"`
 
-    - **value**  
-      _Type:_ `string`, `number`, `boolean`  
-      The value for a dropdown option.  
+    - **value**
+      _Type:_ `string`, `number`, `boolean`
+      The value for a dropdown option.
       _Example:_ `"option1"`
 
 
 
-- **source**  
-  _Type:_ array of strings  
-  Specifies the data source(s) for the widget.  
+- **source**
+  _Type:_ array of strings
+  Specifies the data source(s) for the widget.
   _Example:_ `["API", "Database"]`
 
-- **refetchInterval**  
+- **refetchInterval**
   _Type:_ `number` or `false`
   Time in milliseconds before the widget's data will refresh if on the page.  Minimum value is `1000`.
   _Default:_ `900000` (15m)
 
-- **staleTime**  
-  _Type:_ `number`  
-  Time in milliseconds before the widget's data is considered stale and will refresh on the next visit to the dashboard.  
+- **staleTime**
+  _Type:_ `number`
+  Time in milliseconds before the widget's data is considered stale and will refresh on the next visit to the dashboard.
   _Default:_ `300000` (5m)
 
-## Example widgets.json
+## Example widgets.json {#example-widgets-json}
 
 Below is an example `widgets.json` with a single widget defined. This widget will default to a column chart but have the ability to switch between a table and chart view.  The widget will have a start date parameter, a ticker parameter, and a colors parameter, all of which will be able to be selected on the widget in the application.
 
@@ -458,7 +458,7 @@ If you don't want to set a date you can omit the value parameter or pass ```null
 ### ChartView chart types
 
 **`chartType`**: The type of chart to display by default. These charts are provided using the AgGrid library. Custom charts can also be created using Plotly. For examples, refer to the [GitHub repository](https://github.com/OpenBB-finance/backend-examples-for-openbb-workspace/tree/main).
-  
+
 **Allowed values:** column, groupedColumn, stackedColumn, normalizedColumn, bar, groupedBar, stackedBar, normalizedBar, line, scatter, bubble, pie, donut, doughnut, area, stackedArea, normalizedArea, histogram, radarLine, radarArea, nightingale, radialColumn, radialBar, sunburst, rangeBar, rangeArea, boxPlot, treemap, heatmap, waterfall
 
 ### formatterFn

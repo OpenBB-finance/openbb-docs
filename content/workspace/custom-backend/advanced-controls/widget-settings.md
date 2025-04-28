@@ -22,7 +22,7 @@ keywords:
 
 This guide covers the essential settings for configuring widget appearance, positioning, and data refresh behavior in OpenBB Workspace.
 
-## Run Button
+## Run Button {#run-button}
 
 The run button allows you to run a widget by clicking it rather then having it run automatically when you change a parameter. It is located in the top right corner of the widget and replaces the refresh button.
 
@@ -67,7 +67,7 @@ Widgets use a grid-based layout system where you can specify their width and hei
   - Recommended range: 8-20 units for standard widgets
   - Larger values useful for detailed charts or tables
 
-## Data Refresh Settings
+## Data Refresh Settings {#data-refresh-settings}
 
 Control how and when widget data updates using these two key settings:
 
