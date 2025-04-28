@@ -496,13 +496,13 @@ html[data-theme="dark"] .sidebar-divider {
 }
 
 .pro-border-gradient {
-  background: linear-gradient(to right, #66ccff, #005ca9);
-  border-radius: 6px;
+  background: var(--ifm-color-gray-600);
+  border-radius: 4px;
   overflow: hidden;
   display: inline-block;
   justify-content: center;
   align-items: center;
-  padding: 3px;
+  padding: 1px;
   position: relative;
 }
 
