@@ -76,7 +76,7 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
 - **type**  
   _Type:_ `string`  
   Sets the default visualization type for the widget.  
-  _Possible values:_ `"chart"`, `"chart-highcharts"`, `"table"`, `"markdown"`, `"metric"`, `"note"`,  `"multi_file_viewer"`
+  _Possible values:_ `"chart"`, `"chart-highcharts"`, `"table"`, `"markdown"`, `"metric"`, `"note"`,  `"multi_file_viewer"`, `"newsfeed"`
   _Default:_ `"table"`
 
 - **runButton**
