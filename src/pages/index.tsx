@@ -34,10 +34,6 @@ export default function Home(): JSX.Element {
 							alt="OpenBB Logo"
 							className="mb-6 w-[200px] md:w-[250px] !shadow-none !border-none"
 						/>
-						<p className="mx-6 text-base text-center text-[#2A2A2A] dark:text-white max-w-[315px] md:max-w-[880px]">
-							All the documentation for the tools you need for your investment
-							research.
-						</p>
 					</div>
 					<div className="flex flex-col md:flex-row w-full container items-center justify-center gap-6 px-6 sm:mx-0 my-8 lg:!my-10">
 						<Link
@@ -60,8 +56,7 @@ export default function Home(): JSX.Element {
 									OpenBB Platform
 								</h3>
 								<p className="text-base mt-2 text-[#434344] dark:text-grey-100">
-									The OpenBB Platform provides a convenient way to access raw
-									financial data from multiple data providers.
+									The OpenBB Platform delivers seamless access to comprehensive financial data from diverse providers, empowering users with powerful analytics and insights.
 								</p>
 								<p
 									className={clsx(
@@ -89,43 +84,10 @@ export default function Home(): JSX.Element {
 									<div className="dark:bg-[#36363F] bg-[#EBEBED] shadow-sm p-1.5 rounded">
 										<OpenBBTerm className="w-5 h-5" />
 									</div>
-									OpenBB
+									OpenBB Workspace
 								</h3>
 								<p className="text-base mt-2 text-[#434344] dark:text-grey-100">
-									OpenBB provides investors with a reinvented interface to
-									perform investment research optimised for efficiency.
-								</p>
-								<p
-									className={clsx(
-										"mt-auto inline-flex items-center gap-1 font-normal text-[#070707] dark:text-gray-200 dark:hover:text-white text-sm dark:bg-[#36363F] bg-[#EBEBED] hover:bg-[#DADBDE] dark:hover:bg-[#2A2A31] px-4 py-2 rounded-md transition-colors",
-									)}
-								>
-									See more
-								</p>
-							</div>
-						</Link>
-						<Link
-							style={{ backgroundSize: "100% 130%" }}
-							to="/excel"
-							className="!bg-white dark:!bg-[#151518] bg-no-repeat shadow-sm group !no-underline text-white relative w-full h-[240px] max-w-full p-8 rounded flex flex-col items-start justify-start overflow-hidden"
-						>
-							<div
-								className="absolute inset-0 bg-gradient-radial from-[#15803D] opacity-40 z-[1]"
-								style={{
-									background:
-										"radial-gradient(circle at top right, var(--tw-gradient-from), var(--tw-gradient-to))",
-								}}
-							/>
-							<div className="relative z-[2]">
-								<h3 className="uppercase text-lg tracking-wider font-bold mb-0 mt-0 text-[#2A2A2A] dark:text-white flex items-center gap-2">
-									<div className="dark:bg-[#36363F] bg-[#EBEBED] shadow-sm p-1.5 rounded">
-										<Excel className="w-5 h-5" />
-									</div>
-									OpenBB excel add-in
-								</h3>
-								<p className="text-base mt-2 text-[#434344] dark:text-grey-100">
-									Our Excel Add-In seamlessly fetches financial data, so you can
-									focus on making investment decisions.
+									The OpenBB Workspace is an enterprise UI that bridges your financial data with AI, enabling streamlined workflows across users data while guaranteeing full control.
 								</p>
 								<p
 									className={clsx(
@@ -149,17 +111,7 @@ export default function Home(): JSX.Element {
 							className="text-[#33BBFF] !underline hover:text-[#99DDFF] active:text-[#0088CC]"
 						>
 							here
-						</a>{" "}
-						and OpenBB Bot documentation can be found{" "}
-						<a
-							href="https://docs.openbb.co/bot"
-							target="_blank"
-							rel="noopener noreferrer"
-							className="text-[#33BBFF] !underline hover:text-[#99DDFF] active:text-[#0088CC]"
-						>
-							here
-						</a>
-						.
+						</a>.
 					</p>
 				</div>
 			</article>
