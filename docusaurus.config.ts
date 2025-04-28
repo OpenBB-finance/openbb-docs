@@ -53,10 +53,6 @@ export default {
 						to: "/workspace/enterprise",
 					},
 					{
-						from: "/pro/enterprise",
-						to: "/workspace/enterprise",
-					},
-					{
 						from: "/pro/native-installation",
 						to: "/workspace/native-installation",
 					},
