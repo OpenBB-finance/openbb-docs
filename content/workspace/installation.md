@@ -1,5 +1,5 @@
 ---
-title: PWA Installation
+title: Native Installation (PWA)
 description: Learn how to install and use OpenBB Workspace as a Progressive Web App (PWA) on your desktop and mobile devices.
 sidebar_position: 2
 keywords:
