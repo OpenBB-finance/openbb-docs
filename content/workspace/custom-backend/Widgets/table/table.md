@@ -71,7 +71,7 @@ Open the `widgets.json` file and add the following JSON data. This configuration
 
 In the widgets.json file, we're creating a widget that shows the current Total Value Locked (TVL) for various blockchain chains using data from the Defi Llama API.
 
-For more information on the `widgets.json` file, see the [Widgets.json](../widgets.json).
+For more information on the `widgets.json` file, see the [Widgets.json](/workspace/custom-backend/widgets-json-reference).
 
 ## Step 3: Run the Application
 

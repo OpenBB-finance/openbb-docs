@@ -19,54 +19,54 @@ In the `widgets.json` configuration, you can specify render functions to customi
 - **`hoverCard`**: Displays additional information when hovering over a cell.
 - **`cellOnClick`**: Triggers an action when a cell is clicked.
 - **`columnColor`**: Changes the color of a column based on specified rules.
-- **`showCellChange`**: Highlights cells when their values change via WebSocket updates. Only used with the [Live Grid Widget](/content/workspace/custom-backend/widgets/live_grid.md)
+- **`showCellChange`**: Highlights cells when their values change via WebSocket updates. Only used with the [Live Grid Widget](/content/workspace/custom-backend/Widgets/live_grid.md)
 
 <details>
 <summary mdxType="summary">Render Function Parameters</summary>
 
-**actionType**  
-_Type:_ `string`  
-Specifies the action type for the render function.  
-_Possible values:_ `"groupBy"`  
+**actionType**
+_Type:_ `string`
+Specifies the action type for the render function.
+_Possible values:_ `"groupBy"`
 _Used with:_ `cellOnClick` render function
 
-**colorValueKey**  
-_Type:_ `string`  
-Specifies which field to use for determining the color when showing cell changes.  
-_Used with:_ `showCellChange` render function  
+**colorValueKey**
+_Type:_ `string`
+Specifies which field to use for determining the color when showing cell changes.
+_Used with:_ `showCellChange` render function
 _Example:_ `"change"`
 
-**hoverCardData**  
-_Type:_ `array of strings`  
-Specifies columns to show in the hover card.  
+**hoverCardData**
+_Type:_ `array of strings`
+Specifies columns to show in the hover card.
 _Used with:_ `hoverCard` render function
 
-**colorRules**  
-_Type:_ `array of objects`  
-An array of rules for conditional coloring.  
+**colorRules**
+_Type:_ `array of objects`
+An array of rules for conditional coloring.
 _Used with:_ `columnColor` render function
 
 Each rule can include:
 
-- **condition**  
-  _Type:_ `string`  
-  The condition for applying the color.  
+- **condition**
+  _Type:_ `string`
+  The condition for applying the color.
   _Options:_ `"eq"`, `"ne"`, `"gt"`, `"lt"`, `"gte"`, `"lte"`, `"between"`
 
-- **value**  
-  _Type:_ `number`  
+- **value**
+  _Type:_ `number`
   The value for the condition.
 
-- **range**  
-  _Type:_ `object`  
+- **range**
+  _Type:_ `object`
   An object specifying `min` and `max` values for the condition.
 
-- **color**  
-  _Type:_ `string`  
+- **color**
+  _Type:_ `string`
   The color to apply, specified as a hex code or `"green"`, `"red"`, `"blue"`.
 
-- **fill**  
-  _Type:_ `boolean`  
+- **fill**
+  _Type:_ `boolean`
   Indicates if the color should fill the cell.
 
 </details>
