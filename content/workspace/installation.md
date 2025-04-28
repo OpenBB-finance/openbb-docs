@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Native Installation | OpenBB Workspace Docs" />
+<HeadTitle title="PWA Installation | OpenBB Workspace Docs" />
 
 # Installing OpenBB on your devices
 

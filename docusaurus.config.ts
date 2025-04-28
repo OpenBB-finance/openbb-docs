@@ -53,10 +53,6 @@ export default {
 						to: "/workspace/enterprise",
 					},
 					{
-						from: "/pro/native-installation",
-						to: "/workspace/native-installation",
-					},
-					{
 						from: "/pro/tutorials",
 						to: "/workspace/tutorials",
 					},
@@ -75,26 +71,6 @@ export default {
 					{
 						from: "/pro/tutorials/earnings-update",
 						to: "/workspace/tutorials/earnings-update",
-					},
-					{
-						from: "/pro/tutorials/layouts-watchlist",
-						to: "/workspace/tutorials/layouts-watchlist",
-					},
-					{
-						from: "/pro/tutorials/report",
-						to: "/workspace/tutorials/report",
-					},
-					{
-						from: "/pro/tutorials/ai",
-						to: "/workspace/tutorials/ai",
-					},
-					{
-						from: "/pro/tutorials/data-to-charts",
-						to: "/workspace/tutorials/data-to-charts",
-					},
-					{
-						from: "/pro/tutorials/overlay",
-						to: "/workspace/tutorials/overlay",
 					},
 					{
 						from: "/pro/openbb-copilot",
