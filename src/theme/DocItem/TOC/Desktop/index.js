@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useDoc } from "@docusaurus/plugin-content-docs/client";
 import { ThemeClassNames } from "@docusaurus/theme-common";
-import { useActiveDocContext } from '@docusaurus/plugin-content-docs/client';
 import TOC from "@theme/TOC";
+import React, { useEffect, useState } from "react";
 export default function DocItemTOCDesktop() {
-  const { toc, frontMatter } = useActiveDocContext();
+	const { toc, frontMatter } = useDoc();
 
-  /*const [currentToc, setCurrentToc] = useState(toc);
+	/*const [currentToc, setCurrentToc] = useState(toc);
   useEffect(() => {
     const modelElements = document.getElementsByClassName("tabs__item");
     let observer = null;
@@ -37,12 +37,12 @@ export default function DocItemTOCDesktop() {
     }
     return () => observer?.disconnect();
   }, []);*/
-  return (
-    <TOC
-      toc={toc}
-      minHeadingLevel={frontMatter?.toc_min_heading_level ?? 2}
-      maxHeadingLevel={frontMatter?.toc_max_heading_level ?? 3}
-      className={ThemeClassNames.docs.docTocDesktop}
-    />
-  );
+	return (
+		<TOC
+			toc={toc}
+			minHeadingLevel={frontMatter?.toc_min_heading_level}
+			maxHeadingLevel={frontMatter?.toc_max_heading_level}
+			className={ThemeClassNames.docs.docTocDesktop}
+		/>
+	);
 }

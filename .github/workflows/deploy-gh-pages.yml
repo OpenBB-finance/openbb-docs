@@ -64,11 +64,6 @@ jobs:
           pip install requests
           python scripts/generate_excel_markdown.py
 
-      - name: Generate Widgets Library
-        run: |
-          pip install requests
-          python scripts/generate_widgets_library.py
-
       - name: Setup Node
         uses: actions/setup-node@v3
         with:

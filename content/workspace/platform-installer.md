@@ -27,9 +27,9 @@ Here's a video that you can use to follow step-by-step instructions.
     style={{position: 'absolute', top: '0', left: '0', width: '100%', height: '100%', display: 'block', margin: '0 auto'}} 
     src="https://www.youtube.com/embed/DFz1WQJbT6c?si=_K3amHb8p4fkTKaj" 
     title="YouTube video player" 
-    frameborder="0" 
+    frameBorder="0" 
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-    referrerpolicy="strict-origin-when-cross-origin" 
+    referrerPolicy="strict-origin-when-cross-origin" 
     allowFullScreen></iframe>
 </div>
 
