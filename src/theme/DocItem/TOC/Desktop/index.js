@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { ThemeClassNames } from "@docusaurus/theme-common";
-import { useDoc } from '@docusaurus/plugin-content-docs/client';
+import { useActiveDocContext } from '@docusaurus/plugin-content-docs/client';
 import TOC from "@theme/TOC";
 export default function DocItemTOCDesktop() {
-  const { toc, frontMatter } = useDoc();
+  const { toc, frontMatter } = useActiveDocContext();
 
   /*const [currentToc, setCurrentToc] = useState(toc);
   useEffect(() => {
@@ -40,8 +40,8 @@ export default function DocItemTOCDesktop() {
   return (
     <TOC
       toc={toc}
-      minHeadingLevel={frontMatter.toc_min_heading_level}
-      maxHeadingLevel={frontMatter.toc_max_heading_level}
+      minHeadingLevel={frontMatter?.toc_min_heading_level ?? 2}
+      maxHeadingLevel={frontMatter?.toc_max_heading_level ?? 3}
       className={ThemeClassNames.docs.docTocDesktop}
     />
   );

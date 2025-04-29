@@ -46,7 +46,9 @@ export default function DocSidebarItem({ item, ...props }) {
 
 	if ((isPro || isExcel) && !checkIfAnyChildIsProExcel(item)) {
 		return null;
-	} else if (
+	}
+
+	if (
 		!(isPro || isExcel) &&
 		item.href?.startsWith("/workspace") &&
 		item.href?.startsWith("/excel")
@@ -68,24 +70,13 @@ export default function DocSidebarItem({ item, ...props }) {
 					}}
 				/>
 			);
-		} else if (item.docId === "workspace/enterprise") {
+		} else if (item.docId === "workspace/data-integration") {
 			addedHtml = (
 				<DocSidebarItemHtml
 					item={{
 						type: "html",
 						className: "sidebar-title !mt-6",
-						value: "Enterprise",
-						defaultStyle: true,
-					}}
-				/>
-			);
-		} else if (item.docId === "workspace/data-connector") {
-			addedHtml = (
-				<DocSidebarItemHtml
-					item={{
-						type: "html",
-						className: "sidebar-title !mt-6",
-						value: "Input Data",
+						value: "Data Integration",
 						defaultStyle: true,
 					}}
 				/>
@@ -101,13 +92,13 @@ export default function DocSidebarItem({ item, ...props }) {
 					}}
 				/>
 			);
-		} else if (item.docId === "workspace/openbb-copilot") {
+		} else if (item.docId === "workspace/ai-agents") {
 			addedHtml = (
 				<DocSidebarItemHtml
 					item={{
 						type: "html",
 						className: "sidebar-title !mt-6",
-						value: "AI Insights",
+						value: "AI Agents",
 						defaultStyle: true,
 					}}
 				/>
@@ -131,7 +122,13 @@ export default function DocSidebarItem({ item, ...props }) {
 			return (
 				<>
 					{addedHtml}
-					<DocSidebarItemCategory item={item} {...props} />
+					<DocSidebarItemCategory 
+						item={{
+							...item,
+							collapsed: isPro && item.label === "OpenBB Workspace" && pathname === "/workspace" ? false : item.collapsed
+						}} 
+						{...props} 
+					/>
 					{afterHtml}
 				</>
 			);

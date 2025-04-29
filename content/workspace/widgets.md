@@ -1,6 +1,6 @@
 ---
 title: Widgets
-sidebar_position: 21
+sidebar_position: 50
 description: The page contains detailed information about the interactive elements
   and functionalities of OpenBB Workspace widgets. From grouping mechanisms to
   settings, these widgets offer an interactive dashboard experience for users to track

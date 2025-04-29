@@ -116,10 +116,25 @@ export default {
 						from: "/pro/bring-your-own-copilot",
 						to: "/workspace/bring-your-own-copilot",
 					},
+					{
+						from: "/workspace/data-connector",
+						to: "/workspace/data-integration",
+					},
+					{
+						from: "/workspace/enterprise",
+						to: "https://openbb.co/pricing",
+					},
 				],
 				createRedirects: (existingPath) => {
 					if (existingPath.startsWith("/pro/")) {
-						return existingPath.replace("/pro/", "/workspace/");
+						const newPath = existingPath.replace("/pro/", "/workspace/");
+						if (newPath.includes("data-connector")) {
+							return newPath.replace("/data-connector/", "/data-integration/");
+						}
+						return newPath;
+					}
+					if (existingPath.includes("data-connector")) {
+						return existingPath.replace("/data-connector/", "/data-integration/");
 					}
 					return undefined;
 				},

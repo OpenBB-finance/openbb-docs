@@ -1,6 +1,6 @@
 ---
 title: OpenBB Copilot
-sidebar_position: 8
+sidebar_position: 22
 description: Learn how to use OpenBB Copilot to interact with the OpenBB Workspace
 keywords:
 - OpenBB Copilot
@@ -14,7 +14,7 @@ keywords:
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 import ReactPlayer from 'react-player'
 
-<HeadTitle title="Copilot | OpenBB Workspace Docs" />
+<HeadTitle title="OpenBB Copilot | OpenBB Workspace Docs" />
 
 OpenBB Copilot is your AI companion that helps you interact with OpenBB
 Workspace, and perform a wide variety of research and analysis tasks.

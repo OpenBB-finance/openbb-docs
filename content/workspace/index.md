@@ -25,6 +25,10 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="OpenBB Workspace Docs" />
 
+- Add the product/workspace architecture;
+- Then show how it works with the data, AI model, ... (use portfolio example)
+- Refer to hello-world and reference implementation
+
 OpenBB introduces the first AI-powered Research and Analytics workspace.
 
 <div style={{position: 'relative', paddingBottom: '56.25%', height: '0', overflow: 'hidden', maxWidth: '100%'}}>

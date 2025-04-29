@@ -9,11 +9,7 @@ import {
 	useThemeConfig,
 } from "@docusaurus/theme-common";
 import { isSamePath } from '@docusaurus/theme-common/internal';
-import {
-	// findFirstCategoryLink,
-	isActiveSidebarItem,
-	useDocSidebarItemsExpandedState,
-} from '@docusaurus/plugin-content-docs/client';
+import { useActiveDocContext } from '@docusaurus/plugin-content-docs/client';
 import useIsBrowser from "@docusaurus/useIsBrowser";
 import DocSidebarItems from "@theme/DocSidebarItems";
 import clsx from "clsx";
@@ -21,14 +17,27 @@ import React, { useEffect, useMemo } from "react";
 import { useIFrameContext } from "../../Root.tsx";
 // If we navigate to a category and it becomes active, it should automatically
 // expand itself
-function useAutoExpandActiveCategory({ isActive, collapsed, updateCollapsed }) {
+function useAutoExpandActiveCategory({ isActive, collapsed, updateCollapsed, items, activePath }) {
 	const wasActive = usePrevious(isActive);
 	useEffect(() => {
 		const justBecameActive = isActive && !wasActive;
 		if (justBecameActive && collapsed) {
-			updateCollapsed(false);
+			// Only auto-expand if this category contains the active item
+			const containsActiveItem = items.some(item => {
+				if (item.type === 'link') {
+					return item.href === activePath;
+				}
+				if (item.type === 'category') {
+					return item.items.some(subItem => subItem.href === activePath);
+				}
+				return false;
+			});
+			
+			if (containsActiveItem) {
+				updateCollapsed(false);
+			}
 		}
-	}, [isActive, wasActive, collapsed, updateCollapsed]);
+	}, [isActive, wasActive, collapsed, updateCollapsed, items, activePath]);
 }
 /**
  * When a collapsible category has no link, we still link it to its first child
@@ -50,7 +59,7 @@ function useCategoryHrefWithSSRFallback(item, href) {
 			return undefined;
 		}
 		// return findFirstCategoryLink(item);
-	}, [item, isBrowser]);
+	}, [item, isBrowser, href]);
 }
 function CollapseButton({ categoryLabel, onClick }) {
 	return (
@@ -70,6 +79,7 @@ function CollapseButton({ categoryLabel, onClick }) {
 		/>
 	);
 }
+
 export default function DocSidebarItemCategory({
 	item,
 	onItemClick,
@@ -79,6 +89,8 @@ export default function DocSidebarItemCategory({
 	...props
 }) {
 	const { items, label, collapsible, className, href } = item;
+	const { activeDoc } = useActiveDocContext();
+	const isActive = activeDoc?.path === activePath;
 	const labelToHrefMap = {
 		"OpenBB Terminal": "/workspace",
 		"OpenBB Platform": "/platform",
@@ -94,7 +106,6 @@ export default function DocSidebarItemCategory({
 		},
 	} = useThemeConfig();
 	const hrefWithSSRFallback = useCategoryHrefWithSSRFallback(item, newHref);
-	const isActive = isActiveSidebarItem(item, activePath);
 	const isCurrentPage = isSamePath(newHref, activePath);
 	const { collapsed, setCollapsed } = useCollapsible({
 		// Active categories are always initialized as expanded. The default
@@ -106,23 +117,14 @@ export default function DocSidebarItemCategory({
 			return isActive ? false : item.collapsed;
 		},
 	});
-	const { expandedItem, setExpandedItem } = useDocSidebarItemsExpandedState();
+
 	// Use this instead of `setCollapsed`, because it is also reactive
 	const updateCollapsed = (toCollapsed = !collapsed) => {
-		setExpandedItem(toCollapsed ? null : index);
 		setCollapsed(toCollapsed);
 	};
-	useAutoExpandActiveCategory({ isActive, collapsed, updateCollapsed });
-	useEffect(() => {
-		if (
-			collapsible &&
-			expandedItem != null &&
-			expandedItem !== index &&
-			autoCollapseCategories
-		) {
-			setCollapsed(true);
-		}
-	}, [collapsible, expandedItem, index, setCollapsed, autoCollapseCategories]);
+
+	useAutoExpandActiveCategory({ isActive, collapsed, updateCollapsed, items, activePath });
+
 	const { isIFrame } = useIFrameContext();
 	const dontShowLink =
 		isIFrame && ["OpenBB Terminal", "OpenBB SDK", "OpenBB Bot"].includes(label);

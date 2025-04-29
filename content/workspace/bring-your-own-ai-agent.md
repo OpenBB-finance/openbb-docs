@@ -1,6 +1,6 @@
 ---
-title: Bring your own Copilot
-sidebar_position: 9
+title: Bring your own AI Agent
+sidebar_position: 21
 description: Learn how to use your own Copilot with OpenBB Workspace
 keywords:
 - OpenBB Copilot
@@ -14,7 +14,7 @@ keywords:
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 import ReactPlayer from 'react-player'
 
-<HeadTitle title="Bring your own Copilot | OpenBB Workspace Docs" />
+<HeadTitle title="Bring your own AI Agent | OpenBB Workspace Docs" />
 
 When the default OpenBB Copilot isn't a perfect fit for your financial institution—especially when proprietary data and tools are involved—OpenBB Workspace offers the 'Bring Your Own Copilot' feature. This allows you to integrate your own custom Large Language Models (LLMs).
 

@@ -1,6 +1,6 @@
 ---
 title: Templates
-sidebar_position: 23
+sidebar_position: 52
 description: This page allows users to manage their OpenBB Workspace and Excel templates.
 keywords:
 - Templates
