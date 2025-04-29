@@ -81,17 +81,6 @@ export default function DocSidebarItem({ item, ...props }) {
 					}}
 				/>
 			);
-		} else if (item.docId === "workspace/widgets") {
-			addedHtml = (
-				<DocSidebarItemHtml
-					item={{
-						type: "html",
-						className: "sidebar-title !mt-6",
-						value: "Visualization",
-						defaultStyle: true,
-					}}
-				/>
-			);
 		} else if (item.docId === "workspace/ai-agents") {
 			addedHtml = (
 				<DocSidebarItemHtml
@@ -99,6 +88,28 @@ export default function DocSidebarItem({ item, ...props }) {
 						type: "html",
 						className: "sidebar-title !mt-6",
 						value: "AI Agents",
+						defaultStyle: true,
+					}}
+				/>
+			);
+		} else if (item.docId === "workspace/apps") {
+			addedHtml = (
+				<DocSidebarItemHtml
+					item={{
+						type: "html",
+						className: "sidebar-title !mt-6",
+						value: "Apps",
+						defaultStyle: true,
+					}}
+				/>
+			);
+		} else if (item.docId === "workspace/upload-files") {
+			addedHtml = (
+				<DocSidebarItemHtml
+					item={{
+						type: "html",
+						className: "sidebar-title !mt-6",
+						value: "TO BE REMOVED",
 						defaultStyle: true,
 					}}
 				/>

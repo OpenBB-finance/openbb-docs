@@ -1,6 +1,6 @@
 ---
 title: API Endpoints
-sidebar_position: 12
+sidebar_position: 102
 description: Learn how to use the API Endpoint Widget of OpenBB Workspace for seamless
   integration with your APIs, enabling custom data to be fetched and displayed
   in an accessible format. Includes features like additional headers and addressing

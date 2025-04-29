@@ -1,6 +1,6 @@
 ---
 title: Dashboards
-sidebar_position: 51
+sidebar_position: 106
 description: This documentation page explains the functionalities of OpenBB Workspace
   Pro's dashboard feature. Learn how to add widgets, text, rename, duplicate, and
   interact with dashboards in various ways for efficient data visualization.

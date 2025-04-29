@@ -1,6 +1,6 @@
 ---
 title: Upload Files
-sidebar_position: 11
+sidebar_position: 101
 description: Learn how to upload both structured and unstructured data to OpenBB Workspace with just a few clicks.
 keywords:
 - Single Widget
