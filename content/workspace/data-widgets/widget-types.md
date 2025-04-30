@@ -1,9 +1,18 @@
 ---
 title: Widget Types
 sidebar_position: 12
-description: Widget Types
+description: Comprehensive guide to different widget types available in OpenBB Workspace including Markdown, Metric, Table, PDF, and Multi-PDF viewers
 keywords:
-- asd
+- widgets
+- markdown
+- metrics
+- tables
+- pdf
+- data visualization
+- workspace
+- grid system
+- base64
+- file viewers
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

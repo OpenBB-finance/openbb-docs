@@ -1,11 +1,17 @@
 ---
-title: Settings
+title: Widget Settings and Configurations
 sidebar_position: 16
-description: Settings
+description: Learn about various widget settings and configurations in OpenBB Workspace, including refetch intervals, stale times, run buttons, and error handling.
 keywords:
 - settings
 - configuration
 - preferences
+- widgets
+- markdown
+- refetch interval
+- stale time
+- run button
+- error handling
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
