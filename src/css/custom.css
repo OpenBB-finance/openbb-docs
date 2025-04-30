@@ -551,6 +551,11 @@ div[role="dialog"][data-state="open"] button:hover {
   @apply text-[#717177] dark:text-[#B8B9BC] hover:text-black dark:hover:text-white hover:bg-[#EBEBED] dark:hover:bg-[#212126] rounded-md transition-colors;
 }
 
+/* If you want different padding for different levels */
+.theme-doc-sidebar-item-category-level-1 {
+  padding-bottom: 15px;
+}
+
 .menu__list-item-collapsible {
   @apply hover:bg-[#EBEBED] dark:hover:bg-[#212126];
 }
