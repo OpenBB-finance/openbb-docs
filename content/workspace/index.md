@@ -27,7 +27,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 OpenBB Workspace is a powerful, secure platform designed specifically for enterprise AI workflows. It combines flexible data integration, customizable UI components, and robust AI capabilities in a single, cohesive solution.
 
-<img src="https://openbb-cms.directus.app/assets/8aa1a314-0e2c-41f0-a3cf-ef621e5f2a13.png" alt="OpenBB Workspace" width="100%" />
+<img src="https://openbb-cms.directus.app/assets/8aa1a314-0e2c-41f0-a3cf-ef621e5f2a13.png" alt="OpenBB Workspace Platform Interface" width="100%" />
 
 ## Core Capabilities
 
@@ -74,13 +74,13 @@ Widgets are the fundamental data units in OpenBB Workspace. Each widget represen
 - **Visual Layer**: Presentation through PDF, table, chart, or feed formats
 - **Parameters**: Configurable options for data display and interaction
 
-<img width="800" alt="Widget-metadata" src="https://openbb-cms.directus.app/assets/132e5cda-b062-4094-8036-8c2d41db1527.png" />
+<img width="800" alt="Widget Metadata Structure and Components" src="https://openbb-cms.directus.app/assets/132e5cda-b062-4094-8036-8c2d41db1527.png" />
 
 ### Dashboards: Your Financial Analysis Workspace
 
 Dashboards serve as your primary workspace for organizing and analyzing financial data through customizable widgets. Each dashboard acts as a dedicated canvas where you can arrange and combine different data visualizations to create comprehensive financial analysis views.
 
-<img width="800" alt="Apps" src="https://openbb-cms.directus.app/assets/fbf80af0-8bc3-4ac6-b349-f8e1ec388cee.png" />
+<img width="800" alt="OpenBB Workspace Dashboard Interface" src="https://openbb-cms.directus.app/assets/fbf80af0-8bc3-4ac6-b349-f8e1ec388cee.png" />
 
 #### Managing Your Dashboards
 
@@ -109,11 +109,11 @@ Export your interactive dashboards as static reports in PDF or PNG format. Inclu
 
 Create AI agents to automate tasks and enhance your dashboards with this intelligence layer.
 
-<img width="800" alt="Apps" src="https://openbb-cms.directus.app/assets/ac287dfe-e279-42bb-8f84-a616ff9df8a8.png" />
+<img width="800" alt="OpenBB Workspace AI Agents Interface" src="https://openbb-cms.directus.app/assets/ac287dfe-e279-42bb-8f84-a616ff9df8a8.png" />
 
 The reason why AI agents work on OpenBB workspace is due to the metadata from each widget which allows AI to understand which widget has access to the right dataset and query it accordingly (along with the right parameters!).
 
-<img width="800" alt="Apps" src="https://openbb-cms.directus.app/assets/2b463b3b-e1cf-4079-8c11-b49cdcda60ac" />
+<img width="800" alt="OpenBB Workspace AI Agent Widget Integration" src="https://openbb-cms.directus.app/assets/2b463b3b-e1cf-4079-8c11-b49cdcda60ac" />
 
 ### Apps: End-to-End Workflows
 
@@ -123,12 +123,11 @@ Combine dashboards and AI agents to create powerful applications:
 - **Data Integration**: Connect your existing systems and services
 - **Scalable Architecture**: Create and manage multiple applications within the platform
 
-<img width="800" alt="Apps" src="https://openbb-cms.directus.app/assets/5778561c-5c09-4d70-bde8-952acbccaa01.png" />
+<img width="800" alt="OpenBB Workspace Applications Overview" src="https://openbb-cms.directus.app/assets/5778561c-5c09-4d70-bde8-952acbccaa01.png" />
 
 You can have a large amount of different applications on OpenBB.
 
-<img width="800" alt="Apps" src="https://openbb-cms.directus.app/assets/2fc9097e-0941-49df-8d83-7d6b5a87bb45.
-png" />
+<img width="800" alt="OpenBB Workspace Multiple Applications View" src="https://openbb-cms.directus.app/assets/2fc9097e-0941-49df-8d83-7d6b5a87bb45.png" />
 
 #### Prompts: Reusable AI Interactions
 
