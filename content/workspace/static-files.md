@@ -1,56 +1,79 @@
 ---
 title: Static Files
 sidebar_position: 14
-description: Static Files
+description: Learn how to import and manage static files in OpenBB, including structured and unstructured data formats, with support for PDF, CSV, JSON, PNG, and JPG files.
 keywords:
-- asd
+- file import
+- data import
+- structured data
+- unstructured data
+- file formats
+- data management
+- file upload
+- data visualization
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-Uploading files is the easiest way to import data into OpenBB. You can add one or multiple files at once, with support for formats like PDF, CSV, JSON, PNG, and JPG. Simply select your files — whether in different formats or the same — or drag them into the Add Data pop-up.
+<HeadTitle title="Static Files | OpenBB Workspace Docs" />
+
+OpenBB provides a powerful and intuitive way to import data through file uploads. This feature supports a wide range of file formats, allowing you to seamlessly integrate both structured and unstructured data into your analysis workflow.
+
+## File Upload Process
+
+The file upload interface offers a straightforward way to import your data. You can either select files individually or drag and drop them into the Add Data pop-up window. This flexibility supports importing multiple files simultaneously, regardless of their format.
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/upload_file.png" />
+  <img className="pro-border-gradient" width="600" alt="File upload interface showing the Add Data pop-up" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/upload_file.png" />
 </div>
 
-The current file size limit is 25MB. While we can support larger files, this is the maximum size that OpenBB Copilot can process effectively.
+### File Size Limitations
 
-Once you upload your files, we automatically generate part of the metadata (namely the **name** and **description**) for the widget that will be created from this data. You can still update these fields if needed. Note: Enterprise customers can turn off such feature.
+To ensure optimal performance and processing capabilities, OpenBB maintains a 25MB file size limit. While the system can technically handle larger files, this limit ensures that OpenBB Copilot can process your data effectively and provide meaningful insights.
+
+### Metadata Management
+
+Upon uploading your files, OpenBB automatically generates initial metadata for the widget, including the name and description. You have the flexibility to modify these fields to better suit your needs. Note that Enterprise customers can customize this automatic metadata generation feature.
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/metadata.png" />
+  <img className="pro-border-gradient" width="600" alt="Metadata configuration interface" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/metadata.png" />
 </div>
 
-After uploading the data and deciding on the metadata, you can access the created widget through the Search feature or the Data Connector page.
+### Accessing Uploaded Data
+
+Once you've uploaded and configured your data, you can access the resulting widget through two primary methods:
+
+1. The Search feature, which provides quick access to all your widgets
+2. The Data Connector page, which offers a comprehensive view of your data sources
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/search_widget.png" />
+  <img className="pro-border-gradient" width="600" alt="Search interface showing widget results" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/search_widget.png" />
 </div>
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/data_connector_widget.png" />
+  <img className="pro-border-gradient" width="600" alt="Data Connector interface showing available widgets" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/data_connector_widget.png" />
 </div>
 
-There are two main types of files supported
+## Supported File Types
 
-## Structured Data
+OpenBB supports two main categories of data files, each with specific use cases and visualization capabilities.
 
-The most common file types for structured data are XLSX, JSON and CSV. Currently, XLSX is only supported with a single sheet. Here are some examples of what a widget that is created from structured data looks like:
+### Structured Data
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/structured_data.png" />
-  </div>
-
-## Unstructured Data
-
-There are 3 types of unstructured data that can be brought in:
-
-- Images (PNG and JPG)
-- PDF
-- Text (TXT and DOCX)
-
-Here is how these widgets look in practice:
+Structured data files, including XLSX, JSON, and CSV formats, are ideal for quantitative analysis and data processing. Currently, XLSX files are limited to single-sheet imports. The system automatically converts these files into interactive widgets that display your data in a clear, organized format.
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/unstructured_data.png" />
-  </div>
+  <img className="pro-border-gradient" width="600" alt="Example of structured data visualization" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/structured_data.png" />
+</div>
+
+### Unstructured Data
+
+OpenBB supports three types of unstructured data, each serving different analytical needs:
+
+- Images (PNG and JPG): Perfect for visual analysis and documentation
+- PDF Documents: Ideal for research papers, reports, and documentation
+- Text Files (TXT and DOCX): Suitable for notes, research, and qualitative analysis
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="600" alt="Example of unstructured data visualization" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/unstructured_data.png" />
+</div>
