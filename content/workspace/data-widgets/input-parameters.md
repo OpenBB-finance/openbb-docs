@@ -202,7 +202,11 @@ Selected days: {days_picker}
 
 ## Advanced Dropdown Parameter
 
-A widget that includes an advanced dropdown parameter with additional information for each option.
+Sometimes you may want to pass a list from an endpoint rather then specify the options in the `widgets.json` file.
+
+By using `type: "endpoint"`, you'll need to specify an `optionsEndpoint` that returns the available options.
+
+Below is an example of an advanced dropdown parameter that includes additional information for each option.
 
 <img className="pro-border-gradient" width="800" alt="Advanced Dropdown Parameter Example" src="https://openbb-cms.directus.app/assets/9ae41bfc-65ad-4578-aeeb-efca97112bfc.png" />
 
@@ -373,7 +377,9 @@ When a user selects a category in the first dropdown, the second dropdown will a
 
 ## Parameter Grouping
 
-A widget that demonstrates how to group parameters across multiple widgets, allowing them to share and synchronize parameter values. This example shows how to create multiple widgets that display different views of the same data while maintaining parameter synchronization.
+Parameter grouping allows multiple widgets to share and respond to the same parameter input. When widgets are grouped, you only need to select a value once to update all related widgets simultaneously. This is useful for dashboards where multiple widgets display different aspects of the same data source. If multiple widgets use the same `paramName` and `options` parameter configuration, they can be grouped together.
+
+Below is an example of how to group parameters across multiple widgets, allowing them to share and synchronize parameter values.
 
 <img className="pro-border-gradient" width="1000" alt="Parameter Grouping Example" src="https://openbb-cms.directus.app/assets/0cac96ae-6915-4183-b5db-a02e2be96fe0.png" />
 
