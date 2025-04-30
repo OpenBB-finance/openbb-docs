@@ -1,16 +1,25 @@
 ---
-title: Gallery
+title: Apps Gallery
 sidebar_position: 31
-description: Gallery
+description: Browse our curated collection of apps for financial analysis, market research, portfolio management and much more.
 keywords:
-- Gallery
+- Dashboard Templates
+- Financial Analysis
+- Market Research
+- Portfolio Management
+- Charting
+- News
+- Equity Research
+- Economic Indicators
+- ETF Analysis
+- Community Templates
 ---
 
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Templates | OpenBB Workspace Docs" />
+<HeadTitle title="Apps Gallery | OpenBB Workspace Docs" />
 
 import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 
@@ -39,7 +48,7 @@ Stay up-to-date with the latest global and industry news, featuring over 200 ful
 
 ## Equity
 
-Research any company’s business and financial performance, including company details, financial metrics, comparative analysis, ownership insights, event calendars, and analyst estimates.
+Research any company's business and financial performance, including company details, financial metrics, comparative analysis, ownership insights, event calendars, and analyst estimates.
 
 <img className="pro-border-gradient" width="800" alt="1" src="https://openbb-assets.s3.amazonaws.com/docs/pro/equity-template.png" />
 
@@ -69,6 +78,6 @@ Research ETFs with information on metadata, price performance, classification, a
 
 ## Comparison Analysis
 
-Quickly Compare any two companies’ performance, including valuation multiples, analyst estimates, price performance, and price targets
+Quickly Compare any two companies' performance, including valuation multiples, analyst estimates, price performance, and price targets
 
 <img className="pro-border-gradient" width="800" alt="1" src="https://openbb-assets.s3.amazonaws.com/docs/pro/comparison-template.png" />
