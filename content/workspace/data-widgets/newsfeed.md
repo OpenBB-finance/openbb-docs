@@ -25,7 +25,7 @@ To get started, create the main application file and the widget configuration fi
 - `main.py`: This file will contain your FastAPI application code.
 - `widgets.json`: This file will define the configuration for your widget.
 
-The backend will use the same FastAPI setup and structure as described in the [Custom Backend](/content/workspace/custom-backend/custom-backend.md) page.
+The backend will use the same FastAPI setup and structure as described in the [Overview](/content/workspace/data-integration#1-create-the-api-server.md) page.
 
 ## Step 2: Create the Newsfeed Endpoint
 
@@ -171,7 +171,7 @@ uvicorn main:app --host localhost --port 5050
 
 ## Step 5: Add to OpenBB Pro
 
-Navigate to [OpenBB Pro Data Connectors](https://pro.openbb.co/app/data-connectors) and add your backend by clicking on the `+ Add Data` button in the top right corner. Select `Custom Backend` and fill in the details. Your URL will be `http://localhost:5050`.
+Navigate to [OpenBB Pro Apps](https://pro.openbb.co/app) and add your backend by clicking on the `Manage Backends` button in the top right corner. Select `Add Backend` and fill in the details. Your URL will be `http://localhost:5050`.
 
 Once you have added your backend, you can find the widget in the `Test` category with the name `Test Metric`.
 

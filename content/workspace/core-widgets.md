@@ -63,7 +63,7 @@ API endpoints are the fastest way to integrate your custom data into OpenBB. Thi
 
 Simply enter your API endpoint along with any required connection details. Once configured, you need to select the metadata and then a corresponding widget will be created. It will then dynamically load and display your data within the OpenBB workspace interface.
 
-For something more custom, you should look into creating [your own backend](/workspace/custom-backend), or reach out for support.
+For something more custom, you should look into creating [your own backend](/content/workspace/data-widgets/index.md), or reach out for support.
 
 Common Issues and Solutions
 
@@ -75,7 +75,7 @@ Common Issues and Solutions
 
 **My data isn't showing up correctly in the table.**
 > If your API endpoint doesn't return a simple JSON but a nested architecture, you will be prompted with a "Data Key" parameter which you can use to grab the data of interest.
-> You may also need to use our [Custom Backend](/workspace/custom-backend) if you want to do anything else like processing the data.
+> You may also need to use our [Data Integration](/content/workspace/data-widgets/index.md) if you want to do anything else like processing the data.
 
 If your issue is not listed above, please contact support at [support@openbb.finance](mailto:support@openbb.finance) with details of your problem.
 

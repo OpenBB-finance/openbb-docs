@@ -25,7 +25,7 @@ In the `widgets.json` configuration, you can specify render functions to customi
 | `hoverCard` | Displays additional information when hovering over a cell |
 | `cellOnClick` | Triggers an action when a cell is clicked |
 | `columnColor` | Changes the color of a column based on specified rules |
-| `showCellChange` | Highlights cells when their values change via WebSocket updates. Only used with the [Live Grid Widget](/content/workspace/custom-backend/widgets/live_grid.md) |
+| `showCellChange` | Highlights cells when their values change via WebSocket updates. Only used with the [Live Grid Widget](/content/workspace/data-widgets/live-grid.md) |
 
 
 ### Render Function Parameters

@@ -30,7 +30,7 @@ This documentation covers everything you need to know about building effective f
 - [Settings](./settings.md) - Customize widget behavior and appearance
 - [Input Parameters](./input-parameters.md) - Configure widget parameters for optimal performance
 - [Input Form](./input-form.md) - Create interactive forms for data input and analysis
-- [Live Data](./live-data.md) - Work with real-time market data feeds
+- [Live Grid](./live-grid.md) - Work with real-time market data feeds
 
 ## Getting Started
 

@@ -120,7 +120,7 @@ The reason why AI agents work on OpenBB workspace is due to the metadata from ea
 Combine dashboards and AI agents to create powerful applications:
 
 - **Integrated Workflows**: AI agents can access and process all dashboard data
-- **Custom Backend Integration**: Connect your existing systems and services
+- **Data Integration**: Connect your existing systems and services
 - **Scalable Architecture**: Create and manage multiple applications within the platform
 
 <img width="800" alt="Apps" src="https://openbb-cms.directus.app/assets/5778561c-5c09-4d70-bde8-952acbccaa01.png" />

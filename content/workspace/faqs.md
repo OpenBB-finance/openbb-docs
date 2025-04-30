@@ -1,10 +1,10 @@
 ---
 title: FAQs
 sidebar_position: 4
-description: Frequently asked questions about the OpenBB Workspace Custom Backend.
+description: Frequently asked questions about the OpenBB Workspace Data Integration.
 keywords:
 - FAQs
-- Custom Backend
+- Data Integration
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
@@ -15,7 +15,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 **Q: What is the purpose of a custom backend in OpenBB Workspace?**
 
-A: A custom backend allows you to integrate your own data sources into OpenBB Workspace, enabling the creation of personalized widgets, dashboards, and templates that display your data in various ways. For more details, see the [Custom Backend Overview](/content/workspace/custom-backend/custom-backend.md) section.
+A: A custom backend allows you to integrate your own data sources into OpenBB Workspace, enabling the creation of personalized widgets, dashboards, and templates that display your data in various ways. For more details, see the [Overview](/content/workspace/data-integration#1-create-the-api-server.md) section.
 
 **Q: What technologies are required to set up a custom backend?**
 
@@ -25,7 +25,7 @@ A: You will need to use an API framework and a `widgets.json` file to define wid
 
 **Q: How do I start setting up a custom backend?**
 
-A: Follow the structure outlined in the [Introduction to Custom Backend](/content/workspace/custom-backend/custom-backend.md#introduction-to-custom-backend) section.
+A: Follow the structure outlined in the [Overview](/content/workspace/data-integration#getting-started-hello-world-example) section.
 
 **Q: What is the `widgets.json` file, and why is it important?**
 
