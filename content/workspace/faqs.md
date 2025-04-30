@@ -1,5 +1,5 @@
 ---
-title: OpenBB Workspace FAQs - Data Integration & Custom Backend
+title: FAQs
 sidebar_position: 4
 description: Comprehensive guide to frequently asked questions about OpenBB Workspace data integration, custom backend setup, widget configuration, and troubleshooting common issues.
 keywords:
