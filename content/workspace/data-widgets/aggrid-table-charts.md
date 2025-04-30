@@ -73,3 +73,47 @@ to change what series are shown on the chart in the "Set Up" tab and the chart t
 <div style={{display: 'flex', justifyContent: 'center'}}>
 <img className="pro-border-gradient" width="800" alt="example" src="https://openbb-assets.s3.amazonaws.com/docs/pro/customization.png" />
 </div>
+
+
+
+:::note
+Guidelines for JSON Format in Tables:
+
+- The JSON data for tables should be in a flat structure, meaning that there should be no nested dictionaries or arrays within the individual objects unless you specify the dataKey in your `widgets.json` file.
+- Each object should contain key-value pairs where the values are simple data types (e.g., strings, numbers, booleans).
+- Avoid nesting other objects or arrays inside any of the values.
+
+The JSON should resemble the following structure:
+
+<details>
+<summary mdxType="summary">Example JSON</summary>
+
+```json
+[
+      {
+        "ticker": "AAPL",
+        "name": "Apple Inc.",
+        "price": 150.5,
+        "marketCap": 2500000000,
+        "change": 1.25
+      },
+      {
+        "ticker": "GOOGL",
+        "name": "Alphabet Inc.",
+        "price": 2800.75,
+        "marketCap": 1900000000,
+        "change": -0.75
+      },
+      {
+        "ticker": "MSFT",
+        "name": "Microsoft Corporation",
+        "price": 300.25,
+        "marketCap": 220000000,
+        "change": 0.98
+      }
+]
+```
+
+</details>
+
+:::

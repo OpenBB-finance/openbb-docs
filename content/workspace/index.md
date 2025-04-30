@@ -70,7 +70,7 @@ Deploy with confidence using our on-premises or private cloud options:
 Widgets are the fundamental data units in OpenBB Workspace. Each widget represents a self-contained data component with:
 
 - **Data Source**: Integration with internal or external data sources
-- **Metadata**: Title, description, category, and source information
+- **Metadata**: Title, description, category, sub-category and source information
 - **Visual Layer**: Presentation through PDF, table, chart, or feed formats
 - **Parameters**: Configurable options for data display and interaction
 
@@ -107,9 +107,13 @@ Export your interactive dashboards as static reports in PDF or PNG format. Inclu
 
 ### AI Agents: Intelligent Automation
 
-Create AI agents to automate tasks and enhance your dashboards with intelligent capabilities.
+Create AI agents to automate tasks and enhance your dashboards with this intelligence layer.
 
 <img width="800" alt="Apps" src="https://openbb-cms.directus.app/assets/ac287dfe-e279-42bb-8f84-a616ff9df8a8.png" />
+
+The reason why AI agents work on OpenBB workspace is due to the metadata from each widget which allows AI to understand which widget has access to the right dataset and query it accordingly (along with the right parameters!).
+
+<img width="800" alt="Apps" src="https://openbb-cms.directus.app/assets/2b463b3b-e1cf-4079-8c11-b49cdcda60ac" />
 
 ### Apps: End-to-End Workflows
 
