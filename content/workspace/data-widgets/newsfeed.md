@@ -1,6 +1,6 @@
 ---
 title: Newsfeed
-sidebar_position: 7
+sidebar_position: 20
 description: Learn how to create a newsfeed widget for OpenBB Workspace that displays articles in a clean, organized format.
 keywords:
 - widgets.json
@@ -12,7 +12,9 @@ keywords:
 - Custom Backend
 ---
 
-# Newsfeed Widget
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Newsfeed | OpenBB Workspace Docs" />
 
 This guide will walk you through creating a newsfeed widget for OpenBB Workspace. We'll use CoinDesk's API as an example, but you can adapt this to any news source.
 

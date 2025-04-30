@@ -1,21 +1,20 @@
 ---
-title: Live Grid
-sidebar_position: 4
-description: Learn how to integrate your own backend with OpenBB Workspace using the cookie-cutter or language-agnostic API approaches, with illustrative guides and principles for handling widget.json files, APIs, interfaces, Python, FastAPI, and more.
+title: Live Grid Widget
+sidebar_position: 19
+description: Create a real-time data grid widget for OpenBB Workspace that displays live updates in a table format
 keywords:
-- widgets.json
-- OpenBB API
-- Endpoint integration
-- widget configuration
-- Language-Agnostic API
-- API implementation
-- Python
-- FastAPI
-- Workspace widgets
-- Widget definitions
+- live grid
+- real-time data
+- websocket
+- streaming data
+- data table
+- live updates
 ---
 
-# Live Grid Widget
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Live Grid | OpenBB Workspace Docs" />
+
 
 This guide will walk you through the process of creating a live grid widget for OpenBB Workspace. By the end of this guide, you will have a working live grid widget that can display real-time data updates for a table. The live grid widget can be configured to only update certain cells when their values change or all of the cells.
 

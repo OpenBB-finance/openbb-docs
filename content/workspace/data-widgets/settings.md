@@ -18,6 +18,35 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Settings | OpenBB Workspace Docs" />
 
+## Markdown and grid-size
+
+Widgets use a grid-based layout system where you can specify their width and height in the `gridData` object. Here's a simple example:
+
+```python
+@register_widget({
+    "name": "Markdown Widget",
+    "description": "A markdown widget",
+    "type": "markdown",
+    "endpoint": "markdown_widget",
+    "gridData": {"w": 12, "h": 4},
+})
+@app.get("/markdown_widget")
+def markdown_widget():
+    """Returns a markdown widget"""
+    return "# Markdown Widget"
+```
+
+The grid system works as follows:
+
+**Width (w)**: Horizontal span (10-40 units)
+  - 12 units is a good default for most widgets
+  - Use 40 units for full-width widgets
+
+**Height (h)**: Vertical span (4-100 units)
+  - 4-8 units for simple widgets
+  - 8-20 units for standard widgets
+  - Larger values for detailed charts or tables
+
 ## Simple Markdown Widget with Category and Subcategory
 
 The category and subcategory specify the category and subcategory of the widget in the OpenBB Workspace. This is important to organize the widgets in the OpenBB Workspace, but also for AI agents to find the best widgets to utilize for a given task.
@@ -65,7 +94,9 @@ def markdown_widget_with_error_handling():
 
 ## Markdown Widget with Run Button
 
-The run button is a button that will execute the code in the widget. This is useful for widgets that are not static and require some computation that may take a while to complete - e.g. running a model, fetching data, etc.
+The run button allows you to run a widget by clicking it rather than having it run automatically when you change a parameter. It is located in the top right corner of the widget and replaces the refresh button. A Ctrl-click on the run button performs a hard refresh, while a regular click runs the new parameters.
+
+Setting the refreshInterval will allow you to still refresh the widget automatically, but it is off by default when using the run button.
 
 <img className="pro-border-gradient" width="800" alt="Markdown Widget with Run Button Example" src="https://openbb-cms.directus.app/assets/48d7d762-a39f-46f3-b205-2b1ffe13c3ef.png" />
 
@@ -88,6 +119,11 @@ def markdown_widget_with_run_button():
 ## Markdown Widget with Short Refetch Interval
 
 The refetch interval is the interval at which the widget will be refreshed. Use lower values for real-time data (e.g., 60000 for 1-minute updates). Higher values are recommended for static or slowly changing data.
+
+- Default: 900000 (15 minutes) (minimum 1000)
+- Set to `false` to disable automatic refreshing
+- Use lower values for real-time data (e.g., 60000 for 1-minute updates)
+- Higher values recommended for static or slowly changing data
 
 <img className="pro-border-gradient" width="800" alt="Markdown Widget with Short Refetch Interval Example" src="https://openbb-cms.directus.app/assets/4b016db5-5265-4e3b-84f9-506aa4fd9c42.png" />
 
@@ -164,6 +200,11 @@ def markdown_widget_with_better_structured_api():
 ## Markdown Widget with Stale Time
 
 The stale time is the time after which the data will be considered stale. You will see a refresh button in the widget becoming orange to indicate that the data is stale.
+
+- Default: 300000 (5 minutes)
+- Data older than this value will trigger a refresh when the widget is viewed again
+- Should typically be less than or equal to `refetchInterval`
+- Set higher for data that updates infrequently
 
 <img className="pro-border-gradient" width="800" alt="Markdown Widget with Stale Time Example" src="https://openbb-cms.directus.app/assets/d601fda5-0ea3-40cc-8290-d0789ccb0e33.png" />
 
