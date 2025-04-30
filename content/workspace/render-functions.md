@@ -1,75 +1,51 @@
 ---
 title: Render Functions
-sidebar_position: 6
-description: Learn how to configure and use custom render functions in OpenBB Workspace.
+sidebar_position: 21
+description: Learn how to configure and use custom render functions in OpenBB Workspace to customize data display and interactions.
 keywords:
 - custom render functions
 - OpenBB API
 - widget configuration
+- data visualization
+- interactive widgets
 ---
 
-## Render Functions
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Render Functions | OpenBB Workspace Docs" />
 
 In the `widgets.json` configuration, you can specify render functions to customize how the data is displayed in the widget - These functions are only compatible with widgets that use a `columnsDefs`.
 
 ### Available Render Functions
 
-- **`greenRed`**: Applies a green or red color based on conditions.
-- **`titleCase`**: Converts text to title case.
-- **`hoverCard`**: Displays additional information when hovering over a cell.
-- **`cellOnClick`**: Triggers an action when a cell is clicked.
-- **`columnColor`**: Changes the color of a column based on specified rules.
-- **`showCellChange`**: Highlights cells when their values change via WebSocket updates. Only used with the [Live Grid Widget](/content/workspace/custom-backend/widgets/live_grid.md)
+| Function | Description |
+|----------|-------------|
+| `greenRed` | Applies a green or red color based on conditions |
+| `titleCase` | Converts text to title case |
+| `hoverCard` | Displays additional information when hovering over a cell |
+| `cellOnClick` | Triggers an action when a cell is clicked |
+| `columnColor` | Changes the color of a column based on specified rules |
+| `showCellChange` | Highlights cells when their values change via WebSocket updates. Only used with the [Live Grid Widget](/content/workspace/custom-backend/widgets/live_grid.md) |
 
-<details>
-<summary mdxType="summary">Render Function Parameters</summary>
 
-**actionType**
-_Type:_ `string`
-Specifies the action type for the render function.
-_Possible values:_ `"groupBy"`
-_Used with:_ `cellOnClick` render function
+### Render Function Parameters
 
-**colorValueKey**
-_Type:_ `string`
-Specifies which field to use for determining the color when showing cell changes.
-_Used with:_ `showCellChange` render function
-_Example:_ `"change"`
+| Parameter | Type | Description | Used With | Example/Options |
+|-----------|------|-------------|-----------|-----------------|
+| **actionType** | `string` | Specifies the action type for the render function | `cellOnClick` | `"groupBy"` |
+| **colorValueKey** | `string` | Specifies which field to use for determining the color when showing cell changes | `showCellChange` | `"change"` |
+| **hoverCardData** | `array of strings` | Specifies columns to show in the hover card | `hoverCard` | - |
+| **colorRules** | `array of objects` | An array of rules for conditional coloring | `columnColor` | See below |
 
-**hoverCardData**
-_Type:_ `array of strings`
-Specifies columns to show in the hover card.
-_Used with:_ `hoverCard` render function
+### Color Rules Parameters
 
-**colorRules**
-_Type:_ `array of objects`
-An array of rules for conditional coloring.
-_Used with:_ `columnColor` render function
-
-Each rule can include:
-
-- **condition**
-  _Type:_ `string`
-  The condition for applying the color.
-  _Options:_ `"eq"`, `"ne"`, `"gt"`, `"lt"`, `"gte"`, `"lte"`, `"between"`
-
-- **value**
-  _Type:_ `number`
-  The value for the condition.
-
-- **range**
-  _Type:_ `object`
-  An object specifying `min` and `max` values for the condition.
-
-- **color**
-  _Type:_ `string`
-  The color to apply, specified as a hex code or `"green"`, `"red"`, `"blue"`.
-
-- **fill**
-  _Type:_ `boolean`
-  Indicates if the color should fill the cell.
-
-</details>
+| Parameter | Type | Description | Options |
+|-----------|------|-------------|---------|
+| **condition** | `string` | The condition for applying the color | `"eq"`, `"ne"`, `"gt"`, `"lt"`, `"gte"`, `"lte"`, `"between"` |
+| **value** | `number` | The value for the condition | - |
+| **range** | `object` | An object specifying `min` and `max` values for the condition | `{min: number, max: number}` |
+| **color** | `string` | The color to apply | Hex code or `"green"`, `"red"`, `"blue"` |
+| **fill** | `boolean` | Indicates if the color should fill the cell | `true`/`false` |
 
 ## Example Configurations
 

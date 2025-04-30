@@ -1,6 +1,6 @@
 ---
 title: Bring your own AI Agent
-sidebar_position: 21
+sidebar_position: 26
 description: Learn how to use your own Copilot with OpenBB Workspace
 keywords:
 - OpenBB Copilot
