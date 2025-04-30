@@ -1,258 +1,257 @@
 ---
 title: Enterprise
 sidebar_position: 2
-description: test
+description: Comprehensive guide to OpenBB Workspace Enterprise features, including role-based access control, security compliance, team collaboration, and on-premises deployment capabilities.
 keywords:
 - OpenBB Workspace Enterprise
-- Role Management
+- Role-Based Access Control
+- Enterprise Security
+- Compliance Requirements
+- Team Collaboration
+- On-Premises Deployment
+- Private Cloud
+- Data Protection
+- Enterprise Support
+- RBAC
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Enterprise | OpenBB Workspace Docs" />
 
-Our product offers two different plans:
-    - **OpenBB Workspace** - Free version for individuals
-    - **OpenBB Enterprise** - Our offering for teams and professionals
+# OpenBB Workspace Enterprise
 
-The products, features and services that come with an enterprise are highlighted below.
+OpenBB Workspace Enterprise provides a secure, compliant solution for organizations that require the highest level of data protection and control. Deploy our platform entirely within your infrastructure—either on-premises or in your private cloud (VPC)—to maintain complete control over your sensitive financial data and AI workflows.
 
-## Excel Add-In
+<img src="https://openbb-cms.directus.app/assets/2ad71c09-ae83-422f-975d-d4cdaefd2c74.png" alt="OpenBB Workspace Enterprise Architecture" width="100%" />
 
-The enterprise plan, enables users to have access to the financial data directly from Excel, or export any dataset into an Excel format.
+## Key Benefits
 
-For more information, check [OpenBB Add-in for Excel](http://docs.openbb.co/excel).
+- **Complete Data Control**: Deploy within your infrastructure—on-premises or private cloud (VPC)
+- **Enhanced Security**: Keep all data, models, and prompts within your secure environment
+- **Compliance Ready**: Meet strict regulatory requirements with built-in compliance features
+- **Seamless Integration**: Connect with your internal systems, data sources, and authentication providers
+- **Granular Access Control**: Implement enterprise-grade role-based access control
+- **Enterprise Support**: Access dedicated support and service-level agreements (SLAs)
+
+## Team Collaboration
+
+OpenBB Workspace Enterprise enables secure team collaboration while maintaining strict access controls. When you sign up, we create a dedicated organization account for your team, allowing you to:
+
+- Keep dashboards private and accessible only to authorized team members
+- Share findings and insights with specific colleagues
+- Collaborate on alpha generation while maintaining data security
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/excel_addin.png" />
+  <img className="pro-border-gradient" width="600" alt="Dashboard Sharing Interface" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/sharing_dashboard.png" />
 </div>
 
-## Export Data
+## Role-Based Access Control (RBAC)
 
-Users are able to export any data from OpenBB, either in CSV, JSON, XLSX or other format. This is achieved by having redistribution rights on the data.
+Our enterprise-grade RBAC system provides granular control over user permissions. Instead of managing individual permissions, you can create roles that define specific access levels for different user groups.
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/export_data.png" />
-  </div>
+### Creating and Managing Roles
 
-## Reporting
+To set up role-based access:
 
-Easily export your dashboards to PDF with a single click.
-
-<div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/export_report.png" />
-</div>
-
-This is how the Report will look.
+1. Create a new role with a descriptive name
+2. Provide a clear description of the role's purpose
+3. Assign users to the role
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-<img className="pro-border-gradient" width="488" alt="dash settings" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/dashboard_export.png
-" />
-</div>
-
-## Database Integrations
-
-There are two ways to connect to your databases or data warehouses.
-
-1. The first is through custom backends, which we have open source [here](https://github.com/OpenBB-finance/backend-examples-for-openbb-workspace/tree/main). This allows users to connect to platforms like Snowflake, Databricks, Elastic, Clickhouse, and others.
-
-2. The second is a native database/datawarehouse integration that enables firms to connect securely with their data, in seconds instead of hours. Supported connections currently include Snowflake, SQLite, and MySQL, with more options coming soon.
-
-<div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/native_integration.png" />
-</div>
-
-## Dashboard Sharing
-
-Keep your dashboards private and securely accessible only to your organization. Upon signing up, we’ll create an organization account for you and your team. You can grant specific team members access to dashboards.
-
-<div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/sharing_dashboard.png" />
-</div>
-
-## Team Management
-
-Gain access to a user management portal where you can manage access to your firm’s workspace. You can invite or remove members, export the entire user list, and view their last login times.
-
-<div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/team_management.png" />
-</div>
-
-## AI Copilot resources
-
-Users on the free tier will have access to 20 messages per day with the OpenBB Copilot, at which point they will need to insert their LLMs API keys. Enterprise users will benefit from far more generous limits, so they aren't limited.
-
-## File storage resources
-
-Enterprise customers will benefit from up to 10 GB of file (structured/unstructured data) storage, as opposed to 1 GB available with the free tier.
-
-## Role Management
-
-This section covers how to create roles, assign users to roles, and set permissions.
-
-We use a Role-Based Access Control (RBAC) model, where users are assigned predefined roles that grant them a set of permissions, rather than assigning permissions individually.
-
-To grant user access, you must first create a role.
-
-### Roles
-
-Creating a new role is straightforward:
-
-
-<div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/create-role-empty.png" />
+  <img className="pro-border-gradient" width="600" alt="Role Creation Interface" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/create-role-empty.png" />
 </div>
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/create-role-popup.png" />
+  <img className="pro-border-gradient" width="600" alt="Role Creation Form" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/create-role-popup.png" />
 </div>
 
-1. Enter the role name
-2. Provide a description
-3. Select users to assign to the role
+> **Note**: You can only assign users who have already been added to the Workspace. See the User Management section for adding new users.
 
-You can only assign users who have already been added to the Workspace. Refer to the User Management section for instructions on adding users.
-
-Once you create a role, you can view all users assigned to that particular role in the `Roles` tab, together with metadata such as Creation Date, and Description.
+After creating a role, you can view all assigned users and role metadata in the Roles tab:
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/create-role-user-list.png" />
+  <img className="pro-border-gradient" width="600" alt="Role User List" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/create-role-user-list.png" />
 </div>
 
-### Permissions
+### Permission Management
 
-Once the role was added, to grant permissions to them, navigate to the Permissions tab inside the Role Management page. You can find the list of roles that have been added, together with the options to Edit their permissions. Permissions are organized into three different categories: Data connectors, Templates and Prompts. 
+Permissions are organized into three key categories:
+
+1. **Data Connectors**: Control access to data sources and files
+2. **Templates**: Manage dashboard template access
+3. **Prompts**: Control access to AI prompts and custom backends
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/permissions-list-view.png" />
+  <img className="pro-border-gradient" width="600" alt="Permissions Overview" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/permissions-list-view.png" />
 </div>
 
-Permissions are organized into three different groups:
-1. Data connectors
-2. Templates
-3. Prompt
+#### Data Connector Permissions
+
+To set up data connector permissions:
+
+1. Configure your custom backend and upload files in the Data Connectors tab
+2. Click the information toast message to access the Permissions section
+3. Update data connection permissions from "No Access" to "Access"
+4. Grant access to specific widgets associated with the backend
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/permissions-edit-overview.png" />
+  <img className="pro-border-gradient" width="600" alt="Backend Setup Notification" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/backend-setup-toast-message.png" />
 </div>
 
-
-#### 1. Data Connectors
-To begin, set up your custom backend and upload files in the Data Connectors tab within the Workspace. [Refer to the guide here.]
-
-Once this is set up from the Workspace, you will be able to set up permissions. By clicking on the information toast message, you will be brought direct to the Permissions section.
-
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/backend-setup-toast-message.png" />
+  <img className="pro-border-gradient" width="600" alt="Permission Edit Interface" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/permission-edit.png" />
 </div>
 
-In the Data Connectors tab, you can grant permissions for Custom Backends and Files. For Custom Backend, you first need to update the underlying data connection permissions from `No Access` to `Access`. Only then can you grant access to specific widgets associated with that backend.
+**Efficient Permission Assignment:**
+- Search by category or data provider
+- Use multi-select for bulk permission assignment
+- Widgets with "No Access" remain hidden from users with that role
+
+#### Template Permissions
+
+Templates define dashboard layouts and widget arrangements. Users need access to all underlying widgets to view a complete template. The system automatically detects and notifies you of any missing widget permissions.
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/permission-edit.png" />
+  <img className="pro-border-gradient" width="600" alt="Template Sharing Notification" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/share-template-toast.png" />
 </div>
 
-Use the search function to efficiently assign permissions to multiple widgets:
+#### Prompt Permissions
 
-1. Search by category or data provider (if metadata is provided via the Custom Backend).
-2. Use multi-select and bulk assign permissions.
+Manage access to prompts through:
 
-Widgets assigned `No Access` will not be visible or searchable for users with that assigned role in their Workspace.
-
-<!-- @TODO Add view where users don't have access to certain widgets -->
-
-#### 2. Templates
-
-A Template defines the layout, consisting of a combination of widgets and their arrangement within the dashboard. To ensure users can view the complete template, they must have access to all underlying widgets.
-
-If any widgets lack the necessary permissions, we will detect them and notify you accordingly.
+1. Custom backend configuration
+2. Manual setup within the Workspace
+3. Role Management in the Admin Portal
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/share-template-toast.png" />
+  <img className="pro-border-gradient" width="600" alt="Prompt Setup Interface" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/set-prompts.png" />
 </div>
 
-#### 3. Prompts
-
-In the Prompt section, you can grant access to prompts, whether they are set up via the custom backend or manually within the Workspace.
-
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/set-prompts.png" />
+  <img className="pro-border-gradient" width="600" alt="Prompt Sharing Controls" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/prompt-sharing.png" />
 </div>
 
-Then, in the Admin Portal, go to Role Management and select Edit Permissions under Prompts tab to control which prompts are accessible to each role.
+### Activity Logging
+
+The Activity Log provides comprehensive tracking of all role and permission changes:
+
+- Role creation, modification, and deletion
+- User role assignments and removals
+- Permission updates
+
+Each log entry includes:
+- Timestamp
+- User who performed the action
+- Action type
+- Detailed change information
+
+The log supports filtering and searching by activity type for quick access to relevant entries.
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/prompt-sharing.png" />
-</div>
-
-To ensure all permissions are correctly granted, you can review the final set of permissions for each user in their profile, under the [User Management](/terminal/user-management) tab.
-<div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/permission-preview.png" />
-</div>
-
-### Activity Log
-
-As an Admin, you can view a detailed activity log that tracks all changes related to roles, groups, and permissions.
-
-The log captures activities such as:
-- Creation, modification (name/description), and deletion of roles
-- User assignments to roles (add/remove)
-- Updates to permissions
-
-Each log entry includes the timestamp of the action, the name of the user who performed it, the type of action (e.g., "Created Group" or "Modified Permission"), and specific details about the change. To enhance usability, the log supports filtering and searching by activity type, making it easy to find relevant entries quickly.
-
-<div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/activity-log.png" />
+  <img className="pro-border-gradient" width="600" alt="Activity Log Interface" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/activity-log.png" />
 </div>
 
 ## User Management
 
-In the User Management tab, you can manage access to your firm’s workspace. You can:
+The User Management interface provides comprehensive control over workspace access:
 
-- Invite or remove members
-- Export the user list
-- View user details, including their permissions, user type and last login time
-  
+- Invite or remove team members
+- Export user lists
+- View detailed user profiles including permissions, user type, and login history
+
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/team_management.png" />
+  <img className="pro-border-gradient" width="600" alt="Team Management Interface" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/team_management.png" />
 </div>
 
-### Inviting users
+### User Invitation Process
 
-To invite users, provide the following details:
-
+Invite users by providing:
 - First name
 - Last name
 - Email address
 
-You can choose to Bypass Invitation, which automatically grants users access to the organization without requiring them to accept an invitation.
+**Invitation Options:**
+- Standard invitation requiring user acceptance
+- Bypass invitation for immediate access
 
-There are two ways to invite users:
-1. Single User Invitation – Add one user at a time.
-2. Bulk Invitation – Recommended for adding multiple users simultaneously.
+**Invitation Methods:**
+1. Single User Invitation
+2. Bulk Invitation (recommended for multiple users)
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/user-invitation-single.png" />
+  <img className="pro-border-gradient" width="600" alt="Single User Invitation" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/user-invitation-single.png" />
 </div>
 
-For bulk invitations, download the provided template, remove the sample data, and add your own. Ensure all mandatory fields are completed before uploading the file.
+For bulk invitations:
+1. Download the template
+2. Remove sample data
+3. Add your user information
+4. Upload the completed file
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/user-invitation-bulk.png" />
+  <img className="pro-border-gradient" width="600" alt="Bulk User Invitation" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/user-invitation-bulk.png" />
 </div>
 
-### User Profile
+### User Profile Management
 
-When clicking on a user, you can perform advanced actions such as deleting the user or changing their user type between Normal User and Admin. Additionally, you'll see a detailed summary of their final permissions. This is especially useful when a user is assigned to multiple roles with overlapping or conflicting permissions. The aggregated view allows you to review the complete list of widgets, prompts, and templates the user has access to, and make any necessary adjustments.
+The user profile interface enables:
+
+- User deletion
+- User type changes (Normal User/Admin)
+- Permission review and adjustment
+- Aggregated view of all permissions across roles
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/permission-preview.png" />
+  <img className="pro-border-gradient" width="600" alt="User Profile Interface" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/permission-preview.png" />
 </div>
 
-### Exporting users
+### User Export
 
-You can export the entire user list, together with their details in CSV or XLS format. 
+Export complete user lists with details in CSV or XLS format:
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/user-export.png" />
+  <img className="pro-border-gradient" width="600" alt="User Export Interface" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/user-export.png" />
+</div>
+
+## Others
+
+### Data Export Capabilities
+
+Enterprise users can export data in multiple formats:
+- CSV
+- JSON
+- XLSX
+- Other supported formats
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="600" alt="Data Export Interface" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/export_data.png" />
+</div>
+
+### Dashboard Reporting
+
+Export dashboards to PDF with a single click:
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="600" alt="Report Export Interface" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/export_report.png" />
+</div>
+
+Example exported report:
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="488" alt="Exported Dashboard Report" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/dashboard_export.png" />
+</div>
+
+## Excel Integration
+
+Enterprise users can:
+
+- Access OpenBB sandbox data directly from Excel
+- Export datasets to Excel format
+- Use the OpenBB Add-in for Excel
+
+For detailed information, see [OpenBB Add-in for Excel](http://docs.openbb.co/excel).
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="600" alt="Excel Add-in Interface" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/excel_addin.png" />
 </div>

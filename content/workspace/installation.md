@@ -14,69 +14,84 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="PWA Installation | OpenBB Workspace Docs" />
 
-# Installing OpenBB on your devices
+# Installing OpenBB as a Progressive Web App
 
-OpenBB is now available as a Progressive Web App (PWA) for desktop, iOS, and Android devices. This guide will walk you through the installation process for each platform.
+OpenBB Workspace is now available as a Progressive Web App (PWA), providing a seamless, native-like experience across all your devices. This installation method offers several advantages:
+
+- **Offline Access**: Continue working even without an internet connection
+- **Native Performance**: Faster loading times and smoother interactions
+- **Cross-Platform**: Consistent experience across desktop and mobile devices
+- **Automatic Updates**: Always have the latest features without manual updates
 
 ## Desktop Installation
 
-You can install OpenBB as a PWA on your desktop computer using Chrome, Edge, or other Chromium-based browsers.
+The desktop PWA provides the most complete OpenBB experience, with full keyboard support and optimized screen real estate.
 
-1. Open your browser and navigate to [https://pro.openbb.co](https://pro.openbb.co).
-2. Look for the install icon in the address bar (usually a plus sign or computer icon).
-3. Click the install icon and follow the prompts to add OpenBB to your desktop.
+### Installation Steps
 
-Here's a quick video demonstration:
+1. Launch Chrome, Edge, or any Chromium-based browser
+2. Navigate to [https://pro.openbb.co](https://pro.openbb.co)
+3. Click the install icon in the address bar (typically a plus sign or computer icon)
+4. Follow the installation prompts to add OpenBB to your desktop
 
 <video width="100%" controls>
   <source src="https://openbb-cms.directus.app/assets/36685e54-d8c1-47ba-acd6-1692fabd768e" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
-## iOS Installation
+## Mobile Installation
 
-1. Open Safari on your iOS device and navigate to [https://pro.openbb.co](https://pro.openbb.co).
-2. Tap the share button at the bottom of the screen (the square with an arrow pointing upward).
-3. Scroll down and tap "Add to Home Screen".
-4. Name the app "OpenBB" and tap "Add".
-5. OpenBB Workspace icon will now appear on your home screen.
+### iOS Devices
 
-Here's a video showing the process:
+1. Open Safari and navigate to [https://pro.openbb.co](https://pro.openbb.co)
+2. Tap the share button (square with upward arrow) at the bottom of the screen
+3. Select "Add to Home Screen" from the share menu
+4. Name the app "OpenBB" and tap "Add"
+5. The OpenBB icon will appear on your home screen
 
 <video controls>
   <source src="https://openbb-cms.directus.app/assets/9bd37920-5776-4004-b6de-8650cd1f8c2a" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
-## Android Installation
+### Android Devices
 
-1. Open Chrome on your Android device and go to [https://pro.openbb.co](https://pro.openbb.co).
-2. Tap the three-dot menu in the top right corner.
-3. Select "Add to Home screen" from the dropdown menu.
-4. Name the app "OpenBB" and tap "Add".
-5. OpenBB Workspace icon will now be available on your home screen.
-
-Here's a video showing the process:
+1. Open Chrome and navigate to [https://pro.openbb.co](https://pro.openbb.co)
+2. Tap the three-dot menu in the top-right corner
+3. Select "Add to Home screen" from the menu
+4. Name the app "OpenBB" and tap "Add"
+5. The OpenBB icon will appear on your home screen
 
 <video controls>
   <source src="https://openbb-cms.directus.app/assets/5699793b-cef4-4fbb-8f2c-1deeca26ea41" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
-## Using OpenBB as a PWA
+## Using OpenBB PWA
 
-Once installed, you can use OpenBB Workspace on your device just like you would on a desktop browser. The PWA version includes all the features of the web version, optimized for various screen sizes and touch interfaces where applicable.
+The PWA version of OpenBB Workspace provides a consistent experience across all your devices while maintaining full functionality. Key features include:
 
-Key features available in the PWA include:
+- **Responsive Design**: Optimized layouts for desktop, tablet, and mobile screens
+- **Touch Support**: Intuitive touch controls for mobile devices
+- **Offline Capabilities**: Access key features without an internet connection
+- **Cross-Device Sync**: Seamlessly continue your work across different devices
 
-- Native-like experience on mobile and desktop devices
-- Access to all OpenBB Workspace features
-- Responsive design for various screen sizes
-- Touch-friendly interface on mobile devices
-- Shortcut to easily access OpenBB Workspace
+### Best Practices
 
-For the best experience, we recommend using the latest version of your browser (Chrome is recommended as well).
+- Use Chrome or Edge for the best desktop experience
+- Keep your browser updated to the latest version
+- Ensure you have sufficient storage space on your device
+- Connect to a stable internet connection for initial setup
 
-## Want More Details?
+### Troubleshooting
 
-For a more in-depth look at the OpenBB PWA, including its benefits and the story behind it, check out our detailed blog post: [OpenBB Workspace is Now Available on Mobile](https://openbb.co/blog/openbb-terminal-is-now-available-on-mobile)
+If you encounter any issues during installation:
+
+1. Clear your browser cache and try again
+2. Ensure you're using a supported browser version
+3. Check your device's storage space
+4. Verify your internet connection
+
+## Learn More
+
+For a deeper dive into the OpenBB PWA, including its development journey and technical implementation, read our detailed blog post: [OpenBB Workspace is Now Available on Mobile](https://openbb.co/blog/openbb-terminal-is-now-available-on-mobile)
