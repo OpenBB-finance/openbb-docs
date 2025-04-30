@@ -1,119 +1,517 @@
 ---
 title: AgGrid Table Charts
 sidebar_position: 13
-description:  AgGrid Table Charts
+description: AgGrid Table Charts
 keywords:
 - asd
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title=" AgGrid Table Charts | OpenBB Workspace Docs" />
+<HeadTitle title="AgGrid Table Charts | OpenBB Workspace Docs" />
 
+## Table Widget with Column Definitions
 
-### Manipulating data
+A widget that displays data in a tabular format with customizable column definitions. The most important part of this widget is the "columnsDefs" key in the data object which allows for detailed column configuration.
 
-- **Column Resizing**: You have the flexibility to manually adjust the width of the table columns. Alternatively, you can use the "Autosize all columns" feature for automatic resizing.
+<img className="pro-border-gradient" width="800" alt="Table Widget with Column Definitions Example" src="https://openbb-cms.directus.app/assets/efea3aa4-fd2a-4098-bd64-1a7c825b6c96.png" />
 
-- **Column Reorganization**: Reorganize your columns effortlessly with our drag-and-drop feature. Simply click and hold the mouse on the column header and drag it to your desired position.
+```python
+@register_widget({
+    "name": "Table Widget with Column Definitions",
+    "description": "A table widget with column definitions",
+    "type": "table",
+    "endpoint": "table_widget_with_column_definitions",
+    "gridData": {"w": 20, "h": 6},
+    "data": {
+        "table": {
+            "columnsDefs": [
+                {
+                    "field": "name",
+                    "headerName": "Asset",
+                    "cellDataType": "text",
+                    "formatterFn": "none",
+                    "renderFn": "titleCase",
+                    "width": 120,
+                    "pinned": "left"
+                },
+                {
+                    "field": "tvl",
+                    "headerName": "TVL (USD)",
+                    "headerTooltip": "Total Value Locked",
+                    "cellDataType": "number",
+                    "formatterFn": "int",
+                    "width": 150
+                },
+                {
+                    "field": "change_1d",
+                    "headerName": "24h Change",
+                    "cellDataType": "number",
+                    "formatterFn": "percent",
+                    "width": 120,
+                    "maxWidth": 150,
+                    "minWidth": 70,
+                },
+                {
+                    "field": "change_7d",
+                    "headerName": "7d Change",
+                    "cellDataType": "number",
+                    "formatterFn": "percent",
+                    "width": 120,
+                    "maxWidth": 150,
+                    "minWidth": 70,
+                    "hide": True
+                },
+            ]
+        }
+    },
+})
+@app.get("/table_widget_with_column_definitions")
+def table_widget_with_column_definitions():
+    """Returns a mock table data for demonstration"""
+    mock_data = [
+        {
+            "name": "Ethereum",
+            "tvl": 45000000000,
+            "change_1d": 2.5,
+            "change_7d": 5.2
+        },
+        {
+            "name": "Bitcoin",
+            "tvl": 35000000000,
+            "change_1d": 1.2,
+            "change_7d": 4.8
+        },
+        {
+            "name": "Solana",
+            "tvl": 8000000000,
+            "change_1d": -0.5,
+            "change_7d": 2.1
+        }
+    ]
+    return mock_data
+```
 
-- **Column Filtering**: To reduce visual clutter, you can temporarily hide any columns that aren't currently relevant to your analysis. This can be done easily in the column settings.
+## Table Widget with Render Functions
 
-- **Sorting**: By clicking on a column header, you can sort the data in ascending or descending order based on that column's values.
+A widget that demonstrates various rendering functions for table cells. The key feature is the "renderFn" key in the columnsDefs object which allows for custom cell rendering.
 
-### Dynamic Chart
+<img className="pro-border-gradient" width="800" alt="Table Widget with Render Functions Example" src="https://openbb-cms.directus.app/assets/ba983638-e6bb-4a3f-9c80-b360f3577b11.png" />
 
-By utilizing the button on the top right corner, users are able to have access to the data in a chart form. And that chart is updated based on the data being updated.
+```python
+@register_widget({
+    "name": "Table Widget with Render Functions",
+    "description": "A table widget with render functions",
+    "type": "table",
+    "endpoint": "table_widget_with_render_functions",
+    "gridData": {"w": 20, "h": 6},
+    "data": {
+        "table": {
+            "columnsDefs": [
+                {
+                    "field": "name",
+                    "headerName": "Asset",
+                    "cellDataType": "text",
+                    "formatterFn": "none",
+                    "renderFn": "titleCase",
+                    "width": 120,
+                    "pinned": "left"
+                },
+                {
+                    "field": "tvl",
+                    "headerName": "TVL (USD)",
+                    "headerTooltip": "Total Value Locked",
+                    "cellDataType": "number",
+                    "formatterFn": "int",               
+                    "width": 150,
+                    "renderFn": "columnColor",
+                    "renderFnParams": {
+                        "colorRules": [
+                            {
+                                "condition": "between",
+                                "range": {
+                                    "min": 30000000000,
+                                    "max": 40000000000
+                                },
+                                "color": "blue",
+                                "fill": False
+                            },
+                            {
+                                "condition": "lt",
+                                "value": 10000000000,
+                                "color": "#FFA500",
+                                "fill": False
+                            },
+                            {
+                                "condition": "gt",
+                                "value": 40000000000,
+                                "color": "green",
+                                "fill": True
+                            }
+                        ]
+                    }
+                },
+                {
+                    "field": "change_1d",
+                    "headerName": "24h Change",
+                    "cellDataType": "number",
+                    "formatterFn": "percent",
+                    "renderFn": "greenRed",
+                    "width": 120,
+                    "maxWidth": 150,
+                    "minWidth": 70,
+                },
+                {
+                    "field": "change_7d",
+                    "headerName": "7d Change",
+                    "cellDataType": "number",
+                    "formatterFn": "percent",
+                    "renderFn": "greenRed",
+                    "width": 120,
+                    "maxWidth": 150,
+                    "minWidth": 70,
+                }
+            ]
+        }
+    },
+})
+@app.get("/table_widget_with_render_functions")
+def table_widget_with_render_functions():
+    """Returns a mock table data for demonstration"""
+    mock_data = [
+        {
+            "name": "Ethereum",
+            "tvl": 45000000000,
+            "change_1d": 2.5,
+            "change_7d": 5.2
+        },
+        {
+            "name": "Bitcoin",
+            "tvl": 35000000000,
+            "change_1d": 1.2,
+            "change_7d": 4.8
+        },
+        {
+            "name": "Solana",
+            "tvl": 8000000000,
+            "change_1d": -0.5,
+            "change_7d": 2.1
+        }
+    ]
+    return mock_data
+```
 
-### Static Chart
+## Table Widget with Hover Card
 
-With OpenBB Workspace, you can create charts directly from your tabular data in two ways.
+A widget that demonstrates the hover card feature, allowing additional information to be displayed when hovering over table cells.
 
-1. Simply select the data you want to visualize, choose your preferred charting style, and let the software do the rest. It's a powerful tool for quants and analysts alike.
+<img className="pro-border-gradient" width="800" alt="Table Widget with Hover Card Example" src="https://openbb-cms.directus.app/assets/60a39927-8985-4f3a-8e14-0016e167b79f.png" />
 
-2. If available pm the widget, you can click on the "ChartView" icon and we will generate a chart for you. The biggest advantage here is that the data will update automatically and be reflected in your chart.
+```python
+@register_widget({
+    "name": "Table Widget with Hover Card",
+    "description": "A table widget with hover card",
+    "type": "table",
+    "endpoint": "table_widget_with_hover_card",
+    "gridData": {"w": 20, "h": 6},
+    "data": {
+        "table": {
+            "columnsDefs": [
+                {
+                    "field": "name",
+                    "headerName": "Asset",
+                    "cellDataType": "text",
+                    "formatterFn": "none",
+                    "width": 120,
+                    "pinned": "left",
+                    "renderFn": "hoverCard",
+                    "renderFnParams": {
+                        "hoverCard": {
+                            "cellField": "value",
+                            "title": "Project Details",
+                            "markdown": "### {value} (since {foundedDate})\n**Description:** {description}"
+                        }
+                    }
+                },
+                {
+                    "field": "tvl",
+                    "headerName": "TVL (USD)",
+                    "headerTooltip": "Total Value Locked",
+                    "cellDataType": "number",
+                    "formatterFn": "int",               
+                    "width": 150,
+                    "renderFn": "columnColor",
+                },
+                {
+                    "field": "change_1d",
+                    "headerName": "24h Change",
+                    "cellDataType": "number",
+                    "formatterFn": "percent",
+                    "renderFn": "greenRed",
+                    "width": 120,
+                    "maxWidth": 150,
+                    "minWidth": 70,
+                },
+                {
+                    "field": "change_7d",
+                    "headerName": "7d Change",
+                    "cellDataType": "number",
+                    "formatterFn": "percent",
+                    "renderFn": "greenRed",
+                    "width": 120,
+                    "maxWidth": 150,
+                    "minWidth": 70,
+                }
+            ]
+        }
+    },
+})
+@app.get("/table_widget_with_hover_card")
+def table_widget_with_hover_card():
+    """Returns a mock table data for demonstration"""
+    mock_data = [
+        {
+            "name": {
+                "value": "Ethereum",
+                "description": "A decentralized, open-source blockchain with smart contract functionality",
+                "foundedDate": "2015-07-30"
+            },
+            "tvl": 45000000000,
+            "change_1d": 2.5,
+            "change_7d": 5.2
+        },
+        {
+            "name": {
+                "value": "Bitcoin",
+                "description": "The first decentralized cryptocurrency",
+                "foundedDate": "2009-01-03"
+            },
+            "tvl": 35000000000,
+            "change_1d": 1.2,
+            "change_7d": 4.8
+        },
+        {
+            "name": {
+                "value": "Solana",
+                "description": "A high-performance blockchain supporting builders around the world",
+                "foundedDate": "2020-03-16"
+            },
+            "tvl": 8000000000,
+            "change_1d": -0.5,
+            "change_7d": 2.1
+        }
+    ]
+    return mock_data
+```
+
+## Table to Chart Widget
+
+A widget that demonstrates how to convert table data into a chart view. The key feature is the "chartView" configuration in the data object.
+
+<img className="pro-border-gradient" width="800" alt="Table to Chart Widget Example" src="https://openbb-cms.directus.app/assets/72c0802d-34c9-4bd2-aa3f-77e7d89ccb7c.png" />
+
+```python
+@register_widget({
+    "name": "Table to Chart Widget",
+    "description": "A table widget",
+    "type": "table",
+    "endpoint": "table_to_chart_widget",
+    "gridData": {"w": 20, "h": 12},
+    "data": {
+        "table": {
+            "enableCharts": True,
+            "showAll": False,
+            "chartView": {
+                "enabled": True,
+                "chartType": "column"
+            },
+            "columnsDefs": [
+                {
+                    "field": "name",
+                    "headerName": "Asset",
+                    "chartDataType": "category",
+                },
+                {
+                    "field": "tvl",
+                    "headerName": "TVL (USD)",
+                    "chartDataType": "series",
+                },
+            ]
+        }
+    },
+})
+@app.get("/table_to_chart_widget")
+def table_to_chart_widget():
+    """Returns a mock table data for demonstration"""
+    mock_data = [
+        {
+            "name": "Ethereum",
+            "tvl": 45000000000,
+            "change_1d": 2.5,
+            "change_7d": 5.2
+        },
+        {
+            "name": "Bitcoin",
+            "tvl": 35000000000,
+            "change_1d": 1.2,
+            "change_7d": 4.8
+        },
+        {
+            "name": "Solana",
+            "tvl": 8000000000,
+            "change_1d": -0.5,
+            "change_7d": 2.1
+        }
+    ]
+    return mock_data
+```
+
+## Table to Time Series Widget
+
+A widget that demonstrates how to display time series data in a chart format. The key feature is the use of "chartDataType": "time" for date fields.
+
+<img className="pro-border-gradient" width="800" alt="Table to Time Series Widget Example" src="https://openbb-cms.directus.app/assets/f2b0f099-795a-4c97-8361-069d91aca150.png" />
+
+```python
+@register_widget({
+    "name": "Table to Time Series Widget",
+    "description": "A table widget",
+    "type": "table",
+    "endpoint": "table_to_time_series_widget",
+    "gridData": {"w": 20, "h": 12},
+    "data": {
+        "table": {
+            "enableCharts": True,
+            "showAll": False,
+            "chartView": {
+                "enabled": True,
+                "chartType": "line"
+            },
+            "columnsDefs": [
+                {
+                    "field": "date",
+                    "headerName": "Date",
+                    "chartDataType": "time",
+                },
+                {
+                    "field": "Ethereum",
+                    "headerName": "Ethereum",
+                    "chartDataType": "series",
+                },
+                {
+                    "field": "Bitcoin",
+                    "headerName": "Bitcoin",
+                    "chartDataType": "series",
+                },
+                {
+                    "field": "Solana",
+                    "headerName": "Solana",
+                    "chartDataType": "series",
+                }
+            ]
+        }
+    },
+})
+@app.get("/table_to_time_series_widget")
+def table_to_time_series_widget():
+    """Returns a mock table data for demonstration"""
+    mock_data = [
+        {
+            "date": "2024-06-06",
+            "Ethereum": 1.0000,
+            "Bitcoin": 1.0000,
+            "Solana": 1.0000
+        },
+        {
+            "date": "2024-06-07",
+            "Ethereum": 1.0235,
+            "Bitcoin": 0.9822,
+            "Solana": 1.0148
+        },
+        {
+            "date": "2024-06-08",
+            "Ethereum": 0.9945,
+            "Bitcoin": 1.0072,
+            "Solana": 0.9764
+        },
+        {
+            "date": "2024-06-09",
+            "Ethereum": 1.0205,
+            "Bitcoin": 0.9856,
+            "Solana": 1.0300
+        },
+        {
+            "date": "2024-06-10",
+            "Ethereum": 0.9847,
+            "Bitcoin": 1.0195,
+            "Solana": 0.9897
+        }
+    ]
+    return mock_data
+```
+
+## OTHERS
+
+### Table Interface
+
+The Table widget offers comprehensive data manipulation and visualization capabilities:
+
+- **Column Resizing**: Adjust column widths manually or use the "Autosize all columns" feature for automatic optimization.
+
+- **Column Reorganization**: Implement drag-and-drop functionality to reorder columns. Click and hold any column header to reposition it.
+
+- **Column Filtering**: Toggle column visibility through column settings to focus on relevant data for your analysis.
+
+- **Sorting**: Click column headers to sort data in ascending or descending order.
+
+- **Data Selection**: Select specific data points or ranges to generate visualizations.
+
+### Table to Chart Conversion
+
+The widget supports two primary methods for converting table data into charts:
+
+1. **Selection-based Charting**: Select desired data points, choose a chart type, and generate visualizations instantly. This feature is particularly useful for quantitative analysis.
+
+The example below demonstrates data selection and right-click menu options for creating a line chart:
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
 <img className="pro-border-gradient" width="800" alt="selection-charting" src="https://openbb-assets.s3.amazonaws.com/docs/pro/selection-charting-1.png" />
 </div>
 
-- In this example we've highlighted some data and with a simple "right-click" you can pick a line chart.
+2. **ChartView Mode**: Access the "ChartView" icon to transform the table into a dynamic chart. This mode automatically updates the visualization as underlying data changes.
+
+The following example shows the ChartView interface:
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
 <img className="pro-border-gradient" width="800" alt="chartview" src="https://openbb-assets.s3.amazonaws.com/docs/pro/chartview-setting.png" />
 </div>
 
-- In this example we're utilizing the "ChartView" highlighted in blue. This allows us to change the widget into a chart instead of a table.
+The highlighted ChartView option enables seamless conversion between table and chart views.
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-<img className="pro-border-gradient" width="800" alt="example" src="https://openbb-assets.s3.amazonaws.com/docs/pro/combo-chart.png" />
-</div>
+### Chart Customization
 
-- Finally we're customizing the chart to show a different way then a simple line.
-
-## OpenBB Core Widgets
-
-### Table
-
-The Table widget was highlighted previously, in the Widget Structure section.
-
-### Chart
-
-@TODO get a similar cheatsheet for charts like shared above for tables
-
-When a chart is created you can customize almost anything within it by clicking on the three dots and then Chart Settings.
+Access comprehensive chart customization options through the three-dot menu and Chart Settings:
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
 <img className="pro-border-gradient" width="200" alt="example" src="https://openbb-assets.s3.amazonaws.com/docs/pro/chart-settings-small.png" />
 </div>
 
-Once you bring up the "Customize" tab on your chart, you'll have a tab like below to change anything from title to colors. In the other tabs you'll also be able
-to change what series are shown on the chart in the "Set Up" tab and the chart type under the "Chart" tab. All of these customizations let you create beautiful visualizations.
+The customization interface provides three main configuration areas:
+
+- **Visual Customization**: Modify chart appearance, including titles, colors, and styling elements.
+- **Data Series Management**: Control the visibility and configuration of data series.
+- **Chart Type Selection**: Choose from various chart types to best represent your data.
+
+Example of the customization interface:
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
 <img className="pro-border-gradient" width="800" alt="example" src="https://openbb-assets.s3.amazonaws.com/docs/pro/customization.png" />
 </div>
 
+Example of a customized chart with multiple visualization types:
 
+<div style={{display: 'flex', justifyContent: 'center'}}>
+<img className="pro-border-gradient" width="800" alt="example" src="https://openbb-assets.s3.amazonaws.com/docs/pro/combo-chart.png" />
+</div>
 
-:::note
-Guidelines for JSON Format in Tables:
-
-- The JSON data for tables should be in a flat structure, meaning that there should be no nested dictionaries or arrays within the individual objects unless you specify the dataKey in your `widgets.json` file.
-- Each object should contain key-value pairs where the values are simple data types (e.g., strings, numbers, booleans).
-- Avoid nesting other objects or arrays inside any of the values.
-
-The JSON should resemble the following structure:
-
-<details>
-<summary mdxType="summary">Example JSON</summary>
-
-```json
-[
-      {
-        "ticker": "AAPL",
-        "name": "Apple Inc.",
-        "price": 150.5,
-        "marketCap": 2500000000,
-        "change": 1.25
-      },
-      {
-        "ticker": "GOOGL",
-        "name": "Alphabet Inc.",
-        "price": 2800.75,
-        "marketCap": 1900000000,
-        "change": -0.75
-      },
-      {
-        "ticker": "MSFT",
-        "name": "Microsoft Corporation",
-        "price": 300.25,
-        "marketCap": 220000000,
-        "change": 0.98
-      }
-]
-```
-
-</details>
-
-:::
+The final example demonstrates how to combine different chart types for enhanced data visualization.
