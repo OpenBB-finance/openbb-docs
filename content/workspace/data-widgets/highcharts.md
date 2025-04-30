@@ -1,6 +1,6 @@
 ---
 title: Highcharts Chart
-sidebar_position: 3
+sidebar_position: 15
 description: Learn how to create Highcharts widgets for OpenBB Workspace, with step-by-step instructions for backend integration, configuration, and theme support.
 keywords:
 - widgets.json
@@ -16,7 +16,9 @@ keywords:
 - Widget definitions
 ---
 
-# Highcharts Chart
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Highcharts Chart | OpenBB Workspace Docs" />
 
 This guide will walk you through the process of creating a chart widget for OpenBB Workspace using Highcharts. By the end of this guide, you will have a working Highcharts widget that you can add to OpenBB.
 
