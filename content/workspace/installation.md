@@ -12,11 +12,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="PWA Installation | OpenBB Workspace Docs" />
+<HeadTitle title="Native Installation (PWA) | OpenBB Workspace Docs" />
 
-# Installing OpenBB as a Progressive Web App
+OpenBB Workspace is now available as a Progressive Web App (PWA), providing a seamless, native-like experience across all your devices.
 
-OpenBB Workspace is now available as a Progressive Web App (PWA), providing a seamless, native-like experience across all your devices. This installation method offers several advantages:
+<img width="800" alt="Apps" src="https://openbb-cms.directus.app/assets/b1d5b799-3abe-4d45-b04c-601e2b652b18.png" />
+
+This installation method offers several advantages:
 
 - **Offline Access**: Continue working even without an internet connection
 - **Native Performance**: Faster loading times and smoother interactions
