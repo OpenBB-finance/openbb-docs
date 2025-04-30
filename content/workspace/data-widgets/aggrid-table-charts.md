@@ -488,25 +488,32 @@ The following example shows the ChartView interface:
 
 The highlighted ChartView option enables seamless conversion between table and chart views.
 
+### Available Chart Types
+
+The built-in charts support a variety of types. Here are the allowed values:
+
+- **Column Charts**: `column`, `groupedColumn`, `stackedColumn`, `normalizedColumn`
+- **Bar Charts**: `bar`, `groupedBar`, `stackedBar`, `normalizedBar`
+- **Line and Scatter Charts**: `line`, `scatter`, `bubble`
+- **Pie and Donut Charts**: `pie`, `donut`, `doughnut`
+- **Area Charts**: `area`, `stackedArea`, `normalizedArea`
+- **Other Types**: `histogram`, `radarLine`, `radarArea`, `nightingale`, `radialColumn`, `radialBar`, `sunburst`, `rangeBar`, `rangeArea`, `boxPlot`, `treemap`, `heatmap`, `waterfall`
+
 ### Chart Customization
 
-Access comprehensive chart customization options through the three-dot menu and Chart Settings:
+You can change the chart settings by clicking on the three dots and then the `Chart Settings` in the dropdown menu.
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-<img className="pro-border-gradient" width="200" alt="example" src="https://openbb-assets.s3.amazonaws.com/docs/pro/chart-settings-small.png" />
-</div>
+<img className="pro-border-gradient" width="400" alt="chart" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/chart+settings.png" />
+
+Here you can change the chart type, the chart settings, and some other settings in each tab.
+
+<img className="pro-border-gradient" width="400" alt="chart" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/chart+settings+2.png" />
 
 The customization interface provides three main configuration areas:
 
 - **Visual Customization**: Modify chart appearance, including titles, colors, and styling elements.
 - **Data Series Management**: Control the visibility and configuration of data series.
 - **Chart Type Selection**: Choose from various chart types to best represent your data.
-
-Example of the customization interface:
-
-<div style={{display: 'flex', justifyContent: 'center'}}>
-<img className="pro-border-gradient" width="800" alt="example" src="https://openbb-assets.s3.amazonaws.com/docs/pro/customization.png" />
-</div>
 
 Example of a customized chart with multiple visualization types:
 

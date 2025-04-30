@@ -1,6 +1,6 @@
 ---
 title: OpenBB Copilot
-sidebar_position: 27
+sidebar_position: 26
 description: Learn how to use OpenBB Copilot to interact with the OpenBB Workspace
 keywords:
 - OpenBB Copilot

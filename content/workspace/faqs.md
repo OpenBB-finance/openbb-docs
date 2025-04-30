@@ -1,13 +1,15 @@
 ---
 title: FAQs
-sidebar_position: 16
+sidebar_position: 4
 description: Frequently asked questions about the OpenBB Workspace Custom Backend.
 keywords:
 - FAQs
 - Custom Backend
 ---
 
-## Frequently Asked Questions {#frequently-asked-questions}
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="FAQs | OpenBB Workspace Docs" />
 
 ### General
 

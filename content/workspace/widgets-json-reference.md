@@ -22,10 +22,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Widgets.json | OpenBB Workspace Docs" />
 
-# Widgets.json Reference Guide
-
-## Overview
-
 The `widgets.json` file is your configuration file that connects custom backend data to the widgets displayed in the application. Each entry in this file directly maps to a widget in the app.
 
 ### Key Components
