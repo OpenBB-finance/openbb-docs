@@ -76,11 +76,34 @@ Widgets are the fundamental data units in OpenBB Workspace. Each widget represen
 
 <img width="800" alt="Widget-metadata" src="https://openbb-cms.directus.app/assets/132e5cda-b062-4094-8036-8c2d41db1527.png" />
 
-### Dashboards: Organize Your Work
+### Dashboards: Your Financial Analysis Workspace
 
-Dashboards provide a structured way to organize and display your widgets. The left sidebar gives you complete control over dashboard management and organization.
+Dashboards serve as your primary workspace for organizing and analyzing financial data through customizable widgets. Each dashboard acts as a dedicated canvas where you can arrange and combine different data visualizations to create comprehensive financial analysis views.
 
 <img width="800" alt="Apps" src="https://openbb-cms.directus.app/assets/fbf80af0-8bc3-4ac6-b349-f8e1ec388cee.png" />
+
+#### Managing Your Dashboards
+
+Access dashboard management options by clicking the ellipsis in the left sidebar next to the dashboard of interest. This opens a menu with the following capabilities:
+
+- **Rename** - Customize your dashboard's name for better organization
+- **Move to** - Organize dashboards by moving them into folders
+- **Duplicate** - Create a copy of your dashboard with all its widgets and settings
+- **Open in new window** - Expand your workspace across multiple screens
+- **Share** - Collaborate by sharing dashboards with team members in your organization
+- **Delete** - Remove unused dashboards
+- **Export report** - Generate static reports in PDF or PNG format
+- **Refresh data** - Update all widget data to the latest available
+
+Note: Some dashboards may be hidden by a folder. By clicking in the folder, you will be able to expand the dashboards contained within.
+
+#### Collaboration Features
+
+Share dashboards with team members by right-clicking and selecting "Share". Search for team members within your organization, and recipients without OpenBB Pro access will receive an email invitation. Shared dashboards appear in the recipient's sidebar with read-only access. Recipients can duplicate the dashboard to create their own editable version while maintaining the original.
+
+#### Creating Static Reports
+
+Export your interactive dashboards as static reports in PDF or PNG format. Include notes and insights from the note widget to capture the exact state of your analysis. This feature enables you to create periodic analysis reports, document investment decisions, share insights with stakeholders, and maintain historical records of your analysis.
 
 ### AI Agents: Intelligent Automation
 
