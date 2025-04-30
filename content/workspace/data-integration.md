@@ -15,23 +15,40 @@ keywords:
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 <HeadTitle title="Overview | OpenBB Workspace Docs" />
 
-OpenBB Workspace offers a versatile and user-friendly data connector system that allows you to integrate various data sources seamlessly. Whether you are uploading files, connecting to APIs, or integrating databases, OpenBB provides the tools you need to visualize and analyze your data effectively.
+## Data
 
-## Upload Files
+For a widget to be added to the OpenBB workspace, it requires data to come
 
-Uploading files is the easiest way to import data into OpenBB Workspace. You can add one or multiple files at once, with support for formats like PDF, CSV, JSON, PNG, and JPG.
+## Widget Structure
 
-## API Endpoints
+This is the typical structure of a widget.
 
-API endpoints provide a fast way to integrate custom data into OpenBB Workspace. By entering your API endpoint and required connection details, you can dynamically load and display your data.
+<img width="800" alt="Widget-rev" src="https://github.com/user-attachments/assets/d44a279f-fb47-44f0-87de-add2b20cec7c" />
 
-## Custom Backend
+- **Title**: The title identifies the widget. Hovering on top shows the description and the source of where the data comes from.
 
-Integrate your own backend using our example or any language-agnostic API approach. Design and implement your API, create a widgets.json file, and connect your API to OpenBB to dynamically load and display your data.
+<div style={{display: 'flex', justifyContent: 'center'}}>
+    <img width="300" alt="hover on title" src="https://github.com/user-attachments/assets/7d1ea855-e77a-4eab-9330-b8a4d9e58bf5" />
+</div>
 
-## Database Integrations
+- **Staleness Indicator**: When the user hovers on the indicator it shows how recent the data is: Green if updated within the last 30 seconds; Yellow if updated between 30 seconds and 5 minutes ago; Red oif updated over 5 minutes ago. If the user wants to get latest data for a particular widget all that is needed is clicking in the indicator icon to fetch/refresh the data.
 
-OpenBB Workspace allows you to connect directly to Snowflake, MySQL, or SQLite databases. By installing and running the OpenBB Data Connector, you can enable these integrations which allows you to run queries and analyze your data directly within OpenBB.
+<div style={{display: 'flex', justifyContent: 'center'}}>
+    <img width="300" alt="staleness indicator" src="https://github.com/user-attachments/assets/ca21f129-5c3d-4c33-9997-338f1180677b" />
+</div>
+
+- **Parameters**: Some widgets will have parameters. Changing the parameter, will update the data contained in the widget. Some of these parameters might be able to be grouped together.
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+    <img width="600" alt="click on symbol" src="https://github.com/user-attachments/assets/322668a5-1d6e-44df-9a8e-39cc51e49c41" />
+</div>
+
+- **Group**: If multiple widgets belong to the same group, updating the symbol in one will automatically update the symbol in the others. When you click on the group icon, you can set a new group for the current widget.
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+    <img width="300" alt="click on group" src="https://github.com/user-attachments/assets/4c8f5fcd-4e44-4e1a-9723-d98c64f8294c" />
+</div>
