@@ -1,6 +1,6 @@
 ---
 title: Settings and Configurations
-sidebar_position: 16
+sidebar_position: 18
 description: Learn about various widget settings and configurations in OpenBB Workspace, including refetch intervals, stale times, run buttons, and error handling.
 keywords:
 - settings
@@ -18,7 +18,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Settings | OpenBB Workspace Docs" />
 
-## Markdown and grid-size
+## Widgets and grid-size
 
 Widgets use a grid-based layout system where you can specify their width and height in the `gridData` object. Here's a simple example:
 
@@ -47,7 +47,7 @@ The grid system works as follows:
   - 8-20 units for standard widgets
   - Larger values for detailed charts or tables
 
-## Simple Markdown Widget with Category and Subcategory
+## Category and Subcategory
 
 The category and subcategory specify the category and subcategory of the widget in the OpenBB Workspace. This is important to organize the widgets in the OpenBB Workspace, but also for AI agents to find the best widgets to utilize for a given task.
 
@@ -69,7 +69,7 @@ def markdown_widget_with_category_and_subcategory():
     return f"# Markdown Widget with Category and Subcategory"
 ```
 
-## Markdown Widget with Error Handling
+## Error Handling
 
 This is a simple widget that demonstrates how to handle errors in your widgets.
 
@@ -92,7 +92,7 @@ def markdown_widget_with_error_handling():
     )
 ```
 
-## Markdown Widget with Run Button
+## Run Button
 
 The run button allows you to run a widget by clicking it rather than having it run automatically when you change a parameter. It is located in the top right corner of the widget and replaces the refresh button. A Ctrl-click on the run button performs a hard refresh, while a regular click runs the new parameters.
 
@@ -116,7 +116,7 @@ def markdown_widget_with_run_button():
     return f"### Current time: {current_time}"
 ```
 
-## Markdown Widget with Short Refetch Interval
+## Short Refetch Interval
 
 The refetch interval is the interval at which the widget will be refreshed. Use lower values for real-time data (e.g., 60000 for 1-minute updates). Higher values are recommended for static or slowly changing data.
 
@@ -143,7 +143,7 @@ def markdown_widget_with_short_refetch_interval():
     return f"### Current time: {current_time}"
 ```
 
-## Markdown Widget with Short Refetch Interval and Run Button
+## Short Refetch Interval and Run Button
 
 The refresh interval is set to 10000ms (10 seconds) but the run button is enabled, which means that the user can refresh the widget manually.
 
@@ -197,7 +197,7 @@ def markdown_widget_with_better_structured_api():
     return "vendor1/markdown_widget_with_better_structured_api"
 ```
 
-## Markdown Widget with Stale Time
+## Stale Time
 
 The stale time is the time after which the data will be considered stale. You will see a refresh button in the widget becoming orange to indicate that the data is stale.
 
@@ -224,7 +224,7 @@ def markdown_widget_with_stale_time():
     return f"### Current time: {current_time}"
 ```
 
-## Markdown Widget with Refetch Interval and Stale Time
+## Refetch Interval and Stale Time
 
 The refetch interval is set to 10000ms (10 seconds) and the stale time is set to 5000ms (5 seconds). Data older than stale time will make the refresh button in the widget become orange to indicate that the data is stale, and once it reaches the refetch interval, the widget will be refreshed and the indicator will turn green again.
 

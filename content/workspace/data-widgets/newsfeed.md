@@ -1,6 +1,6 @@
 ---
 title: Newsfeed
-sidebar_position: 20
+sidebar_position: 17
 description: Learn how to create a newsfeed widget for OpenBB Workspace that displays articles in a clean, organized format.
 keywords:
 - widgets.json

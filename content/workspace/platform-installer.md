@@ -124,7 +124,7 @@ This section will explore how you can filter the platform integration datasets t
 Now, similarly to the previous section, you should:
 - Run `OpenBB/openbb-api`
 - Set your PAT
-- Refresh the connection inside the ["My Data"](https://pro.openbb.co/app/data-connectors) tab or follow instructions above to add again.
+- Refresh the connection inside the ["Manage Backends"](https://pro.openbb.co/app) button or follow instructions above to add again.
 
 <!-- (http://pro.openbb.co/app/data-connectors?tab=my-data&modal=data-connectors&dcTab=backend&name=OpenBB%20Platform&url=http://localhost:6900) -->
 

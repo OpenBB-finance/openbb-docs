@@ -27,10 +27,12 @@ This documentation covers everything you need to know about building effective f
 - [AG Grid Table Charts](./aggrid-table-charts.md) - Create advanced data tables with built-in charting capabilities
 - [Plotly Charts](./plotly-charts.md) - Build interactive financial visualizations using Plotly
 - [TradingView Charts](./tradingview-charts.md) - Integrate professional-grade charting with TradingView
-- [Settings](./settings.md) - Customize widget behavior and appearance
-- [Input Parameters](./input-parameters.md) - Configure widget parameters for optimal performance
-- [Input Form](./input-form.md) - Create interactive forms for data input and analysis
 - [Live Grid](./live-grid.md) - Work with real-time market data feeds
+- [Input Form](./input-form.md) - Create interactive forms for data input and analysis
+- [Newsfeed](./newsfeed.md) - Display news articles in a clean, organized format
+- [Highcharts](./highcharts.md) - Create Highcharts widgets for OpenBB Workspace
+- [Input Parameters](./input-parameters.md) - Configure widget parameters for optimal performance
+- [Settings](./settings.md) - Customize widget behavior and appearance
 
 ## Getting Started
 

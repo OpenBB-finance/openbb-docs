@@ -1,5 +1,5 @@
 ---
-title: AI generated
+title: AI Generated
 sidebar_position: 16
 description: Learn how to use AI agent outputs as widgets in your OpenBB dashboard
 keywords:

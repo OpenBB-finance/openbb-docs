@@ -1,6 +1,6 @@
 ---
 title: Input Parameters
-sidebar_position: 17
+sidebar_position: 18
 description: Comprehensive guide to different input parameter types available in OpenBB Workspace including Date Picker, Text Input, Boolean Toggle, Number Input, Dropdown, and Advanced Dropdown
 keywords:
 - input
@@ -813,7 +813,7 @@ def get_tickers_list():
 
 This functionality is achieved through three key components:
 
-1. Both widgets must share the same `paramName` ("symbol") to enable parameter synchronization
+1. Both widgets must share the same `paramName` (in this case "symbol") to enable parameter synchronization
 2. The table widget's `cellOnClick` renderFn must be configured with `actionType: "groupBy"` and specify the `groupByParamName` as "symbol"
 3. Both widgets must reference the same endpoint (`/get_tickers_list`) for their options data
 
