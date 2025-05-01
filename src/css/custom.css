@@ -496,13 +496,13 @@ html[data-theme="dark"] .sidebar-divider {
 }
 
 .pro-border-gradient {
-  background: linear-gradient(to right, #66ccff, #005ca9);
-  border-radius: 6px;
+  background: var(--ifm-color-gray-600);
+  border-radius: 4px;
   overflow: hidden;
   display: inline-block;
   justify-content: center;
   align-items: center;
-  padding: 3px;
+  padding: 1px;
   position: relative;
 }
 
@@ -549,6 +549,11 @@ div[role="dialog"][data-state="open"] button:hover {
 .theme-doc-sidebar-item-category .menu__link,
 .menu__list-item-collapsible {
   @apply text-[#717177] dark:text-[#B8B9BC] hover:text-black dark:hover:text-white hover:bg-[#EBEBED] dark:hover:bg-[#212126] rounded-md transition-colors;
+}
+
+/* If you want different padding for different levels */
+.theme-doc-sidebar-item-category-level-1 {
+  padding-bottom: 15px;
 }
 
 .menu__list-item-collapsible {

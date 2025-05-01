@@ -41,10 +41,6 @@ export default {
 						to: "/platform/developer_guide/contributing",
 					},
 					{
-						from: "/pro/copilot/bring-your-own-copilot",
-						to: "/workspace/bring-your-own-copilot",
-					},
-					{
 						from: "/pro/",
 						to: "/workspace/",
 					},
@@ -53,97 +49,35 @@ export default {
 						to: "/workspace/enterprise",
 					},
 					{
-						from: "/pro/native-installation",
-						to: "/workspace/native-installation",
-					},
-					{
-						from: "/pro/tutorials",
-						to: "/workspace/tutorials",
-					},
-					{
-						from: "/pro/tutorials/bring-data",
-						to: "/workspace/tutorials/bring-data",
-					},
-					{
-						from: "/pro/tutorials/customizability",
-						to: "/workspace/tutorials/customizability",
-					},
-					{
-						from: "/pro/tutorials/ai-insights",
-						to: "/workspace/tutorials/ai-insights",
-					},
-					{
-						from: "/pro/tutorials/earnings-update",
-						to: "/workspace/tutorials/earnings-update",
-					},
-					{
-						from: "/pro/tutorials/layouts-watchlist",
-						to: "/workspace/tutorials/layouts-watchlist",
-					},
-					{
-						from: "/pro/tutorials/report",
-						to: "/workspace/tutorials/report",
-					},
-					{
-						from: "/pro/tutorials/ai",
-						to: "/workspace/tutorials/ai",
-					},
-					{
-						from: "/pro/tutorials/data-to-charts",
-						to: "/workspace/tutorials/data-to-charts",
-					},
-					{
-						from: "/pro/tutorials/overlay",
-						to: "/workspace/tutorials/overlay",
-					},
-					{
 						from: "/pro/openbb-copilot",
 						to: "/workspace/openbb-copilot",
-					},
-					{
-						from: "/pro/data-connector",
-						to: "/workspace/data-connector",
-					},
-					{
-						from: "/pro/upload-files",
-						to: "/workspace/upload-files",
-					},
-					{
-						from: "/pro/api-endpoints",
-						to: "/workspace/api-endpoints",
-					},
-					{
-						from: "/pro/custom-backend",
-						to: "/workspace/custom-backend",
-					},
-					{
-						from: "/pro/custom-backend/widgets-json-reference",
-						to: "/workspace/custom-backend/widgets-json-reference",
 					},
 					{
 						from: "/pro/platform-installer",
 						to: "/workspace/platform-installer",
 					},
 					{
-						from: "/pro/widgets",
-						to: "/workspace/widgets",
+						from: "/workspace/data-connector",
+						to: "/workspace/data-integration",
 					},
 					{
-						from: "/pro/dashboards",
-						to: "/workspace/dashboards",
-					},
-					{
-						from: "/pro/templates",
-						to: "/workspace/templates",
-					},
-					{
-						from: "/pro/bring-your-own-copilot",
-						to: "/workspace/bring-your-own-copilot",
+						from: "/workspace/enterprise",
+						to: "https://openbb.co/pricing",
 					},
 				],
 				createRedirects: (existingPath) => {
 					if (existingPath.startsWith("/pro/")) {
-						return existingPath.replace("/pro/", "/workspace/");
+						const newPath = existingPath.replace("/pro/", "/workspace/");
+						if (newPath.includes("data-connector")) {
+							return newPath.replace("/data-connector/", "/data-integration/");
+						}
+						return newPath;
+					}
+					if (existingPath.includes("data-connector")) {
+						return existingPath.replace(
+							"/data-connector/",
+							"/data-integration/",
+						);
 					}
 					return undefined;
 				},

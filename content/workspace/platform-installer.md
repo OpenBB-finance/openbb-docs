@@ -1,6 +1,6 @@
 ---
-title: Open Source Platform Integration
-sidebar_position: 15
+title: OpenBB Platform
+sidebar_position: 33
 description: Learn how to integrate the OpenBB Platform data to OpenBB Workspace
 keywords:
 - widgets.json
@@ -27,9 +27,9 @@ Here's a video that you can use to follow step-by-step instructions.
     style={{position: 'absolute', top: '0', left: '0', width: '100%', height: '100%', display: 'block', margin: '0 auto'}} 
     src="https://www.youtube.com/embed/DFz1WQJbT6c?si=_K3amHb8p4fkTKaj" 
     title="YouTube video player" 
-    frameborder="0" 
+    frameBorder="0" 
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-    referrerpolicy="strict-origin-when-cross-origin" 
+    referrerPolicy="strict-origin-when-cross-origin" 
     allowFullScreen></iframe>
 </div>
 
@@ -124,7 +124,7 @@ This section will explore how you can filter the platform integration datasets t
 Now, similarly to the previous section, you should:
 - Run `OpenBB/openbb-api`
 - Set your PAT
-- Refresh the connection inside the ["My Data"](https://pro.openbb.co/app/data-connectors) tab or follow instructions above to add again.
+- Refresh the connection inside the ["Manage Backends"](https://pro.openbb.co/app) button or follow instructions above to add again.
 
 <!-- (http://pro.openbb.co/app/data-connectors?tab=my-data&modal=data-connectors&dcTab=backend&name=OpenBB%20Platform&url=http://localhost:6900) -->
 
