@@ -185,7 +185,7 @@ relevant widgets on your dashboard.
 
 OpenBB Copilot can also analyze and answer questions using files you provide, such as PDF, CSV, and XLSX files.
 
-To add a file to OpenBB Copilot, first [upload it and add it as a widget to the currently-active dashboard](https://docs.openbb.co/pro/upload-files).
+To add a file to OpenBB Copilot, first [upload it and add it as a widget to the currently-active dashboard](https://docs.openbb.co/workspace/static-files).
 
 The file can then be used by OpenBB Copilot to answer questions (either by adding the file widget to the [context explicitly](#analyze-specific-widgets-only), or by allowing OpenBB Copilot to [automatically retrieve the data](#automatically-use-data-from-the-dashboard) if it is relevant to your query).
 

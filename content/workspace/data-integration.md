@@ -37,7 +37,7 @@ A custom backend is an API that returns data in a format that OpenBB Workspace u
 
 Let's walk through a simple example to demonstrate how to integrate a custom backend. We'll create a basic "Hello World" application that you can use as a template for your own integrations.
 
-The complete example code is available in our [GitHub repository](https://github.com/OpenBB-finance/backend-examples-for-openbb-workspace/tree/refactor-docs/getting-started/hello-world).
+The complete example code is available in our [GitHub repository](https://github.com/OpenBB-finance/backend-examples-for-openbb-workspace/tree/main/getting-started/hello-world).
 
 ### 0. Prerequisites
 
