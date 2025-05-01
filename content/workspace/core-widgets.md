@@ -1,89 +1,150 @@
 ---
 title: Core Widgets
 sidebar_position: 13
-description: Core Widgets
+description: Master OpenBB's essential widgets for building powerful financial dashboards, including navigation, notes, API integration, and real-time data visualization tools.
 keywords:
-- asd
+- dashboard widgets
+- financial analysis
+- data visualization
+- navigation tools
+- note taking
+- API integration
+- RSS feeds
+- market monitoring
+- time tracking
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
+<HeadTitle title="Core Widgets | OpenBB Workspace Docs" />
 
-### Note
+OpenBB's core widgets form the foundation of your financial analysis workspace. These essential components enable you to organize information, capture insights, and integrate external data sources within a unified interface, creating a powerful environment for financial analysis and decision-making.
 
-The Note Widget lets you quickly jot down notes, insights, and observations directly in your dashboard. It’s ideal for capturing key information during research, tracking important points, or storing prompts for the OpenBB Copilot.
+## Navigation Bar
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/note_widget.png" />
-</div>
+The Navigation Bar serves as your dashboard's command center, providing intuitive organization for complex information. This powerful tool enables you to:
 
-Did you know that you can enhance your experience by adding Notes as context to OpenBB Copilot and using them as prompts? It’s a powerful way to track prompts and seamlessly integrate your insights into your workflow.
-
-<div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/note_context.png" />
-</div>
-
-### Website and Iframe
-
-Often, during your research workflow, you need to browse multiple websites to extract data. The Website widget is a versatile tool that lets you embed and interact with websites directly within your dashboard, making it easy to access data from various sources all within OpenBB.
-
-Please note that some websites may disable this functionality. We will automatically check and display the website only if permitted by the site owner.
+- Create and manage multiple tabs for different analysis contexts
+- Organize information into logical sections
+- Separate research from analysis
+- Track different market sectors
+- Monitor various portfolios
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/website.png" />
+  <img className="pro-border-gradient" width="600" alt="Navigation bar interface showing multiple tabs" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/navigation_bar.png" />
 </div>
 
-### Clock
+## Note Widget
 
-Use our Clock Widget to track multiple time zones simultaneously. It lets you monitor the current time in key financial hubs worldwide, helping you stay on top of market hours and coordinate effectively with international teams.
+The Note widget transforms your dashboard into a dynamic research platform, enabling you to capture and organize your insights effectively. This versatile tool allows you to:
+
+- Document real-time insights during market analysis
+- Record key findings and observations
+- Store and organize prompts for AI-powered analysis
+- Create a searchable knowledge base of your research
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/clock.png" />
+  <img className="pro-border-gradient" width="600" alt="Note widget interface showing text editing capabilities" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/note_widget.png" />
 </div>
 
-### RSS Feeds
+### AI Integration
 
-The RSS Feeds Widget is an excellent way to stay up-to-date with the latest news directly within your dashboard. We provide a curated list of top news sources right out of the box, but the true power lies in the ability to customize your RSS feeds. You can add any feeds that are relevant to your research workflow, ensuring you always have the most relevant information at your fingertips.
+The Note widget's AI integration capabilities enhance your analysis workflow by:
+
+- Maintaining a library of effective prompts
+- Providing context for AI analysis
+- Creating a seamless workflow between manual research and automated insights
+- Enabling intelligent data processing and interpretation
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/rss.png" />
+  <img className="pro-border-gradient" width="600" alt="Note widget being used as AI context" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/note_context.png" />
 </div>
 
-### Navigation bar
+## Website and Iframe Widget
 
-The Navigation Bar lets you add and manage multiple tabs within your dashboard, making it easier to organize and navigate through your information.
+The Website widget brings external data sources directly into your dashboard, creating a unified research environment. This powerful integration enables you to:
+
+- Access and interact with external websites without leaving OpenBB
+- Compare data from multiple sources side by side
+- Create a comprehensive research workspace
+- Maintain context while analyzing multiple data sources
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/navigation_bar.png" />
+  <img className="pro-border-gradient" width="600" alt="Website widget showing embedded webpage" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/website.png" />
 </div>
 
-### Simple API endpoints
+> **Note:** Some websites may restrict embedding. OpenBB automatically checks and only displays websites that permit embedding.
 
+## RSS Feeds Widget
 
-API endpoints are the fastest way to integrate your custom data into OpenBB. This method allows you to import data via a URL or endpoint that is directly rendered into a table format providing a quick and easy way to visualize your data.
+The RSS Feeds widget serves as your personal news aggregator within OpenBB, keeping you informed with market-moving information. This essential tool provides:
 
-Simply enter your API endpoint along with any required connection details. Once configured, you need to select the metadata and then a corresponding widget will be created. It will then dynamically load and display your data within the OpenBB workspace interface.
+- Curated financial news from top sources
+- Customizable news feed preferences
+- Real-time market updates
+- Integrated news analysis within your research workflow
 
-For something more custom, you should look into creating [your own backend](/content/workspace/data-widgets/index.md), or reach out for support.
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="600" alt="RSS Feeds widget showing news headlines" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/rss.png" />
+</div>
 
-Common Issues and Solutions
+## Clock Widget
 
-**Why can't I see my data in the table?**
-> Ensure that the endpoint or url you are using returns data in JSON format
+The Clock widget helps you track global market hours and coordinate across time zones, essential for international trading and analysis. This tool is particularly valuable for:
 
-**I'm getting an error that it can't fetch the url**
-> Your endpoint might require additional headers to be passed, you can add them using the '+ Add Headers' button.
+- Monitoring market open/close times across different regions
+- Coordinating with international teams
+- Planning trades across multiple time zones
+- Staying aware of global market events
 
-**My data isn't showing up correctly in the table.**
-> If your API endpoint doesn't return a simple JSON but a nested architecture, you will be prompted with a "Data Key" parameter which you can use to grab the data of interest.
-> You may also need to use our [Data Integration](/content/workspace/data-widgets/index.md) if you want to do anything else like processing the data.
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="600" alt="Clock widget showing multiple time zones" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/clock.png" />
+</div>
 
-If your issue is not listed above, please contact support at [support@openbb.finance](mailto:support@openbb.finance) with details of your problem.
+## Simple API Endpoints
 
-Here's a list of public API endpoints that can be used for free:
+The Simple API Endpoints widget provides a direct path to integrate custom data into your dashboard, enabling real-time data updates and analysis. This powerful feature:
 
-| Widget title | Public URL | Category | Subcategory | Source | Description | Add to Pro |
-| -------- | ------- | -------- | ------- | -------- | ------- | ------- |
-| Protocols | https://defillama-datasets.llama.fi/lite/v2/protocols | DeFi | TVL | DefiLLama | List of all protocols on DefiLlama along with their TVL | <a href="https://pro.openbb.co/app/data-connectors?modal=data-connectors&dcTab=single&endpoint=https://defillama-datasets.llama.fi/lite/v2/protocols&name=Protocols" target="_blank"> <button className="_btn text-xs">Add</button> </a> |
-| Historical Chain TVL | https://api.llama.fi/v2/historicalChainTvl | DeFi | TVL | DefiLLama | Get historical TVL (excludes liquid staking and double counted tvl) on DeFi on all chains | <a href="https://pro.openbb.co/app/data-connectors?modal=data-connectors&dcTab=single&endpoint=https://api.llama.fi/v2/historicalChainTvl&name=Historical Chain TVL" target="_blank"> <button className="_btn text-xs">Add</button> </a> |
-| Chains | https://api.llama.fi/v2/chains | DeFi | TVL | DefiLLama | Get current TVL of all chains | <a href="https://pro.openbb.co/app/data-connectors?modal=data-connectors&dcTab=single&endpoint=https://api.llama.fi/v2/chains&name=Chains" target="_blank"> <button className="_btn text-xs">Add</button> </a> |
-| TAO stats | https://taostats.io/data.json | Crypto | | Tao | Latest $TAO token and subnet information | <a href="https://pro.openbb.co/app/data-connectors?modal=data-connectors&dcTab=single&endpoint=https://taostats.io/data.json&name=TAO stats" target="_blank"> <button className="_btn text-xs">Add</button> </a> |
+- Converts API responses into interactive tables
+- Requires minimal configuration
+- Supports JSON data formats
+- Enables real-time data updates
+
+### Implementation Guide
+
+1. Enter your API endpoint URL
+2. Configure any required connection details
+3. Select the relevant metadata
+4. The widget automatically renders your data in table format
+
+### Troubleshooting Guide
+
+#### Data Not Displaying
+
+- Verify your endpoint returns JSON format
+- Check API response structure
+- Ensure proper authentication if required
+
+#### Connection Errors
+
+- Use the '+ Add Headers' button to include required authentication
+- Verify endpoint accessibility
+- Check network connectivity
+
+#### Data Structure Issues
+
+- Use the "Data Key" parameter for nested JSON structures
+- Consider using [Data Integration](/content/workspace/data-widgets/index.md) for complex data processing
+
+For additional support, contact [support@openbb.finance](mailto:support@openbb.finance) with specific details about your issue.
+
+### Pre-configured API Endpoints
+
+We provide several pre-configured API endpoints for immediate use:
+
+| Widget Title | Public URL | Category | Subcategory | Source | Description | Add to Pro |
+| ------------ | ---------- | -------- | ----------- | ------ | ----------- | ---------- |
+| Protocols | https://defillama-datasets.llama.fi/lite/v2/protocols | DeFi | TVL | DefiLLama | Comprehensive list of DeFi protocols with TVL data | <a href="https://pro.openbb.co/app/data-connectors?modal=data-connectors&dcTab=single&endpoint=https://defillama-datasets.llama.fi/lite/v2/protocols&name=Protocols" target="_blank"> <button className="_btn text-xs">Add</button> </a> |
+| Historical Chain TVL | https://api.llama.fi/v2/historicalChainTvl | DeFi | TVL | DefiLLama | Historical TVL data across all DeFi chains | <a href="https://pro.openbb.co/app/data-connectors?modal=data-connectors&dcTab=single&endpoint=https://api.llama.fi/v2/historicalChainTvl&name=Historical Chain TVL" target="_blank"> <button className="_btn text-xs">Add</button> </a> |
+| Chains | https://api.llama.fi/v2/chains | DeFi | TVL | DefiLLama | Current TVL metrics for all chains | <a href="https://pro.openbb.co/app/data-connectors?modal=data-connectors&dcTab=single&endpoint=https://api.llama.fi/v2/chains&name=Chains" target="_blank"> <button className="_btn text-xs">Add</button> </a> |
+| TAO stats | https://taostats.io/data.json | Crypto | | Tao | Real-time $TAO token and subnet metrics | <a href="https://pro.openbb.co/app/data-connectors?modal=data-connectors&dcTab=single&endpoint=https://taostats.io/data.json&name=TAO stats" target="_blank"> <button className="_btn text-xs">Add</button> </a> |

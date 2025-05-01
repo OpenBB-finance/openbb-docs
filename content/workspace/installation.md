@@ -16,7 +16,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 OpenBB Workspace is now available as a Progressive Web App (PWA), providing a seamless, native-like experience across all your devices.
 
-<img width="800" alt="Apps" src="https://openbb-cms.directus.app/assets/b1d5b799-3abe-4d45-b04c-601e2b652b18.png" />
+<img width="800" alt="PWA" src="https://openbb-cms.directus.app/assets/b1d5b799-3abe-4d45-b04c-601e2b652b18.png" />
 
 This installation method offers several advantages:
 

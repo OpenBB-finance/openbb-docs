@@ -1,10 +1,18 @@
 ---
 title: FAQs
 sidebar_position: 4
-description: Frequently asked questions about the OpenBB Workspace Data Integration.
+description: Comprehensive guide to frequently asked questions about OpenBB Workspace data integration, custom backend setup, widget configuration, and troubleshooting common issues.
 keywords:
-- FAQs
-- Data Integration
+  - FAQs
+  - Data Integration
+  - Custom Backend
+  - Widget Configuration
+  - API Integration
+  - OpenBB Workspace
+  - Backend Setup
+  - Widget Templates
+  - Troubleshooting
+  - Data Sources
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
