@@ -18,7 +18,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 OpenBB Apps are powerful, customizable solutions that combine data widgets, prompts and AI agents to create optimized workflows for your specific needs.
 
-<img width="800" alt="OpenBB Workspace Multiple Applications View" src="https://openbb-cms.directus.app/assets/2fc9097e-0941-49df-8d83-7d6b5a87bb45.png" />
+<div style={{display: 'flex-col', justifyContent: 'center'}}>
+  <img width="800" alt="PWA" src="https://openbb-cms.directus.app/assets/b1d5b799-3abe-4d45-b04c-601e2b652b18.png" />
+</div>
 
 Built on the principle that there's no one-size-fits-all approach to financial analysis, Apps empower you to own your workflows end-to-end.
 
@@ -30,8 +32,6 @@ OpenBB Apps are comprehensive solutions that combine:
 - **Custom Dashboards**: Pre-configured layouts with specialized widgets
 - **AI Agents**: Intelligent automation for your analysis workflows
 - **Pre-saved Prompts**: Reusable AI interactions for consistent results
-
-<img className="pro-border-gradient" width="800" alt="OpenBB Apps Example" src="https://openbb-cms.directus.app/assets/5778561c-5c09-4d70-bde8-952acbccaa01.png" />
 
 ## Why Use OpenBB Apps?
 
