@@ -357,4 +357,6 @@ Your custom apps will appear in the OpenBB Workspace under the "Apps" tab in the
 
 <img width="800" alt="OpenBB Workspace Multiple Applications View" src="https://openbb-cms.directus.app/assets/2fc9097e-0941-49df-8d83-7d6b5a87bb45.png" />
 
+**Note**: The ideal image size is 250x200px
+
 Remember, the best part is that you can build your own apps tailored to your specific needs.
