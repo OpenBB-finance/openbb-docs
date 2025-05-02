@@ -269,6 +269,11 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
     Description of the parameter, shown on hover.
     _Example:_ `"The start date for the data"`
 
+  - **roles**
+    _Type:_ `array`
+    Only used on the Multi-File Viewer Widget - Specifies which parameter is used to select the files.
+    _Example:_ `["fileSelector"]`
+
   - **multiSelect**
     _Type:_ `boolean`
     Allows multiple values to be selected from your parameter options.

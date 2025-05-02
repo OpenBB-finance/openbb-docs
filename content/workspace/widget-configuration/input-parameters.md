@@ -1,6 +1,6 @@
 ---
 title: Input Parameters
-sidebar_position: 18
+sidebar_position: 17
 description: Comprehensive guide to different input parameter types available in OpenBB Workspace including Date Picker, Text Input, Boolean Toggle, Number Input, Dropdown, and Advanced Dropdown
 keywords:
 - input
