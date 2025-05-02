@@ -36,20 +36,21 @@ This documentation covers everything you need to know about building effective f
 
 ## Getting Started
 
-In our [Data Integration](../data-integration.md) guide, we introduced the basic structure using `main.py` and `widgets.json`. To make development even easier, we've created a Python decorator that keeps your widget specifications right next to their implementation code.
-
-Our widget registry system simplifies widget management by allowing you to define widget configurations directly in your code. Here's how it works:
-
-<details>
-<summary mdxType="summary">registry.py</summary>
+In our [Data Integration](../data-integration.md) guide, we introduced the basic structure using `main.py` and `widgets.json`. To make development even easier, we've created a Python decorator that keeps your widget specifications right next to their implementation code. You can add it as part of the initial boilerplate, so you can build a backend with a single `main.py` file:
 
 ```python
+# Import required libraries
+from pathlib import Path
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 from functools import wraps
 import asyncio
 
 # Initialize empty dictionary for widgets
 WIDGETS = {}
 
+# Decorator that registers a widget configuration in the WIDGETS dictionary.
 def register_widget(widget_config):
     """
     Decorator that registers a widget configuration in the WIDGETS dictionary.
@@ -87,22 +88,6 @@ def register_widget(widget_config):
             return async_wrapper
         return sync_wrapper
     return decorator
-```
-
-</details>
-
-
-With the registry system in place, you can create a complete backend with just a single `main.py` file:
-
-<details>
-<summary mdxType="summary">main.py</summary>
-
-```python
-# Import required libraries
-from pathlib import Path
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from registry import register_widget, WIDGETS
 
 # Initialize FastAPI application with metadata
 app = FastAPI(
@@ -164,8 +149,6 @@ def markdown_widget():
     """Returns a markdown widget"""
     return "# Markdown Widget"
 ```
-
-</details>
 
 ## Example Widgets
 
