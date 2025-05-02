@@ -76,7 +76,7 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
 - **type**
   _Type:_ `string`
   Sets the default visualization type for the widget.
-  _Possible values:_ `"chart"`, `"table"`, `"markdown"`, `"metric"`, `"note"`,  `"multi_file_viewer"`
+  _Possible values:_ `"chart"`, `"table"`, `"markdown"`, `"metric"`, `"note"`,  `"multi_file_viewer"`, `"live_grid"`, `"newsfeed"`, `"advanced-chart"`, `"chart-highcharts"`
   _Default:_ `"table"`
 
 - **runButton**
@@ -291,7 +291,6 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
       _Type:_ `string`, `number`, `boolean`
       The value for a dropdown option.
       _Example:_ `"option1"`
-
 
 
 - **source**
