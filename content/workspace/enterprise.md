@@ -43,7 +43,7 @@ OpenBB Workspace Enterprise enables secure team collaboration while maintaining 
 - Collaborate on alpha generation while maintaining data security
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="Dashboard Sharing Interface" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/sharing_dashboard.png" />
+  <img className="pro-border-gradient" width="800" alt="Dashboard Sharing Interface" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/sharing_dashboard.png" />
 </div>
 
 ## Role-Based Access Control (RBAC)
@@ -59,11 +59,11 @@ To set up role-based access:
 3. Assign users to the role
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="Role Creation Interface" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/create-role-empty.png" />
+  <img className="pro-border-gradient" width="800" alt="Role Creation Interface" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/create-role-empty.png" />
 </div>
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="Role Creation Form" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/create-role-popup.png" />
+  <img className="pro-border-gradient" width="800" alt="Role Creation Form" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/create-role-popup.png" />
 </div>
 
 > **Note**: You can only assign users who have already been added to the Workspace. See the User Management section for adding new users.
@@ -71,29 +71,29 @@ To set up role-based access:
 After creating a role, you can view all assigned users and role metadata in the Roles tab:
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="Role User List" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/create-role-user-list.png" />
+  <img className="pro-border-gradient" width="800" alt="Role User List" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/create-role-user-list.png" />
 </div>
 
 ### Permission Management
 
 Permissions are organized into three key categories:
 
-1. **Data Connectors**: Control access to data sources and files
-2. **Templates**: Manage dashboard template access
-3. **Prompts**: Control access to AI prompts and custom backends
+1. **Apps**: Manage dashboard access through apps
+2. **Widgets**: Granular control over widget access
+3. **Prompts**: Control access to AI prompts
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="Permissions Overview" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/permissions-list-view.png" />
+  <img className="pro-border-gradient" width="800" alt="Permissions Overview" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/permissions-list-view.png" />
 </div>
 
-#### Data Connector Permissions
+#### App Permissions
 
-To set up data connector permissions:
+To set up app permissions:
 
-1. Configure your custom backend and upload files in the Data Connectors tab
+1. Configure your data integration in the App tab
 2. Click the information toast message to access the Permissions section
 3. Update data connection permissions from "No Access" to "Access"
-4. Grant access to specific widgets associated with the backend
+4. (Optional) Grant access to specific widgets associated with the data integration instead of the entire app
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
   <img className="pro-border-gradient" width="600" alt="Backend Setup Notification" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/backend-setup-toast-message.png" />
@@ -104,16 +104,17 @@ To set up data connector permissions:
 </div>
 
 **Efficient Permission Assignment:**
+
 - Search by category or data provider
 - Use multi-select for bulk permission assignment
 - Widgets with "No Access" remain hidden from users with that role
 
-#### Template Permissions
+#### Widget Permissions
 
-Templates define dashboard layouts and widget arrangements. Users need access to all underlying widgets to view a complete template. The system automatically detects and notifies you of any missing widget permissions.
+If you want to grant access to specific widgets instead of the entire app, you can do so by setting widget permissions.
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="Template Sharing Notification" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/share-template-toast.png" />
+  <img className="pro-border-gradient" width="600" alt="Permission Edit Interface" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/permission-edit.png" />
 </div>
 
 #### Prompt Permissions

@@ -18,9 +18,8 @@ This guide explains how to implement TradingView charts in OpenBB using TradingV
 
 ## Prerequisites
 
-1. TradingView Charting Library license
-2. FastAPI or similar web framework for implementing the UDF endpoints
-3. Data source for market data (OHLCV)
+1. FastAPI or similar web framework for implementing the UDF endpoints
+2. Data source for market data (OHLCV)
 
 ## Required UDF Endpoints
 

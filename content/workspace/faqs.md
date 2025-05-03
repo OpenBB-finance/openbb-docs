@@ -68,11 +68,11 @@ A: Templates allow you to define and manage the layout and behavior of widgets o
 
 **Q: How do I implement dynamic dropdown options in widgets?**
 
-A: Use the `type: "endpoint"` in your parameter configuration and specify an `optionsEndpoint` that returns the available options. See the [Input Parameters](/content/workspace/data-widgets/input-parameters.md) page for implementation details.
+A: Use the `type: "endpoint"` in your parameter configuration and specify an `optionsEndpoint` that returns the available options. See the [Input Parameters](/content/workspace/widget-configuration/input-parameters.md) page for implementation details.
 
 **Q: Can I group widgets to share parameters?**
 
-A: Yes, widgets can be grouped by using the same parameter configuration. This allows a single parameter selection to update all related widgets. More information is available in the [Input Parameters](/content/workspace/data-widgets/input-parameters.md) page.
+A: Yes, widgets can be grouped by using the same parameter configuration. This allows a single parameter selection to update all related widgets. More information is available in the [Input Parameters](/content/workspace/widget-configuration/input-parameters.md) page.
 
 ### Troubleshooting
 
@@ -113,4 +113,4 @@ Contact the system administrator if you are using a work device and require addi
 
 **Q: My widget data is not refreshing as expected. What could be wrong?**
 
-A: Check the `refetchInterval` and `staleTime` settings in your `widgets.json` file. Ensure they are set appropriately for your data's update frequency. Refer to the [Widget Settings](/content/workspace/data-widgets/settings.md) section for more information. Or you have set the `runButton` to `true` in the `widgets.json` file which doesn't refresh the data until you click on it. [Run Button](/content/workspace/data-widgets/settings.md)
+A: Check the `refetchInterval` and `staleTime` settings in your `widgets.json` file. Ensure they are set appropriately for your data's update frequency. Refer to the [Widget Settings](/content/workspace/widget-configuration/settings.md) section for more information. Or you have set the `runButton` to `true` in the `widgets.json` file which doesn't refresh the data until you click on it. [Run Button](/content/workspace/widget-configuration/settings.md)

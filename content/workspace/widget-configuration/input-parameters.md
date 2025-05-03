@@ -1,6 +1,6 @@
 ---
 title: Input Parameters
-sidebar_position: 18
+sidebar_position: 17
 description: Comprehensive guide to different input parameter types available in OpenBB Workspace including Date Picker, Text Input, Boolean Toggle, Number Input, Dropdown, and Advanced Dropdown
 keywords:
 - input
@@ -18,7 +18,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Input Parameters | OpenBB Workspace Docs" />
 
-## Date Picker Parameter
+## Date Picker
 
 A widget that includes a date picker parameter allowing users to select a specific date. The selected date is passed to the widget as a parameter.
 
@@ -51,7 +51,7 @@ Selected date: {date_picker}
 """
 ```
 
-## Text Input Parameter
+## Text Input
 
 A widget that includes a text input parameter allowing users to enter custom text. The entered text is passed to the widget as a parameter.
 
@@ -82,7 +82,7 @@ Entered text: {text_box}
 """
 ```
 
-## Boolean Toggle Parameter
+## Boolean Toggle
 
 A widget that includes a boolean toggle parameter allowing users to enable or disable features. The toggle state is passed to the widget as a parameter.
 
@@ -113,7 +113,7 @@ Current state: {'Enabled' if condition else 'Disabled'}
 """
 ```
 
-## Number Input Parameter
+## Number Input
 
 A widget that includes a number input parameter allowing users to enter numerical values. The entered number is passed to the widget as a parameter.
 
@@ -144,7 +144,7 @@ Entered number: {number_box}
 """
 ```
 
-## Dropdown Parameter
+## Dropdown
 
 A widget that includes a dropdown parameter allowing users to select from predefined options. The selected option is passed to the widget as a parameter.
 
@@ -200,7 +200,7 @@ Selected days: {days_picker}
 """
 ```
 
-## Advanced Dropdown Parameter
+## Advanced Dropdown
 
 Sometimes you may want to pass a list from an endpoint rather then specify the options in the `widgets.json` file.
 
@@ -276,7 +276,7 @@ Selected stocks: {stock_picker}
 """
 ```
 
-## Dependent Dropdown Parameters
+## Dependent Dropdown
 
 A widget that demonstrates how to create dependent dropdowns where the options in one dropdown depend on the selection in another dropdown. This is useful when you want to filter options in a second dropdown based on the selection in the first dropdown.
 
