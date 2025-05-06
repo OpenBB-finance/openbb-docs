@@ -28,14 +28,14 @@ This documentation covers everything you need to know about building effective f
 - [Plotly Charts](./plotly-charts.md) - Build interactive financial visualizations using Plotly
 - [TradingView Charts](./tradingview-charts.md) - Integrate professional-grade charting with TradingView
 - [Live Grid](./live-grid.md) - Work with real-time market data feeds
-- [Input Form](./input-form.md) - Create interactive forms for data input and analysis
+- [Input Form](../widget-configuration/input-form.md) - Create interactive forms for data input and analysis
 - [Newsfeed](./newsfeed.md) - Display news articles in a clean, organized format
 - [Multi-File Viewer](./multi-file-viewer.md) - View multiple files in a single widget
 - [Metric](./metric.md) - Display a single metric in a widget
 - [Markdown](./markdown.md) - Display markdown content in a widget
 - [Highcharts](./highcharts.md) - Create Highcharts widgets for OpenBB Workspace
-- [Input Parameters](./input-parameters.md) - Configure widget parameters for optimal performance
-- [Settings](./settings.md) - Customize widget behavior and appearance
+- [Input Parameters](../widget-configuration/input-parameters.md) - Configure widget parameters for optimal performance
+- [Settings](../widget-configuration/settings.md) - Customize widget behavior and appearance
 
 
 ## Getting Started

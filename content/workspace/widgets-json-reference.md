@@ -185,7 +185,7 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
 
       - **renderFn**
         _Type:_ `string`
-        Specifies a rendering function for cell data. See [Render Functions](/content/workspace/render-functions.md) for more information.
+        Specifies a rendering function for cell data. See [Render Functions](../workspace/widget-configuration/render-functions.md) for more information.
         _Example:_ `"titleCase"`
         _Possible values:_ `"greenRed"`, `"titleCase"`, `"hoverCard"`, `"cellOnClick"`, `"columnColor"`, `"showCellChange"`
 
