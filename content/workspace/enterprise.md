@@ -83,7 +83,7 @@ Permissions are organized into three key categories:
 3. **Prompts**: Control access to AI prompts
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="800" alt="Permissions Overview" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/permissions-list-view.png" />
+  <img className="pro-border-gradient" width="800" alt="Permissions Overview" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/role+permissions.png" />
 </div>
 
 #### App Permissions
@@ -96,11 +96,11 @@ To set up app permissions:
 4. (Optional) Grant access to specific widgets associated with the data integration instead of the entire app
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="Backend Setup Notification" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/backend-setup-toast-message.png" />
+  <img className="pro-border-gradient" width="600" alt="Backend Setup Notification" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/new-apps.png" />
 </div>
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="Permission Edit Interface" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/permission-edit.png" />
+  <img className="pro-border-gradient" width="600" alt="Permission Edit Interface" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/app2.png" />
 </div>
 
 **Efficient Permission Assignment:**
@@ -114,7 +114,7 @@ To set up app permissions:
 If you want to grant access to specific widgets instead of the entire app, you can do so by setting widget permissions.
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="Permission Edit Interface" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/permission-edit.png" />
+  <img className="pro-border-gradient" width="600" alt="Permission Edit Interface" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/widgets+permissions.png" />
 </div>
 
 #### Prompt Permissions
@@ -126,11 +126,11 @@ Manage access to prompts through:
 3. Role Management in the Admin Portal
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="Prompt Setup Interface" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/set-prompts.png" />
+  <img className="pro-border-gradient" width="600" alt="Prompt Setup Interface" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/prompts.png" />
 </div>
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="Prompt Sharing Controls" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/prompt-sharing.png" />
+  <img className="pro-border-gradient" width="600" alt="Prompt Sharing Controls" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/prompts-permissions.png" />
 </div>
 
 ### Activity Logging
