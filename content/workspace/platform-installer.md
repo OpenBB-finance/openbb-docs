@@ -69,13 +69,22 @@ If you are using Brave/Safari you will need an HTTPS connection - see how [here]
 
 <!-- TODO - We cant do this yet - issue with localhost in name - You can do so by clicking on this [link](http://pro.openbb.co/app/data-connectors?tab=my-data&modal=data-connectors&dcTab=backend&name=OpenBB%20Platform&url=http://localhost:6900). -->
 
-<img className="pro-border-gradient" width="1000" alt="install" src="https://github.com/user-attachments/assets/c3ee50ff-114c-4718-8471-ef8070356692" />
+Right click on a dashboard, then click "Add data".
 
-<img className="pro-border-gradient" width="1000" alt="install-2" src="https://github.com/user-attachments/assets/770e6d6c-6cd7-4073-a874-af0850f404cc" />
+<img className="pro-border-gradient" width="200" alt="Table Widget Example" src="https://openbb-cms.directus.app/assets/0c2c8866-54a8-4137-90b6-bf0db365ca6e.png" />
 
-6. Voila. You are now ready to access 350+ data widgets from your OpenBB. For free.
+Then fill in the information as shown below:
 
-<img className="pro-border-gradient" width="1000" alt="finished" src="https://github.com/user-attachments/assets/a48eb08c-6536-43c6-a055-0e46082c14c8" />
+<img className="pro-border-gradient" width="800" alt="Table Widget Example" src="https://openbb-cms.directus.app/assets/563aca68-1ec3-48c7-86d8-9129e0e5fd8c.png" />
+
+Or you could also click this link to have it all filed in: https://pro.openbb.co/app?modal=connect-backend&name=OpenBB%20Platform&url=https://127.0.0.1:6900
+
+
+6. Voila. You are now ready to access 300+ data widgets from OpenBB. For free.
+
+These are some apps available out of the box:
+
+<img className="pro-border-gradient" width="800" alt="Table Widget Example" src="https://openbb-cms.directus.app/assets/9d5f9dba-1603-489c-ad47-ae0f9b7bd0da.png" />
 
 ## Advanced - Access this data on mobile
 
