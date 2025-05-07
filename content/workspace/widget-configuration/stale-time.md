@@ -1,6 +1,6 @@
 ---
 title: Stale Time
-sidebar_position: 8
+sidebar_position: 5
 description: Learn about configuring stale time for widgets in OpenBB Workspace.
 keywords:
 - stale time
