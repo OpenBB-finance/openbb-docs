@@ -1,40 +1,67 @@
 ---
 title: Markdown
 sidebar_position: 4
-description: Learn how to integrate your own backend with OpenBB Workspace using the cookie-cutter or language-agnostic API approaches, with illustrative guides and principles for handling widget.json files, APIs, interfaces, Python, FastAPI, and more.
+description: Learn how to create and customize markdown widgets in OpenBB Workspace, including basic markdown display and data-rich markdown with dynamic content integration.
 keywords:
-- widgets.json
-- OpenBB API
-- Endpoint integration
+- markdown widget
 - widget configuration
-- Language-Agnostic API
-- API implementation
-- Python
-- FastAPI
-- Workspace widgets
-- Widget definitions
+- dynamic markdown
+- data integration
+- widget display
+- markdown formatting
+- widget customization
+- OpenBB Workspace
+- widget development
+- markdown content
 ---
 
-# Markdown Widget
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-This guide will walk you through the process of creating a markdown widget for OpenBB Workspace. By the end of this guide, you will have a working markdown widget that you can add to OpenBB.
+<HeadTitle title="Markdown | OpenBB Workspace Docs" />
 
-## Step 1: Set Up Your Project
+A simple widget that displays markdown content.
 
-To get started, create the main application file and the widget configuration file. You will only need these two files:
-
-- `main.py`: This file will contain your FastAPI application code.
-- `widgets.json`: This file will define the configuration for your widget.
-
-The backend will use the same FastAPI setup and structure as described in the [Overview](/content/workspace/data-integration#1-create-the-api-server.md) page.
-
-## Step 2: Create the Markdown Endpoint
-
-Edit the `main.py` file and add the following code. This code sets up a FastAPI application with an endpoint to serve the widget configuration and data for a markdown widget to display:
+<img className="pro-border-gradient" width="800" alt="Markdown Widget Example" src="https://openbb-cms.directus.app/assets/60cbbcb5-194e-4c03-905e-65f3de7f4efe.png" />
 
 ```python
-...
-# Markdown endpoint
+@register_widget({
+    "name": "Markdown Widget",
+    "description": "A markdown widget",
+    "type": "markdown",
+    "endpoint": "markdown_widget",
+    "gridData": {"w": 12, "h": 4},
+})
+@app.get("/markdown_widget")
+def markdown_widget():
+    """Returns a markdown widget"""
+    return "# Markdown Widget"
+```
+
+The gridData parameter specifies the widget's size in the OpenBB Workspace grid system. More on that can be found [here](/workspace/widget-configuration/grid-size).
+
+## Data rich markdown
+
+<img className="pro-border-gradient" width="600" alt="markdown" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/markdown-widget.png" />
+
+```python
+@register_widget({
+  "name": "Defi Llama Protocol Details",
+  "description": "Details for a given protocol",
+  "category": "Crypto",
+  "defaultViz": "markdown",
+  "endpoint": "defi_llama_protocol_details",
+  "gridData": {"w": 20, "h": 9},
+  "source": "Defi Llama",
+  "params": [
+    {
+      "paramName": "protocol_id",
+      "value": "aave",
+      "label": "Protocol",
+      "type": "text",
+      "description": "Defi Llama ID of the protocol"
+    }
+  ]
+})
 @app.get("/defi_llama_protocol_details")
 def defi_llama_protocol_details(protocol_id: str = None):
     """Get details for a given protocol using Defi Llama"""
@@ -64,50 +91,87 @@ def defi_llama_protocol_details(protocol_id: str = None):
     return markdown
 ```
 
-> **Note:** The `dedent` function is used to remove leading whitespace from the markdown string. This is a good practice to ensure the markdown is formatted correctly.
-### Edit the widgets.json File
+**Note:** The `dedent` function is used to remove leading whitespace from the markdown string. This is a good practice to ensure the markdown is formatted correctly.
 
-Open the `widgets.json` file and add the following JSON data. This configuration defines the widget's properties and how it should be displayed in the OpenBB Workspace.
 
-```json
-{
-  "defi_llama_protocol_details": {
-    "name": "Defi Llama Protocol Details",
-    "description": "Details for a given protocol",
-    "category": "Crypto",
-    "defaultViz": "markdown",
-    "endpoint": "defi_llama_protocol_details",
-    "gridData": {"w": 20, "h": 9},
-    "source": "Defi Llama",
-    "params": [
-      {
-        "paramName": "protocol_id",
-        "value": "aave",
-        "label": "Protocol",
-        "type": "text",
-        "description": "Defi Llama ID of the protocol"
-      }
-    ]
-  }
-}
+
+
+## Markdown Widget with Local Image
+
+A widget that displays markdown content with an embedded local image. The image is converted to base64 for display.
+
+<img className="pro-border-gradient" width="800" alt="Markdown Widget with Local Image Example" src="https://openbb-cms.directus.app/assets/f2847732-a01e-4146-8095-5dc389c98c7a.png" />
+
+```python
+@register_widget({
+    "name": "Markdown Widget with Local Image",
+    "description": "A markdown widget with a local image",
+    "type": "markdown",
+    "endpoint": "markdown_widget_with_local_image",
+    "gridData": {"w": 20, "h": 20},
+})
+@app.get("/markdown_widget_with_local_image")
+def markdown_widget_with_local_image():
+    """Returns a markdown widget with a local image"""
+    try:
+        with open("img.png", "rb") as image_file:
+            image_base64 = base64.b64encode(image_file.read()).decode('utf-8')
+            return f"![Local Image](data:image/png;base64,{image_base64})"
+    except FileNotFoundError:
+        raise HTTPException(
+            status_code=500,
+            detail="Image file not found"
+        ) from e
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error reading image: {str(e)}"
+        ) from e
 ```
 
-## Step 3: Run the Application
+## Markdown Widget with Image from URL
 
-Start the FastAPI Server using Uvicorn. This will host your backend locally:
+The Markdown widget also provides image handling capabilities, supporting both local and remote images. Images are converted to base64 format for displaying.
 
-```bash
-uvicorn main:app --host localhost --port 5050
-```
+Below is a markdown widget that displays markdown content with an image fetched from a URL. The image is converted to base64 for display.
 
-## Step 4: Add to OpenBB Pro
+<img className="pro-border-gradient" width="800" alt="Markdown Widget with Image from URL Example" src="https://openbb-cms.directus.app/assets/bf26f507-ec62-45d8-bec2-531fe75624e4.png" />
 
-Navigate to [OpenBB Pro Apps](https://pro.openbb.co/app) and add your backend by clicking on the `Manage Backends` button in the top right corner. Select `Add Backend` and fill in the details. Your URL will be `http://localhost:5050`.
+```python
+@register_widget({
+    "name": "Markdown Widget with Image from URL",
+    "description": "A markdown widget with an image from a URL",
+    "type": "markdown",
+    "endpoint": "markdown_widget_with_image_from_url",
+    "gridData": {"w": 20, "h": 20},
+})
+@app.get("/markdown_widget_with_image_from_url")
+def markdown_widget_with_image_from_url():
+    """Returns a markdown widget with an image from a URL"""
+    image_url = "https://api.star-history.com/svg?repos=openbb-finance/OpenBB&type=Date&theme=dark"
+    
+    try:
+        response = requests.get(image_url, timeout=10)
+        response.raise_for_status()
+        
+        content_type = response.headers.get('content-type', '')
+        if not content_type.startswith('image/'):
+            raise HTTPException(
+                status_code=500,
+                detail=f"URL did not return an image. Content-Type: {content_type}"
+            )
 
-Once you have added your backend, you can find the widget in the `Crypto` category with the name `Defi Llama Protocol Details`.
-
-<img className="pro-border-gradient" width="600" alt="markdown" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/markdown-widget.png" />
-
-## Additional Resources
-
-You can find more examples of how to set up your own backend in the [Backend for OpenBB Workspace GitHub](https://github.com/OpenBB-finance/backend-examples-for-openbb-workspace).
+        image_base64 = base64.b64encode(response.content).decode('utf-8')
+        return f"![OpenBB Logo](data:{content_type};base64,{image_base64})"
+        
+    except requests.RequestException as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to fetch image: {str(e)}"
+        ) from e
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error processing image: {str(e)}"
+        ) from e
+``` 

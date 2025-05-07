@@ -10,6 +10,75 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="AgGrid Table Charts | OpenBB Workspace Docs" />
 
+## Basic Table Widget
+
+A widget that displays data in a tabular format. This example shows how to create a table with cryptocurrency data including TVL and price changes.
+
+<img className="pro-border-gradient" width="800" alt="Table Widget Example" src="https://openbb-cms.directus.app/assets/96f31526-87c1-40f3-8ecb-6cc869d2e910.png" />
+
+```python
+@register_widget({
+    "name": "Table Widget",
+    "description": "A table widget",
+    "type": "table",
+    "endpoint": "table_widget",
+    "gridData": {"w": 12, "h": 4},
+})
+@app.get("/table_widget")
+def table_widget():
+    """Returns a mock table data for demonstration"""
+    mock_data = [
+        {
+            "name": "Ethereum",
+            "tvl": 45000000000,
+            "change_1d": 2.5,
+            "change_7d": 5.2
+        },
+        {
+            "name": "Bitcoin",
+            "tvl": 35000000000,
+            "change_1d": 1.2,
+            "change_7d": 4.8
+        },
+        {
+            "name": "Solana",
+            "tvl": 8000000000,
+            "change_1d": -0.5,
+            "change_7d": 2.1
+        }
+    ]
+    return mock_data
+```
+
+## Table Widget from API
+
+A widget that fetches and displays data from an external API. This example demonstrates integration with the DeFi Llama API to show chain TVL data.
+
+<img className="pro-border-gradient" width="800" alt="Table Widget from API Example" src="https://openbb-cms.directus.app/assets/ab850520-843d-4fe2-b95c-c8346b41ac93.png" />
+
+```python
+@register_widget({
+    "name": "Table Widget from API Endpoint",
+    "description": "A table widget from an API endpoint",
+    "type": "table",
+    "endpoint": "table_widget_from_api_endpoint",
+    "gridData": {"w": 12, "h": 4},
+})
+@app.get("/table_widget_from_api_endpoint")
+def table_widget_from_api_endpoint():
+    """Get current TVL of all chains using Defi LLama"""
+    response = requests.get("https://api.llama.fi/v2/chains")
+
+    if response.status_code == 200:
+        return response.json()
+
+    print(f"Request error {response.status_code}: {response.text}")
+    raise HTTPException(
+        status_code=response.status_code,
+        detail=response.text
+    )
+```
+
 ## Table Widget with Column Definitions
 
 A widget that displays data in a tabular format with customizable column definitions. The most important part of this widget is the "columnsDefs" key in the data object which allows for detailed column configuration.
@@ -200,6 +269,8 @@ def table_widget_with_render_functions():
     ]
     return mock_data
 ```
+
+For more information on this, check [Render functions](/workspace/widget-configuration/render-functions).
 
 ## Table Widget with Hover Card
 
