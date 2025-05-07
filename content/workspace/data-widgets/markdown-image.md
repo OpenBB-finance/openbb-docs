@@ -14,6 +14,10 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Markdown with Images | OpenBB Workspace Docs" />
 
+The Markdown widget provides secure image handling capabilities, supporting both local and remote images. Images are converted to base64 format for secure display, ensuring that sensitive data remains protected while maintaining the visual integrity of your content.
+
+Note: This prevents potential security vulnerabilities that could arise from direct file access or unsecured image URLs.
+
 ## Markdown Widget with Local Image
 
 A widget that displays markdown content with an embedded local image. The image is converted to base64 for display.
