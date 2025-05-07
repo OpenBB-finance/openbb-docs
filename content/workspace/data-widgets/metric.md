@@ -15,26 +15,22 @@ keywords:
 - Widget definitions
 ---
 
-# Metric Widget
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-This guide will walk you through the process of creating a metric widget for OpenBB Workspace. By the end of this guide, you will have a working metric widget that you can add to OpenBB.
+<HeadTitle title="Metric | OpenBB Workspace Docs" />
 
-## Step 1: Set Up Your Project
+A widget that displays key metrics with labels, values, and delta changes. Useful for showing important statistics and their trends.
 
-To get started, create the main application file and the widget configuration file. You will only need these two files:
-
-- `main.py`: This file will contain your FastAPI application code.
-- `widgets.json`: This file will define the configuration for your widget.
-
-The backend will use the same FastAPI setup and structure as described in the [Overview](/content/workspace/data-integration#1-create-the-api-server.md) page.
-
-## Step 2: Create the Metric Endpoint
-
-Edit the `main.py` file and add the following code. This code sets up a FastAPI application with an endpoint to serve the widget configuration and data for a metric widget:
+<img className="pro-border-gradient" width="600" alt="metric" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/metric-widget.png" />
 
 ```python
-...
-# Metric endpoint
+@register_widget({
+  "name": "Metric Widget",
+  "description": "A metric widget example",
+  "category": "Test",
+  "endpoint": "test_metric",
+  "type": "metric"
+})
 @app.get("/test_metric")
 def test_metric():
     """Example endpoint to provide metric data."""
@@ -54,40 +50,50 @@ As you can see in the example the data structure is as follows:
 - `value`: The value of the metric.
 - `delta`: The delta of the metric.
 
-### Edit the widgets.json File
+## Multiple metrics
 
-Edit the `widgets.json` file and add the following JSON data. This configuration defines the widget's properties and how it should be displayed:
+<img className="pro-border-gradient" width="800" alt="Metric Widget Example" src="https://openbb-cms.directus.app/assets/ba37bbbb-371a-40e8-a7e1-e48edcc6c0c8.png" />
 
-```json
-{
-  "test_metric": {
+```python
+@register_widget({
     "name": "Metric Widget",
-    "description": "A metric widget example",
-    "category": "Test",
-    "endpoint": "test_metric",
+    "description": "A metric widget",
+    "endpoint": "metric_widget",
+    "gridData": {
+      "w": 5,
+      "h": 5
+    },
     "type": "metric"
-  }
-}
+})
+@app.get("/metric_widget")
+def metric_widget():
+    data = [
+        {
+            "label": "Total Users",
+            "value": "1,234,567",
+            "delta": "12.5"
+        },
+        {
+            "label": "Active Sessions",
+            "value": "45,678",
+            "delta": "-2.3"
+        },
+        {
+            "label": "Revenue (USD)",
+            "value": "$89,432",
+            "delta": "8.9"
+        },
+        {
+            "label": "Conversion Rate",
+            "value": "3.2%",
+            "delta": "0.0"
+        },
+        {
+            "label": "Avg. Session Duration",
+            "value": "4m 32s",
+            "delta": "0.5"
+        }
+    ]
+
+    return JSONResponse(content=data)
 ```
-
-For more information on the `widgets.json` file, see the [Widgets.json](/workspace/custom-backend/widgets-json-reference) page.
-
-## Step 3: Run the Application
-
-Start the FastAPI Server using Uvicorn. This will host your backend locally:
-
-```bash
-uvicorn main:app --host localhost --port 5050
-```
-
-## Step 4: Add to OpenBB Pro
-
-Navigate to [OpenBB Pro Apps](https://pro.openbb.co/app) and add your backend by clicking on the `Manage Backends` button in the top right corner. Select `Add Backend` and fill in the details. Your URL will be `http://localhost:5050`.
-
-Once you have added your backend, you can find the widget in the `Test` category with the name `Test Metric`.
-
-<img className="pro-border-gradient" width="600" alt="metric" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/metric-widget.png" />
-
-## Additional Resources
-
-You can find more examples of how to set up your own backend in the [Backend for OpenBB Workspace GitHub](https://github.com/OpenBB-finance/backend-examples-for-openbb-workspace).
