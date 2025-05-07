@@ -1,5 +1,5 @@
 ---
-title: Date Picker Parameter
+title: Date Picker
 sidebar_position: 20
 description: Learn how to implement and use date picker parameters in OpenBB Workspace widgets, including configuration options and example usage
 keywords:
@@ -30,7 +30,7 @@ A widget that includes a date picker parameter allowing users to select a specif
         {
             "paramName": "date_picker",
             "description": "Choose a date to display",
-            "value": (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d"),
+            "value": "$currentDate-1d",
             "label": "Select Date",
             "type": "date"
         }
@@ -45,3 +45,5 @@ def markdown_widget_with_date_picker(
 Selected date: {date_picker}
 """
 ```
+
+Note : We use the `$currentDate` variable to get the current date. More info here : [Date Modifier in widgets.json](../widgets-json-reference#date-modifier)

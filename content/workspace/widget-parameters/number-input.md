@@ -1,5 +1,5 @@
 ---
-title: Number Input Parameter
+title: Number Input
 sidebar_position: 23
 description: Learn how to implement and use number input parameters in OpenBB Workspace widgets, including configuration options and example usage
 keywords:

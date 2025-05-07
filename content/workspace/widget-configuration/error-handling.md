@@ -16,6 +16,8 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 This is a simple widget that demonstrates how to handle errors in your widgets.
 
+We display the error detail message in the markdown widget that is returned from the endpoint.
+
 <img className="pro-border-gradient" width="800" alt="Markdown Widget with Error Handling Example" src="https://openbb-cms.directus.app/assets/c8671675-d4d0-4b3d-ada1-d4eae95ca859.png" />
 
 ```python

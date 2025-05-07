@@ -1,5 +1,5 @@
 ---
-title: Advanced Dropdown Parameter
+title: Advanced Dropdown
 sidebar_position: 25
 description: Learn how to implement and use advanced dropdown parameters in OpenBB Workspace widgets, including dynamic options from endpoints and additional information display
 keywords:
@@ -56,7 +56,9 @@ def advanced_dropdown_options():
     ]
 ```
 
-Note how the `optionsEndpoint` is `/advanced_dropdown_options`.
+Note how the `optionsEndpoint` is pointing to the endpoint `"/advanced_dropdown_options"`.
+
+We also set the `style` parameter to `popupWidth` to `450` to set the width of the dropdown.
 
 ```python
 @register_widget({

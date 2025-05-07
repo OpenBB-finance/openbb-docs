@@ -1,5 +1,5 @@
 ---
-title: Dependent Dropdown Parameter
+title: Dependent Dropdown
 sidebar_position: 26
 description: Learn how to implement and use dependent dropdown parameters in OpenBB Workspace widgets, where options in one dropdown depend on the selection in another
 keywords:
@@ -60,10 +60,11 @@ def get_document_options(category: str = "all"):
 ```
 
 Next, we create the widget that uses these dependent dropdowns. The widget has two parameters:
+
 1. A category dropdown that lets users select between "All", "Reports", or "Presentations"
 2. A document dropdown that shows documents filtered based on the selected category
 
-The key to making this work is the `optionsParams` field in the second parameter, which uses `$category` to reference the value from the first parameter. This creates the dependency between the two dropdowns.
+The key to making this work is the `optionsParams` field in the second parameter, which uses `$category` to reference the value from the first parameter. This creates the dependency between the two dropdowns. These parameters are passed to the endpoint as a query parameter.
 
 ```python
 @register_widget({

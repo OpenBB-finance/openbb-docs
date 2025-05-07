@@ -1,5 +1,5 @@
 ---
-title: Text Input Parameter
+title: Text Input
 sidebar_position: 21
 description: Learn how to implement and use text input parameters in OpenBB Workspace widgets, including configuration options and example usage
 keywords:

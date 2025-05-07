@@ -1,5 +1,5 @@
 ---
-title: Boolean Toggle Parameter
+title: Boolean Toggle
 sidebar_position: 22
 description: Learn how to implement and use boolean toggle parameters in OpenBB Workspace widgets, including configuration options and example usage
 keywords:
