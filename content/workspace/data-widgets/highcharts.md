@@ -165,7 +165,7 @@ Edit the `widgets.json` file and add the following JSON data. This configuration
 
 Note that for Highcharts, the `type` field is set to `"chart-highcharts"` instead of just `"chart"` which is used for Plotly charts.
 
-For more information on the `widgets.json` file, see the [Widgets.json](/content/workspace/custom-backend/widgets-json-reference) page.
+For more information on the `widgets.json` file, see the [Widgets.json](../widgets-json-reference) page.
 
 ## Step 4: Run the Application
 

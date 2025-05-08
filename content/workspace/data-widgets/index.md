@@ -17,26 +17,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 # Data Widgets in OpenBB Workspace
 
-OpenBB Workspace provides a powerful and flexible UI framework that lets you create sophisticated financial dashboards through customizable data widgets. Whether you're building a simple market overview or a complex trading system, our widget system gives you the tools to create exactly what you need.
-
-## What You'll Learn
-
-This documentation covers everything you need to know about building effective financial dashboards:
-
-- [Widget Types](./widget-types.md) - Explore our comprehensive widget library, from markdown displays to interactive charts
-- [AG Grid Table Charts](./aggrid-table-charts.md) - Create advanced data tables with built-in charting capabilities
-- [Plotly Charts](./plotly-charts.md) - Build interactive financial visualizations using Plotly
-- [TradingView Charts](./tradingview-charts.md) - Integrate professional-grade charting with TradingView
-- [Live Grid](./live-grid.md) - Work with real-time market data feeds
-- [Input Form](../widget-configuration/input-form.md) - Create interactive forms for data input and analysis
-- [Newsfeed](./newsfeed.md) - Display news articles in a clean, organized format
-- [Multi-File Viewer](./multi-file-viewer.md) - View multiple files in a single widget
-- [Metric](./metric.md) - Display a single metric in a widget
-- [Markdown](./markdown.md) - Display markdown content in a widget
-- [Highcharts](./highcharts.md) - Create Highcharts widgets for OpenBB Workspace
-- [Input Parameters](../widget-configuration/input-parameters.md) - Configure widget parameters for optimal performance
-- [Settings](../widget-configuration/settings.md) - Customize widget behavior and appearance
-
+OpenBB Workspace provides a powerful and flexible UI framework that lets you create sophisticated financial dashboards through customizable data widgets.
 
 ## Getting Started
 

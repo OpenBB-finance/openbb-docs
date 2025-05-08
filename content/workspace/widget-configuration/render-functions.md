@@ -30,12 +30,12 @@ In the `widgets.json` configuration, you can specify render functions to customi
 
 ### Render Function Parameters
 
-| Parameter | Type | Description | Used With | Example/Options |
-|-----------|------|-------------|-----------|-----------------|
-| **actionType** | `string` | Specifies the action type for the render function | `cellOnClick` | `"groupBy"` |
-| **colorValueKey** | `string` | Specifies which field to use for determining the color when showing cell changes | `showCellChange` | `"change"` |
-| **hoverCardData** | `array of strings` | Specifies columns to show in the hover card | `hoverCard` | - |
-| **colorRules** | `array of objects` | An array of rules for conditional coloring | `columnColor` | See below |
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **actionType** | `string` | Specifies the action type for the render function |
+| **colorValueKey** | `string` | Specifies which field to use for determining the color when showing cell changes |
+| **hoverCardData** | `array of strings` | Specifies columns to show in the hover card |
+| **colorRules** | `array of objects` | An array of rules for conditional coloring |
 
 ### Color Rules Parameters
 
@@ -94,6 +94,39 @@ The below example would apply a green color to the cell if the value is between 
             }
         }
     ]
+}
+```
+
+### Multiple Render Functions and Color Rules
+
+If you want to use multiple render functions, you can pass an array of render functions to the `renderFn` parameter. Below is an example of a column that uses both the `cellOnClick` and `columnColor` render functions. We also specify the `colorValueKey` so that the `columnColor` render function knows which field to use for determining the color. In this case we want to color the symbol cell based on the `Analyst` field.
+
+```json
+{
+    ...
+      "columnsDefs": [
+          {
+            "field": "Symbol",
+            "headerName": "Symbol",
+            "renderFn": [
+              "cellOnClick",
+              "columnColor"
+            ],
+            "renderFnParams": {
+              "actionType": "groupBy",
+              "groupByParamName": "symbol",
+              "colorValueKey": "Analyst",
+              "colorRules": [
+                {
+                  "condition": "eq",
+                  "value": "Sarah Johnson",
+                  "color": "blue",
+                  "fill": true
+                }
+              ]
+            }
+        },
+      ] 
 }
 ```
 
