@@ -27,7 +27,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
     />
 </div>
 
-The OpenBB Add-in for Excel is available on the [Microsoft AppSource](https://appsource.microsoft.com/pt-pt/product/office/wa200006381?tab=overview). It can be installed by an administrator or by individual users.
+The OpenBB Add-in for Excel is available on the [Microsoft AppSource](https://appsource.microsoft.com/product/office/wa200006381?tab=overview). It can be installed by an administrator or by individual users.
 
 ### Individual user
 
