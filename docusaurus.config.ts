@@ -123,7 +123,6 @@ export default {
 					  const relativePath = path.relative(contentDir, fullPath);
 					  const section = relativePath.split(path.sep)[0];
 					  if (section in sectionContent) {
-						console.log(`Processing ${relativePath} for section ${section}`);
 						sectionContent[section].push(content);
 					  }
 					} catch (err) {
@@ -137,9 +136,8 @@ export default {
 			  
 			  // Log content sizes for each section
 			  for (const [section, content] of Object.entries(sectionContent)) {
-				console.log(`Section ${section} has ${content.length} files`);
 				const totalSize = content.reduce((acc, curr) => acc + curr.length, 0);
-				console.log(`Total size for ${section}: ${(totalSize / 1024 / 1024).toFixed(2)}MB`);
+				console.log(`Section ${section} has ${content.length} files with total size of ${(totalSize / 1024 / 1024).toFixed(2)}MB`);
 			  }
 			  
 			  return { sectionContent };
@@ -183,25 +181,20 @@ export default {
 			  // Process each section
 			  for (const [section, routes] of Object.entries(sectionRoutes)) {
 				try {
-				  console.log(`Processing section ${section}...`);
 				  const sectionDir = path.join(staticDir, section);
 				  await fs.promises.mkdir(sectionDir, { recursive: true });
 
 				  // Write section-specific llms.txt
 				  const llmsTxt = `# ${context.siteConfig.title} - ${section}\n\n## Docs\n\n${routes.join("\n")}`;
 				  await fs.promises.writeFile(path.join(sectionDir, "llms.txt"), llmsTxt);
-				  console.log(`Wrote llms.txt for ${section}`);
 
 				  // Write section-specific llms-full.txt
-				  console.log(`Preparing llms-full.txt for ${section}...`);
 				  const sectionFullContent = sectionContent[section].join("\n\n---\n\n");
-				  console.log(`Content prepared for ${section}, size: ${(sectionFullContent.length / 1024 / 1024).toFixed(2)}MB`);
 				  
 				  await fs.promises.writeFile(
 					path.join(sectionDir, "llms-full.txt"),
 					sectionFullContent
 				  );
-				  console.log(`Wrote llms-full.txt for ${section}`);
 				} catch (err) {
 				  console.error(`Error processing section ${section}:`, err);
 				}
