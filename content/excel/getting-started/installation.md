@@ -32,12 +32,10 @@ The OpenBB Add-in for Excel is available on the [Microsoft AppSource](https://ap
 ### Individual user
 
 1. Open Microsoft Excel.
-2. Click the **Insert** tab.
-3. Click **Get Add-ins**.
+2. Go to **Home** tab.
+3. Click in the **Add-ins** button and then **More add-ins**.
 4. In the **Office Add-ins** dialog box **STORE** tab, search for **OpenBB** and select the add-in.
 5. Click **Add**.
-
-> **Note:** If you are using Excel on the web replace steps 2-3 with **Home** > **Add-ins** > **More add-ins**.
 
 ### Administrator
 
