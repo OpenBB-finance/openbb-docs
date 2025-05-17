@@ -1,0 +1,45 @@
+# OpenBB Docs - workspace
+
+## Docs
+
+- [Overview](workspace/ai-agents): Learn how to integrate and customize AI agents in OpenBB Workspace for enhanced financial analysis and research capabilities
+- [AI Generated](workspace/ai-generated): Learn how to use AI agent outputs as widgets in your OpenBB dashboard
+- [Apps](workspace/apps): Create and customize your own OpenBB Apps for optimized workflows
+- [Core Widgets](workspace/core-widgets): Master OpenBB's essential widgets for building powerful financial dashboards, including navigation, notes, API integration, and real-time data visualization tools.
+- [Overview](workspace/data-integration): Learn how to integrate your own data sources and APIs into OpenBB Workspace with a custom backend solution.
+- [AgGrid Table Charts](workspace/data-widgets/aggrid-table-charts): AgGrid Table Charts
+- [File Viewer](workspace/data-widgets/file-viewer): Guide to using PDF and multi-PDF viewer widgets in OpenBB Workspace
+- [Highcharts Chart](workspace/data-widgets/highcharts): Learn how to create Highcharts widgets for OpenBB Workspace, with step-by-step instructions for backend integration, configuration, and theme support.
+- [Data Widgets](workspace/data-widgets/index): Build powerful financial dashboards with OpenBB Workspace's flexible widget system
+- [Live Grid](workspace/data-widgets/live-grid): Create a real-time data grid widget for OpenBB Workspace that displays live updates in a table format
+- [Markdown](workspace/data-widgets/markdown): Learn how to create and customize markdown widgets in OpenBB Workspace, including basic markdown display and data-rich markdown with dynamic content integration.
+- [Metric](workspace/data-widgets/metric): Learn how to integrate your own backend with OpenBB Workspace using the cookie-cutter or language-agnostic API approaches, with illustrative guides and principles for handling widget.json files, APIs, interfaces, Python, FastAPI, and more.
+- [Newsfeed](workspace/data-widgets/newsfeed): Learn how to create a newsfeed widget for OpenBB Workspace that displays articles in a clean, organized format.
+- [Plotly Charts](workspace/data-widgets/plotly-charts): Plotly Charts
+- [TradingView Charts](workspace/data-widgets/tradingview-charts): How to implement TradingView charts in OpenBB using UDF (Universal Data Feed)
+- [Enterprise](workspace/enterprise): Comprehensive guide to OpenBB Workspace Enterprise features, including role-based access control, security compliance, team collaboration, and on-premises deployment capabilities.
+- [FAQs](workspace/faqs): Comprehensive guide to frequently asked questions about OpenBB Workspace data integration, custom backend setup, widget configuration, and troubleshooting common issues.
+- [Apps Gallery](workspace/gallery): Browse our curated collection of apps for financial analysis, market research, portfolio management and much more.
+- [Overview](workspace/index): OpenBB Workspace is a secure enterprise UI platform for AI workflows, featuring data integration, AI model deployment, flexible UI customization, and on-premises deployment capabilities.
+- [Native Installation (PWA)](workspace/installation): Learn how to install and use OpenBB Workspace as a Progressive Web App (PWA) on your desktop and mobile devices.
+- [OpenBB Copilot](workspace/openbb-copilot): Learn how to use OpenBB Copilot to interact with the OpenBB Workspace
+- [OpenBB Platform](workspace/platform-installer): Learn how to integrate the OpenBB Platform data to OpenBB Workspace
+- [Static Files](workspace/static-files): Learn how to import and manage static files in OpenBB, including structured and unstructured data formats, with support for PDF, CSV, JSON, PNG, and JPG files.
+- [Categories and Subcategories](workspace/widget-configuration/category-subcategory): Learn how to organize widgets using categories and subcategories in OpenBB Workspace.
+- [Error Handling](workspace/widget-configuration/error-handling): Learn how to handle errors in your widgets in OpenBB Workspace.
+- [Grid Size](workspace/widget-configuration/grid-size): Learn about the grid-based layout system for widgets in OpenBB Workspace, including width and height specifications.
+- [Refetch Interval](workspace/widget-configuration/refetch-interval): Learn about configuring refetch intervals for widgets in OpenBB Workspace.
+- [Render Functions](workspace/widget-configuration/render-functions): Learn how to configure and use custom render functions in OpenBB Workspace to customize data display and interactions.
+- [Run Button](workspace/widget-configuration/run-button): Learn about the run button functionality in OpenBB Workspace widgets.
+- [Stale Time](workspace/widget-configuration/stale-time): Learn about configuring stale time for widgets in OpenBB Workspace.
+- [Advanced Dropdown](workspace/widget-parameters/advanced-dropdown): Learn how to implement and use advanced dropdown parameters in OpenBB Workspace widgets, including dynamic options from endpoints and additional information display
+- [Boolean Toggle](workspace/widget-parameters/boolean-toggle): Learn how to implement and use boolean toggle parameters in OpenBB Workspace widgets, including configuration options and example usage
+- [Cell Click Grouping](workspace/widget-parameters/cell-click-grouping): Learn how to implement cell click grouping in OpenBB Workspace widgets, allowing users to click on cells in a table to update related widgets
+- [Date Picker](workspace/widget-parameters/date-picker): Learn how to implement and use date picker parameters in OpenBB Workspace widgets, including configuration options and example usage
+- [Dependent Dropdown](workspace/widget-parameters/dependent-dropdown): Learn how to implement and use dependent dropdown parameters in OpenBB Workspace widgets, where options in one dropdown depend on the selection in another
+- [Dropdown](workspace/widget-parameters/dropdown): Learn how to implement and use dropdown parameters in OpenBB Workspace widgets, including configuration options and example usage
+- [Input Form](workspace/widget-parameters/input-form): Input Form
+- [Number Input](workspace/widget-parameters/number-input): Learn how to implement and use number input parameters in OpenBB Workspace widgets, including configuration options and example usage
+- [Parameter Grouping](workspace/widget-parameters/parameter-grouping): Learn how to implement parameter grouping in OpenBB Workspace widgets, allowing multiple widgets to share and respond to the same parameter input
+- [Text Input](workspace/widget-parameters/text-input): Learn how to implement and use text input parameters in OpenBB Workspace widgets, including configuration options and example usage
+- [widgets.json Reference](workspace/widgets-json-reference): Learn how to integrate your own backend with OpenBB Workspace using the cookie-cutter or language-agnostic API approaches, with illustrative guides and principles for handling widget.json files, APIs, interfaces, Python, FastAPI and more.
