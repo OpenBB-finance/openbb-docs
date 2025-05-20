@@ -27,11 +27,11 @@ jobs:
         with:
           python-version: "3.9"
           architecture: x64
-
+      
       - name: Install Poetry
         uses: snok/install-poetry@v1
         with:
-          version: 1.8.1
+          version: 2.1.3
           virtualenvs-create: true
           virtualenvs-in-project: true
 
@@ -56,7 +56,7 @@ jobs:
           source openbb_platform/.venv/bin/activate
           pip install -U poetry
           python openbb_platform/dev_install.py --extras
-          python -c "import openbb; openbb.build()"
+          openbb-build
           python scripts/generate_platform_markdown.py
 
       - name: Generate Excel Docs
