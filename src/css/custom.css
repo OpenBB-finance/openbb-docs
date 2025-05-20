@@ -58,6 +58,10 @@
   }
 }
 
+#nprogress {
+  display: none !important;
+}
+
 @layer components {
   .card {
     @apply w-full rounded-[4px] border border-grey-400 p-6 shadow bg-grey-900;
