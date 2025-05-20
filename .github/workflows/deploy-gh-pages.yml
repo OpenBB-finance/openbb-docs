@@ -28,12 +28,11 @@ jobs:
           python-version: "3.9"
           architecture: x64
 
-      - name: Install Poetry v2
-        run: |
-          pip install "poetry>=2.0.0,<3.0.0"
-        env:
-          POETRY_VIRTUALENVS_CREATE: true
-          POETRY_VIRTUALENVS_IN_PROJECT: true
+        uses: snok/install-poetry@v1
+        with:
+          version: 2.1.3
+          virtualenvs-create: true
+          virtualenvs-in-project: true
 
       - name: Setup sudo apt installs for ubuntu-latest
         run: |
