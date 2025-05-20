@@ -17,7 +17,6 @@
 - [DERIVATIVES](excel/reference/derivatives/index): Menus
 - [CHAINS](excel/reference/derivatives/options/chains): Learn how to get the complete options chain for a ticker using the OBB.equity.options.chains function. Explore the available parameters like symbol and provider, and understand the data returned, including contract symbol, expiration, strike price, and more.
 - [DERIVATIVES.OPTIONS](excel/reference/derivatives/options/index): Commands
-- [CALENDAR](excel/reference/economy/calendar): The Economic Calendar provides information on economic events and data. Use the OBB Python function `obb.economy.calendar()` to retrieve economic calendar data. The function accepts parameters such as start date, end date, provider, country, importance, and group. It returns a list of economic calendar data, including the date, event, reference, source, actual value, previous value, consensus value, and forecast value. The data can be filtered by provider such as FMP, Nasdaq, or Trading Economics.
 - [COUNTRY_PROFILE](excel/reference/economy/country_profile): Get a profile of country statistics and economic indicators.
 - [ECONOMY](excel/reference/economy/index): Commands
 - [INDICATORS](excel/reference/economy/indicators): Get economic indicators by country and indicator.

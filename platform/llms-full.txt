@@ -63724,6 +63724,18 @@ import TabItem from '@theme/TabItem';
 EIA Weekly Petroleum Status Report.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# Get the EIA's Weekly Petroleum Status Report.
+obb.commodity.petroleum_status_report(provider='eia')
+# Select the category of data, and filter for a specific table within the report.
+obb.commodity.petroleum_status_report(category=weekly_estimates, table=imports, provider='eia')
+```
+
+
 
 ## Parameters
 
@@ -64028,6 +64040,16 @@ import TabItem from '@theme/TabItem';
 Commodity Spot Prices.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.commodity.price.spot(provider='fred')
+obb.commodity.price.spot(provider='fred', commodity=wti)
+```
+
+
 
 ## Parameters
 
@@ -64262,6 +64284,18 @@ import TabItem from '@theme/TabItem';
 Monthly short term (18 month) projections using EIA's STEO model.
 
 Source: www.eia.gov/steo/
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+# Get the EIA's Short Term Energy Outlook.
+obb.commodity.short_term_energy_outlook(provider='eia')
+# Select the specific table of data from the STEO. Table 03d is World Crude Oil Production.
+obb.commodity.short_term_energy_outlook(table=03d, provider='eia')
+```
 
 
 
@@ -64526,6 +64560,19 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get historical price data for cryptocurrency pair(s) within a provider.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.crypto.price.historical(symbol='BTCUSD', provider='fmp')
+obb.crypto.price.historical(symbol='BTCUSD', start_date='2024-01-01', end_date='2024-01-31', provider='fmp')
+obb.crypto.price.historical(symbol='BTCUSD,ETHUSD', start_date='2024-01-01', end_date='2024-01-31', provider='polygon')
+# Get monthly historical prices from Yahoo Finance for Ethereum.
+obb.crypto.price.historical(symbol='ETH-USD', interval=1m, start_date='2024-01-01', end_date='2024-12-31', provider='yfinance')
+```
 
 
 
@@ -65008,6 +65055,16 @@ import TabItem from '@theme/TabItem';
 Search available cryptocurrency pairs within a provider.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.crypto.search(provider='fmp')
+obb.crypto.search(query='BTCUSD', provider='fmp')
+```
+
+
 
 ## Parameters
 
@@ -65175,6 +65232,19 @@ another over a specific period.
 This data provides insight into the fluctuations and trends in the foreign exchange market,
 helping analysts, traders, and economists understand currency performance,
 evaluate economic health, and make predictions about future movements.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.currency.price.historical(symbol='EURUSD', provider='fmp')
+# Filter historical data with specific start and end date.
+obb.currency.price.historical(symbol='EURUSD', start_date='2023-01-01', end_date='2023-12-31', provider='fmp')
+# Get data with different granularity.
+obb.currency.price.historical(symbol='EURUSD', provider='polygon', interval=15m)
+```
 
 
 
@@ -65635,6 +65705,15 @@ Central banks and financial institutions often use these rates to guide their ow
 impacting global trade, loans, and investments.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.currency.reference_rates(provider='ecb')
+```
+
+
 
 ## Parameters
 
@@ -66015,6 +66094,19 @@ All trading within the forex market, whether selling, buying, or trading, will t
 Major currency pairs include pairs such as EUR/USD, USD/JPY, GBP/USD, etc.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.currency.search(provider='fmp')
+# Search for 'EUR' currency pair using 'intrinio' as provider.
+obb.currency.search(provider='intrinio', query='EUR')
+# Search for terms  using 'polygon' as provider.
+obb.currency.search(provider='polygon', query='EUR')
+```
+
+
 
 ## Parameters
 
@@ -66220,6 +66312,17 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Snapshots of currency exchange rates from an indirect or direct perspective of a base currency.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.currency.snapshots(provider='fmp')
+# Get exchange rates from USD and XAU to EUR, JPY, and GBP using 'fmp' as provider.
+obb.currency.snapshots(provider='fmp', base='USD,XAU', counter_currencies='EUR,JPY,GBP', quote_type='indirect')
+```
 
 
 
@@ -66626,6 +66729,16 @@ import TabItem from '@theme/TabItem';
 Futures Term Structure, current or historical.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.derivatives.futures.curve(symbol='VX', provider='cboe', date='2024-06-25')
+obb.derivatives.futures.curve(symbol='NG', provider='yfinance')
+```
+
+
 
 ## Parameters
 
@@ -66859,6 +66972,19 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Historical futures prices.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.derivatives.futures.historical(symbol='ES', provider='yfinance')
+# Enter multiple symbols.
+obb.derivatives.futures.historical(symbol='ES,NQ', provider='yfinance')
+# Enter expiration dates as "YYYY-MM".
+obb.derivatives.futures.historical(symbol='ES', provider='yfinance', expiration='2025-12')
+```
 
 
 
@@ -67159,6 +67285,18 @@ import TabItem from '@theme/TabItem';
 Get current trading statistics by futures contract symbol.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.derivatives.futures.info(provider='deribit', symbol=BTC)
+obb.derivatives.futures.info(provider='deribit', symbol=SOLUSDC)
+obb.derivatives.futures.info(provider='deribit', symbol=SOL_USDC-PERPETUAL)
+obb.derivatives.futures.info(provider='deribit', symbol=BTC,ETH)
+```
+
+
 
 ## Parameters
 
@@ -67351,6 +67489,15 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get reference data for available futures instruments by provider.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.derivatives.futures.instruments(provider='deribit')
+```
 
 
 
@@ -67568,6 +67715,17 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get the complete options chain for a ticker.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.derivatives.options.chains(symbol='AAPL', provider='intrinio')
+# Use the "date" parameter to get the end-of-day-data for a specific date, where supported.
+obb.derivatives.options.chains(symbol='AAPL', date=2023-01-25, provider='intrinio')
+```
 
 
 
@@ -69514,6 +69672,15 @@ import TabItem from '@theme/TabItem';
 Get a snapshot of the options market universe.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.derivatives.options.snapshots(provider='intrinio')
+```
+
+
 
 ## Parameters
 
@@ -69802,6 +69969,17 @@ import TabItem from '@theme/TabItem';
 Get the complete options chain for a ticker.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.derivatives.options.unusual(symbol='TSLA', provider='intrinio')
+# Use the 'symbol' parameter to get the most recent activity for a specific symbol.
+obb.derivatives.options.unusual(symbol='TSLA', provider='intrinio')
+```
+
+
 
 ## Parameters
 
@@ -70035,6 +70213,18 @@ Perform Durbin-Watson test for autocorrelation.
  the underlying dynamics of the data, ensuring more accurate and trustworthy results.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# Perform Durbin-Watson test for autocorrelation.
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()
+obb.econometrics.autocorrelation(data=stock_data, y_column="close", x_columns=["open", "high", "low"])
+obb.econometrics.autocorrelation(y_column='close', x_columns='['open', 'high', 'low']', data='[{'date': '2023-01-02', 'open': 110.0, 'high': 120.0, 'low': 100.0, 'close': 115.0, 'volume': 10000.0}, {'date': '2023-01-03', 'open': 165.0, 'high': 180.0, 'low': 150.0, 'close': 172.5, 'volume': 15000.0}, {'date': '2023-01-04', 'open': 146.67, 'high': 160.0, 'low': 133.33, 'close': 153.33, 'volume': 13333.33}, {'date': '2023-01-05', 'open': 137.5, 'high': 150.0, 'low': 125.0, 'close': 143.75, 'volume': 12500.0}, {'date': '2023-01-06', 'open': 132.0, 'high': 144.0, 'low': 120.0, 'close': 138.0, 'volume': 12000.0}]')
+```
+
+
 
 ## Parameters
 
@@ -70138,6 +70328,19 @@ Perform Granger causality test to determine if X 'causes' y.
  look back in the time series to assess this relationship. This test is particularly useful in economic and
  financial data analysis, where understanding the lead-lag relationship between indicators can inform investment
  decisions and policy making.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+# Perform Granger causality test to determine if X 'causes' y.
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()
+obb.econometrics.causality(data=stock_data, y_column="close", x_column="open")
+# Example with mock data.
+obb.econometrics.causality(y_column='close', x_column='open', lag=1, data='[{'date': '2023-01-02', 'open': 110.0, 'high': 120.0, 'low': 100.0, 'close': 115.0, 'volume': 10000.0}, {'date': '2023-01-03', 'open': 165.0, 'high': 180.0, 'low': 150.0, 'close': 172.5, 'volume': 15000.0}, {'date': '2023-01-04', 'open': 146.67, 'high': 160.0, 'low': 133.33, 'close': 153.33, 'volume': 13333.33}, {'date': '2023-01-05', 'open': 137.5, 'high': 150.0, 'low': 125.0, 'close': 143.75, 'volume': 12500.0}, {'date': '2023-01-06', 'open': 132.0, 'high': 144.0, 'low': 120.0, 'close': 138.0, 'volume': 12000.0}]')
+```
 
 
 
@@ -70255,6 +70458,17 @@ Show co-integration between two timeseries using the two step Engle-Granger test
  the series are bound by an equilibrium relationship over time.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# Perform co-integration test between two timeseries.
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()
+obb.econometrics.cointegration(data=stock_data, columns=["open", "close"])
+```
+
+
 
 ## Parameters
 
@@ -70349,6 +70563,18 @@ Get the correlation matrix of an input dataset.
  By quantifying the degree to which variables move in relation to each other, this matrix can help identify patterns,
  trends, and potential areas for deeper analysis. The correlation score ranges from -1 to 1, with -1 indicating a
  perfect negative correlation, 0 indicating no correlation, and 1 indicating a perfect positive correlation.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+# Get the correlation matrix of a dataset.
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()
+obb.econometrics.correlation_matrix(data=stock_data)
+obb.econometrics.correlation_matrix(data='[{'date': '2023-01-02', 'open': 110.0, 'high': 120.0, 'low': 100.0, 'close': 115.0, 'volume': 10000.0}, {'date': '2023-01-03', 'open': 165.0, 'high': 180.0, 'low': 150.0, 'close': 172.5, 'volume': 15000.0}, {'date': '2023-01-04', 'open': 146.67, 'high': 160.0, 'low': 133.33, 'close': 153.33, 'volume': 13333.33}, {'date': '2023-01-05', 'open': 137.5, 'high': 150.0, 'low': 125.0, 'close': 143.75, 'volume': 12500.0}, {'date': '2023-01-06', 'open': 132.0, 'high': 144.0, 'low': 120.0, 'close': 138.0, 'volume': 12000.0}]')
+```
 
 
 
@@ -70489,6 +70715,18 @@ Perform Ordinary Least Squares (OLS) regression.
  This returns the model and results objects from statsmodels library.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# Perform Ordinary Least Squares (OLS) regression.
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()
+obb.econometrics.ols_regression(data=stock_data, y_column="close", x_columns=["open", "high", "low"])
+obb.econometrics.ols_regression(y_column='close', x_columns='['open', 'high', 'low']', data='[{'date': '2023-01-02', 'open': 110.0, 'high': 120.0, 'low': 100.0, 'close': 115.0, 'volume': 10000.0}, {'date': '2023-01-03', 'open': 165.0, 'high': 180.0, 'low': 150.0, 'close': 172.5, 'volume': 15000.0}, {'date': '2023-01-04', 'open': 146.67, 'high': 160.0, 'low': 133.33, 'close': 153.33, 'volume': 13333.33}, {'date': '2023-01-05', 'open': 137.5, 'high': 150.0, 'low': 125.0, 'close': 143.75, 'volume': 12500.0}, {'date': '2023-01-06', 'open': 132.0, 'high': 144.0, 'low': 120.0, 'close': 138.0, 'volume': 12000.0}]')
+```
+
+
 
 ## Parameters
 
@@ -70588,6 +70826,18 @@ import TabItem from '@theme/TabItem';
 Perform Ordinary Least Squares (OLS) regression.
 
  This returns the summary object from statsmodels.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+# Perform Ordinary Least Squares (OLS) regression and return the summary.
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()
+obb.econometrics.ols_regression_summary(data=stock_data, y_column="close", x_columns=["open", "high", "low"])
+obb.econometrics.ols_regression_summary(y_column='close', x_columns='['open', 'high', 'low']', data='[{'date': '2023-01-02', 'open': 110.0, 'high': 120.0, 'low': 100.0, 'close': 115.0, 'volume': 10000.0}, {'date': '2023-01-03', 'open': 165.0, 'high': 180.0, 'low': 150.0, 'close': 172.5, 'volume': 15000.0}, {'date': '2023-01-04', 'open': 146.67, 'high': 160.0, 'low': 133.33, 'close': 153.33, 'volume': 13333.33}, {'date': '2023-01-05', 'open': 137.5, 'high': 150.0, 'low': 125.0, 'close': 143.75, 'volume': 12500.0}, {'date': '2023-01-06', 'open': 132.0, 'high': 144.0, 'low': 120.0, 'close': 138.0, 'volume': 12000.0}]')
+```
 
 
 
@@ -70694,6 +70944,15 @@ Perform a Between estimator regression on panel data.
  the dependent variable (y_column) across all entities.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.econometrics.panel_between(y_column='portfolio_value', x_columns='['risk_free_rate']', data='[{'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_1', 'time': 0, 'portfolio_value': 100000.0, 'risk_free_rate': 0.02}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_1', 'time': 1, 'portfolio_value': 150000.0, 'risk_free_rate': 0.03}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_2', 'time': 0, 'portfolio_value': 150000.0, 'risk_free_rate': 0.03}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_2', 'time': 1, 'portfolio_value': 133333.33, 'risk_free_rate': 0.03}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_3', 'time': 0, 'portfolio_value': 133333.33, 'risk_free_rate': 0.03}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_3', 'time': 1, 'portfolio_value': 125000.0, 'risk_free_rate': 0.03}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_4', 'time': 0, 'portfolio_value': 125000.0, 'risk_free_rate': 0.03}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_4', 'time': 1, 'portfolio_value': 120000.0, 'risk_free_rate': 0.02}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_5', 'time': 0, 'portfolio_value': 120000.0, 'risk_free_rate': 0.02}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_5', 'time': 1, 'portfolio_value': 116666.67, 'risk_free_rate': 0.02}]')
+```
+
+
 
 ## Parameters
 
@@ -70796,6 +71055,15 @@ Perform a first-difference estimate for panel data.
  in explanatory variables (x_columns) on the change in the dependent variable (y_column).
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.econometrics.panel_first_difference(y_column='portfolio_value', x_columns='['risk_free_rate']', data='[{'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_1', 'time': 0, 'portfolio_value': 100000.0, 'risk_free_rate': 0.02}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_1', 'time': 1, 'portfolio_value': 150000.0, 'risk_free_rate': 0.03}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_2', 'time': 0, 'portfolio_value': 150000.0, 'risk_free_rate': 0.03}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_2', 'time': 1, 'portfolio_value': 133333.33, 'risk_free_rate': 0.03}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_3', 'time': 0, 'portfolio_value': 133333.33, 'risk_free_rate': 0.03}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_3', 'time': 1, 'portfolio_value': 125000.0, 'risk_free_rate': 0.03}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_4', 'time': 0, 'portfolio_value': 125000.0, 'risk_free_rate': 0.03}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_4', 'time': 1, 'portfolio_value': 120000.0, 'risk_free_rate': 0.02}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_5', 'time': 0, 'portfolio_value': 120000.0, 'risk_free_rate': 0.02}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_5', 'time': 1, 'portfolio_value': 116666.67, 'risk_free_rate': 0.02}]')
+```
+
+
 
 ## Parameters
 
@@ -70893,6 +71161,15 @@ One- and two-way fixed effects estimator for panel data.
  (such as individuals, companies, or countries) and/or time periods. By controlling for entity-specific and/or
  time-specific influences, this method isolates the effect of explanatory variables (x_columns) on the dependent
  variable (y_column), under the assumption that these entity or time effects capture unobserved heterogeneity.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.econometrics.panel_fixed(y_column='portfolio_value', x_columns='['risk_free_rate']', data='[{'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_1', 'time': 0, 'portfolio_value': 100000.0, 'risk_free_rate': 0.02}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_1', 'time': 1, 'portfolio_value': 150000.0, 'risk_free_rate': 0.03}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_2', 'time': 0, 'portfolio_value': 150000.0, 'risk_free_rate': 0.03}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_2', 'time': 1, 'portfolio_value': 133333.33, 'risk_free_rate': 0.03}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_3', 'time': 0, 'portfolio_value': 133333.33, 'risk_free_rate': 0.03}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_3', 'time': 1, 'portfolio_value': 125000.0, 'risk_free_rate': 0.03}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_4', 'time': 0, 'portfolio_value': 125000.0, 'risk_free_rate': 0.03}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_4', 'time': 1, 'portfolio_value': 120000.0, 'risk_free_rate': 0.02}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_5', 'time': 0, 'portfolio_value': 120000.0, 'risk_free_rate': 0.02}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_5', 'time': 1, 'portfolio_value': 116666.67, 'risk_free_rate': 0.02}]')
+```
 
 
 
@@ -70994,6 +71271,15 @@ Fama-MacBeth estimator for panel data.
  entities (such as individuals, companies, or countries).
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.econometrics.panel_fmac(y_column='portfolio_value', x_columns='['risk_free_rate']', data='[{'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_1', 'time': 0, 'portfolio_value': 100000.0, 'risk_free_rate': 0.02}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_1', 'time': 1, 'portfolio_value': 150000.0, 'risk_free_rate': 0.03}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_2', 'time': 0, 'portfolio_value': 150000.0, 'risk_free_rate': 0.03}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_2', 'time': 1, 'portfolio_value': 133333.33, 'risk_free_rate': 0.03}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_3', 'time': 0, 'portfolio_value': 133333.33, 'risk_free_rate': 0.03}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_3', 'time': 1, 'portfolio_value': 125000.0, 'risk_free_rate': 0.03}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_4', 'time': 0, 'portfolio_value': 125000.0, 'risk_free_rate': 0.03}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_4', 'time': 1, 'portfolio_value': 120000.0, 'risk_free_rate': 0.02}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_5', 'time': 0, 'portfolio_value': 120000.0, 'risk_free_rate': 0.02}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_5', 'time': 1, 'portfolio_value': 116666.67, 'risk_free_rate': 0.02}]')
+```
+
+
 
 ## Parameters
 
@@ -71093,6 +71379,15 @@ Perform a Pooled coefficient estimator regression on panel data.
  the analysis and provides a generalized view of the relationships within the data.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.econometrics.panel_pooled(y_column='portfolio_value', x_columns='['risk_free_rate']', data='[{'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_1', 'time': 0, 'portfolio_value': 100000.0, 'risk_free_rate': 0.02}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_1', 'time': 1, 'portfolio_value': 150000.0, 'risk_free_rate': 0.03}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_2', 'time': 0, 'portfolio_value': 150000.0, 'risk_free_rate': 0.03}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_2', 'time': 1, 'portfolio_value': 133333.33, 'risk_free_rate': 0.03}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_3', 'time': 0, 'portfolio_value': 133333.33, 'risk_free_rate': 0.03}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_3', 'time': 1, 'portfolio_value': 125000.0, 'risk_free_rate': 0.03}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_4', 'time': 0, 'portfolio_value': 125000.0, 'risk_free_rate': 0.03}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_4', 'time': 1, 'portfolio_value': 120000.0, 'risk_free_rate': 0.02}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_5', 'time': 0, 'portfolio_value': 120000.0, 'risk_free_rate': 0.02}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_5', 'time': 1, 'portfolio_value': 116666.67, 'risk_free_rate': 0.02}]')
+```
+
+
 
 ## Parameters
 
@@ -71188,6 +71483,15 @@ Perform One-way Random Effects model for panel data.
  time and entities (such as individuals, companies, countries, etc.). By acknowledging and modeling the random
  variation that exists within these entities, this method provides insights into the general patterns that
  emerge across the dataset.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.econometrics.panel_random_effects(y_column='portfolio_value', x_columns='['risk_free_rate']', data='[{'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_1', 'time': 0, 'portfolio_value': 100000.0, 'risk_free_rate': 0.02}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_1', 'time': 1, 'portfolio_value': 150000.0, 'risk_free_rate': 0.03}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_2', 'time': 0, 'portfolio_value': 150000.0, 'risk_free_rate': 0.03}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_2', 'time': 1, 'portfolio_value': 133333.33, 'risk_free_rate': 0.03}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_3', 'time': 0, 'portfolio_value': 133333.33, 'risk_free_rate': 0.03}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_3', 'time': 1, 'portfolio_value': 125000.0, 'risk_free_rate': 0.03}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_4', 'time': 0, 'portfolio_value': 125000.0, 'risk_free_rate': 0.03}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_4', 'time': 1, 'portfolio_value': 120000.0, 'risk_free_rate': 0.02}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_5', 'time': 0, 'portfolio_value': 120000.0, 'risk_free_rate': 0.02}, {'is_multiindex': True, 'multiindex_names': "['asset_manager', 'time']", 'asset_manager': 'asset_manager_5', 'time': 1, 'portfolio_value': 116666.67, 'risk_free_rate': 0.02}]')
+```
 
 
 
@@ -71289,6 +71593,18 @@ Perform Breusch-Godfrey Lagrange Multiplier tests for residual autocorrelation.
  allowing for a tailored analysis that matches the specific characteristics of your data.
  This test is particularly valuable in econometrics and time-series analysis, where understanding the independence
  of errors is crucial for model validity.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+# Perform Breusch-Godfrey Lagrange Multiplier tests for residual autocorrelation.
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()
+obb.econometrics.residual_autocorrelation(data=stock_data, y_column="close", x_columns=["open", "high", "low"])
+obb.econometrics.residual_autocorrelation(y_column='close', x_columns='['open', 'high', 'low']', data='[{'date': '2023-01-02', 'open': 110.0, 'high': 120.0, 'low': 100.0, 'close': 115.0, 'volume': 10000.0}, {'date': '2023-01-03', 'open': 165.0, 'high': 180.0, 'low': 150.0, 'close': 172.5, 'volume': 15000.0}, {'date': '2023-01-04', 'open': 146.67, 'high': 160.0, 'low': 133.33, 'close': 153.33, 'volume': 13333.33}, {'date': '2023-01-05', 'open': 137.5, 'high': 150.0, 'low': 125.0, 'close': 143.75, 'volume': 12500.0}, {'date': '2023-01-06', 'open': 132.0, 'high': 144.0, 'low': 120.0, 'close': 138.0, 'volume': 12000.0}]')
+```
 
 
 
@@ -71408,6 +71724,19 @@ Perform Augmented Dickey-Fuller (ADF) unit root test.
  assessment of its stationarity.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# Perform Augmented Dickey-Fuller (ADF) unit root test.
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()
+obb.econometrics.unit_root(data=stock_data, column="close")
+obb.econometrics.unit_root(data=stock_data, column="close", regression="ct")
+obb.econometrics.unit_root(column='close', data='[{'date': '2023-01-02', 'open': 110.0, 'high': 120.0, 'low': 100.0, 'close': 115.0, 'volume': 10000.0}, {'date': '2023-01-03', 'open': 165.0, 'high': 180.0, 'low': 150.0, 'close': 172.5, 'volume': 15000.0}, {'date': '2023-01-04', 'open': 146.67, 'high': 160.0, 'low': 133.33, 'close': 153.33, 'volume': 13333.33}, {'date': '2023-01-05', 'open': 137.5, 'high': 150.0, 'low': 125.0, 'close': 143.75, 'volume': 12500.0}, {'date': '2023-01-06', 'open': 132.0, 'high': 144.0, 'low': 120.0, 'close': 138.0, 'volume': 12000.0}]')
+```
+
+
 
 ## Parameters
 
@@ -71516,6 +71845,17 @@ Calculate VIF (variance inflation factor), which tests for collinearity.
  For further information see: https://en.wikipedia.org/wiki/Variance_inflation_factor
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# Calculate the variance inflation factor.
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='yfinance').to_df()
+obb.econometrics.variance_inflation_factor(data=stock_data, column="close")
+```
+
+
 
 ## Parameters
 
@@ -71604,6 +71944,15 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get the available economic indicators for a provider.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.available_indicators(provider='econdb')
+```
 
 
 
@@ -71841,6 +72190,20 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Balance of Payments Reports.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.balance_of_payments(provider='fred')
+obb.economy.balance_of_payments(provider='fred', country=brazil)
+obb.economy.balance_of_payments(provider='ecb')
+obb.economy.balance_of_payments(report_type=summary, provider='ecb')
+# The `country` parameter will override the `report_type`.
+obb.economy.balance_of_payments(country=united_states, provider='ecb')
+```
 
 
 
@@ -73310,6 +73673,19 @@ import TabItem from '@theme/TabItem';
 Get the upcoming, or historical, economic calendar of global events.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# By default, the calendar will be forward-looking.
+obb.economy.calendar(provider='fmp')
+obb.economy.calendar(provider='fmp', start_date='2020-03-01', end_date='2020-03-31')
+# By default, the calendar will be forward-looking.
+obb.economy.calendar(provider='nasdaq')
+```
+
+
 
 ## Parameters
 
@@ -73963,6 +74339,22 @@ import TabItem from '@theme/TabItem';
 Get the balance sheet holdings of a central bank.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# The default is the latest Treasury securities held by the Federal Reserve.
+obb.economy.central_bank_holdings(provider='federal_reserve')
+# Get historical summaries of the Fed's holdings.
+obb.economy.central_bank_holdings(provider='federal_reserve', summary=True)
+# Get the balance sheet holdings as-of a historical date.
+obb.economy.central_bank_holdings(provider='federal_reserve', date='2019-05-21')
+# Use the `holding_type` parameter to select Agency securities, or specific categories or Treasury securities.
+obb.economy.central_bank_holdings(provider='federal_reserve', holding_type=agency_debts)
+```
+
+
 
 ## Parameters
 
@@ -74215,6 +74607,16 @@ in business cycles showing fluctuation of the economic activity around its long 
 CLIs show short-term economic movements in qualitative rather than quantitative terms.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.composite_leading_indicator(provider='oecd')
+obb.economy.composite_leading_indicator(country=all, provider='oecd', growth_rate=True)
+```
+
+
 
 ## Parameters
 
@@ -74382,6 +74784,17 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get a profile of country statistics and economic indicators.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.country_profile(provider='econdb', country='united_kingdom')
+# Enter the country as the full name, or iso code. If `latest` is False, the complete history for each series is returned.
+obb.economy.country_profile(country='united_states,jp', latest=False, provider='econdb')
+```
 
 
 
@@ -74628,6 +75041,17 @@ import TabItem from '@theme/TabItem';
 Get Consumer Price Index (CPI).
 
 Returns either the rescaled index value, or a rate of change (inflation).
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.cpi(country='japan,china,turkey', provider='fred')
+# Use the `transform` parameter to define the reference period for the change in values. Default is YoY.
+obb.economy.cpi(country='united_states,united_kingdom', transform='period', provider='oecd')
+```
 
 
 
@@ -74944,6 +75368,17 @@ Imports are reported on a cost, insurance and freight (CIF) basis
 and exports are reported on a free on board (FOB) basis.
 Time series data includes estimates derived from reports of partner countries
 for non-reporting and slow-reporting countries.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.direction_of_trade(provider='imf', country='all', counterpart='china')
+# Select multiple countries or counterparts by entering a comma-separated list. The direction of trade can be 'exports', 'imports', 'balance', or 'all'.
+obb.economy.direction_of_trade(provider='imf', country='us', counterpart='world,eu', frequency='annual', direction='exports')
+```
 
 
 
@@ -76197,6 +76632,15 @@ import TabItem from '@theme/TabItem';
 Get top export destinations by country from the UN Comtrade International Trade Statistics Database.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.export_destinations(provider='econdb', country='us')
+```
+
+
 
 ## Parameters
 
@@ -76347,6 +76791,21 @@ Keys, `label` and `value`, correspond with the `doc_type` + `date`, and the `url
 If `url` was provided, the response is a `dict[str, Any]` with keys `filename`, `content`, and `data_format`.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.fomc_documents(provider='federal_reserve')
+# Filter all documents by year.
+obb.economy.fomc_documents(provider='federal_reserve', year=2022)
+# Filter all documents by year and document type.
+obb.economy.fomc_documents(provider='federal_reserve', year=2022, document_type=minutes)
+# The `url` parameter will override all other parameters to download the document. The response will be a dictionary with keys `filename`, `content`, and `data_format`. PDF content will be a base64 encoded string of the document.
+obb.economy.fomc_documents(provider='federal_reserve', url=https://www.federalreserve.gov/monetarypolicy/files/fomcminutes20220126.pdf)
+```
+
+
 
 ## Parameters
 
@@ -76480,6 +76939,17 @@ import TabItem from '@theme/TabItem';
 Query the Geo Fred API for regional economic data by series group.
 
 The series group ID is found by using `fred_search` and the `series_id` parameter.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.fred_regional(symbol='NYICLAIMS', provider='fred')
+# With a date, time series data is returned.
+obb.economy.fred_regional(symbol='NYICLAIMS', start_date='2021-01-01', end_date='2021-12-31', limit=10, provider='fred')
+```
 
 
 
@@ -76789,6 +77259,20 @@ import TabItem from '@theme/TabItem';
 Get economic release data by ID and/or element from FRED.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# Get the top-level elements of a release by not supplying an element ID.
+obb.economy.fred_release_table(release_id='50', provider='fred')
+# Drill down on a specific section of the release.
+obb.economy.fred_release_table(release_id='50', element_id='4880', provider='fred')
+# Drill down on a specific table of the release.
+obb.economy.fred_release_table(release_id='50', element_id='4881', provider='fred')
+```
+
+
 
 ## Parameters
 
@@ -77001,6 +77485,15 @@ Search for FRED series or economic releases by ID or string.
 
 This does not return the observation values, only the metadata.
 Use this function to find series IDs for `fred_series()`.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.fred_search(provider='fred')
+```
 
 
 
@@ -77374,6 +77867,19 @@ import TabItem from '@theme/TabItem';
 Get data by series ID from FRED.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.fred_series(symbol='NFCI', provider='fred')
+# Multiple series can be passed in as a list.
+obb.economy.fred_series(symbol='NFCI,STLFSI4', provider='fred')
+# Use the `transform` parameter to transform the data as change, log, or percent change.
+obb.economy.fred_series(symbol='CBBTCUSD', transform=pc1, provider='fred')
+```
+
+
 
 ## Parameters
 
@@ -77671,6 +78177,16 @@ import TabItem from '@theme/TabItem';
 Get Forecasted GDP Data.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.gdp.forecast(provider='oecd')
+obb.economy.gdp.forecast(country=united_states,germany,france, frequency=annual, units=capita, provider='oecd')
+```
+
+
 
 ## Parameters
 
@@ -77919,6 +78435,16 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get Nominal GDP Data.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.gdp.nominal(provider='oecd')
+obb.economy.gdp.nominal(units=capita, country=all, frequency=annual, provider='oecd')
+```
 
 
 
@@ -78240,6 +78766,16 @@ import TabItem from '@theme/TabItem';
 Get Real GDP Data.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.gdp.real(provider='oecd')
+obb.economy.gdp.real(country=united_states,germany,japan, provider='econdb')
+```
+
+
 
 ## Parameters
 
@@ -78524,6 +79060,17 @@ import TabItem from '@theme/TabItem';
 Get the House Price Index by country from the OECD Short-Term Economics Statistics.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.house_price_index(provider='oecd')
+# Multiple countries can be passed in as a list.
+obb.economy.house_price_index(country='united_kingdom,germany', frequency='quarter', provider='oecd')
+```
+
+
 
 ## Parameters
 
@@ -78725,6 +79272,17 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get immediate interest rates by country.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.immediate_interest_rate(provider='oecd')
+# Multiple countries can be passed in as a list.
+obb.economy.immediate_interest_rate(country='united_kingdom,germany', frequency=monthly, provider='oecd')
+```
 
 
 
@@ -78941,6 +79499,32 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get economic indicators by country and indicator.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.indicators(provider='econdb', symbol=PCOCO)
+# Enter the country as the full name, or iso code. Use `available_indicators()` to get a list of supported indicators from EconDB.
+obb.economy.indicators(symbol=CPI, country='united_states,jp', provider='econdb')
+# Use the `main` symbol to get the group of main indicators for a country.
+obb.economy.indicators(provider='econdb', symbol=main, country='eu')
+# When the provider is 'imf', the absence of a symbol will default to 'irfcl_top_lines'. Use 'IRFCL' to get all the data from the set of indicators.
+obb.economy.indicators(provider='imf')
+# When the provider is 'imf', complete tables are returned by using a 'preset'. Refer to the function's docstring for descriptions of each preset. When no country is supplied, the data is returned for all countries.
+obb.economy.indicators(provider='imf', symbol=gold_reserves)
+# When the provider is 'imf', multiple countries and symbols can be supplied. Enter countries as a two-letter ISO country code, or the country name in lower_snake_case.
+obb.economy.indicators(provider='imf', symbol=RAFA_USD,RAPFA_USD,RAFA_RAPFA_RO, country='us,china,jp,4f,gb', start_date='2010-01-01', end_date='2020-12-31', frequency=annual)
+# When the provider is 'imf', additional presets return the core Financial Soundness Indicators.
+    'fsi_core' -  Core FSIs
+    'fsi_encouraged_set' - Encouraged Set of FSIs,
+    'fsi_core_underlying' - Underlying data for the Core FSIs.
+    'fsi_other' - Additional/Other FSIs that are not in the Core or Encouraged Set.
+    'fsi_all' - all FSI data for a single country.
+obb.economy.indicators(provider='imf', symbol=fsi_encouraged_set, country='us,fr,gb', start_date='2022-01-01', end_date='2023-12-31', frequency=annual)
+```
 
 
 
@@ -79946,6 +80530,19 @@ Get interest rates by country(s) and duration.
 Most OECD countries publish short-term, a long-term, and immediate rates monthly.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.interest_rates(provider='oecd')
+# For OECD, duration can be 'immediate', 'short', or 'long'. Default is 'short', which is the 3-month rate. Overnight interbank rate is 'immediate', and 10-year rate is 'long'.
+obb.economy.interest_rates(provider='oecd', country='all', duration=immediate, frequency=quarter)
+# Multiple countries can be passed in as a list.
+obb.economy.interest_rates(duration=long, country='united_kingdom,germany', frequency=monthly, provider='oecd')
+```
+
+
 
 ## Parameters
 
@@ -80246,6 +80843,16 @@ Low long-term interest rates encourage investment in new equipment and high inte
 Investment is, in turn, a major source of economic growth.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.long_term_interest_rate(provider='oecd')
+obb.economy.long_term_interest_rate(country=all, frequency=quarterly, provider='oecd')
+```
+
+
 
 ## Parameters
 
@@ -80405,6 +81012,16 @@ import TabItem from '@theme/TabItem';
 Get Money Measures (M1/M2 and components).
 
 The Federal Reserve publishes as part of the H.6 Release.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.money_measures(provider='federal_reserve')
+obb.economy.money_measures(adjusted=False, provider='federal_reserve')
+```
 
 
 
@@ -80606,6 +81223,17 @@ import TabItem from '@theme/TabItem';
 Get Personal Consumption Expenditures (PCE) reports.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.pce(provider='fred')
+# Get reports for multiple dates, entered as a comma-separated string.
+obb.economy.pce(provider='fred', date='2024-05-01,2024-04-01,2023-05-01', category=pce_price_index)
+```
+
+
 
 ## Parameters
 
@@ -80761,6 +81389,15 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get average dwelling times and TEU volumes from the top ports.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.port_volume(provider='econdb')
+```
 
 
 
@@ -80938,6 +81575,17 @@ Near-100 percent pass-through of fails suggests a high degree of collateral
 re-hypothecation together with the inability or unwillingness to borrow or buy the needed securities."
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.primary_dealer_fails(provider='federal_reserve')
+# Transform the data to be percentage totals by asset class
+obb.economy.primary_dealer_fails(provider='federal_reserve', unit=percent)
+```
+
+
 
 ## Parameters
 
@@ -81097,6 +81745,16 @@ import TabItem from '@theme/TabItem';
 Get Primary dealer positioning statistics.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.primary_dealer_positioning(provider='federal_reserve')
+obb.economy.primary_dealer_positioning(category=abs, provider='federal_reserve')
+```
+
+
 
 ## Parameters
 
@@ -81248,6 +81906,19 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get retail prices for common items.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.retail_prices(provider='fred')
+# The price of eggs in the northeast census region.
+obb.economy.retail_prices(item='eggs', region=northeast, provider='fred')
+# The percentage change in price, from one-year ago, of various meats, US City Average.
+obb.economy.retail_prices(item='meats', transform=pc1, provider='fred')
+```
 
 
 
@@ -81499,6 +82170,15 @@ import TabItem from '@theme/TabItem';
 Get Market Risk Premium by country.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.risk_premium(provider='fmp')
+```
+
+
 
 ## Parameters
 
@@ -81616,6 +82296,17 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get the Share Price Index by country from the OECD Short-Term Economics Statistics.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.share_price_index(provider='oecd')
+# Multiple countries can be passed in as a list.
+obb.economy.share_price_index(country='united_kingdom,germany', frequency='quarter', provider='oecd')
+```
 
 
 
@@ -81808,6 +82499,16 @@ Short-term interest rates are based on three-month money market rates where avai
 Typical standardised names are "money market rate" and "treasury bill rate".
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.short_term_interest_rate(provider='oecd')
+obb.economy.short_term_interest_rate(country=all, frequency=quarterly, provider='oecd')
+```
+
+
 
 ## Parameters
 
@@ -81966,6 +82667,17 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Search BLS surveys by category and keyword or phrase to identify BLS series IDs.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.survey.bls_search(provider='bls', category=cpi)
+# Use semi-colon to separate multiple queries as an & operator.
+obb.economy.survey.bls_search(provider='bls', category=cpi, query='seattle;gasoline')
+```
 
 
 
@@ -82150,6 +82862,15 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get time series data for one, or more, BLS series IDs.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.survey.bls_series(provider='bls', symbol='CES0000000001')
+```
 
 
 
@@ -82384,6 +83105,15 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get The Survey Of Economic Conditions For The Chicago Region.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.survey.economic_conditions_chicago(provider='fred')
+```
 
 
 
@@ -82673,6 +83403,16 @@ manufacturing executives in New York State, typically the president or CEO.
 About 100 responses are received. Most are completed by the tenth, although surveys are accepted until the fifteenth.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.survey.manufacturing_outlook_ny(provider='fred')
+obb.economy.survey.manufacturing_outlook_ny(topic=hours_worked,new_orders, transform=pc1, provider='fred', seasonally_adjusted=True)
+```
+
+
 
 ## Parameters
 
@@ -82903,6 +83643,16 @@ import TabItem from '@theme/TabItem';
 Get The Manufacturing Outlook Survey For The Texas Region.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.survey.manufacturing_outlook_texas(provider='fred')
+obb.economy.survey.manufacturing_outlook_texas(topic=business_outlook,new_orders, transform=pc1, provider='fred')
+```
+
+
 
 ## Parameters
 
@@ -83123,6 +83873,16 @@ import TabItem from '@theme/TabItem';
 Get Nonfarm Payrolls Survey.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.survey.nonfarm_payrolls(provider='fred')
+obb.economy.survey.nonfarm_payrolls(category=avg_hours, provider='fred')
+```
+
+
 
 ## Parameters
 
@@ -83275,6 +84035,16 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get Senior Loan Officers Opinion Survey.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.survey.sloos(provider='fred')
+obb.economy.survey.sloos(category=credit_card, provider='fred')
+```
 
 
 
@@ -83455,6 +84225,15 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get University of Michigan Consumer Sentiment and Inflation Expectations Surveys.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.survey.university_of_michigan(provider='fred')
+```
 
 
 
@@ -83652,6 +84431,18 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get global unemployment data.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.economy.unemployment(provider='oecd')
+obb.economy.unemployment(country='all', frequency='quarter', provider='oecd')
+# Demographics for the statistics are selected with the `age` parameter.
+obb.economy.unemployment(country='all', frequency='quarter', age=total, provider='oecd')
+```
 
 
 
@@ -83880,6 +84671,17 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get historical and upcoming dividend payments. Includes dividend amount, ex-dividend and payment dates.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.calendar.dividend(provider='fmp')
+# Get dividend calendar for specific dates.
+obb.equity.calendar.dividend(start_date='2024-02-01', end_date='2024-02-07', provider='nasdaq')
+```
 
 
 
@@ -84131,6 +84933,17 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get historical and upcoming company earnings releases. Includes earnings per share (EPS) and revenue data.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.calendar.earnings(provider='fmp')
+# Get earnings calendar for specific dates.
+obb.equity.calendar.earnings(start_date='2024-02-01', end_date='2024-02-07', provider='fmp')
+```
 
 
 
@@ -84509,6 +85322,17 @@ import TabItem from '@theme/TabItem';
 Get historical and upcoming company events, such as Investor Day, Conference Call, Earnings Release.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.calendar.events(provider='fmp')
+# Get company events calendar for specific dates.
+obb.equity.calendar.events(start_date='2024-02-01', end_date='2024-02-07', provider='fmp')
+```
+
+
 
 ## Parameters
 
@@ -84724,6 +85548,20 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get historical and upcoming initial public offerings (IPOs).
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.calendar.ipo(provider='intrinio')
+obb.equity.calendar.ipo(limit=100, provider='nasdaq')
+# Get all IPOs available.
+obb.equity.calendar.ipo(provider='intrinio')
+# Get IPOs for specific dates.
+obb.equity.calendar.ipo(start_date='2024-02-01', end_date='2024-02-07', provider='nasdaq')
+```
 
 
 
@@ -85094,6 +85932,17 @@ import TabItem from '@theme/TabItem';
 Get historical and upcoming stock split operations.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.calendar.splits(provider='fmp')
+# Get stock splits calendar for specific dates.
+obb.equity.calendar.splits(start_date='2024-02-01', end_date='2024-02-07', provider='fmp')
+```
+
+
 
 ## Parameters
 
@@ -85248,6 +86097,17 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Compare reported company facts and fundamental data points.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.compare.company_facts(provider='sec')
+obb.equity.compare.company_facts(provider='sec', fact='PaymentsForRepurchaseOfCommonStock', year=2023)
+obb.equity.compare.company_facts(provider='sec', symbol='NVDA,AAPL,AMZN,MSFT,GOOG,SMCI', fact='RevenueFromContractWithCustomerExcludingAssessedTax', year=2024)
+```
 
 
 
@@ -85505,6 +86365,21 @@ Valuation metrics include price to earnings, price to book, price to sales ratio
 Performance metrics include the stock price change for different time periods.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.compare.groups(provider='finviz')
+# Group by sector and analyze valuation.
+obb.equity.compare.groups(group=sector, metric=valuation, provider='finviz')
+# Group by industry and analyze performance.
+obb.equity.compare.groups(group=industry, metric=performance, provider='finviz')
+# Group by country and analyze valuation.
+obb.equity.compare.groups(group=country, metric=valuation, provider='finviz')
+```
+
+
 
 ## Parameters
 
@@ -85731,6 +86606,15 @@ Peers consist of companies trading on the same exchange, operating within the sa
 and with comparable market capitalizations.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.compare.peers(symbol='AAPL', provider='fmp')
+```
+
+
 
 ## Parameters
 
@@ -85867,6 +86751,17 @@ Get the weekly aggregate trade data for Over The Counter deals.
 
 ATS and non-ATS trading data for each ATS/firm
 with trade reporting obligations under FINRA rules.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.darkpool.otc(provider='finra')
+# Get OTC data for a symbol
+obb.equity.darkpool.otc(symbol='AAPL', provider='finra')
+```
 
 
 
@@ -86038,6 +86933,16 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get the most actively traded stocks based on volume.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.discovery.active(provider='yfinance')
+obb.equity.discovery.active(sort='desc', provider='yfinance')
+```
 
 
 
@@ -86297,6 +87202,16 @@ import TabItem from '@theme/TabItem';
 Get top small cap stocks based on earnings growth.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.discovery.aggressive_small_caps(provider='yfinance')
+obb.equity.discovery.aggressive_small_caps(sort='desc', provider='yfinance')
+```
+
+
 
 ## Parameters
 
@@ -86542,6 +87457,17 @@ filed annually and includes the company's financial statements, management discu
 and audited financial statements.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.discovery.filings(provider='fmp')
+# Get filings for the year 2023, limited to 100 results
+obb.equity.discovery.filings(start_date='2023-01-01', end_date='2023-12-31', limit=100, provider='fmp')
+```
+
+
 
 ## Parameters
 
@@ -86774,6 +87700,16 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get the top price gainers in the stock market.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.discovery.gainers(provider='yfinance')
+obb.equity.discovery.gainers(sort='desc', provider='yfinance')
+```
 
 
 
@@ -87104,6 +88040,16 @@ import TabItem from '@theme/TabItem';
 Get top tech stocks based on revenue and earnings growth.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.discovery.growth_tech(provider='yfinance')
+obb.equity.discovery.growth_tech(sort='desc', provider='yfinance')
+```
+
+
 
 ## Parameters
 
@@ -87368,6 +88314,16 @@ import TabItem from '@theme/TabItem';
 Get the newest quarterly, annual, and current reports for all companies.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.discovery.latest_financial_reports(provider='sec')
+obb.equity.discovery.latest_financial_reports(provider='sec', date=2024-09-30)
+```
+
+
 
 ## Parameters
 
@@ -87599,6 +88555,16 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get the top price losers in the stock market.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.discovery.losers(provider='yfinance')
+obb.equity.discovery.losers(sort='desc', provider='yfinance')
+```
 
 
 
@@ -87848,6 +88814,15 @@ It gives a daily view into retail activity and sentiment for over 9,500 US trade
 ADRs, and ETPs.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.discovery.top_retail(provider='nasdaq')
+```
+
+
 
 ## Parameters
 
@@ -87999,6 +88974,16 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get potentially undervalued growth stocks.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.discovery.undervalued_growth(provider='yfinance')
+obb.equity.discovery.undervalued_growth(sort='desc', provider='yfinance')
+```
 
 
 
@@ -88254,6 +89239,16 @@ import TabItem from '@theme/TabItem';
 Get potentially undervalued large cap stocks.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.discovery.undervalued_large_caps(provider='yfinance')
+obb.equity.discovery.undervalued_large_caps(sort='desc', provider='yfinance')
+```
+
+
 
 ## Parameters
 
@@ -88494,6 +89489,16 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Search for specific analysts and get their forecast track record.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.estimates.analyst_search(provider='benzinga')
+obb.equity.estimates.analyst_search(firm_name='Wedbush', provider='benzinga')
+```
 
 
 
@@ -88911,6 +89916,16 @@ import TabItem from '@theme/TabItem';
 Get consensus price target and recommendation.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.estimates.consensus(symbol='AAPL', provider='fmp')
+obb.equity.estimates.consensus(symbol='AAPL,MSFT', provider='yfinance')
+```
+
+
 
 ## Parameters
 
@@ -89249,6 +90264,17 @@ import TabItem from '@theme/TabItem';
 Get forward EBITDA estimates.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.estimates.forward_ebitda(provider='intrinio')
+obb.equity.estimates.forward_ebitda(symbol='AAPL', fiscal_period=annual, provider='intrinio')
+obb.equity.estimates.forward_ebitda(symbol='AAPL,MSFT', fiscal_period=quarter, provider='fmp')
+```
+
+
 
 ## Parameters
 
@@ -89577,6 +90603,16 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get forward EPS estimates.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.estimates.forward_eps(symbol='AAPL', provider='intrinio')
+obb.equity.estimates.forward_eps(fiscal_year=2025, fiscal_period=fy, provider='intrinio')
+```
 
 
 
@@ -90029,6 +91065,16 @@ import TabItem from '@theme/TabItem';
 Get forward PE estimates.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.estimates.forward_pe(provider='intrinio')
+obb.equity.estimates.forward_pe(symbol='AAPL,MSFT,GOOG', provider='intrinio')
+```
+
+
 
 ## Parameters
 
@@ -90195,6 +91241,16 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get forward sales estimates.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.estimates.forward_sales(symbol='AAPL', provider='intrinio')
+obb.equity.estimates.forward_sales(fiscal_year=2025, fiscal_period=fy, provider='intrinio')
+```
 
 
 
@@ -90595,6 +91651,15 @@ import TabItem from '@theme/TabItem';
 Get historical analyst estimates for earnings and revenue.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.estimates.historical(symbol='AAPL', provider='fmp')
+```
+
+
 
 ## Parameters
 
@@ -90919,6 +91984,17 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get analyst price targets by company.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.estimates.price_target(provider='benzinga')
+# Get price targets for Microsoft using 'benzinga' as provider.
+obb.equity.estimates.price_target(start_date=2020-01-01, end_date=2024-02-16, limit=10, symbol='msft', provider='benzinga', action=downgrades)
+```
 
 
 
@@ -91495,6 +92571,16 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get the balance sheet for a given company.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.fundamental.balance(symbol='AAPL', provider='fmp')
+obb.equity.fundamental.balance(symbol='AAPL', period=annual, limit=5, provider='intrinio')
+```
 
 
 
@@ -92617,6 +93703,16 @@ import TabItem from '@theme/TabItem';
 Get the growth of a company's balance sheet items over time.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.fundamental.balance_growth(symbol='AAPL', provider='fmp')
+obb.equity.fundamental.balance_growth(symbol='AAPL', limit=10, provider='fmp')
+```
+
+
 
 ## Parameters
 
@@ -92969,6 +94065,16 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get the cash flow statement for a given company.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.fundamental.cash(symbol='AAPL', provider='fmp')
+obb.equity.fundamental.cash(symbol='AAPL', period=annual, limit=5, provider='intrinio')
+```
 
 
 
@@ -93784,6 +94890,16 @@ import TabItem from '@theme/TabItem';
 Get the growth of a company's cash flow statement items over time.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.fundamental.cash_growth(symbol='AAPL', provider='fmp')
+obb.equity.fundamental.cash_growth(symbol='AAPL', limit=10, provider='fmp')
+```
+
+
 
 ## Parameters
 
@@ -94074,6 +95190,15 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get historical dividend data for a given company.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.fundamental.dividends(symbol='AAPL', provider='intrinio')
+```
 
 
 
@@ -94468,6 +95593,15 @@ import TabItem from '@theme/TabItem';
 Get historical employee count data for a given company.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.fundamental.employee_count(symbol='AAPL', provider='fmp')
+```
+
+
 
 ## Parameters
 
@@ -94662,6 +95796,16 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get public company filings.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.fundamental.filings(provider='fmp')
+obb.equity.fundamental.filings(limit=100, provider='fmp')
+```
 
 
 
@@ -95541,6 +96685,15 @@ import TabItem from '@theme/TabItem';
 Get the historical values of a data tag from Intrinio.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.fundamental.historical_attributes(symbol='AAPL', tag='ebitda', provider='intrinio')
+```
+
+
 
 ## Parameters
 
@@ -95797,6 +96950,15 @@ import TabItem from '@theme/TabItem';
 Get historical earnings per share data for a given company.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.fundamental.historical_eps(symbol='AAPL', provider='fmp')
+```
+
+
 
 ## Parameters
 
@@ -96043,6 +97205,15 @@ import TabItem from '@theme/TabItem';
 Get historical stock splits for a given company.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.fundamental.historical_splits(symbol='AAPL', provider='fmp')
+```
+
+
 
 ## Parameters
 
@@ -96207,6 +97378,16 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get the income statement for a given company.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.fundamental.income(symbol='AAPL', provider='fmp')
+obb.equity.fundamental.income(symbol='AAPL', period=annual, limit=5, provider='intrinio')
+```
 
 
 
@@ -97267,6 +98448,16 @@ import TabItem from '@theme/TabItem';
 Get the growth of a company's income statement items over time.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.fundamental.income_growth(symbol='AAPL', provider='fmp')
+obb.equity.fundamental.income_growth(symbol='AAPL', limit=10, period=annual, provider='fmp')
+```
+
+
 
 ## Parameters
 
@@ -97566,6 +98757,15 @@ import TabItem from '@theme/TabItem';
 Get the latest value of a data tag from Intrinio.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.fundamental.latest_attributes(symbol='AAPL', tag='ceo', provider='intrinio')
+```
+
+
 
 ## Parameters
 
@@ -97712,6 +98912,15 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get executive management team data for a given company.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.fundamental.management(symbol='AAPL', provider='fmp')
+```
 
 
 
@@ -97941,6 +99150,15 @@ import TabItem from '@theme/TabItem';
 Get executive management team compensation for a given company over time.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.fundamental.management_compensation(symbol='AAPL', provider='fmp')
+```
+
+
 
 ## Parameters
 
@@ -98155,6 +99373,21 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get the Management Discussion & Analysis section from the financial statements for a given company.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.fundamental.management_discussion_analysis(symbol='AAPL', provider='sec')
+# Get the Management Discussion & Analysis section by calendar year and period.
+obb.equity.fundamental.management_discussion_analysis(symbol='AAPL', calendar_year=2020, calendar_period='Q4', provider='sec')
+# Setting 'include_tables' to True will attempt to extract all tables in valid Markdown.
+obb.equity.fundamental.management_discussion_analysis(symbol='AAPL', calendar_year=2020, calendar_period='Q4', provider='sec', include_tables=True)
+# Setting 'raw_html' to True will bypass extraction and return the raw HTML file, as is. Use this for custom parsing or to access the entire HTML filing.
+obb.equity.fundamental.management_discussion_analysis(symbol='AAPL', calendar_year=2020, calendar_period='Q4', provider='sec', raw_html=True)
+```
 
 
 
@@ -98444,6 +99677,16 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get fundamental metrics for a given company.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.fundamental.metrics(symbol='AAPL', provider='fmp')
+obb.equity.fundamental.metrics(symbol='AAPL', period=annual, limit=100, provider='intrinio')
+```
 
 
 
@@ -99374,6 +100617,15 @@ import TabItem from '@theme/TabItem';
 Get equity valuation multiples for a given company.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.fundamental.multiples(symbol='AAPL', provider='fmp')
+```
+
+
 
 ## Parameters
 
@@ -99974,6 +101226,16 @@ import TabItem from '@theme/TabItem';
 Get an extensive set of financial and accounting ratios for a given company over time.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.fundamental.ratios(symbol='AAPL', provider='fmp')
+obb.equity.fundamental.ratios(symbol='AAPL', period=annual, limit=12, provider='intrinio')
+```
+
+
 
 ## Parameters
 
@@ -100406,6 +101668,21 @@ import TabItem from '@theme/TabItem';
 Get financial statements as reported by the company.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.fundamental.reported_financials(symbol='AAPL', provider='intrinio')
+# Get AAPL balance sheet with a limit of 10 items.
+obb.equity.fundamental.reported_financials(symbol='AAPL', period='annual', statement_type='balance', limit=10, provider='intrinio')
+# Get reported income statement
+obb.equity.fundamental.reported_financials(symbol='AAPL', statement_type='income', provider='intrinio')
+# Get reported cash flow statement
+obb.equity.fundamental.reported_financials(symbol='AAPL', statement_type='cash', provider='intrinio')
+```
+
+
 
 ## Parameters
 
@@ -100614,6 +101891,16 @@ import TabItem from '@theme/TabItem';
 Get the geographic breakdown of revenue for a given company over time.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.fundamental.revenue_per_geography(symbol='AAPL', provider='fmp')
+obb.equity.fundamental.revenue_per_geography(symbol='AAPL', period=quarter, provider='fmp')
+```
+
+
 
 ## Parameters
 
@@ -100783,6 +102070,16 @@ import TabItem from '@theme/TabItem';
 Get the revenue breakdown by business segment for a given company over time.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.fundamental.revenue_per_segment(symbol='AAPL', provider='fmp')
+obb.equity.fundamental.revenue_per_segment(symbol='AAPL', period=quarter, provider='fmp')
+```
+
+
 
 ## Parameters
 
@@ -100939,6 +102236,15 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Search Intrinio data tags to search in latest or historical attributes.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.fundamental.search_attributes(query='ebitda', provider='intrinio')
+```
 
 
 
@@ -101149,6 +102455,16 @@ import TabItem from '@theme/TabItem';
 Get the 1 year trailing dividend yield for a given company over time.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.fundamental.trailing_dividend_yield(symbol='AAPL', provider='tiingo')
+obb.equity.fundamental.trailing_dividend_yield(symbol='AAPL', limit=252, provider='tiingo')
+```
+
+
 
 ## Parameters
 
@@ -101290,6 +102606,15 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get earnings call transcripts for a given company.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.fundamental.transcript(symbol='AAPL', year='2020', provider='fmp')
+```
 
 
 
@@ -101445,6 +102770,15 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get the historical market cap of a ticker symbol.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.historical_market_cap(provider='fmp', symbol='AAPL')
+```
 
 
 
@@ -101696,6 +103030,15 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get an updated equity market snapshot. This includes price data for thousands of stocks.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.market_snapshots(provider='fmp')
+```
 
 
 
@@ -102131,6 +103474,21 @@ Most funds wait until the end of this period in order to conceal
 their investment strategy from competitors and the public.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.ownership.form_13f(symbol='NVDA', provider='sec')
+# Enter a date (calendar quarter ending) for a specific report.
+obb.equity.ownership.form_13f(symbol='BRK-A', date='2016-09-30', provider='sec')
+# Example finding Michael Burry's filings.
+cik = obb.regulators.sec.institutions_search("Scion Asset Management").results[0].cik
+# Use the `limit` parameter to return N number of reports from the most recent.
+obb.equity.ownership.form_13f(cik, limit=2).to_df()
+```
+
+
 
 ## Parameters
 
@@ -102367,6 +103725,16 @@ import TabItem from '@theme/TabItem';
 
 Obtain government transaction data, including data from the Senate
 and the House of Representatives.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.ownership.government_trades(symbol='AAPL', chamber='all', provider='fmp')
+obb.equity.ownership.government_trades(limit=500, chamber='all', provider='fmp')
+```
 
 
 
@@ -102614,6 +103982,16 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get data about trading by a company's management team and board of directors.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.ownership.insider_trading(symbol='AAPL', provider='fmp')
+obb.equity.ownership.insider_trading(symbol='AAPL', limit=500, provider='intrinio')
+```
 
 
 
@@ -103379,6 +104757,15 @@ import TabItem from '@theme/TabItem';
 Get data about institutional ownership for a given company over time.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.ownership.institutional(symbol='AAPL', provider='fmp')
+```
+
+
 
 ## Parameters
 
@@ -103675,6 +105062,16 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get data about major holders for a given company over time.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.ownership.major_holders(symbol='AAPL', provider='fmp')
+obb.equity.ownership.major_holders(symbol='AAPL', page=0, provider='fmp')
+```
 
 
 
@@ -104132,6 +105529,15 @@ import TabItem from '@theme/TabItem';
 Get data about share float for a given company.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.ownership.share_statistics(symbol='AAPL', provider='fmp')
+```
+
+
 
 ## Parameters
 
@@ -104417,6 +105823,16 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get historical price data for a given stock. This includes open, high, low, close, and volume.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.price.historical(symbol='AAPL', provider='fmp')
+obb.equity.price.historical(symbol='AAPL', interval=1d, provider='intrinio')
+```
 
 
 
@@ -105524,6 +106940,15 @@ import TabItem from '@theme/TabItem';
 Get the National Best Bid and Offer for a given stock.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.price.nbbo(symbol='AAPL', provider='polygon')
+```
+
+
 
 ## Parameters
 
@@ -105782,6 +107207,15 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get price performance data for a given stock. This includes price changes for different time periods.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.price.performance(symbol='AAPL', provider='fmp')
+```
 
 
 
@@ -106180,6 +107614,15 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get the latest quote for a given stock. Quote includes price, volume, and other data.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.price.quote(symbol='AAPL', provider='fmp')
+```
 
 
 
@@ -107684,6 +109127,15 @@ import TabItem from '@theme/TabItem';
 Get general information about a company. This includes company name, industry, sector and price data.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.profile(symbol='AAPL', provider='fmp')
+```
+
+
 
 ## Parameters
 
@@ -108919,6 +110371,15 @@ import TabItem from '@theme/TabItem';
 Screen for companies meeting various criteria.
 
 These criteria include market cap, price, beta, volume, and dividend yield.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.screener(provider='fmp')
+```
 
 
 
@@ -110402,6 +111863,16 @@ import TabItem from '@theme/TabItem';
 Search for stock symbol, CIK, LEI, or company name.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.search(provider='intrinio')
+obb.equity.search(query='AAPL', is_symbol=False, use_cache=True, provider='nasdaq')
+```
+
+
 
 ## Parameters
 
@@ -110846,6 +112317,15 @@ import TabItem from '@theme/TabItem';
 Get reported Fail-to-deliver (FTD) data.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.shorts.fails_to_deliver(symbol='AAPL', provider='sec')
+```
+
+
 
 ## Parameters
 
@@ -111062,6 +112542,15 @@ import TabItem from '@theme/TabItem';
 Get reported short volume and days to cover data.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.shorts.short_interest(symbol='AAPL', provider='finra')
+```
+
+
 
 ## Parameters
 
@@ -111257,6 +112746,15 @@ import TabItem from '@theme/TabItem';
 Get reported Fail-to-deliver (FTD) data.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.shorts.short_volume(symbol='AAPL', provider='stockgrid')
+```
+
+
 
 ## Parameters
 
@@ -111410,6 +112908,15 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 ETF Country weighting.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.etf.countries(symbol='VT', provider='fmp')
+```
 
 
 
@@ -111567,6 +113074,16 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get the most active ETFs.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+# Get the most active ETFs.
+obb.etf.discovery.active(provider='wsj')
+```
 
 
 
@@ -111805,6 +113322,16 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get the top ETF gainers.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+# Get the top ETF gainers.
+obb.etf.discovery.gainers(provider='wsj')
+```
 
 
 
@@ -112060,6 +113587,16 @@ import TabItem from '@theme/TabItem';
 Get the top ETF losers.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# Get the top ETF losers.
+obb.etf.discovery.losers(provider='wsj')
+```
+
+
 
 ## Parameters
 
@@ -112275,6 +113812,17 @@ import TabItem from '@theme/TabItem';
 Get the exposure to ETFs for a specific stock.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.etf.equity_exposure(symbol='MSFT', provider='fmp')
+# This function accepts multiple tickers.
+obb.etf.equity_exposure(symbol='MSFT,AAPL', provider='fmp')
+```
+
+
 
 ## Parameters
 
@@ -112426,6 +113974,18 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 ETF Historical Market Price.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.etf.historical(symbol='SPY', provider='fmp')
+obb.etf.historical(symbol='SPY', provider='yfinance')
+# This function accepts multiple tickers.
+obb.etf.historical(symbol='SPY,IWM,QQQ,DJIA', provider='yfinance')
+```
 
 
 
@@ -113520,6 +115080,19 @@ import TabItem from '@theme/TabItem';
 Get the holdings for an individual ETF.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.etf.holdings(symbol='XLK', provider='fmp')
+# Including a date (FMP, SEC) will return the holdings as per NPORT-P filings.
+obb.etf.holdings(symbol='XLK', date=2022-03-31, provider='fmp')
+# The same data can be returned from the SEC directly.
+obb.etf.holdings(symbol='XLK', date=2022-03-31, provider='sec')
+```
+
+
 
 ## Parameters
 
@@ -114249,6 +115822,15 @@ import TabItem from '@theme/TabItem';
 Use this function to get the holdings dates, if available.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.etf.holdings_date(symbol='XLK', provider='fmp')
+```
+
+
 
 ## Parameters
 
@@ -114406,6 +115988,17 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 ETF Information Overview.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.etf.info(symbol='SPY', provider='fmp')
+# This function accepts multiple tickers.
+obb.etf.info(symbol='SPY,IWM,QQQ,DJIA', provider='fmp')
+```
 
 
 
@@ -115394,6 +116987,16 @@ import TabItem from '@theme/TabItem';
 Price performance as a return, over different periods.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.etf.price_performance(symbol='QQQ', provider='fmp')
+obb.etf.price_performance(symbol='SPY,QQQ,IWM,DJIA', provider='fmp')
+```
+
+
 
 ## Parameters
 
@@ -115915,6 +117518,18 @@ Search for ETFs.
 An empty query returns the full list of ETFs from the provider.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# An empty query returns the full list of ETFs from the provider.
+obb.etf.search(provider='fmp')
+# The query will return results from text-based fields containing the term.
+obb.etf.search(query='commercial real estate', provider='fmp')
+```
+
+
 
 ## Parameters
 
@@ -116334,6 +117949,15 @@ import TabItem from '@theme/TabItem';
 ETF Sector weighting.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.etf.sectors(symbol='SPY', provider='fmp')
+```
+
+
 
 ## Parameters
 
@@ -116479,6 +118103,20 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Bond Indices.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+# The default state for FRED are series for constructing the US Corporate Bond Yield Curve.
+obb.fixedincome.bond_indices(provider='fred')
+# Multiple indices, from within the same 'category', can be requested.
+obb.fixedincome.bond_indices(category=high_yield, index=us,europe,emerging, index_type='total_return', provider='fred')
+# From FRED, there are three main categories, 'high_yield', 'us', and 'emerging_markets'. Emerging markets is a broad category.
+obb.fixedincome.bond_indices(category=emerging_markets, index=corporate,private_sector,public_sector, provider='fred')
+```
 
 
 
@@ -116797,6 +118435,15 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Corporate Bond Prices.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.fixedincome.corporate.bond_prices(provider='tmx')
+```
 
 
 
@@ -117189,6 +118836,16 @@ Many companies use CP to raise cash needed for current transactions,
 and many find it to be a lower-cost alternative to bank loans.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.fixedincome.corporate.commercial_paper(provider='fred')
+obb.fixedincome.corporate.commercial_paper(category=all, maturity=15d, provider='fred')
+```
+
+
 
 ## Parameters
 
@@ -117447,6 +119104,16 @@ These terms are adjustment factors that blend AAA, AA, and A bonds into a single
 that is the market-weighted average (MWA) quality of high quality bonds.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.fixedincome.corporate.hqm(provider='fred')
+obb.fixedincome.corporate.hqm(yield_curve=par, provider='fred')
+```
+
+
 
 ## Parameters
 
@@ -117614,6 +119281,16 @@ publicly issued in the US domestic market. Qualifying securities must have an in
 average of Moody’s, S&P and Fitch), at least 18 months to final maturity at the time of issuance, at least one year
 remaining term to final maturity as of the rebalance date, a fixed coupon schedule and a minimum amount
 outstanding of $250 million. The ICE BofA US Corporate Index is a component of the US Corporate Master Index.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.fixedincome.corporate.ice_bofa(provider='fred')
+obb.fixedincome.corporate.ice_bofa(index_type='yield_to_worst', provider='fred')
+```
 
 
 
@@ -117835,6 +119512,16 @@ These corporate bonds often are used in macroeconomics as an alternative to the 
 Treasury Bill as an indicator of the interest rate.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.fixedincome.corporate.moody(provider='fred')
+obb.fixedincome.corporate.moody(index_type='baa', provider='fred')
+```
+
+
 
 ## Parameters
 
@@ -118012,6 +119699,16 @@ The spot rates for any maturity is the yield on a bond that provides a single pa
 This is a zero coupon bond.
 Because each spot rate pertains to a single cashflow, it is the relevant interest rate
 concept for discounting a pension liability at the same maturity.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.fixedincome.corporate.spot_rates(provider='fred')
+obb.fixedincome.corporate.spot_rates(maturity='10,20,30,50', provider='fred')
+```
 
 
 
@@ -118215,6 +119912,16 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get current Treasury inflation-protected securities yields.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.fixedincome.government.tips_yields(provider='fred')
+obb.fixedincome.government.tips_yields(maturity=10, provider='fred')
+```
 
 
 
@@ -118444,6 +120151,16 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Government Treasury Auctions.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.fixedincome.government.treasury_auctions(provider='government_us')
+obb.fixedincome.government.treasury_auctions(security_type='Bill', start_date='2022-01-01', end_date='2023-01-01', provider='government_us')
+```
 
 
 
@@ -119586,6 +121303,16 @@ import TabItem from '@theme/TabItem';
 Government Treasury Prices by date.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.fixedincome.government.treasury_prices(provider='government_us')
+obb.fixedincome.government.treasury_prices(date='2019-02-05', provider='government_us')
+```
+
+
 
 ## Parameters
 
@@ -119980,6 +121707,15 @@ import TabItem from '@theme/TabItem';
 Government Treasury Rates.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.fixedincome.government.treasury_rates(provider='fmp')
+```
+
+
 
 ## Parameters
 
@@ -120284,6 +122020,19 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get yield curve data by country and date.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.fixedincome.government.yield_curve(provider='federal_reserve')
+obb.fixedincome.government.yield_curve(date='2023-05-01,2024-05-01', provider='fmp')
+obb.fixedincome.government.yield_curve(date='2023-05-01', country=united_kingdom, provider='econdb')
+obb.fixedincome.government.yield_curve(provider='ecb', yield_curve_type=par_yield)
+obb.fixedincome.government.yield_curve(provider='fred', yield_curve_type=real, date='2023-05-01,2024-05-01')
+```
 
 
 
@@ -120597,6 +122346,18 @@ import TabItem from '@theme/TabItem';
 Mortgage Indices.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# The default state for FRED are the primary mortgage indices from Optimal Blue.
+obb.fixedincome.mortgage_indices(provider='fred')
+# Multiple indices can be requested.
+obb.fixedincome.mortgage_indices(index=jumbo_30y,conforming_30y,conforming_15y, provider='fred')
+```
+
+
 
 ## Parameters
 
@@ -120826,6 +122587,17 @@ AMERIBOR.
 AMERIBOR (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of
 short-term interbank borrowing. This rate is based on transactions in overnight unsecured loans conducted on the
 American Financial Exchange (AFX).
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.fixedincome.rate.ameribor(provider='fred')
+# The change from one year ago is applied with the transform parameter.
+obb.fixedincome.rate.ameribor(maturity=all, transform=pc1, provider='fred')
+```
 
 
 
@@ -121063,6 +122835,16 @@ In the United States, the Federal Reserve System's Board of Governors set the ba
 also known as the discount rate.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.fixedincome.rate.dpcredit(provider='fred')
+obb.fixedincome.rate.dpcredit(start_date='2023-02-01', end_date='2023-05-01', provider='fred')
+```
+
+
 
 ## Parameters
 
@@ -121221,6 +123003,16 @@ the bulk of liquidity to the banking system.
 - The rate on the marginal lending facility, which offers overnight credit to banks from the Eurosystem.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.fixedincome.rate.ecb(provider='fred')
+obb.fixedincome.rate.ecb(interest_rate_type='refinancing', provider='fred')
+```
+
+
 
 ## Parameters
 
@@ -121374,6 +123166,16 @@ Fed Funds Rate.
 
 Get Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its
 domestic banks to borrow money. The rates central banks charge are set to stabilize the economy.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.fixedincome.rate.effr(provider='fred')
+obb.fixedincome.rate.effr(effr_only=True, provider='fred')
+```
 
 
 
@@ -121717,6 +123519,16 @@ appropriate target level for the federal funds rate at the end of the specified
 calendar year or over the longer run.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.fixedincome.rate.effr_forecast(provider='fred')
+obb.fixedincome.rate.effr_forecast(long_run=True, provider='fred')
+```
+
+
 
 ## Parameters
 
@@ -121880,6 +123692,16 @@ The euro short-term rate (€STR) reflects the wholesale euro unsecured overnigh
 the euro area. The €STR is published on each TARGET2 business day based on transactions conducted and settled on
 the previous TARGET2 business day (the reporting date “T”) with a maturity date of T+1 which are deemed to have been
 executed at arm's length and thus reflect market rates in an unbiased way.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.fixedincome.rate.estr(provider='fred')
+obb.fixedincome.rate.estr(transform=ch1, provider='fred')
+```
 
 
 
@@ -122179,6 +124001,15 @@ domestic banks to borrow money. The rates central banks charge are set to stabil
 United States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.fixedincome.rate.iorb(provider='fred')
+```
+
+
 
 ## Parameters
 
@@ -122313,6 +124144,15 @@ Overnight Bank Funding.
 For the United States, the overnight bank funding rate (OBFR) is calculated as a volume-weighted median of
 overnight federal funds transactions and Eurodollar transactions reported in the
 FR 2420 Report of Selected Money Market Rates.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.fixedincome.rate.overnight_bank_funding(provider='fred')
+```
 
 
 
@@ -122606,6 +124446,15 @@ Secured Overnight Financing Rate.
 
 The Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of
 borrowing cash overnight collateralizing by Treasury securities.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.fixedincome.rate.sofr(provider='fred')
+```
 
 
 
@@ -122914,6 +124763,16 @@ transactions and reflects the average of the interest rates that banks pay to bo
 financial institutions and other institutional investors.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.fixedincome.rate.sonia(provider='fred')
+obb.fixedincome.rate.sonia(parameter=total_nominal_value, provider='fred')
+```
+
+
 
 ## Parameters
 
@@ -123077,6 +124936,15 @@ Secured Overnight Financing Rate.
 
 The Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of
 borrowing cash overnight collateralizing by Treasury securities.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.fixedincome.sofr(provider='fred')
+```
 
 
 
@@ -123401,6 +125269,16 @@ Treasuries. The value is obtained by the U.S. Treasury on a daily basis through 
 yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.fixedincome.spreads.tcm(provider='fred')
+obb.fixedincome.spreads.tcm(maturity='2y', provider='fred')
+```
+
+
 
 ## Parameters
 
@@ -123556,6 +125434,16 @@ Get data for Selected Treasury Constant Maturity Minus Federal Funds Rate
 Constant maturity is the theoretical value of a U.S. Treasury that is based on recent values of auctioned U.S.
 Treasuries. The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury
 yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.fixedincome.spreads.tcm_effr(provider='fred')
+obb.fixedincome.spreads.tcm_effr(maturity='10y', provider='fred')
+```
 
 
 
@@ -123731,6 +125619,16 @@ The value is obtained by the U.S. Treasury on a daily basis through interpolatio
 yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.fixedincome.spreads.treasury_effr(provider='fred')
+obb.fixedincome.spreads.treasury_effr(maturity='6m', provider='fred')
+```
+
+
 
 ## Parameters
 
@@ -123880,6 +125778,16 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 All indices available from a given provider.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.index.available(provider='fmp')
+obb.index.available(provider='yfinance')
+```
 
 
 
@@ -124114,6 +126022,17 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get Index Constituents.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.index.constituents(symbol='dowjones', provider='fmp')
+# Providers other than FMP will use the ticker symbol.
+obb.index.constituents(symbol='BEP50P', provider='cboe')
+```
 
 
 
@@ -124391,6 +126310,17 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Historical Index Levels.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.index.price.historical(symbol='^GSPC', provider='fmp')
+# Not all providers have the same symbols.
+obb.index.price.historical(symbol='SPX', provider='intrinio')
+```
 
 
 
@@ -124915,6 +126845,16 @@ import TabItem from '@theme/TabItem';
 Filter indices for rows containing the query.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.index.search(provider='cboe')
+obb.index.search(query='SPX', provider='cboe')
+```
+
+
 
 ## Parameters
 
@@ -125096,6 +127036,15 @@ import TabItem from '@theme/TabItem';
 Get Index Sectors. Sector weighting of an index.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.index.sectors(symbol='^TX60', provider='tmx')
+```
+
+
 
 ## Parameters
 
@@ -125238,6 +127187,16 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Index Snapshots. Current levels for all indices from a provider, grouped by `region`.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.index.snapshots(provider='tmx')
+obb.index.snapshots(region='us', provider='cboe')
+```
 
 
 
@@ -125606,6 +127565,16 @@ import TabItem from '@theme/TabItem';
 Get historical S&P 500 multiples and Shiller PE ratios.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.index.sp500_multiples(provider='multpl')
+obb.index.sp500_multiples(series_name='shiller_pe_year', provider='multpl')
+```
+
+
 
 ## Parameters
 
@@ -125867,6 +127836,24 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Company News. Get news for one or more companies.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.news.company(provider='benzinga')
+obb.news.company(limit=100, provider='benzinga')
+# Get news on the specified dates.
+obb.news.company(symbol='AAPL', start_date='2024-02-01', end_date='2024-02-07', provider='intrinio')
+# Display the headlines of the news.
+obb.news.company(symbol='AAPL', display=headline, provider='benzinga')
+# Get news for multiple symbols.
+obb.news.company(symbol='aapl,tsla', provider='fmp')
+# Get news company's ISIN.
+obb.news.company(symbol='NVDA', isin=US0378331005, provider='benzinga')
+```
 
 
 
@@ -126860,6 +128847,26 @@ import TabItem from '@theme/TabItem';
 World News. Global news data.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.news.world(provider='fmp')
+obb.news.world(limit=100, provider='intrinio')
+# Get news on the specified dates.
+obb.news.world(start_date='2024-02-01', end_date='2024-02-07', provider='intrinio')
+# Display the headlines of the news.
+obb.news.world(display=headline, provider='benzinga')
+# Get news by topics.
+obb.news.world(topics=finance, provider='benzinga')
+# Get news by source using 'tingo' as provider.
+obb.news.world(provider='tiingo', source=bloomberg)
+# Filter aticles by term using 'biztoc' as provider.
+obb.news.world(provider='biztoc', term=apple)
+```
+
+
 
 ## Parameters
 
@@ -127569,6 +129576,18 @@ Get Capital Asset Pricing Model (CAPM).
  risk and return, guiding more informed investment choices.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# Get Capital Asset Pricing Model (CAPM).
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()
+obb.quantitative.capm(data=stock_data, target='close')
+obb.quantitative.capm(target='close', data='[{'date': '2023-01-02', 'open': 110.0, 'high': 120.0, 'low': 100.0, 'close': 115.0, 'volume': 10000.0}, {'date': '2023-01-03', 'open': 165.0, 'high': 180.0, 'low': 150.0, 'close': 172.5, 'volume': 15000.0}, {'date': '2023-01-04', 'open': 146.67, 'high': 160.0, 'low': 133.33, 'close': 153.33, 'volume': 13333.33}, {'date': '2023-01-05', 'open': 137.5, 'high': 150.0, 'low': 125.0, 'close': 143.75, 'volume': 12500.0}, {'date': '2023-01-06', 'open': 132.0, 'high': 144.0, 'low': 120.0, 'close': 138.0, 'volume': 12000.0}, {'date': '2023-01-07', 'open': 128.33, 'high': 140.0, 'low': 116.67, 'close': 134.17, 'volume': 11666.67}, {'date': '2023-01-08', 'open': 125.71, 'high': 137.14, 'low': 114.29, 'close': 131.43, 'volume': 11428.57}, {'date': '2023-01-09', 'open': 123.75, 'high': 135.0, 'low': 112.5, 'close': 129.38, 'volume': 11250.0}, {'date': '2023-01-10', 'open': 122.22, 'high': 133.33, 'low': 111.11, 'close': 127.78, 'volume': 11111.11}, {'date': '2023-01-11', 'open': 121.0, 'high': 132.0, 'low': 110.0, 'close': 126.5, 'volume': 11000.0}, {'date': '2023-01-12', 'open': 120.0, 'high': 130.91, 'low': 109.09, 'close': 125.45, 'volume': 10909.09}, {'date': '2023-01-13', 'open': 119.17, 'high': 130.0, 'low': 108.33, 'close': 124.58, 'volume': 10833.33}, {'date': '2023-01-14', 'open': 118.46, 'high': 129.23, 'low': 107.69, 'close': 123.85, 'volume': 10769.23}, {'date': '2023-01-15', 'open': 117.86, 'high': 128.57, 'low': 107.14, 'close': 123.21, 'volume': 10714.29}, {'date': '2023-01-16', 'open': 117.33, 'high': 128.0, 'low': 106.67, 'close': 122.67, 'volume': 10666.67}, {'date': '2023-01-17', 'open': 116.88, 'high': 127.5, 'low': 106.25, 'close': 122.19, 'volume': 10625.0}, {'date': '2023-01-18', 'open': 116.47, 'high': 127.06, 'low': 105.88, 'close': 121.76, 'volume': 10588.24}, {'date': '2023-01-19', 'open': 116.11, 'high': 126.67, 'low': 105.56, 'close': 121.39, 'volume': 10555.56}, {'date': '2023-01-20', 'open': 115.79, 'high': 126.32, 'low': 105.26, 'close': 121.05, 'volume': 10526.32}, {'date': '2023-01-21', 'open': 115.5, 'high': 126.0, 'low': 105.0, 'close': 120.75, 'volume': 10500.0}, {'date': '2023-01-22', 'open': 115.24, 'high': 125.71, 'low': 104.76, 'close': 120.48, 'volume': 10476.19}, {'date': '2023-01-23', 'open': 115.0, 'high': 125.45, 'low': 104.55, 'close': 120.23, 'volume': 10454.55}, {'date': '2023-01-24', 'open': 114.78, 'high': 125.22, 'low': 104.35, 'close': 120.0, 'volume': 10434.78}, {'date': '2023-01-25', 'open': 114.58, 'high': 125.0, 'low': 104.17, 'close': 119.79, 'volume': 10416.67}, {'date': '2023-01-26', 'open': 114.4, 'high': 124.8, 'low': 104.0, 'close': 119.6, 'volume': 10400.0}, {'date': '2023-01-27', 'open': 114.23, 'high': 124.62, 'low': 103.85, 'close': 119.42, 'volume': 10384.62}, {'date': '2023-01-28', 'open': 114.07, 'high': 124.44, 'low': 103.7, 'close': 119.26, 'volume': 10370.37}, {'date': '2023-01-29', 'open': 113.93, 'high': 124.29, 'low': 103.57, 'close': 119.11, 'volume': 10357.14}, {'date': '2023-01-30', 'open': 113.79, 'high': 124.14, 'low': 103.45, 'close': 118.97, 'volume': 10344.83}, {'date': '2023-01-31', 'open': 113.67, 'high': 124.0, 'low': 103.33, 'close': 118.83, 'volume': 10333.33}, {'date': '2023-02-01', 'open': 113.55, 'high': 123.87, 'low': 103.23, 'close': 118.71, 'volume': 10322.58}]')
+```
+
+
 
 ## Parameters
 
@@ -127710,6 +129729,18 @@ Get Normality Statistics.
  - **Kolmogorov-Smirnov**: whether two underlying one-dimensional probability distributions differ.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# Get Normality Statistics.
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()
+obb.quantitative.normality(data=stock_data, target='close')
+obb.quantitative.normality(target='close', data='[{'date': '2023-01-02', 'open': 110.0, 'high': 120.0, 'low': 100.0, 'close': 115.0, 'volume': 10000.0}, {'date': '2023-01-03', 'open': 165.0, 'high': 180.0, 'low': 150.0, 'close': 172.5, 'volume': 15000.0}, {'date': '2023-01-04', 'open': 146.67, 'high': 160.0, 'low': 133.33, 'close': 153.33, 'volume': 13333.33}, {'date': '2023-01-05', 'open': 137.5, 'high': 150.0, 'low': 125.0, 'close': 143.75, 'volume': 12500.0}, {'date': '2023-01-06', 'open': 132.0, 'high': 144.0, 'low': 120.0, 'close': 138.0, 'volume': 12000.0}, {'date': '2023-01-07', 'open': 128.33, 'high': 140.0, 'low': 116.67, 'close': 134.17, 'volume': 11666.67}, {'date': '2023-01-08', 'open': 125.71, 'high': 137.14, 'low': 114.29, 'close': 131.43, 'volume': 11428.57}, {'date': '2023-01-09', 'open': 123.75, 'high': 135.0, 'low': 112.5, 'close': 129.38, 'volume': 11250.0}]')
+```
+
+
 
 ## Parameters
 
@@ -127843,6 +129874,19 @@ Calculate the Omega Ratio.
  focusing on the likelihood of success rather than just average outcomes.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# Get Omega Ratio.
+stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
+returns = stock_data["close"].pct_change().dropna()
+obb.quantitative.performance.omega_ratio(data=returns, target="close")
+obb.quantitative.performance.omega_ratio(target='close', data='[{'date': '2023-01-02', 'close': 0.05}, {'date': '2023-01-03', 'close': 0.08}, {'date': '2023-01-04', 'close': 0.07}, {'date': '2023-01-05', 'close': 0.06}, {'date': '2023-01-06', 'close': 0.06}]')
+```
+
+
 
 ## Parameters
 
@@ -127970,6 +130014,19 @@ Get Rolling Sharpe Ratio.
  optimizing your portfolio for maximum return on risk.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# Get Rolling Sharpe Ratio.
+stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
+returns = stock_data["close"].pct_change().dropna()
+obb.quantitative.performance.sharpe_ratio(data=returns, target="close")
+obb.quantitative.performance.sharpe_ratio(target='close', window=2, data='[{'date': '2023-01-02', 'close': 0.05}, {'date': '2023-01-03', 'close': 0.08}, {'date': '2023-01-04', 'close': 0.07}, {'date': '2023-01-05', 'close': 0.06}, {'date': '2023-01-06', 'close': 0.06}]')
+```
+
+
 
 ## Parameters
 
@@ -128091,6 +130148,20 @@ Get rolling Sortino Ratio.
 
  For method & terminology see:
  http://www.redrockcapital.com/Sortino__A__Sharper__Ratio_Red_Rock_Capital.pdf
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+# Get Rolling Sortino Ratio.
+stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
+returns = stock_data["close"].pct_change().dropna()
+obb.quantitative.performance.sortino_ratio(data=stock_data, target="close")
+obb.quantitative.performance.sortino_ratio(data=stock_data, target="close", target_return=0.01, window=126, adjusted=True)
+obb.quantitative.performance.sortino_ratio(target='close', window=2, data='[{'date': '2023-01-02', 'close': 0.05}, {'date': '2023-01-03', 'close': 0.08}, {'date': '2023-01-04', 'close': 0.07}, {'date': '2023-01-05', 'close': 0.06}, {'date': '2023-01-06', 'close': 0.06}]')
+```
 
 
 
@@ -128236,6 +130307,19 @@ Calculate the rolling kurtosis of a target column within a given window size.
  rolling window.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# Get Rolling Kurtosis.
+stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
+returns = stock_data["close"].pct_change().dropna()
+obb.quantitative.rolling.kurtosis(data=returns, target="close", window=252)
+obb.quantitative.rolling.kurtosis(target='close', window=2, data='[{'date': '2023-01-02', 'close': 0.05}, {'date': '2023-01-03', 'close': 0.08}, {'date': '2023-01-04', 'close': 0.07}, {'date': '2023-01-05', 'close': 0.06}, {'date': '2023-01-06', 'close': 0.06}]')
+```
+
+
 
 ## Parameters
 
@@ -128343,6 +130427,19 @@ Calculate the rolling average of a target column within a given window size.
  or cycles in time series data.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# Get Rolling Mean.
+stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
+returns = stock_data["close"].pct_change().dropna()
+obb.quantitative.rolling.mean(data=returns, target="close", window=252)
+obb.quantitative.rolling.mean(target='close', window=2, data='[{'date': '2023-01-02', 'close': 0.05}, {'date': '2023-01-03', 'close': 0.08}, {'date': '2023-01-04', 'close': 0.07}, {'date': '2023-01-05', 'close': 0.06}, {'date': '2023-01-06', 'close': 0.06}]')
+```
+
+
 
 ## Parameters
 
@@ -128448,6 +130545,20 @@ Calculate the rolling quantile of a target column within a given window size at 
  Quantiles are points dividing the range of a probability distribution into intervals with equal probabilities,
  or dividing the sample in the same way. This function is useful for understanding the distribution of data
  within a specified window, allowing for analysis of trends, identification of outliers, and assessment of risk.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+# Get Rolling Quantile.
+stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
+returns = stock_data["close"].pct_change().dropna()
+obb.quantitative.rolling.quantile(data=returns, target="close", window=252, quantile_pct=0.25)
+obb.quantitative.rolling.quantile(data=returns, target="close", window=252, quantile_pct=0.75)
+obb.quantitative.rolling.quantile(target='close', window=2, data='[{'date': '2023-01-02', 'close': 0.05}, {'date': '2023-01-03', 'close': 0.08}, {'date': '2023-01-04', 'close': 0.07}, {'date': '2023-01-05', 'close': 0.06}, {'date': '2023-01-06', 'close': 0.06}]')
+```
 
 
 
@@ -128569,6 +130680,19 @@ Get Rolling Skew.
  financial returns, enabling more informed decision-making based on the distribution's shape over a specified period.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# Get Rolling Mean.
+stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
+returns = stock_data["close"].pct_change().dropna()
+obb.quantitative.rolling.skew(data=returns, target="close")
+obb.quantitative.rolling.skew(target='close', window=2, data='[{'date': '2023-01-02', 'close': 0.05}, {'date': '2023-01-03', 'close': 0.08}, {'date': '2023-01-04', 'close': 0.07}, {'date': '2023-01-05', 'close': 0.06}, {'date': '2023-01-06', 'close': 0.06}]')
+```
+
+
 
 ## Parameters
 
@@ -128676,6 +130800,19 @@ Calculate the rolling standard deviation of a target column within a given windo
  over a specified rolling window. It is the square root of the variance.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# Get Rolling Standard Deviation.
+stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
+returns = stock_data["close"].pct_change().dropna()
+obb.quantitative.rolling.stdev(data=returns, target="close", window=252)
+obb.quantitative.rolling.stdev(target='close', window=2, data='[{'date': '2023-01-02', 'close': 0.05}, {'date': '2023-01-03', 'close': 0.08}, {'date': '2023-01-04', 'close': 0.07}, {'date': '2023-01-05', 'close': 0.06}, {'date': '2023-01-06', 'close': 0.06}]')
+```
+
+
 
 ## Parameters
 
@@ -128780,6 +130917,19 @@ Calculate the rolling variance of a target column within a given window size.
 
  Variance measures the dispersion of a set of data points around their mean. It is a key metric for
  assessing the volatility and stability of financial returns or other time series data over a specified rolling window.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+# Get Rolling Variance.
+stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
+returns = stock_data["close"].pct_change().dropna()
+obb.quantitative.rolling.variance(data=returns, target="close", window=252)
+obb.quantitative.rolling.variance(target='close', window=2, data='[{'date': '2023-01-02', 'close': 0.05}, {'date': '2023-01-03', 'close': 0.08}, {'date': '2023-01-04', 'close': 0.07}, {'date': '2023-01-05', 'close': 0.06}, {'date': '2023-01-06', 'close': 0.06}]')
+```
 
 
 
@@ -128908,6 +131058,19 @@ Calculate the rolling kurtosis of a target column.
  This function helps in assessing the risk of outliers in financial returns or other time series data.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# Get Kurtosis.
+stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
+returns = stock_data["close"].pct_change().dropna()
+obb.quantitative.stats.kurtosis(data=returns, target="close")
+obb.quantitative.stats.kurtosis(target='close', data='[{'date': '2023-01-02', 'close': 0.05}, {'date': '2023-01-03', 'close': 0.08}, {'date': '2023-01-04', 'close': 0.07}, {'date': '2023-01-05', 'close': 0.06}, {'date': '2023-01-06', 'close': 0.06}]')
+```
+
+
 
 ## Parameters
 
@@ -128995,6 +131158,19 @@ Calculate the average of a target column.
  or cycles in time series data.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# Get Mean.
+stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
+returns = stock_data["close"].pct_change().dropna()
+obb.quantitative.stats.mean(data=returns, target="close")
+obb.quantitative.stats.mean(target='close', data='[{'date': '2023-01-02', 'close': 0.05}, {'date': '2023-01-03', 'close': 0.08}, {'date': '2023-01-04', 'close': 0.07}, {'date': '2023-01-05', 'close': 0.06}, {'date': '2023-01-06', 'close': 0.06}]')
+```
+
+
 
 ## Parameters
 
@@ -129079,6 +131255,19 @@ Calculate the quantile of a target column at a specified quantile percentage.
 
  Quantiles are points dividing the range of a probability distribution into intervals with equal probabilities,
  or dividing the sample in the same way.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+# Get Quantile.
+stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
+returns = stock_data["close"].pct_change().dropna()
+obb.quantitative.stats.quantile(data=returns, target="close", quantile_pct=0.75)
+obb.quantitative.stats.quantile(target='close', data='[{'date': '2023-01-02', 'close': 0.05}, {'date': '2023-01-03', 'close': 0.08}, {'date': '2023-01-04', 'close': 0.07}, {'date': '2023-01-05', 'close': 0.06}, {'date': '2023-01-06', 'close': 0.06}]')
+```
 
 
 
@@ -129180,6 +131369,19 @@ Get the skew of the data set.
  financial returns, enabling more informed decision-making based on the distribution's shape over a specified period.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# Get Skewness.
+stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
+returns = stock_data["close"].pct_change().dropna()
+obb.quantitative.stats.skew(data=returns, target="close")
+obb.quantitative.stats.skew(target='close', data='[{'date': '2023-01-02', 'close': 0.05}, {'date': '2023-01-03', 'close': 0.08}, {'date': '2023-01-04', 'close': 0.07}, {'date': '2023-01-05', 'close': 0.06}, {'date': '2023-01-06', 'close': 0.06}]')
+```
+
+
 
 ## Parameters
 
@@ -129267,6 +131469,19 @@ Calculate the rolling standard deviation of a target column.
  It is the square root of the variance.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# Get Standard Deviation.
+stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
+returns = stock_data["close"].pct_change().dropna()
+obb.quantitative.stats.stdev(data=returns, target="close")
+obb.quantitative.stats.stdev(target='close', data='[{'date': '2023-01-02', 'close': 0.05}, {'date': '2023-01-03', 'close': 0.08}, {'date': '2023-01-04', 'close': 0.07}, {'date': '2023-01-05', 'close': 0.06}, {'date': '2023-01-06', 'close': 0.06}]')
+```
+
+
 
 ## Parameters
 
@@ -129351,6 +131566,19 @@ Calculate the variance of a target column.
 
  Variance measures the dispersion of a set of data points around their mean. It is a key metric for
  assessing the volatility and stability of financial returns or other time series data.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+# Get Variance.
+stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
+returns = stock_data["close"].pct_change().dropna()
+obb.quantitative.stats.variance(data=returns, target="close")
+obb.quantitative.stats.variance(target='close', data='[{'date': '2023-01-02', 'close': 0.05}, {'date': '2023-01-03', 'close': 0.08}, {'date': '2023-01-04', 'close': 0.07}, {'date': '2023-01-05', 'close': 0.06}, {'date': '2023-01-06', 'close': 0.06}]')
+```
 
 
 
@@ -129444,6 +131672,18 @@ Get Summary Statistics.
  y examining these metrics, you gain insights into the data's overall behavior, helping to identify patterns,
  outliers, or anomalies. The summary table is an invaluable tool for initial data exploration,
  ensuring you have a solid foundation for further analysis or reporting.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+# Get Summary Statistics.
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()
+obb.quantitative.summary(data=stock_data, target='close')
+obb.quantitative.summary(target='close', data='[{'date': '2023-01-02', 'open': 110.0, 'high': 120.0, 'low': 100.0, 'close': 115.0, 'volume': 10000.0}, {'date': '2023-01-03', 'open': 165.0, 'high': 180.0, 'low': 150.0, 'close': 172.5, 'volume': 15000.0}, {'date': '2023-01-04', 'open': 146.67, 'high': 160.0, 'low': 133.33, 'close': 153.33, 'volume': 13333.33}, {'date': '2023-01-05', 'open': 137.5, 'high': 150.0, 'low': 125.0, 'close': 143.75, 'volume': 12500.0}, {'date': '2023-01-06', 'open': 132.0, 'high': 144.0, 'low': 120.0, 'close': 138.0, 'volume': 12000.0}]')
+```
 
 
 
@@ -129591,6 +131831,18 @@ Get Unit Root Test.
  accurate modeling and forecasting.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# Get Unit Root Test.
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()
+obb.quantitative.unitroot_test(data=stock_data, target='close')
+obb.quantitative.unitroot_test(target='close', data='[{'date': '2023-01-02', 'open': 110.0, 'high': 120.0, 'low': 100.0, 'close': 115.0, 'volume': 10000.0}, {'date': '2023-01-03', 'open': 165.0, 'high': 180.0, 'low': 150.0, 'close': 172.5, 'volume': 15000.0}, {'date': '2023-01-04', 'open': 146.67, 'high': 160.0, 'low': 133.33, 'close': 153.33, 'volume': 13333.33}, {'date': '2023-01-05', 'open': 137.5, 'high': 150.0, 'low': 125.0, 'close': 143.75, 'volume': 12500.0}, {'date': '2023-01-06', 'open': 132.0, 'high': 144.0, 'low': 120.0, 'close': 138.0, 'volume': 12000.0}]')
+```
+
+
 
 ## Parameters
 
@@ -129728,6 +131980,22 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Get Commitment of Traders Reports.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+# Get the latest report for all items classified as, GOLD.
+obb.regulators.cftc.cot(id='gold', provider='cftc')
+# Enter the entire history for a single CFTC Market Contract Code.
+obb.regulators.cftc.cot(id='088691', provider='cftc')
+# Get the report for futures only.
+obb.regulators.cftc.cot(id='088691', futures_only=True, provider='cftc')
+# Get the most recent Commodity Index Traders Supplemental Report.
+obb.regulators.cftc.cot(id='all', report_type=supplemental, provider='cftc')
+```
 
 
 
@@ -130037,6 +132305,16 @@ Get the current Commitment of Traders Reports.
 Search a list of the current Commitment of Traders Reports series information.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.regulators.cftc.cot_search(provider='cftc')
+obb.regulators.cftc.cot_search(query='gold', provider='cftc')
+```
+
+
 
 ## Parameters
 
@@ -130226,6 +132504,15 @@ import TabItem from '@theme/TabItem';
 Map a ticker symbol to a CIK number.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.regulators.sec.cik_map(symbol='MSFT', provider='sec')
+```
+
+
 
 ## Parameters
 
@@ -130342,6 +132629,15 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Download the index headers, and cover page if available, for any SEC filing.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.regulators.sec.filing_headers(url=https://www.sec.gov/Archives/edgar/data/317540/000119312524076556/d645509ddef14a.htm, provider='sec')
+```
 
 
 
@@ -130504,6 +132800,15 @@ import TabItem from '@theme/TabItem';
 Download a raw HTML object from the SEC website.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.regulators.sec.htm_file(url=https://www.sec.gov/Archives/edgar/data/1723690/000119312525030074/d866336dex991.htm, provider='sec')
+```
+
+
 
 ## Parameters
 
@@ -130648,6 +132953,16 @@ import TabItem from '@theme/TabItem';
 Search SEC-regulated institutions by name and return a list of results with CIK numbers.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.regulators.sec.institutions_search(provider='sec')
+obb.regulators.sec.institutions_search(query='blackstone real estate', provider='sec')
+```
+
+
 
 ## Parameters
 
@@ -130779,6 +133094,15 @@ import TabItem from '@theme/TabItem';
 Get the RSS feed that provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.regulators.sec.rss_litigation(provider='sec')
+```
+
+
 
 ## Parameters
 
@@ -130894,6 +133218,33 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Use tool for navigating the directory of SEC XML schema files by year.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.regulators.sec.schema_files(provider='sec')
+# Get a list of schema files.
+data = obb.regulators.sec.schema_files().results
+data.files[0]
+'https://xbrl.fasb.org/us-gaap/'
+# The directory structure can be navigated by constructing a URL from the 'results' list.
+url = data.files[0]+data.files[-1]
+# The URL base will always be the 0 position in the list, feed  the URL back in as a parameter.
+obb.regulators.sec.schema_files(url=url).results.files
+['https://xbrl.fasb.org/us-gaap/2024/'
+'USGAAP2024Filelist.xml'
+'dis/'
+'dqcrules/'
+'ebp/'
+'elts/'
+'entire/'
+'meta/'
+'stm/'
+'us-gaap-2024.zip']
+```
 
 
 
@@ -131032,6 +133383,16 @@ import TabItem from '@theme/TabItem';
 Search for Industry Titles, Reporting Office, and SIC Codes. An empty query string returns all results.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+obb.regulators.sec.sic_search(provider='sec')
+obb.regulators.sec.sic_search(query='real estate investment trusts', provider='sec')
+```
+
+
 
 ## Parameters
 
@@ -131162,6 +133523,15 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Map a CIK number to a ticker symbol, leading 0s can be omitted or included.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.regulators.sec.symbol_map(query='0000789019', provider='sec')
+```
 
 
 
@@ -131312,6 +133682,18 @@ Calculate the Accumulation/Distribution Line.
  then it signals an impending flattening of the price.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# Get the Accumulation/Distribution Line.
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')
+ad_data = obb.technical.ad(data=stock_data.results, offset=0)
+obb.technical.ad(data='[{'date': '2023-01-02', 'open': 110.0, 'high': 120.0, 'low': 100.0, 'close': 115.0, 'volume': 10000.0}, {'date': '2023-01-03', 'open': 165.0, 'high': 180.0, 'low': 150.0, 'close': 172.5, 'volume': 15000.0}, {'date': '2023-01-04', 'open': 146.67, 'high': 160.0, 'low': 133.33, 'close': 153.33, 'volume': 13333.33}, {'date': '2023-01-05', 'open': 137.5, 'high': 150.0, 'low': 125.0, 'close': 143.75, 'volume': 12500.0}, {'date': '2023-01-06', 'open': 132.0, 'high': 144.0, 'low': 120.0, 'close': 138.0, 'volume': 12000.0}]')
+```
+
+
 
 ## Parameters
 
@@ -131424,6 +133806,18 @@ Calculate the Accumulation/Distribution Oscillator.
  reading above zero indicates net buying pressure, while one below zero registers
  net selling pressure. Divergence between the indicator and pure price moves are
  the most common signals from the indicator, and often flag market turning points.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+# Get the Accumulation/Distribution Oscillator.
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')
+adosc_data = obb.technical.adosc(data=stock_data.results, fast=3, slow=10, offset=0)
+obb.technical.adosc(fast=2, slow=4, data='[{'date': '2023-01-02', 'open': 110.0, 'high': 120.0, 'low': 100.0, 'close': 115.0, 'volume': 10000.0}, {'date': '2023-01-03', 'open': 165.0, 'high': 180.0, 'low': 150.0, 'close': 172.5, 'volume': 15000.0}, {'date': '2023-01-04', 'open': 146.67, 'high': 160.0, 'low': 133.33, 'close': 153.33, 'volume': 13333.33}, {'date': '2023-01-05', 'open': 137.5, 'high': 150.0, 'low': 125.0, 'close': 143.75, 'volume': 12500.0}, {'date': '2023-01-06', 'open': 132.0, 'high': 144.0, 'low': 120.0, 'close': 138.0, 'volume': 12000.0}]')
+```
 
 
 
@@ -131553,6 +133947,18 @@ Calculate the Average Directional Index (ADX).
  The ADX is a Welles Wilder style moving average of the Directional Movement Index (DX).
  The values range from 0 to 100, but rarely get above 60. To interpret the ADX, consider
  a high number to be a strong trend, and a low number, a weak trend.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+# Get the Average Directional Index (ADX).
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')
+adx_data = obb.technical.adx(data=stock_data.results, length=50, scalar=100.0, drift=1)
+obb.technical.adx(length=2, data='[{'date': '2023-01-02', 'open': 110.0, 'high': 120.0, 'low': 100.0, 'close': 115.0, 'volume': 10000.0}, {'date': '2023-01-03', 'open': 165.0, 'high': 180.0, 'low': 150.0, 'close': 172.5, 'volume': 15000.0}, {'date': '2023-01-04', 'open': 146.67, 'high': 160.0, 'low': 133.33, 'close': 153.33, 'volume': 13333.33}, {'date': '2023-01-05', 'open': 137.5, 'high': 150.0, 'low': 125.0, 'close': 143.75, 'volume': 12500.0}, {'date': '2023-01-06', 'open': 132.0, 'high': 144.0, 'low': 120.0, 'close': 138.0, 'volume': 12000.0}]')
+```
 
 
 
@@ -131688,6 +134094,18 @@ Calculate the Aroon Indicator.
  the Aroon Up, it indicates a weakening of the upward trend (and vice versa).
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# Get the Chande Momentum Oscillator.
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')
+aaron_data = obb.technical.aroon(data=stock_data.results, length=25, scalar=100)
+obb.technical.aroon(length=2, data='[{'date': '2023-01-02', 'open': 110.0, 'high': 120.0, 'low': 100.0, 'close': 115.0, 'volume': 10000.0}, {'date': '2023-01-03', 'open': 165.0, 'high': 180.0, 'low': 150.0, 'close': 172.5, 'volume': 15000.0}, {'date': '2023-01-04', 'open': 146.67, 'high': 160.0, 'low': 133.33, 'close': 153.33, 'volume': 13333.33}, {'date': '2023-01-05', 'open': 137.5, 'high': 150.0, 'low': 125.0, 'close': 143.75, 'volume': 12500.0}, {'date': '2023-01-06', 'open': 132.0, 'high': 144.0, 'low': 120.0, 'close': 138.0, 'volume': 12000.0}]')
+```
+
+
 
 ## Parameters
 
@@ -131809,6 +134227,18 @@ Calculate the Average True Range.
  without getting into technical trading details.
  The method considers not just the day-to-day changes but also accounts for any
  sudden jumps or drops, ensuring you get a comprehensive view of movement.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+# Get the Average True Range.
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')
+atr_data = obb.technical.atr(data=stock_data.results)
+obb.technical.atr(length=2, data='[{'date': '2023-01-02', 'open': 110.0, 'high': 120.0, 'low': 100.0, 'close': 115.0, 'volume': 10000.0}, {'date': '2023-01-03', 'open': 165.0, 'high': 180.0, 'low': 150.0, 'close': 172.5, 'volume': 15000.0}, {'date': '2023-01-04', 'open': 146.67, 'high': 160.0, 'low': 133.33, 'close': 153.33, 'volume': 13333.33}, {'date': '2023-01-05', 'open': 137.5, 'high': 150.0, 'low': 125.0, 'close': 143.75, 'volume': 12500.0}, {'date': '2023-01-06', 'open': 132.0, 'high': 144.0, 'low': 120.0, 'close': 138.0, 'volume': 12000.0}]')
+```
 
 
 
@@ -131951,6 +134381,18 @@ Calculate the Bollinger Bands.
  becomes a support or resistance level. The upper and lower bands can also be
  interpreted as price targets. When the price bounces off of the lower band and crosses
  the middle band, then the upper band becomes the price target.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+# Get the Chande Momentum Oscillator.
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')
+bbands_data = obb.technical.bbands(data=stock_data.results, target='close', length=50, std=2, mamode='sma')
+obb.technical.bbands(length=2, data='[{'date': '2023-01-02', 'open': 110.0, 'high': 120.0, 'low': 100.0, 'close': 115.0, 'volume': 10000.0}, {'date': '2023-01-03', 'open': 165.0, 'high': 180.0, 'low': 150.0, 'close': 172.5, 'volume': 15000.0}, {'date': '2023-01-04', 'open': 146.67, 'high': 160.0, 'low': 133.33, 'close': 153.33, 'volume': 13333.33}, {'date': '2023-01-05', 'open': 137.5, 'high': 150.0, 'low': 125.0, 'close': 143.75, 'volume': 12500.0}, {'date': '2023-01-06', 'open': 132.0, 'high': 144.0, 'low': 120.0, 'close': 138.0, 'volume': 12000.0}]')
+```
 
 
 
@@ -132103,6 +134545,18 @@ Calculate the Commodity Channel Index (CCI).
  then a price correction is likely.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# Get the Commodity Channel Index (CCI).
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')
+cci_data = obb.technical.cci(data=stock_data.results, length=14, scalar=0.015)
+obb.technical.cci(length=2, data='[{'date': '2023-01-02', 'open': 110.0, 'high': 120.0, 'low': 100.0, 'close': 115.0, 'volume': 10000.0}, {'date': '2023-01-03', 'open': 165.0, 'high': 180.0, 'low': 150.0, 'close': 172.5, 'volume': 15000.0}, {'date': '2023-01-04', 'open': 146.67, 'high': 160.0, 'low': 133.33, 'close': 153.33, 'volume': 13333.33}, {'date': '2023-01-05', 'open': 137.5, 'high': 150.0, 'low': 125.0, 'close': 143.75, 'volume': 12500.0}, {'date': '2023-01-06', 'open': 132.0, 'high': 144.0, 'low': 120.0, 'close': 138.0, 'volume': 12000.0}]')
+```
+
+
 
 ## Parameters
 
@@ -132232,6 +134686,18 @@ Calculate the Center of Gravity.
  price change of the asset.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# Get the Center of Gravity (CG).
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')
+cg_data = obb.technical.cg(data=stock_data.results, length=14)
+obb.technical.cg(length=2, data='[{'date': '2023-01-02', 'open': 110.0, 'high': 120.0, 'low': 100.0, 'close': 115.0, 'volume': 10000.0}, {'date': '2023-01-03', 'open': 165.0, 'high': 180.0, 'low': 150.0, 'close': 172.5, 'volume': 15000.0}, {'date': '2023-01-04', 'open': 146.67, 'high': 160.0, 'low': 133.33, 'close': 153.33, 'volume': 13333.33}, {'date': '2023-01-05', 'open': 137.5, 'high': 150.0, 'low': 125.0, 'close': 143.75, 'volume': 12500.0}, {'date': '2023-01-06', 'open': 132.0, 'high': 144.0, 'low': 120.0, 'close': 138.0, 'volume': 12000.0}]')
+```
+
+
 
 ## Parameters
 
@@ -132345,6 +134811,18 @@ Calculate the Clenow Volatility Adjusted Momentum.
  The Clenow Volatility Adjusted Momentum is a sophisticated approach to understanding market momentum with a twist.
  It adjusts for volatility, offering a clearer picture of true momentum by considering how price movements are
  influenced by their volatility over a set period. It helps in identifying stronger, more reliable trends.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+# Get the Clenow Volatility Adjusted Momentum.
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')
+clenow_data = obb.technical.clenow(data=stock_data.results, period=90)
+obb.technical.clenow(period=2, data='[{'date': '2023-01-02', 'open': 110.0, 'high': 120.0, 'low': 100.0, 'close': 115.0, 'volume': 10000.0}, {'date': '2023-01-03', 'open': 165.0, 'high': 180.0, 'low': 150.0, 'close': 172.5, 'volume': 15000.0}, {'date': '2023-01-04', 'open': 146.67, 'high': 160.0, 'low': 133.33, 'close': 153.33, 'volume': 13333.33}, {'date': '2023-01-05', 'open': 137.5, 'high': 150.0, 'low': 125.0, 'close': 143.75, 'volume': 12500.0}, {'date': '2023-01-06', 'open': 132.0, 'high': 144.0, 'low': 120.0, 'close': 138.0, 'volume': 12000.0}]')
+```
 
 
 
@@ -132476,6 +134954,18 @@ Calculate the realized volatility quantiles over rolling windows of time.
  - Yang-Zhang
 
  Read more about it in the model parameter description.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+# Realized Volatility Cones.
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='yfinance')
+cones_data = obb.technical.cones(data=stock_data.results, lower_q=0.25, upper_q=0.75, model='std')
+obb.technical.cones(data='[{'date': '2023-01-02', 'open': 110.0, 'high': 120.0, 'low': 100.0, 'close': 115.0, 'volume': 10000.0}, {'date': '2023-01-03', 'open': 165.0, 'high': 180.0, 'low': 150.0, 'close': 172.5, 'volume': 15000.0}, {'date': '2023-01-04', 'open': 146.67, 'high': 160.0, 'low': 133.33, 'close': 153.33, 'volume': 13333.33}, {'date': '2023-01-05', 'open': 137.5, 'high': 150.0, 'low': 125.0, 'close': 143.75, 'volume': 12500.0}, {'date': '2023-01-06', 'open': 132.0, 'high': 144.0, 'low': 120.0, 'close': 138.0, 'volume': 12000.0}]')
+```
 
 
 
@@ -132633,6 +135123,18 @@ Calculate the Demark sequential indicator.
  with precision.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# Get the Demark Sequential Indicator.
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')
+demark_data = obb.technical.demark(data=stock_data.results, offset=0)
+obb.technical.demark(data='[{'date': '2023-01-02', 'open': 110.0, 'high': 120.0, 'low': 100.0, 'close': 115.0, 'volume': 10000.0}, {'date': '2023-01-03', 'open': 165.0, 'high': 180.0, 'low': 150.0, 'close': 172.5, 'volume': 15000.0}, {'date': '2023-01-04', 'open': 146.67, 'high': 160.0, 'low': 133.33, 'close': 153.33, 'volume': 13333.33}, {'date': '2023-01-05', 'open': 137.5, 'high': 150.0, 'low': 125.0, 'close': 143.75, 'volume': 12500.0}, {'date': '2023-01-06', 'open': 132.0, 'high': 144.0, 'low': 120.0, 'close': 138.0, 'volume': 12000.0}]')
+```
+
+
 
 ## Parameters
 
@@ -132775,6 +135277,18 @@ Calculate the Donchian Channels.
  between the upper and lower bands represents the Donchian Channel.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# Get the Donchian Channels.
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')
+donchian_data = obb.technical.donchian(data=stock_data.results, lower_length=20, upper_length=20, offset=0)
+obb.technical.donchian(lower_length=1, upper_length=3, data='[{'date': '2023-01-02', 'open': 110.0, 'high': 120.0, 'low': 100.0, 'close': 115.0, 'volume': 10000.0}, {'date': '2023-01-03', 'open': 165.0, 'high': 180.0, 'low': 150.0, 'close': 172.5, 'volume': 15000.0}, {'date': '2023-01-04', 'open': 146.67, 'high': 160.0, 'low': 133.33, 'close': 153.33, 'volume': 13333.33}, {'date': '2023-01-05', 'open': 137.5, 'high': 150.0, 'low': 125.0, 'close': 143.75, 'volume': 12500.0}, {'date': '2023-01-06', 'open': 132.0, 'high': 144.0, 'low': 120.0, 'close': 138.0, 'volume': 12000.0}]')
+```
+
+
 
 ## Parameters
 
@@ -132902,6 +135416,18 @@ Calculate the Exponential Moving Average (EMA).
  in the data.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# Get the Exponential Moving Average (EMA).
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')
+ema_data = obb.technical.ema(data=stock_data.results, target='close', length=50, offset=0)
+obb.technical.ema(length=2, data='[{'date': '2023-01-02', 'open': 110.0, 'high': 120.0, 'low': 100.0, 'close': 115.0, 'volume': 10000.0}, {'date': '2023-01-03', 'open': 165.0, 'high': 180.0, 'low': 150.0, 'close': 172.5, 'volume': 15000.0}, {'date': '2023-01-04', 'open': 146.67, 'high': 160.0, 'low': 133.33, 'close': 153.33, 'volume': 13333.33}, {'date': '2023-01-05', 'open': 137.5, 'high': 150.0, 'low': 125.0, 'close': 143.75, 'volume': 12500.0}, {'date': '2023-01-06', 'open': 132.0, 'high': 144.0, 'low': 120.0, 'close': 138.0, 'volume': 12000.0}]')
+```
+
+
 
 ## Parameters
 
@@ -133023,6 +135549,18 @@ Create Fibonacci Retracement Levels.
  It's a tool used to gauge potential turning points in the data by applying a
  mathematical approach rooted in nature's patterns. Is used to get insights into
  where prices could head next, based on historical movements.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+# Get the Bollinger Band Width.
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')
+fib_data = obb.technical.fib(data=stock_data.results, period=120)
+obb.technical.fib(data='[{'date': '2023-01-02', 'open': 110.0, 'high': 120.0, 'low': 100.0, 'close': 115.0, 'volume': 10000.0}, {'date': '2023-01-03', 'open': 165.0, 'high': 180.0, 'low': 150.0, 'close': 172.5, 'volume': 15000.0}, {'date': '2023-01-04', 'open': 146.67, 'high': 160.0, 'low': 133.33, 'close': 153.33, 'volume': 13333.33}, {'date': '2023-01-05', 'open': 137.5, 'high': 150.0, 'low': 125.0, 'close': 143.75, 'volume': 12500.0}, {'date': '2023-01-06', 'open': 132.0, 'high': 144.0, 'low': 120.0, 'close': 138.0, 'volume': 12000.0}]')
+```
 
 
 
@@ -133171,6 +135709,18 @@ Perform the Fisher Transform.
  show the trend and isolate the price waves within a trend.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# Perform the Fisher Transform.
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')
+fisher_data = obb.technical.fisher(data=stock_data.results, length=14, signal=1)
+obb.technical.fisher(length=2, data='[{'date': '2023-01-02', 'open': 110.0, 'high': 120.0, 'low': 100.0, 'close': 115.0, 'volume': 10000.0}, {'date': '2023-01-03', 'open': 165.0, 'high': 180.0, 'low': 150.0, 'close': 172.5, 'volume': 15000.0}, {'date': '2023-01-04', 'open': 146.67, 'high': 160.0, 'low': 133.33, 'close': 153.33, 'volume': 13333.33}, {'date': '2023-01-05', 'open': 137.5, 'high': 150.0, 'low': 125.0, 'close': 143.75, 'volume': 12500.0}, {'date': '2023-01-06', 'open': 132.0, 'high': 144.0, 'low': 120.0, 'close': 138.0, 'volume': 12000.0}]')
+```
+
+
 
 ## Parameters
 
@@ -133294,6 +135844,17 @@ Calculate the Hull Moving Average (HMA).
  price activity whilst maintaining curve smoothness.
  In fact the HMA almost eliminates lag altogether and manages to improve smoothing
  at the same time.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+# Calculate HMA with historical stock data.
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')
+hma_data = obb.technical.hma(data=stock_data.results, target='close', length=50, offset=0)
+```
 
 
 
@@ -133422,6 +135983,17 @@ Calculate the Ichimoku Cloud.
  signals. Ichimoku Kinko Hyo translates into "one look equilibrium chart". With
  one look, chartists can identify the trend and look for potential signals within
  that trend.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+# Get the Ichimoku Cloud.
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')
+ichimoku_data = obb.technical.ichimoku(data=stock_data.results, conversion=9, base=26, lookahead=False)
+```
 
 
 
@@ -133611,6 +136183,18 @@ Calculate the Keltner Channels.
  and bottom barriers signaling a continuation.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# Get the Keltner Channels.
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')
+kc_data = obb.technical.kc(data=stock_data.results, length=20, scalar=20, mamode='ema', offset=0)
+obb.technical.kc(length=2, data='[{'date': '2023-01-02', 'open': 110.0, 'high': 120.0, 'low': 100.0, 'close': 115.0, 'volume': 10000.0}, {'date': '2023-01-03', 'open': 165.0, 'high': 180.0, 'low': 150.0, 'close': 172.5, 'volume': 15000.0}, {'date': '2023-01-04', 'open': 146.67, 'high': 160.0, 'low': 133.33, 'close': 153.33, 'volume': 13333.33}, {'date': '2023-01-05', 'open': 137.5, 'high': 150.0, 'low': 125.0, 'close': 143.75, 'volume': 12500.0}, {'date': '2023-01-06', 'open': 132.0, 'high': 144.0, 'low': 120.0, 'close': 138.0, 'volume': 12000.0}]')
+```
+
+
 
 ## Parameters
 
@@ -133761,6 +136345,19 @@ Calculate the Moving Average Convergence Divergence (MACD).
  and below zero for a sell.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# Get the Moving Average Convergence Divergence (MACD).
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')
+macd_data = obb.technical.macd(data=stock_data.results, target='close', fast=12, slow=26, signal=9)
+# Example with mock data.
+obb.technical.macd(fast=2, slow=3, signal=1, data='[{'date': '2023-01-02', 'open': 110.0, 'high': 120.0, 'low': 100.0, 'close': 115.0, 'volume': 10000.0}, {'date': '2023-01-03', 'open': 165.0, 'high': 180.0, 'low': 150.0, 'close': 172.5, 'volume': 15000.0}, {'date': '2023-01-04', 'open': 146.67, 'high': 160.0, 'low': 133.33, 'close': 153.33, 'volume': 13333.33}, {'date': '2023-01-05', 'open': 137.5, 'high': 150.0, 'low': 125.0, 'close': 143.75, 'volume': 12500.0}, {'date': '2023-01-06', 'open': 132.0, 'high': 144.0, 'low': 120.0, 'close': 138.0, 'volume': 12000.0}]')
+```
+
+
 
 ## Parameters
 
@@ -133906,6 +136503,18 @@ Calculate the On Balance Volume (OBV).
  is not trending.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# Get the On Balance Volume (OBV).
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')
+obv_data = obb.technical.obv(data=stock_data.results, offset=0)
+obb.technical.obv(data='[{'date': '2023-01-02', 'open': 110.0, 'high': 120.0, 'low': 100.0, 'close': 115.0, 'volume': 10000.0}, {'date': '2023-01-03', 'open': 165.0, 'high': 180.0, 'low': 150.0, 'close': 172.5, 'volume': 15000.0}, {'date': '2023-01-04', 'open': 146.67, 'high': 160.0, 'low': 133.33, 'close': 153.33, 'volume': 13333.33}, {'date': '2023-01-05', 'open': 137.5, 'high': 150.0, 'low': 125.0, 'close': 143.75, 'volume': 12500.0}, {'date': '2023-01-06', 'open': 132.0, 'high': 144.0, 'low': 120.0, 'close': 138.0, 'volume': 12000.0}]')
+```
+
+
 
 ## Parameters
 
@@ -133996,6 +136605,22 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Calculate the Relative Strength Ratio and Relative Strength Momentum for a group of symbols against a benchmark.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+# Calculate the Relative Strength Ratio and Relative Strength Momentum for a group of symbols against a benchmark.
+stock_data = obb.equity.price.historical(symbol='AAPL,MSFT,GOOGL,META,AMZN,TSLA,SPY', start_date='2022-01-01', provider='yfinance')
+rr_data = obb.technical.relative_rotation(data=stock_data.results, benchmark='SPY')
+rs_ratios = rr_data.results.rs_ratios
+rs_momentum = rr_data.results.rs_momentum
+# When the assets are not traded 252 days per year,adjust the momentum and volatility periods accordingly.
+crypto_data = obb.crypto.price.historical( symbol='BTCUSD,ETHUSD,SOLUSD', start_date='2021-01-01', provider='yfinance')
+rr_data = obb.technical.relative_rotation(data=crypto_data.results, benchmark='BTC-USD', long_period=365, short_period=30, window=30, trading_periods=365)
+```
 
 
 
@@ -134220,6 +136845,18 @@ Calculate the Relative Strength Index (RSI).
  the price is making new highs/lows, and the RSI is not, it indicates a reversal.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# Get the Relative Strength Index (RSI).
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')
+rsi_data = obb.technical.rsi(data=stock_data.results, target='close', length=14, scalar=100.0, drift=1)
+obb.technical.rsi(length=2, data='[{'date': '2023-01-02', 'open': 110.0, 'high': 120.0, 'low': 100.0, 'close': 115.0, 'volume': 10000.0}, {'date': '2023-01-03', 'open': 165.0, 'high': 180.0, 'low': 150.0, 'close': 172.5, 'volume': 15000.0}, {'date': '2023-01-04', 'open': 146.67, 'high': 160.0, 'low': 133.33, 'close': 153.33, 'volume': 13333.33}, {'date': '2023-01-05', 'open': 137.5, 'high': 150.0, 'low': 125.0, 'close': 143.75, 'volume': 12500.0}, {'date': '2023-01-06', 'open': 132.0, 'high': 144.0, 'low': 120.0, 'close': 138.0, 'volume': 12000.0}]')
+```
+
+
 
 ## Parameters
 
@@ -134360,6 +136997,18 @@ Calculate the Simple Moving Average (SMA).
  equal weight, and values outside of the time period are not included in the average.
  This makes it less responsive to recent changes in the data, which can be useful for
  filtering out those changes.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+# Get the Chande Momentum Oscillator.
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')
+sma_data = obb.technical.sma(data=stock_data.results, target='close', length=50, offset=0)
+obb.technical.sma(length=2, data='[{'date': '2023-01-02', 'open': 110.0, 'high': 120.0, 'low': 100.0, 'close': 115.0, 'volume': 10000.0}, {'date': '2023-01-03', 'open': 165.0, 'high': 180.0, 'low': 150.0, 'close': 172.5, 'volume': 15000.0}, {'date': '2023-01-04', 'open': 146.67, 'high': 160.0, 'low': 133.33, 'close': 153.33, 'volume': 13333.33}, {'date': '2023-01-05', 'open': 137.5, 'high': 150.0, 'low': 125.0, 'close': 143.75, 'volume': 12500.0}, {'date': '2023-01-06', 'open': 132.0, 'high': 144.0, 'low': 120.0, 'close': 138.0, 'volume': 12000.0}]')
+```
 
 
 
@@ -134509,6 +137158,17 @@ Calculate the Stochastic Oscillator.
  for crossover signals.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# Get the Stochastic Oscillator.
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')
+stoch_data = obb.technical.stoch(data=stock_data.results, fast_k_period=14, slow_d_period=3, slow_k_period=3)
+```
+
+
 
 ## Parameters
 
@@ -134631,6 +137291,18 @@ Calculate the Volume Weighted Average Price (VWAP).
  It is typically used with intraday charts to identify general direction.
  It helps to understand the true average price factoring in the volume of transactions,
  and serves as a benchmark for assessing the market's direction over short periods, such as a single trading day.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+# Get the Volume Weighted Average Price (VWAP).
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')
+vwap_data = obb.technical.vwap(data=stock_data.results, anchor='D', offset=0)
+obb.technical.vwap(data='[{'date': '2023-01-02', 'open': 110.0, 'high': 120.0, 'low': 100.0, 'close': 115.0, 'volume': 10000.0}, {'date': '2023-01-03', 'open': 165.0, 'high': 180.0, 'low': 150.0, 'close': 172.5, 'volume': 15000.0}, {'date': '2023-01-04', 'open': 146.67, 'high': 160.0, 'low': 133.33, 'close': 153.33, 'volume': 13333.33}, {'date': '2023-01-05', 'open': 137.5, 'high': 150.0, 'low': 125.0, 'close': 143.75, 'volume': 12500.0}, {'date': '2023-01-06', 'open': 132.0, 'high': 144.0, 'low': 120.0, 'close': 138.0, 'volume': 12000.0}]')
+```
 
 
 
@@ -134772,6 +137444,18 @@ Calculate the Weighted Moving Average (WMA).
  Moving Average.
 
 
+Examples
+--------
+
+```python
+from openbb import obb
+# Get the Average True Range (ATR).
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')
+wma_data = obb.technical.wma(data=stock_data.results, target='close', length=50, offset=0)
+obb.technical.wma(length=2, data='[{'date': '2023-01-02', 'open': 110.0, 'high': 120.0, 'low': 100.0, 'close': 115.0, 'volume': 10000.0}, {'date': '2023-01-03', 'open': 165.0, 'high': 180.0, 'low': 150.0, 'close': 172.5, 'volume': 15000.0}, {'date': '2023-01-04', 'open': 146.67, 'high': 160.0, 'low': 133.33, 'close': 153.33, 'volume': 13333.33}, {'date': '2023-01-05', 'open': 137.5, 'high': 150.0, 'low': 125.0, 'close': 143.75, 'volume': 12500.0}, {'date': '2023-01-06', 'open': 132.0, 'high': 144.0, 'low': 120.0, 'close': 138.0, 'volume': 12000.0}]')
+```
+
+
 
 ## Parameters
 
@@ -134902,6 +137586,18 @@ Calculate the zero lag exponential moving average (ZLEMA).
  Data is de-lagged by removing the data from "lag" days ago
  thus removing (or attempting to) the cumulative effect of
  the moving average.
+
+
+Examples
+--------
+
+```python
+from openbb import obb
+# Get the Chande Momentum Oscillator.
+stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')
+zlma_data = obb.technical.zlma(data=stock_data.results, target='close', length=50, offset=0)
+obb.technical.zlma(length=2, data='[{'date': '2023-01-02', 'open': 110.0, 'high': 120.0, 'low': 100.0, 'close': 115.0, 'volume': 10000.0}, {'date': '2023-01-03', 'open': 165.0, 'high': 180.0, 'low': 150.0, 'close': 172.5, 'volume': 15000.0}, {'date': '2023-01-04', 'open': 146.67, 'high': 160.0, 'low': 133.33, 'close': 153.33, 'volume': 13333.33}, {'date': '2023-01-05', 'open': 137.5, 'high': 150.0, 'low': 125.0, 'close': 143.75, 'volume': 12500.0}, {'date': '2023-01-06', 'open': 132.0, 'high': 144.0, 'low': 120.0, 'close': 138.0, 'volume': 12000.0}]')
+```
 
 
 
