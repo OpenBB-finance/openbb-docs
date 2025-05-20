@@ -28,12 +28,12 @@ jobs:
           python-version: "3.9"
           architecture: x64
 
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
-        with:
-          version: 1.8.1
-          virtualenvs-create: true
-          virtualenvs-in-project: true
+      - name: Install Poetry v2
+        run: |
+          pip install "poetry>=2.0.0,<3.0.0"
+        env:
+          POETRY_VIRTUALENVS_CREATE: true
+          POETRY_VIRTUALENVS_IN_PROJECT: true
 
       - name: Setup sudo apt installs for ubuntu-latest
         run: |
@@ -56,7 +56,7 @@ jobs:
           source openbb_platform/.venv/bin/activate
           pip install -U poetry
           python openbb_platform/dev_install.py --extras
-          python -c "import openbb; openbb.build()"
+          openbb-build
           python scripts/generate_platform_markdown.py
 
       - name: Generate Excel Docs
