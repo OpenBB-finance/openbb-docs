@@ -571,7 +571,9 @@ import TabItem from '@theme/TabItem';
 | close | The close price. |
 | volume | The trading volume. |
 | vwap | Volume Weighted Average Price over the period. |
-| transactions | Number of transactions for the symbol in the time period. |
+| adj_close | The adjusted close price. |
+| change | Change in the price from the previous close. |
+| changeOverTime | Change in the price from the previous close, as a normalized percent. |
 </TabItem>
 </Tabs>
 
@@ -654,26 +656,13 @@ import TabItem from '@theme/TabItem';
 | close | The close price. |
 | volume | The trading volume. |
 | prev_close | The previous close price. |
-| vwap | The volume-weighted average price. |
-| change | The change in price from the previous day. |
-| change_percent | The percentage change in price from the previous day. |
-| prev_open | The previous day's opening price. |
-| prev_high | The previous day's high price. |
-| prev_low | The previous day's low price. |
-| prev_volume | The previous day's volume. |
-| prev_vwap | The previous day's VWAP. |
-| bid | The current bid price. |
-| ask | The current ask price. |
-| minute_open | The open price from the most recent minute bar. |
-| minute_high | The high price from the most recent minute bar. |
-| minute_low | The low price from the most recent minute bar. |
-| minute_close | The close price from the most recent minute bar. |
-| minute_volume | The volume from the most recent minute bar. |
-| minute_vwap | The VWAP from the most recent minute bar. |
-| minute_transactions | The number of transactions in the most recent minute bar. |
-| quote_timestamp | The timestamp of the last quote. |
-| minute_timestamp | The timestamp for the start of the most recent minute bar. |
-| last_updated | The last time the data was updated. |
+| change | The change in the price from the previous close. |
+| change_percent | The change in the price from the previous close, as a normalized percent. |
+| ma_50 | The 50-day moving average. |
+| ma_200 | The 200-day moving average. |
+| year_high | The 52-week high. |
+| year_low | The 52-week low. |
+| last_rate_timestamp | The timestamp of the last rate. |
 </TabItem>
 </Tabs>
 
@@ -1054,12 +1043,6 @@ import TabItem from '@theme/TabItem';
 | target_low | Low target of the price target consensus. |
 | target_consensus | Consensus target of the price target consensus. |
 | target_median | Median target of the price target consensus. |
-| standard_deviation | The standard deviation of target price estimates. |
-| total_analysts | The total number of target price estimates in consensus. |
-| raised | The number of analysts that have raised their target price estimates. |
-| lowered | The number of analysts that have lowered their target price estimates. |
-| most_recent_date | The date of the most recent estimate. |
-| industry_group_number | The Zacks industry group number. |
 </TabItem>
 </Tabs>
 
@@ -1262,15 +1245,11 @@ import TabItem from '@theme/TabItem';
 | price_when_posted | Price when posted. |
 | rating_current | The analyst's rating for the company. |
 | rating_previous | Previous analyst rating for the company. |
-| action_company | Description of the change in rating from firm's last rating.Note that all of these terms are precisely defined. |
-| action_pt | Description of the change in price target from firm's last price target. |
-| importance | Subjective Basis of How Important Event is to Market. 5 = High |
-| notes | Notes of the price target. |
-| analyst_id | Id of the analyst. |
-| url_news | URL for analyst ratings news articles for this ticker on Benzinga.com. |
-| url_analyst | URL for analyst ratings page for this ticker on Benzinga.com. |
-| id | Unique ID of this entry. |
-| updated | Last updated timestamp, UTC. |
+| action | Description of the change in rating from firm's last rating. |
+| news_url | News URL of the price target. |
+| news_title | News title of the price target. |
+| news_publisher | News publisher of the price target. |
+| news_base_url | News base URL of the price target. |
 </TabItem>
 <TabItem value='fmp'>
 
@@ -1291,11 +1270,15 @@ import TabItem from '@theme/TabItem';
 | price_when_posted | Price when posted. |
 | rating_current | The analyst's rating for the company. |
 | rating_previous | Previous analyst rating for the company. |
-| action | Description of the change in rating from firm's last rating. |
-| news_url | News URL of the price target. |
-| news_title | News title of the price target. |
-| news_publisher | News publisher of the price target. |
-| news_base_url | News base URL of the price target. |
+| action_company | Description of the change in rating from firm's last rating.Note that all of these terms are precisely defined. |
+| action_pt | Description of the change in price target from firm's last price target. |
+| importance | Subjective Basis of How Important Event is to Market. 5 = High |
+| notes | Notes of the price target. |
+| analyst_id | Id of the analyst. |
+| url_news | URL for analyst ratings news articles for this ticker on Benzinga.com. |
+| url_analyst | URL for analyst ratings page for this ticker on Benzinga.com. |
+| id | Unique ID of this entry. |
+| updated | Last updated timestamp, UTC. |
 </TabItem>
 </Tabs>
 
@@ -1365,96 +1348,56 @@ import TabItem from '@theme/TabItem';
 | period_ending | The end date of the reporting period. |
 | fiscal_period | The fiscal period of the report. |
 | fiscal_year | The fiscal year of the fiscal period. |
-| reported_currency | The currency in which the balance sheet is reported. |
+| filing_date | The date when the filing was made. |
+| accepted_date | The date and time when the filing was accepted. |
+| reported_currency | The currency in which the balance sheet was reported. |
 | cash_and_cash_equivalents | Cash and cash equivalents. |
-| cash_and_due_from_banks | Cash and due from banks. |
-| restricted_cash | Restricted cash. |
 | short_term_investments | Short term investments. |
-| federal_funds_sold | Federal funds sold. |
-| accounts_receivable | Accounts receivable. |
-| note_and_lease_receivable | Note and lease receivable. (Vendor non-trade receivables) |
-| inventories | Net Inventories. |
-| customer_and_other_receivables | Customer and other receivables. |
-| interest_bearing_deposits_at_other_banks | Interest bearing deposits at other banks. |
-| time_deposits_placed_and_other_short_term_investments | Time deposits placed and other short term investments. |
-| trading_account_securities | Trading account securities. |
-| loans_and_leases | Loans and leases. |
-| allowance_for_loan_and_lease_losses | Allowance for loan and lease losses. |
-| current_deferred_refundable_income_taxes | Current deferred refundable income taxes. |
+| cash_and_short_term_investments | Cash and short term investments. |
+| net_receivables | Net receivables. |
+| inventory | Inventory. |
 | other_current_assets | Other current assets. |
-| loans_and_leases_net_of_allowance | Loans and leases net of allowance. |
-| accrued_investment_income | Accrued investment income. |
-| other_current_non_operating_assets | Other current non-operating assets. |
-| loans_held_for_sale | Loans held for sale. |
-| prepaid_expenses | Prepaid expenses. |
 | total_current_assets | Total current assets. |
-| plant_property_equipment_gross | Plant property equipment gross. |
-| accumulated_depreciation | Accumulated depreciation. |
-| premises_and_equipment_net | Net premises and equipment. |
-| plant_property_equipment_net | Net plant property equipment. |
-| long_term_investments | Long term investments. |
-| mortgage_servicing_rights | Mortgage servicing rights. |
-| unearned_premiums_asset | Unearned premiums asset. |
-| non_current_note_lease_receivables | Non-current note lease receivables. |
-| deferred_acquisition_cost | Deferred acquisition cost. |
+| plant_property_equipment_net | Plant property equipment net. |
 | goodwill | Goodwill. |
-| separate_account_business_assets | Separate account business assets. |
-| non_current_deferred_refundable_income_taxes | Noncurrent deferred refundable income taxes. |
 | intangible_assets | Intangible assets. |
-| employee_benefit_assets | Employee benefit assets. |
+| goodwill_and_intangible_assets | Goodwill and intangible assets. |
+| long_term_investments | Long term investments. |
+| tax_assets | Tax assets. |
+| other_non_current_assets | Other non current assets. |
+| non_current_assets | Total non current assets. |
 | other_assets | Other assets. |
-| other_non_current_operating_assets | Other noncurrent operating assets. |
-| other_non_current_non_operating_assets | Other noncurrent non-operating assets. |
-| interest_bearing_deposits | Interest bearing deposits. |
-| total_non_current_assets | Total noncurrent assets. |
 | total_assets | Total assets. |
-| non_interest_bearing_deposits | Non interest bearing deposits. |
-| federal_funds_purchased_and_securities_sold | Federal funds purchased and securities sold. |
-| bankers_acceptance_outstanding | Bankers acceptance outstanding. |
-| short_term_debt | Short term debt. |
 | accounts_payable | Accounts payable. |
+| short_term_debt | Short term debt. |
+| tax_payables | Tax payables. |
 | current_deferred_revenue | Current deferred revenue. |
-| current_deferred_payable_income_tax_liabilities | Current deferred payable income tax liabilities. |
-| accrued_interest_payable | Accrued interest payable. |
-| accrued_expenses | Accrued expenses. |
-| other_short_term_payables | Other short term payables. |
-| customer_deposits | Customer deposits. |
-| dividends_payable | Dividends payable. |
-| claims_and_claim_expense | Claims and claim expense. |
-| future_policy_benefits | Future policy benefits. |
-| current_employee_benefit_liabilities | Current employee benefit liabilities. |
-| unearned_premiums_liability | Unearned premiums liability. |
-| other_taxes_payable | Other taxes payable. |
-| policy_holder_funds | Policy holder funds. |
 | other_current_liabilities | Other current liabilities. |
-| other_current_non_operating_liabilities | Other current non-operating liabilities. |
-| separate_account_business_liabilities | Separate account business liabilities. |
 | total_current_liabilities | Total current liabilities. |
 | long_term_debt | Long term debt. |
-| other_long_term_liabilities | Other long term liabilities. |
-| non_current_deferred_revenue | Non-current deferred revenue. |
-| non_current_deferred_payable_income_tax_liabilities | Non-current deferred payable income tax liabilities. |
-| non_current_employee_benefit_liabilities | Non-current employee benefit liabilities. |
-| other_non_current_operating_liabilities | Other non-current operating liabilities. |
-| other_non_current_non_operating_liabilities | Other non-current, non-operating liabilities. |
-| total_non_current_liabilities | Total non-current liabilities. |
+| deferred_revenue_non_current | Non current deferred revenue. |
+| deferred_tax_liabilities_non_current | Deferred tax liabilities non current. |
+| other_non_current_liabilities | Other non current liabilities. |
+| total_non_current_liabilities | Total non current liabilities. |
+| other_liabilities | Other liabilities. |
 | capital_lease_obligations | Capital lease obligations. |
-| asset_retirement_reserve_litigation_obligation | Asset retirement reserve litigation obligation. |
 | total_liabilities | Total liabilities. |
-| commitments_contingencies | Commitments contingencies. |
-| redeemable_non_controlling_interest | Redeemable non-controlling interest. |
 | preferred_stock | Preferred stock. |
 | common_stock | Common stock. |
 | retained_earnings | Retained earnings. |
-| treasury_stock | Treasury stock. |
-| accumulated_other_comprehensive_income | Accumulated other comprehensive income. |
-| participating_policy_holder_equity | Participating policy holder equity. |
-| other_equity_adjustments | Other equity adjustments. |
+| accumulated_other_comprehensive_income | Accumulated other comprehensive income (loss). |
+| other_shareholders_equity | Other shareholders equity. |
+| other_total_shareholders_equity | Other total shareholders equity. |
 | total_common_equity | Total common equity. |
-| total_preferred_common_equity | Total preferred common equity. |
-| non_controlling_interest | Non-controlling interest. |
-| total_equity_non_controlling_interests | Total equity non-controlling interests. |
-| total_liabilities_shareholders_equity | Total liabilities and shareholders equity. |
+| total_equity_non_controlling_interests | Total equity non controlling interests. |
+| total_liabilities_and_shareholders_equity | Total liabilities and shareholders equity. |
+| minority_interest | Minority interest. |
+| total_liabilities_and_total_equity | Total liabilities and total equity. |
+| total_investments | Total investments. |
+| total_debt | Total debt. |
+| net_debt | Net debt. |
+| link | Link to the filing. |
+| final_link | Link to the filing document. |
 </TabItem>
 </Tabs>
 
@@ -1670,9 +1613,11 @@ import TabItem from '@theme/TabItem';
 | ---- | ----------- |
 | ex_dividend_date | The ex-dividend date - the date on which the stock begins trading without rights to the dividend. |
 | amount | The dividend amount per share. |
-| factor | factor by which to multiply stock prices before this date, in order to calculate historically-adjusted stock prices. |
-| currency | The currency in which the dividend is paid. |
-| split_ratio | The ratio of the stock split, if a stock split occurred. |
+| label | Label of the historical dividends. |
+| adj_dividend | Adjusted dividend of the historical dividends. |
+| record_date | Record date of the historical dividends. |
+| payment_date | Payment date of the historical dividends. |
+| declaration_date | Declaration date of the historical dividends. |
 </TabItem>
 </Tabs>
 
@@ -1767,12 +1712,6 @@ import TabItem from '@theme/TabItem';
 | report_type | Type of filing. |
 | filing_url | URL to the filing page. |
 | report_url | URL to the actual report. |
-| id | Intrinio ID of the filing. |
-| period_end_date | Ending date of the fiscal period for the filing. |
-| sec_unique_id | SEC unique ID of the filing. |
-| instance_url | URL for the XBRL filing for the report. |
-| industry_group | Industry group of the company. |
-| industry_category | Industry category of the company. |
 </TabItem>
 </Tabs>
 
@@ -2539,62 +2478,6 @@ import TabItem from '@theme/TabItem';
 | period_ending | The date of the data. |
 | fiscal_period | Period of the financial ratios. |
 | fiscal_year | Fiscal year. |
-| symbol | Symbol representing the entity requested in the data. |
-| current_ratio | Current ratio. |
-| quick_ratio | Quick ratio. |
-| cash_ratio | Cash ratio. |
-| days_of_sales_outstanding | Days of sales outstanding. |
-| days_of_inventory_outstanding | Days of inventory outstanding. |
-| operating_cycle | Operating cycle. |
-| days_of_payables_outstanding | Days of payables outstanding. |
-| cash_conversion_cycle | Cash conversion cycle. |
-| gross_profit_margin | Gross profit margin. |
-| operating_profit_margin | Operating profit margin. |
-| pretax_profit_margin | Pretax profit margin. |
-| net_profit_margin | Net profit margin. |
-| effective_tax_rate | Effective tax rate. |
-| return_on_assets | Return on assets. |
-| return_on_equity | Return on equity. |
-| return_on_capital_employed | Return on capital employed. |
-| net_income_per_ebt | Net income per EBT. |
-| ebt_per_ebit | EBT per EBIT. |
-| ebit_per_revenue | EBIT per revenue. |
-| debt_ratio | Debt ratio. |
-| debt_equity_ratio | Debt equity ratio. |
-| long_term_debt_to_capitalization | Long term debt to capitalization. |
-| total_debt_to_capitalization | Total debt to capitalization. |
-| interest_coverage_ratio | Interest coverage. |
-| cash_flow_to_debt | Cash flow to debt ratio. |
-| company_equity_multiplier | Company equity multiplier. |
-| receivables_turnover | Receivables turnover. |
-| payables_turnover | Payables turnover. |
-| inventory_turnover | Inventory turnover. |
-| fixed_asset_turnover | Fixed asset turnover. |
-| asset_turnover | Asset turnover. |
-| operating_cash_flow_per_share | Operating cash flow per share. |
-| free_cash_flow_per_share | Free cash flow per share. |
-| cash_per_share | Cash per share. |
-| payout_ratio | Payout ratio. |
-| operating_cash_flow_sales_ratio | Operating cash flow sales ratio. |
-| free_cash_flow_operating_cash_flow_ratio | Free cash flow operating cash flow ratio. |
-| cash_flow_coverage_ratio | Cash flow coverage ratio. |
-| short_term_coverage_ratio | Short term coverage ratio. |
-| capital_expenditure_coverage_ratio | Capital expenditure coverage ratio. |
-| price_book_value_ratio | Price book value ratio. |
-| price_to_book_ratio | Price to book ratio. |
-| price_to_sales_ratio | Price to sales ratio. |
-| price_earnings_ratio | Price earnings ratio. |
-| price_to_free_cash_flows_ratio | Price to free cash flows ratio. |
-| price_to_operating_cash_flows_ratio | Price to operating cash flows ratio. |
-| price_cash_flow_ratio | Price cash flow ratio. |
-| price_earnings_to_growth_ratio | Price earnings to growth ratio. |
-| price_sales_ratio | Price sales ratio. |
-| dividend_paid_and_capex_coverage_ratio | Dividend paid and capex coverage ratio. |
-| dividend_payout_ratio | Dividend payout ratio. |
-| dividend_yield | Dividend yield. |
-| dividend_per_share | Dividend per share. |
-| enterprise_value_multiple | Enterprise value multiple. |
-| price_fair_value | Price fair value. |
 </TabItem>
 </Tabs>
 
@@ -3273,11 +3156,7 @@ import TabItem from '@theme/TabItem';
 | close | The close price. |
 | volume | The trading volume. |
 | vwap | Volume Weighted Average Price over the period. |
-| symbol | Symbol of the equity. |
-| adj_close | The adjusted close price. |
-| unadjusted_volume | Unadjusted volume of the symbol. |
-| change | Change in the price from the previous close. |
-| changeOverTime | Change in the price from the previous close, as a normalized percent. |
+| n | Number of transactions for the symbol in the time period. |
 </TabItem>
 </Tabs>
 
@@ -3922,7 +3801,6 @@ import TabItem from '@theme/TabItem';
 | low | The low price. |
 | close | The close price. |
 | volume | The trading volume. |
-| n | Number of transactions for the symbol in the time period. |
 </TabItem>
 </Tabs>
 
@@ -4095,18 +3973,7 @@ import TabItem from '@theme/TabItem';
 | images | Images associated with the article. |
 | url | URL to the article. |
 | symbols | Symbols associated with the article. |
-| source | The source of the news article. |
-| summary | The summary of the news article. |
-| topics | The topics related to the news article. |
-| word_count | The word count of the news article. |
-| business_relevance |  	How strongly correlated the news article is to the business |
-| sentiment | The sentiment of the news article - i.e, negative, positive. |
-| sentiment_confidence | The confidence score of the sentiment rating. |
-| language | The language of the news article. |
-| spam | Whether the news article is spam. |
-| copyright | The copyright notice of the news article. |
-| id | Article ID. |
-| security | The Intrinio Security object. Contains the security details related to the news article. |
+| source | Name of the news source. |
 </TabItem>
 </Tabs>
 
