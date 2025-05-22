@@ -33,6 +33,8 @@ OpenBB Apps are comprehensive solutions that combine:
 - **AI Agents**: Intelligent automation for your analysis workflows
 - **Pre-saved Prompts**: Reusable AI interactions for consistent results
 
+
+
 ## Why Use OpenBB Apps?
 
 ### Complete Control
@@ -331,7 +333,46 @@ This is what you should expect as a file:
 ]
 ```
 
+
 </details>
+
+### App Structure Reference
+
+The `apps.json` file follows this structure:
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `name` | string | The name of your app |
+| `description` | string | A detailed description of what your app does |
+| `img` | string | URL to the app's thumbnail image |
+| `img_dark` | string | Optional URL to the app's thumbnail for dark mode |
+| `img_light` | string | Optional URL to the app's thumbnail for light mode |
+| `allowCustomization` | boolean | Whether users can customize the app |
+| `selected_agent` | string | Optional ID of the default AI agent for this app |
+| `authentication` | string | Optional authentication requirements |
+| `tabs` | object | Collection of tabs, each with an ID, name, and layout configuration |
+| `groups` | array | Widget groupings for synchronized parameters |
+| `prompts` | array | Optional list of prompt IDs associated with the app |
+
+Each tab contains:
+- `id`: Unique identifier for the tab
+- `name`: Display name for the tab
+- `layout`: Array of widget configurations with positioning and state
+
+Each group contains:
+- `name`: Display name for the group
+- `type`: Type of grouping (e.g., "param", "endpointParam")
+- `paramName`: The parameter being synchronized
+- `widgetIds`: Array of widget IDs in this group
+- `defaultValue`: Default value for the parameter
+
+Each layout contains a reference to a widget:
+- `i`: The id of the widget - This will be used to identify the widget in the app (if the widget endpoint is "test/widget_1 the id will be test_widget_1")
+- `x`: The x position of the widget
+- `y`: The y position of the widget
+- `w`: The width of the widget
+- `h`: The height of the widget
+- `state`: The state of the widget
 
 ### Setting up the Apps endpoint
 
