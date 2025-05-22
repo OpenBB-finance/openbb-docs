@@ -188,8 +188,9 @@ export default {
 					)) {
 						const section = path.split("/")[0];
 						if (section in sectionRoutes) {
+							const fullUrl = `${context.siteConfig.url}/${path}`;
 							sectionRoutes[section].push(
-								`- [${record.title}](${path}): ${record.description}`,
+								`- [${record.title}](${fullUrl}): ${record.description}`,
 							);
 						}
 					}
