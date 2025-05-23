@@ -1,10 +1,10 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-import type { Options, ThemeConfig } from "@docusaurus/preset-classic";
-import type { Config } from "@docusaurus/types";
 import fs from "fs";
 import path from "path";
+import type { Options, ThemeConfig } from "@docusaurus/preset-classic";
+import type { Config } from "@docusaurus/types";
 import autoprefixer from "autoprefixer";
 import { themes } from "prism-react-renderer";
 import katex from "rehype-katex";
@@ -97,111 +97,147 @@ export default {
 			};
 		},
 		async function pluginLlmsTxt(context) {
-		  return {
-			name: "llms-txt-plugin",
-			loadContent: async () => {
-			  const { siteDir } = context;
-			  const contentDir = path.join(siteDir, "content");
-			  const sectionContent: Record<string, string[]> = {
-				workspace: [],
-				platform: [],
-				excel: []
-			  };
-	
-			  // recursive function to get all mdx files
-			  const getMdxFiles = async (dir: string) => {
-				const entries = await fs.promises.readdir(dir, { withFileTypes: true });
-	
-				for (const entry of entries) {
-				  const fullPath = path.join(dir, entry.name);
-				  if (entry.isDirectory()) {
-					await getMdxFiles(fullPath);
-				  } else if (entry.name.endsWith(".mdx") || entry.name.endsWith(".md")) {
-					try {
-					  const content = await fs.promises.readFile(fullPath, "utf8");
-					  // Determine which section this file belongs to
-					  const relativePath = path.relative(contentDir, fullPath);
-					  const section = relativePath.split(path.sep)[0];
-					  if (section in sectionContent) {
-						sectionContent[section].push(content);
-					  }
-					} catch (err) {
-					  console.error(`Error processing file ${fullPath}:`, err);
+			return {
+				name: "llms-txt-plugin",
+				loadContent: async () => {
+					const { siteDir } = context;
+					const contentDir = path.join(siteDir, "content");
+					const sectionContent: Record<string, string[]> = {
+						workspace: [],
+						platform: [],
+						excel: [],
+					};
+
+					// recursive function to get all mdx files
+					const getMdxFiles = async (dir: string) => {
+						const entries = await fs.promises.readdir(dir, {
+							withFileTypes: true,
+						});
+
+						for (const entry of entries) {
+							const fullPath = path.join(dir, entry.name);
+							if (entry.isDirectory()) {
+								await getMdxFiles(fullPath);
+							} else if (
+								entry.name.endsWith(".mdx") ||
+								entry.name.endsWith(".md")
+							) {
+								try {
+									const content = await fs.promises.readFile(fullPath, "utf8");
+									// Determine which section this file belongs to
+									const relativePath = path.relative(contentDir, fullPath);
+									const section = relativePath.split(path.sep)[0];
+									if (section in sectionContent) {
+										sectionContent[section].push(content);
+									}
+								} catch (err) {
+									console.error(`Error processing file ${fullPath}:`, err);
+								}
+							}
+						}
+					};
+
+					await getMdxFiles(contentDir);
+
+					// Log content sizes for each section
+					for (const [section, content] of Object.entries(sectionContent)) {
+						const totalSize = content.reduce(
+							(acc, curr) => acc + curr.length,
+							0,
+						);
+						console.log(
+							`Section ${section} has ${content.length} files with total size of ${(totalSize / 1024 / 1024).toFixed(2)}MB`,
+						);
 					}
-				  }
-				}
-			  };
-	
-			  await getMdxFiles(contentDir);
-			  
-			  // Log content sizes for each section
-			  for (const [section, content] of Object.entries(sectionContent)) {
-				const totalSize = content.reduce((acc, curr) => acc + curr.length, 0);
-				console.log(`Section ${section} has ${content.length} files with total size of ${(totalSize / 1024 / 1024).toFixed(2)}MB`);
-			  }
-			  
-			  return { sectionContent };
-			},
-			postBuild: async ({ content, routes, outDir }) => {
-			  const { sectionContent } = content as { sectionContent: Record<string, string[]> };
-			  const { siteDir } = context;
-			  const staticDir = path.join(siteDir, "static");
 
-			  // Find docs plugin route config
-			  const docsPluginRouteConfig = routes.filter(
-				(route) => route.plugin.name === "docusaurus-plugin-content-docs"
-			  )[0];
+					return { sectionContent };
+				},
+				postBuild: async ({ content, routes, outDir }) => {
+					const { sectionContent } = content as {
+						sectionContent: Record<string, string[]>;
+					};
+					const { siteDir } = context;
+					const staticDir = path.join(siteDir, "static");
 
-			  const allDocsRouteConfig = docsPluginRouteConfig.routes?.filter(
-				(route) => route.path === "/"
-			  )[0];
+					// Find docs plugin route config
+					const docsPluginRouteConfig = routes.filter(
+						(route) => route.plugin.name === "docusaurus-plugin-content-docs",
+					)[0];
 
-			  if (!allDocsRouteConfig?.props?.version) {
-				return;
-			  }
+					const allDocsRouteConfig = docsPluginRouteConfig.routes?.filter(
+						(route) => route.path === "/",
+					)[0];
 
-			  const currentVersionDocsRoutes = (
-				allDocsRouteConfig.props.version as Record<string, unknown>
-			  ).docs as Record<string, Record<string, unknown>>;
+					if (!allDocsRouteConfig?.props?.version) {
+						return;
+					}
 
-			  // Group routes by section
-			  const sectionRoutes: Record<string, string[]> = {
-				workspace: [],
-				platform: [],
-				excel: []
-			  };
+					const currentVersionDocsRoutes = (
+						allDocsRouteConfig.props.version as Record<string, unknown>
+					).docs as Record<string, Record<string, unknown>>;
 
-			  for (const [path, record] of Object.entries(currentVersionDocsRoutes)) {
-				const section = path.split("/")[0];
-				if (section in sectionRoutes) {
-				  sectionRoutes[section].push(`- [${record.title}](${path}): ${record.description}`);
-				}
-			  }
+					// Group routes by section
+					const sectionRoutes: Record<string, string[]> = {
+						workspace: [],
+						platform: [],
+						excel: [],
+					};
 
-			  // Process each section
-			  for (const [section, routes] of Object.entries(sectionRoutes)) {
-				try {
-				  const sectionDir = path.join(staticDir, section);
-				  await fs.promises.mkdir(sectionDir, { recursive: true });
+					for (const [path, record] of Object.entries(
+						currentVersionDocsRoutes,
+					)) {
+						const section = path.split("/")[0];
+						if (section in sectionRoutes) {
+							const fullUrl = `${context.siteConfig.url}/${path}`;
+							sectionRoutes[section].push(
+								`- [${record.title}](${fullUrl}): ${record.description}`,
+							);
+						}
+					}
 
-				  // Write section-specific llms.txt
-				  const llmsTxt = `# ${context.siteConfig.title} - ${section}\n\n## Docs\n\n${routes.join("\n")}`;
-				  await fs.promises.writeFile(path.join(sectionDir, "llms.txt"), llmsTxt);
+					// Process each section
+					for (const [section, routes] of Object.entries(sectionRoutes)) {
+						try {
+							// Create directory in static folder
+							const sectionDir = path.join(staticDir, section);
+							await fs.promises.mkdir(sectionDir, { recursive: true });
 
-				  // Write section-specific llms-full.txt
-				  const sectionFullContent = sectionContent[section].join("\n\n---\n\n");
-				  
-				  await fs.promises.writeFile(
-					path.join(sectionDir, "llms-full.txt"),
-					sectionFullContent
-				  );
-				} catch (err) {
-				  console.error(`Error processing section ${section}:`, err);
-				}
-			  }
-			},
-		  };
-		}
+							// Write section-specific llms.txt
+							const llmsTxt = `# ${context.siteConfig.title} - ${section}\n\n## Docs\n\n${routes.join("\n")}`;
+							await fs.promises.writeFile(
+								path.join(sectionDir, "llms.txt"),
+								llmsTxt,
+							);
+
+							// Also write to build output directory for direct access
+							const buildSectionDir = path.join(outDir, section);
+							await fs.promises.mkdir(buildSectionDir, { recursive: true });
+							await fs.promises.writeFile(
+								path.join(buildSectionDir, "llms.txt"),
+								llmsTxt,
+							);
+
+							// Write section-specific llms-full.txt
+							const sectionFullContent =
+								sectionContent[section].join("\n\n---\n\n");
+
+							await fs.promises.writeFile(
+								path.join(sectionDir, "llms-full.txt"),
+								sectionFullContent,
+							);
+
+							// Also write to build output directory for direct access
+							await fs.promises.writeFile(
+								path.join(buildSectionDir, "llms-full.txt"),
+								sectionFullContent,
+							);
+						} catch (err) {
+							console.error(`Error processing section ${section}:`, err);
+						}
+					}
+				},
+			};
+		},
 	],
 	presets: [
 		[
