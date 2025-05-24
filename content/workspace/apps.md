@@ -33,31 +33,21 @@ OpenBB Apps are comprehensive solutions that combine:
 - **AI Agents**: Intelligent automation for your analysis workflows
 - **Pre-saved Prompts**: Reusable AI interactions for consistent results
 
-## Why Use OpenBB Apps?
 
-### Complete Control
+## Why use OpenBB Apps?
 
-- Build solutions tailored to your specific workflows
-- Integrate your proprietary data and preferred AI models
-- Customize every aspect of your analysis environment
+- **Complete Control**
+  Build solutions tailored to your specific workflows, integrate your proprietary data and preferred AI models, and customize every aspect of your analysis environment.
 
-### No Vendor Lock-in
+- **No Vendor Lock-in**
+  Avoid being limited by vendor data or technology, maintain ownership of your workflows and data, and choose your preferred data sources and AI models.
 
-- Avoid being limited by vendor data or technology
-- Maintain ownership of your workflows and data
-- Choose your preferred data sources and AI models
-
-### Optimized Workflows
-
-- Save time with pre-configured analysis templates
-- Automate repetitive tasks with AI agents
-- Create consistent, reproducible analysis processes
+- **Optimized Workflows**
+  Save time with pre-configured analysis templates, automate repetitive tasks with AI agents, and create consistent, reproducible analysis processes.
 
 ## Creating Your Own App
 
-### Exporting an App
-
-1. Integrate your data widgets in OpenBB Workspace
+1. Integrate your data widgets in OpenBB Workspace, as seen in <a href="/workspace/data-widgets" target="_blank" rel="noopener noreferrer">Data Widgets</a>.
 2. Organize them in a certain layout
 3. Group widgets together and/or change their display (e.g. table or charts)
 4. Right click on the dashboard and select "Export apps.json"
@@ -67,9 +57,6 @@ OpenBB Apps are comprehensive solutions that combine:
 <img className="pro-border-gradient" width="800" alt="OpenBB Apps Example" src="https://openbb-cms.directus.app/assets/2250bf63-e7e9-447d-b2e3-14d71d23fe92.png" />
 
 This is what you should expect as a file:
-
-<details>
-<summary mdxType="summary">apps.json</summary>
 
 ```json
 [
@@ -326,37 +313,12 @@ This is what you should expect as a file:
           "portfolio_factors_custom_obb"
         ]
       }
+    ],
+    "prompts": [
+      "Please analyze my current portfolio holdings. What are the top 5 positions by weight? Are there any concentration risks I should be aware of? How has each position performed over the last month?",
+      "What are the strongest correlations between my portfolio holdings? Which positions might provide good diversification benefits? How do my holdings correlate with major market factors?",
+      "What is my current sector exposure? Are there any sectors where I'm over or underweight compared to the market? What are the risks and opportunities in my current sector allocation?",
+      "How does my portfolio respond to different market factors? What are my current factor exposures? Are there any factor tilts I should consider adjusting?"
     ]
   }
 ]
-```
-
-</details>
-
-### Setting up the Apps endpoint
-
-To serve custom apps, you need to define an endpoint in your FastAPI application that returns the content of your `apps.json` file.
-
-Here's how to define the `/apps.json` endpoint in your FastAPI application:
-
-```python
-from fastapi import FastAPI
-from fastapi.responses import JSONResponse
-
-app = FastAPI()
-
-@app.get("/apps.json")
-async def get_apps():
-    # Load your apps.json file
-    with open("path/to/your/apps.json", "r") as f:
-        apps_config = json.load(f)
-    return JSONResponse(content=apps_config)
-```
-
-Your custom apps will appear in the OpenBB Workspace under the "Apps" tab in the "My Apps" section, as shown in here:
-
-<img width="800" alt="OpenBB Workspace Multiple Applications View" src="https://openbb-cms.directus.app/assets/2fc9097e-0941-49df-8d83-7d6b5a87bb45.png" />
-
-**Note**: The ideal image size is 250x200px
-
-Remember, the best part is that you can build your own apps tailored to your specific needs.
