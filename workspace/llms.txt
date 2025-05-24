@@ -5,6 +5,7 @@
 - [Overview](https://docs.openbb.co/workspace/ai-agents): Learn how to integrate and customize AI agents in OpenBB Workspace for enhanced financial analysis and research capabilities
 - [AI Generated](https://docs.openbb.co/workspace/ai-generated): Learn how to use AI agent outputs as widgets in your OpenBB dashboard
 - [Apps](https://docs.openbb.co/workspace/apps): Create and customize your own OpenBB Apps for optimized workflows
+- [apps.json Reference](https://docs.openbb.co/workspace/apps-json-reference): Learn about the structure and configuration of apps.json for creating custom applications in OpenBB Workspace
 - [Core Widgets](https://docs.openbb.co/workspace/core-widgets): Master OpenBB's essential widgets for building powerful financial dashboards, including navigation, notes, API integration, and real-time data visualization tools.
 - [Overview](https://docs.openbb.co/workspace/data-integration): Learn how to integrate your own data sources and APIs into OpenBB Workspace with a custom backend solution.
 - [AgGrid Table Charts](https://docs.openbb.co/workspace/data-widgets/aggrid-table-charts): AgGrid Table Charts

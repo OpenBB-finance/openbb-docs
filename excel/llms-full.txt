@@ -656,13 +656,26 @@ import TabItem from '@theme/TabItem';
 | close | The close price. |
 | volume | The trading volume. |
 | prev_close | The previous close price. |
-| change | The change in the price from the previous close. |
-| change_percent | The change in the price from the previous close, as a normalized percent. |
-| ma_50 | The 50-day moving average. |
-| ma_200 | The 200-day moving average. |
-| year_high | The 52-week high. |
-| year_low | The 52-week low. |
-| last_rate_timestamp | The timestamp of the last rate. |
+| vwap | The volume-weighted average price. |
+| change | The change in price from the previous day. |
+| change_percent | The percentage change in price from the previous day. |
+| prev_open | The previous day's opening price. |
+| prev_high | The previous day's high price. |
+| prev_low | The previous day's low price. |
+| prev_volume | The previous day's volume. |
+| prev_vwap | The previous day's VWAP. |
+| bid | The current bid price. |
+| ask | The current ask price. |
+| minute_open | The open price from the most recent minute bar. |
+| minute_high | The high price from the most recent minute bar. |
+| minute_low | The low price from the most recent minute bar. |
+| minute_close | The close price from the most recent minute bar. |
+| minute_volume | The volume from the most recent minute bar. |
+| minute_vwap | The VWAP from the most recent minute bar. |
+| minute_transactions | The number of transactions in the most recent minute bar. |
+| quote_timestamp | The timestamp of the last quote. |
+| minute_timestamp | The timestamp for the start of the most recent minute bar. |
+| last_updated | The last time the data was updated. |
 </TabItem>
 </Tabs>
 
@@ -1043,6 +1056,12 @@ import TabItem from '@theme/TabItem';
 | target_low | Low target of the price target consensus. |
 | target_consensus | Consensus target of the price target consensus. |
 | target_median | Median target of the price target consensus. |
+| standard_deviation | The standard deviation of target price estimates. |
+| total_analysts | The total number of target price estimates in consensus. |
+| raised | The number of analysts that have raised their target price estimates. |
+| lowered | The number of analysts that have lowered their target price estimates. |
+| most_recent_date | The date of the most recent estimate. |
+| industry_group_number | The Zacks industry group number. |
 </TabItem>
 </Tabs>
 
@@ -1503,41 +1522,19 @@ import TabItem from '@theme/TabItem';
 | period_ending | The end date of the reporting period. |
 | fiscal_period | The fiscal period of the report. |
 | fiscal_year | The fiscal year of the fiscal period. |
-| filing_date | The date of the filing. |
-| accepted_date | The date the filing was accepted. |
-| reported_currency | The currency in which the cash flow statement was reported. |
-| net_income | Net income. |
-| depreciation_and_amortization | Depreciation and amortization. |
-| deferred_income_tax | Deferred income tax. |
-| stock_based_compensation | Stock-based compensation. |
-| change_in_working_capital | Change in working capital. |
-| change_in_account_receivables | Change in account receivables. |
-| change_in_inventory | Change in inventory. |
-| change_in_account_payable | Change in account payable. |
-| change_in_other_working_capital | Change in other working capital. |
-| change_in_other_non_cash_items | Change in other non-cash items. |
-| net_cash_from_operating_activities | Net cash from operating activities. |
-| purchase_of_property_plant_and_equipment | Purchase of property, plant and equipment. |
-| acquisitions | Acquisitions. |
-| purchase_of_investment_securities | Purchase of investment securities. |
-| sale_and_maturity_of_investments | Sale and maturity of investments. |
-| other_investing_activities | Other investing activities. |
-| net_cash_from_investing_activities | Net cash from investing activities. |
-| repayment_of_debt | Repayment of debt. |
-| issuance_of_common_equity | Issuance of common equity. |
-| repurchase_of_common_equity | Repurchase of common equity. |
-| payment_of_dividends | Payment of dividends. |
-| other_financing_activities | Other financing activities. |
-| net_cash_from_financing_activities | Net cash from financing activities. |
-| effect_of_exchange_rate_changes_on_cash | Effect of exchange rate changes on cash. |
-| net_change_in_cash_and_equivalents | Net change in cash and equivalents. |
-| cash_at_beginning_of_period | Cash at beginning of period. |
-| cash_at_end_of_period | Cash at end of period. |
-| operating_cash_flow | Operating cash flow. |
-| capital_expenditure | Capital expenditure. |
-| free_cash_flow |  |
-| link | Link to the filing. |
-| final_link | Link to the filing document. |
+| net_cash_flow_from_operating_activities_continuing | Net cash flow from operating activities continuing. |
+| net_cash_flow_from_operating_activities_discontinued | Net cash flow from operating activities discontinued. |
+| net_cash_flow_from_operating_activities | Net cash flow from operating activities. |
+| net_cash_flow_from_investing_activities_continuing | Net cash flow from investing activities continuing. |
+| net_cash_flow_from_investing_activities_discontinued | Net cash flow from investing activities discontinued. |
+| net_cash_flow_from_investing_activities | Net cash flow from investing activities. |
+| net_cash_flow_from_financing_activities_continuing | Net cash flow from financing activities continuing. |
+| net_cash_flow_from_financing_activities_discontinued | Net cash flow from financing activities discontinued. |
+| net_cash_flow_from_financing_activities | Net cash flow from financing activities. |
+| net_cash_flow_continuing | Net cash flow continuing. |
+| net_cash_flow_discontinued | Net cash flow discontinued. |
+| exchange_gains_losses | Exchange gains losses. |
+| net_cash_flow | Net cash flow. |
 </TabItem>
 </Tabs>
 
@@ -1613,11 +1610,9 @@ import TabItem from '@theme/TabItem';
 | ---- | ----------- |
 | ex_dividend_date | The ex-dividend date - the date on which the stock begins trading without rights to the dividend. |
 | amount | The dividend amount per share. |
-| label | Label of the historical dividends. |
-| adj_dividend | Adjusted dividend of the historical dividends. |
-| record_date | Record date of the historical dividends. |
-| payment_date | Payment date of the historical dividends. |
-| declaration_date | Declaration date of the historical dividends. |
+| factor | factor by which to multiply stock prices before this date, in order to calculate historically-adjusted stock prices. |
+| currency | The currency in which the dividend is paid. |
+| split_ratio | The ratio of the stock split, if a stock split occurred. |
 </TabItem>
 </Tabs>
 
@@ -1712,6 +1707,12 @@ import TabItem from '@theme/TabItem';
 | report_type | Type of filing. |
 | filing_url | URL to the filing page. |
 | report_url | URL to the actual report. |
+| id | Intrinio ID of the filing. |
+| period_end_date | Ending date of the fiscal period for the filing. |
+| sec_unique_id | SEC unique ID of the filing. |
+| instance_url | URL for the XBRL filing for the report. |
+| industry_group | Industry group of the company. |
+| industry_category | Industry category of the company. |
 </TabItem>
 </Tabs>
 
@@ -1911,85 +1912,49 @@ import TabItem from '@theme/TabItem';
 | period_ending | The end date of the reporting period. |
 | fiscal_period | The fiscal period of the report. |
 | fiscal_year | The fiscal year of the fiscal period. |
-| reported_currency | The currency in which the balance sheet is reported. |
-| revenue | Total revenue |
-| operating_revenue | Total operating revenue |
-| cost_of_revenue | Total cost of revenue |
-| operating_cost_of_revenue | Total operating cost of revenue |
-| gross_profit | Total gross profit |
-| gross_profit_margin | Gross margin ratio. |
-| provision_for_credit_losses | Provision for credit losses |
-| research_and_development_expense | Research and development expense |
-| selling_general_and_admin_expense | Selling, general, and admin expense |
-| salaries_and_employee_benefits | Salaries and employee benefits |
-| marketing_expense | Marketing expense |
-| net_occupancy_and_equipment_expense | Net occupancy and equipment expense |
-| other_operating_expenses | Other operating expenses |
-| depreciation_expense | Depreciation expense |
-| amortization_expense | Amortization expense |
-| amortization_of_deferred_policy_acquisition_costs | Amortization of deferred policy acquisition costs |
-| exploration_expense | Exploration expense |
-| depletion_expense | Depletion expense |
-| total_operating_expenses | Total operating expenses |
-| total_operating_income | Total operating income |
-| deposits_and_money_market_investments_interest_income | Deposits and money market investments interest income |
-| federal_funds_sold_and_securities_borrowed_interest_income | Federal funds sold and securities borrowed interest income |
-| investment_securities_interest_income | Investment securities interest income |
-| loans_and_leases_interest_income | Loans and leases interest income |
-| trading_account_interest_income | Trading account interest income |
-| other_interest_income | Other interest income |
-| total_non_interest_income | Total non-interest income |
-| interest_and_investment_income | Interest and investment income |
-| short_term_borrowings_interest_expense | Short-term borrowings interest expense |
-| long_term_debt_interest_expense | Long-term debt interest expense |
-| capitalized_lease_obligations_interest_expense | Capitalized lease obligations interest expense |
-| deposits_interest_expense | Deposits interest expense |
-| federal_funds_purchased_and_securities_sold_interest_expense | Federal funds purchased and securities sold interest expense |
-| other_interest_expense | Other interest expense |
-| total_interest_expense | Total interest expense |
-| net_interest_income | Net interest income |
-| other_non_interest_income | Other non-interest income |
-| investment_banking_income | Investment banking income |
-| trust_fees_by_commissions | Trust fees by commissions |
-| premiums_earned | Premiums earned |
-| insurance_policy_acquisition_costs | Insurance policy acquisition costs |
-| current_and_future_benefits | Current and future benefits |
-| property_and_liability_insurance_claims | Property and liability insurance claims |
-| total_non_interest_expense | Total non-interest expense |
-| net_realized_and_unrealized_capital_gains_on_investments | Net realized and unrealized capital gains on investments |
-| other_gains | Other gains |
-| non_operating_income | Non-operating income |
-| other_income | Other income |
-| other_revenue | Other revenue |
-| extraordinary_income | Extraordinary income |
-| total_other_income | Total other income |
-| ebitda | Earnings Before Interest, Taxes, Depreciation and Amortization. |
-| ebitda_margin | Margin on Earnings Before Interest, Taxes, Depreciation and Amortization. |
-| total_pre_tax_income | Total pre-tax income |
-| ebit | Earnings Before Interest and Taxes. |
-| pre_tax_income_margin | Pre-Tax Income Margin. |
-| income_tax_expense | Income tax expense |
-| impairment_charge | Impairment charge |
-| restructuring_charge | Restructuring charge |
-| service_charges_on_deposit_accounts | Service charges on deposit accounts |
-| other_service_charges | Other service charges |
-| other_special_charges | Other special charges |
-| other_cost_of_revenue | Other cost of revenue |
-| net_income_continuing_operations | Net income (continuing operations) |
-| net_income_discontinued_operations | Net income (discontinued operations) |
-| consolidated_net_income | Consolidated net income |
-| other_adjustments_to_consolidated_net_income | Other adjustments to consolidated net income |
-| other_adjustment_to_net_income_attributable_to_common_shareholders | Other adjustment to net income attributable to common shareholders |
-| net_income_attributable_to_noncontrolling_interest | Net income attributable to noncontrolling interest |
-| net_income_attributable_to_common_shareholders | Net income attributable to common shareholders |
-| basic_earnings_per_share | Basic earnings per share |
-| diluted_earnings_per_share | Diluted earnings per share |
-| basic_and_diluted_earnings_per_share | Basic and diluted earnings per share |
-| cash_dividends_to_common_per_share | Cash dividends to common per share |
-| preferred_stock_dividends_declared | Preferred stock dividends declared |
-| weighted_average_basic_shares_outstanding | Weighted average basic shares outstanding |
-| weighted_average_diluted_shares_outstanding | Weighted average diluted shares outstanding |
-| weighted_average_basic_and_diluted_shares_outstanding | Weighted average basic and diluted shares outstanding |
+| revenue | Total Revenue |
+| cost_of_revenue_goods | Cost of Revenue - Goods |
+| cost_of_revenue_services | Cost of Revenue - Services |
+| cost_of_revenue | Cost of Revenue |
+| gross_profit | Gross Profit |
+| provisions_for_loan_lease_and_other_losses | Provisions for loan lease and other losses |
+| depreciation_and_amortization | Depreciation and Amortization |
+| income_tax_expense_benefit_current | Income tax expense benefit current |
+| deferred_tax_benefit | Deferred tax benefit |
+| benefits_costs_expenses | Benefits, costs and expenses |
+| selling_general_and_administrative_expense | Selling, general and administrative expense |
+| research_and_development | Research and development |
+| costs_and_expenses | Costs and expenses |
+| other_operating_expenses | Other Operating Expenses |
+| operating_expenses | Operating expenses |
+| operating_income | Operating Income/Loss |
+| non_operating_income | Non Operating Income/Loss |
+| interest_and_dividend_income | Interest and Dividend Income |
+| total_interest_expense | Interest Expense |
+| interest_and_debt_expense | Interest and Debt Expense |
+| net_interest_income | Interest Income Net |
+| interest_income_after_provision_for_losses | Interest Income After Provision for Losses |
+| non_interest_expense | Non-Interest Expense |
+| non_interest_income | Non-Interest Income |
+| income_from_discontinued_operations_net_of_tax_on_disposal | Income From Discontinued Operations Net of Tax on Disposal |
+| income_from_discontinued_operations_net_of_tax | Income From Discontinued Operations Net of Tax |
+| income_before_equity_method_investments | Income Before Equity Method Investments |
+| income_from_equity_method_investments | Income From Equity Method Investments |
+| total_pre_tax_income | Income Before Tax |
+| income_tax_expense | Income Tax Expense |
+| income_after_tax | Income After Tax |
+| consolidated_net_income | Net Income/Loss |
+| net_income_attributable_noncontrolling_interest | Net income (loss) attributable to noncontrolling interest |
+| net_income_attributable_to_parent | Net income (loss) attributable to parent |
+| net_income_attributable_to_common_shareholders | Net Income/Loss Available To Common Stockholders Basic |
+| participating_securities_earnings | Participating Securities Distributed And Undistributed Earnings Loss Basic |
+| undistributed_earnings_allocated_to_participating_securities | Undistributed Earnings Allocated To Participating Securities |
+| common_stock_dividends | Common Stock Dividends |
+| preferred_stock_dividends_and_other_adjustments | Preferred stock dividends and other adjustments |
+| basic_earnings_per_share | Earnings Per Share |
+| diluted_earnings_per_share | Diluted Earnings Per Share |
+| weighted_average_basic_shares_outstanding | Basic Average Shares |
+| weighted_average_diluted_shares_outstanding | Diluted Average Shares |
 </TabItem>
 </Tabs>
 
@@ -3801,6 +3766,7 @@ import TabItem from '@theme/TabItem';
 | low | The low price. |
 | close | The close price. |
 | volume | The trading volume. |
+| n | Number of transactions for the symbol in the time period. |
 </TabItem>
 </Tabs>
 
@@ -3970,10 +3936,16 @@ import TabItem from '@theme/TabItem';
 | date | The date of the data. Here it is the published date of the article. |
 | title | Title of the article. |
 | text | Text/body of the article. |
-| images | Images associated with the article. |
+| images | URL to the images of the news. |
 | url | URL to the article. |
 | symbols | Symbols associated with the article. |
-| source | Name of the news source. |
+| id | Article ID. |
+| author | Author of the article. |
+| teaser | Teaser of the news. |
+| channels | Channels associated with the news. |
+| stocks | Stocks associated with the news. |
+| tags | Tags associated with the news. |
+| updated | Updated date of the news. |
 </TabItem>
 </Tabs>
 
