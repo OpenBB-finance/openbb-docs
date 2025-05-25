@@ -1,6 +1,6 @@
 ---
-title: Data slicer
-sidebar_position: 2
+title: OBB.GET
+sidebar_position: 3
 description: Slice Excel ranges by label or index
 keywords:
 - Microsoft Excel
@@ -14,7 +14,7 @@ keywords:
 <!-- markdownlint-disable MD033 -->
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Data slicer | OpenBB Add-in for Excel Docs" />
+<HeadTitle title="OBB.GET | OpenBB Add-in for Excel Docs" />
 
 To help you slice parts of data, we provide the [OBB.GET](https://docs.openbb.co/excel/reference/get) function. This function allows to slice rows, columns or range subsets. It is useful to extract specific fields from the `OBB.` custom functions. Data can be sliced by label or index.
 
