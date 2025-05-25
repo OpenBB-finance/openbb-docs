@@ -14,83 +14,60 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="OBB.WIDGET | OpenBB Add-in for Excel Docs" />
 
-OpenBB Add-In for Excel allows you to access your [data connectors](https://docs.openbb.co/pro/data-connectors) from OpenBB Workspace inside Microsoft Excel. This can be done using the [OBB.BYOD](https://docs.openbb.co/excel/reference/byod) function.
-
-## [Single widget](https://docs.openbb.co/pro/data-connectors/single-widget)
-
-```excel
-=OBB.BYOD("widget_name")
-```
-
-:::info
-
-- Make sure your widget is setup in the OpenBB Workspace.
-
-:::
-
-## [Own backend](https://docs.openbb.co/pro/data-connectors/integrate-your-own-backend)
-
-```excel
-=OBB.BYOD("widget_name","backend_name")
-```
-
-If your backend supports it is possible to pass a symbol, a date or other optional parameters:
-
-```excel
-=OBB.BYOD("widget_name","backend_name","my_symbol","YYYY-MM-DD",{"param1":"value1","param2":"value2", ...})
-```
-
-:::tip
-The easiest way to pass optional parameters is to write them into cells and reference them in the function. For example, `=OBB.BYOD(...,A1:B2)` where A1 contains "param1", B1 "value1", A2 "param2", B2 "value2" and so on.
-:::
+This is the most important formula that is available, as it allows you to access any dataset available from the OpenBB workspace.
 
 :::info
 
 - Make sure your backend's CORS settings allow requests coming from [https://excel.openbb.co](https://excel.openbb.co).
 - Requests via HTTP will be blocked by Excel. So if you are using the Add-in for Excel on Mac or Office on the web with Safari browser you need to run your backend via HTTPS.
 
----
-
-The OpenBB Add-in for Excel provides direct access to the OpenBB platform, where each function implements the following pattern:
-
-- `OBB.[MENU].[SUB_MENU].[COMMAND]`
-
-:::tip
-Use the &lt;TAB&gt; key to autocomplete the function name after typing `=OBB.`
 :::
 
-Examples:
+It has the following format:
 
-1. Getting balance sheet data for a stock:
+```excel
+=OBB.BYOD(<BACKEND NAME>,<WIDGET ID> or <WIDGET NAME>, <PARAMETERS (OPTIONAL)>)
+```
 
-   ```excel
-   =OBB.EQUITY.FUNDAMENTAL.BALANCE("AAPL")
-   ```
+Where parameters, shows up as `{"param1","value1";"param2","value2"; ...}`.
 
-2. Getting the latest news for a stock:
+Here are a few examples:
 
-   ```excel
-   =OBB.NEWS.COMPANY("AAPL")
-   ```
+```excel
+=OBB.WIDGET("DTCC Trades","swap_rate_levels_custom_obb",{"currency","USD";"swap_type","OIS";"period","1y"})
+```
 
-3. Getting the earnings calendar:
+```excel
+=OBB.WIDGET("DTCC Trades","Swap Trades",{"currency","USD";"date","2025-04-15";"cleared_only","true";"include_starting","false"})
+```
 
-   ```excel
-   =OBB.EQUITY.CALENDAR.IPO(,"2023-11-20")
-   ```
+```excel
+=OBB.WIDGET("OpenBB Platform","economy_pce_fred_obb",{"category","personal_income";"provider","fred"})
+```
 
-:::tip
-If you want to skip a parameter use comma (or semi-colon depending on your number separator) without any value. In example iii. we are skipping the first parameter (symbol).
-:::
+```excel
+=OBB.WIDGET("Custom Backend","Portugal CPI since 2000")
+```
 
-## Advanced
+### Explicit parameters
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-    <iframe
-        style={{width: '800px', height: '450px', display: 'block', margin: '0 auto'}}
-        src="https://www.youtube.com/embed/mk-NDjH8CDE?si=oL1Iqh1yJc24dh-K"
-        title="YouTube video player"
-        frameBorder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-    />
-</div>
+The easiest way to pass optional parameters is to write them into cells and reference them in the function.
+
+For example,
+
+```excel
+=OBB.WIDGET("DTCC Trades","swap_rate_levels_custom_obb",{"currency","USD";"swap_type","OIS";"period","1y"})
+```
+
+can be rewritten as:
+
+```excel
+=OBB.WIDGET("DTCC Trades","swap_rate_levels_custom_obb",A1:B3)
+```
+
+where:
+
+- A1 contains "currency" and B1 "USD"
+- A2 contains "swap_type" and B2 "OIS"
+- A3 contains "period" and B3 "1y"
+
