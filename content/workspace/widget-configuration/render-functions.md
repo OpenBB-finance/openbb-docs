@@ -27,7 +27,6 @@ In the `widgets.json` configuration, you can specify render functions to customi
 | `columnColor` | Changes the color of a column based on specified rules |
 | `showCellChange` | Highlights cells when their values change via WebSocket updates. Only used with the [Live Grid Widget](/content/workspace/data-widgets/live-grid.md) |
 
-
 ### Render Function Parameters
 
 | Parameter | Type | Description |
@@ -196,3 +195,7 @@ The hover card example would use the below data to display the hover card.
 
 - You can pass a simple configuration to get a hover card with default settings, excluding the title and value.
 - The `hoverCard` render function allows for markdown customization, providing flexibility in how information is displayed.
+
+### Prefix and Suffix
+
+The `prefix` and `suffix` parameters can also be used in the `columnsDefs` to add a prefix or suffix to the column values. [See the widgets-json-reference](/content/workspace/widgets-json-reference.md) for more information.
