@@ -327,6 +327,22 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
       The value for a dropdown option.
       _Example:_ `"option1"`
 
+    - **extraInfo**
+      _Type:_ `object`
+      Additional information to display for the dropdown option.
+      _Example:_ `{"description": "Technology Company", "rightOfDescription": "NASDAQ"}`
+
+      Contains the following keys:
+
+      - **description**
+        _Type:_ `string`
+        Additional descriptive text shown below the label.
+        _Example:_ `"Technology Company"`
+
+      - **rightOfDescription**
+        _Type:_ `string`
+        Text shown to the right of the description.
+        _Example:_ `"NASDAQ"`
 
 - **source**
   _Type:_ array of strings
