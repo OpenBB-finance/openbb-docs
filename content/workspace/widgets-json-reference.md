@@ -284,6 +284,11 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
     Endpoint to fetch options for the parameter.
     _Example:_ `"v1/test/values"`
 
+  - **editable**
+    _Type:_ `boolean`
+    If true, the parameter will be editable. Only used with the `text` type.
+    _Example:_ `true`
+
   - **optionsParams**
     _Type:_ `object`
     Parameters to pass to the options endpoint. You can use the parameter name from the `params` array to pass a value to the options endpoint.
