@@ -100,6 +100,26 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
     _Example:_ `9`
     _Maximum value:_ `100`
 
+  - **minW**
+    _Type:_ `number`
+    Sets the minimum width of the widget in grid units.
+    _Example:_ `10`
+
+  - **minH**
+    _Type:_ `number`
+    Sets the minimum height of the widget in grid units.
+    _Example:_ `10`
+
+  - **maxW**
+    _Type:_ `number`
+    Sets the maximum width of the widget in grid units.
+    _Example:_ `40`
+
+  - **maxH**  
+    _Type:_ `number`
+    Sets the maximum height of the widget in grid units.
+    _Example:_ `100`
+
 - **data**
   _Type:_ object containing the following keys:
 
@@ -225,6 +245,16 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
         Tooltip text for the column header.
         _Example:_ `"This is a tooltip"`
 
+      - **prefix**
+        _Type:_ `string`
+        Prefix to be added to the column header.
+        _Example:_ `"$"`
+
+      - **suffix**
+        _Type:_ `string`
+        Suffix to be added to the column header.
+        _Example:_ `"USD"`
+
 - **params**
   _Type:_ list of objects, each containing the following keys:
 
@@ -253,6 +283,11 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
     _Type:_ `string`
     Endpoint to fetch options for the parameter.
     _Example:_ `"v1/test/values"`
+
+  - **editable**
+    _Type:_ `boolean`
+    If true, the parameter will be editable. Only used with the `text` type.
+    _Example:_ `true`
 
   - **optionsParams**
     _Type:_ `object`
@@ -297,6 +332,22 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
       The value for a dropdown option.
       _Example:_ `"option1"`
 
+    - **extraInfo**
+      _Type:_ `object`
+      Additional information to display for the dropdown option.
+      _Example:_ `{"description": "Technology Company", "rightOfDescription": "NASDAQ"}`
+
+      Contains the following keys:
+
+      - **description**
+        _Type:_ `string`
+        Additional descriptive text shown below the label.
+        _Example:_ `"Technology Company"`
+
+      - **rightOfDescription**
+        _Type:_ `string`
+        Text shown to the right of the description.
+        _Example:_ `"NASDAQ"`
 
 - **source**
   _Type:_ array of strings
