@@ -18,18 +18,19 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Omni Widget | OpenBB Workspace Docs" />
 
-The Omni widget is a versatile widget type that can dynamically return different content formats (text/markdown, tables, or charts) based on input parameters. Unlike other widgets that use GET requests, the Omni widget uses POST requests and passes all parameters in the request body.
+The Omni widget is a versatile widget type that can dynamically return different content formats (markdown, tables, or charts). Unlike other widgets that use GET requests, the Omni widget uses POST requests and passes all parameters in the request body. This widget requires the `prompt` parameter to be passed in the params section of the widget configuration.
 
 ## Key Features
 
-- **Dynamic Output Control**: Can return different content types (text, table, chart) based on parameters
+- **Dynamic Output Control**: Can return different content types (text, table, chart)
+- **Create Widgets from Responses**: Create widgets directly from the response types returned by the backend.
 - **POST Request Method**: Uses POST instead of GET, with parameters passed in the request body
 - **Citation Support**: Built-in support for adding citations and source information
 - **Flexible Parameter Handling**: All widget parameters are passed in the POST data
 
 ## Basic Omni Widget
 
-A widget that demonstrates the versatility of the Omni widget by returning different content types based on the `type` parameter.
+Below is an example of a basic Omni widget that demonstrates the versatility by returning different content types based on the `type` parameter. In a real world example you might choose to dynamically return different content types based on your backend logic.
 
 <img className="pro-border-gradient" width="800" alt="Omni Widget Example" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/omni-widget.png" />
 
@@ -140,7 +141,7 @@ async def get_omni_widget(
 
 ## Omni Widget with Citations
 
-This example demonstrates how to add citation support to your Omni widget, which is useful for tracking data sources and providing transparency about the information displayed. These citations are automatically added to the response if the `citable` parameter is set to `True`. This is shown in the example below and returned when they user is interacting with the widget through an agent.
+This example demonstrates how to add citation support to your Omni widget, which is useful when you want to use the widget in conjunction with an agent. The citations are added to the response if the `citable` parameter is set to `True`. This is shown in the example below and returned when the user is interacting with the widget through an agent.
 
 <img className="pro-border-gradient" width="800" alt="Omni Widget with Citations Example" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/omni-widget+with+citation.png" />
 
@@ -334,4 +335,4 @@ The Omni widget is particularly useful for:
 
 - AI/LLM Integration: Dynamic content generation based on user prompts
 - Multi-format Data Display: Single endpoint that can return different visualizations
-- Citation-heavy Applications: Research tools that need to track data sources
+- Citation-heavy Applications: Research tools that need to track data sources.
