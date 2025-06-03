@@ -18,7 +18,7 @@ A widget that includes a text input parameter allowing users to enter custom tex
 
 There are two types of text input parameters:
 
-Simple text input and an editable text input.
+Simple text input and a multiple options text input.
 
 ## Simple Text Input
 
@@ -49,8 +49,7 @@ Entered text: {text_box}
 """ 
 ```
 
-
-## Editable Text Input
+## Multiple Options Text Input
 
 <img className="pro-border-gradient" width="800" alt="Text Input Parameter Example" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/text-input-with-dd.png" />
 
@@ -68,7 +67,7 @@ Entered text: {text_box}
             "value": "var1,var2,var3",
             "label": "Enter Text",
             "description": "Type something to display",
-            "editable": true,
+            "multiple": true,
             "type": "text"
         }
     ]
