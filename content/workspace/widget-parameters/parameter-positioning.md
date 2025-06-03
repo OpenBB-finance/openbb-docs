@@ -1,6 +1,6 @@
 ---
 title: Parameter Positioning
-sidebar_position: 30
+sidebar_position: 19
 description: Learn how to control the layout and positioning of widget parameters in OpenBB Workspace, including row positioning and parameter ordering
 keywords:
 - parameter positioning
