@@ -82,7 +82,6 @@ class OmniWidgetResponse(BaseModel):
 })
 @app.post("/omni-widget")
 async def get_omni_widget(
-    search: str = Query(default="search"),
     data: str | dict = Body(...)
 ):
     if isinstance(data, str):
@@ -173,7 +172,6 @@ This example demonstrates how to add citation support to your Omni widget, which
 })
 @app.post("/omni-widget-citations")
 async def get_omni_widget_with_citations(
-    search: str = Query(default=""),
     data: str | dict = Body(...)
 ):
     if isinstance(data, str):
@@ -246,7 +244,6 @@ Unlike other widget types that use GET requests, the Omni widget uses POST reque
 ```python
 @app.post("/omni-widget")  # Note: POST, not GET
 async def omni_endpoint(
-    search: str = Query(default=""),  # Query parameters still available
     data: str | dict = Body(...)      # Main parameters in request body
 ):
     # Handle both string and dict formats
