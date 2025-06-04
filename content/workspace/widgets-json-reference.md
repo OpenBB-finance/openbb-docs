@@ -212,7 +212,68 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
       - **renderFnParams**
         _Type:_ `object`
         Required if `renderFn` is used. Specifies the parameters for the render function.
-        _Example:_ `{"actionType": "groupBy"}`
+        _Example:_ `{"actionType": "sendToAgent", "sendToAgent": {"markdown": "Analyze **{company}** data"}}`
+
+        - **actionType**
+          _Type:_ `string`
+          Specifies the action type for the render function.
+          _Example:_ `"sendToAgent"`
+          _Possible values:_ `"groupBy"`, `"sendToAgent"`
+
+        - **groupByParamName**
+          _Type:_ `string`
+          Group by parameter for the render function.
+          _Example:_ `"symbol"`
+
+        - **colorValueKey**
+          _Type:_ `string`
+          Specifies which field to use for determining the color when showing cell changes.
+          _Example:_ `"Analyst"`
+
+        - **hoverCardData**
+          _Type:_ `array of strings`
+          Specifies columns to show in the hover card.
+          _Example:_ `["column1", "column2"]`
+
+        - **colorRules**
+          _Type:_ `array of objects`
+          An array of rules for conditional coloring.
+          _Example:_ `[{"condition": "gt", "value": 50, "color": "green", "fill": true}]`
+
+        - **hoverCard**
+          _Type:_ `object`
+          Hover card configuration.
+          Contains the following keys:
+
+          - **cellField**
+            _Type:_ `string`
+            Field to display on table cell.
+            _Example:_ `"value"`
+
+          - **title**
+            _Type:_ `string`
+            Title for the hover card.
+            _Example:_ `"Analyst Details"`
+
+          - **markdown**
+            _Type:_ `string`
+            Markdown content for the hover card.
+            _Example:_ `"### {value}\n- **Description:** {description}"`
+
+        - **sendToAgent**
+          _Type:_ `object`
+          Configuration for sending data to an AI agent.
+          Contains the following keys:
+
+          - **markdown**
+            _Type:_ `string`
+            Markdown content to send to the agent, supports template variables from row data using curly braces.
+            _Example:_ `"Please analyze the company **{company}** with revenue of ${revenue}M"`
+
+          - **agentId**
+            _Type:_ `string`
+            (Optional) Specific agent ID to send the message to.
+            _Example:_ `"financial-analyst-agent"`
 
       - **width**
         _Type:_ `number`

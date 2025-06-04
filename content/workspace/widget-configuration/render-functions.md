@@ -31,10 +31,18 @@ In the `widgets.json` configuration, you can specify render functions to customi
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| **actionType** | `string` | Specifies the action type for the render function |
+| **actionType** | `string` | Specifies the action type for the render function (`"openUrl"`, `"openModal"`, `"openWidget"`, `"groupBy"`, `"sendToAgent"`) |
 | **colorValueKey** | `string` | Specifies which field to use for determining the color when showing cell changes |
 | **hoverCardData** | `array of strings` | Specifies columns to show in the hover card |
 | **colorRules** | `array of objects` | An array of rules for conditional coloring |
+| **sendToAgent** | `object` | Configuration for sending data to an AI agent |
+
+### Send to Agent Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **markdown** | `string` | Markdown content to send to the agent, supports template variables from row data |
+| **agentId** | `string` | (Optional) Specific agent ID to send the message to |
 
 ### Color Rules Parameters
 
@@ -42,7 +50,7 @@ In the `widgets.json` configuration, you can specify render functions to customi
 |-----------|------|-------------|---------|
 | **condition** | `string` | The condition for applying the color | `"eq"`, `"ne"`, `"gt"`, `"lt"`, `"gte"`, `"lte"`, `"between"` |
 | **value** | `number` | The value for the condition | - |
-| **range** | `object` | An object specifying `min` and `max` values for the condition | `{min: number, max: number}` |
+| **range** | `object` | An object specifying `min` and `max` values for the between condition | `{min: number, max: number}` |
 | **color** | `string` | The color to apply | Hex code or `"green"`, `"red"`, `"blue"` |
 | **fill** | `boolean` | Indicates if the color should fill the cell | `true`/`false` |
 
@@ -199,3 +207,47 @@ The hover card example would use the below data to display the hover card.
 ### Prefix and Suffix
 
 The `prefix` and `suffix` parameters can also be used in the `columnsDefs` to add a prefix or suffix to the column values. [See the widgets-json-reference](/content/workspace/widgets-json-reference.md) for more information.
+
+### Send to Agent
+
+The `sendToAgent` action type allows users to click on table cells to send contextual data directly to an AI agent for analysis. This is particularly useful for getting insights about specific data points or rows.
+
+```json
+{
+    ...
+    "columnsDefs": [
+        {
+            "field": "company",
+            "headerName": "Company",
+            "renderFn": "cellOnClick",
+            "renderFnParams": {
+                "actionType": "sendToAgent",
+                "sendToAgent": {
+                    "markdown": "Please analyze the company **{company}** with the following details:\n\n- **Revenue:** ${revenue}M\n- **Growth Rate:** {growth_rate}%\n- **Market Cap:** ${market_cap}B\n- **Sector:** {sector}\n\nProvide insights on the company's financial performance, growth prospects, and market position."
+                }
+            }
+        },
+        {
+            "field": "revenue",
+            "headerName": "Revenue (M)",
+            "renderFn": "cellOnClick",
+            "renderFnParams": {
+                "actionType": "sendToAgent",
+                "sendToAgent": {
+                    "markdown": "Analyze the revenue figure of **${revenue}M** for {company}. How does this compare to industry standards in the {sector} sector?",
+                    "agentId": "financial-analyst-agent"
+                }
+            }
+        }
+    ]
+}
+```
+
+#### Template Variables
+
+The `markdown` content in `sendToAgent` supports template variables using curly braces `{}`. You can reference any field from the row data:
+
+- `{company}` - References the company field value
+- `{revenue}` - References the revenue field value  
+- `{growth_rate}` - References the growth_rate field value
+- And so on for any field in your data
