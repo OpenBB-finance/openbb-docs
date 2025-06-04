@@ -45,6 +45,10 @@ class DataFormat(BaseModel):
     data_type: str
     parse_as: Literal["text", "table", "chart"]
 
+class ExtraCitation(BaseModel):
+    source_info: SourceInfo | None = Field(default=None)
+    details: List[dict] | None = Field(default=None)
+
 class OmniWidgetResponse(BaseModel):
     content: Any
     data_format: DataFormat
