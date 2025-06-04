@@ -16,6 +16,12 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 A widget that includes a text input parameter allowing users to enter custom text. The entered text is passed to the widget as a parameter.
 
+There are two types of text input parameters:
+
+Simple text input and a multiple options text input.
+
+## Simple Text Input
+
 <img className="pro-border-gradient" width="800" alt="Text Input Parameter Example" src="https://openbb-cms.directus.app/assets/b126ba58-ff29-4923-b124-1a0314ad4842.png" />
 
 ```python
@@ -41,3 +47,35 @@ def markdown_widget_with_text_input(text_box: str):
     return f"""# Text Input
 Entered text: {text_box}
 """ 
+```
+
+## Multiple Options Text Input
+
+<img className="pro-border-gradient" width="800" alt="Text Input Parameter Example" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/text-input-with-dd.png" />
+
+
+```python
+@register_widget({
+    "name": "Markdown Widget with Text Input",
+    "description": "A markdown widget with a text input parameter",
+    "endpoint": "markdown_widget_with_text_input",
+    "gridData": {"w": 16, "h": 6},
+    "type": "markdown",
+    "params": [
+        {
+            "paramName": "text_box",
+            "value": "var1,var2,var3",
+            "label": "Enter Text",
+            "description": "Type something to display",
+            "multiple": true,
+            "type": "text"
+        }
+    ]
+})
+@app.get("/markdown_widget_with_text_input")
+def markdown_widget_with_text_input(text_box: str):
+    """Returns a markdown widget with text input parameter"""
+    return f"""# Text Input
+Entered text: {text_box}
+""" 
+```
