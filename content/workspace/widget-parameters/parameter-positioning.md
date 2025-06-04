@@ -16,6 +16,8 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 By default, widget parameters are displayed in a single row at the top of the widget. However, you can control the positioning and layout of parameters by organizing them into multiple rows and changing their order within those rows.
 
+<img className="pro-border-gradient" width="1000" alt="Parameter Grouping Example" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/markdown-organized-params.png" />
+
 ## Row Positioning
 
 To position parameters in different rows, you can structure the `params` array as a nested array where each sub-array represents a row of parameters.
