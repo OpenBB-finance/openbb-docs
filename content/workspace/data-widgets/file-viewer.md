@@ -130,26 +130,66 @@ def get_pdf_widget_url():
 
 The main difference, in implementation, between multi and single file viewer is that the multi-file viewer requires two endpoints:
 
-1. An endpoint to get the list of available files.
-2. An endpoint to view the file content.
+1. An endpoint to get the list of available options.
+2. A POST endpoint to request the list of selected file names and receive a list of results.
+
+Model that we need:
+
+```python
+from typing import List, Literal
+from pydantic import BaseModel
+
+
+class FileOption(BaseModel):
+    label: str
+    value: str
+
+
+class FileRequest(BaseModel):
+    filenames: List[str]
+
+
+class DataFormat(BaseModel):
+    data_type: Literal["pdf"]
+    filename: str
+
+
+class DataContent(BaseModel):
+    content: str
+    data_format: DataFormat
+
+
+class DataUrl(BaseModel):
+    url: str
+    data_format: DataFormat
+
+
+class DataError(BaseModel):
+    error_type: Literal["not_found"]
+    content: str
+
+
+FileOptions = List[FileOption]
+FileResponse = List[DataContent | DataUrl | DataError]
+```
 
 For the endpoint with the list of available files, we are going to utilize:
 
 ```python
 
-# Sample PDF files data
-SAMPLE_PDFS = [
-    {
-        "name": "Sample",
-        "location": "sample.pdf",
+# PDF files data
+PDFS = {
+    "sample.pdf": {
+        "label": "Sample",
+        "filename": "Sample",
         "url": "https://openbb-assets.s3.us-east-1.amazonaws.com/testing/sample.pdf",
     },
-    {
-        "name": "Bitcoin Whitepaper", 
-        "location": "bitcoin.pdf",
+    "bitcoin.pdf": {
+        "label": "Bitcoin",
+        "filename": "bitcoin.pdf",
         "url": "https://openbb-assets.s3.us-east-1.amazonaws.com/testing/bitcoin.pdf",
     }
-]
+}
 
 # Sample PDF options endpoint
 # This is a simple endpoint to get the list of available PDFs
@@ -159,13 +199,10 @@ SAMPLE_PDFS = [
 async def get_pdf_options():
     """Get list of available PDFs"""
     return [
-        {
-            "label": pdf["name"],
-            "value": pdf["name"]
-        } for pdf in SAMPLE_PDFS
+        FileOption(label=pdf["label"], value=pdf["filename"])
+        for pdf in PDFS.values()
     ]
 ```
-
 
 ### Multi PDF Viewer with Base64
 
@@ -185,42 +222,55 @@ A widget that allows viewing multiple PDF files using base64 encoding. Includes 
     },
     "params": [
         {
-            "paramName": "pdf_name",
-            "description": "PDF file to display",
+            "paramName": "filenames",
+            "description": "PDF files to display",
             "type": "endpoint",
             "label": "PDF File",
             "optionsEndpoint": "/get_pdf_options",
             "show": False,
-            "value": ["Bitcoin Whitepaper"],
+            "value": ["bitcoin.pdf"],
             "multiSelect": True,
             "roles": ["fileSelector"]
         }
     ]
 })
-@app.get("/multi_pdf_base64")
-async def get_multi_pdf_base64(pdf_name: str):
+@app.post("/multi_pdf_base64")
+async def get_multi_pdf_base64(
+    request: FileRequest,
+) -> List[DataContent | DataUrl | DataError]:
     """Get PDF content in base64 format"""
-    pdf = next((p for p in SAMPLE_PDFS if p["name"] == pdf_name), None)
-    if not pdf:
-        raise HTTPException(status_code=404, detail="PDF not found")
-
-    file_path = ROOT_PATH / pdf["location"]
-    if not file_path.exists():
-        raise HTTPException(status_code=404, detail="PDF file not found")
-
-    with open(file_path, "rb") as file:
-        base64_content = base64.b64encode(file.read()).decode("utf-8")
-
-    return JSONResponse(
-        headers={"Content-Type": "application/json"},
-        content={
-            "data_format": {
-                "data_type": "pdf",
-                "filename": f"{pdf['name']}.pdf"
-            },
-            "content": base64_content,
-        },
-    )
+    files = []
+    for name in request.filenames:
+        if whitepaper := PDFS.get(name):
+            file_name_with_extension = whitepaper["filename"]
+            file_path = Path.cwd() / file_name_with_extension
+            if file_path.exists():
+                with open(file_path, "rb") as file:
+                    base64_content = base64.b64encode(file.read()).decode("utf-8")
+                    files.append(
+                        DataContent(
+                            content=base64_content,
+                            data_format=DataFormat(
+                                data_type="pdf",
+                                filename=file_name_with_extension,
+                            ),
+                        ).model_dump()
+                    )
+            else:
+                files.append(
+                    DataError(
+                        error_type="not_found",
+                        content="File not found"
+                    ).model_dump()
+                )
+        else:
+            files.append(
+                DataError(
+                    error_type="not_found",
+                    content=f"Whitepaper '{name}' not found"
+                ).model_dump()
+            )                    
+    return JSONResponse(headers={"Content-Type": "application/json"}, content=files)
 ```
 
 ### Multi PDF Viewer with URL
@@ -241,32 +291,51 @@ A widget that allows viewing multiple PDF files using direct URLs. More efficien
     },
     "params": [
         {
-            "paramName": "pdf_name",
-            "description": "PDF file to display",
+            "paramName": "filenames",
+            "description": "PDF files to display",
             "type": "endpoint",
             "label": "PDF File",
             "optionsEndpoint": "/get_pdf_options",
-            "value": ["Sample"],
+            "value": ["sample.pdf"],
             "show": False,
             "multiSelect": True,
             "roles": ["fileSelector"]
         }
     ]
 })
-@app.get("/multi_pdf_url")
-async def get_multi_pdf_url(pdf_name: str):
-    """Get PDF URL"""
-    pdf = next((p for p in SAMPLE_PDFS if p["name"] == pdf_name), None)
-    if not pdf:
-        raise HTTPException(status_code=404, detail="PDF not found")
-
-    return JSONResponse(
-        headers={"Content-Type": "application/json"},
-        content={
-            "data_format": {"data_type": "pdf", "filename": f"{pdf['name']}.pdf"},
-            "url": pdf["url"],
-        },
-    )
+@app.post("/multi_pdf_url")
+async def get_multi_pdf_url(
+    request: FileRequest,
+) -> List[DataContent | DataUrl | DataError]:
+    files = []
+    for name in request.filenames:
+        if whitepaper := PDFS.get(name):
+            file_name_with_extension = whitepaper["filename"]
+            if url := whitepaper.get("url"):
+                files.append(
+                    DataUrl(
+                        url=url,
+                        data_format=DataFormat(
+                            data_type="pdf",
+                            filename=file_name_with_extension
+                        ),
+                    ).model_dump()
+                )
+            else:
+                files.append(
+                    DataError(
+                        error_type="not_found",
+                        content="URL not found"
+                    ).model_dump()
+                )
+        else:
+            files.append(
+                DataError(
+                    error_type="not_found",
+                    content=f"Whitepaper '{name}' not found"
+                ).model_dump()
+            )
+    return JSONResponse(headers={"Content-Type": "application/json"}, content=files)    
 ```
 
 ### More complex example
@@ -277,104 +346,127 @@ This multi-file-viewer widget introduces a parameter called `optionsParams` whic
 
 In our case we want to pass the options in the `type` parameter to the `/random/whitepapers` endpoint to filter the list of whitepapers.
 
-
-
 ```python
 # You can find these files in the OpenBB GitHub repository in the backend-examples-for-openbb-workspace folder.
 # https://github.com/OpenBB-finance/backend-examples-for-openbb-workspace
 # Sample whitepaper data for the multi-file viewer widget
 # This is a list of dictionaries, each representing a whitepaper
 # Each whitepaper has the following properties:
-# - name: The name of the whitepaper
-# - location: The location of the whitepaper on the server
+# - label: The name of the whitepaper
+# - filename: The file name of the whitepaper
 # - url: The URL to the whitepaper
 # - category: The type of whitepaper
-whitepapers = [
-    {
-        "name": "Bitcoin",
-        "location": "bitcoin.pdf",
+WHITEPAPERS = {
+    "bitcoin.pdf": {
+        "label": "Bitcoin",
+        "filename": "bitcoin.pdf",
         "url": "https://openbb-assets.s3.us-east-1.amazonaws.com/testing/bitcoin.pdf",
         "category": "l1",
     },
-    {
-        "name": "Ethereum",
-        "location": "ethereum.pdf",
+    "ethereum.pdf": {
+        "label": "Ethereum",
+        "filename": "ethereum.pdf",
         "url": "https://openbb-assets.s3.us-east-1.amazonaws.com/testing/ethereum.pdf",
         "category": "l1",
     },
-    {
-        "name": "ChainLink",
-        "location": "chainlink.pdf",
+    "chainlink.pdf": {
+        "label": "ChainLink",
+        "filename": "chainlink.pdf",
         "url": "https://openbb-assets.s3.us-east-1.amazonaws.com/testing/chainlink.pdf",
         "category": "oracles",
     },
-    {
-        "name": "Solana",
-        "location": "solana.pdf",
+    "solana.pdf": {
+        "label": "Solana",
+        "filename": "solana.pdf",
         "url": "https://openbb-assets.s3.us-east-1.amazonaws.com/testing/solana.pdf",
         "category": "l1",
     },
-]
+}
 
 
-@app.get("/whitepapers")
-async def get_whitepapers(category: str = Query("all")):
+@app.get("/options")
+async def get_options(category: str = Query("all")):
     if category == "all":
-        return [{"label": wp["name"], "value": wp["name"]} for wp in whitepapers]
+        return [
+            FileOption(label=whitepaper["label"], value=whitepaper["filename"])
+            for whitepaper in WHITEPAPERS.values()
+        ]
     return [
-        {"label": wp["name"], "value": wp["name"]}
-        for wp in whitepapers
-        if wp["category"] == category
+        FileOption(label=whitepaper["label"], value=whitepaper["filename"])
+        for whitepaper in WHITEPAPERS.values()
+        if whitepaper["category"] == category
     ]
 
-
 # This is a simple example of how to return a base64 encoded pdf.
-@app.get("/whitepapers/view-base64")
-async def view_whitepaper_base64(whitepaper: str):
-    wp = next((wp for wp in whitepapers if wp["name"] == whitepaper), None)
-    if not wp:
-        raise HTTPException(status_code=404, detail="Whitepaper not found")
-
-    file_path = Path.cwd() / wp["location"]
-    if not file_path.exists():
-        raise HTTPException(status_code=404, detail="Whitepaper file not found")
-
-    with open(file_path, "rb") as file:
-        base64_content = base64.b64encode(file.read()).decode("utf-8")
-
-    return JSONResponse(
-        headers={"Content-Type": "application/json"},
-        content={
-            "data_format": {"data_type": "pdf", "filename": f"{wp['name']}.pdf"},
-            "content": base64_content,
-        },
-    )
+@app.post("/whitepapers/base64")
+async def get_whitepapers_base64(
+    request: FileRequest,
+) -> List[DataContent | DataUrl | DataError]:
+    files = []
+    for name in request.filenames:
+        if whitepaper := WHITEPAPERS.get(name):
+            file_name_with_extension = whitepaper["filename"]
+            file_path = Path.cwd() / file_name_with_extension
+            if file_path.exists():
+                with open(file_path, "rb") as file:
+                    base64_content = base64.b64encode(file.read()).decode("utf-8")
+                    files.append(
+                        DataContent(
+                            content=base64_content,
+                            data_format=DataFormat(
+                                data_type="pdf",
+                                filename=file_name_with_extension,
+                            ),
+                        ).model_dump()
+                    )
+            else:
+                files.append(
+                    DataError(
+                        error_type="not_found", content="File not found"
+                    ).model_dump()
+                )
+        else:
+            files.append(
+                DataError(
+                    error_type="not_found", content=f"Whitepaper '{name}' not found"
+                ).model_dump()
+            )
+    return JSONResponse(headers={"Content-Type": "application/json"}, content=files)
 
 
 # This is a simple example of how to return a url
 # if you are using this endpoint you will need to change the widgets.json file to use this endpoint as well.
 # You would want to return your own presigned url here for the file to load correctly or else the file will not load due to CORS policy.
-@app.get("/whitepapers/view-url")
-async def view_whitepaper_url(whitepaper: str):
-    wp = next((wp for wp in whitepapers if wp["name"] == whitepaper), None)
-    if not wp:
-        raise HTTPException(status_code=404, detail="Whitepaper not found")
-
-    # Fetch the presigned url and return it for the `url`.
-    # In the code below, we are simulating the presigned url by returning the url directly.
-    presigned_url = wp["url"]
-
-    file_path = Path.cwd() / wp["location"]
-    if not file_path.exists():
-        raise HTTPException(status_code=404, detail="Whitepaper file not found")
-
-    return JSONResponse(
-        headers={"Content-Type": "application/json"},
-        content={
-            "data_format": {"data_type": "pdf", "filename": f"{wp['name']}.pdf"},
-            "url": presigned_url,
-        },
-    )
+@app.post("/whitepapers/url")
+async def get_whitepapers_url(
+    request: FileRequest,
+) -> List[DataContent | DataUrl | DataError]:
+    files = []
+    for name in request.filenames:
+        if whitepaper := WHITEPAPERS.get(name):
+            file_name_with_extension = whitepaper["filename"]
+            if url := whitepaper.get("url"):
+                files.append(
+                    DataUrl(
+                        url=url,
+                        data_format=DataFormat(
+                            data_type="pdf", filename=file_name_with_extension
+                        ),
+                    ).model_dump()
+                )
+            else:
+                files.append(
+                    DataError(
+                        error_type="not_found", content="URL not found"
+                    ).model_dump()
+                )
+        else:
+            files.append(
+                DataError(
+                    error_type="not_found", content=f"Whitepaper '{name}' not found"
+                ).model_dump()
+            )
+    return JSONResponse(headers={"Content-Type": "application/json"}, content=files)
 ```
 
 The corresponding `widgets.json` would have the following format:
@@ -385,7 +477,7 @@ The corresponding `widgets.json` would have the following format:
     "type": "multi_file_viewer",
     "name": "Whitepapers",
     "description": "A collection of crypto whitepapers.",
-    "endpoint": "/whitepapers/view-base64",
+    "endpoint": "/whitepapers/base64",
     "gridData": {
       "w": 40,
       "h": 10
@@ -393,11 +485,11 @@ The corresponding `widgets.json` would have the following format:
     "params": [
       {
         "type": "endpoint",
-        "paramName": "whitepaper",
-        "value": ["Bitcoin"],
+        "paramName": "filenames",
+        "value": ["bitcoin.pdf"],
         "label": "Whitepaper",
         "description": "Whitepaper to display.",
-        "optionsEndpoint": "/whitepapers",
+        "optionsEndpoint": "/options",
         "show": false,
         "optionsParams": {
           "category": "$category"
@@ -444,5 +536,5 @@ Key configuration elements:
 - `type`: Set to "multi_file_viewer" to use this widget type
 - `endpoint`: The endpoint that will return the file content
 - `params`: Parameters for filtering and selecting files to display
-- The `whitepaper` parameter uses an endpoint to dynamically load options
+- The `filenames` parameter uses an endpoint to fetch a list of options
 - The `category` parameter allows filtering by category
