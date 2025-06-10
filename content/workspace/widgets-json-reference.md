@@ -161,6 +161,20 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
         _Example:_ `"column"`
         _Possible values:_ see [ChartView chart types](#chartview-chart-types)
 
+      - **cellRangeCols**
+        _Type:_ `object`
+        Defines the default column mappings for different chart types. Each key represents a chart type, and the value is an array of column names that specify the category and series columns for that chart type.
+        The array structure is: `[category, series1, series2, ...]` where:
+        - First element: The category column (x-axis)
+        - Remaining elements: The series columns (y-axis data)
+        _Example:_ 
+        ```json
+        "cellRangeCols": {
+          "line": ["ticker", "weight", "weight2"],
+          "column": ["date", "price", "volume"]
+        }
+        ```
+
       - **ignoreCellRange**
         _Type:_ `boolean`
         Ignores stored cell range for the chart.
@@ -443,7 +457,10 @@ Below is an example `widgets.json` with a single widget defined. This widget wil
                 "showAll": true,
                 "chartView": {
                     "enabled": true,
-                    "chartType": "column"
+                    "chartType": "column",
+                    "cellRangeCols" : {
+                        "line": ["ticker", "weight"]
+                    }
                 },
                 "columnsDefs": [
                     {
