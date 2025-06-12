@@ -128,16 +128,14 @@ def get_pdf_widget_url():
 
 ## Multi File
 
+<img className="pro-border-gradient" width="800" alt="Multi PDF Viewer with Base64 Example" src="https://openbb-cms.directus.app/assets/610ec2bc-2768-4d48-9f0b-0ad08a69b41e.png" />
+
 :::warning Deprecation Notice
-The GET-based approach for multi-file viewers is deprecated. Please use the new POST-based approach shown in the "New Implementation (Recommended)" section below.
+The GET-based approach for multi-file viewers is deprecated. Please use the new POST-based approach shown in the example below.
+The major change is the GET request to fetch the files is not a POST request that can take in and return a list of files.
 :::
 
-The multi-file viewer widget has evolved to support better batch processing and error handling. There are now two approaches:
-
-1. **Deprecated GET-based approach**: Uses individual GET requests for each file
-2. **New POST-based approach**: Uses a single POST request with batch processing
-
-### New Implementation (Recommended)
+### Implementation
 
 The new implementation uses POST requests to handle multiple files efficiently in a single request. This approach provides better performance and error handling.
 
@@ -299,106 +297,40 @@ async def get_whitepapers_url(
     return JSONResponse(headers={"Content-Type": "application/json"}, content=files)
 ```
 
-### Deprecated Implementation (GET-based)
 
-:::warning Deprecated
-This approach is deprecated and will be removed in future versions. Please migrate to the POST-based implementation above.
-:::
+The corresponding `widgets.json` would have the following format (for url just change the ```endpoint```):
 
-The main difference, in implementation, between multi and single file viewer is that the multi-file viewer requires two endpoints:
-
-1. An endpoint to get the list of available files.
-2. An endpoint to view the file content.
-
-For the endpoint with the list of available files, we are going to utilize:
-
-```python
-
-# Sample PDF files data
-SAMPLE_PDFS = [
-    {
-        "name": "Sample",
-        "location": "sample.pdf",
-        "url": "https://openbb-assets.s3.us-east-1.amazonaws.com/testing/sample.pdf",
-    },
-    {
-        "name": "Bitcoin Whitepaper", 
-        "location": "bitcoin.pdf",
-        "url": "https://openbb-assets.s3.us-east-1.amazonaws.com/testing/bitcoin.pdf",
-    }
-]
-
-# Sample PDF options endpoint
-# This is a simple endpoint to get the list of available PDFs
-# and return it in the JSON format. The reason why we need this endpoint is because the multi_file_viewer widget
-# needs to know the list of available PDFs to display and we pass this endpoint to the widget as the optionsEndpoint
-@app.get("/get_pdf_options")
-async def get_pdf_options():
-    """Get list of available PDFs"""
-    return [
-        {
-            "label": pdf["name"],
-            "value": pdf["name"]
-        } for pdf in SAMPLE_PDFS
-    ]
-```
-
-
-#### Multi PDF Viewer with Base64 (Deprecated)
-
-A widget that allows viewing multiple PDF files using base64 encoding. Includes a file selector parameter for choosing which PDFs to display.
-
-<img className="pro-border-gradient" width="800" alt="Multi PDF Viewer with Base64 Example" src="https://openbb-cms.directus.app/assets/610ec2bc-2768-4d48-9f0b-0ad08a69b41e.png" />
-
-```python
-@register_widget({
-    "name": "Multi PDF Viewer - Base64",
-    "description": "View multiple PDF files using base64 encoding",
+```json
+{
+  "whitepapers": {
     "type": "multi_file_viewer",
-    "endpoint": "multi_pdf_base64",
+    "name": "Whitepapers",
+    "description": "A collection of crypto whitepapers.",
+    "endpoint": "/whitepapers/base64",
     "gridData": {
-        "w": 20,
-        "h": 10
+      "w": 40,
+      "h": 10
     },
     "params": [
-        {
-            "paramName": "pdf_name",
-            "description": "PDF file to display",
-            "type": "endpoint",
-            "label": "PDF File",
-            "optionsEndpoint": "/get_pdf_options",
-            "show": False,
-            "value": ["Bitcoin Whitepaper"],
-            "multiSelect": True,
-            "roles": ["fileSelector"]
-        }
-    ]
-})
-@app.get("/multi_pdf_base64")
-async def get_multi_pdf_base64(pdf_name: str):
-    """Get PDF content in base64 format"""
-    pdf = next((p for p in SAMPLE_PDFS if p["name"] == pdf_name), None)
-    if not pdf:
-        raise HTTPException(status_code=404, detail="PDF not found")
-
-    file_path = ROOT_PATH / pdf["location"]
-    if not file_path.exists():
-        raise HTTPException(status_code=404, detail="PDF file not found")
-
-    with open(file_path, "rb") as file:
-        base64_content = base64.b64encode(file.read()).decode("utf-8")
-
-    return JSONResponse(
-        headers={"Content-Type": "application/json"},
-        content={
-            "data_format": {
-                "data_type": "pdf",
-                "filename": f"{pdf['name']}.pdf"
-            },
-            "content": base64_content,
+      {
+        "type": "endpoint",
+        "paramName": "whitepaper",
+        "value": ["bitcoin.pdf"],
+        "label": "Whitepaper",
+        "description": "Whitepaper to display.",
+        "optionsEndpoint": "/whitepapers/options",
+        "show": false,
+        "optionsParams": {
+          "category": "$category"
         },
-    )
+        "multiSelect": true,
+        "roles": ["fileSelector"]
+      }
+    ]
+  }
+}
 ```
+
 
 ### More complex example
 
@@ -428,9 +360,15 @@ WHITEPAPERS = {
     "ethereum.pdf": {
         "label": "Ethereum",
         "filename": "ethereum.pdf",
+    "ethereum.pdf": {
+        "label": "Ethereum",
+        "filename": "ethereum.pdf",
         "url": "https://openbb-assets.s3.us-east-1.amazonaws.com/testing/ethereum.pdf",
         "category": "l1",
     },
+    "chainlink.pdf": {
+        "label": "ChainLink",
+        "filename": "chainlink.pdf",
     "chainlink.pdf": {
         "label": "ChainLink",
         "filename": "chainlink.pdf",
@@ -440,9 +378,13 @@ WHITEPAPERS = {
     "solana.pdf": {
         "label": "Solana",
         "filename": "solana.pdf",
+    "solana.pdf": {
+        "label": "Solana",
+        "filename": "solana.pdf",
         "url": "https://openbb-assets.s3.us-east-1.amazonaws.com/testing/solana.pdf",
         "category": "l1",
     },
+}
 }
 
 
@@ -454,12 +396,18 @@ async def get_whitepaper_options(category: str = Query("all")) -> List[FileOptio
             FileOption(label=whitepaper["label"], value=whitepaper["filename"])
             for whitepaper in WHITEPAPERS.values()
         ]
+        return [
+            FileOption(label=whitepaper["label"], value=whitepaper["filename"])
+            for whitepaper in WHITEPAPERS.values()
+        ]
     return [
         FileOption(label=whitepaper["label"], value=whitepaper["filename"])
         for whitepaper in WHITEPAPERS.values()
         if whitepaper["category"] == category
+        FileOption(label=whitepaper["label"], value=whitepaper["filename"])
+        for whitepaper in WHITEPAPERS.values()
+        if whitepaper["category"] == category
     ]
-
 
 # This is an example of how to return a list of base64 encoded files using POST.
 @app.post("/whitepapers/view-base64")
@@ -537,7 +485,7 @@ The corresponding `widgets.json` would have the following format:
     "type": "multi_file_viewer",
     "name": "Whitepapers",
     "description": "A collection of crypto whitepapers.",
-    "endpoint": "/whitepapers/view-base64",
+    "endpoint": "/whitepapers/base64",
     "gridData": {
       "w": 40,
       "h": 10
@@ -592,49 +540,3 @@ The corresponding `widgets.json` would have the following format:
 ```
 
 More examples can be found on the github repository at https://github.com/OpenBB-finance/backends-for-openbb
-
-#### Multi PDF Viewer with URL (Deprecated)
-
-A widget that allows viewing multiple PDF files using direct URLs. More efficient for larger PDFs as it doesn't require base64 encoding.
-
-<img className="pro-border-gradient" width="800" alt="Multi PDF Viewer with URL Example" src="https://openbb-cms.directus.app/assets/8a269267-acd3-4c4f-93cb-0b64c4a87eda.png" />
-
-```python
-@register_widget({
-    "name": "Multi PDF Viewer - URL",
-    "description": "View multiple PDF files using URLs",
-    "type": "multi_file_viewer", 
-    "endpoint": "multi_pdf_url",
-    "gridData": {
-        "w": 20,
-        "h": 10
-    },
-    "params": [
-        {
-            "paramName": "pdf_name",
-            "description": "PDF file to display",
-            "type": "endpoint",
-            "label": "PDF File",
-            "optionsEndpoint": "/get_pdf_options",
-            "value": ["Sample"],
-            "show": False,
-            "multiSelect": True,
-            "roles": ["fileSelector"]
-        }
-    ]
-})
-@app.get("/multi_pdf_url")
-async def get_multi_pdf_url(pdf_name: str):
-    """Get PDF URL"""
-    pdf = next((p for p in SAMPLE_PDFS if p["name"] == pdf_name), None)
-    if not pdf:
-        raise HTTPException(status_code=404, detail="PDF not found")
-
-    return JSONResponse(
-        headers={"Content-Type": "application/json"},
-        content={
-            "data_format": {"data_type": "pdf", "filename": f"{pdf['name']}.pdf"},
-            "url": pdf["url"],
-        },
-    )
-```
