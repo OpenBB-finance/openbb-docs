@@ -100,6 +100,26 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
     _Example:_ `9`
     _Maximum value:_ `100`
 
+  - **minW**
+    _Type:_ `number`
+    Sets the minimum width of the widget in grid units.
+    _Example:_ `10`
+
+  - **minH**
+    _Type:_ `number`
+    Sets the minimum height of the widget in grid units.
+    _Example:_ `10`
+
+  - **maxW**
+    _Type:_ `number`
+    Sets the maximum width of the widget in grid units.
+    _Example:_ `40`
+
+  - **maxH**  
+    _Type:_ `number`
+    Sets the maximum height of the widget in grid units.
+    _Example:_ `100`
+
 - **data**
   _Type:_ object containing the following keys:
 
@@ -140,6 +160,20 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
         Specifies the type of chart to display.
         _Example:_ `"column"`
         _Possible values:_ see [ChartView chart types](#chartview-chart-types)
+
+      - **cellRangeCols**
+        _Type:_ `object`
+        Defines the default column mappings for different chart types. Each key represents a chart type, and the value is an array of column names that specify the category and series columns for that chart type.
+        The array structure is: `[category, series1, series2, ...]` where:
+        - First element: The category column (x-axis)
+        - Remaining elements: The series columns (y-axis data)
+        _Example:_ 
+        ```json
+        "cellRangeCols": {
+          "line": ["ticker", "weight", "weight2"],
+          "column": ["date", "price", "volume"]
+        }
+        ```
 
       - **ignoreCellRange**
         _Type:_ `boolean`
@@ -192,7 +226,68 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
       - **renderFnParams**
         _Type:_ `object`
         Required if `renderFn` is used. Specifies the parameters for the render function.
-        _Example:_ `{"actionType": "groupBy"}`
+        _Example:_ `{"actionType": "sendToAgent", "sendToAgent": {"markdown": "Analyze **{company}** data"}}`
+
+        - **actionType**
+          _Type:_ `string`
+          Specifies the action type for the render function.
+          _Example:_ `"sendToAgent"`
+          _Possible values:_ `"groupBy"`, `"sendToAgent"`
+
+        - **groupByParamName**
+          _Type:_ `string`
+          Group by parameter for the render function.
+          _Example:_ `"symbol"`
+
+        - **colorValueKey**
+          _Type:_ `string`
+          Specifies which field to use for determining the color when showing cell changes.
+          _Example:_ `"Analyst"`
+
+        - **hoverCardData**
+          _Type:_ `array of strings`
+          Specifies columns to show in the hover card.
+          _Example:_ `["column1", "column2"]`
+
+        - **colorRules**
+          _Type:_ `array of objects`
+          An array of rules for conditional coloring.
+          _Example:_ `[{"condition": "gt", "value": 50, "color": "green", "fill": true}]`
+
+        - **hoverCard**
+          _Type:_ `object`
+          Hover card configuration.
+          Contains the following keys:
+
+          - **cellField**
+            _Type:_ `string`
+            Field to display on table cell.
+            _Example:_ `"value"`
+
+          - **title**
+            _Type:_ `string`
+            Title for the hover card.
+            _Example:_ `"Analyst Details"`
+
+          - **markdown**
+            _Type:_ `string`
+            Markdown content for the hover card.
+            _Example:_ `"### {value}\n- **Description:** {description}"`
+
+        - **sendToAgent**
+          _Type:_ `object`
+          Configuration for sending data to an AI agent.
+          Contains the following keys:
+
+          - **markdown**
+            _Type:_ `string`
+            Markdown content to send to the agent, supports template variables from row data using curly braces.
+            _Example:_ `"Please analyze the company **{company}** with revenue of ${revenue}M"`
+
+          - **agentId**
+            _Type:_ `string`
+            (Optional) Specific agent ID to send the message to.
+            _Example:_ `"financial-analyst-agent"`
 
       - **width**
         _Type:_ `number`
@@ -225,6 +320,16 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
         Tooltip text for the column header.
         _Example:_ `"This is a tooltip"`
 
+      - **prefix**
+        _Type:_ `string`
+        Prefix to be added to the column header.
+        _Example:_ `"$"`
+
+      - **suffix**
+        _Type:_ `string`
+        Suffix to be added to the column header.
+        _Example:_ `"USD"`
+
 - **params**
   _Type:_ list of objects, each containing the following keys:
 
@@ -253,6 +358,11 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
     _Type:_ `string`
     Endpoint to fetch options for the parameter.
     _Example:_ `"v1/test/values"`
+
+  - **multiple**
+    _Type:_ `boolean`
+    If true, the parameter will be a dropdown with multiple selectable options that you can add add-hoc.
+    _Example:_ `true`
 
   - **optionsParams**
     _Type:_ `object`
@@ -297,6 +407,22 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
       The value for a dropdown option.
       _Example:_ `"option1"`
 
+    - **extraInfo**
+      _Type:_ `object`
+      Additional information to display for the dropdown option.
+      _Example:_ `{"description": "Technology Company", "rightOfDescription": "NASDAQ"}`
+
+      Contains the following keys:
+
+      - **description**
+        _Type:_ `string`
+        Additional descriptive text shown below the label.
+        _Example:_ `"Technology Company"`
+
+      - **rightOfDescription**
+        _Type:_ `string`
+        Text shown to the right of the description.
+        _Example:_ `"NASDAQ"`
 
 - **source**
   _Type:_ array of strings
@@ -331,7 +457,10 @@ Below is an example `widgets.json` with a single widget defined. This widget wil
                 "showAll": true,
                 "chartView": {
                     "enabled": true,
-                    "chartType": "column"
+                    "chartType": "column",
+                    "cellRangeCols" : {
+                        "line": ["ticker", "weight"]
+                    }
                 },
                 "columnsDefs": [
                     {
