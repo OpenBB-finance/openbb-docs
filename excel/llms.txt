@@ -9,7 +9,6 @@
 - [Installation](https://docs.openbb.co/excel/getting-started/installation): This page presents the general requirements and the steps to install the OpenBB Add-in for Excel. The OpenBB Add-in for Excel is available on Windows, Mac, and Excel on the web. It can be installed by an administrator or by individual users.
 - [Help](https://docs.openbb.co/excel/help): Help for OpenBB Add-in for Excel.
 - [Overview](https://docs.openbb.co/excel/index): OpenBB Add-in for Excel is a powerful tool that allows you to access financial data directly from Excel. With the OpenBB Add-in for Excel, you can easily create financial models and perform financial analysis without leaving your spreadsheet.
-- [BYOD](https://docs.openbb.co/excel/reference/byod): Bring Your Own Data: single widget, own backend or native integration setup in OpenBB Terminal Pro.
 - [CURRENCY](https://docs.openbb.co/excel/reference/currency/index): Menus
 - [HISTORICAL](https://docs.openbb.co/excel/reference/currency/price/historical): Learn how to use the `obb.equity.price.historical` function to load historical price data for a specific stock ticker. Find out about the available parameters and providers, as well as the structure of the returned data and the columns it contains.
 - [CURRENCY.PRICE](https://docs.openbb.co/excel/reference/currency/price/index): Commands

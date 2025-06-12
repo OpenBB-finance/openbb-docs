@@ -415,51 +415,6 @@ If interested in the Excel Add-in, reach out for an enterprise license to [hello
 
 ---
 
----
-title: BYOD
----
-
-<!-- markdownlint-disable MD033 -->
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="BYOD | OpenBB Add-in for Excel Docs" />
-
-Bring Your Own Data: single widget, own backend or native integration setup in OpenBB Terminal Pro.
-
-## Syntax
-
-```excel
-=OBB.BYOD(widget,[backend],[symbol],[date],[optional])
-```
-
-## Examples
-
-```excel
-=OBB.BYOD("widget_name")
-```
-
-```excel
-=OBB.BYOD("widget_name","backend_name")
-```
-
----
-
-## Parameters
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| **widget** | **Text** | **Name of the widget to get data for.** | **True** |
-| backend | Text | Name of the backend to use, required for widgets in custom backends or native integrations (e.g. database, snowflake). | False |
-| symbol | Text | Symbol to get data for, if applicable. | False |
-| date | Text | Date to get data for, if applicable. | False |
-| optional | Any | Optional parameters as (n rows by 2 columns) range selection or array constant (e.g. {"key1","value1"}; {"key2","value2"}). | False |
-
----
-
-
-
----
-
 # CURRENCY
 
 import ReferenceCard from '@site/src/components/General/NewReferenceCard';
@@ -571,9 +526,7 @@ import TabItem from '@theme/TabItem';
 | close | The close price. |
 | volume | The trading volume. |
 | vwap | Volume Weighted Average Price over the period. |
-| adj_close | The adjusted close price. |
-| change | Change in the price from the previous close. |
-| changeOverTime | Change in the price from the previous close, as a normalized percent. |
+| transactions | Number of transactions for the symbol in the time period. |
 </TabItem>
 </Tabs>
 
@@ -845,14 +798,14 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 ### Commands
 <ul className="grid grid-cols-1 gap-4 -ml-6">
 <ReferenceCard
-    title="COUNTRY_PROFILE"
-    description="Get a profile of country statistics and economic indicators."
-    url="economy/country_profile"
-    command
-/><ReferenceCard
     title="INDICATORS"
     description="Get economic indicators by country and indicator."
     url="economy/indicators"
+    command
+/><ReferenceCard
+    title="COUNTRY_PROFILE"
+    description="Get a profile of country statistics and economic indicators."
+    url="economy/country_profile"
     command
 />
 </ul>
@@ -1136,6 +1089,7 @@ import TabItem from '@theme/TabItem';
 | median | The EBITDA estimate median for the period. |
 | standard_deviation | The EBITDA estimate standard deviation for the period. |
 | number_of_analysts | Number of analysts providing estimates for the period. |
+| conensus_type | The type of estimate. |
 </TabItem>
 </Tabs>
 
@@ -1149,6 +1103,11 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 ### Commands
 <ul className="grid grid-cols-1 gap-4 -ml-6">
 <ReferenceCard
+    title="PRICE_TARGET"
+    description="Get analyst price targets by company."
+    url="estimates/price_target"
+    command
+/><ReferenceCard
     title="CONSENSUS"
     description="Get consensus price target and recommendation."
     url="estimates/consensus"
@@ -1157,11 +1116,6 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
     title="FORWARD_EBITDA"
     description="Get forward EBITDA estimates."
     url="estimates/forward_ebitda"
-    command
-/><ReferenceCard
-    title="PRICE_TARGET"
-    description="Get analyst price targets by company."
-    url="estimates/price_target"
     command
 />
 </ul>
@@ -1264,11 +1218,15 @@ import TabItem from '@theme/TabItem';
 | price_when_posted | Price when posted. |
 | rating_current | The analyst's rating for the company. |
 | rating_previous | Previous analyst rating for the company. |
-| action | Description of the change in rating from firm's last rating. |
-| news_url | News URL of the price target. |
-| news_title | News title of the price target. |
-| news_publisher | News publisher of the price target. |
-| news_base_url | News base URL of the price target. |
+| action_company | Description of the change in rating from firm's last rating.Note that all of these terms are precisely defined. |
+| action_pt | Description of the change in price target from firm's last price target. |
+| importance | Subjective Basis of How Important Event is to Market. 5 = High |
+| notes | Notes of the price target. |
+| analyst_id | Id of the analyst. |
+| url_news | URL for analyst ratings news articles for this ticker on Benzinga.com. |
+| url_analyst | URL for analyst ratings page for this ticker on Benzinga.com. |
+| id | Unique ID of this entry. |
+| updated | Last updated timestamp, UTC. |
 </TabItem>
 <TabItem value='fmp'>
 
@@ -1289,15 +1247,11 @@ import TabItem from '@theme/TabItem';
 | price_when_posted | Price when posted. |
 | rating_current | The analyst's rating for the company. |
 | rating_previous | Previous analyst rating for the company. |
-| action_company | Description of the change in rating from firm's last rating.Note that all of these terms are precisely defined. |
-| action_pt | Description of the change in price target from firm's last price target. |
-| importance | Subjective Basis of How Important Event is to Market. 5 = High |
-| notes | Notes of the price target. |
-| analyst_id | Id of the analyst. |
-| url_news | URL for analyst ratings news articles for this ticker on Benzinga.com. |
-| url_analyst | URL for analyst ratings page for this ticker on Benzinga.com. |
-| id | Unique ID of this entry. |
-| updated | Last updated timestamp, UTC. |
+| action | Description of the change in rating from firm's last rating. |
+| news_url | News URL of the price target. |
+| news_title | News title of the price target. |
+| news_publisher | News publisher of the price target. |
+| news_base_url | News base URL of the price target. |
 </TabItem>
 </Tabs>
 
@@ -1367,56 +1321,96 @@ import TabItem from '@theme/TabItem';
 | period_ending | The end date of the reporting period. |
 | fiscal_period | The fiscal period of the report. |
 | fiscal_year | The fiscal year of the fiscal period. |
-| filing_date | The date when the filing was made. |
-| accepted_date | The date and time when the filing was accepted. |
-| reported_currency | The currency in which the balance sheet was reported. |
+| reported_currency | The currency in which the balance sheet is reported. |
 | cash_and_cash_equivalents | Cash and cash equivalents. |
+| cash_and_due_from_banks | Cash and due from banks. |
+| restricted_cash | Restricted cash. |
 | short_term_investments | Short term investments. |
-| cash_and_short_term_investments | Cash and short term investments. |
-| net_receivables | Net receivables. |
-| inventory | Inventory. |
+| federal_funds_sold | Federal funds sold. |
+| accounts_receivable | Accounts receivable. |
+| note_and_lease_receivable | Note and lease receivable. (Vendor non-trade receivables) |
+| inventories | Net Inventories. |
+| customer_and_other_receivables | Customer and other receivables. |
+| interest_bearing_deposits_at_other_banks | Interest bearing deposits at other banks. |
+| time_deposits_placed_and_other_short_term_investments | Time deposits placed and other short term investments. |
+| trading_account_securities | Trading account securities. |
+| loans_and_leases | Loans and leases. |
+| allowance_for_loan_and_lease_losses | Allowance for loan and lease losses. |
+| current_deferred_refundable_income_taxes | Current deferred refundable income taxes. |
 | other_current_assets | Other current assets. |
+| loans_and_leases_net_of_allowance | Loans and leases net of allowance. |
+| accrued_investment_income | Accrued investment income. |
+| other_current_non_operating_assets | Other current non-operating assets. |
+| loans_held_for_sale | Loans held for sale. |
+| prepaid_expenses | Prepaid expenses. |
 | total_current_assets | Total current assets. |
-| plant_property_equipment_net | Plant property equipment net. |
-| goodwill | Goodwill. |
-| intangible_assets | Intangible assets. |
-| goodwill_and_intangible_assets | Goodwill and intangible assets. |
+| plant_property_equipment_gross | Plant property equipment gross. |
+| accumulated_depreciation | Accumulated depreciation. |
+| premises_and_equipment_net | Net premises and equipment. |
+| plant_property_equipment_net | Net plant property equipment. |
 | long_term_investments | Long term investments. |
-| tax_assets | Tax assets. |
-| other_non_current_assets | Other non current assets. |
-| non_current_assets | Total non current assets. |
+| mortgage_servicing_rights | Mortgage servicing rights. |
+| unearned_premiums_asset | Unearned premiums asset. |
+| non_current_note_lease_receivables | Non-current note lease receivables. |
+| deferred_acquisition_cost | Deferred acquisition cost. |
+| goodwill | Goodwill. |
+| separate_account_business_assets | Separate account business assets. |
+| non_current_deferred_refundable_income_taxes | Noncurrent deferred refundable income taxes. |
+| intangible_assets | Intangible assets. |
+| employee_benefit_assets | Employee benefit assets. |
 | other_assets | Other assets. |
+| other_non_current_operating_assets | Other noncurrent operating assets. |
+| other_non_current_non_operating_assets | Other noncurrent non-operating assets. |
+| interest_bearing_deposits | Interest bearing deposits. |
+| total_non_current_assets | Total noncurrent assets. |
 | total_assets | Total assets. |
-| accounts_payable | Accounts payable. |
+| non_interest_bearing_deposits | Non interest bearing deposits. |
+| federal_funds_purchased_and_securities_sold | Federal funds purchased and securities sold. |
+| bankers_acceptance_outstanding | Bankers acceptance outstanding. |
 | short_term_debt | Short term debt. |
-| tax_payables | Tax payables. |
+| accounts_payable | Accounts payable. |
 | current_deferred_revenue | Current deferred revenue. |
+| current_deferred_payable_income_tax_liabilities | Current deferred payable income tax liabilities. |
+| accrued_interest_payable | Accrued interest payable. |
+| accrued_expenses | Accrued expenses. |
+| other_short_term_payables | Other short term payables. |
+| customer_deposits | Customer deposits. |
+| dividends_payable | Dividends payable. |
+| claims_and_claim_expense | Claims and claim expense. |
+| future_policy_benefits | Future policy benefits. |
+| current_employee_benefit_liabilities | Current employee benefit liabilities. |
+| unearned_premiums_liability | Unearned premiums liability. |
+| other_taxes_payable | Other taxes payable. |
+| policy_holder_funds | Policy holder funds. |
 | other_current_liabilities | Other current liabilities. |
+| other_current_non_operating_liabilities | Other current non-operating liabilities. |
+| separate_account_business_liabilities | Separate account business liabilities. |
 | total_current_liabilities | Total current liabilities. |
 | long_term_debt | Long term debt. |
-| deferred_revenue_non_current | Non current deferred revenue. |
-| deferred_tax_liabilities_non_current | Deferred tax liabilities non current. |
-| other_non_current_liabilities | Other non current liabilities. |
-| total_non_current_liabilities | Total non current liabilities. |
-| other_liabilities | Other liabilities. |
+| other_long_term_liabilities | Other long term liabilities. |
+| non_current_deferred_revenue | Non-current deferred revenue. |
+| non_current_deferred_payable_income_tax_liabilities | Non-current deferred payable income tax liabilities. |
+| non_current_employee_benefit_liabilities | Non-current employee benefit liabilities. |
+| other_non_current_operating_liabilities | Other non-current operating liabilities. |
+| other_non_current_non_operating_liabilities | Other non-current, non-operating liabilities. |
+| total_non_current_liabilities | Total non-current liabilities. |
 | capital_lease_obligations | Capital lease obligations. |
+| asset_retirement_reserve_litigation_obligation | Asset retirement reserve litigation obligation. |
 | total_liabilities | Total liabilities. |
+| commitments_contingencies | Commitments contingencies. |
+| redeemable_non_controlling_interest | Redeemable non-controlling interest. |
 | preferred_stock | Preferred stock. |
 | common_stock | Common stock. |
 | retained_earnings | Retained earnings. |
-| accumulated_other_comprehensive_income | Accumulated other comprehensive income (loss). |
-| other_shareholders_equity | Other shareholders equity. |
-| other_total_shareholders_equity | Other total shareholders equity. |
+| treasury_stock | Treasury stock. |
+| accumulated_other_comprehensive_income | Accumulated other comprehensive income. |
+| participating_policy_holder_equity | Participating policy holder equity. |
+| other_equity_adjustments | Other equity adjustments. |
 | total_common_equity | Total common equity. |
-| total_equity_non_controlling_interests | Total equity non controlling interests. |
-| total_liabilities_and_shareholders_equity | Total liabilities and shareholders equity. |
-| minority_interest | Minority interest. |
-| total_liabilities_and_total_equity | Total liabilities and total equity. |
-| total_investments | Total investments. |
-| total_debt | Total debt. |
-| net_debt | Net debt. |
-| link | Link to the filing. |
-| final_link | Link to the filing document. |
+| total_preferred_common_equity | Total preferred common equity. |
+| non_controlling_interest | Non-controlling interest. |
+| total_equity_non_controlling_interests | Total equity non-controlling interests. |
+| total_liabilities_shareholders_equity | Total liabilities and shareholders equity. |
 </TabItem>
 </Tabs>
 
@@ -1522,19 +1516,41 @@ import TabItem from '@theme/TabItem';
 | period_ending | The end date of the reporting period. |
 | fiscal_period | The fiscal period of the report. |
 | fiscal_year | The fiscal year of the fiscal period. |
-| net_cash_flow_from_operating_activities_continuing | Net cash flow from operating activities continuing. |
-| net_cash_flow_from_operating_activities_discontinued | Net cash flow from operating activities discontinued. |
-| net_cash_flow_from_operating_activities | Net cash flow from operating activities. |
-| net_cash_flow_from_investing_activities_continuing | Net cash flow from investing activities continuing. |
-| net_cash_flow_from_investing_activities_discontinued | Net cash flow from investing activities discontinued. |
-| net_cash_flow_from_investing_activities | Net cash flow from investing activities. |
-| net_cash_flow_from_financing_activities_continuing | Net cash flow from financing activities continuing. |
-| net_cash_flow_from_financing_activities_discontinued | Net cash flow from financing activities discontinued. |
-| net_cash_flow_from_financing_activities | Net cash flow from financing activities. |
-| net_cash_flow_continuing | Net cash flow continuing. |
-| net_cash_flow_discontinued | Net cash flow discontinued. |
-| exchange_gains_losses | Exchange gains losses. |
-| net_cash_flow | Net cash flow. |
+| filing_date | The date of the filing. |
+| accepted_date | The date the filing was accepted. |
+| reported_currency | The currency in which the cash flow statement was reported. |
+| net_income | Net income. |
+| depreciation_and_amortization | Depreciation and amortization. |
+| deferred_income_tax | Deferred income tax. |
+| stock_based_compensation | Stock-based compensation. |
+| change_in_working_capital | Change in working capital. |
+| change_in_account_receivables | Change in account receivables. |
+| change_in_inventory | Change in inventory. |
+| change_in_account_payable | Change in account payable. |
+| change_in_other_working_capital | Change in other working capital. |
+| change_in_other_non_cash_items | Change in other non-cash items. |
+| net_cash_from_operating_activities | Net cash from operating activities. |
+| purchase_of_property_plant_and_equipment | Purchase of property, plant and equipment. |
+| acquisitions | Acquisitions. |
+| purchase_of_investment_securities | Purchase of investment securities. |
+| sale_and_maturity_of_investments | Sale and maturity of investments. |
+| other_investing_activities | Other investing activities. |
+| net_cash_from_investing_activities | Net cash from investing activities. |
+| repayment_of_debt | Repayment of debt. |
+| issuance_of_common_equity | Issuance of common equity. |
+| repurchase_of_common_equity | Repurchase of common equity. |
+| payment_of_dividends | Payment of dividends. |
+| other_financing_activities | Other financing activities. |
+| net_cash_from_financing_activities | Net cash from financing activities. |
+| effect_of_exchange_rate_changes_on_cash | Effect of exchange rate changes on cash. |
+| net_change_in_cash_and_equivalents | Net change in cash and equivalents. |
+| cash_at_beginning_of_period | Cash at beginning of period. |
+| cash_at_end_of_period | Cash at end of period. |
+| operating_cash_flow | Operating cash flow. |
+| capital_expenditure | Capital expenditure. |
+| free_cash_flow |  |
+| link | Link to the filing. |
+| final_link | Link to the filing document. |
 </TabItem>
 </Tabs>
 
@@ -1610,9 +1626,11 @@ import TabItem from '@theme/TabItem';
 | ---- | ----------- |
 | ex_dividend_date | The ex-dividend date - the date on which the stock begins trading without rights to the dividend. |
 | amount | The dividend amount per share. |
-| factor | factor by which to multiply stock prices before this date, in order to calculate historically-adjusted stock prices. |
-| currency | The currency in which the dividend is paid. |
-| split_ratio | The ratio of the stock split, if a stock split occurred. |
+| label | Label of the historical dividends. |
+| adj_dividend | Adjusted dividend of the historical dividends. |
+| record_date | Record date of the historical dividends. |
+| payment_date | Payment date of the historical dividends. |
+| declaration_date | Declaration date of the historical dividends. |
 </TabItem>
 </Tabs>
 
@@ -1707,12 +1725,19 @@ import TabItem from '@theme/TabItem';
 | report_type | Type of filing. |
 | filing_url | URL to the filing page. |
 | report_url | URL to the actual report. |
-| id | Intrinio ID of the filing. |
-| period_end_date | Ending date of the fiscal period for the filing. |
-| sec_unique_id | SEC unique ID of the filing. |
-| instance_url | URL for the XBRL filing for the report. |
-| industry_group | Industry group of the company. |
-| industry_category | Industry category of the company. |
+| reportDate | The date of the filing. |
+| act | The SEC Act number. |
+| items | The SEC Item numbers. |
+| primaryDocDescription | The description of the primary document. |
+| primaryDocument | The filename of the primary document. |
+| accessionNumber | The accession number. |
+| fileNumber | The file number. |
+| filmNumber | The film number. |
+| isInlineXBRL | Whether the filing is an inline XBRL filing. |
+| isXBRL | Whether the filing is an XBRL filing. |
+| size | The size of the filing. |
+| completeSubmissionUrl | The URL to the complete filing submission. |
+| filingDetailUrl | The URL to the filing details. |
 </TabItem>
 </Tabs>
 
@@ -1968,26 +1993,6 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 ### Commands
 <ul className="grid grid-cols-1 gap-4 -ml-6">
 <ReferenceCard
-    title="METRICS"
-    description="Get fundamental metrics for a given company."
-    url="fundamental/metrics"
-    command
-/><ReferenceCard
-    title="INCOME"
-    description="Get the income statement for a given company."
-    url="fundamental/income"
-    command
-/><ReferenceCard
-    title="RATIOS"
-    description="Get an extensive set of financial and accounting ratios for a given company over time."
-    url="fundamental/ratios"
-    command
-/><ReferenceCard
-    title="BALANCE"
-    description="Get the balance sheet for a given company."
-    url="fundamental/balance"
-    command
-/><ReferenceCard
     title="HISTORICAL_EPS"
     description="Get historical earnings per share data for a given company."
     url="fundamental/historical_eps"
@@ -1998,19 +2003,29 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
     url="fundamental/dividends"
     command
 /><ReferenceCard
-    title="MANAGEMENT"
-    description="Get executive management team data for a given company."
-    url="fundamental/management"
+    title="BALANCE"
+    description="Get the balance sheet for a given company."
+    url="fundamental/balance"
+    command
+/><ReferenceCard
+    title="RATIOS"
+    description="Get an extensive set of financial and accounting ratios for a given company over time."
+    url="fundamental/ratios"
+    command
+/><ReferenceCard
+    title="OVERVIEW"
+    description="Get company general business and stock data for a given company."
+    url="fundamental/overview"
+    command
+/><ReferenceCard
+    title="INCOME"
+    description="Get the income statement for a given company."
+    url="fundamental/income"
     command
 /><ReferenceCard
     title="REVENUE_PER_GEOGRAPHY"
     description="Get the revenue geographic breakdown for a given company over time."
     url="fundamental/revenue_per_geography"
-    command
-/><ReferenceCard
-    title="TRANSCRIPT"
-    description="Get earnings call transcripts for a given company."
-    url="fundamental/transcript"
     command
 /><ReferenceCard
     title="FILINGS"
@@ -2028,14 +2043,24 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
     url="fundamental/historical_splits"
     command
 /><ReferenceCard
+    title="METRICS"
+    description="Get fundamental metrics for a given company."
+    url="fundamental/metrics"
+    command
+/><ReferenceCard
     title="CASH"
     description="Get the cash flow statement for a given company."
     url="fundamental/cash"
     command
 /><ReferenceCard
-    title="OVERVIEW"
-    description="Get company general business and stock data for a given company."
-    url="fundamental/overview"
+    title="TRANSCRIPT"
+    description="Get earnings call transcripts for a given company."
+    url="fundamental/transcript"
+    command
+/><ReferenceCard
+    title="MANAGEMENT"
+    description="Get executive management team data for a given company."
+    url="fundamental/management"
     command
 />
 </ul>
@@ -2636,24 +2661,24 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 ### Menus
 <ul className="grid grid-cols-1 gap-4 -ml-6">
 <ReferenceCard
+    title="FUNDAMENTAL"
+    description="historical_eps, dividends, balance, ratios, overview, income, revenue_per_geography, filings,..."
+    url="equity/fundamental"
+/><ReferenceCard
+    title="PRICE"
+    description="quote, performance, historical"
+    url="equity/price"
+/><ReferenceCard
+    title="ESTIMATES"
+    description="price_target, consensus, forward_ebitda"
+    url="equity/estimates"
+/><ReferenceCard
     title="COMPARE"
     description="peers"
     url="equity/compare"
 /><ReferenceCard
-    title="FUNDAMENTAL"
-    description="metrics, income, ratios, balance, historical_eps, dividends, management, revenue_per_geography,..."
-    url="equity/fundamental"
-/><ReferenceCard
-    title="PRICE"
-    description="performance, historical, quote"
-    url="equity/price"
-/><ReferenceCard
-    title="ESTIMATES"
-    description="consensus, forward_ebitda, price_target"
-    url="equity/estimates"
-/><ReferenceCard
     title="OWNERSHIP"
-    description="share_statistics, institutional, major_holders, insider_trading"
+    description="insider_trading, share_statistics, major_holders, institutional"
     url="equity/ownership"
 />
 </ul>
@@ -2679,14 +2704,14 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 ### Commands
 <ul className="grid grid-cols-1 gap-4 -ml-6">
 <ReferenceCard
+    title="INSIDER_TRADING"
+    description="Get data about trading by a company's management team and board of directors."
+    url="ownership/insider_trading"
+    command
+/><ReferenceCard
     title="SHARE_STATISTICS"
     description="Get data about share float for a given company."
     url="ownership/share_statistics"
-    command
-/><ReferenceCard
-    title="INSTITUTIONAL"
-    description="Get data about institutional ownership for a given company over time."
-    url="ownership/institutional"
     command
 /><ReferenceCard
     title="MAJOR_HOLDERS"
@@ -2694,9 +2719,9 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
     url="ownership/major_holders"
     command
 /><ReferenceCard
-    title="INSIDER_TRADING"
-    description="Get data about trading by a company's management team and board of directors."
-    url="ownership/insider_trading"
+    title="INSTITUTIONAL"
+    description="Get data about institutional ownership for a given company over time."
+    url="ownership/institutional"
     command
 />
 </ul>
@@ -3035,6 +3060,8 @@ import TabItem from '@theme/TabItem';
 | float_shares | Number of shares available for trading by the general public. |
 | outstanding_shares | Total number of shares of a publicly-traded company. |
 | source | Source of the received data. |
+| adjweightedavebasicdilutedsharesos | Total number of shares of a publicly-traded company, adjusted for splits. |
+| public_float | Aggregate market value of the shares of a publicly-traded company. |
 </TabItem>
 </Tabs>
 
@@ -3121,7 +3148,11 @@ import TabItem from '@theme/TabItem';
 | close | The close price. |
 | volume | The trading volume. |
 | vwap | Volume Weighted Average Price over the period. |
-| n | Number of transactions for the symbol in the time period. |
+| symbol | Symbol of the equity. |
+| adj_close | The adjusted close price. |
+| unadjusted_volume | Unadjusted volume of the symbol. |
+| change | Change in the price from the previous close. |
+| changeOverTime | Change in the price from the previous close, as a normalized percent. |
 </TabItem>
 </Tabs>
 
@@ -3135,6 +3166,11 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 ### Commands
 <ul className="grid grid-cols-1 gap-4 -ml-6">
 <ReferenceCard
+    title="QUOTE"
+    description="Get the latest quote for a given stock. Quote includes price, volume, and other data."
+    url="price/quote"
+    command
+/><ReferenceCard
     title="PERFORMANCE"
     description="Get price performance data for a given stock. This includes price changes for different time..."
     url="price/performance"
@@ -3143,11 +3179,6 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
     title="HISTORICAL"
     description="Get historical price data for a given stock. This includes open, high, low, close, and volume."
     url="price/historical"
-    command
-/><ReferenceCard
-    title="QUOTE"
-    description="Get the latest quote for a given stock. Quote includes price, volume, and other data."
-    url="price/quote"
     command
 />
 </ul>
@@ -3766,7 +3797,6 @@ import TabItem from '@theme/TabItem';
 | low | The low price. |
 | close | The close price. |
 | volume | The trading volume. |
-| n | Number of transactions for the symbol in the time period. |
 </TabItem>
 </Tabs>
 
@@ -3780,7 +3810,7 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 <ul className="grid grid-cols-1 gap-4 -ml-6">
 <ReferenceCard
     title="CURRENCY"
-    description="snapshots, price, historical"
+    description="price, snapshots, historical"
     url="reference/currency"
 /><ReferenceCard
     title="DERIVATIVES"
@@ -3788,11 +3818,11 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
     url="reference/derivatives"
 /><ReferenceCard
     title="ECONOMY"
-    description="country_profile, indicators"
+    description="indicators, country_profile"
     url="reference/economy"
 /><ReferenceCard
     title="EQUITY"
-    description="compare, fundamental, price, estimates, ownership, profile, peers, metrics, income, ratios,..."
+    description="fundamental, price, estimates, compare, ownership, profile, historical_eps, dividends, balance,..."
     url="reference/equity"
 /><ReferenceCard
     title="FIXEDINCOME"
@@ -3804,12 +3834,8 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
     url="reference/index"
 /><ReferenceCard
     title="NEWS"
-    description="company, world"
+    description="world, company"
     url="reference/news"
-/><ReferenceCard
-    title="BYOD"
-    description=""
-    url="reference/byod"
 /><ReferenceCard
     title="GET"
     description=""
@@ -3936,16 +3962,21 @@ import TabItem from '@theme/TabItem';
 | date | The date of the data. Here it is the published date of the article. |
 | title | Title of the article. |
 | text | Text/body of the article. |
-| images | URL to the images of the news. |
+| images | Images associated with the article. |
 | url | URL to the article. |
 | symbols | Symbols associated with the article. |
+| source | The source of the news article. |
+| summary | The summary of the news article. |
+| topics | The topics related to the news article. |
+| word_count | The word count of the news article. |
+| business_relevance |  	How strongly correlated the news article is to the business |
+| sentiment | The sentiment of the news article - i.e, negative, positive. |
+| sentiment_confidence | The confidence score of the sentiment rating. |
+| language | The language of the news article. |
+| spam | Whether the news article is spam. |
+| copyright | The copyright notice of the news article. |
 | id | Article ID. |
-| author | Author of the article. |
-| teaser | Teaser of the news. |
-| channels | Channels associated with the news. |
-| stocks | Stocks associated with the news. |
-| tags | Tags associated with the news. |
-| updated | Updated date of the news. |
+| security | The Intrinio Security object. Contains the security details related to the news article. |
 </TabItem>
 </Tabs>
 
@@ -3959,14 +3990,14 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 ### Commands
 <ul className="grid grid-cols-1 gap-4 -ml-6">
 <ReferenceCard
-    title="COMPANY"
-    description="Company News. Get news for one or more companies."
-    url="news/company"
-    command
-/><ReferenceCard
     title="WORLD"
     description="World News. Global news data."
     url="news/world"
+    command
+/><ReferenceCard
+    title="COMPANY"
+    description="Company News. Get news for one or more companies."
+    url="news/company"
     command
 />
 </ul>
