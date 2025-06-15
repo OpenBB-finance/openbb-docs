@@ -1,6 +1,6 @@
 ---
-title: Add Extensions
-sidebar_position: 11
+title: Add extension from scratch
+sidebar_position: 1
 description: This guide outlines the process for adding a new endpoint to an existing data provider, that does not yet have a standard model.
 keywords:
   - OpenBB Platform
@@ -31,47 +31,44 @@ import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 This page will walk through adding a new router endpoint to an existing data provider, and how to go about creating a new standard model.
 
 To demonstrate, we will be extending the `openbb-currency` router. The objective is to add a snapshot of currencies relative to a base currency.
-The process will be very similar to adding a data provider to an existing endpoint - described on [this page](add_data_to_existing_endpoint) -
-only here, we need to create a new router function and standard model.
+
+The process will be very similar to adding a data provider to an existing endpoint - but here, we need to create a new standard model and add an extension.
 
 It's about the same amount of work, but effort should be placed in consideration of others inheriting from this model in the future.
 
 At a high level, the workflow is going to look something like:
 
-- With clear objectives, define the requirements for inputs and outputs of this function.
-- Create a standard model that will be suitable for any provider to inherit from.
-- Catalogue parameters and returned fields from the specific source of data, then build the models and fetcher.
-- Create a new router endpoint in the `openbb-currency` module.
-- Rebuild the Python interface and static assets.
-- Create unit tests.
-- Create integration tests.
-- Submit a pull request.
+1. With clear objectives, define the requirements for inputs and outputs of this function.
+2. Create a standard model that will be suitable for any provider to inherit from.
+3. Catalogue parameters and returned fields from the specific source of data, then build the models and fetcher.
+4. Create a new router endpoint in the `openbb-currency` module.
+5. Rebuild the Python interface and static assets.
+6. Create unit tests.
+7. Create integration tests.
+8. Submit a pull request.
 
-:::note
+## Getting started
 
-Before getting started, get a few housekeeping items in order:
+Clone the GitHub repo and navigate into the project's folder.
 
-- Clone the GitHub repo and navigate into the project's folder.
-  - If you have already done this, update your local branch:
+If you have already done this, update your local branch:
     - `git fetch`
     - `git pull origin develop`
-    - `git fetch`
-    - `git pull origin develop`
-- Install the OpenBB Platform in "editable" mode.
+
+Install the OpenBB Platform in "editable" mode.
   - `cd openbb_platform`
   - `python dev_install.py -e`
-- Rebuild the Python interface and static assets.
+
+Rebuild the Python interface and static assets.
   - `import openbb`
   - `openbb.build()`
-- Create a new local branch (pick a relevant name and use dashes for multiple words), always beginning with `feature/`.
+
+Create a new local branch (pick a relevant name and use dashes for multiple words), always beginning with `feature/`.
   - `git checkout -b feature/currency-snapshots`
 
-:::
+## Background information
 
-## Let's Get Started
-
-Currencies, as an asset class, have different data properties than securities.
-For this exercise, we're really only concerned about the differences within the market data we are working with.
+Currencies, as an asset class, have different data properties than securities. For this exercise, we're really only concerned about the differences within the market data we are working with.
 Things to keep in mind are:
 
 - Market trading hours are relative to three major centers: Hong Kong, London, New York.
@@ -83,9 +80,10 @@ Things to keep in mind are:
   - Similar to index benchmarking, but with a layer of interest rate expectations.
 - Gold and silver are typically included as, XAU and XAG, respectively.
 
-## How To Build A Standard Model
+## Build Standard Model
 
 The essence of a standard model is to be a shared resource with common ground between all sources.
+
 It should not be so specific that it is relevant only to one provider, and it needs to have defining characteristics that warrant its existence.
 
 Mandatory fields and parameters should be minimal, and names need to be consistent with similar ones across the OpenBB Platform.
@@ -126,7 +124,7 @@ The rule must be clearly communicated and each provider's output should be verif
 
 :::
 
-### Create File
+### Create a new file
 
 We're going to map this new endpoint in the interface to, `obb.currency.snapshots()`. We'll name the model accordingly, `CurrencySnapshots`, and create a file, `currency_snapshots.py`. The file should be created here:
 
@@ -135,8 +133,6 @@ We're going to map this new endpoint in the interface to, `obb.currency.snapshot
 ```
 
 The first line of the file should be a docstring, the second line should be empty, and the import statements follow.
-
-### Import Statements
 
 The code block below are the typical imports in a standard model file, modify to suit the specific requirements.
 
@@ -276,6 +272,53 @@ Combine the three code blocks above to make a complete standard model file, and 
 
 We're going to start with one provider, [FMP](https://site.financialmodelingprep.com/developer/docs#exchange-prices-quote), and this section will look a lot like the process outlined [here](add_data_to_existing_endpoint).
 
+### Create File For Provider
+
+We need to create a new file in the FMP provider extension. This will have the same name as our standard model.
+
+```console
+~/OpenBB/openbb_platform/providers/fmp/openbb_fmp/models/currency_snapshots.py
+```
+
+The first line in the file will always be a docstring, with the import statements beginning below an empty line.
+
+```python
+"""FMP Currency Snapshots Model."""
+
+# pylint: disable=unused-argument
+
+from datetime import datetime
+from typing import Any, Dict, List, Optional
+
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.currency_snapshots import (
+    CurrencySnapshotsData,
+    CurrencySnapshotsQueryParams,
+)
+from openbb_core.provider.utils.errors import EmptyDataError
+from openbb_core.provider.utils.helpers import amake_request
+from pandas import DataFrame, concat
+from pydantic import Field, field_validator
+```
+
+### Define QueryParams
+
+Here, we won't need to define any new parameters. All that's added is a URL to the endpoint's documentation,
+and then the `__json_schema_extra__` dictionary which will allow multiple base symbols to be accepted by this provider.
+
+```python
+class FMPCurrencySnapshotsQueryParams(CurrencySnapshotsQueryParams):
+    """
+    FMP Currency Snapshots Query.
+
+    Source: https://site.financialmodelingprep.com/developer/docs#exchange-prices-quote
+    """
+
+    __json_schema_extra__ = {"base": ["multiple_items_allowed"]}
+```
+
+### Define Data
+
 Sample output data from the source is pasted below, and we can see that there are some fields which don't have anything to do with currencies. Those will be dropped.
 
 ```json
@@ -307,56 +350,7 @@ Sample output data from the source is pasted below, and we can see that there ar
 ]
 ```
 
-### Create File For Provider
-
-We need to create a new file in the FMP provider extension. This will have the same name as our standard model.
-
-```console
-~/OpenBB/openbb_platform/providers/fmp/openbb_fmp/models/currency_snapshots.py
-```
-
-The first line in the file will always be a docstring, with the import statements beginning below an empty line.
-
-```python
-"""FMP Currency Snapshots Model."""
-
-# pylint: disable=unused-argument
-
-from datetime import datetime
-from typing import Any, Dict, List, Optional
-
-from openbb_core.provider.abstract.fetcher import Fetcher
-from openbb_core.provider.standard_models.currency_snapshots import (
-    CurrencySnapshotsData,
-    CurrencySnapshotsQueryParams,
-)
-from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_request
-from pandas import DataFrame, concat
-from pydantic import Field, field_validator
-```
-
-### Provider QueryParams
-
-Here, we won't need to define any new parameters. All that's added is a URL to the endpoint's documentation,
-and then the `__json_schema_extra__` dictionary which will allow multiple base symbols to be accepted by this provider.
-
-```python
-class FMPCurrencySnapshotsQueryParams(CurrencySnapshotsQueryParams):
-    """
-    FMP Currency Snapshots Query.
-
-    Source: https://site.financialmodelingprep.com/developer/docs#exchange-prices-quote
-    """
-
-    __json_schema_extra__ = {"base": ["multiple_items_allowed"]}
-```
-
-### Provider Data
-
 We'll then need to map the fields in the sample output data to the corresponding ones in the standard model, and then define the remaining.
-
-A validator is setup to convert the percentage to a normalized value (1% -> 0.01).
 
 ```python
 class FMPCurrencySnapshotsData(CurrencySnapshotsData):
@@ -402,7 +396,9 @@ class FMPCurrencySnapshotsData(CurrencySnapshotsData):
         return v / 100 if v is not None else None
 ```
 
-### Build The Fetcher
+A validator is setup to convert the percentage to a normalized value (1% -> 0.01).
+
+### Define Fetcher
 
 The Fetcher class will always have the same general construction, in this instance we will use the `transform_data` stage to parse and filter the returned data before validating the model on output.
 
@@ -505,7 +501,7 @@ Step 3 is now done.
 
 - [x] Catalogue parameters and returned fields from the specific source of data, then build the models and fetcher.
 
-## Create Router Endpoint
+## Add router endpoint to extension
 
 To use our new function, we need to create a router command. The currency router is located here:
 
@@ -514,6 +510,7 @@ To use our new function, we need to create a router command. The currency router
 ```
 
 It's as simple as copying and pasting the function above and modifying details to suit.
+
 The examples will be included in the docstring of the endpoint.
 
 ```python
@@ -542,7 +539,12 @@ async def snapshots(
     return await OBBject.from_query(Query(**locals()))
 ```
 
-Save the file, start a new Python session in a Terminal window, rebuild the app, and it's ready to use!
+Steps 4 is done:
+- [x] Create a new router endpoint in the `openbb-currency` module.
+
+### Smoke test
+
+Save the file, start a new Python session in a Terminal window, rebuild the app, and test it.
 
 ```console
 import openbb
@@ -552,10 +554,7 @@ openbb.build()
 exit()
 ```
 
-Steps 4 and 5 are done!
-
-- [x] Create a new router endpoint in the `openbb-currency` module.
-- [x] Rebuild the Python interface and static assets.
+Then run:
 
 ```python
 from openbb import obb
@@ -574,11 +573,15 @@ obb.currency.snapshots(base="xau,xag", counter_currencies=["usd", "gbp", "eur", 
 | XAG           | EUR              |     21.36 |   21.32 |   21.37 | 21.2087 |   1079 |         21 |   0.36 |      0.0171429 | 21.0393 | 21.4906 |     23.64 |    18.97 | 2024-03-04 05:30:10 |
 | XAG           | HKD              |   181.237 | 180.881 | 181.399 | 180.124 |   1596 |        180 |  1.237 |      0.0068722 | 178.342 | 181.815 |   204.411 |  157.209 | 2024-03-04 05:30:10 |
 
-## Write Tests
+
+Steps 5 is done:
+- [x] Create a new router endpoint in the `openbb-currency` module.
+
+## Tests
 
 We'll need to create a unit test for the FMP provider, and then integration tests for the Python interface and Fast API. It's as simple as creating a new router function was, copying and pasting.
 
-### Unit Test
+### Unit test for provider
 
 This is located in the `openbb-fmp` extension:
 
@@ -613,7 +616,10 @@ This will generate a new file:
 
 Check the file for any obvious errors, like a bad HTTP request status code.
 
-### Integration Tests
+Step 6 is done:
+- [x] Add integration tests.
+
+### Integration tests for router endpoint
 
 The Python interface and Fast API each require a new integration test. Again, emulate an existing test and make sure to declare all parameters available to each provider.
 
@@ -702,9 +708,7 @@ def test_currency_snapshots(params, obb):
 
 Now run `pytest` for both of these files.
 
-Step 6 & 7 are done.
-
-- [x] Add unit test.
+Step 7 is done:
 - [x] Add integration tests.
 
 ## Submit A Pull Request
@@ -716,7 +720,7 @@ git fetch
 git pull origin develop
 ```
 
-### Linters
+#### Linters
 
 Before opening a pull request, run the linters over all files that were touched.
 
@@ -739,7 +743,7 @@ Here are all the files we touched in this process:
 - `/OpenBB/openbb_platform/openbb/assets/module_map.json`
 - `/OpenBB/openbb_platform/openbb/package/currency.py`
 
-### Install Pre-Commit Hooks
+#### Install Pre-Commit Hooks
 
 The pre-commit hooks will run the testing suite locally before the commit is made. Install them from the root of the GitHub project folder, `OpenBB`.
 
@@ -747,7 +751,7 @@ The pre-commit hooks will run the testing suite locally before the commit is mad
 pre-commit install
 ```
 
-### Commit Changes
+#### Commit Changes
 
 Add all the files then commit the results to the local branch.
 
@@ -755,7 +759,7 @@ Add all the files then commit the results to the local branch.
 git commit -m "add obb.currency.snapshots() endpoint and create new standard model"
 ```
 
-### Push Changes
+#### Push Changes
 
 Assuming the commit is successful, push the changes to the remote branch.
 
@@ -763,7 +767,7 @@ Assuming the commit is successful, push the changes to the remote branch.
 git push --set-upstream origin feature/currency-snapshots
 ```
 
-### Open a Pull Request
+#### Open a Pull Request
 
 A pull request, in general, should have details on why the PR was created, what the changes are, what the impact is to existing users and infrastructure, how it was tested, and any other relevant information for reviewers and maintainers to consider.
 
@@ -797,8 +801,6 @@ A pull request, in general, should have details on why the PR was created, what 
 
 ![Screenshot 2024-03-04 at 10 05 00 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/7943d2ef-05b9-4a25-9d17-32618e2c57cf)
 
-### Enjoy
+With this final step, we have completed all the tasks outlined at the top of the page.
 
-With this final step, we have completed all the tasks outlined at the top of the page. Thank you for your contributions!
-
-This guide was based on a true story, see the pull request [here](https://github.com/OpenBB-finance/OpenBBTerminal/pull/6162)
+This guide was based on [this pull request](https://github.com/OpenBB-finance/OpenBBTerminal/pull/6162).

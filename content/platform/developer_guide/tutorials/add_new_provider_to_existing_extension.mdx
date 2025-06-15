@@ -28,38 +28,36 @@ import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
 This page will walk through adding a data provider to an existing endpoint, using a standard model. At a high level, the process will look something like:
 
-- Document the parameters and returned fields from the chosen data provider.
-- Find the existing standard model that is mapped to the router endpoint.
-- Identify any common parameters and fields to map.
-- Build the provider models and Fetcher class by inheriting from the standard models.
-- Map the new provider model to the router.
-- Rebuild the Python interface and static assets.
-- Add unit tests.
-- Add integration tests.
-- Submit a pull request.
+1. Document the parameters and returned fields from the chosen data provider.
+2. Find the existing standard model that is mapped to the router endpoint.
+3. Identify any common parameters and fields to map.
+4. Build the provider models and Fetcher class by inheriting from the standard models.
+5. Map the new provider model to the router.
+6. Rebuild the Python interface and static assets.
+7. Add unit tests.
+8. Add integration tests.
+9. Submit a pull request.
 
-:::note
+## Getting started
 
-Before getting started, get a few housekeeping items in order:
+Clone the GitHub repo and navigate into the project's folder.
 
-- Clone the GitHub repo and navigate into the project's folder.
-  - If you have already done this, update your local branch:
+If you have already done this, update your local branch:
     - `git fetch`
     - `git pull origin develop`
-- Install the OpenBB Platform in "editable" mode.
+
+Install the OpenBB Platform in "editable" mode.
   - `cd openbb_platform`
   - `python dev_install.py -e`
-- Rebuild the Python interface and static assets.
+
+Rebuild the Python interface and static assets.
   - `import openbb`
   - `openbb.build()`
-- Create a new local branch (pick a relevant name and use dashes for multiple words), always beginning with `feature/`.
+
+Create a new local branch (pick a relevant name and use dashes for multiple words), always beginning with `feature/`.
   - `git checkout -b feature/av-historical-eps`
 
-:::
-
-Let's get started!
-
-## Identify What's Being Added
+## Provider Endpoint
 
 For this example, we will be adding a user-requested data set from AlphaVantage, historical EPS. There is an existing [GitHub issue](https://github.com/OpenBB-finance/OpenBBTerminal/issues/6104) that we will link to in the submitted pull request. By linking the issue, it will be closed automatically on merge.
 
@@ -70,11 +68,9 @@ This API returns the annual and quarterly earnings (EPS) for the company of inte
 Quarterly data also includes analyst estimates and surprise metrics.
 :::
 
-### Provider API Documentation
-
 The documentation for this endpoint is, [https://www.alphavantage.co/documentation/#earnings](https://www.alphavantage.co/documentation/#earnings). This link will be added to the query parameters model docstring.
 
-### Base URL
+#### Base URL
 
 The base URL structure will be different for each provider, AlphaVantage identifies a `function` for each request as the first parameter.
 
@@ -82,7 +78,7 @@ The base URL structure will be different for each provider, AlphaVantage identif
 BASE_URL = "https://www.alphavantage.co/query?function=EARNINGS&"
 ```
 
-### Source Parameters
+#### Source Parameters
 
 Ignoring `function` and `api_key`, there is only one parameter for this function.
 
@@ -90,7 +86,7 @@ Ignoring `function` and `api_key`, there is only one parameter for this function
 symbol: str = "IBM"
 ```
 
-### Source Response
+#### Source Response
 
 They provide a sample JSON output, returning both annual and quarterly data in the same response.
 
@@ -128,9 +124,9 @@ They provide a sample JSON output, returning both annual and quarterly data in t
 }
 ```
 
-Here's what we know about the existing router endpoint and standard model:
+## OpenBB Endpoint
 
-### OpenBB Endpoint
+Here's what we know about the existing router endpoint.
 
 The function we are adding AlphaVantage as a source to is:
 
@@ -150,7 +146,11 @@ obb.equity.fundamental.historical_eps(symbol = "IBM", limit=5, provider="fmp")
 
 FMP is currently the only source for this endpoint. There are only two parameters, `symbol` and `limit`. The `limit` argument determines how many quarters to go back.
 
-### Standard Model
+Tasks done:
+
+- [x] Catalogue the parameters and returned fields from the chosen data provider.
+
+## Look for Standard Model
 
 The standard model is defined by, [HistoricalEps](https://docs.openbb.co/platform/data_models/HistoricalEps).
 
@@ -209,17 +209,16 @@ class HistoricalEpsData(Data):
 
 Now we know exactly what is going to be added, and how we should structure our query to fetch the data. This endpoint is not overly complex but harmonizing many input parameters, and the potentially endless data fields, across many providers is a challenge.
 
-So far, we have knocked out three of the outlined tasks.
+Tasks done:
 
-- [x] Catalogue the parameters and returned fields from the chosen data provider.
 - [x] Find the existing standard model that is mapped to the router endpoint.
 - [x] Identify common parameters and fields to map.
 
-Let's get on with the fun stuff and start building!
-
 ## Build the Provider Model
 
-### Create a New File
+We are going to build the provider-specific model.
+
+### Create a new file
 
 The first step is to create a new file in the provider extension folder:
 
@@ -230,8 +229,6 @@ The first step is to create a new file in the provider extension folder:
 We will call this file: `historical_eps.py`
 
 The first line of the file should be a docstring, followed by the import statements.
-
-### Import Statements
 
 Every model will be different, but most items below will be typical of nearly every data provider model. Variations will come from design choices for [HTTP requests](/platform/developer_guide/http_requests), or other requirements. We won't get into that here though.
 
@@ -259,7 +256,7 @@ from openbb_core.provider.utils.helpers import (
 from pydantic import Field, field_validator
 ```
 
-### Define The QueryParams
+### Define QueryParams
 
 Define a class that inherits from the standard model's `QueryParams` and put a link to the source documentation, if it exists, in the docstring.
 
@@ -287,7 +284,7 @@ class AlphaVantageHistoricalEpsQueryParams(HistoricalEpsQueryParams):
     )
 ```
 
-### Define The Data Model
+### Define Data
 
 In the sample output data from AlphaVantage, we know that there are two date fields; however, only 'fiscalDateEnding' is returned in both time intervals. This makes it the right candidate to map to the `date` field in the standard model.
 
@@ -350,9 +347,11 @@ class AlphaVantageHistoricalEpsData(HistoricalEpsData):
         return float(v) / 100
 ```
 
-### Build the Fetcher Class
+### Define the Fetcher
 
-Provider models have a total of three classes, `QueryParams`, `Data`, and `Fetcher`. The `Fetcher` is what gets executed by the router and divides the request into three distinct processes that can be serviced individually. We define it as a Transform-Extract-Transform (TET) process because we:
+Provider models have a total of three classes, `QueryParams`, `Data`, and `Fetcher`.
+
+The `Fetcher` is what gets executed by the router and divides the request into three distinct processes that can be serviced individually. We define it as a Transform-Extract-Transform (TET) process because we:
 
 - Transform the query from the user input into the specific format required for each provider.
 - Extract the data from the provider endpoint.
@@ -550,11 +549,11 @@ obb.equity.fundamental.historical_eps(symbol="AAPL,BAD_SYMBOL", provider="alpha_
 
 With confidence that the endpoint is working as expected, let's move on to unit and integration tests.
 
-## Add Tests
+## Create Tests
 
 Adding tests doesn't take a lot of effort. In most cases, copying and pasting from an existing one will do the job.
 
-### Unit Tests
+### Unit Tests for Provider
 
 Unit tests are located in the provider extension folder.
 
@@ -632,7 +631,7 @@ Step 7 is done.
 
 - [x] Add unit tests.
 
-### Integration Tests
+### Integration Tests for Extension
 
 Integration tests are even easier to add here, we just need to add a set of parameters for the new provider to the existing test. These tests are located in the `extensions` folder, where the routers are, under `integration`.
 
@@ -786,7 +785,7 @@ git fetch
 git pull origin develop
 ```
 
-### Linters
+#### Linters
 
 Before opening a pull request, run the linters over all files that were touched.
 
@@ -797,7 +796,7 @@ Before opening a pull request, run the linters over all files that were touched.
 
 Fix all items, and valid fixes for `pylint` can be disabling on that line. It won't always know what is contextually correct.
 
-### Add Files To Commit
+#### Add Files To Commit
 
 When preparing to commit changes to the local branch, only add the files directly touched. Here are all the files we touched in this process:
 
@@ -808,7 +807,7 @@ When preparing to commit changes to the local branch, only add the files directl
 - `openbb_platform/extensions/equity/integration/test_equity_api.py`
 - `openbb_platform/extensions/equity/integration/test_equity_python.py`
 
-### Install Pre-Commit Hooks
+#### Install Pre-Commit Hooks
 
 The pre-commit hooks will run the testing suite locally before the commit is made. Install them from the root of the GitHub project folder, `OpenBB`.
 
@@ -816,13 +815,13 @@ The pre-commit hooks will run the testing suite locally before the commit is mad
 pre-commit install
 ```
 
-### Commit Changes
+#### Commit Changes
 
 ```console
 git commit -m "adds AlphaVantage to historical_eps"
 ```
 
-### Push Changes
+#### Push Changes
 
 Assuming the commit is successful, push the changes to the remote branch.
 
@@ -830,7 +829,7 @@ Assuming the commit is successful, push the changes to the remote branch.
 git push --set-upstream origin feature/av-historical-eps
 ```
 
-### Open a Pull Request
+#### Open a Pull Request
 
 A pull request, in general, should have details on why the PR was created, what the changes are, what the impact is to existing users and infrastructure, how it was tested, and any other relevant information for reviewers and maintainers to consider.
 
@@ -856,8 +855,6 @@ A pull request, in general, should have details on why the PR was created, what 
 
    - Used a variety of symbols, single and lists, to check that the EmptyDataError and symbol warnings are catching correctly.
 
-### Enjoy
+With this final step, we have completed all the tasks outlined at the top of the page.
 
-With this final step, we have completed all the tasks outlined at the top of the page. Thank you for your contributions!
-
-This guide was based on a true story, see the pull request [here](https://github.com/OpenBB-finance/OpenBBTerminal/pull/6155)
+This guide was based on [this pull request](https://github.com/OpenBB-finance/OpenBBTerminal/pull/6155).
