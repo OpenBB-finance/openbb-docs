@@ -31,7 +31,7 @@ import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 This page will walk through adding a new data provider extension to the OpenBB Platform.
 
 <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-  <img src="https://openbb-cms.directus.app/assets/cc978d76-269b-4793-a0bf-fe892b757e89.png" alt="Extensions" width="60%" />
+  <img src="https://openbb-cms.directus.app/assets/cc978d76-269b-4793-a0bf-fe892b757e89.png" alt="Provider" width="60%" />
 </div>
 
 ## Getting Started
@@ -704,5 +704,13 @@ The folder `/records` will contain the recordings of the data seen when running 
 In order to get that you will need to run:
 
 ```sh
-pytest test_your_fetcher.py --record http
+pytest test_fmp_fetchers.py --record http --record-no-overwrite
 ```
+
+This will generate a file such as:
+
+```sh
+~/OpenBB/openbb_platform/providers/fmp/tests/record/test_fmp_currency_snapshots_fetcher.yaml
+```
+
+Make sure that it doesn't contain any of your API keys or credentials.
