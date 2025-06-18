@@ -16,6 +16,7 @@
 - [Markdown](https://docs.openbb.co/workspace/data-widgets/markdown): Learn how to create and customize markdown widgets in OpenBB Workspace, including basic markdown display and data-rich markdown with dynamic content integration.
 - [Metric](https://docs.openbb.co/workspace/data-widgets/metric): Learn how to integrate your own backend with OpenBB Workspace using the cookie-cutter or language-agnostic API approaches, with illustrative guides and principles for handling widget.json files, APIs, interfaces, Python, FastAPI, and more.
 - [Newsfeed](https://docs.openbb.co/workspace/data-widgets/newsfeed): Learn how to create a newsfeed widget for OpenBB Workspace that displays articles in a clean, organized format.
+- [Omni](https://docs.openbb.co/workspace/data-widgets/omni): Learn how to create versatile Omni widgets for OpenBB Workspace that can dynamically return different content types based on input parameters.
 - [Plotly Charts](https://docs.openbb.co/workspace/data-widgets/plotly-charts): Plotly Charts
 - [TradingView Charts](https://docs.openbb.co/workspace/data-widgets/tradingview-charts): How to implement TradingView charts in OpenBB using UDF (Universal Data Feed)
 - [Enterprise](https://docs.openbb.co/workspace/enterprise): Comprehensive guide to OpenBB Workspace Enterprise features, including role-based access control, security compliance, team collaboration, and on-premises deployment capabilities.
@@ -42,5 +43,6 @@
 - [Input Form](https://docs.openbb.co/workspace/widget-parameters/input-form): Input Form
 - [Number Input](https://docs.openbb.co/workspace/widget-parameters/number-input): Learn how to implement and use number input parameters in OpenBB Workspace widgets, including configuration options and example usage
 - [Parameter Grouping](https://docs.openbb.co/workspace/widget-parameters/parameter-grouping): Learn how to implement parameter grouping in OpenBB Workspace widgets, allowing multiple widgets to share and respond to the same parameter input
+- [Parameter Positioning](https://docs.openbb.co/workspace/widget-parameters/parameter-positioning): Learn how to control the layout and positioning of widget parameters in OpenBB Workspace, including row positioning and parameter ordering
 - [Text Input](https://docs.openbb.co/workspace/widget-parameters/text-input): Learn how to implement and use text input parameters in OpenBB Workspace widgets, including configuration options and example usage
 - [widgets.json Reference](https://docs.openbb.co/workspace/widgets-json-reference): Learn how to integrate your own backend with OpenBB Workspace using the cookie-cutter or language-agnostic API approaches, with illustrative guides and principles for handling widget.json files, APIs, interfaces, Python, FastAPI and more.
