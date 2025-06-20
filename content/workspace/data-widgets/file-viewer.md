@@ -128,234 +128,53 @@ def get_pdf_widget_url():
 
 ## Multi File
 
-The main difference, in implementation, between multi and single file viewer is that the multi-file viewer requires two endpoints:
+<img className="pro-border-gradient" width="800" alt="Multi PDF Viewer with Base64 Example" src="https://openbb-cms.directus.app/assets/610ec2bc-2768-4d48-9f0b-0ad08a69b41e.png" />
 
-1. An endpoint to get the list of available options.
-2. A POST endpoint to request the list of selected file names and receive a list of results.
+:::warning Deprecation Notice
+The GET-based approach for multi-file viewers is deprecated. Please use the new POST-based approach shown in the example below.
+The major change is the GET request to fetch the files is not a POST request that can take in and return a list of files.
+:::
 
-Model that we need:
+### Implementation
+
+The new implementation uses POST requests to handle multiple files efficiently in a single request. This approach provides better performance and error handling.
+
+#### Required Models
+
+First, define the necessary Pydantic models:
 
 ```python
-from typing import List, Literal
 from pydantic import BaseModel
-
+from typing import List, Union
 
 class FileOption(BaseModel):
     label: str
     value: str
 
-
 class FileRequest(BaseModel):
     filenames: List[str]
 
-
 class DataFormat(BaseModel):
-    data_type: Literal["pdf"]
+    data_type: str
     filename: str
-
 
 class DataContent(BaseModel):
     content: str
     data_format: DataFormat
 
-
 class DataUrl(BaseModel):
     url: str
     data_format: DataFormat
 
-
 class DataError(BaseModel):
-    error_type: Literal["not_found"]
+    error_type: str
     content: str
-
-
-FileOptions = List[FileOption]
-FileResponse = List[DataContent | DataUrl | DataError]
 ```
 
-For the endpoint with the list of available files, we are going to utilize:
+#### Sample Data
 
 ```python
-
-# PDF files data
-PDFS = {
-    "sample.pdf": {
-        "label": "Sample",
-        "filename": "Sample",
-        "url": "https://openbb-assets.s3.us-east-1.amazonaws.com/testing/sample.pdf",
-    },
-    "bitcoin.pdf": {
-        "label": "Bitcoin",
-        "filename": "bitcoin.pdf",
-        "url": "https://openbb-assets.s3.us-east-1.amazonaws.com/testing/bitcoin.pdf",
-    }
-}
-
-# Sample PDF options endpoint
-# This is a simple endpoint to get the list of available PDFs
-# and return it in the JSON format. The reason why we need this endpoint is because the multi_file_viewer widget
-# needs to know the list of available PDFs to display and we pass this endpoint to the widget as the optionsEndpoint
-@app.get("/get_pdf_options")
-async def get_pdf_options():
-    """Get list of available PDFs"""
-    return [
-        FileOption(label=pdf["label"], value=pdf["filename"])
-        for pdf in PDFS.values()
-    ]
-```
-
-### Multi PDF Viewer with Base64
-
-A widget that allows viewing multiple PDF files using base64 encoding. Includes a file selector parameter for choosing which PDFs to display.
-
-<img className="pro-border-gradient" width="800" alt="Multi PDF Viewer with Base64 Example" src="https://openbb-cms.directus.app/assets/610ec2bc-2768-4d48-9f0b-0ad08a69b41e.png" />
-
-```python
-@register_widget({
-    "name": "Multi PDF Viewer - Base64",
-    "description": "View multiple PDF files using base64 encoding",
-    "type": "multi_file_viewer",
-    "endpoint": "multi_pdf_base64",
-    "gridData": {
-        "w": 20,
-        "h": 10
-    },
-    "params": [
-        {
-            "paramName": "filenames",
-            "description": "PDF files to display",
-            "type": "endpoint",
-            "label": "PDF File",
-            "optionsEndpoint": "/get_pdf_options",
-            "show": False,
-            "value": ["bitcoin.pdf"],
-            "multiSelect": True,
-            "roles": ["fileSelector"]
-        }
-    ]
-})
-@app.post("/multi_pdf_base64")
-async def get_multi_pdf_base64(
-    request: FileRequest,
-) -> List[DataContent | DataUrl | DataError]:
-    """Get PDF content in base64 format"""
-    files = []
-    for name in request.filenames:
-        if whitepaper := PDFS.get(name):
-            file_name_with_extension = whitepaper["filename"]
-            file_path = Path.cwd() / file_name_with_extension
-            if file_path.exists():
-                with open(file_path, "rb") as file:
-                    base64_content = base64.b64encode(file.read()).decode("utf-8")
-                    files.append(
-                        DataContent(
-                            content=base64_content,
-                            data_format=DataFormat(
-                                data_type="pdf",
-                                filename=file_name_with_extension,
-                            ),
-                        ).model_dump()
-                    )
-            else:
-                files.append(
-                    DataError(
-                        error_type="not_found",
-                        content="File not found"
-                    ).model_dump()
-                )
-        else:
-            files.append(
-                DataError(
-                    error_type="not_found",
-                    content=f"Whitepaper '{name}' not found"
-                ).model_dump()
-            )                    
-    return JSONResponse(headers={"Content-Type": "application/json"}, content=files)
-```
-
-### Multi PDF Viewer with URL
-
-A widget that allows viewing multiple PDF files using direct URLs. More efficient for larger PDFs as it doesn't require base64 encoding.
-
-<img className="pro-border-gradient" width="800" alt="Multi PDF Viewer with URL Example" src="https://openbb-cms.directus.app/assets/8a269267-acd3-4c4f-93cb-0b64c4a87eda.png" />
-
-```python
-@register_widget({
-    "name": "Multi PDF Viewer - URL",
-    "description": "View multiple PDF files using URLs",
-    "type": "multi_file_viewer", 
-    "endpoint": "multi_pdf_url",
-    "gridData": {
-        "w": 20,
-        "h": 10
-    },
-    "params": [
-        {
-            "paramName": "filenames",
-            "description": "PDF files to display",
-            "type": "endpoint",
-            "label": "PDF File",
-            "optionsEndpoint": "/get_pdf_options",
-            "value": ["sample.pdf"],
-            "show": False,
-            "multiSelect": True,
-            "roles": ["fileSelector"]
-        }
-    ]
-})
-@app.post("/multi_pdf_url")
-async def get_multi_pdf_url(
-    request: FileRequest,
-) -> List[DataContent | DataUrl | DataError]:
-    files = []
-    for name in request.filenames:
-        if whitepaper := PDFS.get(name):
-            file_name_with_extension = whitepaper["filename"]
-            if url := whitepaper.get("url"):
-                files.append(
-                    DataUrl(
-                        url=url,
-                        data_format=DataFormat(
-                            data_type="pdf",
-                            filename=file_name_with_extension
-                        ),
-                    ).model_dump()
-                )
-            else:
-                files.append(
-                    DataError(
-                        error_type="not_found",
-                        content="URL not found"
-                    ).model_dump()
-                )
-        else:
-            files.append(
-                DataError(
-                    error_type="not_found",
-                    content=f"Whitepaper '{name}' not found"
-                ).model_dump()
-            )
-    return JSONResponse(headers={"Content-Type": "application/json"}, content=files)    
-```
-
-### More complex example
-
-<img className="pro-border-gradient" width="600" alt="multi-file-viewer" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/multi-file-viewer.png" />
-
-This multi-file-viewer widget introduces a parameter called `optionsParams` which allows you to pass the options to an endpoint from a different parameter. More information [here](../widget-parameters/dependent-dropdown.md).
-
-In our case we want to pass the options in the `type` parameter to the `/random/whitepapers` endpoint to filter the list of whitepapers.
-
-```python
-# You can find these files in the OpenBB GitHub repository in the backend-examples-for-openbb-workspace folder.
-# https://github.com/OpenBB-finance/backend-examples-for-openbb-workspace
-# Sample whitepaper data for the multi-file viewer widget
-# This is a list of dictionaries, each representing a whitepaper
-# Each whitepaper has the following properties:
-# - label: The name of the whitepaper
-# - filename: The file name of the whitepaper
-# - url: The URL to the whitepaper
-# - category: The type of whitepaper
+# Sample whitepaper data
 WHITEPAPERS = {
     "bitcoin.pdf": {
         "label": "Bitcoin",
@@ -370,7 +189,7 @@ WHITEPAPERS = {
         "category": "l1",
     },
     "chainlink.pdf": {
-        "label": "ChainLink",
+        "label": "Chainlink",
         "filename": "chainlink.pdf",
         "url": "https://openbb-assets.s3.us-east-1.amazonaws.com/testing/chainlink.pdf",
         "category": "oracles",
@@ -382,10 +201,14 @@ WHITEPAPERS = {
         "category": "l1",
     },
 }
+```
 
+#### Options Endpoint
 
+```python
 @app.get("/options")
-async def get_options(category: str = Query("all")):
+async def get_options(category: str = "all") -> List[FileOption]:
+    """Get list of available files filtered by category"""
     if category == "all":
         return [
             FileOption(label=whitepaper["label"], value=whitepaper["filename"])
@@ -396,17 +219,21 @@ async def get_options(category: str = Query("all")):
         for whitepaper in WHITEPAPERS.values()
         if whitepaper["category"] == category
     ]
+```
 
-# This is a simple example of how to return a base64 encoded pdf.
+#### Multi File Viewer with Base64 (POST)
+
+```python
 @app.post("/whitepapers/base64")
 async def get_whitepapers_base64(
     request: FileRequest,
-) -> List[DataContent | DataUrl | DataError]:
+) -> List[Union[DataContent, DataUrl, DataError]]:
+    """Get multiple PDF files in base64 format"""
     files = []
     for name in request.filenames:
         if whitepaper := WHITEPAPERS.get(name):
             file_name_with_extension = whitepaper["filename"]
-            file_path = Path.cwd() / file_name_with_extension
+            file_path = Path.cwd() / "whitepapers" / file_name_with_extension
             if file_path.exists():
                 with open(file_path, "rb") as file:
                     base64_content = base64.b64encode(file.read()).decode("utf-8")
@@ -432,15 +259,16 @@ async def get_whitepapers_base64(
                 ).model_dump()
             )
     return JSONResponse(headers={"Content-Type": "application/json"}, content=files)
+```
 
+#### Multi File Viewer with URL (POST)
 
-# This is a simple example of how to return a url
-# if you are using this endpoint you will need to change the widgets.json file to use this endpoint as well.
-# You would want to return your own presigned url here for the file to load correctly or else the file will not load due to CORS policy.
+```python
 @app.post("/whitepapers/url")
 async def get_whitepapers_url(
     request: FileRequest,
-) -> List[DataContent | DataUrl | DataError]:
+) -> List[Union[DataContent, DataUrl, DataError]]:
+    """Get multiple PDF files via URLs"""
     files = []
     for name in request.filenames:
         if whitepaper := WHITEPAPERS.get(name):
@@ -469,6 +297,186 @@ async def get_whitepapers_url(
     return JSONResponse(headers={"Content-Type": "application/json"}, content=files)
 ```
 
+
+The corresponding `widgets.json` would have the following format (for url just change the ```endpoint```):
+
+```json
+{
+  "whitepapers": {
+    "type": "multi_file_viewer",
+    "name": "Whitepapers",
+    "description": "A collection of crypto whitepapers.",
+    "endpoint": "/whitepapers/base64",
+    "gridData": {
+      "w": 40,
+      "h": 10
+    },
+    "params": [
+      {
+        "type": "endpoint",
+        "paramName": "whitepaper",
+        "value": ["bitcoin.pdf"],
+        "label": "Whitepaper",
+        "description": "Whitepaper to display.",
+        "optionsEndpoint": "/whitepapers/options",
+        "show": false,
+        "optionsParams": {
+          "category": "$category"
+        },
+        "multiSelect": true,
+        "roles": ["fileSelector"]
+      }
+    ]
+  }
+}
+```
+
+
+### More complex example
+
+<img className="pro-border-gradient" width="600" alt="multi-file-viewer" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/multi-file-viewer.png" />
+
+This multi-file-viewer widget introduces a parameter called `optionsParams` which allows you to pass the options to an endpoint from a different parameter. More information [here](../widget-parameters/dependent-dropdown.md).
+
+In our case we want to pass the options in the `type` parameter to the `/whitepapers/options` endpoint to filter the list of whitepapers.
+
+```python
+# You can find these files in the OpenBB GitHub repository in the backend-examples-for-openbb-workspace folder.
+# https://github.com/OpenBB-finance/backend-examples-for-openbb-workspace
+# Sample whitepaper data for the multi-file viewer widget
+# This is a dictionary where keys are filenames and values contain metadata
+# Each whitepaper has the following properties:
+# - label: The display name of the whitepaper
+# - filename: The filename of the whitepaper
+# - url: The URL to the whitepaper
+# - category: The category/type of whitepaper
+WHITEPAPERS = {
+    "bitcoin.pdf": {
+        "label": "Bitcoin",
+        "filename": "bitcoin.pdf",
+        "url": "https://openbb-assets.s3.us-east-1.amazonaws.com/testing/bitcoin.pdf",
+        "category": "l1",
+    },
+    "ethereum.pdf": {
+        "label": "Ethereum",
+        "filename": "ethereum.pdf",
+    "ethereum.pdf": {
+        "label": "Ethereum",
+        "filename": "ethereum.pdf",
+        "url": "https://openbb-assets.s3.us-east-1.amazonaws.com/testing/ethereum.pdf",
+        "category": "l1",
+    },
+    "chainlink.pdf": {
+        "label": "ChainLink",
+        "filename": "chainlink.pdf",
+    "chainlink.pdf": {
+        "label": "ChainLink",
+        "filename": "chainlink.pdf",
+        "url": "https://openbb-assets.s3.us-east-1.amazonaws.com/testing/chainlink.pdf",
+        "category": "oracles",
+    },
+    "solana.pdf": {
+        "label": "Solana",
+        "filename": "solana.pdf",
+    "solana.pdf": {
+        "label": "Solana",
+        "filename": "solana.pdf",
+        "url": "https://openbb-assets.s3.us-east-1.amazonaws.com/testing/solana.pdf",
+        "category": "l1",
+    },
+}
+}
+
+
+@app.get("/whitepapers/options")
+async def get_whitepaper_options(category: str = Query("all")) -> List[FileOption]:
+    """Get list of available whitepapers filtered by category"""
+    if category == "all":
+        return [
+            FileOption(label=whitepaper["label"], value=whitepaper["filename"])
+            for whitepaper in WHITEPAPERS.values()
+        ]
+        return [
+            FileOption(label=whitepaper["label"], value=whitepaper["filename"])
+            for whitepaper in WHITEPAPERS.values()
+        ]
+    return [
+        FileOption(label=whitepaper["label"], value=whitepaper["filename"])
+        for whitepaper in WHITEPAPERS.values()
+        if whitepaper["category"] == category
+        FileOption(label=whitepaper["label"], value=whitepaper["filename"])
+        for whitepaper in WHITEPAPERS.values()
+        if whitepaper["category"] == category
+    ]
+
+# This is an example of how to return a list of base64 encoded files using POST.
+@app.post("/whitepapers/view-base64")
+async def view_whitepapers_base64(
+    request: FileRequest,
+) -> List[Union[DataContent, DataUrl, DataError]]:
+    """Get multiple whitepapers in base64 format"""
+    files = []
+    for filename in request.filenames:
+        if whitepaper := WHITEPAPERS.get(filename):
+            file_path = Path.cwd() / whitepaper["filename"]
+            if file_path.exists():
+                with open(file_path, "rb") as file:
+                    base64_content = base64.b64encode(file.read()).decode("utf-8")
+                    files.append(
+                        DataContent(
+                            content=base64_content,
+                            data_format=DataFormat(
+                                data_type="pdf", filename=whitepaper["filename"]
+                            ),
+                        ).model_dump()
+                    )
+            else:
+                files.append(
+                    DataError(
+                        error_type="not_found", content="Whitepaper file not found"
+                    ).model_dump()
+                )
+        else:
+            files.append(
+                DataError(
+                    error_type="not_found", content=f"Whitepaper '{filename}' not found"
+                ).model_dump()
+            )
+    return JSONResponse(headers={"Content-Type": "application/json"}, content=files)
+
+
+# This is an example of how to return a list of URLs using POST.
+# You would want to return your own presigned URLs here for the files to load correctly 
+# or else the files will not load due to CORS policy.
+@app.post("/whitepapers/view-url")
+async def view_whitepapers_url(
+    request: FileRequest,
+) -> List[Union[DataContent, DataUrl, DataError]]:
+    """Get multiple whitepapers via URLs"""
+    files = []
+    for filename in request.filenames:
+        if whitepaper := WHITEPAPERS.get(filename):
+            # Fetch the presigned url and return it for the `url`.
+            # In the code below, we are simulating the presigned url by returning the url directly.
+            presigned_url = whitepaper["url"]
+            
+            files.append(
+                DataUrl(
+                    url=presigned_url,
+                    data_format=DataFormat(
+                        data_type="pdf", filename=whitepaper["filename"]
+                    ),
+                ).model_dump()
+            )
+        else:
+            files.append(
+                DataError(
+                    error_type="not_found", content=f"Whitepaper '{filename}' not found"
+                ).model_dump()
+            )
+    return JSONResponse(headers={"Content-Type": "application/json"}, content=files)
+```
+
 The corresponding `widgets.json` would have the following format:
 
 ```json
@@ -485,11 +493,11 @@ The corresponding `widgets.json` would have the following format:
     "params": [
       {
         "type": "endpoint",
-        "paramName": "filenames",
+        "paramName": "whitepaper",
         "value": ["bitcoin.pdf"],
         "label": "Whitepaper",
         "description": "Whitepaper to display.",
-        "optionsEndpoint": "/options",
+        "optionsEndpoint": "/whitepapers/options",
         "show": false,
         "optionsParams": {
           "category": "$category"
@@ -531,10 +539,4 @@ The corresponding `widgets.json` would have the following format:
 }
 ```
 
-Key configuration elements:
-
-- `type`: Set to "multi_file_viewer" to use this widget type
-- `endpoint`: The endpoint that will return the file content
-- `params`: Parameters for filtering and selecting files to display
-- The `filenames` parameter uses an endpoint to fetch a list of options
-- The `category` parameter allows filtering by category
+More examples can be found on the github repository at https://github.com/OpenBB-finance/backends-for-openbb
