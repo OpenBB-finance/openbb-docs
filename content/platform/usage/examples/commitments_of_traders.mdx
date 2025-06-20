@@ -1,0 +1,711 @@
+---
+title: Commitments of Traders
+sidebar_position: 22
+description: This page provides details on the accessing Commitments of Traders reports with the OpenBB Platform, published by the CFTC weekly. There are explanations of the query parameters and data response, as well as examples for use.
+keywords:
+- futures
+- commodities
+- index
+- indices
+- positioning
+- dealer
+- hedge
+- open interest
+- CFTC
+- commitments of traders
+- COT
+- Treasury Note
+- currency
+- currencies
+- equity
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Commitments of Traders - User Guides | OpenBB Platform Docs" />
+
+Commitments of Traders (COT) reports are published on Fridays, by the [CFTC](https://www.cftc.gov/MarketReports/CommitmentsofTraders/index.htm). CFTC COT reports provide a breakdown of each Tuesday’s open interest for futures and options on futures markets in which 20 or more traders hold positions equal to or above the reporting levels established by the CFTC.
+
+## Regulators Module
+
+The `obb.regulators` module contains data published by industry regulators and agencies. The data will not be specific to any particular asset class, and the information is available to the general public. The COT reports have two end points:
+
+- `obb.regulators.cftc.cot()`
+- `obb.regulators.cfc.cot_search()`
+
+The `openbb-cftc` extension (included with `pip install openbb`) provides programmatic access to the complete history of reports, dating as far back as 1995.
+
+## `cot_search()`
+
+<details>
+<summary mdxType="summary">COT Search</summary>
+
+The `obb.regulators.cftc.cot_search()` endpoint is a curated list of current reports. The list can be searched by partial match - i.e., "resources" - and they are classified under categories and subcategories. Get the whole list with an empty query.
+
+Indices - S&P 500, Nasdaq 100, Dow Jones Industrial Average, Russell 1000 & 2000, VIX, Bloomberg Commodity Index, etc. - can be found with the keyword "index".
+
+The example below shows all the S&P reports.
+
+```python
+reports = obb.regulators.cftc.cot_search("s&p").to_df()
+```
+
+| code   | name                           | commodity_name                | category              | subcategory   |
+|:-------|:-------------------------------|:------------------------------|:----------------------|:--------------|
+| 43874A | S&P 500 ANNUAL DIVIDEND INDEX  | DIVIDEND INDICES              | FINANCIAL INSTRUMENTS | STOCK INDICES |
+| 43874Q | S&P 500 QUARTERLY DIVIDEND IND | DIVIDEND INDICES              | FINANCIAL INSTRUMENTS | STOCK INDICES |
+| 13874I | E-MINI S&P TECHNOLOGY INDEX    | S&P BROAD BASED STOCK INDICES | FINANCIAL INSTRUMENTS | STOCK INDICES |
+| 138748 | E-MINI S&P CONSU STAPLES INDEX | S&P BROAD BASED STOCK INDICES | FINANCIAL INSTRUMENTS | STOCK INDICES |
+| 13874A | E-MINI S&P 500                 | S&P BROAD BASED STOCK INDICES | FINANCIAL INSTRUMENTS | STOCK INDICES |
+| 138749 | E-MINI S&P ENERGY INDEX        | S&P BROAD BASED STOCK INDICES | FINANCIAL INSTRUMENTS | STOCK INDICES |
+| 13874W | ADJUSTED INT RATE S&P 500 TOTL | S&P BROAD BASED STOCK INDICES | FINANCIAL INSTRUMENTS | STOCK INDICES |
+| 13874+ | S&P 500 Consolidated           | S&P BROAD BASED STOCK INDICES | FINANCIAL INSTRUMENTS | STOCK INDICES |
+| 13874C | E-MINI S&P FINANCIAL INDEX     | S&P BROAD BASED STOCK INDICES | FINANCIAL INSTRUMENTS | STOCK INDICES |
+| 33874A | E-MINI S&P 400 STOCK INDEX     | S&P BROAD BASED STOCK INDICES | FINANCIAL INSTRUMENTS | STOCK INDICES |
+| 13874U | MICRO E-MINI S&P 500 INDEX     | S&P BROAD BASED STOCK INDICES | FINANCIAL INSTRUMENTS | STOCK INDICES |
+| 13874J | E-MINI S&P UTILITIES INDEX     | S&P BROAD BASED STOCK INDICES | FINANCIAL INSTRUMENTS | STOCK INDICES |
+| 13874R | E-MINI S&P REAL ESTATE INDEX   | S&P BROAD BASED STOCK INDICES | FINANCIAL INSTRUMENTS | STOCK INDICES |
+
+</details>
+
+## `cot()`
+
+<details>
+<summary mdxType="summary">Overview</summary>
+
+The weekly reports are returned as a flat timeseries. The `id` parameter accepts a flexible input, using the "code" provides an exact match returning the complete history. See the Parameters section below for more information on entering symbols.
+
+```python
+sp = obb.regulators.cftc.cot("13874+")
+
+# Display the change in open interest from the previous week, limiting to the last 5 reports.
+sp.to_df().T.filter(like="change_in", axis=0).iloc[:,-5:]
+```
+
+|                             |   2024-10-15 |   2024-10-22 |   2024-10-29 |   2024-11-05 |   2024-11-12 |
+|:----------------------------|-------------:|-------------:|-------------:|-------------:|-------------:|
+| change_in_open_interest_all |        88416 |       -95881 |        35345 |       -28290 |       242306 |
+| change_in_noncomm_long_all  |        22828 |        11329 |         7547 |        11680 |         -900 |
+| change_in_noncomm_short_all |        -6723 |         3364 |       -43078 |       -44221 |        82742 |
+| change_in_noncomm_spead_all |        29860 |       -46828 |        48684 |       -12005 |        83965 |
+| change_in_comm_long_all     |        23939 |       -48592 |       -30357 |       -28563 |       140423 |
+| change_in_comm_short_all    |        65620 |       -47838 |        38124 |        29856 |        76404 |
+| change_in_tot_rept_long_all |        76627 |       -84092 |        25874 |       -28888 |       223488 |
+| change_in_tot_rept_short    |        88757 |       -91302 |        43730 |       -26370 |       243111 |
+| change_in_nonrept_long_all  |        11789 |       -11790 |         9471 |          598 |        18818 |
+| change_in_nonrept_short_all |         -341 |        -4579 |        -8385 |        -1921 |         -805 |
+
+</details>
+
+<details>
+<summary mdxType="summary">Parameters</summary>
+
+The parameters here will alter the type of report returned. Use `start_date` and `end_date` to request specific historical windows.
+
+<details>
+<summary mdxType="summary">`id: str`</summary>
+
+The `id` parameter will accept different inputs:
+
+- A "code" - i.e, "13874A" - which can be mapped using `cot_search()`, and can be any valid CFTC market contract code. This should be an exact match.
+- A commodity name, category, or subcategory - i.e, "precious metals" for palladium, platinum, silver, and gold.
+- A partial name match - i.e, "russell", "nasdaq", "japanese yen"
+- "all" - returns all reports associated with the `report_type`, for the most recent date.
+
+</details>
+
+<details>
+<summary mdxType="summary">`futures_only: bool = False`</summary>
+
+When `True`, returns the futures-only report. Default is False, for the combined (futures and options) report.
+
+</details>
+
+<details>
+<summary mdxType="summary">`report_type: Literal["legacy", "disaggregated", "financial", "supplemental"] = "legacy"`</summary>
+
+The Legacy report is broken down by exchange with reported open interest by three trader classifications:
+- commercial
+- non-commercial
+- non-reportable
+
+Disaggregated reports are broken down by Agriculture and Natural Resource contracts, groups reportable open interest positions into four classifications:
+- Producer/Merchant
+- Swap Dealers
+- Managed Money
+- Other Reportables
+
+The Traders in Financial Futures (TFF) report includes financial contracts, and the reported open interest has five classifications:
+- Dealer
+- Asset Manager
+- Leveraged Money
+- Other Reportables
+- Non-Reportables
+
+<details>
+<summary mdxType="summary">Supplemental Explanation</summary>
+
+:::info
+Excerpt below is from the explanatory notes on the CFTC's [website](https://www.cftc.gov/MarketReports/CommitmentsofTraders/ExplanatoryNotes/index.htm)
+:::
+
+Based on the information contained in the report of futures-and-options combined in the short format, the Supplemental report shows an additional category of “Index Traders” in selected agricultural markets. These traders are drawn from the noncommercial and commercial categories. The noncommercial category includes positions of managed funds, pension funds, and other investors that are generally seeking exposure to a broad index of commodity prices as an asset class in an unleveraged and passively-managed manner. The commercial category includes positions for entities whose trading predominantly reflects hedging of over-the-counter transactions involving commodity indices—for example, a swap dealer holding long futures positions to hedge a short commodity index exposure opposite institutional traders, such as pension funds.
+
+All of these traders—whether coming from the noncommercial or commercial categories—are generally replicating a commodity index by establishing long futures positions in the component markets and then rolling those positions forward from future to future using a fixed methodology. Some traders assigned to the Index Traders category are engaged in other futures activity that could not be disaggregated. As a result, the Index Traders category, which is typically made up of traders with long-only futures positions replicating an index, will include some long and short positions where traders have multi-dimensional trading activities, the preponderance of which is index trading. Likewise, the Index Traders category will not include some traders who are engaged in index trading, but for whom it does not represent a substantial part of their overall trading activity.
+
+</details>
+
+</details>
+
+</details>
+
+<details>
+<summary mdxType="summary">Data Response</summary>
+
+:::info
+The number of fields returned will vary greatly (up to nearly 200) depending on the type of report and CFTC market contract. Numbers are generally categorized as below, in brackets is a key for isolating each group.
+
+- Positions ('positions')
+- Percent of open interest ('pct')
+- Change in open interest ('change')
+- Number of traders ('traders')
+- Concentration Ratios ('conc')
+
+See the CFTC's [website](https://www.cftc.gov/MarketReports/CommitmentsofTraders/ExplanatoryNotes/index.htm) for a detailed explanation of each.
+:::
+
+<details>
+<summary mdxType="summary">Legacy Report Fields</summary>
+
+```python
+[
+    "date",
+    "report_week",
+    "market_and_exchange_names",
+    "cftc_contract_market_code",
+    "cftc_market_code",
+    "cftc_region_code",
+    "cftc_commodity_code",
+    "commodity",
+    "commodity_group",
+    "commodity_subgroup",
+    "futonly_or_combined",
+    "contract_units",
+    "id",
+    "contract_market_name",
+    "open_interest_all",
+    "noncomm_positions_long_all",
+    "noncomm_positions_short_all",
+    "noncomm_postions_spread_all",
+    "comm_positions_long_all",
+    "comm_positions_short_all",
+    "tot_rept_positions_long_all",
+    "tot_rept_positions_short",
+    "nonrept_positions_long_all",
+    "nonrept_positions_short_all",
+    "open_interest_old",
+    "noncomm_positions_long_old",
+    "noncomm_positions_short_old",
+    "noncomm_positions_spread",
+    "comm_positions_long_old",
+    "comm_positions_short_old",
+    "tot_rept_positions_long_old",
+    "tot_rept_positions_short_1",
+    "nonrept_positions_long_old",
+    "nonrept_positions_short_old",
+    "open_interest_other",
+    "noncomm_positions_long_other",
+    "noncomm_positions_short_other",
+    "noncomm_positions_spread_1",
+    "comm_positions_long_other",
+    "comm_positions_short_other",
+    "tot_rept_positions_long_other",
+    "tot_rept_positions_short_2",
+    "nonrept_positions_long_other",
+    "nonrept_positions_short_other",
+    "change_in_open_interest_all",
+    "change_in_noncomm_long_all",
+    "change_in_noncomm_short_all",
+    "change_in_noncomm_spead_all",
+    "change_in_comm_long_all",
+    "change_in_comm_short_all",
+    "change_in_tot_rept_long_all",
+    "change_in_tot_rept_short",
+    "change_in_nonrept_long_all",
+    "change_in_nonrept_short_all",
+    "pct_of_open_interest_all",
+    "pct_of_oi_noncomm_long_all",
+    "pct_of_oi_noncomm_short_all",
+    "pct_of_oi_noncomm_spread",
+    "pct_of_oi_comm_long_all",
+    "pct_of_oi_comm_short_all",
+    "pct_of_oi_tot_rept_long_all",
+    "pct_of_oi_tot_rept_short",
+    "pct_of_oi_nonrept_long_all",
+    "pct_of_oi_nonrept_short_all",
+    "pct_of_open_interest_old",
+    "pct_of_oi_noncomm_long_old",
+    "pct_of_oi_noncomm_short_old",
+    "pct_of_oi_noncomm_spread_1",
+    "pct_of_oi_comm_long_old",
+    "pct_of_oi_comm_short_old",
+    "pct_of_oi_tot_rept_long_old",
+    "pct_of_oi_tot_rept_short_1",
+    "pct_of_oi_nonrept_long_old",
+    "pct_of_oi_nonrept_short_old",
+    "pct_of_open_interest_other",
+    "pct_of_oi_noncomm_long_other",
+    "pct_of_oi_noncomm_short_other",
+    "pct_of_oi_noncomm_spread_2",
+    "pct_of_oi_comm_long_other",
+    "pct_of_oi_comm_short_other",
+    "pct_of_oi_tot_rept_long_other",
+    "pct_of_oi_tot_rept_short_2",
+    "pct_of_oi_nonrept_long_other",
+    "pct_of_oi_nonrept_short_other",
+    "traders_tot_all",
+    "traders_noncomm_long_all",
+    "traders_noncomm_short_all",
+    "traders_noncomm_spread_all",
+    "traders_comm_long_all",
+    "traders_comm_short_all",
+    "traders_tot_rept_long_all",
+    "traders_tot_rept_short_all",
+    "traders_tot_old",
+    "traders_noncomm_long_old",
+    "traders_noncomm_short_old",
+    "traders_noncomm_spead_old",
+    "traders_comm_long_old",
+    "traders_comm_short_old",
+    "traders_tot_rept_long_old",
+    "traders_tot_rept_short_old",
+    "traders_tot_other",
+    "traders_noncomm_long_other",
+    "traders_noncomm_short_other",
+    "traders_noncomm_spread_other",
+    "traders_comm_long_other",
+    "traders_comm_short_other",
+    "traders_tot_rept_long_other",
+    "traders_tot_rept_short_other",
+    "conc_gross_le_4_tdr_long",
+    "conc_gross_le_4_tdr_short",
+    "conc_gross_le_8_tdr_long",
+    "conc_gross_le_8_tdr_short",
+    "conc_net_le_4_tdr_long_all",
+    "conc_net_le_4_tdr_short_all",
+    "conc_net_le_8_tdr_long_all",
+    "conc_net_le_8_tdr_short_all",
+    "conc_gross_le_4_tdr_long_1",
+    "conc_gross_le_4_tdr_short_1",
+    "conc_gross_le_8_tdr_long_1",
+    "conc_gross_le_8_tdr_short_1",
+    "conc_net_le_4_tdr_long_old",
+    "conc_net_le_4_tdr_short_old",
+    "conc_net_le_8_tdr_long_old",
+    "conc_net_le_8_tdr_short_old",
+    "conc_gross_le_4_tdr_long_2",
+    "conc_gross_le_4_tdr_short_2",
+    "conc_gross_le_8_tdr_long_2",
+    "conc_gross_le_8_tdr_short_2",
+    "conc_net_le_4_tdr_long_other",
+    "conc_net_le_4_tdr_short_other",
+    "conc_net_le_8_tdr_long_other",
+    "conc_net_le_8_tdr_short_other",
+]
+```
+</details>
+
+<details>
+<summary mdxType="summary">Disaggregated Report Fields</summary>
+
+```python
+[
+    "date",
+    "report_week",
+    "market_and_exchange_names",
+    "cftc_contract_market_code",
+    "cftc_market_code",
+    "cftc_region_code",
+    "cftc_commodity_code",
+    "cftc_subgroup_code",
+    "commodity",
+    "commodity_group",
+    "commodity_subgroup",
+    "futonly_or_combined",
+    "contract_units",
+    "id",
+    "contract_market_name",
+    "open_interest_all",
+    "prod_merc_positions_long",
+    "prod_merc_positions_short",
+    "swap_positions_long_all",
+    "swap_positions_short_all",
+    "swap_positions_spread_all",
+    "m_money_positions_long_all",
+    "m_money_positions_short_all",
+    "m_money_positions_spread",
+    "other_rept_positions_long",
+    "other_rept_positions_short",
+    "other_rept_positions_spread",
+    "tot_rept_positions_long_all",
+    "tot_rept_positions_short",
+    "nonrept_positions_long_all",
+    "nonrept_positions_short_all",
+    "open_interest_old",
+    "prod_merc_positions_long_1",
+    "prod_merc_positions_short_1",
+    "swap_positions_long_old",
+    "swap_positions_short_old",
+    "swap_positions_spread_old",
+    "m_money_positions_long_old",
+    "m_money_positions_short_old",
+    "m_money_positions_spread_1",
+    "other_rept_positions_long_1",
+    "other_rept_positions_short_1",
+    "other_rept_positions_spread_1",
+    "tot_rept_positions_long_old",
+    "tot_rept_positions_short_1",
+    "nonrept_positions_long_old",
+    "nonrept_positions_short_old",
+    "open_interest_other",
+    "prod_merc_positions_long_2",
+    "prod_merc_positions_short_2",
+    "swap_positions_long_other",
+    "swap_positions_short_other",
+    "swap_positions_spread_other",
+    "m_money_positions_long_other",
+    "m_money_positions_short_other",
+    "m_money_positions_spread_2",
+    "other_rept_positions_long_2",
+    "other_rept_positions_short_2",
+    "other_rept_positions_spread_2",
+    "tot_rept_positions_long_other",
+    "tot_rept_positions_short_2",
+    "nonrept_positions_long_other",
+    "nonrept_positions_short_other",
+    "change_in_open_interest_all",
+    "change_in_prod_merc_long",
+    "change_in_prod_merc_short",
+    "change_in_swap_long_all",
+    "change_in_swap_short_all",
+    "change_in_swap_spread_all",
+    "change_in_m_money_long_all",
+    "change_in_m_money_short_all",
+    "change_in_m_money_spread",
+    "change_in_other_rept_long",
+    "change_in_other_rept_short",
+    "change_in_other_rept_spread",
+    "change_in_tot_rept_long_all",
+    "change_in_tot_rept_short",
+    "change_in_nonrept_long_all",
+    "change_in_nonrept_short_all",
+    "pct_of_open_interest_all",
+    "pct_of_oi_prod_merc_long",
+    "pct_of_oi_prod_merc_short",
+    "pct_of_oi_swap_long_all",
+    "pct_of_oi_swap_short_all",
+    "pct_of_oi_swap_spread_all",
+    "pct_of_oi_m_money_long_all",
+    "pct_of_oi_m_money_short_all",
+    "pct_of_oi_m_money_spread",
+    "pct_of_oi_other_rept_long",
+    "pct_of_oi_other_rept_short",
+    "pct_of_oi_other_rept_spread",
+    "pct_of_oi_tot_rept_long_all",
+    "pct_of_oi_tot_rept_short",
+    "pct_of_oi_nonrept_long_all",
+    "pct_of_oi_nonrept_short_all",
+    "pct_of_open_interest_old",
+    "pct_of_oi_prod_merc_long_1",
+    "pct_of_oi_prod_merc_short_1",
+    "pct_of_oi_swap_long_old",
+    "pct_of_oi_swap_short_old",
+    "pct_of_oi_swap_spread_old",
+    "pct_of_oi_m_money_long_old",
+    "pct_of_oi_m_money_short_old",
+    "pct_of_oi_m_money_spread_1",
+    "pct_of_oi_other_rept_long_1",
+    "pct_of_oi_other_rept_short_1",
+    "pct_of_oi_other_rept_spread_1",
+    "pct_of_oi_tot_rept_long_old",
+    "pct_of_oi_tot_rept_short_1",
+    "pct_of_oi_nonrept_long_old",
+    "pct_of_oi_nonrept_short_old",
+    "pct_of_open_interest_other",
+    "pct_of_oi_prod_merc_long_2",
+    "pct_of_oi_prod_merc_short_2",
+    "pct_of_oi_swap_long_other",
+    "pct_of_oi_swap_short_other",
+    "pct_of_oi_swap_spread_other",
+    "pct_of_oi_m_money_long_other",
+    "pct_of_oi_m_money_short_other",
+    "pct_of_oi_m_money_spread_2",
+    "pct_of_oi_other_rept_long_2",
+    "pct_of_oi_other_rept_short_2",
+    "pct_of_oi_other_rept_spread_2",
+    "pct_of_oi_tot_rept_long_other",
+    "pct_of_oi_tot_rept_short_2",
+    "pct_of_oi_nonrept_long_other",
+    "pct_of_oi_nonrept_short_other",
+    "traders_tot_all",
+    "traders_prod_merc_long_all",
+    "traders_prod_merc_short_all",
+    "traders_swap_short_all",
+    "traders_m_money_short_all",
+    "traders_m_money_spread_all",
+    "traders_other_rept_long_all",
+    "traders_other_rept_spread",
+    "traders_tot_rept_long_all",
+    "traders_tot_rept_short_all",
+    "traders_tot_old",
+    "traders_prod_merc_long_old",
+    "traders_prod_merc_short_old",
+    "traders_swap_short_old",
+    "traders_m_money_short_old",
+    "traders_m_money_spread_old",
+    "traders_other_rept_long_old",
+    "traders_other_rept_spread_1",
+    "traders_tot_rept_long_old",
+    "traders_tot_rept_short_old",
+    "traders_tot_other",
+    "traders_prod_merc_long_other",
+    "traders_prod_merc_short_other",
+    "traders_swap_long_other",
+    "traders_swap_short_other",
+    "traders_swap_spread_other",
+    "traders_m_money_long_other",
+    "traders_m_money_short_other",
+    "traders_m_money_spread_other",
+    "traders_other_rept_long_other",
+    "traders_other_rept_short_2",
+    "traders_other_rept_spread_2",
+    "traders_tot_rept_long_other",
+    "traders_tot_rept_short_other",
+    "conc_gross_le_4_tdr_long",
+    "conc_gross_le_4_tdr_short",
+    "conc_gross_le_8_tdr_long",
+    "conc_gross_le_8_tdr_short",
+    "conc_net_le_4_tdr_long_all",
+    "conc_net_le_4_tdr_short_all",
+    "conc_net_le_8_tdr_long_all",
+    "conc_net_le_8_tdr_short_all",
+    "conc_gross_le_4_tdr_long_1",
+    "conc_gross_le_4_tdr_short_1",
+    "conc_gross_le_8_tdr_long_1",
+    "conc_gross_le_8_tdr_short_1",
+    "conc_net_le_4_tdr_long_old",
+    "conc_net_le_4_tdr_short_old",
+    "conc_net_le_8_tdr_long_old",
+    "conc_net_le_8_tdr_short_old",
+    "conc_gross_le_4_tdr_long_2",
+    "conc_gross_le_4_tdr_short_2",
+    "conc_gross_le_8_tdr_long_2",
+    "conc_gross_le_8_tdr_short_2",
+    "conc_net_le_4_tdr_long_other",
+    "conc_net_le_4_tdr_short_other",
+    "conc_net_le_8_tdr_long_other",
+    "conc_net_le_8_tdr_short_other",
+    "traders_swap_long_all",
+    "traders_swap_spread_all",
+    "traders_m_money_long_all",
+    "traders_other_rept_short",
+    "traders_swap_long_old",
+    "traders_swap_spread_old",
+    "traders_m_money_long_old",
+    "traders_other_rept_short_1",
+]
+```
+</details>
+
+<details>
+<summary mdxType="summary">Financial Report Fields</summary>
+
+```python
+[
+    "date",
+    "report_week",
+    "market_and_exchange_names",
+    "cftc_contract_market_code",
+    "cftc_market_code",
+    "cftc_region_code",
+    "cftc_commodity_code",
+    "cftc_subgroup_code",
+    "commodity",
+    "commodity_group",
+    "commodity_subgroup",
+    "futonly_or_combined",
+    "contract_units",
+    "id",
+    "contract_market_name",
+    "open_interest_all",
+    "dealer_positions_long_all",
+    "dealer_positions_short_all",
+    "dealer_positions_spread_all",
+    "asset_mgr_positions_long",
+    "asset_mgr_positions_short",
+    "asset_mgr_positions_spread",
+    "lev_money_positions_long",
+    "lev_money_positions_short",
+    "lev_money_positions_spread",
+    "other_rept_positions_long",
+    "other_rept_positions_short",
+    "other_rept_positions_spread",
+    "tot_rept_positions_long_all",
+    "tot_rept_positions_short",
+    "nonrept_positions_long_all",
+    "nonrept_positions_short_all",
+    "change_in_open_interest_all",
+    "change_in_dealer_long_all",
+    "change_in_dealer_short_all",
+    "change_in_dealer_spread_all",
+    "change_in_asset_mgr_long",
+    "change_in_asset_mgr_short",
+    "change_in_asset_mgr_spread",
+    "change_in_lev_money_long",
+    "change_in_lev_money_short",
+    "change_in_lev_money_spread",
+    "change_in_other_rept_long",
+    "change_in_other_rept_short",
+    "change_in_other_rept_spread",
+    "change_in_tot_rept_long_all",
+    "change_in_tot_rept_short",
+    "change_in_nonrept_long_all",
+    "change_in_nonrept_short_all",
+    "pct_of_open_interest_all",
+    "pct_of_oi_dealer_long_all",
+    "pct_of_oi_dealer_short_all",
+    "pct_of_oi_dealer_spread_all",
+    "pct_of_oi_asset_mgr_long",
+    "pct_of_oi_asset_mgr_short",
+    "pct_of_oi_asset_mgr_spread",
+    "pct_of_oi_lev_money_long",
+    "pct_of_oi_lev_money_short",
+    "pct_of_oi_lev_money_spread",
+    "pct_of_oi_other_rept_long",
+    "pct_of_oi_other_rept_short",
+    "pct_of_oi_other_rept_spread",
+    "pct_of_oi_tot_rept_long_all",
+    "pct_of_oi_tot_rept_short",
+    "pct_of_oi_nonrept_long_all",
+    "pct_of_oi_nonrept_short_all",
+    "traders_tot_all",
+    "traders_dealer_short_all",
+    "traders_dealer_spread_all",
+    "traders_asset_mgr_long_all",
+    "traders_lev_money_long_all",
+    "traders_lev_money_short_all",
+    "traders_lev_money_spread",
+    "traders_other_rept_long_all",
+    "traders_other_rept_short",
+    "traders_tot_rept_long_all",
+    "traders_tot_rept_short_all",
+    "conc_gross_le_4_tdr_long",
+    "conc_gross_le_4_tdr_short",
+    "conc_gross_le_8_tdr_long",
+    "conc_gross_le_8_tdr_short",
+    "conc_net_le_4_tdr_long_all",
+    "conc_net_le_4_tdr_short_all",
+    "conc_net_le_8_tdr_long_all",
+    "conc_net_le_8_tdr_short_all",
+    "traders_dealer_long_all",
+    "traders_asset_mgr_short_all",
+    "traders_asset_mgr_spread",
+    "traders_other_rept_spread",
+]
+```
+</details>
+
+<details>
+<summary mdxType="summary">Supplemental Report Fields</summary>
+
+```python
+[
+    "date",
+    "report_week",
+    "market_and_exchange_names",
+    "cftc_contract_market_code",
+    "cftc_market_code",
+    "cftc_region_code",
+    "cftc_commodity_code",
+    "commodity",
+    "commodity_group",
+    "commodity_subgroup",
+    "contract_units",
+    "id",
+    "contract_market_name",
+    "open_interest_all",
+    "ncomm_postions_long_all_nocit",
+    "ncomm_postions_short_all_nocit",
+    "ncomm_postions_spread_all_nocit",
+    "comm_positions_long_all_nocit",
+    "comm_positions_short_all_nocit",
+    "tot_rept_positions_long_all",
+    "tot_rept_positions_short",
+    "nonrept_positions_long_all",
+    "nonrept_positions_short_all",
+    "cit_positions_long_all",
+    "cit_positions_short_all",
+    "change_open_interest_all",
+    "change_noncomm_long_all_nocit",
+    "change_noncomm_short_all_nocit",
+    "change_noncomm_spead_all_nocit",
+    "change_comm_long_all_nocit",
+    "change_comm_short_all_nocit",
+    "change_tot_rept_long_all",
+    "change_tot_rept_short_all",
+    "change_nonrept_long_all",
+    "change_nonrept_short_all",
+    "change_cit_long_all",
+    "change_cit_short_all",
+    "pct_open_interest_all",
+    "pct_oi_noncomm_long_all_nocit",
+    "pct_oi_noncomm_short_all_nocit",
+    "pct_oi_noncomm_spread_all_nocit",
+    "pct_oi_comm_long_all_nocit",
+    "pct_oi_comm_short_all_nocit",
+    "pct_oi_tot_rept_long_all_nocit",
+    "pct_oi_tot_rept_short_all_nocit",
+    "pct_oi_nonrept_long_all_nocit",
+    "pct_oi_nonrept_short_all_nocit",
+    "pct_oi_cit_long_all",
+    "pct_oi_cit_short_all",
+    "traders_tot_all",
+    "traders_noncomm_long_all_nocit",
+    "traders_noncomm_short_all_nocit",
+    "traders_noncomm_spread_all_nocit",
+    "traders_comm_long_all_nocit",
+    "traders_comm_short_all_nocit",
+    "traders_tot_rept_long_all_nocit",
+    "traders_tot_rept_short_all_nocit",
+    "traders_cit_long_all",
+    "traders_cit_short_all",
+]
+```
+</details>
+
+</details>
+
+## Example
+
+```python
+import pandas as pd
+from openbb import obb
+
+pd.set_option("plotting.backend", "plotly")
+
+cot = obb.regulators.cftc.cot("S&P 500 Consolidated", start_date="2014-01-01").to_df()
+oi_change = cot[["open_interest_all"]]
+sp_price = obb.equity.price.historical("SPY", start_date="2014-01-01", interval="1d", provider="yfinance")
+sp_df = sp_price.to_df()[["close"]]
+
+df = oi_change.join(sp_df).pct_change().multiply(100).round(4).dropna()
+df.iloc[0, :] = 0
+df.columns = ["Change in Open Interest", "Change in Price"]
+
+fig = df.plot()
+
+fig.show(config={"scrollZoom": True})
+```
+
+!["S&P Price Change vs. CFTC Open Interest"](https://github.com/user-attachments/assets/cddb9c0a-19ad-482d-82a3-515cd82ec1a1)
+
