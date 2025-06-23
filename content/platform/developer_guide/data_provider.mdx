@@ -1,0 +1,716 @@
+---
+title: Data Provider
+sidebar_position: 7
+description: This guide outlines the process for adding a new data provider extension to the OpenBB Platform.
+keywords:
+  - OpenBB Platform
+  - Open source
+  - Python interface
+  - REST API
+  - contribution
+  - contributing
+  - documentation
+  - code
+  - provider
+  - data
+  - endpoint
+  - existing
+  - OpenBB extensions
+  - OpenBB provider
+  - standard model
+  - provider model
+  - how to
+  - new
+  - template
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Build New Provider Extension - How-To | OpenBB Platform Docs" />
+
+This page will walk through adding a new data provider extension to the OpenBB Platform.
+
+<div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+  <img src="https://openbb-cms.directus.app/assets/cc978d76-269b-4793-a0bf-fe892b757e89.png" alt="Provider" width="60%" />
+</div>
+
+## Getting Started
+
+An easy way to get started is to copy and paste something existing. In the OpenBB GitHub repository, provider extensions are located [here](https://github.com/OpenBB-finance/OpenBB/tree/develop/openbb_platform/providers).
+
+For convenience's sake, download this template [zip file](https://github.com/OpenBB-finance/OpenBB/files/14519701/provider_extension_template.zip). It contains the basic folder structure and everything required to get started creating new data models.
+
+For demonstration purposes, we'll assume this is from the perspective of somebody who will open a pull request and contribute the code to the OpenBB repository. The process, however, also applies to publishing directly via PyPI. Anyone can make an OpenBB extension.
+
+The structure of the folder will look something like this:
+
+```md
+template/
+├── openbb_template/
+│ ├── models/
+│ │ ├── __init__.py
+│ │ └── some_model.py
+│ ├── utils/
+│ │ ├── __init__.py
+│ │ └── helpers.py
+│ ├── tests/
+│ │ ├── record/
+│ │ ├── __init__.py
+│ │ └── test_template_fetchers.py
+│ ├── __init__.py
+├── __init__.py
+├── pyproject.toml
+└── README.md
+```
+
+The `__init__.py` file where models are mapped to the router is under, `/openbb_template`.
+
+To get started:
+
+- Unpack the downloaded [zip](ttps://github.com/OpenBB-finance/OpenBB/files/14519701/provider_extension_template.zip) file.
+
+  - If working with a cloned GitHub repo, the folder is:
+
+  ```console
+  ~/OpenBB/openbb_platform/providers
+  ```
+
+- Rename everything, "template", to suit. File names, models, import statements, docstrings.
+- Add any provider-specific package requirements in the `pyproject.toml` file.
+- Update the Provider information in the `__init__.py` file.
+  - If credentials are required, add a line to the Provider class initialization.
+
+  ```python
+  credentials=["api_key", "account_type"], # account_type is either "sandbox" or "live"
+  ```
+
+- From a terminal command line, navigate into the folder where the extension is, then install the empty blank package in "editable" mode.
+
+  ```console
+  poetry lock
+  pip install -e .
+  ```
+
+- Start creating data models using the steps outlined [here](add_data_to_existing_endpoint)
+
+### Cookiecutter
+
+In order to speed up the process of building an extension, we have created a [**Cookiecutter**](https://github.com/OpenBB-finance/openbb-cookiecutter) template.
+
+It serves as a jumpstart for your extension development, and can be used instead of the template ZIP referenced earlier. Instructions are located on the [GitHub page](https://github.com/OpenBB-finance/openbb-cookiecutter).
+
+:::note
+The cookiecutter tool will get you most of the way there, but it still requires some tweaks to the file names and initializations.
+:::
+
+ver are typically included as, XAU and XAG, respectively.
+
+
+## Provider module
+
+
+Below is the contents from the template's `__init__.py` file, modified to create a provider extension for [Tradier](https://documentation.tradier.com/brokerage-api/overview/endpoints).
+
+```python
+"""Tradier Provider Module."""
+
+from openbb_core.provider.abstract.provider import Provider
+from openbb_tradier.models.options_chains import TradierOptionsChainsFetcher
+
+tradier_provider = Provider(
+    name="tradier",
+    website="https://tradier.com",
+    description= "Tradier provides a full range of services in a scalable, secure,"
+        + " and easy-to-use REST-based API for businesses and individual developers."
+        + " Fast, secure, simple. Start in minutes."
+        + " Get access to trading, account management, and market-data for"
+        + " Tradier Brokerage accounts through our APIs.",
+    credentials=["api_key", "account_type"], # account_type is either "sandbox" or "live"
+    fetcher_dict={
+        "OptionsChains": TradierOptionsChainsFetcher,
+    },
+)
+```
+
+Note: Access to most data sources is authorized with an API key, issued by the source. Sometimes there are multiple authorization fields, and other times there may be a need to change the base URL depending on the type of account.
+
+> If no authorization is required, leave out the 'credentials' parameter.
+
+### Rebuild python interface and assets
+
+The application will need to rebuild the static files in order to recognize any changes to the `fetcher_dict` in the `__init__.py` file.
+
+This is also required to reflect any changes to parameters, docstrings and function signatures.
+
+Open a terminal, start a new Python session, then enter:
+
+```python
+import openbb
+
+openbb.build()
+
+exit()
+```
+
+The updated endpoint's function signature will now display the additional provider.
+
+```python
+Signature:
+obb.derivatives.options.chains(
+    symbol: typing.Annotated[str, OpenBBField(description='Symbol to get data for.')],
+    provider: Optional[Literal['cboe', 'intrinio', 'tmx', 'tradier']] = None,
+    **kwargs,
+) -> openbb_core.app.model.obbject.OBBject
+```
+
+
+## Dependencies
+
+The `pyproject.toml` file defines the package itself.
+
+:::tip
+
+- Before adding any dependency, ensure it aligns with the Platform's existing dependencies.
+- If possible, use loose versioning.
+
+  :::
+
+```toml
+[tool.poetry]
+name = "openbb-template"
+version = "1.0.0"
+description = "Template Provider Extension for the OpenBB Platform"
+authors = ["Name <my@emailaddress.com>"]
+readme = "README.md"
+packages = [{ include = "openbb_template" }]
+
+[tool.poetry.dependencies]
+python = ">=3.8,<3.12"
+openbb = "^4.1.7"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_provider_extension"]
+template = "openbb_template:template_provider"
+```
+
+The last line (poetry.plugins) maps to the provider defined in the `__init__.py` file.
+
+Additionally, for local extensions, you can add this line in the `LOCAL_DEPS` variable in the `dev_install.py` file, located in `~/OpenBB/openbb_platform/`:
+
+```toml
+# If this is a community dependency, add this under "Community dependencies",
+# with additional argument optional = true
+openbb-extension = { path = "<relative-path-to-the-extension>", develop = true }
+```
+
+Now you can use the `python dev_install.py [-e]` command to install the local extension.
+
+
+## Standard Model
+
+The essence of a standard model is to be a shared resource with common ground between all sources.
+It should not be so specific that it is relevant only to one provider, and it needs to have defining characteristics that warrant its existence.
+
+Mandatory fields and parameters should be minimal, and names need to be consistent with similar ones across the OpenBB Platform. If in doubbt, contact the OpenBB team.
+
+### File Structure
+
+We're going to map this new endpoint in the interface to, `obb.currency.snapshots()`. We'll name the model accordingly, `CurrencySnapshots`, and create a file, `currency_snapshots.py`. The file should be created here:
+
+```console
+~/OpenBB/openbb_platform/core/openbb_core/provider/standard_models/
+```
+
+The first line of the file should be a docstring, the second line should be empty, and the import statements follow.
+
+The code block below are the typical imports in a standard model file, modify to suit the specific requirements.
+
+:::tip
+
+Constrained types can be imported from the Pydantic library, i.e. `PositiveInt`, `NonNegativeFloat`, etc.
+
+:::
+
+<details>
+<summary mdxType="summary">File imports</summary>
+
+```python
+"""Currency Snapshots Standard Model."""
+
+from typing import Literal, Optional
+
+from pydantic import Field, field_validator
+
+from openbb_core.provider.abstract.data import Data
+from openbb_core.provider.abstract.query_params import QueryParams
+from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
+```
+</details>
+
+### Standard QueryParams
+
+Don't try to add every possible parameter unless it is certain that the majority of providers will have this available from their API.
+The same applies to `Literal` types, set as a generic `str` or `int` type and redefine it within the provider model as a `Literal["choice1", "choice2"]`.
+We don't want a standard model parameter to provide invalid choices for individual providers.
+
+Our `CurrencySnapshotsQueryParams` model is going to be very similar to `MarketSnapshotsQueryParams`, with the only difference being the field name "base".
+
+:::important
+
+If the field will only sometimes accept a list of values, DO NOT define it in the standard model as a Union - `Union[str, List[str]]`.
+Instead, define it for the single value, `str`, and then add the property below to the provider's QueryParams model.
+
+```python
+__json_schema_extra__ = {"base": ["multiple_items_allowed"]}
+```
+
+:::
+
+<details>
+<summary mdxType="summary">Code example</summary>
+
+The code block below is a continuation of the section above.
+
+```python
+class CurrencySnapshotsQueryParams(QueryParams):
+    """Currency Snapshots Query Params."""
+
+    base: str = Field(description="The base currency symbol.", default="usd")
+    quote_type: Literal["direct", "indirect"] = Field(
+        description="Whether the quote is direct or indirect."
+        + " Selecting 'direct' will return the exchange rate"
+        + " as the amount of domestic currency required to buy one unit"
+        + " of the foreign currency."
+        + " Selecting 'indirect' (default) will return the exchange rate"
+        + " as the amount of foreign currency required to buy one unit"
+        + " of the domestic currency.",
+        default="indirect",
+    )
+    counter_currencies: Optional[Union[str, List[str]]] = Field(
+        description="An optional list of counter currency symbols to filter for."
+        + " None returns all.",
+        default=None,
+    )
+
+    @field_validator("base", mode="before", check_fields=False)
+    @classmethod
+    def to_upper(cls, v):
+        """Convert the base currency to uppercase."""
+        return v.upper()
+
+    @field_validator("counter_currencies", mode="before", check_fields=False)
+    @classmethod
+    def convert_string(cls, v):
+        """Convert the counter currencies to an upper case string list."""
+        if v is not None:
+            return ",".join(v).upper() if isinstance(v, list) else v.upper()
+        return None
+```
+
+</details>
+
+It would be nice to have a list of valid choices, but each source may not have data for all currencies. Or, we could miss choices by only consulting one provider.
+This can be a consideration for the data provider models to handle, and country codes for currencies are widely known ISO three-letter abbreviations.
+
+### Standard Data
+
+Like `QueryParams`, we don't want to attempt to define every potential future field. We want a core foundation for others to build on.
+We will define three fields as mandatory, "base_currency", "counter_currency", and "last_rate". This is enough to communicate our
+We will define three fields as mandatory, "base_currency", "counter_currency", and "last_rate". This is enough to communicate our
+data parsing requirements for this endpoint:
+
+- Split the six-letter symbol as two symbols.
+- If the provider only returns `{"symbol": "price"}`, it will need to coerced accordingly within the `transform_data` static method of the `Fetcher` class.
+
+<details>
+<summary mdxType="summary">Code example</summary>
+
+```python
+class CurrencySnapshotsData(Data):
+    """Currency Snapshots Data."""
+
+    base_currency: str = Field(description="The base, or domestic, currency.")
+    counter_currency: str = Field(description="The counter, or foreign, currency.")
+    last_rate: float = Field(
+        description="The exchange rate, relative to the base currency."
+        + " By default, rates are expressed as the amount of foreign currency"
+        + " received from selling one unit of the base currency,"
+        + " or the quantity of foreign currency required to purchase"
+        + " one unit of the domestic currency."
+        + " To inverse the perspective, set the 'quote_type' parameter as 'direct'.
+    )
+    open: Optional[float] = Field(
+        description=DATA_DESCRIPTIONS.get("open", ""),
+        default=None,
+    )
+    high: Optional[float] = Field(
+        description=DATA_DESCRIPTIONS.get("high", ""),
+        default=None,
+    )
+    low: Optional[float] = Field(
+        description=DATA_DESCRIPTIONS.get("low", ""),
+        default=None,
+    )
+    close: Optional[float] = Field(
+        description=DATA_DESCRIPTIONS.get("close", ""),
+        default=None,
+    )
+    volume: Optional[int] = Field(
+        description=DATA_DESCRIPTIONS.get("volume", ""), default=None
+    )
+    prev_close: Optional[float] = Field(
+        description=DATA_DESCRIPTIONS.get("prev_close", ""),
+        default=None,
+    )
+```
+
+</details>
+
+## Provider Model
+
+### File structure
+
+We need to create a new file for our data provider.
+
+:::note
+
+If we created a standard model previously, the name will be the same.
+
+```console
+~/OpenBB/openbb_platform/providers/fmp/openbb_fmp/models/currency_snapshots.py
+```
+
+:::
+
+The first line in the file will always be a docstring, with the import statements beginning below an empty line.
+
+```python
+"""FMP Currency Snapshots Model."""
+
+# pylint: disable=unused-argument
+
+from datetime import datetime
+from typing import Any, Dict, List, Optional
+
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.currency_snapshots import (
+    CurrencySnapshotsData,
+    CurrencySnapshotsQueryParams,
+)
+from openbb_core.provider.utils.errors import EmptyDataError
+from openbb_core.provider.utils.helpers import amake_request
+from pandas import DataFrame, concat
+from pydantic import Field, field_validator
+```
+
+### Provider QueryParams
+
+If we have defined a Standard Model for this provider, then our life is simplified as that base model already exists that we will inherit.
+
+#### Iheritance
+
+All that's added is a URL to the endpoint's documentation, and then the `__json_schema_extra__` dictionary which will allow multiple base symbols to be accepted by this provider.
+
+```python
+class FMPCurrencySnapshotsQueryParams(CurrencySnapshotsQueryParams):
+    """
+    FMP Currency Snapshots Query.
+
+    Source: https://site.financialmodelingprep.com/developer/docs#exchange-prices-quote
+    """
+
+    __json_schema_extra__ = {"base": ["multiple_items_allowed"]}
+```
+
+#### One off
+
+```python
+from openbb_core.provider.abstract.query_params import QueryParams
+
+
+class CongressBillsQueryParams(QueryParams):
+    """Congress Bills Query Parameters."""
+
+    __json_schema_extra__ = {
+        "format": {
+            "x-widget_config": {
+                "exclude": True,
+            },
+        },
+        "offset": {
+            "x-widget_config": {
+                "exclude": True,
+            },
+        },
+    }
+
+    format: Literal["json", "xml"] = Field(
+        default="json", description="The data format. Value can be xml or json."
+    )
+    limit: int = Field(
+        default=100,
+        description="The number of records returned. The maximum limit is 250.",
+    )
+    offset: Optional[int] = Field(
+        default=None, description="The starting record returned. 0 is the first record."
+    )
+    ...
+```
+
+### Provider Data
+
+If we have defined a Standard Model we'll need to map the fields in the sample output data to the corresponding ones in the standard model, and then define the remaining. If there isn't a standard model, then we just need to define all the fields here.
+
+For instance, if the sample output data from the source looks like this:
+
+```json
+[
+  {
+    "symbol": "AEDAUD",
+    "name": "AED/AUD",
+    "price": 0.40401,
+    "changesPercentage": 0.3901,
+    "change": 0.0016,
+    "dayLow": 0.40211,
+    "dayHigh": 0.40535,
+    "yearHigh": 0.440948,
+    "yearLow": 0.356628,
+    "marketCap": null,
+    "priceAvg50": 0.39494148,
+    "priceAvg200": 0.40097216,
+    "volume": 0,
+    "avgVolume": 0,
+    "exchange": "FOREX",
+    "open": 0.40223,
+    "previousClose": 0.40244,
+    "eps": null,
+    "pe": null,
+    "earningsAnnouncement": null,
+    "sharesOutstanding": null,
+    "timestamp": 1677792573
+  }
+]
+```
+
+We can see that there are some fields which don't have anything to do with currencies. Those will be added here so the user still has access to them, since they aren't inherited from the standard model.
+
+```python
+class FMPCurrencySnapshotsData(CurrencySnapshotsData):
+    """FMP Currency Snapshots Data."""
+
+    __alias_dict__ = {
+        "last_rate": "price",
+        "high": "dayHigh",
+        "low": "dayLow",
+        "ma50": "priceAvg50",
+        "ma200": "priceAvg200",
+        "year_high": "yearHigh",
+        "year_low": "yearLow",
+        "prev_close": "previousClose",
+        "change_percent": "changesPercentage",
+        "last_rate_timestamp": "timestamp",
+    }
+
+    change: Optional[float] = Field(
+        description="The change in the price from the previous close.", default=None
+    )
+    change_percent: Optional[float] = Field(
+        description="The change in the price from the previous close, as a normalized percent.",
+        default=None,
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    ma50: Optional[float] = Field(
+        description="The 50-day moving average.", default=None
+    )
+    ma200: Optional[float] = Field(
+        description="The 200-day moving average.", default=None
+    )
+    year_high: Optional[float] = Field(description="The 52-week high.", default=None)
+    year_low: Optional[float] = Field(description="The 52-week low.", default=None)
+    last_rate_timestamp: Optional[datetime] = Field(
+        description="The timestamp of the last rate.", default=None
+    )
+
+    @field_validator("change_percent", mode="before", check_fields=False)
+    @classmethod
+    def normalize_percent(cls, v):
+        """Normalize the percent."""
+        return v / 100 if v is not None else None
+```
+
+A validator is setup to convert the percentage to a normalized value (1% -> 0.01).
+
+### Provider Fetcher
+
+The Fetcher class will always have the same general construction, in this instance we will use the `transform_data` stage to parse and filter the returned data before validating the model on output.
+
+This is where the TET (transform-extract-transform) pattern is applied.
+
+```python
+class FMPCurrencySnapshotsFetcher(
+    Fetcher[FMPCurrencySnapshotsQueryParams, List[FMPCurrencySnapshotsData]]
+):
+    """FMP Currency Snapshots Fetcher."""
+
+    @staticmethod
+    def transform_query(params: Dict[str, Any]) -> FMPCurrencySnapshotsQueryParams:
+        """Transform the query parameters."""
+        return FMPCurrencySnapshotsQueryParams(**params)
+
+    @staticmethod
+    async def aextract_data(
+        query: FMPCurrencySnapshotsQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
+    ) -> List[Dict]:
+        """Extract the data from the FMP endpoint."""
+
+        api_key = credentials.get("fmp_api_key") if credentials else ""
+
+        url = f"https://financialmodelingprep.com/api/v3/quotes/forex?apikey={api_key}"
+
+        return await amake_request(url, **kwargs)  # type: ignore
+
+    @staticmethod
+    def transform_data(
+        query: FMPCurrencySnapshotsQueryParams,
+        data: List[Dict],
+        **kwargs: Any,
+    ) -> List[FMPCurrencySnapshotsData]:
+        """Filter by the query parameters and validate the model."""
+
+        if not data:
+            raise EmptyDataError("No data was returned from the FMP endpoint.")
+
+        # Drop all the zombie columns FMP returns.
+        df = (
+            DataFrame(data)
+            .dropna(how="all", axis=1)
+            .drop(columns=["exchange", "avgVolume"])
+        )
+
+        new_df = DataFrame()
+
+        # Filter for the base currencies requested and the quote_type.
+        for symbol in query.base.split(","):
+            temp = (
+                df.query("`symbol`.str.startswith(@symbol)")
+                if query.quote_type == "indirect"
+                else df.query("`symbol`.str.endswith(@symbol)")
+            ).rename(columns={"symbol": "base_currency", "name": "counter_currency"})
+            temp["base_currency"] = symbol
+            temp["counter_currency"] = (
+                [d.split("/")[1] for d in temp["counter_currency"]]
+                if query.quote_type == "indirect"
+                else [d.split("/")[0] for d in temp["counter_currency"]]
+            )
+            # Filter for the counter currencies, if requested.
+            if query.counter_currencies is not None:
+                counter_currencies = (  # noqa: F841  # pylint: disable=unused-variable
+                    query.counter_currencies
+                    if isinstance(query.counter_currencies, list)
+                    else query.counter_currencies.split(",")
+                )
+                temp = (
+                    temp.query("`counter_currency`.isin(@counter_currencies)")
+                    .set_index("counter_currency")
+                    # Sets the counter currencies in the order they were requested.
+                    .filter(items=counter_currencies, axis=0)
+                    .reset_index()
+                )
+            # If there are no records, don't concatenate.
+            if len(temp) > 0:
+                # Convert the Unix timestamp to a datetime.
+                temp.timestamp = temp.timestamp.apply(
+                    lambda x: datetime.fromtimestamp(x)
+                )
+                new_df = concat([new_df, temp])
+            if len(new_df) == 0:
+                raise EmptyDataError(
+                    "No data was found using the applied filters. Check the parameters."
+                )
+            # Fill and replace any NaN values with NoneType.
+            new_df = new_df.fillna("N/A").replace("N/A", None)
+        return [
+            FMPCurrencySnapshotsData.model_validate(d)
+            for d in new_df.reset_index(drop=True).to_dict(orient="records")
+        ]
+```
+
+If there are functions or constants that are required for the fetcher - these are typically added in a `/utils` folder with naming `helpers.py` and `constants.py` accordingly.
+
+## Tests
+
+### Testing the Fetcher
+
+```python
+"""Unit tests for FMP provider modules."""
+
+from openbb_fmp.models.currency_snapshots import FMPCurrencySnapshotsFetcher
+
+import pytest
+
+test_credentials = UserService().default_user_settings.credentials.model_dump(
+    mode="json"
+)
+
+
+def response_filter(response):
+    """Filter the response."""
+    if "Location" in response["headers"]:
+        response["headers"]["Location"] = [
+            re.sub(r"apikey=[^&]+", "apikey=MOCK_API_KEY", x)
+            for x in response["headers"]["Location"]
+        ]
+    return response
+
+
+@pytest.fixture(scope="module")
+def vcr_config():
+    """VCR configuration."""
+    return {
+        "filter_headers": [("User-Agent", None)],
+        "filter_query_parameters": [
+            ("apikey", "MOCK_API_KEY"),
+        ],
+        "before_record_response": response_filter,
+    }
+
+
+@pytest.mark.record_http
+def test_fmp_currency_snapshots_fetcher(credentials=test_credentials):
+    """Test FMP currency snapshots fetcher."""
+    params = {
+        "base": "XAU",
+        "quote_type": "indirect",
+        "counter_currencies": "USD,EUR,GBP,JPY,HKD,AUD,CAD,CHF,SEK,NZD,SGD",
+    }
+
+    fetcher = FMPCurrencySnapshotsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+```
+
+The filters might need to be updated for the specific provider, to ensure that API key or any authorization is sent correctly, and not logged. Particularly in the cassetes that are used for the CI.
+
+### Records
+
+The folder `/records` will contain the recordings of the data seen when running the test.
+
+In order to get that you will need to run:
+
+```sh
+pytest test_fmp_fetchers.py --record http --record-no-overwrite
+```
+
+This will generate a file such as:
+
+```sh
+~/OpenBB/openbb_platform/providers/fmp/tests/record/test_fmp_currency_snapshots_fetcher.yaml
+```
+
+Make sure that it doesn't contain any of your API keys or credentials.
