@@ -9,9 +9,19 @@
       "fmp"
     ]
   },
-  "ECONOMY.CALENDAR": {
+  "DERIVATIVES.OPTIONS.CHAINS": {
     "providers": [
-      "tradingeconomics"
+      "intrinio"
+    ]
+  },
+  "ECONOMY.COUNTRY_PROFILE": {
+    "providers": [
+      "econdb"
+    ]
+  },
+  "ECONOMY.INDICATORS": {
+    "providers": [
+      "econdb"
     ]
   },
   "EQUITY.COMPARE.PEERS": {
@@ -24,7 +34,7 @@
       "fmp"
     ]
   },
-  "EQUITY.ESTIMATES.HISTORICAL": {
+  "EQUITY.ESTIMATES.FORWARD_EBITDA": {
     "providers": [
       "fmp"
     ]
@@ -145,14 +155,9 @@
       "fmp"
     ]
   },
-  "ETF.HOLDINGS": {
+  "FIXEDINCOME.GOVERNMENT.YIELD_CURVE": {
     "providers": [
-      "intrinio"
-    ]
-  },
-  "ETF.INFO": {
-    "providers": [
-      "intrinio"
+      "econdb"
     ]
   },
   "INDEX.MARKET": {
