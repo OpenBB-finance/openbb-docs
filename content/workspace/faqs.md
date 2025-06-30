@@ -14,10 +14,9 @@ keywords:
   - Troubleshooting
   - Data Sources
 ---
-
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="FAQs | OpenBB Workspace Docs" />
+`<HeadTitle title="FAQs | OpenBB Workspace Docs" />`
 
 ### General
 
@@ -50,7 +49,6 @@ A: We provide an the ability when adding a custom backend to pass a custom Heade
   <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/authorization.png" />
 </div>
 </details>
-
 
 ### Widgets and Templates
 
@@ -99,7 +97,6 @@ openbb-api --ssl_keyfile localhost.key --ssl_certfile localhost.crt
 ```
 
 **Note**: Adjust the command to include the full path to the file if the current working directory is not where they are located.
-
 
 The certificate - `localhost.crt` - will need to be added to system's trust store. The process for this will depend on the operating system and the user account privilege.
 

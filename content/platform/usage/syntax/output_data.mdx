@@ -3,19 +3,19 @@ title: Output Data
 sidebar_position: 2
 description: This page details the basic response and output that can be expected to be received from the the OpenBB Platform.
 keywords:
-- tutorial
-- standardized output
-- OBBject
-- basic response
-- provider
-- results
-- warnings
-- chart
-- extra
-- command coverage
+  - tutorial
+  - standardized output
+  - OBBject
+  - basic response
+  - provider
+  - results
+  - warnings
+  - chart
+  - extra
+  - command coverage
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
 <HeadTitle title="Basic Response - Usage | OpenBB Platform Docs" />
 
@@ -66,6 +66,7 @@ The preferred output type can be set with a user preference.
 ```python
 obb.user.preferences.output_type="dataframe"
 ```
+
 :::
 
 ### Metadata
@@ -103,13 +104,13 @@ data.extra
 
 #### Disabling
 
-This content can be disabled as a setting in the [`user_settings.json`](/platform/settings_and_environment_variables) file.
+This content can be disabled as a setting in the [`user_settings.json`](/platform/settings/environment_variables) file.
 
 ```json
 {
   "preferences": {
     "metadata": false
-}
+  }
 }
 ```
 
@@ -207,6 +208,7 @@ data.extra
   'last_trade_timestamp': '2024-05-22 14:50:36'},
 }
 ```
+
 </details>
 
 <details>
@@ -264,6 +266,7 @@ data.extra
     'value': 198566750.0}]}
 }
 ```
+
 </details>
 
 ### LLM friendly mode
@@ -347,7 +350,7 @@ uvicorn openbb_core.api.rest_api:app
 ```
 
 :::info
-See [User Settings & Environment Variables](/platform/settings_and_environment_variables#uvicorn) for details on configuring settings in `system_settings.json`
+See [System Settings](/platform/settings/system_settings) for details on configuring settings in `system_settings.json`
 :::
 
 You can add arguments that are supported by `uvicorn` to customize how the API is launched.
@@ -367,10 +370,9 @@ The API Docs provide interactive descriptions of all available endpoints that yo
 
 ### Data API Keys
 
-
 The API keys to your data providers are loaded from the `~/.openbb_platform/user_settings.json` file.
 
-You can find more information about the structure of the file and environment variables in the [Local Environment](/platform/api_keys) section.
+You can find more information about the structure of the file and environment variables in the [Local Environment](/platform/settings/user_settings/api_keys) section.
 
 ### API Authorization
 
@@ -405,13 +407,11 @@ response = requests.get(url=url, headers=headers)
 response.json()
 ```
 
-
 ### Advanced API Settings
 
 :::info
-See [User Settings & Environment Variables](/platform/settings_and_environment_variables#api-settings) for details on configuring settings in `system_settings.json`
+See [System Settings](/platform/settings/system_settings) for details on configuring settings in `system_settings.json`
 :::
-
 
 When deploying the API to the public internet, it's crucial to configure it in a way you ensure the application functions correctly and securely. Two critical aspects to consider are Cross-Origin Resource Sharing (CORS) and the configuration of the "servers" list.
 
@@ -419,35 +419,29 @@ The configuration for these settings is managed through the `system_settings.jso
 
 ```json
 {
-    "api_settings": {
-        "version": "1",
-        "title": "OpenBB Platform API",
-        "description": "This is the OpenBB Platform API.",
-        "terms_of_service": "http://example.com/terms/",
-        "contact_name": "OpenBB Team",
-        "contact_url": "https://openbb.co",
-        "contact_email": "hello@openbb.co",
-        "license_name": "AGPLv3",
-        "license_url": "https://github.com/OpenBB-finance/OpenBB/blob/develop/LICENSE",
-        "servers": [
-            {
-                "url": "",
-                "description": "Local OpenBB development server"
-            }
-        ],
-        "cors": {
-            "allow_origins": [
-                "*"
-            ],
-            "allow_methods": [
-                "*"
-            ],
-            "allow_headers": [
-                "*"
-            ]
-        },
-        "prefix": "/api/v1"
-    }
+  "api_settings": {
+    "version": "1",
+    "title": "OpenBB Platform API",
+    "description": "This is the OpenBB Platform API.",
+    "terms_of_service": "http://example.com/terms/",
+    "contact_name": "OpenBB Team",
+    "contact_url": "https://openbb.co",
+    "contact_email": "hello@openbb.co",
+    "license_name": "AGPLv3",
+    "license_url": "https://github.com/OpenBB-finance/OpenBB/blob/develop/LICENSE",
+    "servers": [
+      {
+        "url": "",
+        "description": "Local OpenBB development server"
+      }
+    ],
+    "cors": {
+      "allow_origins": ["*"],
+      "allow_methods": ["*"],
+      "allow_headers": ["*"]
+    },
+    "prefix": "/api/v1"
+  }
 }
 ```
 

@@ -12,10 +12,9 @@ keywords:
   - EmptyDataError
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
 <HeadTitle title="Errors FAQ - FAQs | OpenBB Platform Docs" />
-
 
 <details>
 <summary mdxType="summary">[Arg] provider -> input: nasdaq -> Input should be 'fmp' or 'yfinance'</summary>
@@ -39,7 +38,7 @@ OPENBB_AUTO_BUILD="true"
 The expected behaviour is for this to be "true" by default, however can be situations where the flag does not trigger a build.
 Manually invoke the process from the command line if necessary.
 
-3. Not every endpoint is supported by every provider. To see the coverage of commands and data providers within the current installation, use `reference` property in the app. The docstring for each function contains the same information as the code block below. 
+3. Not every endpoint is supported by every provider. To see the coverage of commands and data providers within the current installation, use `reference` property in the app. The docstring for each function contains the same information as the code block below.
 
 ```python
 from openbb import obb
@@ -48,6 +47,7 @@ path = "/index/available"
 
 [d for d in obb.reference["paths"][path]["parameters"] if d != "standard"]
 ```
+
 ```sh
 ['cboe', 'fmp', 'tmx', 'yfinance']
 ```
@@ -56,21 +56,24 @@ Complete breakdowns of query and return fields by provider and endpoint are avai
 
 </details>
 
-
 <details>
 <summary mdxType="summary">Attribute Error: 'App' object has no attribute 'some attribute'</summary>
 
 There could be a few reasons for this message that are similar to the issue above.
 
 1. The extension is not installed.
-  - Install it and rebuild the static files (described in the item above.)
+
+- Install it and rebuild the static files (described in the item above.)
+
 2. No installed provider extension services an endpoint within the router.
-  - Under these conditions, the router is excluded from the app factory.
+
+- Under these conditions, the router is excluded from the app factory.
+
 3. The extension is installed, a provider does service the router, but the static assets have not been rebuilt.
-  - Rebuild the static files (described in the item above.)
+
+- Rebuild the static files (described in the item above.)
 
 </details>
-
 
 <details>
 <summary mdxType="summary">Unauthorized Error - HTTP Status Code 502</summary>
@@ -142,4 +145,5 @@ os.environ["OPENBB_DEBUG_MODE"] = "true"
 
 from openbb import obb
 ```
+
 </details>

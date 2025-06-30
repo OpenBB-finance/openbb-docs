@@ -31,17 +31,16 @@ Variables can be defined for current session only.
 import os
 os.environ["OPENBB_DEBUG_MODE"] = "True"
 from openbb import obb
-````
+```
 
 ### Proxy Networks
-
 
 Any function fetching data requires making an outbound HTTP request. Utility functions within the `openbb-core` simplify the procedure for making both asynchronous and synchronous requests. These cover the majority of typical requests and should be imported for use instead of creating a new client from scratch.
 
 Using the helpers will keep the codebase leaner and easier to maintain by eliminating duplicate processes. Anyone can build effective and efficient data fetchers, this guide outlines how to import and implement either type of request into any fetcher.
 
 :::info
-See [Environment Variables & Settings](/platform/settings_and_environment_variables#http) for information on configuring global settings and the session object.
+See [System Settings](/platform/settings/system_settings) for information on configuring global settings and the session object.
 :::
 
 ## Generate Query String
@@ -79,7 +78,7 @@ In the example above, the "base url" is dedicated to the "interval" of the OHLC 
 
 ## Asynchronous vs Synchronous
 
-Every function in the router is asynchronous. This is the only place an asynchronous function *must* be used. Data-fetching router functions all follow the same format.
+Every function in the router is asynchronous. This is the only place an asynchronous function _must_ be used. Data-fetching router functions all follow the same format.
 
 ```python
 @router.command(model="MarketSnapshots")
@@ -105,8 +104,8 @@ Some data providers allow for bulk downloading from a list of symbols, while man
 
 Ultimately, the choice is at the discretion of the developer. OpenBB has made the implementation of both methods easy and fast, the next sections will elaborate.
 
-
 ### Synchronous - Requests
+
 <details>
 ```python
 from openbb_core.provider.utils import make_request
@@ -137,6 +136,7 @@ All parameters of `requests.get` or `requests.post`are accessible and passed thr
     ValueError
         If invalid method is passed
 ```
+
 </details>
 
 ### Asynchronous - AIOHTTP
@@ -186,6 +186,7 @@ Absent `await`, the response is a coroutine - a task waiting to be executed.
 </details>
 
 ### Multi-URL Requests
+
 <details>
 The helper function becomes plural, `amake_requests`, when fetching for a list of URLs. Under the hood, it is using `asyncio.gather` to perform the tasks concurrently. The same default callback function from `amake_request` exists, only here it appends the expected `json` output to a `List[Dict]`.
 
@@ -212,9 +213,11 @@ from openbb_core.provider.utils.helpers import amake_requests
     Union[dict, List[dict]]
         Response json
 ```
+
 </details>
 
 ### Custom Callback
+
 <details>
 Customize the response parsing by creating a specific callback function. The example below is a method for converting CSV data to a dictionary and appending it to a list.
 
@@ -231,10 +234,11 @@ async def response_callback(response, _: Any):
     data = DataFrame(StringIO(response), skiprows=2)
     results.append(data.to_dict("records"))
 ```
+
 </details>
 
-
 ### Asynchronous Fetchers
+
 <details>
 When a Fetcher is asynchronous, the `extract_data` static method needs to be defined accordingly - `aextract_data` instead of `extract_data`.
 
@@ -250,5 +254,5 @@ When a Fetcher is asynchronous, the `extract_data` static method needs to be def
 These helper functions simplify and standardize the majority of HTTP requests.
 
 They are starting points for building or modifying data provider extensions, and they can also be imported as a standalone utility within any Python session.
-</details>
 
+</details>

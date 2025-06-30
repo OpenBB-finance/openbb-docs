@@ -25,7 +25,7 @@ To get started, create the main application file and the widget configuration fi
 - `main.py`: This file will contain your FastAPI application code.
 - `widgets.json`: This file will define the configuration for your widget.
 
-The backend will use the same FastAPI setup and structure as described in the [Overview](/content/workspace/data-integration#1-create-the-api-server.md) page.
+The backend will use the same FastAPI setup and structure as described in the [Overview](/workspace/data-integration#1-create-the-api-server) page.
 
 ## Step 2: Create the Live Feed Endpoints
 
@@ -55,14 +55,14 @@ WS_DATA = {
 def get_ws_data(symbol: str):
     """Generate real-time data for a symbol"""
     data = WS_DATA.get(symbol, {"price": 100.0, "prev_close": 100.0, "volume": 1000000})
-    
+
     price = data["price"] + np.random.uniform(-10, 10)
     volume = data["volume"] + np.random.randint(100, 1000)
     change = price - data["prev_close"]
     change_percent = change / data["prev_close"]
-    
+
     WS_DATA[symbol].update(dict(price=price, volume=volume))
-    
+
     return {
         "symbol": symbol,
         "price": price,

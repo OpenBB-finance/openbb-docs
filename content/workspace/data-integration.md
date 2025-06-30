@@ -3,16 +3,16 @@ title: Overview
 sidebar_position: 10
 description: Learn how to integrate your own data sources and APIs into OpenBB Workspace with a custom backend solution.
 keywords:
-- Data Integration
-- Custom Backend
-- API Endpoints
-- Widget Configuration
-- Data Connectors
-- User Interface
-- Real-time Updates
-- Single Widget
-- Data Key Parameter
-- Nested JSON
+  - Data Integration
+  - Custom Backend
+  - API Endpoints
+  - Widget Configuration
+  - Data Connectors
+  - User Interface
+  - Real-time Updates
+  - Single Widget
+  - Data Key Parameter
+  - Nested JSON
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
@@ -93,7 +93,7 @@ def read_root():
 @app.get("/widgets.json")
 def get_widgets():
     """Widgets configuration file for the OpenBB Workspace
-    
+
     Returns:
         JSONResponse: The contents of widgets.json file
     """
@@ -108,7 +108,7 @@ def get_widgets():
 @app.get("/apps.json")
 def get_apps():
     """Apps configuration file for the OpenBB Workspace
-    
+
     Returns:
         JSONResponse: The contents of apps.json file
     """
@@ -139,24 +139,24 @@ Create a `widgets.json` file to define your widget's properties. This file is yo
 
 ```json
 {
-    "hello_world": {
-        "name": "Hello World",
-        "description": "A simple markdown widget that displays Hello World",
-        "category": "Hello World",
-        "type": "markdown",
-        "endpoint": "hello_world",
-        "gridData": {"w": 12, "h": 4},
-        "source": "None",
-        "params": [
-            {
-                "paramName": "name",
-                "value": "",
-                "label": "Name",
-                "type": "text",
-                "description": "Enter your name"
-            }
-        ]
-    }
+  "hello_world": {
+    "name": "Hello World",
+    "description": "A simple markdown widget that displays Hello World",
+    "category": "Hello World",
+    "type": "markdown",
+    "endpoint": "hello_world",
+    "gridData": { "w": 12, "h": 4 },
+    "source": "None",
+    "params": [
+      {
+        "paramName": "name",
+        "value": "",
+        "label": "Name",
+        "type": "text",
+        "description": "Enter your name"
+      }
+    ]
+  }
 }
 ```
 
@@ -201,6 +201,7 @@ Create an `apps.json` file to define the app's layout. This makes it so that the
 ### 4. Run the Application
 
 Your project structure should look like this:
+
 ```
 backend/
 ├── main.py
@@ -209,11 +210,13 @@ backend/
 ```
 
 Start the server with:
+
 ```bash
 uvicorn main:app --reload --host 0.0.0.0 --port 7779
 ```
 
 You should see output similar to:
+
 ```bash
 $ uvicorn main:app --reload --host 0.0.0.0 --port 7779
 INFO:     Uvicorn running on http://0.0.0.0:7779 (Press CTRL+C to quit)

@@ -40,7 +40,7 @@ export default {
 				redirects: [
 					{
 						from: "/platform/development/contributing",
-						to: "/platform/developer_guide/contributing",
+						to: "/platform/developer_guide/misc/contributing",
 					},
 					{
 						from: "/pro/",
