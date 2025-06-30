@@ -16,7 +16,7 @@ keywords:
 ---
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-`<HeadTitle title="FAQs | OpenBB Workspace Docs" />`
+<HeadTitle title="FAQs | OpenBB Workspace Docs" />
 
 ### General
 
