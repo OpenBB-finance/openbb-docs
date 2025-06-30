@@ -17,6 +17,27 @@ import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
 An additional configuration file, `system_settings.json`, is located in the same folder as `user_settings.json`, and can be created manually if it does not exist. The items below can be configured via this file, as a JSON dictionary.
 
+## Logging Service
+
+OpenBB Platform has a logging service which can be enabled (default is off) in `system_settings.json`.
+
+When active, it logs commands executed, with their parameters, and any errors to a file.
+The files will be stored in the `OpenBBUserData\logs` folder, with each session assigned a UUID and logged in a separate file.
+
+Add this entry to `system_settings.json`:
+
+```json
+{
+    "logging_suppress": false,
+}
+```
+
+With the configuration set, the logger can be retrieved by name in the code.
+
+```python
+logger = logging.getLogger("openbb.logging_service")
+```
+
 ## API Settings
 
 The, `"api_settings"`, key is a nested dictionary, and is passed to the instance of FastAPI. 
@@ -54,23 +75,6 @@ The, `"api_settings"`, key is a nested dictionary, and is passed to the instance
     }
 }
 ```
-
-## Logging Service
-
-The OpenBB Platform logs anonymized records of function calls, and any error messages produced, to a unique file for the session, written to `~/OpenBBUserData/logs`.
-
-There are two settings that can be applied:
-
-- log_collect: Set as false to disable telemetry while still logging locally to file.
-- logging_suppress: Disables the file handler in the logging service and no log records are created.
-
-```json
-{
-    "logging_suppress": true,
-    "log_collect": false
-}
-```
-
 
 ## Python Settings
 
