@@ -320,9 +320,6 @@ The corresponding `widgets.json` would have the following format (for url just c
         "description": "Whitepaper to display.",
         "optionsEndpoint": "/whitepapers/options",
         "show": false,
-        "optionsParams": {
-          "category": "$category"
-        },
         "multiSelect": true,
         "roles": ["fileSelector"]
       }
