@@ -9,7 +9,6 @@ The final website can be found at [https://docs.openbb.co](https://docs.openbb.c
 
 ```bash
 ├── content # Markdown files
-│   ├── bot
 │   ├── cli
 │   ├── excel
 │   ├── platform
@@ -36,58 +35,14 @@ The markdown files are used to generate the website. The markdown files are loca
 
 Code blocks are generated using the default markdown syntax:
 
-  ```python
-  print("Hello World")
-  ```
+```python
+print("Hello World")
+```
 
 To generate a dynamic date for a certain code block (useful for options examples that need to have a valid date), you can use `2022-07-29` as a placeholder. The script will replace it with the third friday of the next month.
 
 ```txt
 /op oichart ticker:AMD expiry:2022-07-29
-```
-
-#### Available options
-
-This is great for huge lists. It opens a popup that contains the list and the search bar, so you can easily find what you are looking for. Everything is virtualized, so it's always fast no matter how many items you have.
-Check [crypto page](https://docs.openbb.co/bot/discord/crypto) for a demo of this component.
-
-```md
-import AvailableOptions from "@site/src/components/General/AvailableOptions";
-
-<AvailableOptions
-label="Exchanges"
-allOptions={[
-"aax",
-"ascendex",
-"bequant",
-"bibox",
-"bigone",
-"binance",
-"binancecoinm",
-"binanceus",
-"binanceusdm",
-"bit2c",
-"bitbank",
-"bitbay",
-"bitcoincom",
-"bitfinex",
-"bitfinex2",
-"bitflyer",
-"bitforex",
-"bitget",
-"bithumb",
-"bitmart",
-"bitmex",
-"bitopro",
-"bitpanda",
-"bitrue",
-"bitso",
-"bitstamp",
-"bitstamp1",
-"bittrex",
-"bitvavo",
-]}
-/>
 ```
 
 ## Run locally
@@ -130,7 +85,6 @@ pytest tests/website --autodoc
 ```
 
 > If tests are run locally, the `--autodoc` flag is required, otherwise tests will be skipped.
-
 > To install necessary dependencies for tests, run `poetry install -E doc` in the root directory of the repository.
 
 ## Notes

@@ -1,0 +1,40 @@
+---
+title: Environment Variables
+sidebar_position: 3
+description: This section details configuring the OpenBB Platform settings and environment variables.
+keywords:
+  - OpenBB Platform
+  - Python client
+  - getting started
+  - OpenBB Hub
+  - local environment
+  - environment variables
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="User Settings & Environment Variables | OpenBB Platform Docs" />
+
+Environment variables are defined in a `.env` file. If this file does not exist, create it inside the same folder `user_settings.json` is located.
+
+- `OPENBB_DEBUG_MODE`: enables verbosity while running the program
+- `OPENBB_DEV_MODE`: applicable to the API; exposes, /system and /user, paths.
+- `OPENBB_AUTO_BUILD`: enables automatic SDK package build on import
+- `OPENBB_API_AUTH_EXTENSION`: specifies which API authentication extension to use
+- `OPENBB_API_AUTH`: enables API authentication for command endpoints
+- `OPENBB_API_USERNAME`: sets API username
+- `OPENBB_API_PASSWORD`: sets API password
+
+Variables can be defined for current session only.
+
+```python
+import os
+os.environ["OPENBB_DEBUG_MODE"] = "True"
+from openbb import obb
+```
+
+### Proxy Networks
+
+:::info
+See [System Settings](/platform/settings/system_settings#http) for information on configuring global settings and the session object.
+:::

@@ -23,13 +23,13 @@ When the default OpenBB AI agent isn't a perfect fit for your financial institut
 
 With this integration, you can use all of OpenBB's features while leveraging your firm's proprietary LLMs. This enhances the efficiency of analysts and researchers by aligning with your unique data and models, all while keeping research queries and data securely within your firm's infrastructure.
 
-## Defining a custom AI agent
+## Defining a Custom AI Agent
 
 You can integrate your existing proprietary LLM into OpenBB Workspace by setting up an API endpoint. This allows OpenBB to interact with your custom AI agent. To help you get started, we provide an open-source Example AI Agent that guides you through the integration process.
 
 The example code is available [here](https://github.com/OpenBB-finance/copilot-for-openbb).
 
-## Adding a custom AI agent to OpenBB Workspace
+## Adding a Custom AI Agent to OpenBB Workspace
 
 After deploying your custom AI agent, you can add it to OpenBB Workspace. To do
 this, navigate to the "Add AI agent" section and follow the prompts:

@@ -137,16 +137,6 @@ To register the TradingView chart widget in OpenBB:
     "data": {
         "defaultSymbol": "AAPL",
         "updateFrequency": 60000,
-        "chartConfig": {
-            "upColor": "#26a69a",
-            "downColor": "#ef5350",
-            "borderUpColor": "#26a69a",
-            "borderDownColor": "#ef5350",
-            "wickUpColor": "#26a69a",
-            "wickDownColor": "#ef5350",
-            "volumeUpColor": "#26a69a",
-            "volumeDownColor": "#ef5350",
-            "showVolume": True
         }
     }
 })

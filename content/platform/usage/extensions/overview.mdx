@@ -1,0 +1,99 @@
+---
+title: Overview
+sidebar_position: 1
+description: This page describes the toolkit extensions available for the OpenBB Platform.
+keywords:
+- OpenBB Platform
+- Python client
+- Fast API
+- getting started
+- extensions
+- data providers
+- data extensions
+- toolkit extensions
+- toolkits
+- endpoints
+- community
+- technical analysis
+- quantitative analysis
+- charting libraries
+- Plotly
+- OpenBBFigure
+- PyWry
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+The extension framework allows individual pieces to be installed and removed seamlessly within the environment, using only the desired data and toolkit extensions.
+
+There are two primary types of extensions for the OpenBB Platform:
+
+- Data
+- Toolkits
+
+The OpenBB Core installation does not include any toolkit extensions. Install the OpenBB Platform with all data and toolkit extensions from PyPI with:
+
+```python
+pip install openbb[all]
+```
+
+When installing from source, navigate into the `openbb_platform` folder from the root of the project and enter:
+
+```console
+python dev_install.py -e
+```
+
+This installs all extensions in editable mode, and the Python interface is compiled in, `/openbb_platform/openbb/package`, instead of the environment's `site-packages` folder. The tables in the next pages lists extensions as either, Core or Community. The Core extensions are installed by default.
+
+A couple of notable differences between data and toolkit extension are:
+
+- In the OpenBB GitHub repo, extensions are all located under:
+
+    ```console
+    ~/OpenBB/openbb_platform/extensions
+    ```
+
+- An additional folder housing integration tests, with the `tests` folder staying empty.
+- There is a `router` file, and there can be sub-folders with additional routers.
+- Utility functions don't need their own sub-folder.
+- `__init__.py` files are all empty.
+
+:::important When an extension is installed or uninstalled, the Python interface will need to rebuild the static assets for the app to fully reflect the changes.
+
+To invoke the build process, enter the line below from the command line:
+
+```sh
+openbb-build
+```
+
+Or
+
+```sh
+python -c "import openbb;openbb.build()"
+```
+
+This is not necessary when using the API, changes will be reflected on the next run.
+:::
+
+## Coverage
+
+The installed commands and data providers are found under, `obb.coverage`.
+
+```python
+obb.coverage
+```
+
+```console
+/coverage
+
+    providers
+    commands
+    command_model
+    command_schemas
+```
+
+`obb.coverage.providers` is a dictionary of the installed provider extensions, each with its own list of available commands.
+
+`obb.coverage.commands` is a dictionary of commands, each with its own list of available providers for the data.
+
+`obb.coverage.command_model` is a dictionary where the keys are the command paths and the values is a nested dictionary of QueryParams and Data models associated with that function.

@@ -25,7 +25,7 @@ To get started, create the main application file and the widget configuration fi
 - `main.py`: This file will contain your FastAPI application code.
 - `widgets.json`: This file will define the configuration for your widget.
 
-The backend will use the same FastAPI setup and structure as described in the [Overview](/content/workspace/data-integration#1-create-the-api-server.md) page.
+The backend will use the same FastAPI setup and structure as described in the [Overview](/workspace/data-integration#1-create-the-api-server) page.
 
 ## Step 2: Create the Newsfeed Endpoint
 
@@ -75,11 +75,11 @@ def transform_article(article: CoindeskArticle) -> TransformedArticle:
     """Transform a CoinDesk article to a standardized format."""
     # Convert UNIX timestamp to ISO format
     date = datetime.fromtimestamp(article["PUBLISHED_ON"]).isoformat()
-    
+
     # Create excerpt from body (first 150 characters)
     body = article["BODY"]
     excerpt = f"{body[:150]}..." if len(body) > 150 else body
-    
+
     return {
         "title": article["TITLE"],
         "date": date,
@@ -92,15 +92,15 @@ def transform_article(article: CoindeskArticle) -> TransformedArticle:
 def fetch_news(limit: str, lang: str, categories: Optional[str] = None) -> List[TransformedArticle]:
     """Fetch news from the CoinDesk API."""
     url = f"https://data-api.coindesk.com/news/v1/article/list?lang={lang}&limit={limit}"
-    
+
     if categories:
         url += f"&categories={categories}"
-    
+
     response = requests.get(url)
-    
+
     if response.status_code != 200:
         raise HTTPException(status_code=response.status_code, detail=f"Failed to fetch news: {response.reason}")
-    
+
     data = response.json()
     return [transform_article(article) for article in data.get("Data", [])]
 
