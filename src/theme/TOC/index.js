@@ -28,7 +28,7 @@ export default function TOC({ className, ...props }) {
             linkClassName={
               "text-grey-400 capitalize !no-underline"
             }
-            linkActiveClassName={"!text-white"}
+            linkActiveClassName="toc-link-active"
           />
         </>
       )}

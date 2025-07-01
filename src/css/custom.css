@@ -600,3 +600,11 @@ div[role="dialog"][data-state="open"] button:hover {
 .theme-doc-sidebar-menu > li:first-child {
   @apply !mt-10;
 }
+
+.toc-link-active {
+  color: #2a2a2a !important; /* grey-900 for light mode */
+  font-weight: bold !important;
+}
+[data-theme="dark"] .toc-link-active {
+  color: #fff !important;     /* white for dark mode */
+}
