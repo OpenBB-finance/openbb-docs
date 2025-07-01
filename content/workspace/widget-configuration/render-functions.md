@@ -31,7 +31,7 @@ In the `widgets.json` configuration, you can specify render functions to customi
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| **actionType** | `string` | Specifies the action type for the render function (`"openUrl"`, `"openModal"`, `"openWidget"`, `"groupBy"`, `"sendToAgent"`) |
+| **actionType** | `string` | Specifies the action type for the render function (`"openUrl"`, `"groupBy"`, `"sendToAgent"`) |
 | **colorValueKey** | `string` | Specifies which field to use for determining the color when showing cell changes |
 | **hoverCardData** | `array of strings` | Specifies columns to show in the hover card |
 | **colorRules** | `array of objects` | An array of rules for conditional coloring |
