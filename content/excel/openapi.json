@@ -252,9 +252,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fmp"
-              ],
               "const": "fmp",
               "type": "string",
               "default": "fmp",
@@ -704,9 +701,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "ecb"
-              ],
               "const": "ecb",
               "type": "string",
               "default": "ecb",
@@ -944,9 +938,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "intrinio"
-              ],
               "const": "intrinio",
               "type": "string",
               "default": "intrinio",
@@ -963,6 +954,31 @@
               "title": "Symbol"
             },
             "description": "Symbol to get data for."
+          },
+          {
+            "name": "delay",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "eod",
+                "realtime",
+                "delayed"
+              ],
+              "type": "string",
+              "title": "intrinio",
+              "description": "Whether to return delayed, realtime, or eod data. (provider: intrinio)",
+              "intrinio": {
+                "multiple_items_allowed": false,
+                "choices": [
+                  "eod",
+                  "realtime",
+                  "delayed"
+                ]
+              },
+              "default": "eod"
+            },
+            "description": "Whether to return delayed, realtime, or eod data. (provider: intrinio)"
           },
           {
             "name": "date",
@@ -982,6 +998,215 @@
               "description": "The end-of-day date for options chains data. (provider: intrinio)"
             },
             "description": "The end-of-day date for options chains data. (provider: intrinio)"
+          },
+          {
+            "name": "option_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "call",
+                    "put"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "intrinio",
+              "description": "The option type, call or put, 'None' is both (default). (provider: intrinio)",
+              "intrinio": {
+                "multiple_items_allowed": false,
+                "choices": [
+                  "call",
+                  "put"
+                ]
+              }
+            },
+            "description": "The option type, call or put, 'None' is both (default). (provider: intrinio)"
+          },
+          {
+            "name": "moneyness",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "otm",
+                "itm",
+                "all"
+              ],
+              "type": "string",
+              "title": "intrinio",
+              "description": "Return only contracts that are in or out of the money, default is 'all'. Parameter is ignored when a date is supplied. (provider: intrinio)",
+              "intrinio": {
+                "multiple_items_allowed": false,
+                "choices": [
+                  "otm",
+                  "itm",
+                  "all"
+                ]
+              },
+              "default": "all"
+            },
+            "description": "Return only contracts that are in or out of the money, default is 'all'. Parameter is ignored when a date is supplied. (provider: intrinio)"
+          },
+          {
+            "name": "strike_gt",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "intrinio",
+              "description": "Return options with a strike price greater than the given value. Parameter is ignored when a date is supplied. (provider: intrinio)"
+            },
+            "description": "Return options with a strike price greater than the given value. Parameter is ignored when a date is supplied. (provider: intrinio)"
+          },
+          {
+            "name": "strike_lt",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "intrinio",
+              "description": "Return options with a strike price less than the given value. Parameter is ignored when a date is supplied. (provider: intrinio)"
+            },
+            "description": "Return options with a strike price less than the given value. Parameter is ignored when a date is supplied. (provider: intrinio)"
+          },
+          {
+            "name": "volume_gt",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "intrinio",
+              "description": "Return options with a volume greater than the given value. Parameter is ignored when a date is supplied. (provider: intrinio)"
+            },
+            "description": "Return options with a volume greater than the given value. Parameter is ignored when a date is supplied. (provider: intrinio)"
+          },
+          {
+            "name": "volume_lt",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "intrinio",
+              "description": "Return options with a volume less than the given value. Parameter is ignored when a date is supplied. (provider: intrinio)"
+            },
+            "description": "Return options with a volume less than the given value. Parameter is ignored when a date is supplied. (provider: intrinio)"
+          },
+          {
+            "name": "oi_gt",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "intrinio",
+              "description": "Return options with an open interest greater than the given value. Parameter is ignored when a date is supplied. (provider: intrinio)"
+            },
+            "description": "Return options with an open interest greater than the given value. Parameter is ignored when a date is supplied. (provider: intrinio)"
+          },
+          {
+            "name": "oi_lt",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "intrinio",
+              "description": "Return options with an open interest less than the given value. Parameter is ignored when a date is supplied. (provider: intrinio)"
+            },
+            "description": "Return options with an open interest less than the given value. Parameter is ignored when a date is supplied. (provider: intrinio)"
+          },
+          {
+            "name": "model",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "black_scholes",
+                "bjerk"
+              ],
+              "type": "string",
+              "title": "intrinio",
+              "description": "The pricing model to use for options chains data, default is 'black_scholes'. Parameter is ignored when a date is supplied. (provider: intrinio)",
+              "intrinio": {
+                "multiple_items_allowed": false,
+                "choices": [
+                  "black_scholes",
+                  "bjerk"
+                ]
+              },
+              "default": "black_scholes"
+            },
+            "description": "The pricing model to use for options chains data, default is 'black_scholes'. Parameter is ignored when a date is supplied. (provider: intrinio)"
+          },
+          {
+            "name": "show_extended_price",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "title": "intrinio",
+              "description": "Whether to include OHLC type fields, default is True. Parameter is ignored when a date is supplied. (provider: intrinio)",
+              "default": true
+            },
+            "description": "Whether to include OHLC type fields, default is True. Parameter is ignored when a date is supplied. (provider: intrinio)"
+          },
+          {
+            "name": "include_related_symbols",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "title": "intrinio",
+              "description": "Include related symbols that end in a 1 or 2 because of a corporate action, default is False. (provider: intrinio)",
+              "default": false
+            },
+            "description": "Include related symbols that end in a 1 or 2 because of a corporate action, default is False. (provider: intrinio)"
           }
         ],
         "responses": {
@@ -1071,9 +1296,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "intrinio"
-              ],
               "const": "intrinio",
               "type": "string",
               "default": "intrinio",
@@ -1189,10 +1411,10 @@
             "schema": {
               "anyOf": [
                 {
-                  "type": "integer"
+                  "type": "number"
                 },
                 {
-                  "type": "number"
+                  "type": "integer"
                 },
                 {
                   "type": "null"
@@ -1210,10 +1432,10 @@
             "schema": {
               "anyOf": [
                 {
-                  "type": "integer"
+                  "type": "number"
                 },
                 {
-                  "type": "number"
+                  "type": "integer"
                 },
                 {
                   "type": "null"
@@ -1339,9 +1561,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "oecd"
-              ],
               "const": "oecd",
               "type": "string",
               "default": "oecd",
@@ -1572,9 +1791,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "oecd"
-              ],
               "const": "oecd",
               "type": "string",
               "default": "oecd",
@@ -1779,9 +1995,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "oecd"
-              ],
               "const": "oecd",
               "type": "string",
               "default": "oecd",
@@ -2451,9 +2664,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fred"
-              ],
               "const": "fred",
               "type": "string",
               "default": "fred",
@@ -2697,9 +2907,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fmp"
-              ],
               "const": "fmp",
               "type": "string",
               "default": "fmp",
@@ -3058,9 +3265,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fred"
-              ],
               "const": "fred",
               "type": "string",
               "default": "fred",
@@ -3349,13 +3553,16 @@
             "required": true,
             "schema": {
               "type": "string",
-              "description": "Symbol to get data for. Multiple comma separated items allowed for provider(s): fred.",
+              "description": "Symbol to get data for. Multiple comma separated items allowed for provider(s): fred, intrinio.",
               "fred": {
+                "multiple_items_allowed": true
+              },
+              "intrinio": {
                 "multiple_items_allowed": true
               },
               "title": "Symbol"
             },
-            "description": "Symbol to get data for. Multiple comma separated items allowed for provider(s): fred."
+            "description": "Symbol to get data for. Multiple comma separated items allowed for provider(s): fred, intrinio."
           },
           {
             "name": "start_date",
@@ -3537,6 +3744,22 @@
               "default": 1.0
             },
             "description": "Time to sleep between requests to avoid rate limiting. (provider: intrinio)"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "type": "string",
+              "title": "intrinio",
+              "description": "Sort the data in ascending or descending order. (provider: intrinio)",
+              "default": "desc"
+            },
+            "description": "Sort the data in ascending or descending order. (provider: intrinio)"
           }
         ],
         "responses": {
@@ -3635,9 +3858,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "federal_reserve"
-              ],
               "const": "federal_reserve",
               "type": "string",
               "default": "federal_reserve",
@@ -3759,7 +3979,7 @@
           {
             "scope": "api",
             "parameters": {
-              "adjusted": 0.0,
+              "adjusted": false,
               "provider": "federal_reserve"
             },
             "provider": "federal_reserve"
@@ -3786,9 +4006,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "oecd"
-              ],
               "const": "oecd",
               "type": "string",
               "default": "oecd",
@@ -4056,9 +4273,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "oecd"
-              ],
               "const": "oecd",
               "type": "string",
               "default": "oecd",
@@ -4222,9 +4436,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "oecd"
-              ],
               "const": "oecd",
               "type": "string",
               "default": "oecd",
@@ -4432,9 +4643,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "oecd"
-              ],
               "const": "oecd",
               "type": "string",
               "default": "oecd",
@@ -4642,9 +4850,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fred"
-              ],
               "const": "fred",
               "type": "string",
               "default": "fred",
@@ -4967,9 +5172,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "econdb"
-              ],
               "const": "econdb",
               "type": "string",
               "default": "econdb",
@@ -5075,7 +5277,7 @@
             "description": "Enter the country as the full name, or iso code. If `latest` is False, the complete history for each series is returned.",
             "parameters": {
               "country": "united_states,jp",
-              "latest": 0.0,
+              "latest": false,
               "provider": "econdb"
             },
             "provider": "econdb"
@@ -5102,9 +5304,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "econdb"
-              ],
               "const": "econdb",
               "type": "string",
               "default": "econdb",
@@ -5200,9 +5399,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "econdb"
-              ],
               "const": "econdb",
               "type": "string",
               "default": "econdb",
@@ -5433,9 +5629,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "intrinio"
-              ],
               "const": "intrinio",
               "type": "string",
               "default": "intrinio",
@@ -5661,9 +5854,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fmp"
-              ],
               "const": "fmp",
               "type": "string",
               "default": "fmp",
@@ -5785,9 +5975,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fmp"
-              ],
               "const": "fmp",
               "type": "string",
               "default": "fmp",
@@ -5919,9 +6106,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fmp"
-              ],
               "const": "fmp",
               "type": "string",
               "default": "fmp",
@@ -6053,9 +6237,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fmp"
-              ],
               "const": "fmp",
               "type": "string",
               "default": "fmp",
@@ -6151,9 +6332,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "sec"
-              ],
               "const": "sec",
               "type": "string",
               "default": "sec",
@@ -6730,9 +6908,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fmp"
-              ],
               "const": "fmp",
               "type": "string",
               "default": "fmp",
@@ -6993,9 +7168,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "benzinga"
-              ],
               "const": "benzinga",
               "type": "string",
               "default": "benzinga",
@@ -7230,9 +7402,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "intrinio"
-              ],
               "const": "intrinio",
               "type": "string",
               "default": "intrinio",
@@ -7879,9 +8048,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "intrinio"
-              ],
               "const": "intrinio",
               "type": "string",
               "default": "intrinio",
@@ -7994,9 +8160,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fmp"
-              ],
               "const": "fmp",
               "type": "string",
               "default": "fmp",
@@ -8177,9 +8340,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fmp"
-              ],
               "const": "fmp",
               "type": "string",
               "default": "fmp",
@@ -8682,9 +8842,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fmp"
-              ],
               "const": "fmp",
               "type": "string",
               "default": "fmp",
@@ -9205,9 +9362,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "intrinio"
-              ],
               "const": "intrinio",
               "type": "string",
               "default": "intrinio",
@@ -9396,9 +9550,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fmp"
-              ],
               "const": "fmp",
               "type": "string",
               "default": "fmp",
@@ -9669,9 +9820,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fmp"
-              ],
               "const": "fmp",
               "type": "string",
               "default": "fmp",
@@ -9785,9 +9933,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fmp"
-              ],
               "const": "fmp",
               "type": "string",
               "default": "fmp",
@@ -9883,9 +10028,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "intrinio"
-              ],
               "const": "intrinio",
               "type": "string",
               "default": "intrinio",
@@ -10000,9 +10142,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "intrinio"
-              ],
               "const": "intrinio",
               "type": "string",
               "default": "intrinio",
@@ -10116,9 +10255,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "intrinio"
-              ],
               "const": "intrinio",
               "type": "string",
               "default": "intrinio",
@@ -10766,9 +10902,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fmp"
-              ],
               "const": "fmp",
               "type": "string",
               "default": "fmp",
@@ -11076,9 +11209,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fmp"
-              ],
               "const": "fmp",
               "type": "string",
               "default": "fmp",
@@ -11174,9 +11304,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fmp"
-              ],
               "const": "fmp",
               "type": "string",
               "default": "fmp",
@@ -11294,9 +11421,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fmp"
-              ],
               "const": "fmp",
               "type": "string",
               "default": "fmp",
@@ -11563,9 +11687,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fmp"
-              ],
               "const": "fmp",
               "type": "string",
               "default": "fmp",
@@ -11703,9 +11824,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fmp"
-              ],
               "const": "fmp",
               "type": "string",
               "default": "fmp",
@@ -12074,9 +12192,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fmp"
-              ],
               "const": "fmp",
               "type": "string",
               "default": "fmp",
@@ -12172,9 +12287,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fmp"
-              ],
               "const": "fmp",
               "type": "string",
               "default": "fmp",
@@ -12282,9 +12394,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fmp"
-              ],
               "const": "fmp",
               "type": "string",
               "default": "fmp",
@@ -12427,9 +12536,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fmp"
-              ],
               "const": "fmp",
               "type": "string",
               "default": "fmp",
@@ -12899,9 +13005,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "sec"
-              ],
               "const": "sec",
               "type": "string",
               "default": "sec",
@@ -13180,9 +13283,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "polygon"
-              ],
               "const": "polygon",
               "type": "string",
               "default": "polygon",
@@ -13697,9 +13797,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fmp"
-              ],
               "const": "fmp",
               "type": "string",
               "default": "fmp",
@@ -13798,9 +13895,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "sec"
-              ],
               "const": "sec",
               "type": "string",
               "default": "sec",
@@ -14131,9 +14225,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fmp"
-              ],
               "const": "fmp",
               "type": "string",
               "default": "fmp",
@@ -15476,9 +15567,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fmp"
-              ],
               "const": "fmp",
               "type": "string",
               "default": "fmp",
@@ -15574,9 +15662,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fmp"
-              ],
               "const": "fmp",
               "type": "string",
               "default": "fmp",
@@ -15988,9 +16073,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fmp"
-              ],
               "const": "fmp",
               "type": "string",
               "default": "fmp",
@@ -16104,9 +16186,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fmp"
-              ],
               "const": "fmp",
               "type": "string",
               "default": "fmp",
@@ -16214,9 +16293,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fred"
-              ],
               "const": "fred",
               "type": "string",
               "default": "fred",
@@ -16371,9 +16447,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fred"
-              ],
               "const": "fred",
               "type": "string",
               "default": "fred",
@@ -16524,9 +16597,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fred"
-              ],
               "const": "fred",
               "type": "string",
               "default": "fred",
@@ -16800,9 +16870,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fred"
-              ],
               "const": "fred",
               "type": "string",
               "default": "fred",
@@ -16879,7 +16946,7 @@
           {
             "scope": "api",
             "parameters": {
-              "long_run": 1.0,
+              "long_run": true,
               "provider": "fred"
             },
             "provider": "fred"
@@ -16906,9 +16973,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fred"
-              ],
               "const": "fred",
               "type": "string",
               "default": "fred",
@@ -17059,9 +17123,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fred"
-              ],
               "const": "fred",
               "type": "string",
               "default": "fred",
@@ -17208,9 +17269,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fred"
-              ],
               "const": "fred",
               "type": "string",
               "default": "fred",
@@ -17360,9 +17418,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fred"
-              ],
               "const": "fred",
               "type": "string",
               "default": "fred",
@@ -17515,9 +17570,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fred"
-              ],
               "const": "fred",
               "type": "string",
               "default": "fred",
@@ -17673,9 +17725,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fred"
-              ],
               "const": "fred",
               "type": "string",
               "default": "fred",
@@ -18093,9 +18142,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fred"
-              ],
               "const": "fred",
               "type": "string",
               "default": "fred",
@@ -18198,7 +18244,7 @@
           {
             "scope": "api",
             "parameters": {
-              "inflation_adjusted": 1.0,
+              "inflation_adjusted": true,
               "provider": "fred"
             },
             "provider": "fred"
@@ -18226,9 +18272,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "ecb"
-              ],
               "const": "ecb",
               "type": "string",
               "default": "ecb",
@@ -18495,9 +18538,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fred"
-              ],
               "const": "fred",
               "type": "string",
               "default": "fred",
@@ -18723,9 +18763,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fred"
-              ],
               "const": "fred",
               "type": "string",
               "default": "fred",
@@ -18893,9 +18930,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fred"
-              ],
               "const": "fred",
               "type": "string",
               "default": "fred",
@@ -19022,9 +19056,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fred"
-              ],
               "const": "fred",
               "type": "string",
               "default": "fred",
@@ -19195,9 +19226,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fred"
-              ],
               "const": "fred",
               "type": "string",
               "default": "fred",
@@ -19380,9 +19408,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fred"
-              ],
               "const": "fred",
               "type": "string",
               "default": "fred",
@@ -19939,9 +19964,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fmp"
-              ],
               "const": "fmp",
               "type": "string",
               "default": "fmp",
@@ -20037,9 +20059,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fmp"
-              ],
               "const": "fmp",
               "type": "string",
               "default": "fmp",
@@ -21316,9 +21335,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "pro"
-              ],
               "const": "pro",
               "type": "string",
               "default": "pro",
@@ -21330,9 +21346,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "fmp"
-              ],
               "const": "fmp",
               "type": "string",
               "title": "pro",
@@ -21369,7 +21382,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/OBBject_Watchlist"
+                  "$ref": "#/components/schemas/OBBject_ProWatchlist"
                 }
               }
             }
@@ -21408,7 +21421,7 @@
             }
           }
         },
-        "model": "Watchlist",
+        "model": "ProWatchlist",
         "examples": []
       }
     },
@@ -21431,9 +21444,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "pro"
-              ],
               "const": "pro",
               "type": "string",
               "default": "pro",
@@ -21546,9 +21556,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "pro"
-              ],
               "const": "pro",
               "type": "string",
               "default": "pro",
@@ -21575,6 +21582,40 @@
               }
             },
             "description": "Symbol to get data for. Multiple comma separated items allowed. (provider: pro)"
+          },
+          {
+            "name": "selected_group",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "financial_ratios",
+                    "valuation_multiples"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "pro",
+              "description": "Data group to fetch. (provider: pro)"
+            },
+            "description": "Data group to fetch. (provider: pro)"
+          },
+          {
+            "name": "with_peers",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "title": "pro",
+              "description": "Fetch data to get peers. (provider: pro)",
+              "default": false
+            },
+            "description": "Fetch data to get peers. (provider: pro)"
           }
         ],
         "responses": {
@@ -21583,7 +21624,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/OBBject_GroupedComparisons"
+                  "$ref": "#/components/schemas/OBBject_ProGroupedComparisons"
                 }
               }
             }
@@ -21622,7 +21663,7 @@
             }
           }
         },
-        "model": "GroupedComparisons",
+        "model": "ProGroupedComparisons",
         "examples": []
       }
     },
@@ -21645,9 +21686,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "pro"
-              ],
               "const": "pro",
               "type": "string",
               "default": "pro",
@@ -21702,10 +21740,34 @@
               ],
               "type": "string",
               "title": "pro",
-              "description": "None",
+              "description": "Time period of the data to return. (provider: pro)",
               "default": "annual"
             },
-            "description": "None"
+            "description": "Time period of the data to return. (provider: pro)"
+          },
+          {
+            "name": "selected_group",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "balance_sheet",
+                    "cash_flow_statement",
+                    "income_statement"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "pro",
+              "description": "Data group to fetch. (provider: pro)",
+              "default": "income_statement"
+            },
+            "description": "Data group to fetch. (provider: pro)"
           },
           {
             "name": "limit",
@@ -21734,7 +21796,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/OBBject_GroupedFinancials"
+                  "$ref": "#/components/schemas/OBBject_ProGroupedFinancials"
                 }
               }
             }
@@ -21773,7 +21835,559 @@
             }
           }
         },
-        "model": "GroupedFinancials",
+        "model": "ProGroupedFinancials",
+        "examples": []
+      }
+    },
+    "/api/v1/pro/earning_trends": {
+      "get": {
+        "tags": [
+          "pro"
+        ],
+        "summary": "Earning Trends",
+        "description": "Earning trends endpoint for pro users.",
+        "operationId": "pro_earning_trends",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "const": "pro",
+              "type": "string",
+              "default": "pro",
+              "title": "Provider"
+            }
+          },
+          {
+            "name": "symbol",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "pro",
+              "description": "Symbol to get data for. Multiple comma separated items allowed. (provider: pro)",
+              "pro": {
+                "multiple_items_allowed": true
+              }
+            },
+            "description": "Symbol to get data for. Multiple comma separated items allowed. (provider: pro)"
+          },
+          {
+            "name": "fiscal_year",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "pro",
+              "description": "The future fiscal year to retrieve estimates for. When no symbol and year is supplied the current calendar year is used. (provider: pro)"
+            },
+            "description": "The future fiscal year to retrieve estimates for. When no symbol and year is supplied the current calendar year is used. (provider: pro)"
+          },
+          {
+            "name": "fiscal_period",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "fy",
+                    "q1",
+                    "q2",
+                    "q3",
+                    "q4"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "pro",
+              "description": "The future fiscal period to retrieve estimates for. (provider: pro)"
+            },
+            "description": "The future fiscal period to retrieve estimates for. (provider: pro)"
+          },
+          {
+            "name": "calendar_year",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "pro",
+              "description": "The future calendar year to retrieve estimates for. When no symbol and year is supplied the current calendar year is used. (provider: pro)"
+            },
+            "description": "The future calendar year to retrieve estimates for. When no symbol and year is supplied the current calendar year is used. (provider: pro)"
+          },
+          {
+            "name": "calendar_period",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "q1",
+                    "q2",
+                    "q3",
+                    "q4"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "pro",
+              "description": "The future calendar period to retrieve estimates for. (provider: pro)"
+            },
+            "description": "The future calendar period to retrieve estimates for. (provider: pro)"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "pro",
+              "description": "The number of data entries to return. (provider: pro)",
+              "default": 10
+            },
+            "description": "The number of data entries to return. (provider: pro)"
+          },
+          {
+            "name": "include_historical",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "title": "pro",
+              "description": "If True, the data will include all past data and the limit will be ignored. (provider: pro)",
+              "default": false
+            },
+            "description": "If True, the data will include all past data and the limit will be ignored. (provider: pro)"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "type": "string",
+              "title": "pro",
+              "description": "Sort order for the data. (provider: pro)",
+              "default": "asc"
+            },
+            "description": "Sort order for the data. (provider: pro)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OBBject_ProEarningTrends"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "400": {
+            "description": "No Results Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "model": "ProEarningTrends",
+        "examples": []
+      }
+    },
+    "/api/v1/pro/revenue_trends": {
+      "get": {
+        "tags": [
+          "pro"
+        ],
+        "summary": "Revenue Trends",
+        "description": "Revenue trends endpoint for pro users.",
+        "operationId": "pro_revenue_trends",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "const": "pro",
+              "type": "string",
+              "default": "pro",
+              "title": "Provider"
+            }
+          },
+          {
+            "name": "symbol",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "pro",
+              "description": "Symbol to get data for. Multiple comma separated items allowed. (provider: pro)",
+              "pro": {
+                "multiple_items_allowed": true
+              }
+            },
+            "description": "Symbol to get data for. Multiple comma separated items allowed. (provider: pro)"
+          },
+          {
+            "name": "fiscal_year",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "pro",
+              "description": "The future fiscal year to retrieve estimates for. When no symbol and year is supplied the current calendar year is used. (provider: pro)"
+            },
+            "description": "The future fiscal year to retrieve estimates for. When no symbol and year is supplied the current calendar year is used. (provider: pro)"
+          },
+          {
+            "name": "fiscal_period",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "fy",
+                    "q1",
+                    "q2",
+                    "q3",
+                    "q4"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "pro",
+              "description": "The future fiscal period to retrieve estimates for. (provider: pro)"
+            },
+            "description": "The future fiscal period to retrieve estimates for. (provider: pro)"
+          },
+          {
+            "name": "calendar_year",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "pro",
+              "description": "The future calendar year to retrieve estimates for. When no symbol and year is supplied the current calendar year is used. (provider: pro)"
+            },
+            "description": "The future calendar year to retrieve estimates for. When no symbol and year is supplied the current calendar year is used. (provider: pro)"
+          },
+          {
+            "name": "calendar_period",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "q1",
+                    "q2",
+                    "q3",
+                    "q4"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "pro",
+              "description": "The future calendar period to retrieve estimates for. (provider: pro)"
+            },
+            "description": "The future calendar period to retrieve estimates for. (provider: pro)"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "pro",
+              "description": "The number of data entries to return. (provider: pro)",
+              "default": 10
+            },
+            "description": "The number of data entries to return. (provider: pro)"
+          },
+          {
+            "name": "include_historical",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "title": "pro",
+              "description": "If True, the data will include all past data and the limit will be ignored. (provider: pro)",
+              "default": false
+            },
+            "description": "If True, the data will include all past data and the limit will be ignored. (provider: pro)"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "type": "string",
+              "title": "pro",
+              "description": "Sort order for the data. (provider: pro)",
+              "default": "asc"
+            },
+            "description": "Sort order for the data. (provider: pro)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OBBject_ProRevenueTrends"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "400": {
+            "description": "No Results Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "model": "ProRevenueTrends",
+        "examples": []
+      }
+    },
+    "/api/v1/pro/price_target_by_analyst": {
+      "get": {
+        "tags": [
+          "pro"
+        ],
+        "summary": "Price Target By Analyst",
+        "description": "Price target by analyst endpoint for pro users.",
+        "operationId": "pro_price_target_by_analyst",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "const": "pro",
+              "type": "string",
+              "default": "pro",
+              "title": "Provider"
+            }
+          },
+          {
+            "name": "symbol",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "pro",
+              "description": "Symbol to get data for. Multiple comma separated items allowed. (provider: pro)",
+              "pro": [
+                "multiple_items_allowed"
+              ]
+            },
+            "description": "Symbol to get data for. Multiple comma separated items allowed. (provider: pro)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OBBject_ProPriceTargetByAnalyst"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "400": {
+            "description": "No Results Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "model": "ProPriceTargetByAnalyst",
         "examples": []
       }
     },
@@ -21868,9 +22482,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "sec"
-              ],
               "const": "sec",
               "type": "string",
               "default": "sec",
@@ -21985,9 +22596,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "sec"
-              ],
               "const": "sec",
               "type": "string",
               "default": "sec",
@@ -22110,9 +22718,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "sec"
-              ],
               "const": "sec",
               "type": "string",
               "default": "sec",
@@ -22268,9 +22873,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "sec"
-              ],
               "const": "sec",
               "type": "string",
               "default": "sec",
@@ -22385,9 +22987,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "sec"
-              ],
               "const": "sec",
               "type": "string",
               "default": "sec",
@@ -22471,9 +23070,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "sec"
-              ],
               "const": "sec",
               "type": "string",
               "default": "sec",
@@ -22642,6 +23238,24 @@
             "description": "Comma separated list of types to ignore. (stock, etf, index, indices)"
           },
           {
+            "name": "ignore_symbols",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Comma separated list of symbols to ignore.",
+              "title": "Ignore Symbols"
+            },
+            "description": "Comma separated list of symbols to ignore."
+          },
+          {
             "name": "limit",
             "in": "query",
             "required": false,
@@ -22767,6 +23381,58 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/search/economic-indicators": {
+      "get": {
+        "tags": [
+          "search"
+        ],
+        "summary": "Economic Indicators",
+        "description": "Get list of economic indicators from the OpenBB SDK API.",
+        "operationId": "query_economic_indicators",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/SelectItem"
+                  },
+                  "type": "array",
+                  "title": "Response Query Economic Indicators"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/search/countries": {
+      "get": {
+        "tags": [
+          "search"
+        ],
+        "summary": "Countries",
+        "description": "Get list of countries from the OpenBB SDK API.",
+        "operationId": "query_countries",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/SelectItem"
+                  },
+                  "type": "array",
+                  "title": "Response Query Countries"
                 }
               }
             }
@@ -22914,6 +23580,736 @@
                     "$ref": "#/components/schemas/UDFSearchResult"
                   },
                   "title": "Response Query Udf Search"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/udf/pyth-symbols": {
+      "get": {
+        "tags": [
+          "udf"
+        ],
+        "summary": "Pyth Symbols",
+        "description": "Pyth Symbols.",
+        "operationId": "query_pyth_symbols",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/SelectItem"
+                  },
+                  "type": "array",
+                  "title": "Response Query Pyth Symbols"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/pro/quartr/events": {
+      "get": {
+        "tags": [
+          "quartr"
+        ],
+        "summary": "Get Company Events",
+        "operationId": "quartr_company_events",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Ticker"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EventResponse"
+                  },
+                  "title": "Response Quartr Company Events"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/pro/quartr/transcripts": {
+      "get": {
+        "tags": [
+          "quartr"
+        ],
+        "summary": "Get Company Transcripts",
+        "operationId": "quartr_company_transcripts",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Ticker"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TranscriptResponse"
+                  },
+                  "title": "Response Quartr Company Transcripts"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/pro/quartr/companies": {
+      "get": {
+        "tags": [
+          "quartr"
+        ],
+        "summary": "Get Companies",
+        "operationId": "quartr_companies",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/CompanyResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Quartr Companies"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/pro/quartr/transcript-text": {
+      "get": {
+        "tags": [
+          "quartr"
+        ],
+        "summary": "Raw Transcript",
+        "operationId": "quartr_transcript_text",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "transcript_url",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Transcript Url"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Transcript"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/pro/quartr/pdf": {
+      "get": {
+        "tags": [
+          "quartr"
+        ],
+        "summary": "Get Pdf File",
+        "operationId": "quartr_get_pdf",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "pdf_url",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Pdf Url"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/pro/quartr/documents": {
+      "get": {
+        "tags": [
+          "quartr"
+        ],
+        "summary": "Get Company Documents",
+        "operationId": "quartr_company_documents",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Ticker"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DocumentResponse"
+                  },
+                  "title": "Response Quartr Company Documents"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/pro/quartr/company/{ticker}": {
+      "get": {
+        "tags": [
+          "quartr"
+        ],
+        "summary": "Get Company",
+        "operationId": "quartr_company",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Ticker"
+            }
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Country"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/pro/quartr/calendar": {
+      "get": {
+        "tags": [
+          "quartr"
+        ],
+        "summary": "Get Calendar",
+        "operationId": "quartr_calendar",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CalendarEvent"
+                  },
+                  "title": "Response Quartr Calendar"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/pro/quartr/calendar-range": {
+      "get": {
+        "tags": [
+          "quartr"
+        ],
+        "summary": "Get Calendar Range",
+        "operationId": "quartr_calendar_range",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Start Date"
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "End Date"
+            }
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Country"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CalendarEvent"
+                  },
+                  "title": "Response Quartr Calendar Range"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/pro/cme/symbols": {
+      "get": {
+        "tags": [
+          "cme"
+        ],
+        "summary": "Get Symbols",
+        "operationId": "cme_symbols",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/CMESymbol"
+                  },
+                  "type": "array",
+                  "title": "Response Cme Symbols"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/pro/cme/maturities": {
+      "get": {
+        "tags": [
+          "cme"
+        ],
+        "summary": "Get Maturities",
+        "operationId": "cme_maturities",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Symbol"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "title": "Response Cme Maturities"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/pro/cme/available-curve-dates": {
+      "get": {
+        "tags": [
+          "cme"
+        ],
+        "summary": "Get Curve Dates",
+        "operationId": "cme_available_curve_dates",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Symbol"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "title": "Response Cme Available Curve Dates"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/pro/cme/historical-settlements": {
+      "get": {
+        "tags": [
+          "cme"
+        ],
+        "summary": "Get Historical Settlement Data",
+        "operationId": "cme_historical_settlements",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Symbol"
+            }
+          },
+          {
+            "name": "maturity_date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Maturity Date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HistoricalSettlement"
+                  },
+                  "title": "Response Cme Historical Settlements"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/pro/cme/settlement-curve": {
+      "get": {
+        "tags": [
+          "cme"
+        ],
+        "summary": "Get Settlement Curve Data",
+        "operationId": "cme_settlement_curve",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Symbol"
+            }
+          },
+          {
+            "name": "trade_date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Trade Date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SettlementCurve"
+                  },
+                  "title": "Response Cme Settlement Curve"
                 }
               }
             }
@@ -24319,6 +25715,129 @@
         "title": "BenzingaWorldNewsData",
         "description": "Benzinga World News Data."
       },
+      "CMESymbol": {
+        "properties": {
+          "value": {
+            "type": "string",
+            "title": "Value"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "extraInfo": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Extrainfo"
+          }
+        },
+        "type": "object",
+        "required": [
+          "value",
+          "label"
+        ],
+        "title": "CMESymbol"
+      },
+      "CalendarEvent": {
+        "properties": {
+          "event_title": {
+            "type": "string",
+            "title": "Event Title"
+          },
+          "event_date": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Event Date"
+          },
+          "event_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Event Type"
+          },
+          "transcript_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Transcript Url"
+          },
+          "slides_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Slides Url"
+          },
+          "report_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Report Url"
+          },
+          "company_ticker": {
+            "type": "string",
+            "title": "Company Ticker"
+          },
+          "company_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Company Name"
+          },
+          "company_country": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Company Country"
+          }
+        },
+        "type": "object",
+        "required": [
+          "event_title",
+          "event_date",
+          "event_type",
+          "transcript_url",
+          "slides_url",
+          "report_url",
+          "company_ticker"
+        ],
+        "title": "CalendarEvent"
+      },
       "Chart": {
         "properties": {
           "content": {
@@ -24366,9 +25885,98 @@
         "enum": [
           "plotly"
         ],
-        "const": "plotly",
         "title": "ChartFormat",
         "description": "Chart format."
+      },
+      "CompanyResponse": {
+        "properties": {
+          "company_id": {
+            "type": "integer",
+            "title": "Company Id"
+          },
+          "company_ticker": {
+            "type": "string",
+            "title": "Company Ticker"
+          },
+          "company_name": {
+            "type": "string",
+            "title": "Company Name"
+          },
+          "company_country": {
+            "type": "string",
+            "title": "Company Country"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "display_name": {
+            "type": "string",
+            "title": "Display Name"
+          },
+          "backlink_url": {
+            "type": "string",
+            "title": "Backlink Url"
+          }
+        },
+        "type": "object",
+        "required": [
+          "company_id",
+          "company_ticker",
+          "company_name",
+          "company_country",
+          "description",
+          "display_name",
+          "backlink_url"
+        ],
+        "title": "CompanyResponse"
+      },
+      "DocumentResponse": {
+        "properties": {
+          "event_title": {
+            "type": "string",
+            "title": "Event Title"
+          },
+          "event_date": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Event Date"
+          },
+          "company_ticker": {
+            "type": "string",
+            "title": "Company Ticker"
+          },
+          "document_type": {
+            "type": "string",
+            "title": "Document Type"
+          },
+          "document_url": {
+            "type": "string",
+            "title": "Document Url"
+          },
+          "document_updated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Document Updated At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "event_title",
+          "event_date",
+          "company_ticker",
+          "document_type",
+          "document_url",
+          "document_updated_at"
+        ],
+        "title": "DocumentResponse"
       },
       "ECBBalanceOfPaymentsData": {
         "properties": {
@@ -25650,7 +27258,7 @@
             "title": "Reserve Assets",
             "description": "Reserve Assets Balance (Billions of EUR)"
           },
-          "errors_and_ommissions": {
+          "errors_and_omissions": {
             "anyOf": [
               {
                 "type": "number"
@@ -25659,7 +27267,7 @@
                 "type": "null"
               }
             ],
-            "title": "Errors And Ommissions",
+            "title": "Errors And Omissions",
             "description": "Errors and Omissions (Billions of EUR)"
           }
         },
@@ -26602,6 +28210,183 @@
         ],
         "title": "EconDbYieldCurveData",
         "description": "EconDB Yield Curve Data."
+      },
+      "EventResponse": {
+        "properties": {
+          "event_id": {
+            "type": "string",
+            "title": "Event Id"
+          },
+          "company_id": {
+            "type": "integer",
+            "title": "Company Id"
+          },
+          "event_title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Event Title"
+          },
+          "event_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Event Date"
+          },
+          "event_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Event Type"
+          },
+          "type_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Type Id"
+          },
+          "report_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Report Url"
+          },
+          "report_updated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Report Updated At"
+          },
+          "slides_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Slides Url"
+          },
+          "slides_updated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Slides Updated At"
+          },
+          "transcript_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Transcript Url"
+          },
+          "transcript_updated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Transcript Updated At"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At"
+          },
+          "report_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Report Type"
+          },
+          "transcript_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Transcript Type"
+          },
+          "slides_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Slides Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "event_id",
+          "company_id"
+        ],
+        "title": "EventResponse"
       },
       "FMPAnalystEstimatesData": {
         "properties": {
@@ -27705,9 +29490,9 @@
             "title": "Growth Deferred Revenue Non Current",
             "description": "Growth rate of non-current deferred revenue."
           },
-          "growth_deferrred_tax_liabilities_non_current": {
+          "growth_deferred_tax_liabilities_non_current": {
             "type": "number",
-            "title": "Growth Deferrred Tax Liabilities Non Current",
+            "title": "Growth Deferred Tax Liabilities Non Current",
             "description": "Growth rate of non-current deferred tax liabilities."
           },
           "growth_other_non_current_liabilities": {
@@ -27806,7 +29591,7 @@
           "growth_total_current_liabilities",
           "growth_long_term_debt",
           "growth_deferred_revenue_non_current",
-          "growth_deferrred_tax_liabilities_non_current",
+          "growth_deferred_tax_liabilities_non_current",
           "growth_other_non_current_liabilities",
           "growth_total_non_current_liabilities",
           "growth_other_liabilities",
@@ -34873,7 +36658,7 @@
             "title": "Eps Estimated",
             "description": "Estimated EPS for the earnings date."
           },
-          "revenueEstimated": {
+          "revenue_estimated": {
             "anyOf": [
               {
                 "type": "number"
@@ -34882,10 +36667,10 @@
                 "type": "null"
               }
             ],
-            "title": "Revenueestimated",
+            "title": "Revenue Estimated",
             "description": "Estimated consensus revenue for the reporting period."
           },
-          "revenue": {
+          "revenue_actual": {
             "anyOf": [
               {
                 "type": "number"
@@ -34894,10 +36679,10 @@
                 "type": "null"
               }
             ],
-            "title": "Revenue",
+            "title": "Revenue Actual",
             "description": "The actual reported revenue."
           },
-          "time": {
+          "reporting_time": {
             "anyOf": [
               {
                 "type": "string"
@@ -34906,10 +36691,10 @@
                 "type": "null"
               }
             ],
-            "title": "Time",
+            "title": "Reporting Time",
             "description": "The reporting time - e.g. after market close."
           },
-          "updatedFromDate": {
+          "updated_at": {
             "anyOf": [
               {
                 "type": "string",
@@ -34919,10 +36704,10 @@
                 "type": "null"
               }
             ],
-            "title": "Updatedfromdate",
+            "title": "Updated At",
             "description": "The date when the data was last updated."
           },
-          "fiscalDateEnding": {
+          "period_ending": {
             "anyOf": [
               {
                 "type": "string",
@@ -34932,7 +36717,7 @@
                 "type": "null"
               }
             ],
-            "title": "Fiscaldateending",
+            "title": "Period Ending",
             "description": "The fiscal period end date."
           }
         },
@@ -38383,6 +40168,18 @@
               }
             ],
             "title": "Type"
+          },
+          "has_options": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Has Options",
+            "default": false
           }
         },
         "type": "object",
@@ -39352,6 +41149,28 @@
         "title": "FREDTreasuryConstantMaturityData",
         "description": "FRED Treasury Constant Maturity Data."
       },
+      "FREDYieldCurveData": {
+        "properties": {
+          "maturity": {
+            "type": "number",
+            "title": "Maturity",
+            "description": "Maturity of the treasury rate in years."
+          },
+          "rate": {
+            "type": "number",
+            "title": "Rate",
+            "description": "Associated rate given in decimal form (0.05 is 5%)"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "maturity",
+          "rate"
+        ],
+        "title": "FREDYieldCurveData",
+        "description": "FRED US Yield Curve Data."
+      },
       "FederalReserveFEDData": {
         "properties": {
           "date": {
@@ -39712,7 +41531,9 @@
         "enum": [
           "stock",
           "etf",
+          "fund etf",
           "index",
+          "options",
           "indices",
           "economic",
           "all"
@@ -42086,11 +43907,36 @@
         "type": "object",
         "title": "HTTPValidationError"
       },
+      "HistoricalSettlement": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "symbol": {
+            "type": "string",
+            "title": "Symbol"
+          },
+          "price": {
+            "type": "number",
+            "title": "Price"
+          }
+        },
+        "type": "object",
+        "required": [
+          "date",
+          "symbol",
+          "price"
+        ],
+        "title": "HistoricalSettlement"
+      },
       "IgnoreTypes": {
         "type": "string",
         "enum": [
           "stock",
           "etf",
+          "fund etf",
           "index",
           "indices",
           "economic"
@@ -45978,10 +47824,10 @@
           "balance": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
-                "type": "number"
+                "type": "integer"
               },
               {
                 "type": "null"
@@ -48255,7 +50101,8 @@
                   "ebit",
                   "enterprise_value",
                   "cash_flow_per_share",
-                  "pretax_income"
+                  "pretax_income",
+                  "ebitda_margin"
                 ]
               },
               {
@@ -50347,10 +52194,10 @@
           "underlying_shares": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
-                "type": "number"
+                "type": "integer"
               },
               {
                 "type": "null"
@@ -51725,18 +53572,6 @@
             ],
             "title": "Rho",
             "description": "Rho of the option."
-          },
-          "exercise_style": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Exercise Style",
-            "description": "The exercise style of the option, American or European."
           }
         },
         "additionalProperties": true,
@@ -52722,6 +54557,9 @@
                     }
                   ]
                 },
+                "propertyNames": {
+                  "format": "date"
+                },
                 "type": "object"
               },
               {
@@ -52826,7 +54664,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -52895,7 +54733,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -52964,7 +54802,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -53033,7 +54871,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -53102,7 +54940,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -53171,7 +55009,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -53247,7 +55085,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -53255,10 +55093,10 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/PolygonBalanceSheetData"
+                      "$ref": "#/components/schemas/IntrinioBalanceSheetData"
                     },
                     {
-                      "$ref": "#/components/schemas/IntrinioBalanceSheetData"
+                      "$ref": "#/components/schemas/PolygonBalanceSheetData"
                     },
                     {
                       "$ref": "#/components/schemas/FMPBalanceSheetData"
@@ -53326,7 +55164,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -53395,7 +55233,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -53464,7 +55302,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -53533,7 +55371,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -53602,7 +55440,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -53671,7 +55509,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -53740,7 +55578,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -53819,7 +55657,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -53888,7 +55726,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -53953,7 +55791,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -54022,7 +55860,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -54030,13 +55868,13 @@
                 "items": {
                   "oneOf": [
                     {
+                      "$ref": "#/components/schemas/SecCompanyFilingsData"
+                    },
+                    {
                       "$ref": "#/components/schemas/IntrinioCompanyFilingsData"
                     },
                     {
                       "$ref": "#/components/schemas/FMPCompanyFilingsData"
-                    },
-                    {
-                      "$ref": "#/components/schemas/SecCompanyFilingsData"
                     }
                   ]
                 },
@@ -54101,7 +55939,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -54109,16 +55947,16 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/FMPCompanyNewsData"
-                    },
-                    {
-                      "$ref": "#/components/schemas/PolygonCompanyNewsData"
+                      "$ref": "#/components/schemas/IntrinioCompanyNewsData"
                     },
                     {
                       "$ref": "#/components/schemas/BenzingaCompanyNewsData"
                     },
                     {
-                      "$ref": "#/components/schemas/IntrinioCompanyNewsData"
+                      "$ref": "#/components/schemas/FMPCompanyNewsData"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PolygonCompanyNewsData"
                     }
                   ]
                 },
@@ -54183,7 +56021,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -54248,7 +56086,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -54317,7 +56155,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -54386,7 +56224,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -54455,7 +56293,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -54531,7 +56369,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -54600,7 +56438,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -54608,10 +56446,10 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/FMPCurrencyHistoricalData"
+                      "$ref": "#/components/schemas/PolygonCurrencyHistoricalData"
                     },
                     {
-                      "$ref": "#/components/schemas/PolygonCurrencyHistoricalData"
+                      "$ref": "#/components/schemas/FMPCurrencyHistoricalData"
                     }
                   ]
                 },
@@ -54676,7 +56514,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -54684,10 +56522,10 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/PolygonCurrencyPairsData"
+                      "$ref": "#/components/schemas/IntrinioCurrencyPairsData"
                     },
                     {
-                      "$ref": "#/components/schemas/IntrinioCurrencyPairsData"
+                      "$ref": "#/components/schemas/PolygonCurrencyPairsData"
                     },
                     {
                       "$ref": "#/components/schemas/FMPCurrencyPairsData"
@@ -54755,7 +56593,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -54820,7 +56658,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -54896,7 +56734,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -54965,7 +56803,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -55034,7 +56872,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -55103,7 +56941,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -55172,7 +57010,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -55241,7 +57079,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -55317,7 +57155,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -55386,7 +57224,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -55455,7 +57293,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -55463,10 +57301,10 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/IntrinioEquityHistoricalData"
+                      "$ref": "#/components/schemas/FMPEquityHistoricalData"
                     },
                     {
-                      "$ref": "#/components/schemas/FMPEquityHistoricalData"
+                      "$ref": "#/components/schemas/IntrinioEquityHistoricalData"
                     },
                     {
                       "$ref": "#/components/schemas/PolygonEquityHistoricalData"
@@ -55534,7 +57372,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -55610,7 +57448,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -55679,7 +57517,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -55748,7 +57586,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -55813,7 +57651,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -55821,10 +57659,10 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/FMPEquityQuoteData"
+                      "$ref": "#/components/schemas/IntrinioEquityQuoteData"
                     },
                     {
-                      "$ref": "#/components/schemas/IntrinioEquityQuoteData"
+                      "$ref": "#/components/schemas/FMPEquityQuoteData"
                     }
                   ]
                 },
@@ -55889,7 +57727,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -55958,7 +57796,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -55966,10 +57804,10 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/SecEquitySearchData"
+                      "$ref": "#/components/schemas/IntrinioEquitySearchData"
                     },
                     {
-                      "$ref": "#/components/schemas/IntrinioEquitySearchData"
+                      "$ref": "#/components/schemas/SecEquitySearchData"
                     }
                   ]
                 },
@@ -56034,7 +57872,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -56103,7 +57941,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -56172,7 +58010,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -56241,7 +58079,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -56249,10 +58087,10 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/IntrinioEquityHistoricalData"
+                      "$ref": "#/components/schemas/FMPEquityHistoricalData"
                     },
                     {
-                      "$ref": "#/components/schemas/FMPEquityHistoricalData"
+                      "$ref": "#/components/schemas/IntrinioEquityHistoricalData"
                     },
                     {
                       "$ref": "#/components/schemas/PolygonEquityHistoricalData"
@@ -56320,7 +58158,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -56331,10 +58169,10 @@
                       "$ref": "#/components/schemas/SecEtfHoldingsData"
                     },
                     {
-                      "$ref": "#/components/schemas/FMPEtfHoldingsData"
+                      "$ref": "#/components/schemas/IntrinioEtfHoldingsData"
                     },
                     {
-                      "$ref": "#/components/schemas/IntrinioEtfHoldingsData"
+                      "$ref": "#/components/schemas/FMPEtfHoldingsData"
                     }
                   ]
                 },
@@ -56399,7 +58237,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -56468,7 +58306,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -56544,7 +58382,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -56620,7 +58458,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -56696,7 +58534,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -56765,7 +58603,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -56834,7 +58672,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -56903,7 +58741,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -56979,7 +58817,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -56987,10 +58825,10 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/IntrinioFinancialRatiosData"
+                      "$ref": "#/components/schemas/FMPFinancialRatiosData"
                     },
                     {
-                      "$ref": "#/components/schemas/FMPFinancialRatiosData"
+                      "$ref": "#/components/schemas/IntrinioFinancialRatiosData"
                     }
                   ]
                 },
@@ -57055,7 +58893,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -57124,7 +58962,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -57200,7 +59038,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -57208,10 +59046,10 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/IntrinioForwardEpsEstimatesData"
+                      "$ref": "#/components/schemas/FMPForwardEpsEstimatesData"
                     },
                     {
-                      "$ref": "#/components/schemas/FMPForwardEpsEstimatesData"
+                      "$ref": "#/components/schemas/IntrinioForwardEpsEstimatesData"
                     }
                   ]
                 },
@@ -57276,7 +59114,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -57345,7 +59183,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -57414,7 +59252,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -57483,7 +59321,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -57552,7 +59390,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -57560,10 +59398,10 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/FredSeriesData"
+                      "$ref": "#/components/schemas/IntrinioFredSeriesData"
                     },
                     {
-                      "$ref": "#/components/schemas/IntrinioFredSeriesData"
+                      "$ref": "#/components/schemas/FredSeriesData"
                     }
                   ]
                 },
@@ -57628,7 +59466,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -57697,7 +59535,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -57766,7 +59604,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -57831,141 +59669,11 @@
         "title": "OBBject_GdpReal",
         "description": "OBBject with results of type GdpReal"
       },
-      "OBBject_GroupedComparisons": {
-        "properties": {
-          "_id": {
-            "type": "string",
-            "title": " Id"
-          },
-          "results": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/GroupedComparisons"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Serializable results."
-          },
-          "provider": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Provider",
-            "description": "Provider name."
-          },
-          "warnings": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/Warning_"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Warnings",
-            "description": "List of warnings."
-          },
-          "chart": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Chart"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Chart object."
-          },
-          "extra": {
-            "type": "object",
-            "title": "Extra",
-            "description": "Extra info."
-          }
-        },
-        "type": "object",
-        "title": "OBBject_GroupedComparisons",
-        "description": "OBBject with results of type GroupedComparisons"
-      },
-      "OBBject_GroupedFinancials": {
-        "properties": {
-          "_id": {
-            "type": "string",
-            "title": " Id"
-          },
-          "results": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/GroupedFinancials"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Serializable results."
-          },
-          "provider": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Provider",
-            "description": "Provider name."
-          },
-          "warnings": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/Warning_"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Warnings",
-            "description": "List of warnings."
-          },
-          "chart": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Chart"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Chart object."
-          },
-          "extra": {
-            "type": "object",
-            "title": "Extra",
-            "description": "Extra info."
-          }
-        },
-        "type": "object",
-        "title": "OBBject_GroupedFinancials",
-        "description": "OBBject with results of type GroupedFinancials"
-      },
       "OBBject_HighQualityMarketCorporateBond": {
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -58034,7 +59742,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -58103,7 +59811,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -58111,10 +59819,10 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/FMPHistoricalDividendsData"
+                      "$ref": "#/components/schemas/IntrinioHistoricalDividendsData"
                     },
                     {
-                      "$ref": "#/components/schemas/IntrinioHistoricalDividendsData"
+                      "$ref": "#/components/schemas/FMPHistoricalDividendsData"
                     }
                   ]
                 },
@@ -58179,7 +59887,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -58248,7 +59956,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -58317,7 +60025,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -58386,7 +60094,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -58455,7 +60163,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -58524,7 +60232,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -58532,13 +60240,13 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/FMPIncomeStatementData"
-                    },
-                    {
                       "$ref": "#/components/schemas/PolygonIncomeStatementData"
                     },
                     {
                       "$ref": "#/components/schemas/IntrinioIncomeStatementData"
+                    },
+                    {
+                      "$ref": "#/components/schemas/FMPIncomeStatementData"
                     }
                   ]
                 },
@@ -58603,7 +60311,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -58672,7 +60380,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -58741,7 +60449,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -58749,13 +60457,13 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/FMPIndexHistoricalData"
-                    },
-                    {
                       "$ref": "#/components/schemas/PolygonIndexHistoricalData"
                     },
                     {
                       "$ref": "#/components/schemas/IntrinioIndexHistoricalData"
+                    },
+                    {
+                      "$ref": "#/components/schemas/FMPIndexHistoricalData"
                     }
                   ]
                 },
@@ -58820,7 +60528,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -58896,7 +60604,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -58965,7 +60673,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -59034,7 +60742,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -59103,7 +60811,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -59179,7 +60887,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -59248,7 +60956,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -59317,7 +61025,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -59325,13 +61033,13 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/FMPIndexHistoricalData"
-                    },
-                    {
                       "$ref": "#/components/schemas/PolygonIndexHistoricalData"
                     },
                     {
                       "$ref": "#/components/schemas/IntrinioIndexHistoricalData"
+                    },
+                    {
+                      "$ref": "#/components/schemas/FMPIndexHistoricalData"
                     }
                   ]
                 },
@@ -59396,7 +61104,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -59475,7 +61183,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -59544,7 +61252,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -59613,7 +61321,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -59682,7 +61390,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -59751,7 +61459,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -59820,7 +61528,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -59889,7 +61597,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -59965,7 +61673,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -60037,11 +61745,210 @@
         "title": "OBBject_PriceTargetConsensus",
         "description": "OBBject with results of type PriceTargetConsensus"
       },
+      "OBBject_ProEarningTrends": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "results": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ProEarningTrends"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Results",
+            "description": "Serializable results."
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider",
+            "description": "Provider name."
+          },
+          "warnings": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Warning_"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warnings",
+            "description": "List of warnings."
+          },
+          "chart": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Chart"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Chart object."
+          },
+          "extra": {
+            "type": "object",
+            "title": "Extra",
+            "description": "Extra info."
+          }
+        },
+        "type": "object",
+        "title": "OBBject_ProEarningTrends",
+        "description": "OBBject with results of type ProEarningTrends"
+      },
+      "OBBject_ProGroupedComparisons": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "results": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/GroupedComparisons"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Serializable results."
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider",
+            "description": "Provider name."
+          },
+          "warnings": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Warning_"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warnings",
+            "description": "List of warnings."
+          },
+          "chart": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Chart"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Chart object."
+          },
+          "extra": {
+            "type": "object",
+            "title": "Extra",
+            "description": "Extra info."
+          }
+        },
+        "type": "object",
+        "title": "OBBject_ProGroupedComparisons",
+        "description": "OBBject with results of type ProGroupedComparisons"
+      },
+      "OBBject_ProGroupedFinancials": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "results": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/GroupedFinancials"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Serializable results."
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider",
+            "description": "Provider name."
+          },
+          "warnings": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Warning_"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warnings",
+            "description": "List of warnings."
+          },
+          "chart": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Chart"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Chart object."
+          },
+          "extra": {
+            "type": "object",
+            "title": "Extra",
+            "description": "Extra info."
+          }
+        },
+        "type": "object",
+        "title": "OBBject_ProGroupedFinancials",
+        "description": "OBBject with results of type ProGroupedFinancials"
+      },
       "OBBject_ProKeyMetrics": {
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -60106,11 +62013,218 @@
         "title": "OBBject_ProKeyMetrics",
         "description": "OBBject with results of type ProKeyMetrics"
       },
+      "OBBject_ProPriceTargetByAnalyst": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "results": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ProPriceTargetByAnalyst"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Results",
+            "description": "Serializable results."
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider",
+            "description": "Provider name."
+          },
+          "warnings": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Warning_"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warnings",
+            "description": "List of warnings."
+          },
+          "chart": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Chart"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Chart object."
+          },
+          "extra": {
+            "type": "object",
+            "title": "Extra",
+            "description": "Extra info."
+          }
+        },
+        "type": "object",
+        "title": "OBBject_ProPriceTargetByAnalyst",
+        "description": "OBBject with results of type ProPriceTargetByAnalyst"
+      },
+      "OBBject_ProRevenueTrends": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "results": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ProRevenueTrends"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Results",
+            "description": "Serializable results."
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider",
+            "description": "Provider name."
+          },
+          "warnings": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Warning_"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warnings",
+            "description": "List of warnings."
+          },
+          "chart": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Chart"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Chart object."
+          },
+          "extra": {
+            "type": "object",
+            "title": "Extra",
+            "description": "Extra info."
+          }
+        },
+        "type": "object",
+        "title": "OBBject_ProRevenueTrends",
+        "description": "OBBject with results of type ProRevenueTrends"
+      },
+      "OBBject_ProWatchlist": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "results": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Watchlist"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Results",
+            "description": "Serializable results."
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider",
+            "description": "Provider name."
+          },
+          "warnings": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Warning_"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warnings",
+            "description": "List of warnings."
+          },
+          "chart": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Chart"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Chart object."
+          },
+          "extra": {
+            "type": "object",
+            "title": "Extra",
+            "description": "Extra info."
+          }
+        },
+        "type": "object",
+        "title": "OBBject_ProWatchlist",
+        "description": "OBBject with results of type ProWatchlist"
+      },
       "OBBject_ReportedFinancials": {
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -60179,7 +62293,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -60248,7 +62362,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -60317,7 +62431,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -60386,7 +62500,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -60455,7 +62569,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -60524,7 +62638,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -60593,7 +62707,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -60662,7 +62776,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -60727,7 +62841,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -60796,7 +62910,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -60865,7 +62979,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -60934,7 +63048,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -61010,7 +63124,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -61079,7 +63193,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -61148,7 +63262,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -61213,7 +63327,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -61282,7 +63396,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -61290,10 +63404,10 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/FMPTreasuryRatesData"
+                      "$ref": "#/components/schemas/FederalReserveTreasuryRatesData"
                     },
                     {
-                      "$ref": "#/components/schemas/FederalReserveTreasuryRatesData"
+                      "$ref": "#/components/schemas/FMPTreasuryRatesData"
                     }
                   ]
                 },
@@ -61358,13 +63472,13 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/openbb_fred__models__us_yield_curve__FREDYieldCurveData"
+                  "$ref": "#/components/schemas/FREDYieldCurveData"
                 },
                 "type": "array"
               },
@@ -61427,7 +63541,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -61492,80 +63606,11 @@
         "title": "OBBject_Unemployment",
         "description": "OBBject with results of type Unemployment"
       },
-      "OBBject_Watchlist": {
-        "properties": {
-          "_id": {
-            "type": "string",
-            "title": " Id"
-          },
-          "results": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/Watchlist"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Results",
-            "description": "Serializable results."
-          },
-          "provider": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Provider",
-            "description": "Provider name."
-          },
-          "warnings": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/Warning_"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Warnings",
-            "description": "List of warnings."
-          },
-          "chart": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Chart"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Chart object."
-          },
-          "extra": {
-            "type": "object",
-            "title": "Extra",
-            "description": "Extra info."
-          }
-        },
-        "type": "object",
-        "title": "OBBject_Watchlist",
-        "description": "OBBject with results of type Watchlist"
-      },
       "OBBject_WorldNews": {
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -61576,10 +63621,10 @@
                       "$ref": "#/components/schemas/IntrinioWorldNewsData"
                     },
                     {
-                      "$ref": "#/components/schemas/BenzingaWorldNewsData"
+                      "$ref": "#/components/schemas/FMPWorldNewsData"
                     },
                     {
-                      "$ref": "#/components/schemas/FMPWorldNewsData"
+                      "$ref": "#/components/schemas/BenzingaWorldNewsData"
                     }
                   ]
                 },
@@ -61644,7 +63689,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -61652,10 +63697,10 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/FMPYieldCurveData"
+                      "$ref": "#/components/schemas/YieldCurveData"
                     },
                     {
-                      "$ref": "#/components/schemas/openbb_fred__models__yield_curve__FREDYieldCurveData"
+                      "$ref": "#/components/schemas/ECBYieldCurveData"
                     },
                     {
                       "$ref": "#/components/schemas/EconDbYieldCurveData"
@@ -61664,7 +63709,7 @@
                       "$ref": "#/components/schemas/FederalReserveYieldCurveData"
                     },
                     {
-                      "$ref": "#/components/schemas/ECBYieldCurveData"
+                      "$ref": "#/components/schemas/FMPYieldCurveData"
                     }
                   ]
                 },
@@ -61729,7 +63774,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "title": " Id"
+            "title": "Id"
           },
           "results": {
             "anyOf": [
@@ -62780,11 +64825,7 @@
             "description": "AMP URL."
           },
           "publisher": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PolygonPublisher"
-              }
-            ],
+            "$ref": "#/components/schemas/PolygonPublisher",
             "description": "Publisher of the article."
           }
         },
@@ -64757,6 +66798,20 @@
             ],
             "title": "Ignore Type"
           },
+          "ignore_symbols": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ignore Symbols"
+          },
           "limit": {
             "type": "integer",
             "minimum": 1.0,
@@ -64767,6 +66822,782 @@
         "type": "object",
         "title": "PostSearchParams",
         "description": "Query Symbols Params."
+      },
+      "ProBenzingaAnalystSearchData": {
+        "properties": {
+          "last_updated": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Updated",
+            "description": "Date of the last update."
+          },
+          "firm_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Firm Name",
+            "description": "Firm name of the analyst."
+          },
+          "name_first": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name First",
+            "description": "Analyst first name."
+          },
+          "name_last": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name Last",
+            "description": "Analyst last name."
+          },
+          "name_full": {
+            "type": "string",
+            "title": "Name Full",
+            "description": "Analyst full name."
+          },
+          "analyst_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Analyst Id",
+            "description": "ID of the analyst."
+          },
+          "firm_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Firm Id",
+            "description": "ID of the analyst firm."
+          },
+          "smart_score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Smart Score",
+            "description": "A weighted average of the total_ratings_percentile, overall_avg_return_percentile, and overall_success_rate"
+          },
+          "overall_success_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Overall Success Rate",
+            "description": "The percentage (normalized) of gain/loss ratings that resulted in a gain overall.",
+            "x-frontend_multiply": 100,
+            "x-unit_measurement": "percent"
+          },
+          "overall_avg_return_percentile": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Overall Avg Return Percentile",
+            "description": "The percentile (normalized) of this analyst's overall average return per rating in comparison to other analysts' overall average returns per rating.",
+            "x-frontend_multiply": 100,
+            "x-unit_measurement": "percent"
+          },
+          "total_ratings_percentile": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Total Ratings Percentile",
+            "description": "The percentile (normalized) of this analyst's total number of ratings in comparison to the total number of ratings published by all other analysts",
+            "x-frontend_multiply": 100,
+            "x-unit_measurement": "percent"
+          },
+          "total_ratings": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Total Ratings",
+            "description": "Number of recommendations made by this analyst."
+          },
+          "overall_gain_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Overall Gain Count",
+            "description": "The number of ratings that have gained value since the date of recommendation"
+          },
+          "overall_loss_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Overall Loss Count",
+            "description": "The number of ratings that have lost value since the date of recommendation"
+          },
+          "overall_average_return": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Overall Average Return",
+            "description": "The average percent (normalized) price difference per rating since the date of recommendation",
+            "x-frontend_multiply": 100,
+            "x-unit_measurement": "percent"
+          },
+          "overall_stdev": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Overall Stdev",
+            "description": "The standard deviation in percent (normalized) price difference in the analyst's ratings since the date of recommendation",
+            "x-frontend_multiply": 100,
+            "x-unit_measurement": "percent"
+          },
+          "1m_gain_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "1M Gain Count",
+            "description": "The number of ratings that have gained value over the last month"
+          },
+          "1m_loss_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "1M Loss Count",
+            "description": "The number of ratings that have lost value over the last month"
+          },
+          "1m_average_return": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "1M Average Return",
+            "description": "The average percent (normalized) price difference per rating over the last month",
+            "x-frontend_multiply": 100,
+            "x-unit_measurement": "percent"
+          },
+          "1m_stdev": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "1M Stdev",
+            "description": "The standard deviation in percent (normalized) price difference in the analyst's ratings over the last month",
+            "x-frontend_multiply": 100,
+            "x-unit_measurement": "percent"
+          },
+          "1m_smart_score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "1M Smart Score",
+            "description": "A weighted average smart score over the last month."
+          },
+          "1m_success_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "1M Success Rate",
+            "description": "The percentage (normalized) of gain/loss ratings that resulted in a gain over the last month",
+            "x-frontend_multiply": 100,
+            "x-unit_measurement": "percent"
+          },
+          "3m_gain_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "3M Gain Count",
+            "description": "The number of ratings that have gained value over the last 3 months"
+          },
+          "3m_loss_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "3M Loss Count",
+            "description": "The number of ratings that have lost value over the last 3 months"
+          },
+          "3m_average_return": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "3M Average Return",
+            "description": "The average percent (normalized) price difference per rating over the last 3 months",
+            "x-frontend_multiply": 100,
+            "x-unit_measurement": "percent"
+          },
+          "3m_stdev": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "3M Stdev",
+            "description": "The standard deviation in percent (normalized) price difference in the analyst's ratings over the last 3 months",
+            "x-frontend_multiply": 100,
+            "x-unit_measurement": "percent"
+          },
+          "3m_smart_score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "3M Smart Score",
+            "description": "A weighted average smart score over the last 3 months."
+          },
+          "3m_success_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "3M Success Rate",
+            "description": "The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 3 months",
+            "x-frontend_multiply": 100,
+            "x-unit_measurement": "percent"
+          },
+          "6m_gain_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "6M Gain Count",
+            "description": "The number of ratings that have gained value over the last 6 months"
+          },
+          "6m_loss_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "6M Loss Count",
+            "description": "The number of ratings that have lost value over the last 6 months"
+          },
+          "6m_average_return": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "6M Average Return",
+            "description": "The average percent (normalized) price difference per rating over the last 6 months",
+            "x-frontend_multiply": 100,
+            "x-unit_measurement": "percent"
+          },
+          "6m_stdev": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "6M Stdev",
+            "description": "The standard deviation in percent (normalized) price difference in the analyst's ratings over the last 6 months",
+            "x-frontend_multiply": 100,
+            "x-unit_measurement": "percent"
+          },
+          "9m_gain_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "9M Gain Count",
+            "description": "The number of ratings that have gained value over the last 9 months"
+          },
+          "9m_loss_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "9M Loss Count",
+            "description": "The number of ratings that have lost value over the last 9 months"
+          },
+          "9m_average_return": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "9M Average Return",
+            "description": "The average percent (normalized) price difference per rating over the last 9 months",
+            "x-frontend_multiply": 100,
+            "x-unit_measurement": "percent"
+          },
+          "9m_stdev": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "9M Stdev",
+            "description": "The standard deviation in percent (normalized) price difference in the analyst's ratings over the last 9 months",
+            "x-frontend_multiply": 100,
+            "x-unit_measurement": "percent"
+          },
+          "9m_smart_score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "9M Smart Score",
+            "description": "A weighted average smart score over the last 9 months."
+          },
+          "9m_success_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "9M Success Rate",
+            "description": "The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 9 months",
+            "x-frontend_multiply": 100,
+            "x-unit_measurement": "percent"
+          },
+          "1y_gain_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "1Y Gain Count",
+            "description": "The number of ratings that have gained value over the last 1 year"
+          },
+          "1y_loss_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "1Y Loss Count",
+            "description": "The number of ratings that have lost value over the last 1 year"
+          },
+          "1y_average_return": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "1Y Average Return",
+            "description": "The average percent (normalized) price difference per rating over the last 1 year",
+            "x-frontend_multiply": 100,
+            "x-unit_measurement": "percent"
+          },
+          "1y_stdev": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "1Y Stdev",
+            "description": "The standard deviation in percent (normalized) price difference in the analyst's ratings over the last 1 year",
+            "x-frontend_multiply": 100,
+            "x-unit_measurement": "percent"
+          },
+          "1y_smart_score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "1Y Smart Score",
+            "description": "A weighted average smart score over the last 1 year."
+          },
+          "1y_success_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "1Y Success Rate",
+            "description": "The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 1 year",
+            "x-frontend_multiply": 100,
+            "x-unit_measurement": "percent"
+          },
+          "2y_gain_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "2Y Gain Count",
+            "description": "The number of ratings that have gained value over the last 2 years"
+          },
+          "2y_loss_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "2Y Loss Count",
+            "description": "The number of ratings that have lost value over the last 2 years"
+          },
+          "2y_average_return": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "2Y Average Return",
+            "description": "The average percent (normalized) price difference per rating over the last 2 years",
+            "x-frontend_multiply": 100,
+            "x-unit_measurement": "percent"
+          },
+          "2y_stdev": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "2Y Stdev",
+            "description": "The standard deviation in percent (normalized) price difference in the analyst's ratings over the last 2 years",
+            "x-frontend_multiply": 100,
+            "x-unit_measurement": "percent"
+          },
+          "2y_smart_score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "2Y Smart Score",
+            "description": "A weighted average smart score over the last 3 years."
+          },
+          "2y_success_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "2Y Success Rate",
+            "description": "The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 2 years",
+            "x-frontend_multiply": 100,
+            "x-unit_measurement": "percent"
+          },
+          "3y_gain_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "3Y Gain Count",
+            "description": "The number of ratings that have gained value over the last 3 years"
+          },
+          "3y_loss_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "3Y Loss Count",
+            "description": "The number of ratings that have lost value over the last 3 years"
+          },
+          "3y_average_return": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "3Y Average Return",
+            "description": "The average percent (normalized) price difference per rating over the last 3 years",
+            "x-frontend_multiply": 100,
+            "x-unit_measurement": "percent"
+          },
+          "3y_stdev": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "3Y Stdev",
+            "description": "The standard deviation in percent (normalized) price difference in the analyst's ratings over the last 3 years",
+            "x-frontend_multiply": 100,
+            "x-unit_measurement": "percent"
+          },
+          "3y_smart_score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "3Y Smart Score",
+            "description": "A weighted average smart score over the last 3 years."
+          },
+          "3y_success_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "3Y Success Rate",
+            "description": "The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 3 years",
+            "x-frontend_multiply": 100,
+            "x-unit_measurement": "percent"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "name_full"
+        ],
+        "title": "ProBenzingaAnalystSearchData"
+      },
+      "ProEarningTrends": {
+        "properties": {
+          "symbol": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Symbol",
+            "description": "Stock symbol."
+          },
+          "historical_eps": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/FMPHistoricalEpsData"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Historical Eps",
+            "description": "Historical EPS data."
+          },
+          "forward_eps": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/IntrinioForwardEpsEstimatesData"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Forward Eps",
+            "description": "Forward EPS estimates."
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "title": "ProEarningTrends",
+        "description": "Earning Trends Data."
       },
       "ProKeyMetrics": {
         "properties": {
@@ -64952,15 +67783,400 @@
               }
             ],
             "title": "One Month",
-            "description": "One month performance.",
-            "x-frontend_multiply": 100,
-            "x-unit_measurement": "percent"
+            "description": "One month performance."
           }
         },
         "additionalProperties": true,
         "type": "object",
         "title": "ProKeyMetrics",
         "description": "Pro Key Metrics Data."
+      },
+      "ProPriceTargetByAnalyst": {
+        "properties": {
+          "published_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "string",
+                "format": "date-time"
+              }
+            ],
+            "title": "Published Date",
+            "description": "Published date of the price target."
+          },
+          "published_time": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Published Time",
+            "description": "Time of the original rating, UTC."
+          },
+          "symbol": {
+            "type": "string",
+            "title": "Symbol",
+            "description": "Symbol representing the entity requested in the data."
+          },
+          "exchange": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Exchange",
+            "description": "Exchange where the company is traded."
+          },
+          "company_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Company Name",
+            "description": "Name of company that is the subject of rating."
+          },
+          "analyst_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Analyst Name",
+            "description": "Analyst name."
+          },
+          "analyst_firm": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Analyst Firm",
+            "description": "Name of the analyst firm that published the price target."
+          },
+          "currency": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Currency",
+            "description": "Currency the data is denominated in."
+          },
+          "price_target": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Price Target",
+            "description": "The current price target."
+          },
+          "adj_price_target": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Adj Price Target",
+            "description": "Adjusted price target for splits and stock dividends."
+          },
+          "price_target_previous": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Price Target Previous",
+            "description": "Previous price target."
+          },
+          "previous_adj_price_target": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Previous Adj Price Target",
+            "description": "Previous adjusted price target."
+          },
+          "price_when_posted": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Price When Posted",
+            "description": "Price when posted."
+          },
+          "rating_current": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rating Current",
+            "description": "The analyst's rating for the company."
+          },
+          "rating_previous": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rating Previous",
+            "description": "Previous analyst rating for the company."
+          },
+          "action_company": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "Downgrades",
+                  "Maintains",
+                  "Reinstates",
+                  "Reiterates",
+                  "Upgrades",
+                  "Assumes",
+                  "Initiates Coverage On",
+                  "Terminates Coverage On",
+                  "Removes",
+                  "Suspends",
+                  "Firm Dissolved"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Action Company",
+            "description": "Description of the change in rating from firm's last rating.Note that all of these terms are precisely defined."
+          },
+          "action_pt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "Announces",
+                  "Maintains",
+                  "Lowers",
+                  "Raises",
+                  "Removes",
+                  "Adjusts"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Action Pt",
+            "description": "Description of the change in price target from firm's last price target."
+          },
+          "importance": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Importance",
+            "description": "Subjective Basis of How Important Event is to Market. 5 = High"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes",
+            "description": "Notes of the price target."
+          },
+          "analyst_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Analyst Id",
+            "description": "Id of the analyst."
+          },
+          "url_news": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url News",
+            "description": "URL for analyst ratings news articles for this ticker on Benzinga.com."
+          },
+          "url_analyst": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url Analyst",
+            "description": "URL for analyst ratings page for this ticker on Benzinga.com."
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id",
+            "description": "Unique ID of this entry."
+          },
+          "updated": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated",
+            "description": "Last updated timestamp, UTC."
+          },
+          "analyst_data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ProBenzingaAnalystSearchData"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Analyst search data."
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "published_date",
+          "symbol"
+        ],
+        "title": "ProPriceTargetByAnalyst",
+        "description": "Pro Price Target By Analyst Data."
+      },
+      "ProRevenueTrends": {
+        "properties": {
+          "symbol": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Symbol",
+            "description": "Stock symbol."
+          },
+          "historical_eps": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/FMPHistoricalEpsData"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Historical Eps",
+            "description": "Historical EPS data."
+          },
+          "forward_sales": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/IntrinioForwardSalesEstimatesData"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Forward Sales",
+            "description": "Forward Sales data."
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "title": "ProRevenueTrends",
+        "description": "Earning Trends Data."
       },
       "SecCikMapData": {
         "properties": {
@@ -66734,6 +69950,48 @@
         "title": "SecSymbolMapData",
         "description": "SEC symbol map Data."
       },
+      "SelectItem": {
+        "properties": {
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "value": {
+            "type": "string",
+            "title": "Value"
+          }
+        },
+        "type": "object",
+        "required": [
+          "label",
+          "value"
+        ],
+        "title": "SelectItem"
+      },
+      "SettlementCurve": {
+        "properties": {
+          "symbol": {
+            "type": "string",
+            "title": "Symbol"
+          },
+          "price": {
+            "type": "number",
+            "title": "Price"
+          },
+          "maturity_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Maturity Date"
+          }
+        },
+        "type": "object",
+        "required": [
+          "symbol",
+          "price",
+          "maturity_date"
+        ],
+        "title": "SettlementCurve"
+      },
       "TEEconomicCalendarData": {
         "properties": {
           "date": {
@@ -67024,22 +70282,87 @@
         "title": "TEEconomicCalendarData",
         "description": "Trading Economics Economic Calendar Data."
       },
-      "UDFSearchResult": {
+      "Transcript": {
         "properties": {
-          "symbol": {
+          "paragraphs": {
+            "items": {
+              "$ref": "#/components/schemas/TranscriptParagraph"
+            },
+            "type": "array",
+            "title": "Paragraphs"
+          }
+        },
+        "type": "object",
+        "required": [
+          "paragraphs"
+        ],
+        "title": "Transcript"
+      },
+      "TranscriptParagraph": {
+        "properties": {
+          "paragraph_text": {
             "type": "string",
-            "title": "Symbol"
+            "title": "Paragraph Text"
           },
-          "full_name": {
+          "paragraph_speaker": {
             "anyOf": [
               {
                 "type": "string"
               },
               {
-                "type": "null"
+                "type": "integer"
               }
             ],
-            "title": "Full Name"
+            "title": "Paragraph Speaker"
+          }
+        },
+        "type": "object",
+        "required": [
+          "paragraph_text",
+          "paragraph_speaker"
+        ],
+        "title": "TranscriptParagraph"
+      },
+      "TranscriptResponse": {
+        "properties": {
+          "company_ticker": {
+            "type": "string",
+            "title": "Company Ticker"
+          },
+          "event_title": {
+            "type": "string",
+            "title": "Event Title"
+          },
+          "event_date": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Event Date"
+          },
+          "transcript_url": {
+            "type": "string",
+            "title": "Transcript Url"
+          },
+          "transcript_updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Transcript Updated At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "company_ticker",
+          "event_title",
+          "event_date",
+          "transcript_url",
+          "transcript_updated_at"
+        ],
+        "title": "TranscriptResponse"
+      },
+      "UDFSearchResult": {
+        "properties": {
+          "symbol": {
+            "type": "string",
+            "title": "Symbol"
           },
           "name": {
             "anyOf": [
@@ -67168,17 +70491,6 @@
               }
             ],
             "title": "Description"
-          },
-          "full_name": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Full Name"
           },
           "short_name": {
             "anyOf": [
@@ -67601,6 +70913,18 @@
             "title": "Last Quote",
             "description": "Last quote."
           },
+          "prev_close": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Prev Close",
+            "description": "Previous close."
+          },
           "day_change": {
             "anyOf": [
               {
@@ -67703,29 +71027,7 @@
         "title": "Watchlist",
         "description": "Watchlist Data."
       },
-      "openbb_fred__models__us_yield_curve__FREDYieldCurveData": {
-        "properties": {
-          "maturity": {
-            "type": "number",
-            "title": "Maturity",
-            "description": "Maturity of the treasury rate in years."
-          },
-          "rate": {
-            "type": "number",
-            "title": "Rate",
-            "description": "Associated rate given in decimal form (0.05 is 5%)"
-          }
-        },
-        "additionalProperties": true,
-        "type": "object",
-        "required": [
-          "maturity",
-          "rate"
-        ],
-        "title": "FREDYieldCurveData",
-        "description": "FRED US Yield Curve Data."
-      },
-      "openbb_fred__models__yield_curve__FREDYieldCurveData": {
+      "YieldCurveData": {
         "properties": {
           "date": {
             "anyOf": [
@@ -67759,8 +71061,8 @@
           "maturity",
           "rate"
         ],
-        "title": "FREDYieldCurveData",
-        "description": "FRED Yield Curve Data."
+        "title": "YieldCurveData",
+        "description": "Yield Curve Data."
       }
     },
     "securitySchemes": {

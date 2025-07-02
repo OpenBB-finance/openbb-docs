@@ -27,7 +27,7 @@ jobs:
         with:
           python-version: "3.9"
           architecture: x64
-      
+
       - name: Install Poetry
         uses: snok/install-poetry@v1
         with:
@@ -63,7 +63,6 @@ jobs:
         run: |
           pip install requests
           python scripts/generate_excel_markdown.py
-
       - name: Setup Node
         uses: actions/setup-node@v3
         with:

@@ -75,4 +75,4 @@ The CLI leverages the extendability of the OpenBB Platform architecture in an ea
 
 ---
 
-Want to contribute? Check out our [Development section](/platform/developer_guide).
+Want to contribute? Check out our [Development section](/platform/developer_guide/architecture_overview).

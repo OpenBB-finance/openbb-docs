@@ -40,7 +40,7 @@ export default {
 				redirects: [
 					{
 						from: "/platform/development/contributing",
-						to: "/platform/developer_guide/contributing",
+						to: "/platform/developer_guide/misc/contributing",
 					},
 					{
 						from: "/pro/",
@@ -65,6 +65,10 @@ export default {
 					{
 						from: "/workspace/enterprise",
 						to: "https://openbb.co/pricing",
+					},
+					{
+						from: "/bot",
+						to: "https://openbb.co/blog/we-are-handing-over-the-openbb-bot-to-focus-on-our-mission",
 					},
 				],
 				createRedirects: (existingPath) => {

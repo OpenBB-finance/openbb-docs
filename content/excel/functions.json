@@ -1,38 +1,25 @@
 {
   "functions": [
     {
-      "description": "Bring Your Own Data: single widget, own backend or native integration setup in OpenBB Workspace.",
-      "helpUrl": "https://docs.openbb.co/excel/data-connectors",
-      "id": "BYOD",
-      "name": "BYOD",
+      "description": "Get the data from a widget living in a backend.",
+      "helpUrl": "https://docs.openbb.co/excel/backends",
+      "id": "WIDGET",
+      "name": "WIDGET",
       "parameters": [
         {
-          "description": "Name of the widget to get data for.",
+          "description": "Name of the backend.",
+          "name": "backend",
+          "type": "string"
+        },
+        {
+          "description": "Name or ID of the widget to get data for.",
           "name": "widget",
           "type": "string"
         },
         {
-          "description": "Name of the backend to use, required for widgets in custom backends or native integrations (e.g. database, snowflake).",
-          "name": "backend",
-          "optional": true,
-          "type": "string"
-        },
-        {
-          "description": "Symbol to get data for, if applicable.",
-          "name": "symbol",
-          "optional": true,
-          "type": "string"
-        },
-        {
-          "description": "Date to get data for, if applicable.",
-          "name": "date",
-          "optional": true,
-          "type": "string"
-        },
-        {
-          "description": "Optional parameters as (n rows by 2 columns) range selection or array constant (e.g. {\"key1\",\"value1\"}; {\"key2\",\"value2\"}).",
+          "description": "Widget parameters as (n rows by 2 columns) range selection or array constant (e.g. {\"key1\",\"value1\"}; {\"key2\",\"value2\"}).",
           "dimensionality": "matrix",
-          "name": "optional",
+          "name": "parameters",
           "optional": true,
           "type": "any"
         }
@@ -96,7 +83,7 @@
           "type": "string"
         },
         {
-          "description": "Time interval of the data to return. Options: 1m, 5m, 15m, 30m, 1h, 4h or 1d.",
+          "description": "Time interval of the data to return. Options: 1m, 5m, 15m, 30m, 1h, 4h, 1d.",
           "name": "interval",
           "optional": true,
           "type": "string"
@@ -136,11 +123,84 @@
       }
     },
     {
-      "description": "Get the upcoming, or historical, economic calendar of global events.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/economy/calendar",
-      "id": "ECONOMY.CALENDAR",
-      "name": "ECONOMY.CALENDAR",
+      "description": "Get the complete options chain for a ticker.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/derivatives/options/chains",
+      "id": "DERIVATIVES.OPTIONS.CHAINS",
+      "name": "DERIVATIVES.OPTIONS.CHAINS",
       "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "The end-of-day date for options chains data.",
+          "name": "date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The option type, call or put, 'None' is both (default). Options: call, put.",
+          "name": "option_type",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Return only contracts that are in or out of the money, default is 'all'. Parameter is ignored when a date is supplied. Options: otm, itm, all.",
+          "name": "moneyness",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Get a profile of country statistics and economic indicators.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/economy/country_profile",
+      "id": "ECONOMY.COUNTRY_PROFILE",
+      "name": "ECONOMY.COUNTRY_PROFILE",
+      "parameters": [
+        {
+          "description": "The country to get data. Multiple comma separated items allowed.",
+          "name": "country",
+          "type": "string"
+        },
+        {
+          "description": "If True, return only the latest data. If False, return all available data for each indicator.",
+          "name": "latest",
+          "optional": true,
+          "type": "boolean"
+        },
+        {
+          "description": "If True, the request will be cached for one day.Using cache is recommended to avoid needlessly requesting the same data.",
+          "name": "use_cache",
+          "optional": true,
+          "type": "boolean"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Get economic indicators by country and indicator.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/economy/indicators",
+      "id": "ECONOMY.INDICATORS",
+      "name": "ECONOMY.INDICATORS",
+      "parameters": [
+        {
+          "description": "Symbol to get data for. The base symbol for the indicator (e.g. GDP, CPI, etc.). Multiple comma separated items allowed.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "The country to get data. The country represented by the indicator, if available. Multiple comma separated items allowed.",
+          "name": "country",
+          "optional": true,
+          "type": "string"
+        },
         {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
@@ -154,28 +214,22 @@
           "type": "string"
         },
         {
-          "description": "Country of the event. Multiple comma separated items allowed.",
-          "name": "country",
+          "description": "tusd` should only be used where values are currencies. Options: toya, tpop, tusd, tpgp.",
+          "name": "transform",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "Importance of the event. Options: Low, Medium, High.",
-          "name": "importance",
+          "description": "The frequency of the data, default is 'quarter'. Only valid when 'symbol' is 'main'. Options: annual, quarter, month.",
+          "name": "frequency",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "Grouping of events. Options: interest_rate, inflation, bonds, consumer, gdp, government, housing, labour, markets, money, prices, trade, business.",
-          "name": "group",
+          "description": "If True, the request will be cached for one day. Using cache is recommended to avoid needlessly requesting the same data.",
+          "name": "use_cache",
           "optional": true,
-          "type": "string"
-        },
-        {
-          "description": "Get events by TradingEconomics Calendar ID. Multiple comma separated items allowed.",
-          "name": "calendar_id",
-          "optional": true,
-          "type": "any"
+          "type": "boolean"
         }
       ],
       "result": {
@@ -216,19 +270,20 @@
       }
     },
     {
-      "description": "Get historical analyst estimates for earnings and revenue.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/equity/estimates/historical",
-      "id": "EQUITY.ESTIMATES.HISTORICAL",
-      "name": "EQUITY.ESTIMATES.HISTORICAL",
+      "description": "Get forward EBITDA estimates.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/estimates/forward_ebitda",
+      "id": "EQUITY.ESTIMATES.FORWARD_EBITDA",
+      "name": "EQUITY.ESTIMATES.FORWARD_EBITDA",
       "parameters": [
         {
           "description": "Symbol to get data for. Multiple comma separated items allowed.",
           "name": "symbol",
+          "optional": true,
           "type": "string"
         },
         {
-          "description": "Time period of the data to return. Options: quarter, annual.",
-          "name": "period",
+          "description": "The future fiscal period to retrieve estimates for. Options: annual, quarter.",
+          "name": "fiscal_period",
           "optional": true,
           "type": "string"
         },
@@ -237,6 +292,12 @@
           "name": "limit",
           "optional": true,
           "type": "number"
+        },
+        {
+          "description": "If True, the data will include all past data and the limit will be ignored.",
+          "name": "include_historical",
+          "optional": true,
+          "type": "boolean"
         }
       ],
       "result": {
@@ -806,7 +867,7 @@
           "type": "string"
         },
         {
-          "description": "Time interval of the data to return. Options: 1m, 5m, 15m, 30m, 1h, 4h or 1d.",
+          "description": "Time interval of the data to return.",
           "name": "interval",
           "optional": true,
           "type": "string"
@@ -877,36 +938,27 @@
       }
     },
     {
-      "description": "Get the holdings for an individual ETF.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/etf/holdings",
-      "id": "ETF.HOLDINGS",
-      "name": "ETF.HOLDINGS",
+      "description": "Get yield curve data by country and date.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/fixedincome/government/yield_curve",
+      "id": "FIXEDINCOME.GOVERNMENT.YIELD_CURVE",
+      "name": "FIXEDINCOME.GOVERNMENT.YIELD_CURVE",
       "parameters": [
         {
-          "description": "Symbol to get data for. (ETF)",
-          "name": "symbol",
-          "type": "string"
-        },
-        {
-          "description": "A specific date to get data for.",
+          "description": "A specific date to get data for. By default is the current data. Multiple comma separated items allowed.",
           "name": "date",
           "optional": true,
           "type": "string"
-        }
-      ],
-      "result": {
-        "dimensionality": "matrix"
-      }
-    },
-    {
-      "description": "ETF Information Overview.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/etf/info",
-      "id": "ETF.INFO",
-      "name": "ETF.INFO",
-      "parameters": [
+        },
         {
-          "description": "Symbol to get data for. (ETF) Multiple comma separated items allowed.",
-          "name": "symbol",
+          "description": "If true, cache the request for four hours.",
+          "name": "use_cache",
+          "optional": true,
+          "type": "boolean"
+        },
+        {
+          "description": "The country to get data. New Zealand, Mexico, Singapore, and Thailand have only monthly data. The nearest date to the requested one will be used. Options: australia, canada, china, hong_kong, india, japan, mexico, new_zealand, russia, saudi_arabia, singapore, south_africa, south_korea, taiwan, thailand, united_kingdom, united_states.",
+          "name": "country",
+          "optional": true,
           "type": "string"
         }
       ],

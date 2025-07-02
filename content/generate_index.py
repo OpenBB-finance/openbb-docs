@@ -40,7 +40,6 @@ def create_nested_subfolder_card(_folder: Path, url: str) -> str:
 
 # Looping through each topfolder to generate the index
 for topfolder in [
-    "bot",
     "cli",
     "excel",
     "platform",

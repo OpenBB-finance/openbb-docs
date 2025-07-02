@@ -137,16 +137,6 @@ To register the TradingView chart widget in OpenBB:
     "data": {
         "defaultSymbol": "AAPL",
         "updateFrequency": 60000,
-        "chartConfig": {
-            "upColor": "#26a69a",
-            "downColor": "#ef5350",
-            "borderUpColor": "#26a69a",
-            "borderDownColor": "#ef5350",
-            "wickUpColor": "#26a69a",
-            "wickDownColor": "#ef5350",
-            "volumeUpColor": "#26a69a",
-            "volumeDownColor": "#ef5350",
-            "showVolume": True
         }
     }
 })
@@ -251,3 +241,5 @@ def generate_mock_price_data(symbol: str, from_time: int, to_time: int, resoluti
 
 - [TradingView Charting Library Documentation](https://www.tradingview.com/charting-library-docs/)
 - [UDF Protocol Documentation](https://www.tradingview.com/charting-library-docs/latest/connecting_data/UDF)
+
+The charting technology is provided by TradingView — a platform for traders and investors offering real-time market data, crypto heatmaps, screeners, and other professional tools, making it easy to follow Bitcoin, [Ethereum price](https://www.tradingview.com/symbols/ETHUSD/), and charts for any other asset.
