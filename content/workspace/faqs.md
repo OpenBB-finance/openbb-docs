@@ -62,7 +62,7 @@ A: Yes, you can customize widget appearance using properties in the `widgets.jso
 
 **Q: What are apps, and how do I use them?**
 
-A: Apps allow you to build tailored solutions for your specific needs. In the `apps.json` file, you can specify the list of data widgets, prompts and AI agents that make up of your app and serve them via a FastAPI endpoint. See the [Apps](/workspace/apps) section for more details.
+A: Apps allow you to build tailored solutions for your specific needs. In the `apps.json` file, you can specify the list of data widgets, prompts and AI agents that make up your app and serve them via an API endpoint. See the [Apps](/workspace/apps) section for more details.
 
 **Q: How do I implement dynamic dropdown options in widgets?**
 
