@@ -298,10 +298,9 @@ analysis).
 
 ## Searching the web
 
-OpenBB Copilot has the ability to search the web. 
+OpenBB Copilot has the ability to search the web. It will use it when it doesn't find the required data to answer your prompt on the dashboard (or product); or if you are looking for news.
 
-To search the web, use the `@web` keyword in your query to tell OpenBB Copilot
-to search the web for information. For example:
+You can also explicitly ask for it using the tagging `@web`.
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
 <img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/ada_web_search_example.png" alt="web search openbb copilot" width="80%" height="80%" />

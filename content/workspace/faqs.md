@@ -60,9 +60,9 @@ A: Define the widget in the `widgets.json` file with necessary properties like n
 
 A: Yes, you can customize widget appearance using properties in the `widgets.json` file, such as `gridData` for size and `columnsDefs` for table widgets. More information is available in the [Customizing Widgets](/workspace/widgets-json-reference) section.
 
-**Q: What are templates, and how do I use them?**
+**Q: What are apps, and how do I use them?**
 
-A: Templates allow you to define and manage the layout and behavior of widgets on your dashboard. You can create a `templates.json` file to structure these templates and serve them via a FastAPI endpoint. See the [Apps](/workspace/apps) section for more details.
+A: Apps allow you to build tailored solutions for your specific needs. In the `apps.json` file, you can specify the list of data widgets, prompts and AI agents that make up your app and serve them via an API endpoint. See the [Apps](/workspace/apps) section for more details.
 
 **Q: How do I implement dynamic dropdown options in widgets?**
 
