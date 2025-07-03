@@ -1157,17 +1157,17 @@ Get analyst price targets by company.
 ## Syntax
 
 ```excel
-=OBB.EQUITY.ESTIMATES.PRICE_TARGET([symbol],[limit],[provider],[page],[date],[start_date],[end_date],[updated],[importance],[action],[analyst_ids],[firm_ids],[fields],[with_grade])
+=OBB.EQUITY.ESTIMATES.PRICE_TARGET([symbol],[limit],[with_grade])
 ```
 
 ## Examples
 
 ```excel
-=OBB.EQUITY.ESTIMATES.PRICE_TARGET(,,"benzinga")
+=OBB.EQUITY.ESTIMATES.PRICE_TARGET()
 ```
 
 ```excel
-=OBB.EQUITY.ESTIMATES.PRICE_TARGET("msft",10,"benzinga",,,"2020-01-01","2024-02-16",,,"downgrades")
+=OBB.EQUITY.ESTIMATES.PRICE_TARGET("msft",10)
 ```
 
 ---
@@ -1178,17 +1178,6 @@ Get analyst price targets by company.
 | ---- | ---- | ----------- | -------- |
 | symbol | Text | Symbol to get data for. Multiple comma separated items allowed. | False |
 | limit | Number | The number of data entries to return. | False |
-| provider | Text | Options: benzinga, fmp, defaults to benzinga. | False |
-| page | Number | Page offset. For optimization, performance and technical reasons, page offsets are limited from 0 - 100000. Limit the query results by other parameters such as date. Used in conjunction with the limit and date parameters. | False |
-| date | Text | Date for calendar data, shorthand for date_from and date_to. | False |
-| start_date | Text | Start date of the data, in YYYY-MM-DD format. | False |
-| end_date | Text | End date of the data, in YYYY-MM-DD format. | False |
-| updated | Any | Records last Updated Unix timestamp (UTC). This will force the sort order to be Greater Than or Equal to the timestamp indicated. The date can be a date string or a Unix timestamp. The date string must be in the format of YYYY-MM-DD. | False |
-| importance | Number | Importance level to filter by. Uses Greater Than or Equal To the importance indicated | False |
-| action | Text | Filter by a specific action_company. Options: downgrades, maintains, reinstates, reiterates, upgrades, assumes, initiates, terminates, removes, suspends, firm_dissolved. | False |
-| analyst_ids | Any | Comma-separated list of analyst (person) IDs. Omitting will bring back all available analysts. Multiple comma separated items allowed. | False |
-| firm_ids | Any | Comma-separated list of firm IDs. Multiple comma separated items allowed. | False |
-| fields | Any | Comma-separated list of fields to include in the response. See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields. Multiple comma separated items allowed. | False |
 | with_grade | Boolean | Include upgrades and downgrades in the response. | False |
 
 ---
@@ -1199,35 +1188,6 @@ import TabItem from '@theme/TabItem';
 ## Data
 
 <Tabs>
-<TabItem value='benzinga'>
-
-| Name | Description |
-| ---- | ----------- |
-| published_date | Published date of the price target. |
-| published_time | Time of the original rating, UTC. |
-| symbol | Symbol representing the entity requested in the data. |
-| exchange | Exchange where the company is traded. |
-| company_name | Name of company that is the subject of rating. |
-| analyst_name | Analyst name. |
-| analyst_firm | Name of the analyst firm that published the price target. |
-| currency | Currency the data is denominated in. |
-| price_target | The current price target. |
-| adj_price_target | Adjusted price target for splits and stock dividends. |
-| price_target_previous | Previous price target. |
-| previous_adj_price_target | Previous adjusted price target. |
-| price_when_posted | Price when posted. |
-| rating_current | The analyst's rating for the company. |
-| rating_previous | Previous analyst rating for the company. |
-| action_company | Description of the change in rating from firm's last rating.Note that all of these terms are precisely defined. |
-| action_pt | Description of the change in price target from firm's last price target. |
-| importance | Subjective Basis of How Important Event is to Market. 5 = High |
-| notes | Notes of the price target. |
-| analyst_id | Id of the analyst. |
-| url_news | URL for analyst ratings news articles for this ticker on Benzinga.com. |
-| url_analyst | URL for analyst ratings page for this ticker on Benzinga.com. |
-| id | Unique ID of this entry. |
-| updated | Last updated timestamp, UTC. |
-</TabItem>
 <TabItem value='fmp'>
 
 | Name | Description |
@@ -3793,10 +3753,6 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
     description="market"
     url="reference/index"
 /><ReferenceCard
-    title="NEWS"
-    description="company, world"
-    url="reference/news"
-/><ReferenceCard
     title="GET"
     description=""
     url="reference/get"
@@ -3807,301 +3763,6 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 />
 </ul>
 
-
-
----
-
----
-title: COMPANY
-description: Get company news for one or more companies using various providers. This
-  API allows you to retrieve news articles along with metadata such as date, title,
-  image, text, and URL. The available providers include Benzinga, FMP, Intrinio, Polygon,
-  Ultima, and Yfinance.
-keywords: 
-- company news
-- news for companies
-- news API
-- API parameters
-- benzinga provider
-- fmp provider
-- polygon provider
-- intrinio provider
-- ultima provider
-- yfinance provider
-- data entries
-- metadata
-- company news results
-- company news warnings
-- company news chart
-- data date
-- data title
-- data image
-- data text
-- data URL
-- benzinga data
-- fmp data
-- intrinio data
-- polygon data
-- ultima data
-- yfinance data
----
-
-<!-- markdownlint-disable MD033 -->
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="NEWS.COMPANY | OpenBB Add-in for Excel Docs" />
-
-Company News. Get news for one or more companies.
-
-## Syntax
-
-```excel
-=OBB.NEWS.COMPANY([symbol],[start_date],[end_date],[limit],[date],[display],[updated_since],[published_since],[order],[isin],[cusip],[channels],[topics],[authors],[content_types])
-```
-
-## Examples
-
-```excel
-=OBB.NEWS.COMPANY()
-```
-
-```excel
-=OBB.NEWS.COMPANY(,,,100)
-```
-
-```excel
-=OBB.NEWS.COMPANY("AAPL","2024-02-01","2024-02-07")
-```
-
-```excel
-=OBB.NEWS.COMPANY("AAPL",,,,,"headline")
-```
-
-```excel
-=OBB.NEWS.COMPANY("aapl,tsla")
-```
-
-```excel
-=OBB.NEWS.COMPANY("NVDA",,,,,,,,,"US0378331005")
-```
-
----
-
-## Parameters
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. Multiple comma separated items allowed. | False |
-| start_date | Text | Start date of the data, in YYYY-MM-DD format. | False |
-| end_date | Text | End date of the data, in YYYY-MM-DD format. | False |
-| limit | Number | The number of data entries to return. | False |
-| date | Text | A specific date to get data for. | False |
-| display | Text | Specify headline only (headline), headline + teaser (abstract), or headline + full body (full). Options: headline, abstract, full. | False |
-| updated_since | Number | Number of seconds since the news was updated. | False |
-| published_since | Number | Number of seconds since the news was published. | False |
-| order | Text | Order to sort the news by. Options: asc, desc. | False |
-| isin | Text | The company's ISIN. | False |
-| cusip | Text | The company's CUSIP. | False |
-| channels | Text | Channels of the news to retrieve. | False |
-| topics | Text | Topics of the news to retrieve. | False |
-| authors | Text | Authors of the news to retrieve. | False |
-| content_types | Text | Content types of the news to retrieve. | False |
-
----
-
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
-## Data
-
-<Tabs>
-<TabItem value='benzinga'>
-
-| Name | Description |
-| ---- | ----------- |
-| date | The date of the data. Here it is the published date of the article. |
-| title | Title of the article. |
-| text | Text/body of the article. |
-| images | Images associated with the article. |
-| url | URL to the article. |
-| symbols | Symbols associated with the article. |
-| source | Source of the article. |
-| tags | Keywords/tags in the article |
-| id | Article ID. |
-| amp_url | AMP URL. |
-| publisher | Publisher of the article. |
-</TabItem>
-</Tabs>
-
-
----
-
-# NEWS
-
-import ReferenceCard from '@site/src/components/General/NewReferenceCard';
-
-### Commands
-<ul className="grid grid-cols-1 gap-4 -ml-6">
-<ReferenceCard
-    title="COMPANY"
-    description="Company News. Get news for one or more companies."
-    url="news/company"
-    command
-/><ReferenceCard
-    title="WORLD"
-    description="World News. Global news data."
-    url="news/world"
-    command
-/>
-</ul>
-
-
-
----
-
----
-title: WORLD
-description: Learn how to retrieve global news data using the obb.news.world API.
-  This documentation covers the parameters, returns, and data structures used in the
-  API, including details on how to set the limit and provider, and how to filter the
-  news by date, author, channels, and more. Explore the different data fields such
-  as date, title, images, text, and URL, and understand the structure of the returned
-  results, warnings, chart, and metadata.
-keywords: 
-- Global News
-- global news data
-- obb.news.world
-- parameters
-- limit
-- provider
-- default
-- benzinga
-- biztoc
-- fmp
-- intrinio
-- display
-- date
-- start_date
-- end_date
-- updated_since
-- published_since
-- sort
-- order
-- isin
-- cusip
-- channels
-- topics
-- authors
-- content_types
-- returns
-- results
-- provider
-- warnings
-- chart
-- metadata
-- data
-- date
-- title
-- images
-- text
-- url
-- id
-- author
-- teaser
-- stocks
-- tags
-- updated
-- favicon
-- score
-- site
-- company
-- datetime
-- list
-- dict
----
-
-<!-- markdownlint-disable MD033 -->
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="NEWS.WORLD | OpenBB Add-in for Excel Docs" />
-
-World News. Global news data.
-
-## Syntax
-
-```excel
-=OBB.NEWS.WORLD([limit],[start_date],[end_date],[date],[display],[updated_since],[published_since],[order],[isin],[cusip],[channels],[topics],[authors],[content_types])
-```
-
-## Examples
-
-```excel
-=OBB.NEWS.WORLD()
-```
-
-```excel
-=OBB.NEWS.WORLD(100)
-```
-
-```excel
-=OBB.NEWS.WORLD(,"2024-02-01","2024-02-07")
-```
-
-```excel
-=OBB.NEWS.WORLD(,,,,"headline")
-```
-
-```excel
-=OBB.NEWS.WORLD(,,,,,,,,,,,"finance")
-```
-
----
-
-## Parameters
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| limit | Number | The number of data entries to return. The number of articles to return. | False |
-| start_date | Text | Start date of the data, in YYYY-MM-DD format. | False |
-| end_date | Text | End date of the data, in YYYY-MM-DD format. | False |
-| date | Text | A specific date to get data for. | False |
-| display | Text | Specify headline only (headline), headline + teaser (abstract), or headline + full body (full). Options: headline, abstract, full. | False |
-| updated_since | Number | Number of seconds since the news was updated. | False |
-| published_since | Number | Number of seconds since the news was published. | False |
-| order | Text | Order to sort the news by. Options: asc, desc. | False |
-| isin | Text | The ISIN of the news to retrieve. | False |
-| cusip | Text | The CUSIP of the news to retrieve. | False |
-| channels | Text | Channels of the news to retrieve. | False |
-| topics | Text | Topics of the news to retrieve. | False |
-| authors | Text | Authors of the news to retrieve. | False |
-| content_types | Text | Content types of the news to retrieve. | False |
-
----
-
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
-## Data
-
-<Tabs>
-<TabItem value='benzinga'>
-
-| Name | Description |
-| ---- | ----------- |
-| date | The date of the data. The published date of the article. |
-| title | Title of the article. |
-| images | Images associated with the article. |
-| text | Text/body of the article. |
-| url | URL to the article. |
-| id | Article ID. |
-| author | Author of the news. |
-| teaser | Teaser of the news. |
-| channels | Channels associated with the news. |
-| stocks | Stocks associated with the news. |
-| tags | Tags associated with the news. |
-| updated | Updated date of the news. |
-</TabItem>
-</Tabs>
 
 
 ---
