@@ -1,21 +1,21 @@
 ---
 title: Using OpenBB With FastAPI and Depends
-sidebar_position: 4
+sidebar_position: 9
 description: This page demonstrates how to efficiently import the OpenBB Python package into a FastAPI application, for use in any endpoint.
 keywords:
-- OBB
-- Python
-- Development
-- OpenBB Platform
-- FastAPI
-- Depends
-- Router
-- Custom
-- Application
-- API
+  - OBB
+  - Python
+  - Development
+  - OpenBB Platform
+  - FastAPI
+  - Depends
+  - Router
+  - Custom
+  - Application
+  - API
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
 <HeadTitle title="Using OpenBB With FastAPI and Depends - Developer Guides | OpenBB Platform Docs" />
 
@@ -24,7 +24,7 @@ for use in any endpoint.
 
 The code below is a complete example for wrapping the Python interface in an API that calls `obb.equity.price.quote`.
 
-Best practice would be to create, `OpenBBApp`, as a separate file and import directly in each router file requiring it. 
+Best practice would be to create, `OpenBBApp`, as a separate file and import directly in each router file requiring it.
 
 ## Example
 
