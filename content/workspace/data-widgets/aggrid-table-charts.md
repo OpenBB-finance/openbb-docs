@@ -713,12 +713,12 @@ def table_widget_custom_formatter():
 
 #### Custom Formatter Parameters
 The formatter function receives parameters including:
-- `yValue` - The data value
-- `first` - Whether this is the first point
-- `last` - Whether this is the last point
-- `min` - Whether this is a minimum point
-- `max` - Whether this is a maximum point
-- `highlighted` - Whether this point is highlighted
+- ***`yValue`*** - The data value
+- ***`first`*** - Whether this is the first point
+- ***`last`*** - Whether this is the last point
+- ***`min`*** - Whether this is a minimum point
+- ***`max`*** - Whether this is a maximum point
+- ***`highlighted`*** - Whether this point is highlighted
 
 #### Styling Options
 - **Basic styling**: `stroke`, `strokeWidth`, `fill`, `fillOpacity`
