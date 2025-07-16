@@ -48,6 +48,14 @@ Most systems capable of running Python `3.9.21-3.12` will be compatible with the
 
 Linux users should run the command line update for the package manager, prior to installation.
 
+:::warning
+As of, `openbb` version 4.4.5, Python 3.9 will trigger a deprecation warning.
+
+Support for versions below 3.10 will be discontinued in the fall of 2025.
+
+Support for Python 3.13 will be introduced in the summer of 2025.
+:::
+
 ## Installer Package
 
 An installer package is available for Mac and Windows machines. Files are available [here](https://my.openbb.co/app/platform/downloads).
@@ -55,7 +63,7 @@ An installer package is available for Mac and Windows machines. Files are availa
 It will handle the installation of Python, environment setup, and OpenBB packages with the latest versions.
 
 :::danger
-Users with v1.0.0 installations need to follow the steps below to update the version of OpenBB.
+Users with versions below v1.0.3 will need to follow the steps below to update the version of OpenBB to the current.
 
 1. In Finder/Explorer, open the folder where it was installed - probably in a folder, named "OpenBB", at the root of user home folder.
 2. From the main installation folder, navigate into the subdirectory, "extensions/openbb_platform_installer".
@@ -68,8 +76,12 @@ Users with v1.0.0 installations need to follow the steps below to update the ver
      - From: `openbb-core = "^1"`
      - To: `openbb-core = ">=1.4.4"`
 
-4. Save the file, close it, and then run the "Update" shortcut.
+4. Save the file, close it.
+
+5. Delete the file, `poetry.lock`, and then run the "Update" shortcut.
    :::
+
+Alternatively, uninstall and reinstall. The solution above is more time-efficient.
 
 ## Supported Environments
 
