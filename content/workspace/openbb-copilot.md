@@ -12,337 +12,284 @@ keywords:
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-import ReactPlayer from 'react-player'
 
 <HeadTitle title="OpenBB Copilot | OpenBB Workspace Docs" />
 
-OpenBB Copilot is your AI companion that helps you interact with OpenBB
-Workspace, and perform a wide variety of research and analysis tasks.
+The OpenBB Copilot is an AI agent seamlessly integrated into the OpenBB Workspace, designed to serve as your personal financial analyst.
 
-With OpenBB Copilot, you can:
+This sophisticated assistant understands natural language queries, retrieves data from multiple sources, performs complex analysis, and generates actionable insights.
 
-- Answer general knowledge questions
-- Interact with widgets added explicitly to its context
-- Interact with your uploaded files
-- Automatically use data from the dashboard
-- Automatically retrieve data using the OpenBB API or any custom backend you have added
-- Create charts, tables, and other text artifacts, like summaries
-- Iteratively manipulate and transform data and charts
-- Be used to search the web for additional information
-- Provide citations
+Built specifically for financial professionals, the Copilot transforms traditional workflows by eliminating manual data retrieval, accelerating analysis, and providing context-aware insights based on your specific datasets and workspace configuration.
 
-## Introduction
+[GRAPHIC: Overview of the OpenBB Copilot in the OpenBB Workspace]
 
-To use OpenBB Copilot, click on the purple icon located at the center right of the
-Workspace screen:
+## Basics
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/open_copilot.jpg" alt="open openbb copilot" width="70%" height="70%" />
-</div>
+### Structure
 
-Under most circumstances, you can treat OpenBB Copilot like a personal research
-assistant. OpenBB Copilot has access to the widgets (including your uploaded
-files) on your currently-active dashboard, the OpenBB API and any custom backend
-endpoints you have added to OpenBB Workspace. 
+The Copilot interface is designed for intuitive interaction with a clean, three-section layout that maximizes usability and clarity.
 
-By utilizing all of these sources of data, OpenBB Copilot can assist you in
-performing a wide variety of research and analysis tasks.
+- **Header:** Contains essential controls for conversation management, including the current conversation the user is in. But also the capability to start a new chat, clear the current chat history, expand to full AI-mode or hide the agent.
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-<img src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/copilot/ada_opened.png" alt="opened openbb copilot" width="70%" height="70%" />
-</div>
+- **Body:** The primary interaction area where conversations unfold. This section displays the Copilot's responses, step-by-step reasoning processes, generated artifacts (charts, tables, code), and any intermediate results. The body automatically scrolls and organizes content chronologically, making it easy to follow complex multi-step analyses. When hovering on messages it also displays the datetime associated with these.
 
-## Understanding Chats
+- **Footer:** This is where the data and widget management occurs for what will be used as context for the agent. This is also where the user can add their own custom AI agents or access their prompt library.
 
-OpenBB Copilot is a chat-based assistant that leverages multiple LLMs (Large
-Language Models) under-the-hood to understand your queries and provide answers.
+[GRAPHIC: Labeled image of the Copilot UI showing header, body, and footer]
 
-Since OpenBB Copilot is a chat-based assistant, it maintains a conversation history
-to provide contextual responses. This means you can have natural back-and-forth
-discussions, ask follow-up questions, and refine your queries based on previous
-responses. The conversation history helps OpenBB Copilot understand the context of
-your questions and provide more relevant and personalized assistance throughout
-your interaction.
+### Full AI-chat mode
 
-For example, if you ask about the price-to-earnings (P/E) ratio, and then follow
-up by asking about other important financial ratios, OpenBB Copilot will
-understand the context and suggest relevant ratios:
+The Copilot panel offers adaptive sizing to match your workflow needs.
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/ada_chat_history.png" alt="chat history openbb copilot" width="60%" height="60%" />
-</div>
+In side-panel mode, it provides quick access for simple queries while maintaining your primary workspace view.
 
-If you'd like to clear the history of the current conversation, you can do so by
-clicking on the trashcan icon in the upper right corner of the OpenBB Copilot
-window. It is **highly recommended** to clear the chat history when you have a
-new question that is unrelated to your current conversation, to prevent
-confusing OpenBB Copilot:
+When expanded to full-screen mode, you gain maximum real estate for complex conversations, detailed reasoning steps, and large artifacts like comprehensive charts or extensive data tables. This flexibility allows seamless transitions between quick consultations and deep analytical sessions without losing context or interrupting your workflow.
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/ada_trash_can_icon.png" alt="clear chat button openbb copilot" width="100%" height="100%" />
-</div>
+And of course you are capable of hiding the AI agent if you are locked in utilizing the workspace.
 
-## General question answering
+[GRAPHIC: Animation showing the copilot panel being expanded to full-screen chat mode]
 
-The simplest functionality of OpenBB Copilot is its general question answering
-capability. For example, you can ask Copilot things like:
+### Prompt library
 
-- "What's the difference between stocks and bonds?"
-- "Explain inflation."
-- "Can you explain the concept of dollar-cost averaging?"
+The integrated prompt library serves as a productivity multiplier by storing and organizing your most valuable queries. You can save complex prompts and even tag widgets, to ensure the right context is utilized for the right prompt.
 
-For general questions, OpenBB Copilot will rely on its underlying model's
-extensive training data to formulate answers. We suggest you spend some time    
-exploring this functionality with a range of questions across different topics
-to get a feel for how OpenBB Copilot works and behaves.
+This feature ensures consistency across team members and dramatically reduces the time spent retyping similar requests.
 
-## Interacting with data sources using OpenBB Copilot
+[GRAPHIC: Screenshot of the prompt library interface]
 
-For OpenBB Copilot, widgets are data sources that can be used to retrieve data relevant to answer your queries. OpenBB Copilot uses the current values of widget parameters (e.g. symbol, start date, etc.) as suggestions to answer your query, but it can also change them if required.
+### Model
 
-This allows you to treat a widget as a data that can return data for multiple tickers and inputs, rather than just the data that is currently being displayed.
+The OpenBB Copilot leverages cutting-edge large language models from OpenAI, specifically optimized for financial analysis and data interpretation tasks.
 
-Widgets have the following priority:
+For enterprise deployments, OpenBB provides seamless integration with your organization's Azure OpenAI or dedicated OpenAI deployments, ensuring data sovereignty, compliance with internal security policies, and the ability to customize model behavior according to your firm's specific requirements and risk parameters.
 
-1. Widgets added to the context explicitly
-2. Widgets in the currently-active dashboard
-3. Any widget available to be added to the OpenBB app, including widgets from custom backends or API endpoints (optional)
+If you would like full control over your agent capabilities, here's [our open source repository](https://github.com/OpenBB-finance/agents-for-openbb) with example of AI custom agents that you can build and integrate to the OpenBB Workspace.
 
-You can toggle on/off global widgets (option 3) the button highlighted in the image below.
+## Context
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/ada_extra_toggle.png" alt="toggle extra data" width="80%" height="80%" />
-</div>
+The Copilot employs a sophisticated context understanding system that intelligently prioritizes and processes multiple information sources simultaneously.
 
-### Analyze specific widgets only
+This hierarchical approach ensures that the most relevant and specific data takes precedence when generating responses, while still maintaining awareness of broader workspace context and conversation history.
 
-Sometimes, you might want OpenBB Copilot to analyze data from only a specific
-widget (or set of widgets) on your dashboard. For example, if you want to deep
-dive into an earnings transcript, and ignore all other widgets on your
-dashboard, you can do so by clicking on the "Add widgets as context" button on
-the widgets you want OpenBB Copilot to use:
+### Priority
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/add_specific_widget_context.png" alt="add widget context openbb copilot" width="80%" height="80%" />
-</div>
+The agent prioritizes context in the following order to provide the most relevant answers:
 
-The OpenBB Copilot chat window will also show you which widgets are currently
-selected as explicitly-added context:
+| Priority | Context Type | Description |
+|---|---|---|
+| 1 | Explicit | Widgets added to context specifically. |
+| 2 | Attached files | Files uploaded directly to the Copilot |
+| 3 | Dashboard | All widgets currently on your dashboard (in all tabs). |
+| 4 | Global | All widgets available within the OpenBB Workspace. |
+| 5 | Conversation | The history of your current conversation. |
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/ada_window_explicit_context.png" alt="query widget context openbb copilot" width="80%" height="80%" />
-</div>
+### Explicit context
 
-### Automatically use data from the dashboard
+Explicit context represents the highest priority information source, allowing you to precisely direct the Copilot's attention to specific datasets or widgets. When you use the "@" symbol followed by a widget name or use "Add to context" button on any widget, you're creating a direct reference that the Copilot will prioritize above all other available information.
 
-OpenBB Copilot can access information from all widgets you have added to your
-currently-active dashboard. If no widgets have been explicitly added to the
-context, OpenBB Copilot will fallback to retrieve data from
-widgets on the currently-active dashboard if they are required to answer your query.
+This mechanism is particularly powerful for ensuring accuracy when working with multiple similar datasets or when you need analysis focused on a specific dataset.
 
-For example, if you add the "Historical Stock Price" widget to your dashboard,
-you can ask OpenBB Copilot to give you the monthly highs for a particular year
-for AAPL, and OpenBB Copilot will use the "Historical Stock
-Price" widget to provide an answer:
+[GRAPHIC: Screenshot showing how to add explicit context using '@']
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/ada_retrieve_from_dashboard.png" alt="copilot retrieve from dashboard" width="100%" height="100%" />
-</div>
+### Dashboard
 
-Also note how OpenBB Copilot displays the reasoning steps that it took to
-retrieve the data:
+The dashboard context provides the Copilot with comprehensive awareness of your current analytical environment. All widgets visible on your active dashboard become automatically available as data sources, allowing the Copilot to understand the broader context of your work session.
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/ada_reasoning_steps.png" alt="reasoning steps openbb copilot" width="50%" height="50%" />
-</div>
+This includes all the data you are seeing, but also the widgets metadata and their current parameters selected.
 
-OpenBB Copilot also provides a citation for the data source after its response.
+### Attached
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/ada_citation_example.png" alt="citation example openbb copilot" width="100%" height="100%" />
-</div>
+The attachment system enables the Copilot to process external documents and datasets that aren't part of your standard workspace configuration. Supported file types include PDFs (research reports, earnings statements, regulatory filings), Excel/CSV files (custom datasets, portfolio holdings, historical data), and various document formats.
 
-To learn more about reasoning steps and citations, please see the [Reasoning
-Steps](#reasoning-steps) and [Citations](#citations) sections below.
+The Copilot automatically extracts and indexes content from attached files, making them searchable and referenceable throughout your conversation. This capability is essential for ad-hoc analysis of new research, processing client-specific documents, or incorporating external datasets into your analysis workflow.
 
-:::note
+[GRAPHIC: Screenshot showing the 'attach file' button in the copilot]
 
-Sometimes, you might need to be more specific with your query when you want
-Copilot to use one or more widgets from your dashboard, since vague queries
-might lead OpenBB Copilot to retrieve the data automatically from all of the
-available data sources it has access to (See more about this capability in the
-[Automatically using data sources available to OpenBB Workspace](#automatically-using-data-sources-available-to-openbb-workspace) section
-below).
+### Global Retrieval
 
-To remedy this, simply add a phrase such as "Use the widgets on my dashboard" to
-the end of your query to "nudge" OpenBB Copilot to retrieve the data from the
-relevant widgets on your dashboard.
+The global retrieval system provides the Copilot with access to the entire OpenBB Workspace widget library, extending far beyond your current dashboard widgets.
 
-:::
+When your current dashboard doesn't contain the specific data or analysis tool needed to answer a query, the Copilot can automatically identify and utilize the appropriate widgets from the global library, effectively expanding your analytical capabilities on-demand without manual widget selection.
 
+This is only possible due to the metadata associated with each widget and is why it's important to invest time in each widget metadata.
 
-### Using your own files
+### Web Search
 
-OpenBB Copilot can also analyze and answer questions using files you provide, such as PDF, CSV, and XLSX files.
+The web search capability enables the Copilot to access real-time information from across the internet when:
 
-To add a file to OpenBB Copilot, first [upload it and add it as a widget to the currently-active dashboard](https://docs.openbb.co/workspace/static-files).
+- The available workspace data is insufficient to fully answer your query.
+- The user asks to look for the information on the open web.
 
-The file can then be used by OpenBB Copilot to answer questions (either by adding the file widget to the [context explicitly](#analyze-specific-widgets-only), or by allowing OpenBB Copilot to [automatically retrieve the data](#automatically-use-data-from-the-dashboard) if it is relevant to your query).
+This feature automatically activates as a fallback mechanism, ensuring comprehensive responses even when dealing with breaking news, recent market developments, or information not available in your current workspace configuration.
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/ada_custom_pdf_chat_example.png" alt="custom pdf copilot chat" width="100%" height="100%" />
-</div>
+### Conversation
 
-Alternatively, you can also upload files directly to OpenBB Copilot by clicking
-on the paper clip icon in the OpenBB Copilot window. Files uploaded directly to
-OpenBB Copilot in this manner will **not** be persisted between sessions:
+Conversational context enables natural, iterative analysis by maintaining awareness of your entire dialogue history within the current session.
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/ada_anonymous_files.png" alt="upload file to copilot" width="80%" height="80%" />
-</div>
+The Copilot tracks not only your explicit questions and its responses, but also the reasoning paths taken, data sources accessed, and conclusions reached. This comprehensive memory allows for sophisticated follow-up queries, refinement of analysis parameters, and building upon previous insights without needing to re-establish context. The system understands references to "the previous chart", "that analysis", or "the data we discussed" and can seamlessly continue complex analytical workflows across multiple conversation turns.
 
+<!--
+### Memory
 
-:::note
+*Coming soon*
 
-When uploading files directly to OpenBB Copilot, we use filenames to determine
-if a file is relevant to your query. For best results, use descriptive
-filenames. For example, if you have a technical report from Tesla released in
-2024, a good filename would be `tsla_technical_report_2024.pdf`.
+The persistent memory system will create a long-term understanding of your analytical preferences, frequently accessed datasets, preferred chart types, and typical workflow patterns. This cross-session intelligence will enable the Copilot to proactively suggest relevant analysis approaches, remember your naming conventions and categorization preferences, and adapt its communication style to match your professional context. The memory system will maintain privacy and security while building a personalized analytical assistant that becomes more effective over time.
 
-:::
+--->
 
-### Automatically using data sources available to OpenBB Workspace
+## Data Handling
 
-OpenBB Copilot can also access external data sources to provide additional
-insights. This allows you to ask questions that go beyond the data displayed on
-your dashboard.
+### Structured data
 
-External data can be retrieved from all data sources available to OpenBB,
-including the OpenBB API (which powers first-party widgets), and any custom
-backend endpoints that you have added.
+The Copilot excels at processing and analyzing structured financial datasets through multiple specialized capabilities:
 
-:::note
+- **AgGrid (table/chart) widgets:** A natural language to SQL translation tool that helps you query tabular data using plain English. Once your data is loaded in a tabular format, `text2sql` converts your questions into SQL queries to retrieve specific information from these tables. This eliminates the need to write SQL manually while allowing you to explore and analyze your data through simple natural language questions.
 
-OpenBB Copilot prioritizes data in the following order:
+- **Plotly widgets:** Full-featured charting engine that not only generates interactive visualizations but also allows firms to provide the underlying data. The Copilot can extract specific data points, and create derivative analyses from existing visualizations.
 
-1. Explicitly-added context widgets
-2. Data from widgets on the currently-active dashboard
-3. Data from the OpenBB API or any active custom backend.
+[GRAPHIC: Example of the agent using text2sql to query a database and showing the SQL]
 
-:::
+### Unstructured data
 
-For example, you can ask OpenBB Copilot to fetch the latest stock price for a
-specific company, or to provide a summary of the latest news for a particular
-stock without having to add a widget to your dashboard, as long as you have the global data toggle enabled.
+The Copilot's unstructured data processing capabilities enable comprehensive analysis of diverse document types and media:
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/ada_direct_retrieval_example.png" alt="direct retrieval example" width="60%" height="60%" />
-</div>
+- **Document Processing (MD/PDF):** Advanced text extraction and comprehension. The system maintains document structure understanding, preserving context around tables, charts, and hierarchical information.
+- **Web search:**: When the user provides a URL to the AI agent, it converts the web page to markdown for it to be parsed by the model - as done above.
+- **Advanced RAG Implementation:** Sophisticated retrieval system that chunks large documents intelligently, maintains semantic relationships, and provides precise citations. The system can cross-reference information across multiple documents and identify contradictions or supporting evidence.
+- **Multi-modal Analysis:** Image processing capabilities for charts, screenshots, financial diagrams, and infographics. The Copilot can extract data from visual representations, understand chart types, and incorporate visual information into broader analytical workflows.
 
-If OpenBB Copilot retrieved data directly from a data source, you can add that
-data to your dashboard by hovering over the appropriate citation, and clicking
-on the "Add to dashboard" button:
+[GRAPHIC: Example of the agent answering a question from a PDF document with citation]
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/ada_add_to_dashboard_from_citation.png" alt="add to dashboard from citation" width="50%" height="50%" />
-</div>
+## Tools
 
-## Producing charts and tables using OpenBB Copilot
+### Widgets
 
-OpenBB Copilot can produce charts and tables using the data that it has access
-to. We call these special outputs "artifacts".
+The Copilot treats every widget in the OpenBB Workspace as a programmable tool in its analytical toolkit.
 
-For charts, OpenBB Copilot can currently produce the following plot types:
+This comprehensive integration means the Copilot can leverage hundreds of specialized functions ranging from basic data retrieval to complex quantitative analysis.
 
-- Line chart
-- Vertical bar chart
-- Scatter plot
+The system can chain widget operations, using the output from one widget as input for another, creating sophisticated analytical pipelines automatically.
 
-To produce a chart or a table, mention the output that you want in your query.
-For example, to produce a chart of the latest stock price for Apple, you can
-ask OpenBB Copilot to "Create a chart of the latest stock price for Apple":
+### Widget parameters
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/ada_chart_artifact.png" alt="chart artifact openbb copilot" width="60%" height="60%" />
-</div>
+Dynamic parameter modification represents one of the OpenBB's Copilot most powerful capabilities, enabling real-time customization of analytical tools based on conversational context.
 
-If you want a table instead, you can just modify your query slightly to ask for
-a table:
+The system understands the parameter schemas of each widget and can intelligently modify settings like date ranges, asset symbols, calculation periods, and analysis parameters to match your specific requirements.
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/ada_table_artifact.png" alt="table artifact openbb copilot" width="60%" height="60%" />
-</div>
+This eliminates the need for manual widget configuration and enables the Copilot to perform iterative analysis with different parameters automatically, such as comparing the same analysis across different time periods or asset classes within a single conversation.
 
-This behaviour works across all structured data.
+[GRAPHIC: Animation showing the agent changing a widget's parameter (e.g. stock ticker) to answer a question]
 
-### Converting artifacts to widgets
+### Web search
 
-Every artifact that OpenBB Copilot generates can be converted to a widget. To do
-this, click the "Create widget from [text, table, or chart]" button:
+The integrated web search capability extends the Copilot's knowledge beyond the OpenBB Workspace ecosystem to access real-time information from across the internet.
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/create_widget_from_artifact.png" alt="create widget from artifact openbb copilot" width="60%" height="60%" />
-</div>
+This feature automatically activates when workspace data is insufficient to answer your query, searching financial news sources, regulatory databases, company websites, and other authoritative sources. The system filters and prioritizes results based on relevance and credibility, then seamlessly integrates external information with your existing workspace data to provide comprehensive answers with proper source attribution.
 
-This will create a new widget on your dashboard containing the artifact.
+[GRAPHIC: Screenshot of a web search result within the copilot chat]
 
-:::note
+### Code interpreter
 
-The newly-created widget contains all of the data in the artifact, so you can
-interact with it just like any other widget on your dashboard (including
-switching between different types of charts, or toggling between chart and table
-views, or adding it as explicitly-added context to OpenBB Copilot for further
-analysis).
+*Coming soon*
 
-:::
+The secure code execution environment will enable the Copilot to perform advanced quantitative analysis through custom Python code generation and execution.
 
-## Searching the web
+This sandboxed interpreter will support popular financial libraries (pandas, numpy, scipy, sklearn, matplotlib and plotly) and will be capable of running statistical models, and custom analytical algorithms.
 
-OpenBB Copilot has the ability to search the web. 
+The code interpreter will maintain security isolation while providing full computational flexibility for sophisticated financial modeling and analysis tasks.
 
-To search the web, use the `@web` keyword in your query to tell OpenBB Copilot
-to search the web for information. For example:
+[GRAPHIC: tba]
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/ada_web_search_example.png" alt="web search openbb copilot" width="80%" height="80%" />
-</div>
+### MCP Server
 
-## Reasoning Steps
+*Coming soon*
 
-As OpenBB Copilot goes through the process of answering your query, it will show
-you the reasoning steps it took to arrive at the answer.  These reasoning steps
-appear above Copilot's responses. Reasoning steps can be expanded to see more
-information about the intermediate steps OpenBB Copilot took to arrive at the
-answer:
+Model Context Protocol (MCP) integration will enable seamless connection to third-party data providers, analytical services, and specialized financial tools without requiring custom development within the OpenBB Workspace.
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/ada_expanded_reasoning_steps.png" alt="expanded reasoning steps openbb copilot" width="80%" height="80%" />
-</div>
+This extensibility framework will support integration with proprietary databases, alternative data providers, risk management systems, and specialized analytical platforms.
 
-The reasoning steps can contain parameters for data sources, internal queries,
-which files are accessed, intermediate artifacts, and more.
+Organizations will be able to maintain their existing technology stack while providing the Copilot with unified access to all relevant data sources and tools through standardized protocol connections.
 
-## Citations
+[GRAPHIC: tba]
 
-When accessing data (whether from widgets on your dashboard, files you have
-uploaded, or external data sources), OpenBB Copilot will always cite the data
-source it referenced when responding to your query:
+## Step-by-step reasoning
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/citation_example.png" alt="citations openbb copilot" width="80%" height="80%" />
-</div>
+Transparency and auditability are fundamental to the OpenBB's Copilot design, with comprehensive step-by-step reasoning displayed for every analysis.
 
-If the widget that was cited is present on your dashboard with the same arguments used by OpenBB Copilot,
-hovering over the citation will give you the option to scroll to that widget.
+This detailed process visibility enables users to understand the logical flow, verify data sources, identify potential biases, and ensure compliance with analytical standards.
 
-If the widget is not present or the arguments were changed, hovering over the citation will give you the
-option to add the data to your dashboard.
+The reasoning display serves both educational and quality assurance purposes, building user confidence while maintaining the ability to audit and reproduce analytical processes.
 
-## Prompting guidelines
+[GRAPHIC: Screenshot of the step-by-step reasoning display in the copilot]
 
-The OpenBB Copilot is designed to assist you in your research and analysis. To
-get the most out of OpenBB Copilot, it is important to have a good understanding
-of prompting techniques.
+### Planning
 
-We recommend reading through the [OpenAI Prompt Engineering Guide](https://beta.openai.com/docs/guides/prompt-engineering) to learn more
-about how to structure your prompts to get the best results.
+The planning phase demonstrates the Copilot's strategic thinking by decomposing complex analytical requests into logical, sequential sub-tasks. This planning process considers data dependencies, optimal execution order, and resource requirements.
+
+The displayed plan serves as a roadmap that users can review and potentially modify before execution, ensuring alignment with analytical objectives and providing clear expectations for the upcoming analysis workflow.
+
+[GRAPHIC: Example of the agent breaking down a complex query into a plan with sub-tasks]
+
+### Querying widgets
+
+Widget query transparency provides complete visibility into data retrieval operations, including the specific widget accessed, all parameters used, data source information, and timestamp details.
+
+This documentation enables users to understand exactly what data was retrieved, verify parameter settings, and reproduce the analysis independently. The system also displays any parameter modifications made automatically, ensuring full awareness of how the Copilot adapted widget configurations to meet query requirements.
+
+[GRAPHIC: Screenshot showing the details of a widget query in the reasoning steps]
+
+### Intermediate result artifact
+
+Intermediate artifacts provide crucial visibility into the Copilot's analytical methodology by displaying generated code, SQL queries, calculation formulas, and other technical implementations.
+
+These artifacts serve multiple purposes: enabling technical review and validation, supporting learning and knowledge transfer, facilitating debugging and optimization, and ensuring compliance with analytical standards.
+
+Users can examine, modify, and reuse these artifacts, treating them as valuable analytical assets beyond their immediate application.
+
+[GRAPHIC: Screenshot of an intermediate artifact, like a SQL query or Python code block]
+
+### Artifact generated
+
+Final artifacts represent the culmination of the analytical process, displayed with complete context about their creation methodology. These artifacts maintain full provenance information, including data sources, transformation steps, and parameter settings used in their generation.
+
+The system preserves the relationship between artifacts and their creation process, enabling users to understand not just what was created, but how and why, supporting both immediate use and future reference or modification.
+
+[GRAPHIC: Screenshot showing a generated chart or table as an artifact]
+
+## Output
+
+The Copilot's output system delivers comprehensive, contextual responses that synthesize all available information into actionable insights. Each response is structured to provide immediate answers while supporting deeper investigation, combining direct responses with supporting evidence, data visualizations, and clear pathways for follow-up analysis.
+
+### Citations
+
+Comprehensive citation system ensures full traceability and verification of all information sources used in responses. The citation framework provides different levels of detail based on source type:
+
+- **Widget citations:** Direct links to widgets with parameters selected. Smart linking enables "Scroll to widget" functionality for existing dashboard widgets. If the widget doesn't exist in the dashboard or has modified parameters the linking will provide a "Add widget to dashboard" options to facilitate workspace workflow.
+- **Document citations:** Precise page and section references for PDF documents with automatic highlighting of relevant content areas.
+- **Web citations:** Full URL references when web pages are utilized.
+
+[GRAPHIC: Screenshot showing citations with links to sources, and the "Scroll to widget" and "Add widget to dashboard" options]
+
+### Create widgets from AI output
+
+The widget creation system enables seamless integration of Copilot-generated content into your workspace environment.
+
+This capability transforms temporary conversational outputs into permanent analytical assets that can be referenced, shared, and incorporated into ongoing workflows.
+
+The system supports multiple artifact types including formatted text summaries, interactive data tables with sorting and filtering capabilities, and fully functional charts with preserved interactivity.
+
+[GRAPHIC: Animation showing a chart generated by the AI being converted into a workspace widget]
+
+### User feedback loop
+
+The thumbs up and down buttons in the agent output allow the user to provide feedback in terms of their experience with the copilot. That data can be utilized to create a flywheel that allows developers to understand how the AI agent can be improved.
+
+## Generative UI
+
+*COMING SOON*
+
+The generative user interface capability will enable the Copilot to directly manipulate and orchestrate your workspace environment through natural language commands. This advanced functionality will include:
+
+- **Multi-widget deployment:** Automatically adding complementary widgets to your dashboard in optimal arrangements based on analytical requirements.
+- **Dynamic parameter synchronization:** Real-time updating of existing widget parameters across your dashboard to maintain consistency and support comparative analysis.
+- **Complete dashboard generation:** Creating fully functional, professionally arranged dashboards from single natural language descriptions, incorporating appropriate data sources, analytical tools, and visualization components tailored to specific analytical objectives or industry use cases.
