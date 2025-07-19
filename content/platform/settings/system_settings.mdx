@@ -1,0 +1,161 @@
+---
+title: System Settings
+sidebar_position: 2
+description: This section details configuring the OpenBB Platform settings and environment variables.
+keywords:
+  - OpenBB Platform
+  - Python client
+  - getting started
+  - OpenBB Hub
+  - local environment
+  - environment variables
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="User Settings & Environment Variables | OpenBB Platform Docs" />
+
+An additional configuration file, `system_settings.json`, is located in the same folder as `user_settings.json`, and can be created manually if it does not exist. The items below can be configured via this file, as a JSON dictionary.
+
+## Logging Service
+
+OpenBB Platform has a logging service which can be enabled (default is off) in `system_settings.json`.
+
+When active, it logs commands executed, with their parameters, and any errors to a file.
+The files will be stored in the `OpenBBUserData\logs` folder, with each session assigned a UUID and logged in a separate file.
+
+Add this entry to `system_settings.json`:
+
+```json
+{
+    "logging_suppress": false,
+}
+```
+
+With the configuration set, the logger can be retrieved by name in the code.
+
+```python
+logger = logging.getLogger("openbb.logging_service")
+```
+
+## API Settings
+
+The, `"api_settings"`, key is a nested dictionary, and is passed to the instance of FastAPI. 
+
+```json
+{
+    "api_settings": {
+        "version": "1",
+        "title": "OpenBB Platform API",
+        "description": "This is the OpenBB Platform API.",
+        "terms_of_service": "http://example.com/terms/",
+        "contact_name": "OpenBB Team",
+        "contact_url": "https://openbb.co",
+        "contact_email": "hello@openbb.co",
+        "license_name": "AGPLv3",
+        "license_url": "https://github.com/OpenBB-finance/OpenBB/blob/develop/LICENSE",
+        "servers": [
+            {
+                "url": "",
+                "description": "Local OpenBB development server"
+            }
+        ],
+        "cors": {
+            "allow_origins": [
+                "*"
+            ],
+            "allow_methods": [
+                "*"
+            ],
+            "allow_headers": [
+                "*"
+            ]
+        },
+        "prefix": "/api/v1"
+    }
+}
+```
+
+## Python Settings
+
+The `python_settings` key is a nested dictionary. It contains configurations for the docstring elements within the Python interface, as well as global HTTP and Uvicorn settings.
+
+Additional keys and values can be supplied, however, unless they are specifically implemented by custom code, they will be ignored.
+
+### Docstring Sections
+
+This configuration allows the user to include specific elements of the docstrings. Useful for reducing the context length when incorporating LLMs and function calling. The settings below are for the complete docstring, and are the default state.
+
+```json
+{
+    "python_settings": {
+        "docstring_sections": ["description", "parameters", "returns", "examples"],
+        "docstring_max_length": null
+    }
+}
+```
+
+### HTTP
+
+:::important
+This section refers to settings available beginning OpenBB v4.4.0
+:::
+
+Configurations within, `python_settings["http"]`, apply to both, the requests, and aiohttp, libraries.
+
+The settings are passed into the `requests.Session` object and the `aiohttp.ClientSession` object by:
+- `openbb_core.provider.utils.helpers.make_request` - Sync
+- `openbb_core.provider.utils.helpers.amake_request` - Async
+- `openbb_core.provider.utils.helpers.amake_requests` - Async (multiple requests)
+- Inserted to use with YFinance & Finviz library implementations.
+
+Return a session object with the settings applied by:
+- `openbb_core.provider.utils.helpers.get_requests_session`
+- `openbb_core.provider.utils.helpers.get_async_requests_session`
+
+:::tip
+Pass the session object, returned by `get_requests_session`, to use this configuration directly with the yFinance library.
+
+```python
+import yfinance as yf
+from openbb_core.provider.utils.helpers import get_requests_session
+
+session = get_requests_session()
+ticker = yf.Ticker("AAPL", session=session)
+```
+:::
+
+#### Available settings:
+
+| Key | Type | Description |
+|:----|:----:|------------:|
+|cafile| str | Path to a CA certificate file.|
+|certfile| str | Path to a client certificate file.|
+|keyfile| str | Path to a client key file.|
+|password| str | Password for the client key file (aiohttp only).|
+|verify_ssl| bool | Verify SSL certificates.|
+|fingerprint| str | SSL fingerprint (aiohttp only).|
+|proxy| str | Proxy URL.|
+|proxy_auth| str, list | Proxy basic authentication (aiohttp only).|
+|proxy_headers| dict | Proxy headers (aiohttp only).|
+|timeout| int | Request timeout.|
+|auth| str, list | Basic authentication.|
+|headers| dict | Request headers.|
+|cookies| dict | Dictionary of session cookies.|
+
+Any additional keys supplied will be ignored unless explicitly implemented via custom code.
+
+### Uvicorn
+
+The, `python_settings["uvicorn"]`, key covers the launch of FastAPI when using the following entry points:
+
+- Running the FastAPI as a Python module script.
+    - python -m openbb_core.api.rest_api
+- Running the `openbb-api` command.
+    - openbb-api
+
+All settings are passed directly to `uvicorn.run`, and can be found in the Uvicorn [documentation](https://www.uvicorn.org/settings/)
+
+:::important
+Keyword arguments supplied to the command line will take priority over the settings in this configuration.
+:::

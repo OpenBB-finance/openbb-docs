@@ -1,0 +1,75 @@
+---
+title: Using OpenBB With FastAPI and Depends
+sidebar_position: 9
+description: This page demonstrates how to efficiently import the OpenBB Python package into a FastAPI application, for use in any endpoint.
+keywords:
+  - OBB
+  - Python
+  - Development
+  - OpenBB Platform
+  - FastAPI
+  - Depends
+  - Router
+  - Custom
+  - Application
+  - API
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Using OpenBB With FastAPI and Depends - Developer Guides | OpenBB Platform Docs" />
+
+This page demonstrates how to efficiently import the OpenBB Python package into a FastAPI application,
+for use in any endpoint.
+
+The code below is a complete example for wrapping the Python interface in an API that calls `obb.equity.price.quote`.
+
+Best practice would be to create, `OpenBBApp`, as a separate file and import directly in each router file requiring it.
+
+## Example
+
+```python
+"""Example of using the OpenBB Python Interface as a FastAPI Dependency."""
+
+from typing import Annotated
+from openbb_core.app.model.abstract.singleton import SingletonMeta
+from fastapi import (
+    Depends,
+    FastAPI,
+)
+
+app = FastAPI()
+
+
+class OpenBB(metaclass=SingletonMeta):
+    def __init__(self):
+        import openbb
+
+        self._obb = openbb.sdk
+
+    @property
+    def obb(self):
+        return self._obb
+
+
+def get_openbb():
+    return OpenBB().obb
+
+
+OpenBBApp = Annotated[OpenBB, Depends(get_openbb)]
+
+
+@app.get("/quote")
+async def quote(obb: OpenBBApp, symbol: str = "AAPL", provider: str = "yfinance"):
+    return obb.equity.price.quote(symbol, provider=provider).model_dump()["results"]
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(app)
+```
+
+:::info
+Launch the server by copying the code block above into a new file, then run it as a script from the command line.
+:::

@@ -60,14 +60,16 @@ Users with v1.0.0 installations need to follow the steps below to update the ver
 1. In Finder/Explorer, open the folder where it was installed - probably in a folder, named "OpenBB", at the root of user home folder.
 2. From the main installation folder, navigate into the subdirectory, "extensions/openbb_platform_installer".
 3. Open, "pyproject.toml", in any text editor, and update two lines:
-  - Line 18:
-    - From: `python =">3.9,<3.13"`
-    - To: `python = ">=3.9.21,<3.13"`
-  - Line 21:
-    - From: `openbb-core = "^1"`
-    - To: `openbb-core = ">=1.4.4"`
+
+   - Line 18:
+     - From: `python =">3.9,<3.13"`
+     - To: `python = ">=3.9.21,<3.13"`
+   - Line 21:
+     - From: `openbb-core = "^1"`
+     - To: `openbb-core = ">=1.4.4"`
+
 4. Save the file, close it, and then run the "Update" shortcut.
-:::
+   :::
 
 ## Supported Environments
 
@@ -125,7 +127,7 @@ from openbb import obb
 ```
 
 :::warning
-This import statement is required due to the statefulness of the obb package. There is currently no support for imports such as:
+This import statement is required due to the stateful nature of the obb package. There is currently no support for imports such as:
 
 ```console
 from openbb.obb.equity import *
@@ -165,7 +167,6 @@ pip install openbb-equity openbb-index openbb-derivatives
 ```
 
 :::
-
 
 To update the package:
 
@@ -288,7 +289,7 @@ Start the REST API with:
 uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-See more information about using the REST API in the [usage section](/platform/user_guides/rest_api)
+See more information about using the REST API in the [usage section](/platform/usage/quickstart_workspace)
 
 ## Hub Synchronization
 

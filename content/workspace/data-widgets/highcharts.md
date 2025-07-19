@@ -29,7 +29,7 @@ To get started, create the main application file and the widget configuration fi
 - `main.py`: This file will contain your FastAPI application code.
 - `widgets.json`: This file will define the configuration for your widget.
 
-The backend will use the same FastAPI setup and structure as described in the [Overview](/content/workspace/data-integration#1-create-the-api-server.md) page.
+The backend will use the same FastAPI setup and structure as described in the [Overview](/workspace/data-integration#1-create-the-api-server) page.
 
 ## Step 2: Create the Chart Endpoint
 
@@ -78,7 +78,7 @@ def get_chains_highchart(theme: str = "dark"):
         df = pd.DataFrame(response.json())
 
         top_30_df = df.sort_values(by='tvl', ascending=False).head(30)
-        
+
         # Format TVL values to be more readable (in billions)
         top_30_df['formatted_tvl'] = top_30_df['tvl'].apply(lambda x: round(x / 1e9, 2))
 
@@ -88,13 +88,13 @@ def get_chains_highchart(theme: str = "dark"):
         # Configure chart options with theme support
         chart_options = {
             'chart': {
-                'type': 'column', 
+                'type': 'column',
                 'height': "50%",
                 'backgroundColor': 'transparent'
             },
             'title': {'text': 'Top 30 Chains by TVL'},
             'xAxis': {
-                'categories': categories, 
+                'categories': categories,
                 'title': {'text': 'Chain Name'},
                 'labels': {
                     'style': {
