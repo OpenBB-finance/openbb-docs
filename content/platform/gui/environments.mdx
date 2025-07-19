@@ -1,0 +1,128 @@
+---
+title: Environments
+sidebar_position: 2
+description: TODO
+keywords:
+  - todo
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="GUI Environments | OpenBB Platform Docs" />
+
+# GUI environments
+
+The OpenBB GUI lets you create and manage **isolated Conda® environments** that run the OpenBB Platform (and anything else you install) without polluting your system-wide Python. Each environment lives inside the OpenBB installation folder, contains its own Python interpreter, packages, and **OpenBB extensions**, and can be deleted at any time.
+
+## Why use environments?
+
+* Keep research projects, prototypes, tutorials, or client deliverables fully isolated.
+* Test the upcoming **development** version of OpenBB without touching your daily environment.
+* Run multiple Python versions (3.8 → 3.12) side-by-side.
+* Ship a ready-to-run `requirements.txt`, `pyproject.toml`, or Conda YAML to a colleague – they can import it in one click.
+* Use it as a lightweight alternative to BQuant/Anaconda for quant notebooks.
+
+---
+
+## Feature overview
+
+Here is a high-level glance at what you can do with the environments screen:
+
+* **Create a new environment** – provide a name, pick a Python version, and optionally pre-install OpenBB extensions or any PyPI package.
+* **Import from a file** – point to a `requirements.txt`, `pyproject.toml`, or Conda YAML and the GUI will reproduce it locally.
+* **Manage packages** – install, update, or uninstall packages at any time through the *Extensions* side-panel; the action happens inside the selected environment only.
+* **Update everything at once** – use the *update* button to upgrade **all** installed packages to their latest compatible versions.
+* **Work in context** – open a system terminal, start an interactive Python or IPython shell, or launch JupyterLab directly in the environment.
+* **Choose working directory** – define the folder where terminals and notebooks start so your code and data are neatly organised.
+* **Delete safely** – when an environment is no longer needed it can be removed together with every package it contained.
+
+*ADD IMAGE HERE – screenshot of the environments list with one card expanded*
+
+---
+
+## Creating a new environment
+
+1. Click **New Environment**.
+2. **Name** – lower-case letters, numbers & dashes only (`my-research`).
+3. **Python version** – 3.8 → 3.12 (the GUI retrieves pre-built Conda distributions).
+4. **Extensions (optional)** – search & select any OpenBB extension or enter a PyPI package name.
+   * Skip this step to create a *bare* environment.
+5. Press **Create Environment**. A progress overlay appears; you can **Cancel Installation** at any point.
+
+!!! tip "Non-blocking UI"
+    The GUI streams the installer output in the background; you may continue using other parts of the Platform while the environment is being created.
+
+---
+
+## Importing from an existing spec
+
+Choose **Import Environment** and select **one** of the following files:
+
+* `requirements.txt`
+* `pyproject.toml`
+* Conda `environment.yml` / `*.yaml`
+
+Then provide an environment name and click **Create Environment**. The GUI uploads the file path to the backend – no temporary copies are created.
+
+---
+
+## Working directory
+
+The *Current Working Directory* panel defines where spawned terminals, Python/IPython shells and Jupyter notebooks will start.
+
+* Type a path manually or click the folder icon.
+* A ✓ / ⚠️ indicator shows whether the directory exists (checked via the backend).
+* Hit **Enter** or blur the input to save. The preference is persisted across sessions.
+
+---
+
+## Everyday management
+
+### Environment card actions
+
+* **Extensions** – open the panel to list, install, update, or remove packages from this environment.
+* **Update** – upgrade every installed package in the environment.
+* **Open system terminal** – launch your default shell with the environment activated and the working directory applied.
+* **Start Python session** – open an interactive Python prompt that auto-imports `openbb` so you can start experimenting immediately.
+* **Start IPython session** – available once the package `ipython` is present; provides rich auto-completion and history.
+* **Start or open JupyterLab** – launch a local Jupyter server in the environment; subsequent clicks open the notebook interface in a window; stop the server when finished.
+* **Delete environment** – permanently remove the environment after confirmation.
+
+### Extensions panel
+
+* Search packages by name or version.
+* **Install** multiple packages at once (uses `pip`).
+* **Update** or **Delete** individual packages.
+* The GUI caches the extension list per environment in `localStorage` to avoid repetitive backend calls.
+
+---
+
+## Updating an environment
+
+Press **↻ Update** on any card. The backend runs:
+
+```bash
+conda activate <env> && pip install --upgrade --upgrade-strategy eager <each-package>
+```
+
+The card turns grey during the process and re-enables once complete. Errors are shown inline and can be retried.
+
+---
+
+## Removing an environment
+
+1. Click **🗑 Delete** on the card.
+2. Confirm the dialog – the GUI blocks input and shows a spinner.
+3. The backend executes `conda env remove -n <env>` and cleans the local cache.
+
+---
+
+## Troubleshooting & FAQ
+
+| Question | Answer |
+| --- | --- |
+| "Directory does not exist" | Ensure the path is reachable by the OS user account. Network drives may require additional permissions. |
+| "FutureWarning" during install | These are non-fatal; the GUI continues automatically. |
+| "Prefix record insertion error" | A known Conda bug – the environment is usually created successfully. The GUI handles this automatically. |
+| How do I keep a Jupyter server running while I browse other pages? | The GUI tracks active servers and will leave them running until you explicitly stop them. |
+| Can I edit `pyproject.toml` after import? | Yes – open the Extensions tab and manage packages as usual. |

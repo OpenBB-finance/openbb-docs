@@ -1,0 +1,62 @@
+---
+title: Introduction
+sidebar_position: 0
+description: TODO
+keywords:
+  - todo
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="GUI Introduction | OpenBB Platform Docs" />
+
+# OpenBB Platform GUI – overview
+
+The **OpenBB Local Installer** ships a cross-platform desktop application (macOS & Windows, Linux via AppImage soon) that puts the entire OpenBB Platform at your fingertips **without any cloud dependency**.  It bundles:
+
+* A Conda distribution pre-configured for finance
+* A Tauri-powered GUI written in React/TypeScript
+* A lightweight FastAPI backend for OS-level tasks
+
+Everything runs **locally**—data never leaves your machine unless you explicitly connect to external APIs.
+
+---
+
+## What you can do
+
+The GUI is divided into three main areas:
+
+* **Environments** – create isolated Python installations, install or import packages, and launch terminals or notebooks in context. See [environments](environments.mdx) for the full walkthrough.
+* **Backends** – define and control background servers such as `openbb-api` or any custom script. Start/stop, view logs, enable auto-start, and more. See [backends](backends.mdx).
+* **API keys** – store credentials for data providers securely on your machine and optionally sync them with the OpenBB Hub. See [API keys](api-keys.mdx).
+
+*ADD IMAGE HERE – overview diagram that shows how environments, backends, and API keys connect to Workspace*
+
+---
+
+## Key benefits
+
+* **Offline-first** – research anywhere, even without internet.
+* **Reproducible** – each project/environment is self-contained; share with colleagues by zipping the folder.
+* **One installer** – no Python required on the system; everything lives inside the OpenBB directory.
+* **Cross-tool bridging** – expose REST endpoints locally and consume them from Excel, Workspace widgets, or trading bots.
+* **Granular control** – choose exactly which packages, versions, and keys are active.
+
+---
+
+## Typical workflow
+
+1. **Install** the app and open it.
+2. Create a new **Environment** (Python 3.12 + `openbb-technical`).
+3. Spin up the **`openbb-api` Backend** inside that environment.
+4. Add your data-provider **API Keys** and (optionally) sync with OpenBB Hub.
+5. Open Workspace in your browser and connect to `http://127.0.0.1:8000`.  You now have a fully local data stack.
+
+---
+
+## Next steps
+
+* Follow the [Installation guide](installation.mdx) if you haven’t installed the app yet.
+* Dive into [Environments](environments.mdx) to set up your first Python stack.
+* Configure a **Backend** to expose the REST API or a custom service.
+* Add your **API Keys** so endpoints can pull premium data.
