@@ -1,9 +1,15 @@
 ---
 title: Introduction
 sidebar_position: 0
-description: TODO
+description: An overview of the OpenBB Platform GUI, a local desktop application for managing backends, environments, and API keys without cloud dependencies.
 keywords:
-  - todo
+  - OpenBB Platform
+  - GUI
+  - Local Development
+  - Backends
+  - Environments
+  - API Keys
+  - Desktop Application
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
@@ -12,13 +18,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 # OpenBB Platform GUI – overview
 
-The **OpenBB Local Installer** ships a cross-platform desktop application (macOS & Windows, Linux via AppImage soon) that puts the entire OpenBB Platform at your fingertips **without any cloud dependency**.  It bundles:
-
-* A Conda distribution pre-configured for finance
-* A Tauri-powered GUI written in React/TypeScript
-* A lightweight FastAPI backend for OS-level tasks
-
-Everything runs **locally**—data never leaves your machine unless you explicitly connect to external APIs.
+The **OpenBB Local Installer** ships a cross-platform desktop application (macOS & Windows) that puts the entire OpenBB Platform at your fingertips **without any cloud dependency**. Everything runs **locally**, data never leaves your machine unless you explicitly connect to external APIs.
 
 ---
 
@@ -26,30 +26,20 @@ Everything runs **locally**—data never leaves your machine unless you explicit
 
 The GUI is divided into three main areas:
 
-* **Environments** – create isolated Python installations, install or import packages, and launch terminals or notebooks in context. See [environments](environments.mdx) for the full walkthrough.
-* **Backends** – define and control background servers such as `openbb-api` or any custom script. Start/stop, view logs, enable auto-start, and more. See [backends](backends.mdx).
-* **API keys** – store credentials for data providers securely on your machine and optionally sync them with the OpenBB Hub. See [API keys](api-keys.mdx).
+* **Backends**: Define and control background servers such as `openbb-api` or any custom script. Start/stop, view logs, enable auto-start, and more. This allows you to utilize this data in the OpenBB Workspace, OpenBB Excel Add-in or a 3rd party application. More in [backends](backends.mdx).
+* **Environments**: Create isolated Python installations, install or import packages, and launch terminals or jupyter notebooks (BQuant style). See [environments](environments.mdx) for the full walkthrough.
+* **API keys**: Store credentials for data providers securely on your machine. See [API keys](api-keys.mdx).
 
 *ADD IMAGE HERE – overview diagram that shows how environments, backends, and API keys connect to Workspace*
-
----
-
-## Key benefits
-
-* **Offline-first** – research anywhere, even without internet.
-* **Reproducible** – each project/environment is self-contained; share with colleagues by zipping the folder.
-* **One installer** – no Python required on the system; everything lives inside the OpenBB directory.
-* **Cross-tool bridging** – expose REST endpoints locally and consume them from Excel, Workspace widgets, or trading bots.
-* **Granular control** – choose exactly which packages, versions, and keys are active.
 
 ---
 
 ## Typical workflow
 
 1. **Install** the app and open it.
-2. Create a new **Environment** (Python 3.12 + `openbb-technical`).
-3. Spin up the **`openbb-api` Backend** inside that environment.
-4. Add your data-provider **API Keys** and (optionally) sync with OpenBB Hub.
+2. Create a new **Environment**.
+3. Spin up the `openbb-api` **Backend** inside that environment.
+4. Add your data-provider **API Keys**.
 5. Open Workspace in your browser and connect to `http://127.0.0.1:8000`.  You now have a fully local data stack.
 
 ---

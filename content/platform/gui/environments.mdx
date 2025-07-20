@@ -1,9 +1,15 @@
 ---
 title: Environments
 sidebar_position: 2
-description: TODO
+description: Create and manage isolated Conda environments for your Python projects. Install packages, manage dependencies, and launch development tools like JupyterLab, all from the OpenBB GUI.
 keywords:
-  - todo
+  - Environments
+  - Conda
+  - Python
+  - Package Management
+  - Jupyter
+  - Isolated Development
+  - Virtual Environments
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
@@ -12,7 +18,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 # GUI environments
 
-The OpenBB GUI lets you create and manage **isolated Conda® environments** that run the OpenBB Platform (and anything else you install) without polluting your system-wide Python. Each environment lives inside the OpenBB installation folder, contains its own Python interpreter, packages, and **OpenBB extensions**, and can be deleted at any time.
+The OpenBB GUI lets you create and manage **isolated Conda environments** that run the OpenBB Platform (and anything else you install) without polluting your system-wide Python. Each environment lives inside the OpenBB installation folder, contains its own Python interpreter, packages, and **OpenBB extensions**, and can be deleted at any time.
 
 ## Why use environments?
 
@@ -49,9 +55,6 @@ Here is a high-level glance at what you can do with the environments screen:
    * Skip this step to create a *bare* environment.
 5. Press **Create Environment**. A progress overlay appears; you can **Cancel Installation** at any point.
 
-!!! tip "Non-blocking UI"
-    The GUI streams the installer output in the background; you may continue using other parts of the Platform while the environment is being created.
-
 ---
 
 ## Importing from an existing spec
@@ -76,44 +79,12 @@ The *Current Working Directory* panel defines where spawned terminals, Python/IP
 
 ---
 
-## Everyday management
-
-### Environment card actions
-
-* **Extensions** – open the panel to list, install, update, or remove packages from this environment.
-* **Update** – upgrade every installed package in the environment.
-* **Open system terminal** – launch your default shell with the environment activated and the working directory applied.
-* **Start Python session** – open an interactive Python prompt that auto-imports `openbb` so you can start experimenting immediately.
-* **Start IPython session** – available once the package `ipython` is present; provides rich auto-completion and history.
-* **Start or open JupyterLab** – launch a local Jupyter server in the environment; subsequent clicks open the notebook interface in a window; stop the server when finished.
-* **Delete environment** – permanently remove the environment after confirmation.
-
 ### Extensions panel
 
 * Search packages by name or version.
 * **Install** multiple packages at once (uses `pip`).
 * **Update** or **Delete** individual packages.
 * The GUI caches the extension list per environment in `localStorage` to avoid repetitive backend calls.
-
----
-
-## Updating an environment
-
-Press **↻ Update** on any card. The backend runs:
-
-```bash
-conda activate <env> && pip install --upgrade --upgrade-strategy eager <each-package>
-```
-
-The card turns grey during the process and re-enables once complete. Errors are shown inline and can be retried.
-
----
-
-## Removing an environment
-
-1. Click **🗑 Delete** on the card.
-2. Confirm the dialog – the GUI blocks input and shows a spinner.
-3. The backend executes `conda env remove -n <env>` and cleans the local cache.
 
 ---
 

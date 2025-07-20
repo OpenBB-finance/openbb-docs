@@ -1,9 +1,14 @@
 ---
 title: Backends
 sidebar_position: 1
-description: TODO
+description: Run and manage background processes like the OpenBB API server, data streaming pipelines, or custom Python scripts directly within the OpenBB GUI.
 keywords:
-  - todo
+  - Backends
+  - API Server
+  - Background Processes
+  - Micro-services
+  - Data Pipelines
+  - Local Development
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
@@ -19,7 +24,7 @@ The **Backends** screen lets you run arbitrary application servers (e.g. the `op
 * Expose OpenBB REST endpoints locally for Workspace widgets, Excel, or third-party tools.
 * Host data pipelines that stream quotes/events to TradingView or dashboards.
 * Prototype agent workflows that rely on the [OpenBB MCP](/workspace/ai-agents.md).
-* Keep everything **offline** – ideal for air-gapped research labs.
+* Keep everything running **locally** – ideal for air-gapped research labs.
 
 ---
 
@@ -30,10 +35,7 @@ Below is a summary of everything you can accomplish on the backends screen:
 * **Create a backend definition** – provide a name, choose the Conda environment in which the process should run, and supply the executable command. Optional fields let you override host/port, pick a working directory, and attach a `.env` file.
 * **Start and stop services** – one click launches the process, another stops it. Status chips show *starting*, *running*, *stopping*, or *error* so you always know what is happening.
 * **Enable auto-start** – flag a service to launch automatically when you open the GUI. Combine with the tray-menu option *Start at login* to have backends running after system boot.
-* **Live URL detection** – while a backend is booting the GUI scans stdout/stderr, extracts the first HTTP/HTTPS address it prints, and displays it on the card so you can copy it instantly.
-* **View logs in real time** – each service can open its own log window. Colour codes are stripped for readability and the window remains alive while the process runs.
-* **Edit in place** – change any field (command, environment, working directory, auto-start flag) and save without deleting and recreating the backend.
-* **Delete safely** – when a backend is stopped the definition can be removed from disk.
+* **View logs in real time** – each service can open its own log window.
 
 *ADD IMAGE HERE – screenshot of a backend card in the running state with logs window open*
 
@@ -50,58 +52,7 @@ Below is a summary of everything you can accomplish on the backends screen:
 7. Enable **Start Automatically** if desired.
 8. Press **Create**.
 
-The new backend appears in the list. Use the **Start** button to launch it. While starting, the GUI:
-
-* Streams stdout/stderr and looks for
-  * `Started server process [PID]` → saves PID
-  * the first `http://` or `https://` → saves URL (host/port auto-extracted)
-* If a Python *traceback* or `ERROR:` line is detected, the service is stopped and the card turns red.
-
-!!! tip "Multiple URLs?"
-    The GUI waits 1.5 s after the *last* detected URL before persisting it, so frameworks that print several bind addresses are handled gracefully.
-
----
-
-## Everyday management
-
-### Card actions
-
-* **Configuration** – expand to edit the backend definition or inspect details such as host, port, working directory, and auto-start flag.
-* **Start / stop** – control the lifecycle of the process.
-* **Logs** – open a dedicated window that streams stdout/stderr in real time.
-* **Copy URL or command** – when the backend is running the URL is copied; when stopped the original command is copied.
-* **Delete** – remove the backend definition (only possible when the process is not running).
-
-### Status lifecycle
-
-`stopped → starting → running → stopping → stopped`
-
-`error` is set automatically when the process exits unexpectedly or if a traceback/error is captured during startup.
-
----
-
-## Auto-start behaviour
-
-* Toggled per backend.
-* The setting is stored in the service config (`auto_start`).
-* On GUI launch all services flagged *auto-start* are queued; their progress is visible in the list.
-* Combine with the tray menu’s **Start at Login** to run headless data services after system boot.
-
----
-
-## Logs & Monitoring
-
-The GUI registers each backend process with the internal monitor:
-
-```ts
-invoke("register_process_monitoring", { processId: `backend-${id}` })
-```
-
-That enables:
-
-* Real-time logs via the *Logs* button.
-* Automatic error detection and status updates.
-* PID tracking for clean shutdown.
+The new backend appears in the list. Use the **Start** button to launch it.
 
 ---
 
