@@ -59,10 +59,6 @@ jobs:
           openbb-build
           python scripts/generate_platform_markdown.py
 
-      - name: Generate Excel Docs
-        run: |
-          pip install requests
-          python scripts/generate_excel_markdown.py
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
