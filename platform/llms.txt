@@ -80,6 +80,12 @@
 - [Euro Short Term Rate](https://docs.openbb.co/platform/data_models/EuroShortTermRate): Euro Short-Term Rate
 - [Executive Compensation](https://docs.openbb.co/platform/data_models/ExecutiveCompensation): Get executive management team compensation for a given company over time
 - [Export Destinations](https://docs.openbb.co/platform/data_models/ExportDestinations): Get top export destinations by country from the UN Comtrade International Trade Statistics Database
+- [Fama French Breakpoints](https://docs.openbb.co/platform/data_models/FamaFrenchBreakpoints): Fama-French breakpoints
+- [Fama French Country Portfolio Returns](https://docs.openbb.co/platform/data_models/FamaFrenchCountryPortfolioReturns): Country portfolio returns
+- [Fama French Factors](https://docs.openbb.co/platform/data_models/FamaFrenchFactors): Fama-French factors
+- [Fama French International Index Returns](https://docs.openbb.co/platform/data_models/FamaFrenchInternationalIndexReturns): International index returns
+- [Fama French Regional Portfolio Returns](https://docs.openbb.co/platform/data_models/FamaFrenchRegionalPortfolioReturns): Regional portfolio returns
+- [Fama French US Portfolio Returns](https://docs.openbb.co/platform/data_models/FamaFrenchUSPortfolioReturns): US Portfolio returns
 - [Federal Funds Rate](https://docs.openbb.co/platform/data_models/FederalFundsRate): Fed Funds Rate
 - [Financial Ratios](https://docs.openbb.co/platform/data_models/FinancialRatios): Get an extensive set of financial and accounting ratios for a given company over time
 - [Fomc Documents](https://docs.openbb.co/platform/data_models/FomcDocuments): Get FOMC documents by year and document type
@@ -110,7 +116,6 @@
 - [Historical Splits](https://docs.openbb.co/platform/data_models/HistoricalSplits): Get historical stock splits for a given company
 - [House Price Index](https://docs.openbb.co/platform/data_models/HousePriceIndex): Get the House Price Index by country from the OECD Short-Term Economics Statistics
 - [ICE Bof A](https://docs.openbb.co/platform/data_models/ICEBofA): ICE BofA US Corporate Bond Indices
-- [Immediate Interest Rate](https://docs.openbb.co/platform/data_models/ImmediateInterestRate): Get immediate interest rates by country
 - [Income Statement](https://docs.openbb.co/platform/data_models/IncomeStatement): Get the income statement for a given company
 - [Income Statement Growth](https://docs.openbb.co/platform/data_models/IncomeStatementGrowth): Get the growth of a company's income statement items over time
 - [Data Models](https://docs.openbb.co/platform/data_models/index): <ReferenceCard
@@ -127,10 +132,11 @@
 - [Key Metrics](https://docs.openbb.co/platform/data_models/KeyMetrics): Get fundamental metrics for a given company
 - [Latest Attributes](https://docs.openbb.co/platform/data_models/LatestAttributes): Get the latest value of a data tag from Intrinio
 - [Latest Financial Reports](https://docs.openbb.co/platform/data_models/LatestFinancialReports): Get the newest quarterly, annual, and current reports for all companies
-- [LTIR](https://docs.openbb.co/platform/data_models/LTIR): Get Long-term interest rates that refer to government bonds maturing in ten years
 - [Management Discussion Analysis](https://docs.openbb.co/platform/data_models/ManagementDiscussionAnalysis): Get the Management Discussion & Analysis section from the financial statements for a given company
 - [Manufacturing Outlook NY](https://docs.openbb.co/platform/data_models/ManufacturingOutlookNY): Get the Empire State Manufacturing Survey
 - [Manufacturing Outlook Texas](https://docs.openbb.co/platform/data_models/ManufacturingOutlookTexas): Get The Manufacturing Outlook Survey For The Texas Region
+- [Maritime Choke Point Info](https://docs.openbb.co/platform/data_models/MaritimeChokePointInfo): Get general metadata and statistics for all maritime chokepoint locations from a given provider
+- [Maritime Choke Point Volume](https://docs.openbb.co/platform/data_models/MaritimeChokePointVolume): Daily transit calls and estimates of transit trade volumes for shipping lane chokepoints around the world
 - [Market Snapshots](https://docs.openbb.co/platform/data_models/MarketSnapshots): Get an updated equity market snapshot
 - [Money Measures](https://docs.openbb.co/platform/data_models/MoneyMeasures): Get Money Measures (M1/M2 and components)
 - [Moody Corporate Bond Index](https://docs.openbb.co/platform/data_models/MoodyCorporateBondIndex): Moody Corporate Bond Index
@@ -143,7 +149,8 @@
 - [Overnight Bank Funding Rate](https://docs.openbb.co/platform/data_models/OvernightBankFundingRate): Overnight Bank Funding
 - [Personal Consumption Expenditures](https://docs.openbb.co/platform/data_models/PersonalConsumptionExpenditures): Get Personal Consumption Expenditures (PCE) reports
 - [Petroleum Status Report](https://docs.openbb.co/platform/data_models/PetroleumStatusReport): EIA Weekly Petroleum Status Report
-- [Port Volume](https://docs.openbb.co/platform/data_models/PortVolume): Get average dwelling times and TEU volumes from the top ports
+- [Port Info](https://docs.openbb.co/platform/data_models/PortInfo): Get general metadata and statistics for all ports from a given provider
+- [Port Volume](https://docs.openbb.co/platform/data_models/PortVolume): Daily port calls and estimates of trading volumes for ports around the world
 - [Price Performance](https://docs.openbb.co/platform/data_models/PricePerformance): Get price performance data for a given stock
 - [Price Target](https://docs.openbb.co/platform/data_models/PriceTarget): Get analyst price targets by company
 - [Price Target Consensus](https://docs.openbb.co/platform/data_models/PriceTargetConsensus): Get consensus price target and recommendation
@@ -172,7 +179,6 @@
 - [Sonia](https://docs.openbb.co/platform/data_models/SONIA): Sterling Overnight Index Average
 - [SP500 Multiples](https://docs.openbb.co/platform/data_models/SP500Multiples): Get historical S&P 500 multiples and Shiller PE ratios
 - [Spot Rate](https://docs.openbb.co/platform/data_models/SpotRate): Spot Rates
-- [STIR](https://docs.openbb.co/platform/data_models/STIR): Get Short-term interest rates
 - [Survey Of Economic Conditions Chicago](https://docs.openbb.co/platform/data_models/SurveyOfEconomicConditionsChicago): Get The Survey Of Economic Conditions For The Chicago Region
 - [Symbol Map](https://docs.openbb.co/platform/data_models/SymbolMap): Map a CIK number to a ticker symbol, leading 0s can be omitted or included
 - [Tips Yields](https://docs.openbb.co/platform/data_models/TipsYields): Get current Treasury inflation-protected securities yields
@@ -233,6 +239,7 @@
 - [chains](https://docs.openbb.co/platform/reference/derivatives/options/chains): Learn how to get the complete options chain for a ticker using the OBB.equity.options.chains  function. Explore the available parameters like symbol and provider, and understand  the data returned, including contract symbol, expiration, strike price, and more.
 - [Options](https://docs.openbb.co/platform/reference/derivatives/options/index): Commands
 - [snapshots](https://docs.openbb.co/platform/reference/derivatives/options/snapshots): Get a snapshot of the options market universe
+- [surface](https://docs.openbb.co/platform/reference/derivatives/options/surface): Filter and process the options chains data for volatility
 - [unusual](https://docs.openbb.co/platform/reference/derivatives/options/unusual): Learn how to get the complete options chain for a ticker with the equity  options unusual API. Explore the available parameters such as symbol and provider.  Retrieve valuable data like the underlying symbol, contract symbol, trade type,  sentiment, total value, total size, average price, ask/bid prices at execution,  underlying price at execution, and timestamp.
 - [autocorrelation](https://docs.openbb.co/platform/reference/econometrics/autocorrelation): Learn how to perform the Durbin-Watson test for autocorrelation in Python.  Understand the parameters and return value of the function, and how to use exogenous  variables in the analysis. This documentation provides a detailed explanation.
 - [causality](https://docs.openbb.co/platform/reference/econometrics/causality): Learn how to perform a Granger causality test to determine if X causes  y. Understand the parameters and the results returned by the test.
@@ -269,20 +276,21 @@
 - [nominal](https://docs.openbb.co/platform/reference/economy/gdp/nominal): Nominal GDP Data
 - [real](https://docs.openbb.co/platform/reference/economy/gdp/real): Learn about Real GDP Data and how to access it using the provided parameters.  Find detailed descriptions of the available parameters and the data returned. Understand  the structure of the returns and explore the data attributes.
 - [house_price_index](https://docs.openbb.co/platform/reference/economy/house_price_index): Get the House Price Index by country from the OECD Short-Term Economics Statistics
-- [immediate_interest_rate](https://docs.openbb.co/platform/reference/economy/immediate_interest_rate): Get immediate interest rates by country
 - [Economy](https://docs.openbb.co/platform/reference/economy/index): Menus
 - [indicators](https://docs.openbb.co/platform/reference/economy/indicators): Get economic indicators by country and indicator
 - [interest_rates](https://docs.openbb.co/platform/reference/economy/interest_rates): Get interest rates by country(s) and duration
-- [long_term_interest_rate](https://docs.openbb.co/platform/reference/economy/long_term_interest_rate): Get Long-term interest rates that refer to government bonds maturing in ten years
 - [money_measures](https://docs.openbb.co/platform/reference/economy/money_measures): Get Money Measures (M1/M2 and components)
 - [pce](https://docs.openbb.co/platform/reference/economy/pce): Get Personal Consumption Expenditures (PCE) reports
-- [port_volume](https://docs.openbb.co/platform/reference/economy/port_volume): Get average dwelling times and TEU volumes from the top ports
 - [primary_dealer_fails](https://docs.openbb.co/platform/reference/economy/primary_dealer_fails): Primary Dealer Statistics for Fails to Deliver and Fails to Receive
 - [primary_dealer_positioning](https://docs.openbb.co/platform/reference/economy/primary_dealer_positioning): Get Primary dealer positioning statistics
 - [retail_prices](https://docs.openbb.co/platform/reference/economy/retail_prices): Get retail prices for common items
 - [risk_premium](https://docs.openbb.co/platform/reference/economy/risk_premium): Learn about Historical Market Risk Premium and the obb.economy.risk_premium  function. Explore the parameters, returns, and data available, including results,  warnings, chart, metadata, country, continent, total equity risk premium, and country  risk premium.
 - [share_price_index](https://docs.openbb.co/platform/reference/economy/share_price_index): Get the Share Price Index by country from the OECD Short-Term Economics Statistics
-- [short_term_interest_rate](https://docs.openbb.co/platform/reference/economy/short_term_interest_rate): Get Short-term interest rates
+- [chokepoint_info](https://docs.openbb.co/platform/reference/economy/shipping/chokepoint_info): Get general metadata and statistics for all maritime chokepoint locations from a given provider
+- [chokepoint_volume](https://docs.openbb.co/platform/reference/economy/shipping/chokepoint_volume): Daily transit calls and estimates of transit trade volumes for shipping lane chokepoints around the world
+- [Shipping](https://docs.openbb.co/platform/reference/economy/shipping/index): Commands
+- [port_info](https://docs.openbb.co/platform/reference/economy/shipping/port_info): Get general metadata and statistics for all ports from a given provider
+- [port_volume](https://docs.openbb.co/platform/reference/economy/shipping/port_volume): Daily port calls and estimates of trading volumes for ports around the world
 - [bls_search](https://docs.openbb.co/platform/reference/economy/survey/bls_search): Search BLS surveys by category and keyword or phrase to identify BLS series IDs
 - [bls_series](https://docs.openbb.co/platform/reference/economy/survey/bls_series): Get time series data for one, or more, BLS series IDs
 - [economic_conditions_chicago](https://docs.openbb.co/platform/reference/economy/survey/economic_conditions_chicago): Get The Survey Of Economic Conditions For The Chicago Region
@@ -387,6 +395,13 @@
 - [price_performance](https://docs.openbb.co/platform/reference/etf/price_performance): Learn about price performance returns over different periods and how  to retrieve data for a given symbol. Find out how to analyze the time series data,  view the provider information, and access additional metadata and warnings.
 - [search](https://docs.openbb.co/platform/reference/etf/search): Learn how to search for ETFs with parameters like query, provider, exchange  code, and more. Retrieve key details about ETFs, including market cap, industry,  sector, beta, current price, annual dividend, trading volume, exchange, and country.  Find actively trading ETFs and their symbol representation.
 - [sectors](https://docs.openbb.co/platform/reference/etf/sectors): Learn about ETF sector weighting using OBB.etf.sectors API. Find information  about the parameters, returns, and data, including sectors, weights, and exposure  levels in normalized percentage points.
+- [breakpoints](https://docs.openbb.co/platform/reference/famafrench/breakpoints): Fama-French breakpoints
+- [country_portfolio_returns](https://docs.openbb.co/platform/reference/famafrench/country_portfolio_returns): Country portfolio returns
+- [factors](https://docs.openbb.co/platform/reference/famafrench/factors): Fama-French factors
+- [Famafrench](https://docs.openbb.co/platform/reference/famafrench/index): Commands
+- [international_index_returns](https://docs.openbb.co/platform/reference/famafrench/international_index_returns): International index returns
+- [regional_portfolio_returns](https://docs.openbb.co/platform/reference/famafrench/regional_portfolio_returns): Regional portfolio returns
+- [us_portfolio_returns](https://docs.openbb.co/platform/reference/famafrench/us_portfolio_returns): US Portfolio returns
 - [bond_indices](https://docs.openbb.co/platform/reference/fixedincome/bond_indices): Bond Indices
 - [bond_prices](https://docs.openbb.co/platform/reference/fixedincome/corporate/bond_prices): Corporate Bond Prices
 - [commercial_paper](https://docs.openbb.co/platform/reference/fixedincome/corporate/commercial_paper): Learn about commercial paper, a form of short-term promissory notes issued  primarily by corporations. Discover how it can help raise cash for current transactions  and serve as a lower-cost alternative to bank loans. Explore the parameters and  data returned by the commercial paper API endpoint.
