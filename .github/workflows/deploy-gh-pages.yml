@@ -22,10 +22,10 @@ jobs:
       - name: Git checkout
         uses: actions/checkout@v3 # actions/checkout v3.0.2
 
-      - name: Setup Python 3.9
+      - name: Setup Python 3.12
         uses: actions/setup-python@v4
         with:
-          python-version: "3.9"
+          python-version: "3.12"
           architecture: x64
 
       - name: Install Poetry
