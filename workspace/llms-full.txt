@@ -4484,12 +4484,10 @@ WIDGETS = {}
 def register_widget(widget_config):
     """
     Decorator that registers a widget configuration in the WIDGETS dictionary.
-    
     Args:
         widget_config (dict): The widget configuration to add to the WIDGETS 
             dictionary. This should follow the same structure as other entries 
             in WIDGETS.
-    
     Returns:
         function: The decorated function.
     """
@@ -4498,21 +4496,21 @@ def register_widget(widget_config):
         async def async_wrapper(*args, **kwargs):
             # Call the original function
             return await func(*args, **kwargs)
-            
         @wraps(func)
         def sync_wrapper(*args, **kwargs):
             # Call the original function
             return func(*args, **kwargs)
-        
         # Extract the endpoint from the widget_config
         endpoint = widget_config.get("endpoint")
         if endpoint:
             # Add an id field to the widget_config if not already present
-            if "id" not in widget_config:
-                widget_config["id"] = endpoint
-            
-            WIDGETS[endpoint] = widget_config
-        
+            if "widgetId" not in widget_config:
+                widget_config["widgetId"] = endpoint
+
+            # Use id as the key to allow multiple widgets per endpoint
+            widget_id = widget_config["widgetId"]
+            WIDGETS[widget_id] = widget_config
+
         # Return the appropriate wrapper based on whether the function is async
         if asyncio.iscoroutinefunction(func):
             return async_wrapper
@@ -4591,6 +4589,7 @@ Throughout this documentation, you'll find examples that include both a visual p
 ```python
 # Simple markdown widget
 @register_widget({
+    "widgetId": "markdown_widget",
     "name": "Markdown Widget",
     "description": "A markdown widget",
     "type": "markdown",
@@ -4602,6 +4601,10 @@ def markdown_widget():
     """Returns a markdown widget"""
     return "# Markdown Widget"
 ```
+
+:::note
+You can also omit the `widgetId` from register_widget as it will take the endpoint path as `widgetId`. It is most relevant to select a `widgetId` when you want to create different widgets from the same endpoint.
+:::
 
 For more examples and complete implementations, visit our [reference backend repository](https://github.com/OpenBB-finance/backend-examples-for-openbb-workspace/tree/main/getting-started/reference-backend).
 
@@ -6786,9 +6789,9 @@ A: Define the widget in the `widgets.json` file with necessary properties like n
 
 A: Yes, you can customize widget appearance using properties in the `widgets.json` file, such as `gridData` for size and `columnsDefs` for table widgets. More information is available in the [Customizing Widgets](/workspace/widgets-json-reference) section.
 
-**Q: What are templates, and how do I use them?**
+**Q: What are apps, and how do I use them?**
 
-A: Templates allow you to define and manage the layout and behavior of widgets on your dashboard. You can create a `templates.json` file to structure these templates and serve them via a FastAPI endpoint. See the [Apps](/workspace/apps) section for more details.
+A: Apps allow you to build tailored solutions for your specific needs. In the `apps.json` file, you can specify the list of data widgets, prompts and AI agents that make up your app and serve them via an API endpoint. See the [Apps](/workspace/apps) section for more details.
 
 **Q: How do I implement dynamic dropdown options in widgets?**
 
@@ -7569,10 +7572,9 @@ analysis).
 
 ## Searching the web
 
-OpenBB Copilot has the ability to search the web. 
+OpenBB Copilot has the ability to search the web. It will use it when it doesn't find the required data to answer your prompt on the dashboard (or product); or if you are looking for news.
 
-To search the web, use the `@web` keyword in your query to tell OpenBB Copilot
-to search the web for information. For example:
+You can also explicitly ask for it using the tagging `@web`.
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
 <img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/ada_web_search_example.png" alt="web search openbb copilot" width="80%" height="80%" />
@@ -8177,7 +8179,7 @@ In the `widgets.json` configuration, you can specify render functions to customi
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| **actionType** | `string` | Specifies the action type for the render function (`"openUrl"`, `"openModal"`, `"openWidget"`, `"groupBy"`, `"sendToAgent"`) |
+| **actionType** | `string` | Specifies the action type for the render function (`"openUrl"`, `"groupBy"`, `"sendToAgent"`) |
 | **colorValueKey** | `string` | Specifies which field to use for determining the color when showing cell changes |
 | **hoverCardData** | `array of strings` | Specifies columns to show in the hover card |
 | **colorRules** | `array of objects` | An array of rules for conditional coloring |
