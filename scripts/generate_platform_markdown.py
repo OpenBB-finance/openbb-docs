@@ -181,6 +181,8 @@ def create_reference_markdown_tabular_section(
             # Use bold and code formatting instead of headings
             content += f"**`{name}`**: `{param_type}`\n\n"
 
+            if not description:
+                continue
             # Format the description to preserve newlines and indentation
             if "\n" in description:
                 # For multi-line descriptions, use a collapsible details section
@@ -651,6 +653,8 @@ def generate_platform_markdown(paths: Dict) -> None:
     console.log(f"\n[INFO] Generating the markdown files for the {PLATFORM_DATA_MODELS_PATH} directory...")  # fmt: skip
 
     for path, path_data in paths.items():
+        if path_data.get("openapi_extra", {}).get("widget_config", {}).get("exclude") is True:
+            continue
         reference_markdown_content = ""
         data_markdown_content = ""
 
