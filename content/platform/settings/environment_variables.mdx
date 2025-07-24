@@ -38,3 +38,16 @@ from openbb import obb
 :::info
 See [System Settings](/platform/settings/system_settings#http) for information on configuring global settings and the session object.
 :::
+
+## API Keys
+
+In addition to `user_settings.json`, API keys can be defined as environment variables (openbb-core V1.4.8).
+
+For example, to define `fmp_api_key` as an environment variable, add the following to the `~/.openbb_platform/.env` file.
+If it doesn't exist, create it.
+
+```env
+FMP_API_KEY = "replaceWITHyourK3Y"
+```
+
+Along with the installed providers' credentials, if an entry in the `.env` file ends with `_API_KEY`, it will be accessible as, `obb.user.credentials.some_key`

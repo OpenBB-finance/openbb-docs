@@ -32,6 +32,7 @@ OpenBB Toolkit Extensions expand the Platform with functions for manipulating da
 | openbb-charting | Rest API charting service and Plotly library. | pip install openbb-charting | Community | N/A |
 | openbb-devtools | Aggregates dependencies that facilitate a nice development experience for OpenBB. | pip install openbb-devtools | N/A |
 | openbb-econometrics | Econometrics models for the Python interface only. | pip install openbb-econometrics | Community | obb.econometrics |
+| openbb-mcp-server | Run the OpenBB API as a MCP server. | pip install openbb-mcp-server | Community | N/A | 
 | openbb-quantitative | Functions for performing quantitative analysis. | pip install openbb-quantitative | Community | obb.quantitative |
 | openbb-technical | Functions for performing technical analysis. | pip install openbb-technical | Community | obb.technical |
 
@@ -132,6 +133,30 @@ pip install -e .
 ```
 
 After installation, the Python interface will automatically rebuild on initialization.
+
+## MCP Server
+
+This extension implements the [FastMCP library](https://github.com/jlowin/fastmcp). It wraps all GET requests as tools that can be used by AI models supporting MCP servers.
+
+```console
+pip install openbb-mcp-server
+```
+
+Start the server by opening a terminal, activating the environment, and running:
+
+```console
+openbb-mcp
+```
+
+This will start the server on localhost, using port 8001, with streamable-http as the trasport.
+
+Use the `--transport` flag and set:
+
+- sse
+- stdio
+- http (Default)
+
+See the extension's [README](https://pypi.org/project/openbb-mcp-server/) for details and instructions.
 
 ## Quantitative
 
