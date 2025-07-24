@@ -79,7 +79,7 @@ When expanded to full-screen mode, you gain maximum real estate for complex conv
 
 This flexibility allows seamless transitions between quick consultations and deep analytical sessions without losing context or interrupting your workflow.
 
-And of course you are capable of hiding the AI agent if you are locked in utilizing the workspace.
+And of course you are capable of hiding the AI agent if only utilizing the workspace.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
@@ -111,7 +111,7 @@ The OpenBB Copilot leverages cutting-edge large language models from OpenAI, spe
 
 For enterprise deployments, OpenBB provides seamless integration with your organization's Azure OpenAI or dedicated OpenAI deployments, ensuring data sovereignty, compliance with internal security policies, and the ability to customize model behavior according to your firm's specific requirements and risk parameters.
 
-If you would like full control over your agent capabilities, here's [our open source repository](https://github.com/OpenBB-finance/agents-for-openbb) with example of AI custom agents that you can build and integrate to the OpenBB Workspace.
+If you would like full control over your agent capabilities, here's [our open source repository](https://github.com/OpenBB-finance/agents-for-openbb) with examples of AI custom agents that you can build and integrate into the OpenBB Workspace.
 
 ## Context
 
@@ -161,7 +161,7 @@ The other way is to tag the widget you want directly. When the message is sent t
 
 ### Dashboard
 
-The dashboard context provides the Copilot with comprehensive awareness of your current analytical environment. All widgets visible on your active dashboard become automatically available as data sources, allowing the Copilot to understand the broader context of your work session.
+The dashboard context provides the Copilot with comprehensive awareness of your currently active dashboard. All widgets on your active dashboard become automatically available as data sources, allowing the Copilot to understand the broader context of your work session.
 
 This includes all the data you are seeing, but also the widgets metadata and their current parameters selected.
 
@@ -461,7 +461,7 @@ The displayed plan serves as a roadmap that users can review and potentially mod
 
 ### Querying widgets
 
-Widget query transparency provides complete visibility into data retrieval operations, including the specific widget accessed, all parameters used, data source information, and timestamp details.
+Widget query transparency provides complete visibility into data retrieval operations, including the specific widget accessed, all parameters used, and data source information.
 
 This documentation enables users to understand exactly what data was retrieved, verify parameter settings, and reproduce the analysis independently. The system also displays any parameter modifications made automatically, ensuring full awareness of how the Copilot adapted widget configurations to meet query requirements.
 
