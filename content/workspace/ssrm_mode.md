@@ -23,24 +23,9 @@ Server-Side Rendered Mode (SSRM) is an advanced widget implementation approach d
 
 SSRM mode is designed for enterprise applications that need to handle **large datasets** (200,000+ rows) efficiently. Instead of loading all data at once, it provides server-side operations that optimize performance and user experience.
 
-### Server-Side Operations
+## How SSRM Differs from Standard Table Widget
 
-- **Pagination**: Load data in chunks as users navigate, eliminating slow initial loads
-- **Filtering**: Apply complex filters on the server to reduce payload size and improve responsiveness
-- **Sorting**: Handle multi-column sorting operations server-side for better performance
-- **Search**: Implement server-side search across massive datasets without client-side limitations
-
-### Performance Optimization
-
-- **Reduced Memory Usage**: Only load visible data on the client, preventing browser slowdowns
-- **Faster Initial Load**: Display data immediately without waiting for complete dataset transfer
-- **Bandwidth Optimization**: Transfer only necessary data, reducing network overhead
-- **Dynamic Loading**: Load additional data on-demand based on user interactions
-- **Server-Side Caching**: Cache frequently accessed data for improved response times
-
-## How SSRM Differs from Standard Widgets
-
-| Aspect | Standard Widgets | SSRM Mode |
+| Aspect | Standard Table Widget | SSRM Mode |
 |--------|------------------|-----------|
 | Data Loading | All data loaded at once | Data loaded on-demand |
 | Filtering | Client-side filtering | Server-side filtering |
