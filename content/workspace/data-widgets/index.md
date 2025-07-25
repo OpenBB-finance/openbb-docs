@@ -39,12 +39,10 @@ WIDGETS = {}
 def register_widget(widget_config):
     """
     Decorator that registers a widget configuration in the WIDGETS dictionary.
-    
     Args:
         widget_config (dict): The widget configuration to add to the WIDGETS 
             dictionary. This should follow the same structure as other entries 
             in WIDGETS.
-    
     Returns:
         function: The decorated function.
     """
@@ -53,21 +51,21 @@ def register_widget(widget_config):
         async def async_wrapper(*args, **kwargs):
             # Call the original function
             return await func(*args, **kwargs)
-            
         @wraps(func)
         def sync_wrapper(*args, **kwargs):
             # Call the original function
             return func(*args, **kwargs)
-        
         # Extract the endpoint from the widget_config
         endpoint = widget_config.get("endpoint")
         if endpoint:
             # Add an id field to the widget_config if not already present
-            if "id" not in widget_config:
-                widget_config["id"] = endpoint
-            
-            WIDGETS[endpoint] = widget_config
-        
+            if "widgetId" not in widget_config:
+                widget_config["widgetId"] = endpoint
+
+            # Use id as the key to allow multiple widgets per endpoint
+            widget_id = widget_config["widgetId"]
+            WIDGETS[widget_id] = widget_config
+
         # Return the appropriate wrapper based on whether the function is async
         if asyncio.iscoroutinefunction(func):
             return async_wrapper
@@ -146,6 +144,7 @@ Throughout this documentation, you'll find examples that include both a visual p
 ```python
 # Simple markdown widget
 @register_widget({
+    "widgetId": "markdown_widget",
     "name": "Markdown Widget",
     "description": "A markdown widget",
     "type": "markdown",
@@ -157,5 +156,9 @@ def markdown_widget():
     """Returns a markdown widget"""
     return "# Markdown Widget"
 ```
+
+:::note
+You can also omit the `widgetId` from register_widget as it will take the endpoint path as `widgetId`. It is most relevant to select a `widgetId` when you want to create different widgets from the same endpoint.
+:::
 
 For more examples and complete implementations, visit our [reference backend repository](https://github.com/OpenBB-finance/backend-examples-for-openbb-workspace/tree/main/getting-started/reference-backend).
