@@ -9,13 +9,17 @@ keywords:
   - Micro-services
   - Data Pipelines
   - Local Development
+  - Certificate
+  - SSL
+  - CA
+  - HTTPS
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="GUI Backends | OpenBB Platform Docs" />
 
-# GUI backends
+# Backends
 
 The **Backends** screen lets you run arbitrary application servers (e.g. the `openbb-api`, a FastAPI micro-service, a websocket relay, or a custom Python script) under the control of the OpenBB GUI. Each backend is started inside a selected OpenBB *Environment* and can be stopped, edited, or deleted at any time.
 
@@ -36,12 +40,13 @@ Below is a summary of everything you can accomplish on the backends screen:
 * **Start and stop services** – one click launches the process, another stops it. Status chips show *starting*, *running*, *stopping*, or *error* so you always know what is happening.
 * **Enable auto-start** – flag a service to launch automatically when you open the GUI. Combine with the tray-menu option *Start at login* to have backends running after system boot.
 * **View logs in real time** – each service can open its own log window.
+* **Generate self-signed certificates** - create a SSL certificate for running a backend over HTTPS.
 
 *ADD IMAGE HERE – screenshot of a backend card in the running state with logs window open*
 
 ---
 
-## Creating a backend service
+## Creating a Backend Service
 
 1. Click **New Backend**.
 2. Fill the **Backend Name** (required).
@@ -55,6 +60,34 @@ Below is a summary of everything you can accomplish on the backends screen:
 The new backend appears in the list. Use the **Start** button to launch it.
 
 ---
+
+## Self-Signed Certificate
+
+1. Click **Generate Certificate**
+2. Enter the required fields:
+  - Common Name (e.g., localhost)
+  - Organization Name (e.g., My Organization)
+  - Output Directory (path to where the files should be created)
+3. Enter any optional fields:
+  - Alternative Names (e.g., 127.0.0.1,0.0.0.0)
+  - Password (set for PKCS#12 bundle)
+  - Days Valid (default 1 year)
+4. Check the box to also add the certificate to the system's trust store.
+  - An operating system dialog will open to confirm adding the certificate.
+
+If using Uvicorn (or `openbb-api`) to start the backend, set environment variables pointing to the file locations.
+
+```env
+UVICORN_SSL_CERTFILE = "/Users/someuser/pathto/certs/certificate.pem"
+UVICORN_SSL_KEYFILE = "/Users/someuser/pathto/certs/private.key"
+```
+
+:::info
+When opening the server docs - https://localhost:8000/docs - the certificate must be manually approved in each browser.
+
+Follow the warning dialogs that display on navigation.
+:::
+
 
 ## Troubleshooting & FAQ
 
