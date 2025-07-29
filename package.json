@@ -23,7 +23,7 @@
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-popover": "^1.0.7",
     "@radix-ui/react-tooltip": "^1.0.7",
-    "axios": "^1.7.4",
+    "axios": "^1.11.0",
     "body-parser": ">=1.20.3",
     "brace-expansion": ">=2.0.2",
     "braces": "^3.0.3",
