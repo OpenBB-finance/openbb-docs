@@ -63962,6 +63962,14 @@ Most systems capable of running Python `3.9.21-3.12` will be compatible with the
 
 Linux users should run the command line update for the package manager, prior to installation.
 
+:::warning
+As of, `openbb` version 4.4.5, Python 3.9 will trigger a deprecation warning.
+
+Support for versions below 3.10 will be discontinued in the fall of 2025.
+
+Support for Python 3.13 will be introduced in the summer of 2025.
+:::
+
 ## Installer Package
 
 An installer package is available for Mac and Windows machines. Files are available [here](https://my.openbb.co/app/platform/downloads).
@@ -63969,7 +63977,7 @@ An installer package is available for Mac and Windows machines. Files are availa
 It will handle the installation of Python, environment setup, and OpenBB packages with the latest versions.
 
 :::danger
-Users with v1.0.0 installations need to follow the steps below to update the version of OpenBB.
+Users with versions below v1.0.3 will need to follow the steps below to update, via the "Update" shortcut ,to the current version of OpenBB
 
 1. In Finder/Explorer, open the folder where it was installed - probably in a folder, named "OpenBB", at the root of user home folder.
 2. From the main installation folder, navigate into the subdirectory, "extensions/openbb_platform_installer".
@@ -63982,8 +63990,21 @@ Users with v1.0.0 installations need to follow the steps below to update the ver
      - From: `openbb-core = "^1"`
      - To: `openbb-core = ">=1.4.4"`
 
-4. Save the file, close it, and then run the "Update" shortcut.
+4. Save the file, close it.
+
+5. Delete the file, `poetry.lock`, and then run the "Update" shortcut.
    :::
+
+OR:
+
+Manually update the environment from the "Bash" ("CMD" in Windows) shortcut.
+
+1. Open the system shell from the shortcut.
+2. Activate the `obb` environment.
+3. Run: `pip install -U "openbb[all]" openbb-cli --force-reinstall`
+4. Rebuild the Python Interface by running: `openbb-build`
+
+Alternatively, uninstall and reinstall; however, the solutions above are more time-efficient.
 
 ## Supported Environments
 
@@ -140101,6 +140122,19 @@ from openbb import obb
 See [System Settings](/platform/settings/system_settings#http) for information on configuring global settings and the session object.
 :::
 
+## API Keys
+
+In addition to `user_settings.json`, API keys can be defined as environment variables (openbb-core V1.4.8).
+
+For example, to define `fmp_api_key` as an environment variable, add the following to the `~/.openbb_platform/.env` file.
+If it doesn't exist, create it.
+
+```env
+FMP_API_KEY = "replaceWITHyourK3Y"
+```
+
+Along with the installed providers' credentials, if an entry in the `.env` file ends with `_API_KEY`, it will be accessible as, `obb.user.credentials.some_key`
+
 
 ---
 
@@ -143700,6 +143734,7 @@ These packages are not installed when `pip install openbb` is run.  They are ava
 | openbb-cboe | [Cboe](https://www.cboe.com/delayed_quotes/) data connector | pip install openbb-cboe | None | - |
 | openbb-deribit | [Deribit](https://docs.deribit.com/) data connector | pip install openbb-deribit | None | - |
 | openbb-ecb | [ECB](https://data.ecb.europa.eu/) data connector | pip install openbb-ecb | None | - |
+| openbb-famafrench | [Ken French Data Library](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html) connector | pip install openbb-famafrench | None | - |
 | openbb-federal-reserve | [Federal Reserve](https://www.federalreserve.gov/) data connector | pip install openbb-federal-reserve | None | - |
 | openbb-finra | [FINRA](https://www.finra.org/finra-data) data connector | pip install openbb-finra | None / Free | - |
 | openbb-finviz | [Finviz](https://finviz.com) data connector | pip install openbb-finviz | None | - |
@@ -143856,6 +143891,7 @@ OpenBB Toolkit Extensions expand the Platform with functions for manipulating da
 | openbb-charting | Rest API charting service and Plotly library. | pip install openbb-charting | Community | N/A |
 | openbb-devtools | Aggregates dependencies that facilitate a nice development experience for OpenBB. | pip install openbb-devtools | N/A |
 | openbb-econometrics | Econometrics models for the Python interface only. | pip install openbb-econometrics | Community | obb.econometrics |
+| openbb-mcp-server | Run the OpenBB API as a MCP server. | pip install openbb-mcp-server | Community | N/A | 
 | openbb-quantitative | Functions for performing quantitative analysis. | pip install openbb-quantitative | Community | obb.quantitative |
 | openbb-technical | Functions for performing technical analysis. | pip install openbb-technical | Community | obb.technical |
 
@@ -143956,6 +143992,30 @@ pip install -e .
 ```
 
 After installation, the Python interface will automatically rebuild on initialization.
+
+## MCP Server
+
+This extension implements the [FastMCP library](https://github.com/jlowin/fastmcp). It wraps all GET requests as tools that can be used by AI models supporting MCP servers.
+
+```console
+pip install openbb-mcp-server
+```
+
+Start the server by opening a terminal, activating the environment, and running:
+
+```console
+openbb-mcp
+```
+
+This will start the server on localhost, using port 8001, with streamable-http as the trasport.
+
+Use the `--transport` flag and set:
+
+- sse
+- stdio
+- http (Default)
+
+See the extension's [README](https://pypi.org/project/openbb-mcp-server/) for details and instructions.
 
 ## Quantitative
 
