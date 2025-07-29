@@ -623,3 +623,7 @@ def get_chains(raw: bool = False, theme: str = "dark"):
         content={"error": response.text}, status_code=response.status_code
     )
 ```
+
+## Additional Resources
+
+For more information on setting up and configuring Plotly charts within the OpenBB Workspace, you can visit the [OpenBB Backend Examples for Chart Widgets](https://github.com/OpenBB-finance/backends-for-openbb/tree/main/widget-examples/widget-types/chart_widget). This resource provides detailed examples and guidance on how to effectively utilize Plotly for creating interactive and dynamic chart widgets.
