@@ -22,10 +22,10 @@ jobs:
       - name: Git checkout
         uses: actions/checkout@v3 # actions/checkout v3.0.2
 
-      - name: Setup Python 3.9
+      - name: Setup Python 3.12
         uses: actions/setup-python@v4
         with:
-          python-version: "3.9"
+          python-version: "3.12"
           architecture: x64
 
       - name: Install Poetry
@@ -59,10 +59,6 @@ jobs:
           openbb-build
           python scripts/generate_platform_markdown.py
 
-      - name: Generate Excel Docs
-        run: |
-          pip install requests
-          python scripts/generate_excel_markdown.py
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
