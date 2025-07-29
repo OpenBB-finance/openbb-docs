@@ -79,6 +79,12 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
   _Possible values:_ `"chart"`, `"table"`, `"markdown"`, `"metric"`, `"note"`,  `"multi_file_viewer"`, `"live_grid"`, `"newsfeed"`, `"advanced-chart"`, `"chart-highcharts"`
   _Default:_ `"table"`
 
+- **raw**
+  _Type:_ `boolean`
+  ONLY used for Plotly configuration. If true will create a button on the widget to switch between the chart and raw data.
+  _Possible values:_ `true`, `false`
+  _Default:_ `false`
+
 - **runButton**
   _Type:_ `boolean`
   If true, a run button will be displayed instead of the refresh button.
@@ -121,7 +127,7 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
     _Example:_ `100`
 
 - **data**
-  _Type:_ object containing the following keys:
+  _Type:_ object containing the following keys - This key is only used for widgets that utilize the AgGrid Table:
 
   - **dataKey**
     _Type:_ `string`

@@ -544,3 +544,82 @@ def get_plotly_heatmap(color_scale: str = "RdBu_r", theme: str = "dark"):
     return figure_json
 ```
 
+## Plotly Chart with Raw Data
+
+This widget demonstrates how to create a Plotly chart that can toggle between displaying the chart visualization and showing the raw data. The button to switch can be found in the top right corner of the widget like seen below.
+
+When `raw` is `True`, you will be able to switch between the data on the widget and our copilot will better understand the data in the chart.
+
+<img className="pro-border-gradient" width="800" alt="Plotly Chart with Raw Data Switch" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/plotly+switch.png" />
+
+```python
+@register_widget({
+    "name": "Chains Chart Example Plotly with Raw Data",
+    "description": "Get current TVL of all chains and plot it with Plotly",
+    "type": "chart",
+    "endpoint": "chains",
+    "gridData": {"w": 40, "h": 9},
+    "raw": true,
+})
+
+@app.get("/chains")
+def get_chains(raw: bool = False, theme: str = "dark"):
+    """Get current TVL of all chains using Defi Llama"""
+    params = {}
+    response = requests.get("https://api.llama.fi/v2/chains", params=params)
+
+    if response.status_code == 200:
+        # Create a DataFrame from the JSON data
+        df = pd.DataFrame(response.json())
+
+        # OPTIONAL - If raw is True, return the data as a list of dictionaries
+        # Otherwise, return the data as a Plotly figure
+        # This is useful when you want to make sure the AI can see the data
+        if raw:
+            return df.to_dict(orient="records")
+
+        # Sort the DataFrame by 'tvl' in descending order and select the top 30
+        top_30_df = df.sort_values(by="tvl", ascending=False).head(30)
+
+        # Get theme colors
+        colors = get_theme_colors(theme)
+
+        # Create a bar chart using Plotly
+        fig = go.Figure()
+        
+        fig.add_trace(go.Bar(
+            x=top_30_df["tokenSymbol"], 
+            y=top_30_df["tvl"],
+            marker_color=colors["main_line"],
+            opacity=0.8
+        ))
+
+        # Apply base layout configuration
+        layout_config = base_layout(theme=theme)
+        layout_config.update({
+            'title': {
+                'text': "Top 30 Chains by TVL",
+                'x': 0.5,
+                'y': 0.95,
+                'xanchor': 'center',
+                'yanchor': 'top',
+                'font': {'size': 20}
+            },
+            'xaxis_title': "Token Symbol",
+            'yaxis_title': "Total Value Locked (TVL)",
+            'margin': {'t': 80, 'b': 80, 'l': 80, 'r': 80}
+        })
+
+        fig.update_layout(layout_config)
+
+        # Convert figure to JSON and apply config
+        figure_json = json.loads(fig.to_json())
+        figure_json['config'] = get_toolbar_config()
+
+        return figure_json
+
+    print(f"Request error {response.status_code}: {response.text}")
+    return JSONResponse(
+        content={"error": response.text}, status_code=response.status_code
+    )
+```
