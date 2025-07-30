@@ -15,11 +15,11 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="OpenBB Copilot | OpenBB Workspace Docs" />
 
-The OpenBB Copilot is an AI agent seamlessly integrated into the OpenBB Workspace, designed to serve as your personal financial analyst.
+The OpenBB Copilot is an AI-powered companion seamlessly integrated into the OpenBB Workspace, designed to enhance and accelerate your financial analysis workflow.
 
 This sophisticated assistant understands natural language queries, retrieves data from multiple sources, performs complex analysis, and generates actionable insights.
 
-Built specifically for financial professionals, the Copilot transforms traditional workflows by eliminating manual data retrieval, accelerating analysis, and providing context-aware insights based on your specific datasets and workspace configuration.
+Built for financial professionals, the Copilot transforms your workflow by accelerating analysis and providing context-aware insights based on your specific datasets and workspace configuration.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
@@ -43,17 +43,17 @@ Built specifically for financial professionals, the Copilot transforms tradition
   />
 </div>
 
-The Copilot interface is designed for intuitive interaction with a clean, three-section layout that maximizes usability and clarity.
+The Copilot interface is designed for intuitive interaction with a clean three-section layout:
 
-- **Header:** Contains essential controls for conversation management, including the current conversation the user is in. But also the capability to start a new chat, clear the current chat history, expand to full AI-mode or hide the agent.
+- **Header:** At the top, you'll find controls to manage your conversation. You can see which chat you're in, start a new one, clear the history, expand to full-screen mode, or hide the agent entirely.
 
-- **Body:** The primary interaction area where conversations unfold. This section displays the Copilot's responses, step-by-step reasoning processes, generated artifacts (charts, tables, code), and any intermediate results. The body automatically scrolls and organizes content chronologically, making it easy to follow complex multi-step analyses. When hovering on messages it also displays the datetime associated with these.
+- **Body:** The main chat window where your conversation takes place. It displays the Copilot's answers, its step-by-step reasoning, and any output like charts, tables, or code. The chat automatically scrolls, keeping everything in chronological order. Hover over a message to see its timestamp.
 
-- **Footer:** This is where the data and widget management occurs for what will be used as context for the agent. This is also where the user can add their own custom AI agents or access their prompt library.
+- **Footer:** Here, you can manage the data and widgets the Copilot uses as context for its answers. You can also add your own custom AI agents or open your prompt library.
 
-### Full AI-chat mode
+### Full screen AI-chat
 
-The Copilot panel offers adaptive sizing to match your workflow needs.
+You can resize the AI panel by dragging the border.
 
 In side-panel mode, it provides quick access for simple queries while maintaining your primary workspace view.
 
@@ -79,7 +79,7 @@ When expanded to full-screen mode, you gain maximum real estate for complex conv
 
 This flexibility allows seamless transitions between quick consultations and deep analytical sessions without losing context or interrupting your workflow.
 
-And of course you are capable of hiding the AI agent if only utilizing the workspace.
+You can also hide the AI agent entirely if you want to work solely with the dashboard.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
@@ -94,7 +94,7 @@ And of course you are capable of hiding the AI agent if only utilizing the works
 
 The integrated prompt library serves as a productivity multiplier by storing and organizing your most valuable queries. You can save complex prompts and even tag widgets, to ensure the right context is utilized for the right prompt.
 
-This feature ensures consistency across team members and dramatically reduces the time spent retyping similar requests.
+This feature ensures consistency across team members and significantly reduces the time spent retyping similar requests.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
@@ -107,9 +107,11 @@ This feature ensures consistency across team members and dramatically reduces th
 
 ### Model
 
-The OpenBB Copilot leverages cutting-edge large language models from OpenAI, specifically optimized for financial analysis and data interpretation tasks.
+The OpenBB Copilot is specifically optimized for financial analysis and data interpretation tasks, leveraging the latest models from OpenAI.
 
-For enterprise deployments, OpenBB provides seamless integration with your organization's Azure OpenAI or dedicated OpenAI deployments, ensuring data sovereignty, compliance with internal security policies, and the ability to customize model behavior according to your firm's specific requirements and risk parameters.
+For enterprise deployments, OpenBB provides seamless integration with your organization's Azure OpenAI or dedicated OpenAI deployments.
+
+This ensures data sovereignty, compliance with internal security policies, and the ability to customize model behavior according to your firm's specific requirements and risk parameters.
 
 If you would like full control over your agent capabilities, here's [our open source repository](https://github.com/OpenBB-finance/agents-for-openbb) with examples of AI custom agents that you can build and integrate into the OpenBB Workspace.
 
@@ -121,7 +123,7 @@ This hierarchical approach ensures that the most relevant and specific data take
 
 ### Priority
 
-The agent prioritizes context in the following order to provide the most relevant answers:
+The agent prioritizes context in the following order:
 
 | Priority | Context Type | Description |
 |---|---|---|
@@ -136,8 +138,6 @@ The agent prioritizes context in the following order to provide the most relevan
 Explicit context represents the highest priority information source, allowing you to precisely direct the Copilot's attention to specific datasets or widgets. When you use the "@" symbol followed by a widget name or use "Add to context" button on any widget, you're creating a direct reference that the Copilot will prioritize above all other available information.
 
 This mechanism is particularly powerful for ensuring accuracy when working with multiple similar datasets or when you need analysis focused on a specific dataset.
-
-To add explicit context you can utilize the "Add to context" icon on the widgets or the @ button on the copilot context - this adds the widget to context and it will persist after sending the message.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
@@ -174,11 +174,13 @@ This includes all the data you are seeing, but also the widgets metadata and the
   />
 </div>
 
-### Attached
+### Attached Files
 
-The attachment system enables the Copilot to process external documents and datasets that aren't part of your standard workspace configuration. Supported file types include PDFs (research reports, earnings statements, regulatory filings), Excel/CSV files (custom datasets, portfolio holdings, historical data), and various document formats.
+The attachment system enables the Copilot to process external documents and datasets that aren't part of your standard workspace configuration. Supported file types include PDF, Excel, CSV, and various other document formats.
 
-The Copilot automatically extracts and indexes content from attached files, making them searchable and referenceable throughout your conversation. This capability is essential for ad-hoc analysis of new research, processing client-specific documents, or incorporating external datasets into your analysis workflow.
+The Copilot automatically extracts and indexes content from attached files, making them searchable and referenceable throughout your conversation. This capability is essential for performing ad-hoc analysis or incorporating external datasets and documents into your workflow.
+
+Please note that for PDF files, text must be selectable as Optical Character Recognition (OCR) is not supported. However, you can integrate your own agent that performs OCR.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
@@ -193,9 +195,9 @@ The Copilot automatically extracts and indexes content from attached files, maki
 
 The global retrieval system provides the Copilot with access to the entire OpenBB Workspace widget library, extending far beyond your current dashboard widgets.
 
-When your current dashboard doesn't contain the specific data or analysis tool needed to answer a query, the Copilot can automatically identify and utilize the appropriate widgets from the global library, effectively expanding your analytical capabilities on-demand without manual widget selection.
+When your current dashboard doesn't contain the specific data or analysis tool needed to answer a query, the Copilot can automatically identify and utilize the appropriate widgets from the entire widget library, effectively expanding your analytical capabilities on-demand without manual widget selection.
 
-This is only possible due to the metadata associated with each widget and is why it's important to invest time in each widget metadata.
+This is only possible due to the metadata associated with each widget and is why it's important to invest time in drafting the metadata carefully.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
@@ -211,7 +213,7 @@ This is only possible due to the metadata associated with each widget and is why
 The web search capability enables the Copilot to access real-time information from across the internet when:
 
 - The available workspace data is insufficient to fully answer your query.
-- The user asks to look for the information on the open web.
+- The user asks to look for the information on the web.
 
 This feature automatically activates as a fallback mechanism, ensuring comprehensive responses even when dealing with breaking news, recent market developments, or information not available in your current workspace configuration.
 
@@ -228,7 +230,9 @@ This feature automatically activates as a fallback mechanism, ensuring comprehen
 
 Conversational context enables natural, iterative analysis by maintaining awareness of your entire dialogue history within the current session.
 
-The Copilot tracks not only your explicit questions and its responses, but also the reasoning paths taken, data sources accessed, and conclusions reached. This comprehensive memory allows for sophisticated follow-up queries, refinement of analysis parameters, and building upon previous insights without needing to re-establish context. The system understands references to "the previous chart", "that analysis", or "the data we discussed" and can seamlessly continue complex analytical workflows across multiple conversation turns.
+The Copilot tracks your explicit questions and its responses. This comprehensive memory allows for sophisticated follow-up queries, refinement of analysis parameters, and building upon previous insights without needing to re-establish context.
+
+The system understands references to "the previous chart", "that analysis", or "the data we discussed" and can seamlessly continue complex analytical workflows across multiple conversation turns.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
@@ -265,7 +269,7 @@ The Copilot excels at processing and analyzing structured financial datasets thr
   />
 </div>
 
-- **Plotly widgets:** Full-featured charting engine that not only generates interactive visualizations but also allows firms to provide the underlying data. The Copilot can extract specific data points, and create derivative analyses from existing visualizations.
+- **Plotly widgets:** Full-featured charting engine that not only generates interactive visualizations but also allows developers to provide the underlying data. The Copilot can extract specific data points, and create derivative analyses from existing visualizations.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
@@ -280,7 +284,7 @@ The Copilot excels at processing and analyzing structured financial datasets thr
 
 The Copilot's unstructured data processing capabilities enable comprehensive analysis of diverse document types and media:
 
-- **Document Processing (MD/PDF):** Advanced text extraction and comprehension. The system maintains document structure understanding, preserving context around tables, charts, and hierarchical information. This utilizes a sophisticated retrieval system that chunks large documents intelligently, maintains semantic relationships, and provides precise citations. The system can cross-reference information across multiple documents and identify contradictions or supporting evidence.
+- **Document Processing (MD/PDF):** Advanced text extraction and comprehension. The system maintains document structure understanding, preserving context around tables and hierarchical information. This utilizes a sophisticated retrieval system that chunks large documents intelligently, maintains semantic relationships, and provides precise citations. The system can cross-reference information across multiple documents and identify contradictions or supporting evidence.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
@@ -319,13 +323,11 @@ The Copilot's unstructured data processing capabilities enable comprehensive ana
 
 The Copilot treats every widget in the OpenBB Workspace as a programmable tool in its analytical toolkit.
 
-This comprehensive integration means the Copilot can leverage hundreds of specialized functions ranging from basic data retrieval to complex quantitative analysis.
-
 The system can chain widget operations, using the output from one widget as input for another, creating sophisticated analytical pipelines automatically.
 
 ### Widget parameters
 
-Dynamic parameter modification represents one of the OpenBB's Copilot most powerful capabilities, enabling real-time customization of analytical tools based on conversational context.
+Dynamic parameter modification represents one of the OpenBB's Copilot most powerful capabilities.
 
 The system understands the parameter schemas of each widget and can intelligently modify settings like date ranges, asset symbols, calculation periods, and analysis parameters to match your specific requirements.
 
@@ -344,7 +346,9 @@ This eliminates the need for manual widget configuration and enables the Copilot
 
 The integrated web search capability extends the Copilot's knowledge beyond the OpenBB Workspace ecosystem to access real-time information from across the internet.
 
-This feature automatically activates when workspace data is insufficient to answer your query, searching financial news sources, regulatory databases, company websites, and other authoritative sources. The system filters and prioritizes results based on relevance and credibility, then seamlessly integrates external information with your existing workspace data to provide comprehensive answers with proper source attribution.
+This feature automatically activates as a fallback mechanism when information is not available in your workspace, searching financial news sources, regulatory databases, company websites, and other sources.
+
+The system filters and prioritizes results based on relevance and credibility, then integrates external information with your existing workspace data to provide comprehensive answers with proper source attribution.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
