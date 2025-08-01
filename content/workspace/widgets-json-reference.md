@@ -76,8 +76,14 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
 - **type**
   _Type:_ `string`
   Sets the default visualization type for the widget.
-  _Possible values:_ `"chart"`, `"table"`, `"markdown"`, `"metric"`, `"note"`,  `"multi_file_viewer"`, `"live_grid"`, `"newsfeed"`, `"advanced-chart"`, `"chart-highcharts"`
+  _Possible values:_ `"chart"`, `"table"`, `"table_ssrm"`, `"markdown"`, `"metric"`, `"note"`,  `"multi_file_viewer"`, `"live_grid"`, `"newsfeed"`, `"advanced-chart"`, `"chart-highcharts"`
   _Default:_ `"table"`
+
+- **raw**
+  _Type:_ `boolean`
+  ONLY used for Plotly configuration. If true will create a button on the widget to switch between the chart and raw data.
+  _Possible values:_ `true`, `false`
+  _Default:_ `false`
 
 - **runButton**
   _Type:_ `boolean`
@@ -121,7 +127,7 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
     _Example:_ `100`
 
 - **data**
-  _Type:_ object containing the following keys:
+  _Type:_ object containing the following keys - This key is only used for widgets that utilize the AgGrid Table:
 
   - **dataKey**
     _Type:_ `string`
@@ -145,6 +151,11 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
     - **showAll**
       _Type:_ `boolean`
       Displays all available data in the table.
+      _Example:_ `true`
+
+    - **transpose**
+      _Type:_ `boolean`
+      Displays transpose the data in the table.
       _Example:_ `true`
 
     - **chartView**
