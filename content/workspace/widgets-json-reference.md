@@ -76,7 +76,7 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
 - **type**
   _Type:_ `string`
   Sets the default visualization type for the widget.
-  _Possible values:_ `"chart"`, `"table"`, `"markdown"`, `"metric"`, `"note"`,  `"multi_file_viewer"`, `"live_grid"`, `"newsfeed"`, `"advanced-chart"`, `"chart-highcharts"`
+  _Possible values:_ `"chart"`, `"table"`, `"table_ssrm"`, `"markdown"`, `"metric"`, `"note"`,  `"multi_file_viewer"`, `"live_grid"`, `"newsfeed"`, `"advanced-chart"`, `"chart-highcharts"`
   _Default:_ `"table"`
 
 - **raw**
@@ -151,6 +151,11 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
     - **showAll**
       _Type:_ `boolean`
       Displays all available data in the table.
+      _Example:_ `true`
+
+    - **transpose**
+      _Type:_ `boolean`
+      Displays transpose the data in the table.
       _Example:_ `true`
 
     - **chartView**
