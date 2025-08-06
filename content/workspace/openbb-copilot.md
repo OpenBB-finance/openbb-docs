@@ -133,9 +133,9 @@ The agent prioritizes context in the following order:
 
 ### Explicit context
 
-Explicit context represents the highest priority information source, allowing you to precisely direct the Copilot's attention to specific datasets or widgets. When you use the "@" symbol followed by a widget name or use "Add to context" button on any widget, you're creating a direct reference that the Copilot will prioritize above all other available information.
+Explicit context represents the highest priority information source, allowing you to precisely direct the Copilot's attention to specific datasets or widgets. This mechanism is particularly powerful for ensuring accuracy when working with multiple similar datasets or when you need analysis focused on a specific dataset.
 
-This mechanism is particularly powerful for ensuring accuracy when working with multiple similar datasets or when you need analysis focused on a specific dataset.
+When you click on the "Add to context" button on any widget you're creating a direct reference that the Copilot will prioritize above all other available information. After sending the prompt, that widget will remain in context.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
@@ -146,7 +146,7 @@ This mechanism is particularly powerful for ensuring accuracy when working with 
   />
 </div>
 
-The other way is to tag the widget you want directly. When the message is sent the widget will no longer be in context.
+When you use the "@" symbol followed by a widget name and the prompt is sent, the widget will disappear from context. This is meant to be a quick tag reference.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
@@ -193,7 +193,7 @@ The global retrieval system provides the Copilot with access to the entire OpenB
 
 When your current dashboard doesn't contain the specific data or analysis tool needed to answer a query, the Copilot can automatically identify and utilize the appropriate widgets from the entire widget library, effectively expanding your analytical capabilities on-demand without manual widget selection.
 
-This is only possible due to the metadata associated with each widget and is why it's important to invest time in drafting the metadata carefully.
+This is only possible due to the metadata associated with each widget and is why it's important to invest time in specifying the metadata carefully.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
