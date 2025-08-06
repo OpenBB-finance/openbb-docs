@@ -26,7 +26,7 @@ This is the most important formula that is available, as it allows you to access
 It has the following format:
 
 ```excel
-=OBB.BYOD(<BACKEND NAME>,<WIDGET ID> or <WIDGET NAME>, <PARAMETERS (OPTIONAL)>)
+=OBB.WIDGET(<BACKEND NAME>,<WIDGET ID> or <WIDGET NAME>, <PARAMETERS (OPTIONAL)>)
 ```
 
 Where parameters, shows up as `{"param1","value1";"param2","value2"; ...}`.
