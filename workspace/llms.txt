@@ -26,6 +26,7 @@
 - [Native Installation (PWA)](https://docs.openbb.co/workspace/installation): Learn how to install and use OpenBB Workspace as a Progressive Web App (PWA) on your desktop and mobile devices.
 - [OpenBB Copilot](https://docs.openbb.co/workspace/openbb-copilot): Learn how to use OpenBB Copilot to interact with the OpenBB Workspace
 - [OpenBB Platform](https://docs.openbb.co/workspace/platform-installer): Learn how to integrate the OpenBB Platform data to OpenBB Workspace
+- [SSRM Mode](https://docs.openbb.co/workspace/ssrm_mode): Server-Side Rendered Mode for handling large datasets efficiently in OpenBB Workspace widgets
 - [Static Files](https://docs.openbb.co/workspace/static-files): Learn how to import and manage static files in OpenBB, including structured and unstructured data formats, with support for PDF, CSV, JSON, PNG, and JPG files.
 - [Categories and Subcategories](https://docs.openbb.co/workspace/widget-configuration/category-subcategory): Learn how to organize widgets using categories and subcategories in OpenBB Workspace.
 - [Error Handling](https://docs.openbb.co/workspace/widget-configuration/error-handling): Learn how to handle errors in your widgets in OpenBB Workspace.
