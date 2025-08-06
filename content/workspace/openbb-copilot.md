@@ -94,8 +94,6 @@ You can also hide the AI agent entirely if you want to work solely with the dash
 
 The integrated prompt library serves as a productivity multiplier by storing and organizing your most valuable queries. You can save complex prompts and even tag widgets, to ensure the right context is utilized for the right prompt.
 
-This feature ensures consistency across team members and significantly reduces the time spent retyping similar requests.
-
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
 >
@@ -109,15 +107,15 @@ This feature ensures consistency across team members and significantly reduces t
 
 The OpenBB Copilot is specifically optimized for financial analysis and data interpretation tasks, leveraging the latest models from OpenAI.
 
-For enterprise deployments, OpenBB provides seamless integration with your organization's Azure OpenAI or dedicated OpenAI deployments.
+For enterprise deployments, OpenBB provides seamless integration with your organization's Azure OpenAI.
 
-This ensures data sovereignty, compliance with internal security policies, and the ability to customize model behavior according to your firm's specific requirements and risk parameters.
+This ensures compliance with internal security and data sovereignty policies.
 
 If you would like full control over your agent capabilities, here's [our open source repository](https://github.com/OpenBB-finance/agents-for-openbb) with examples of AI custom agents that you can build and integrate into the OpenBB Workspace.
 
 ## Context
 
-The Copilot employs a sophisticated context understanding system that intelligently prioritizes and processes multiple information sources simultaneously.
+The Copilot employs a sophisticated context understanding system that prioritizes and processes multiple information sources simultaneously.
 
 This hierarchical approach ensures that the most relevant and specific data takes precedence when generating responses, while still maintaining awareness of broader workspace context and conversation history.
 
@@ -161,9 +159,7 @@ The other way is to tag the widget you want directly. When the message is sent t
 
 ### Dashboard
 
-The dashboard context provides the Copilot with comprehensive awareness of your currently active dashboard. All widgets on your active dashboard become automatically available as data sources, allowing the Copilot to understand the broader context of your work session.
-
-This includes all the data you are seeing, but also the widgets metadata and their current parameters selected.
+The dashboard context provides the Copilot with comprehensive awareness of your currently active dashboard. All widgets on your active dashboard become automatically available as data sources, allowing the Copilot to understand the broader context of your work session. It also has access to the widgets metadata and the current parameters selected.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
@@ -176,7 +172,7 @@ This includes all the data you are seeing, but also the widgets metadata and the
 
 ### Attached Files
 
-The attachment system enables the Copilot to process external documents and datasets that aren't part of your standard workspace configuration. Supported file types include PDF, Excel, CSV, and various other document formats.
+The attachment system enables the Copilot to process documents and datasets that aren't part of your current workspace widgets. Supported file types include PDF, Excel, CSV, and various other document formats.
 
 The Copilot automatically extracts and indexes content from attached files, making them searchable and referenceable throughout your conversation. This capability is essential for performing ad-hoc analysis or incorporating external datasets and documents into your workflow.
 
@@ -215,7 +211,7 @@ The web search capability enables the Copilot to access real-time information fr
 - The available workspace data is insufficient to fully answer your query.
 - The user asks to look for the information on the web.
 
-This feature automatically activates as a fallback mechanism, ensuring comprehensive responses even when dealing with breaking news, recent market developments, or information not available in your current workspace configuration.
+This feature automatically activates as a fallback mechanism, ensuring comprehensive responses even when dealing with breaking news, recent market developments, or information not available in your current workspace widgets.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
@@ -230,7 +226,7 @@ This feature automatically activates as a fallback mechanism, ensuring comprehen
 
 Conversational context enables natural, iterative analysis by maintaining awareness of your entire dialogue history within the current session.
 
-The Copilot tracks your explicit questions and its responses. This comprehensive memory allows for sophisticated follow-up queries, refinement of analysis parameters, and building upon previous insights without needing to re-establish context.
+The Copilot tracks your explicit questions and its responses. This memory allows for follow-up queries, refinement of analysis parameters, and building upon previous insights without needing to re-establish context.
 
 The system understands references to "the previous chart", "that analysis", or "the data we discussed" and can seamlessly continue complex analytical workflows across multiple conversation turns.
 
@@ -450,9 +446,9 @@ The reasoning display serves both educational and quality assurance purposes, bu
 
 ### Planning
 
-The planning phase demonstrates the Copilot's strategic thinking by decomposing complex analytical requests into logical, sequential sub-tasks. This planning process considers data dependencies, optimal execution order, and resource requirements.
+The planning phase demonstrates the Copilot's tactical thinking by decomposing complex analytical requests into logical, sequential sub-tasks. This planning process considers data dependencies, optimal execution order, and resource requirements.
 
-The displayed plan serves as a roadmap that users can review and potentially modify before execution, ensuring alignment with analytical objectives and providing clear expectations for the upcoming analysis workflow.
+The displayed plan serves as a roadmap that users can review before execution, ensuring alignment with analytical objectives and providing clear expectations for the upcoming analysis workflow.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
@@ -484,7 +480,7 @@ Intermediate artifacts provide crucial visibility into the Copilot's analytical 
 
 These artifacts serve multiple purposes: enabling technical review and validation, supporting learning and knowledge transfer, facilitating debugging and optimization, and ensuring compliance with analytical standards.
 
-Users can examine, modify, and reuse these artifacts, treating them as valuable analytical assets beyond their immediate application.
+Users can examine and reuse these artifacts, treating them as valuable analytical assets beyond their immediate application.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
@@ -497,7 +493,7 @@ Users can examine, modify, and reuse these artifacts, treating them as valuable 
 
 ### Artifact generated
 
-Final artifacts represent the culmination of the analytical process, displayed with complete context about their creation methodology. These artifacts maintain full provenance information, including data sources, transformation steps, and parameter settings used in their generation.
+Final artifacts represent the culmination of the analytical process, displayed with complete context about their creation methodology. The step-by-step reasoning (status updates) maintain full provenance information, including data sources, transformation steps, and parameter settings used in their generation.
 
 The system preserves the relationship between artifacts and their creation process, enabling users to understand not just what was created, but how and why, supporting both immediate use and future reference or modification.
 
@@ -516,7 +512,7 @@ The Copilot's output system delivers comprehensive, contextual responses that sy
 
 ### Citations
 
-Comprehensive citation system ensures full traceability and verification of all information sources used in responses. The citation framework provides different levels of detail based on source type:
+Comprehensive citation system ensures full traceability and verification of all information sources used in responses. The citation system provides different levels of detail based on source type:
 
 - **Widget citations:** Direct links to widgets with parameters selected. Smart linking enables "Scroll to widget" functionality for existing dashboard widgets. If the widget doesn't exist in the dashboard or has modified parameters the linking will provide a "Add widget to dashboard" options to facilitate workspace workflow.
 
@@ -597,7 +593,7 @@ The system supports multiple artifact types including formatted text summaries, 
 
 The thumbs up and down buttons in the agent output allow the user to provide feedback in terms of their experience with the copilot. That data can be utilized to create a flywheel that allows developers to understand how the AI agent can be improved.
 
-While the thumbs up goes through without getting any data from the user.
+While the thumbs up does not prompt the user for any additional details.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
@@ -608,7 +604,7 @@ While the thumbs up goes through without getting any data from the user.
   />
 </div>
 
-The thumbs down logs the reason for the output.
+The thumbs down asks for clarification of what went wrong.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
