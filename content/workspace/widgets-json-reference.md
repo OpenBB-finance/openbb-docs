@@ -341,6 +341,163 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
         Suffix to be added to the column header.
         _Example:_ `"USD"`
 
+      - **sparkline**
+        _Type:_ `object`
+        Configuration for displaying sparklines within table cells.
+        Contains the following keys:
+
+        - **type**
+          _Type:_ `string`
+          Specifies the type of sparkline chart.
+          _Example:_ `"line"`
+          _Possible values:_ `"line"`, `"area"`, `"bar"`
+
+        - **dataField**
+          _Type:_ `string`
+          Alternative field name to use for sparkline data (if different from main field).
+          _Example:_ `"spark_data"`
+
+        - **options**
+          _Type:_ `object`
+          Configuration options for the sparkline appearance and behavior.
+          Contains the following keys:
+
+          - **stroke**
+            _Type:_ `string`
+            Color of the line or border.
+            _Example:_ `"#3366cc"`
+
+          - **strokeWidth**
+            _Type:_ `number`
+            Width of the line or border in pixels.
+            _Example:_ `2`
+
+          - **fill**
+            _Type:_ `string`
+            Fill color for area and bar charts.
+            _Example:_ `"#e3f2fd"`
+
+          - **fillOpacity**
+            _Type:_ `number`
+            Opacity of the fill color (0-1).
+            _Example:_ `0.3`
+
+          - **min**
+            _Type:_ `number`
+            Minimum value constraint for the sparkline.
+            _Example:_ `0`
+
+          - **max**
+            _Type:_ `number`
+            Maximum value constraint for the sparkline.
+            _Example:_ `100`
+
+          - **direction**
+            _Type:_ `string`
+            Direction for bar charts.
+            _Example:_ `"vertical"`
+            _Possible values:_ `"vertical"`, `"horizontal"`
+
+          - **markers**
+            _Type:_ `object`
+            Configuration for markers on line and area charts.
+            Contains the following keys:
+
+            - **enabled**
+              _Type:_ `boolean`
+              Whether to show markers.
+              _Example:_ `true`
+
+            - **size**
+              _Type:_ `number`
+              Size of the markers in pixels.
+              _Example:_ `3`
+
+            - **fill**
+              _Type:_ `string`
+              Fill color of the markers.
+              _Example:_ `"#3366cc"`
+
+            - **stroke**
+              _Type:_ `string`
+              Stroke color of the markers.
+              _Example:_ `"#ffffff"`
+
+            - **strokeWidth**
+              _Type:_ `number`
+              Width of the marker stroke.
+              _Example:_ `1`
+
+          - **pointsOfInterest**
+            _Type:_ `object`
+            Configuration for highlighting special data points.
+            Contains the following keys:
+
+            - **firstLast**
+              _Type:_ `object`
+              Styling for first and last data points.
+              Contains `fill`, `stroke`, `strokeWidth`, and `size` properties.
+
+            - **minimum**
+              _Type:_ `object`
+              Styling for minimum value points.
+              Contains `fill`, `stroke`, `strokeWidth`, and `size` properties.
+
+            - **maximum**
+              _Type:_ `object`
+              Styling for maximum value points.
+              Contains `fill`, `stroke`, `strokeWidth`, and `size` properties.
+
+            - **highlighted**
+              _Type:_ `object`
+              Styling for highlighted points on hover/interaction.
+              Contains `fill`, `stroke`, `strokeWidth`, and `size` properties.
+
+            - **positiveNegative**
+              _Type:_ `object`
+              Separate styling for positive and negative values.
+              Contains the following keys:
+
+              - **positive**
+                _Type:_ `object`
+                Styling for positive values.
+                Contains `fill`, `stroke`, `strokeWidth`, and `size` properties.
+
+              - **negative**
+                _Type:_ `object`
+                Styling for negative values.
+                Contains `fill`, `stroke`, `strokeWidth`, and `size` properties.
+
+          - **customFormatter**
+            _Type:_ `string`
+            JavaScript function as a string for complete control over individual data point styling.
+            _Example:_ `"(params) => ({ fill: params.yValue >= 0 ? '#22c55e' : '#ef4444', stroke: params.yValue >= 0 ? '#16a34a' : '#dc2626' })"`
+
+          - **padding**
+            _Type:_ `object`
+            Padding configuration for the sparkline.
+            Contains the following keys:
+
+            - **top**
+              _Type:_ `number`
+              Top padding in pixels.
+              _Example:_ `5`
+
+            - **right**
+              _Type:_ `number`
+              Right padding in pixels.
+              _Example:_ `5`
+
+            - **bottom**
+              _Type:_ `number`
+              Bottom padding in pixels.
+              _Example:_ `5`
+
+            - **left**
+              _Type:_ `number`
+              Left padding in pixels.
+              _Example:_ `5`
+
 - **params**
   _Type:_ list of objects, each containing the following keys:
 
@@ -492,10 +649,38 @@ Below is an example `widgets.json` with a single widget defined. This widget wil
                         "headerName": "Column 2",
                         "chartDataType": "series",
                         "cellDataType": "number",
-                        "formatterFn": "int",
-                        "renderFn": "greenRed",
-                        "width": 150
+                                            "formatterFn": "int",
+                    "renderFn": "greenRed",
+                    "width": 150
+                },
+                {
+                    "field": "price_trend",
+                    "headerName": "Price Trend",
+                    "width": 200,
+                    "sparkline": {
+                        "type": "line",
+                        "options": {
+                            "stroke": "#3366cc",
+                            "strokeWidth": 2,
+                            "markers": {
+                                "enabled": true,
+                                "size": 3
+                            },
+                            "pointsOfInterest": {
+                                "maximum": {
+                                    "fill": "#22c55e",
+                                    "stroke": "#16a34a",
+                                    "size": 5
+                                },
+                                "minimum": {
+                                    "fill": "#ef4444",
+                                    "stroke": "#dc2626",
+                                    "size": 5
+                                }
+                            }
+                        }
                     }
+                }
                 ]
             }
         },
