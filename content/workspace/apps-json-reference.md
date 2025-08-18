@@ -28,8 +28,8 @@ While it is expected for users to create their apps.json from the UI directly, a
 | `selected_agent` | string | Optional ID of the default AI agent for this app |
 | `authentication` | string | Optional authentication requirements |
 | `tabs` | object | Collection of tabs, each with an ID, name, and layout configuration |
-| `groups` | array | Widget groupings for synchronized parameters |
-| `prompts` | array | Optional list of prompt IDs associated with the app |
+| `groups` | array | Defines synchronized parameter groups for widgets. |
+| `prompts` | array | A list of suggested prompts for the current agent. |
 
 Each tab contains:
 - `id`: Unique identifier for the tab
@@ -38,10 +38,25 @@ Each tab contains:
 
 Each group contains:
 - `name`: Display name for the group
-- `type`: Type of grouping (e.g., "param", "endpointParam")
+- `type`: Type of grouping (e.g., `param`, `endpointParam`).
 - `paramName`: The parameter being synchronized
 - `widgetIds`: Array of widget IDs in this group
 - `defaultValue`: Default value for the parameter
+
+Each prompt is a `string` that represents a question.
+
+For example:
+
+```json
+
+"prompts": [
+    "What is the latest CPI inflation momentum?",
+    "Show me the year-over-year Core CPI.",
+    "What was the last Non-Farm Payrolls (NFP) number?",
+    "Plot the 2-year and 10-year Treasury yields.",
+    "What is the current 30-year Treasury yield?"
+]
+```
 
 Each layout contains a reference to a widget:
 - `i`: The id of the widget - This will be used to identify the widget in the app (if the widget endpoint is "test/widget_1 the id will be test_widget_1")
@@ -82,6 +97,9 @@ Remember, the best part is that you can build your own apps tailored to your spe
 ## Examples
 
 ### DTCC Trade Apps
+
+<details>
+<summary mdxType="summary">DTCC Trade App Example</summary>
 
 ```json
 [
@@ -2065,12 +2083,24 @@ Remember, the best part is that you can build your own apps tailored to your spe
           "trade_distribution_custom_obb"
         ]
       }
+    ],
+    "prompts": [
+      "What are the latest OIS swap rate levels?",
+      "Show me the notional trading volumes for LIBOR vs OIS.",
+      "What is the distribution of trades for USD swaps?",
+      "Compare cleared vs. uncleared swap trades.",
+      "What's the 5-day moving average volume for swaps?"
     ]
   }
 ]
 ```
 
+</details>
+
 ### FRED
+
+<details>
+<summary mdxType="summary">FRED App Example</summary>
 
 ```json
 {
@@ -2152,11 +2182,23 @@ Remember, the best part is that you can build your own apps tailored to your spe
       ]
     }
   },
-  "groups": []
+  "groups": [],
+  "prompts": [
+    "What is the latest CPI inflation momentum?",
+    "Show me the year-over-year Core CPI.",
+    "What was the last Non-Farm Payrolls (NFP) number?",
+    "Plot the 2-year and 10-year Treasury yields.",
+    "What is the current 30-year Treasury yield?"
+  ]
 }
 ```
 
+</details>
+
 ### FED Net Liquidity
+
+<details>
+<summary mdxType="summary">FED Net Liquidity App Example</summary>
 
 ```json
 [
@@ -2263,7 +2305,16 @@ Remember, the best part is that you can build your own apps tailored to your spe
         ]
       }
     },
-    "groups": []
+    "groups": [],
+    "prompts": [
+      "What is the current Fed Net Liquidity?",
+      "Show me the weekly changes in the Fed's balance sheet.",
+      "What are the year-over-year changes in MTS income taxes?",
+      "Display the monthly income tax receipts for the current fiscal year.",
+      "How has the Fed's balance sheet evolved over the last year?"
+    ]
   }
 ]
 ```
+
+</details>
