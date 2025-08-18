@@ -64254,8 +64254,8 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 
 ### Commands
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
-<ReferenceCard title="petroleum status report" description="EIA Weekly Petroleum Status Report" url="/platform/reference/commodity/petroleum_status_report" />
 <ReferenceCard title="short term energy outlook" description="Monthly short term (18 month) projections using EIA's STEO model" url="/platform/reference/commodity/short_term_energy_outlook" />
+<ReferenceCard title="petroleum status report" description="EIA Weekly Petroleum Status Report" url="/platform/reference/commodity/petroleum_status_report" />
 </ul>
 
 
@@ -65741,8 +65741,8 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 
 ### Commands
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
-<ReferenceCard title="search" description="Currency Search" url="/platform/reference/currency/search" />
 <ReferenceCard title="reference rates" description="Get current, official, currency reference rates" url="/platform/reference/currency/reference_rates" />
+<ReferenceCard title="search" description="Currency Search" url="/platform/reference/currency/search" />
 <ReferenceCard title="snapshots" description="Snapshots of currency exchange rates from an indirect or direct perspective of a base currency" url="/platform/reference/currency/snapshots" />
 </ul>
 
@@ -67812,10 +67812,10 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 
 ### Commands
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
-<ReferenceCard title="historical" description="Historical futures prices" url="/platform/reference/derivatives/futures/historical" />
 <ReferenceCard title="instruments" description="Get reference data for available futures instruments by provider" url="/platform/reference/derivatives/futures/instruments" />
-<ReferenceCard title="curve" description="Futures Term Structure, current or historical" url="/platform/reference/derivatives/futures/curve" />
+<ReferenceCard title="historical" description="Historical futures prices" url="/platform/reference/derivatives/futures/historical" />
 <ReferenceCard title="info" description="Get current trading statistics by futures contract symbol" url="/platform/reference/derivatives/futures/info" />
+<ReferenceCard title="curve" description="Futures Term Structure, current or historical" url="/platform/reference/derivatives/futures/curve" />
 </ul>
 
 
@@ -68219,8 +68219,8 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 
 ### Menus
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
-<ReferenceCard title="Futures" description="historical, instruments, curve, info" url="/platform/reference/derivatives/futures" />
-<ReferenceCard title="Options" description="unusual, snapshots, chains, surface" url="/platform/reference/derivatives/options" />
+<ReferenceCard title="Futures" description="instruments, historical, info, curve" url="/platform/reference/derivatives/futures" />
+<ReferenceCard title="Options" description="chains, snapshots, surface, unusual" url="/platform/reference/derivatives/options" />
 </ul>
 
 
@@ -70200,10 +70200,10 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 
 ### Commands
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
-<ReferenceCard title="unusual" description="Get the complete options chain for a ticker" url="/platform/reference/derivatives/options/unusual" />
-<ReferenceCard title="snapshots" description="Get a snapshot of the options market universe" url="/platform/reference/derivatives/options/snapshots" />
 <ReferenceCard title="chains" description="Get the complete options chain for a ticker" url="/platform/reference/derivatives/options/chains" />
+<ReferenceCard title="snapshots" description="Get a snapshot of the options market universe" url="/platform/reference/derivatives/options/snapshots" />
 <ReferenceCard title="surface" description="Filter and process the options chains data for volatility" url="/platform/reference/derivatives/options/surface" />
+<ReferenceCard title="unusual" description="Get the complete options chain for a ticker" url="/platform/reference/derivatives/options/unusual" />
 </ul>
 
 
@@ -71436,20 +71436,20 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 
 ### Commands
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
-<ReferenceCard title="autocorrelation" description="Perform Durbin-Watson test for autocorrelation" url="/platform/reference/econometrics/autocorrelation" />
-<ReferenceCard title="correlation matrix" description="Get the correlation matrix of an input dataset" url="/platform/reference/econometrics/correlation_matrix" />
-<ReferenceCard title="panel fixed" description="One- and two-way fixed effects estimator for panel data" url="/platform/reference/econometrics/panel_fixed" />
-<ReferenceCard title="variance inflation factor" description="Calculate VIF (variance inflation factor), which tests for collinearity" url="/platform/reference/econometrics/variance_inflation_factor" />
-<ReferenceCard title="ols regression summary" description="Perform Ordinary Least Squares (OLS) regression" url="/platform/reference/econometrics/ols_regression_summary" />
-<ReferenceCard title="residual autocorrelation" description="Perform Breusch-Godfrey Lagrange Multiplier tests for residual autocorrelation" url="/platform/reference/econometrics/residual_autocorrelation" />
-<ReferenceCard title="causality" description="Perform Granger causality test to determine if X 'causes' y" url="/platform/reference/econometrics/causality" />
-<ReferenceCard title="panel first difference" description="Perform a first-difference estimate for panel data" url="/platform/reference/econometrics/panel_first_difference" />
-<ReferenceCard title="ols regression" description="Perform Ordinary Least Squares (OLS) regression" url="/platform/reference/econometrics/ols_regression" />
-<ReferenceCard title="cointegration" description="Show co-integration between two timeseries using the two step Engle-Granger test" url="/platform/reference/econometrics/cointegration" />
-<ReferenceCard title="panel between" description="Perform a Between estimator regression on panel data" url="/platform/reference/econometrics/panel_between" />
-<ReferenceCard title="panel pooled" description="Perform a Pooled coefficient estimator regression on panel data" url="/platform/reference/econometrics/panel_pooled" />
-<ReferenceCard title="unit root" description="Perform Augmented Dickey-Fuller (ADF) unit root test" url="/platform/reference/econometrics/unit_root" />
 <ReferenceCard title="panel random effects" description="Perform One-way Random Effects model for panel data" url="/platform/reference/econometrics/panel_random_effects" />
+<ReferenceCard title="panel first difference" description="Perform a first-difference estimate for panel data" url="/platform/reference/econometrics/panel_first_difference" />
+<ReferenceCard title="panel pooled" description="Perform a Pooled coefficient estimator regression on panel data" url="/platform/reference/econometrics/panel_pooled" />
+<ReferenceCard title="correlation matrix" description="Get the correlation matrix of an input dataset" url="/platform/reference/econometrics/correlation_matrix" />
+<ReferenceCard title="cointegration" description="Show co-integration between two timeseries using the two step Engle-Granger test" url="/platform/reference/econometrics/cointegration" />
+<ReferenceCard title="variance inflation factor" description="Calculate VIF (variance inflation factor), which tests for collinearity" url="/platform/reference/econometrics/variance_inflation_factor" />
+<ReferenceCard title="panel fixed" description="One- and two-way fixed effects estimator for panel data" url="/platform/reference/econometrics/panel_fixed" />
+<ReferenceCard title="causality" description="Perform Granger causality test to determine if X 'causes' y" url="/platform/reference/econometrics/causality" />
+<ReferenceCard title="unit root" description="Perform Augmented Dickey-Fuller (ADF) unit root test" url="/platform/reference/econometrics/unit_root" />
+<ReferenceCard title="residual autocorrelation" description="Perform Breusch-Godfrey Lagrange Multiplier tests for residual autocorrelation" url="/platform/reference/econometrics/residual_autocorrelation" />
+<ReferenceCard title="panel between" description="Perform a Between estimator regression on panel data" url="/platform/reference/econometrics/panel_between" />
+<ReferenceCard title="autocorrelation" description="Perform Durbin-Watson test for autocorrelation" url="/platform/reference/econometrics/autocorrelation" />
+<ReferenceCard title="ols regression" description="Perform Ordinary Least Squares (OLS) regression" url="/platform/reference/econometrics/ols_regression" />
+<ReferenceCard title="ols regression summary" description="Perform Ordinary Least Squares (OLS) regression" url="/platform/reference/econometrics/ols_regression_summary" />
 <ReferenceCard title="panel fmac" description="Fama-MacBeth estimator for panel data" url="/platform/reference/econometrics/panel_fmac" />
 </ul>
 
@@ -79155,8 +79155,8 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 ### Commands
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
 <ReferenceCard title="forecast" description="Get Forecasted GDP Data" url="/platform/reference/economy/gdp/forecast" />
-<ReferenceCard title="nominal" description="Get Nominal GDP Data" url="/platform/reference/economy/gdp/nominal" />
 <ReferenceCard title="real" description="Get Real GDP Data" url="/platform/reference/economy/gdp/real" />
+<ReferenceCard title="nominal" description="Get Nominal GDP Data" url="/platform/reference/economy/gdp/nominal" />
 </ul>
 
 
@@ -79999,38 +79999,38 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 
 ### Menus
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
-<ReferenceCard title="Gdp" description="forecast, nominal, real" url="/platform/reference/economy/gdp" />
-<ReferenceCard title="Shipping" description="port_volume, chokepoint_volume, port_info, chokepoint_info" url="/platform/reference/economy/shipping" />
-<ReferenceCard title="Survey" description="manufacturing_outlook_ny, bls_search, bls_series, sloos, manufacturing_outlook_texas, nonfarm_payrolls, university_of_michigan, economic_conditions_chicago" url="/platform/reference/economy/survey" />
+<ReferenceCard title="Gdp" description="forecast, real, nominal" url="/platform/reference/economy/gdp" />
+<ReferenceCard title="Shipping" description="port_info, chokepoint_info, chokepoint_volume, port_volume" url="/platform/reference/economy/shipping" />
+<ReferenceCard title="Survey" description="bls_series, sloos, economic_conditions_chicago, nonfarm_payrolls, university_of_michigan, manufacturing_outlook_texas, bls_search, manufacturing_outlook_ny" url="/platform/reference/economy/survey" />
 </ul>
 
 ### Commands
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
-<ReferenceCard title="balance of payments" description="Balance of Payments Reports" url="/platform/reference/economy/balance_of_payments" />
-<ReferenceCard title="primary dealer fails" description="Primary Dealer Statistics for Fails to Deliver and Fails to Receive" url="/platform/reference/economy/primary_dealer_fails" />
-<ReferenceCard title="money measures" description="Get Money Measures (M1/M2 and components)" url="/platform/reference/economy/money_measures" />
-<ReferenceCard title="fred search" description="Search for FRED series or economic releases by ID or string" url="/platform/reference/economy/fred_search" />
-<ReferenceCard title="fomc documents" description="Get FOMC documents by year and document type" url="/platform/reference/economy/fomc_documents" />
-<ReferenceCard title="direction of trade" description="Get Direction Of Trade Statistics from the IMF database" url="/platform/reference/economy/direction_of_trade" />
-<ReferenceCard title="indicators" description="Get economic indicators by country and indicator" url="/platform/reference/economy/indicators" />
-<ReferenceCard title="retail prices" description="Get retail prices for common items" url="/platform/reference/economy/retail_prices" />
-<ReferenceCard title="composite leading indicator" description="Get the composite leading indicator (CLI)" url="/platform/reference/economy/composite_leading_indicator" />
-<ReferenceCard title="export destinations" description="Get top export destinations by country from the UN Comtrade International Trade Statistics Database" url="/platform/reference/economy/export_destinations" />
-<ReferenceCard title="interest rates" description="Get interest rates by country(s) and duration" url="/platform/reference/economy/interest_rates" />
-<ReferenceCard title="share price index" description="Get the Share Price Index by country from the OECD Short-Term Economics Statistics" url="/platform/reference/economy/share_price_index" />
-<ReferenceCard title="central bank holdings" description="Get the balance sheet holdings of a central bank" url="/platform/reference/economy/central_bank_holdings" />
-<ReferenceCard title="cpi" description="Get Consumer Price Index (CPI)" url="/platform/reference/economy/cpi" />
-<ReferenceCard title="fred series" description="Get data by series ID from FRED" url="/platform/reference/economy/fred_series" />
-<ReferenceCard title="pce" description="Get Personal Consumption Expenditures (PCE) reports" url="/platform/reference/economy/pce" />
-<ReferenceCard title="house price index" description="Get the House Price Index by country from the OECD Short-Term Economics Statistics" url="/platform/reference/economy/house_price_index" />
-<ReferenceCard title="risk premium" description="Get Market Risk Premium by country" url="/platform/reference/economy/risk_premium" />
-<ReferenceCard title="calendar" description="Get the upcoming, or historical, economic calendar of global events" url="/platform/reference/economy/calendar" />
-<ReferenceCard title="fred release table" description="Get economic release data by ID and/or element from FRED" url="/platform/reference/economy/fred_release_table" />
 <ReferenceCard title="unemployment" description="Get global unemployment data" url="/platform/reference/economy/unemployment" />
-<ReferenceCard title="fred regional" description="Query the Geo Fred API for regional economic data by series group" url="/platform/reference/economy/fred_regional" />
-<ReferenceCard title="available indicators" description="Get the available economic indicators for a provider" url="/platform/reference/economy/available_indicators" />
 <ReferenceCard title="country profile" description="Get a profile of country statistics and economic indicators" url="/platform/reference/economy/country_profile" />
+<ReferenceCard title="house price index" description="Get the House Price Index by country from the OECD Short-Term Economics Statistics" url="/platform/reference/economy/house_price_index" />
+<ReferenceCard title="share price index" description="Get the Share Price Index by country from the OECD Short-Term Economics Statistics" url="/platform/reference/economy/share_price_index" />
+<ReferenceCard title="balance of payments" description="Balance of Payments Reports" url="/platform/reference/economy/balance_of_payments" />
+<ReferenceCard title="calendar" description="Get the upcoming, or historical, economic calendar of global events" url="/platform/reference/economy/calendar" />
+<ReferenceCard title="interest rates" description="Get interest rates by country(s) and duration" url="/platform/reference/economy/interest_rates" />
+<ReferenceCard title="direction of trade" description="Get Direction Of Trade Statistics from the IMF database" url="/platform/reference/economy/direction_of_trade" />
+<ReferenceCard title="export destinations" description="Get top export destinations by country from the UN Comtrade International Trade Statistics Database" url="/platform/reference/economy/export_destinations" />
+<ReferenceCard title="primary dealer fails" description="Primary Dealer Statistics for Fails to Deliver and Fails to Receive" url="/platform/reference/economy/primary_dealer_fails" />
+<ReferenceCard title="fred series" description="Get data by series ID from FRED" url="/platform/reference/economy/fred_series" />
+<ReferenceCard title="cpi" description="Get Consumer Price Index (CPI)" url="/platform/reference/economy/cpi" />
+<ReferenceCard title="fred search" description="Search for FRED series or economic releases by ID or string" url="/platform/reference/economy/fred_search" />
+<ReferenceCard title="retail prices" description="Get retail prices for common items" url="/platform/reference/economy/retail_prices" />
+<ReferenceCard title="fred regional" description="Query the Geo Fred API for regional economic data by series group" url="/platform/reference/economy/fred_regional" />
+<ReferenceCard title="fomc documents" description="Get FOMC documents by year and document type" url="/platform/reference/economy/fomc_documents" />
+<ReferenceCard title="pce" description="Get Personal Consumption Expenditures (PCE) reports" url="/platform/reference/economy/pce" />
+<ReferenceCard title="risk premium" description="Get Market Risk Premium by country" url="/platform/reference/economy/risk_premium" />
+<ReferenceCard title="available indicators" description="Get the available economic indicators for a provider" url="/platform/reference/economy/available_indicators" />
+<ReferenceCard title="composite leading indicator" description="Get the composite leading indicator (CLI)" url="/platform/reference/economy/composite_leading_indicator" />
 <ReferenceCard title="primary dealer positioning" description="Get Primary dealer positioning statistics" url="/platform/reference/economy/primary_dealer_positioning" />
+<ReferenceCard title="fred release table" description="Get economic release data by ID and/or element from FRED" url="/platform/reference/economy/fred_release_table" />
+<ReferenceCard title="central bank holdings" description="Get the balance sheet holdings of a central bank" url="/platform/reference/economy/central_bank_holdings" />
+<ReferenceCard title="money measures" description="Get Money Measures (M1/M2 and components)" url="/platform/reference/economy/money_measures" />
+<ReferenceCard title="indicators" description="Get economic indicators by country and indicator" url="/platform/reference/economy/indicators" />
 </ul>
 
 
@@ -83048,10 +83048,10 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 
 ### Commands
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
-<ReferenceCard title="port volume" description="Daily port calls and estimates of trading volumes for ports around the world" url="/platform/reference/economy/shipping/port_volume" />
-<ReferenceCard title="chokepoint volume" description="Daily transit calls and estimates of transit trade volumes for shipping lane chokepoints around the world" url="/platform/reference/economy/shipping/chokepoint_volume" />
 <ReferenceCard title="port info" description="Get general metadata and statistics for all ports from a given provider" url="/platform/reference/economy/shipping/port_info" />
 <ReferenceCard title="chokepoint info" description="Get general metadata and statistics for all maritime chokepoint locations from a given provider" url="/platform/reference/economy/shipping/chokepoint_info" />
+<ReferenceCard title="chokepoint volume" description="Daily transit calls and estimates of transit trade volumes for shipping lane chokepoints around the world" url="/platform/reference/economy/shipping/chokepoint_volume" />
+<ReferenceCard title="port volume" description="Daily port calls and estimates of trading volumes for ports around the world" url="/platform/reference/economy/shipping/port_volume" />
 </ul>
 
 
@@ -84281,14 +84281,14 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 
 ### Commands
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
-<ReferenceCard title="manufacturing outlook ny" description="Get the Empire State Manufacturing Survey" url="/platform/reference/economy/survey/manufacturing_outlook_ny" />
-<ReferenceCard title="bls search" description="Search BLS surveys by category and keyword or phrase to identify BLS series IDs" url="/platform/reference/economy/survey/bls_search" />
 <ReferenceCard title="bls series" description="Get time series data for one, or more, BLS series IDs" url="/platform/reference/economy/survey/bls_series" />
 <ReferenceCard title="sloos" description="Get Senior Loan Officers Opinion Survey" url="/platform/reference/economy/survey/sloos" />
-<ReferenceCard title="manufacturing outlook texas" description="Get The Manufacturing Outlook Survey For The Texas Region" url="/platform/reference/economy/survey/manufacturing_outlook_texas" />
+<ReferenceCard title="economic conditions chicago" description="Get The Survey Of Economic Conditions For The Chicago Region" url="/platform/reference/economy/survey/economic_conditions_chicago" />
 <ReferenceCard title="nonfarm payrolls" description="Get Nonfarm Payrolls Survey" url="/platform/reference/economy/survey/nonfarm_payrolls" />
 <ReferenceCard title="university of michigan" description="Get University of Michigan Consumer Sentiment and Inflation Expectations Surveys" url="/platform/reference/economy/survey/university_of_michigan" />
-<ReferenceCard title="economic conditions chicago" description="Get The Survey Of Economic Conditions For The Chicago Region" url="/platform/reference/economy/survey/economic_conditions_chicago" />
+<ReferenceCard title="manufacturing outlook texas" description="Get The Manufacturing Outlook Survey For The Texas Region" url="/platform/reference/economy/survey/manufacturing_outlook_texas" />
+<ReferenceCard title="bls search" description="Search BLS surveys by category and keyword or phrase to identify BLS series IDs" url="/platform/reference/economy/survey/bls_search" />
+<ReferenceCard title="manufacturing outlook ny" description="Get the Empire State Manufacturing Survey" url="/platform/reference/economy/survey/manufacturing_outlook_ny" />
 </ul>
 
 
@@ -86396,11 +86396,11 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 
 ### Commands
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
-<ReferenceCard title="earnings" description="Get historical and upcoming company earnings releases" url="/platform/reference/equity/calendar/earnings" />
 <ReferenceCard title="ipo" description="Get historical and upcoming initial public offerings (IPOs)" url="/platform/reference/equity/calendar/ipo" />
-<ReferenceCard title="splits" description="Get historical and upcoming stock split operations" url="/platform/reference/equity/calendar/splits" />
-<ReferenceCard title="dividend" description="Get historical and upcoming dividend payments" url="/platform/reference/equity/calendar/dividend" />
 <ReferenceCard title="events" description="Get historical and upcoming company events, such as Investor Day, Conference Call, Earnings Release" url="/platform/reference/equity/calendar/events" />
+<ReferenceCard title="earnings" description="Get historical and upcoming company earnings releases" url="/platform/reference/equity/calendar/earnings" />
+<ReferenceCard title="dividend" description="Get historical and upcoming dividend payments" url="/platform/reference/equity/calendar/dividend" />
+<ReferenceCard title="splits" description="Get historical and upcoming stock split operations" url="/platform/reference/equity/calendar/splits" />
 </ul>
 
 
@@ -89199,16 +89199,16 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 
 ### Commands
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
+<ReferenceCard title="undervalued growth" description="Get potentially undervalued growth stocks" url="/platform/reference/equity/discovery/undervalued_growth" />
 <ReferenceCard title="undervalued large caps" description="Get potentially undervalued large cap stocks" url="/platform/reference/equity/discovery/undervalued_large_caps" />
+<ReferenceCard title="latest financial reports" description="Get the newest quarterly, annual, and current reports for all companies" url="/platform/reference/equity/discovery/latest_financial_reports" />
+<ReferenceCard title="losers" description="Get the top price losers in the stock market" url="/platform/reference/equity/discovery/losers" />
+<ReferenceCard title="top retail" description="Track over $30B USD/day of individual investors trades" url="/platform/reference/equity/discovery/top_retail" />
+<ReferenceCard title="growth tech" description="Get top tech stocks based on revenue and earnings growth" url="/platform/reference/equity/discovery/growth_tech" />
+<ReferenceCard title="active" description="Get the most actively traded stocks based on volume" url="/platform/reference/equity/discovery/active" />
+<ReferenceCard title="filings" description="Get the URLs to SEC filings reported to EDGAR database, such as 10-K, 10-Q, 8-K, and more" url="/platform/reference/equity/discovery/filings" />
 <ReferenceCard title="aggressive small caps" description="Get top small cap stocks based on earnings growth" url="/platform/reference/equity/discovery/aggressive_small_caps" />
 <ReferenceCard title="gainers" description="Get the top price gainers in the stock market" url="/platform/reference/equity/discovery/gainers" />
-<ReferenceCard title="losers" description="Get the top price losers in the stock market" url="/platform/reference/equity/discovery/losers" />
-<ReferenceCard title="undervalued growth" description="Get potentially undervalued growth stocks" url="/platform/reference/equity/discovery/undervalued_growth" />
-<ReferenceCard title="filings" description="Get the URLs to SEC filings reported to EDGAR database, such as 10-K, 10-Q, 8-K, and more" url="/platform/reference/equity/discovery/filings" />
-<ReferenceCard title="active" description="Get the most actively traded stocks based on volume" url="/platform/reference/equity/discovery/active" />
-<ReferenceCard title="growth tech" description="Get top tech stocks based on revenue and earnings growth" url="/platform/reference/equity/discovery/growth_tech" />
-<ReferenceCard title="top retail" description="Track over $30B USD/day of individual investors trades" url="/platform/reference/equity/discovery/top_retail" />
-<ReferenceCard title="latest financial reports" description="Get the newest quarterly, annual, and current reports for all companies" url="/platform/reference/equity/discovery/latest_financial_reports" />
 </ul>
 
 
@@ -92861,14 +92861,14 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 
 ### Commands
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
-<ReferenceCard title="historical" description="Get historical analyst estimates for earnings and revenue" url="/platform/reference/equity/estimates/historical" />
-<ReferenceCard title="consensus" description="Get consensus price target and recommendation" url="/platform/reference/equity/estimates/consensus" />
-<ReferenceCard title="analyst search" description="Search for specific analysts and get their forecast track record" url="/platform/reference/equity/estimates/analyst_search" />
+<ReferenceCard title="forward sales" description="Get forward sales estimates" url="/platform/reference/equity/estimates/forward_sales" />
 <ReferenceCard title="forward ebitda" description="Get forward EBITDA estimates" url="/platform/reference/equity/estimates/forward_ebitda" />
-<ReferenceCard title="forward eps" description="Get forward EPS estimates" url="/platform/reference/equity/estimates/forward_eps" />
 <ReferenceCard title="price target" description="Get analyst price targets by company" url="/platform/reference/equity/estimates/price_target" />
 <ReferenceCard title="forward pe" description="Get forward PE estimates" url="/platform/reference/equity/estimates/forward_pe" />
-<ReferenceCard title="forward sales" description="Get forward sales estimates" url="/platform/reference/equity/estimates/forward_sales" />
+<ReferenceCard title="historical" description="Get historical analyst estimates for earnings and revenue" url="/platform/reference/equity/estimates/historical" />
+<ReferenceCard title="analyst search" description="Search for specific analysts and get their forecast track record" url="/platform/reference/equity/estimates/analyst_search" />
+<ReferenceCard title="forward eps" description="Get forward EPS estimates" url="/platform/reference/equity/estimates/forward_eps" />
+<ReferenceCard title="consensus" description="Get consensus price target and recommendation" url="/platform/reference/equity/estimates/consensus" />
 </ul>
 
 
@@ -99627,31 +99627,31 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 
 ### Commands
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
-<ReferenceCard title="cash growth" description="Get the growth of a company's cash flow statement items over time" url="/platform/reference/equity/fundamental/cash_growth" />
-<ReferenceCard title="balance growth" description="Get the growth of a company's balance sheet items over time" url="/platform/reference/equity/fundamental/balance_growth" />
-<ReferenceCard title="trailing dividend yield" description="Get the 1 year trailing dividend yield for a given company over time" url="/platform/reference/equity/fundamental/trailing_dividend_yield" />
 <ReferenceCard title="employee count" description="Get historical employee count data for a given company" url="/platform/reference/equity/fundamental/employee_count" />
-<ReferenceCard title="management compensation" description="Get executive management team compensation for a given company over time" url="/platform/reference/equity/fundamental/management_compensation" />
-<ReferenceCard title="search attributes" description="Search Intrinio data tags to search in latest or historical attributes" url="/platform/reference/equity/fundamental/search_attributes" />
+<ReferenceCard title="income" description="Get the income statement for a given company" url="/platform/reference/equity/fundamental/income" />
 <ReferenceCard title="management" description="Get executive management team data for a given company" url="/platform/reference/equity/fundamental/management" />
-<ReferenceCard title="ratios" description="Get an extensive set of financial and accounting ratios for a given company over time" url="/platform/reference/equity/fundamental/ratios" />
-<ReferenceCard title="revenue per geography" description="Get the geographic breakdown of revenue for a given company over time" url="/platform/reference/equity/fundamental/revenue_per_geography" />
-<ReferenceCard title="historical splits" description="Get historical stock splits for a given company" url="/platform/reference/equity/fundamental/historical_splits" />
-<ReferenceCard title="filings" description="Get public company filings" url="/platform/reference/equity/fundamental/filings" />
-<ReferenceCard title="reported financials" description="Get financial statements as reported by the company" url="/platform/reference/equity/fundamental/reported_financials" />
-<ReferenceCard title="metrics" description="Get fundamental metrics for a given company" url="/platform/reference/equity/fundamental/metrics" />
-<ReferenceCard title="historical eps" description="Get historical earnings per share data for a given company" url="/platform/reference/equity/fundamental/historical_eps" />
-<ReferenceCard title="cash" description="Get the cash flow statement for a given company" url="/platform/reference/equity/fundamental/cash" />
 <ReferenceCard title="management discussion analysis" description="Get the Management Discussion & Analysis section from the financial statements for a given company" url="/platform/reference/equity/fundamental/management_discussion_analysis" />
+<ReferenceCard title="transcript" description="Get earnings call transcripts for a given company" url="/platform/reference/equity/fundamental/transcript" />
+<ReferenceCard title="trailing dividend yield" description="Get the 1 year trailing dividend yield for a given company over time" url="/platform/reference/equity/fundamental/trailing_dividend_yield" />
+<ReferenceCard title="cash growth" description="Get the growth of a company's cash flow statement items over time" url="/platform/reference/equity/fundamental/cash_growth" />
+<ReferenceCard title="search attributes" description="Search Intrinio data tags to search in latest or historical attributes" url="/platform/reference/equity/fundamental/search_attributes" />
+<ReferenceCard title="metrics" description="Get fundamental metrics for a given company" url="/platform/reference/equity/fundamental/metrics" />
+<ReferenceCard title="filings" description="Get public company filings" url="/platform/reference/equity/fundamental/filings" />
+<ReferenceCard title="historical eps" description="Get historical earnings per share data for a given company" url="/platform/reference/equity/fundamental/historical_eps" />
+<ReferenceCard title="management compensation" description="Get executive management team compensation for a given company over time" url="/platform/reference/equity/fundamental/management_compensation" />
 <ReferenceCard title="historical attributes" description="Get the historical values of a data tag from Intrinio" url="/platform/reference/equity/fundamental/historical_attributes" />
 <ReferenceCard title="income growth" description="Get the growth of a company's income statement items over time" url="/platform/reference/equity/fundamental/income_growth" />
-<ReferenceCard title="multiples" description="Get equity valuation multiples for a given company" url="/platform/reference/equity/fundamental/multiples" />
 <ReferenceCard title="balance" description="Get the balance sheet for a given company" url="/platform/reference/equity/fundamental/balance" />
-<ReferenceCard title="dividends" description="Get historical dividend data for a given company" url="/platform/reference/equity/fundamental/dividends" />
-<ReferenceCard title="transcript" description="Get earnings call transcripts for a given company" url="/platform/reference/equity/fundamental/transcript" />
-<ReferenceCard title="income" description="Get the income statement for a given company" url="/platform/reference/equity/fundamental/income" />
+<ReferenceCard title="balance growth" description="Get the growth of a company's balance sheet items over time" url="/platform/reference/equity/fundamental/balance_growth" />
+<ReferenceCard title="reported financials" description="Get financial statements as reported by the company" url="/platform/reference/equity/fundamental/reported_financials" />
+<ReferenceCard title="multiples" description="Get equity valuation multiples for a given company" url="/platform/reference/equity/fundamental/multiples" />
+<ReferenceCard title="cash" description="Get the cash flow statement for a given company" url="/platform/reference/equity/fundamental/cash" />
+<ReferenceCard title="historical splits" description="Get historical stock splits for a given company" url="/platform/reference/equity/fundamental/historical_splits" />
 <ReferenceCard title="latest attributes" description="Get the latest value of a data tag from Intrinio" url="/platform/reference/equity/fundamental/latest_attributes" />
+<ReferenceCard title="dividends" description="Get historical dividend data for a given company" url="/platform/reference/equity/fundamental/dividends" />
+<ReferenceCard title="ratios" description="Get an extensive set of financial and accounting ratios for a given company over time" url="/platform/reference/equity/fundamental/ratios" />
 <ReferenceCard title="revenue per segment" description="Get the revenue breakdown by business segment for a given company over time" url="/platform/reference/equity/fundamental/revenue_per_segment" />
+<ReferenceCard title="revenue per geography" description="Get the geographic breakdown of revenue for a given company over time" url="/platform/reference/equity/fundamental/revenue_per_geography" />
 </ul>
 
 
@@ -103896,23 +103896,23 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 
 ### Menus
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
-<ReferenceCard title="Calendar" description="earnings, ipo, splits, dividend, events" url="/platform/reference/equity/calendar" />
+<ReferenceCard title="Calendar" description="ipo, events, earnings, dividend, splits" url="/platform/reference/equity/calendar" />
 <ReferenceCard title="Compare" description="groups, company_facts, peers" url="/platform/reference/equity/compare" />
 <ReferenceCard title="Darkpool" description="otc" url="/platform/reference/equity/darkpool" />
-<ReferenceCard title="Discovery" description="undervalued_large_caps, aggressive_small_caps, gainers, losers, undervalued_growth, filings, active, growth_tech,..." url="/platform/reference/equity/discovery" />
-<ReferenceCard title="Estimates" description="historical, consensus, analyst_search, forward_ebitda, forward_eps, price_target, forward_pe, forward_sales" url="/platform/reference/equity/estimates" />
-<ReferenceCard title="Fundamental" description="cash_growth, balance_growth, trailing_dividend_yield, employee_count, management_compensation, search_attributes, management, ratios,..." url="/platform/reference/equity/fundamental" />
-<ReferenceCard title="Ownership" description="insider_trading, major_holders, institutional, government_trades, share_statistics, form_13f" url="/platform/reference/equity/ownership" />
-<ReferenceCard title="Price" description="historical, quote, performance, nbbo" url="/platform/reference/equity/price" />
-<ReferenceCard title="Shorts" description="short_interest, fails_to_deliver, short_volume" url="/platform/reference/equity/shorts" />
+<ReferenceCard title="Discovery" description="undervalued_growth, undervalued_large_caps, latest_financial_reports, losers, top_retail, growth_tech, active, filings,..." url="/platform/reference/equity/discovery" />
+<ReferenceCard title="Estimates" description="forward_sales, forward_ebitda, price_target, forward_pe, historical, analyst_search, forward_eps, consensus" url="/platform/reference/equity/estimates" />
+<ReferenceCard title="Fundamental" description="employee_count, income, management, management_discussion_analysis, transcript, trailing_dividend_yield, cash_growth, search_attributes,..." url="/platform/reference/equity/fundamental" />
+<ReferenceCard title="Ownership" description="institutional, insider_trading, form_13f, government_trades, share_statistics, major_holders" url="/platform/reference/equity/ownership" />
+<ReferenceCard title="Price" description="nbbo, historical, quote, performance" url="/platform/reference/equity/price" />
+<ReferenceCard title="Shorts" description="short_interest, short_volume, fails_to_deliver" url="/platform/reference/equity/shorts" />
 </ul>
 
 ### Commands
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
 <ReferenceCard title="screener" description="Screen for companies meeting various criteria" url="/platform/reference/equity/screener" />
-<ReferenceCard title="search" description="Search for stock symbol, CIK, LEI, or company name" url="/platform/reference/equity/search" />
 <ReferenceCard title="market snapshots" description="Get an updated equity market snapshot" url="/platform/reference/equity/market_snapshots" />
 <ReferenceCard title="historical market cap" description="Get the historical market cap of a ticker symbol" url="/platform/reference/equity/historical_market_cap" />
+<ReferenceCard title="search" description="Search for stock symbol, CIK, LEI, or company name" url="/platform/reference/equity/search" />
 <ReferenceCard title="profile" description="Get general information about a company" url="/platform/reference/equity/profile" />
 </ul>
 
@@ -104848,13 +104848,13 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 
 ### Commands
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
-<ReferenceCard title="insider trading" description="Get data about trading by a company's management team and board of directors" url="/platform/reference/equity/ownership/insider_trading" />
-<ReferenceCard title="major holders" description="Get data about major holders for a given company over time" url="/platform/reference/equity/ownership/major_holders" />
 <ReferenceCard title="institutional" description="Get data about institutional ownership for a given company over time" url="/platform/reference/equity/ownership/institutional" />
+<ReferenceCard title="insider trading" description="Get data about trading by a company's management team and board of directors" url="/platform/reference/equity/ownership/insider_trading" />
+<ReferenceCard title="form 13f" description="Get the form 13F" url="/platform/reference/equity/ownership/form_13f" />
 <ReferenceCard title="government trades" description="Obtain government transaction data, including data from the Senate
 and the House of Representatives" url="/platform/reference/equity/ownership/government_trades" />
 <ReferenceCard title="share statistics" description="Get data about share float for a given company" url="/platform/reference/equity/ownership/share_statistics" />
-<ReferenceCard title="form 13f" description="Get the form 13F" url="/platform/reference/equity/ownership/form_13f" />
+<ReferenceCard title="major holders" description="Get data about major holders for a given company over time" url="/platform/reference/equity/ownership/major_holders" />
 </ul>
 
 
@@ -107804,10 +107804,10 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 
 ### Commands
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
+<ReferenceCard title="nbbo" description="Get the National Best Bid and Offer for a given stock" url="/platform/reference/equity/price/nbbo" />
 <ReferenceCard title="historical" description="Get historical price data for a given stock" url="/platform/reference/equity/price/historical" />
 <ReferenceCard title="quote" description="Get the latest quote for a given stock" url="/platform/reference/equity/price/quote" />
 <ReferenceCard title="performance" description="Get price performance data for a given stock" url="/platform/reference/equity/price/performance" />
-<ReferenceCard title="nbbo" description="Get the National Best Bid and Offer for a given stock" url="/platform/reference/equity/price/nbbo" />
 </ul>
 
 
@@ -113416,8 +113416,8 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 ### Commands
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
 <ReferenceCard title="short interest" description="Get reported short volume and days to cover data" url="/platform/reference/equity/shorts/short_interest" />
-<ReferenceCard title="fails to deliver" description="Get reported Fail-to-deliver (FTD) data" url="/platform/reference/equity/shorts/fails_to_deliver" />
 <ReferenceCard title="short volume" description="Get reported Fail-to-deliver (FTD) data" url="/platform/reference/equity/shorts/short_volume" />
+<ReferenceCard title="fails to deliver" description="Get reported Fail-to-deliver (FTD) data" url="/platform/reference/equity/shorts/fails_to_deliver" />
 </ul>
 
 
@@ -114455,9 +114455,9 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 
 ### Commands
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
-<ReferenceCard title="gainers" description="Get the top ETF gainers" url="/platform/reference/etf/discovery/gainers" />
 <ReferenceCard title="losers" description="Get the top ETF losers" url="/platform/reference/etf/discovery/losers" />
 <ReferenceCard title="active" description="Get the most active ETFs" url="/platform/reference/etf/discovery/active" />
+<ReferenceCard title="gainers" description="Get the top ETF gainers" url="/platform/reference/etf/discovery/gainers" />
 </ul>
 
 
@@ -116852,20 +116852,20 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 
 ### Menus
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
-<ReferenceCard title="Discovery" description="gainers, losers, active" url="/platform/reference/etf/discovery" />
+<ReferenceCard title="Discovery" description="losers, active, gainers" url="/platform/reference/etf/discovery" />
 </ul>
 
 ### Commands
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
+<ReferenceCard title="sectors" description="ETF Sector weighting" url="/platform/reference/etf/sectors" />
+<ReferenceCard title="holdings" description="Get the holdings for an individual ETF" url="/platform/reference/etf/holdings" />
 <ReferenceCard title="historical" description="ETF Historical Market Price" url="/platform/reference/etf/historical" />
 <ReferenceCard title="search" description="Search for ETFs" url="/platform/reference/etf/search" />
-<ReferenceCard title="equity exposure" description="Get the exposure to ETFs for a specific stock" url="/platform/reference/etf/equity_exposure" />
 <ReferenceCard title="info" description="ETF Information Overview" url="/platform/reference/etf/info" />
-<ReferenceCard title="price performance" description="Price performance as a return, over different periods" url="/platform/reference/etf/price_performance" />
-<ReferenceCard title="holdings date" description="Use this function to get the holdings dates, if available" url="/platform/reference/etf/holdings_date" />
 <ReferenceCard title="countries" description="ETF Country weighting" url="/platform/reference/etf/countries" />
-<ReferenceCard title="holdings" description="Get the holdings for an individual ETF" url="/platform/reference/etf/holdings" />
-<ReferenceCard title="sectors" description="ETF Sector weighting" url="/platform/reference/etf/sectors" />
+<ReferenceCard title="holdings date" description="Use this function to get the holdings dates, if available" url="/platform/reference/etf/holdings_date" />
+<ReferenceCard title="price performance" description="Price performance as a return, over different periods" url="/platform/reference/etf/price_performance" />
+<ReferenceCard title="equity exposure" description="Get the exposure to ETFs for a specific stock" url="/platform/reference/etf/equity_exposure" />
 </ul>
 
 
@@ -119840,12 +119840,12 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 
 ### Commands
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
-<ReferenceCard title="breakpoints" description="Fama-French breakpoints" url="/platform/reference/famafrench/breakpoints" />
+<ReferenceCard title="international index returns" description="International index returns" url="/platform/reference/famafrench/international_index_returns" />
 <ReferenceCard title="regional portfolio returns" description="Regional portfolio returns" url="/platform/reference/famafrench/regional_portfolio_returns" />
 <ReferenceCard title="country portfolio returns" description="Country portfolio returns" url="/platform/reference/famafrench/country_portfolio_returns" />
 <ReferenceCard title="us portfolio returns" description="US Portfolio returns" url="/platform/reference/famafrench/us_portfolio_returns" />
 <ReferenceCard title="factors" description="Fama-French factors" url="/platform/reference/famafrench/factors" />
-<ReferenceCard title="international index returns" description="International index returns" url="/platform/reference/famafrench/international_index_returns" />
+<ReferenceCard title="breakpoints" description="Fama-French breakpoints" url="/platform/reference/famafrench/breakpoints" />
 </ul>
 
 
@@ -121932,12 +121932,12 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 
 ### Commands
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
+<ReferenceCard title="ice bofa" description="ICE BofA US Corporate Bond Indices" url="/platform/reference/fixedincome/corporate/ice_bofa" />
 <ReferenceCard title="bond prices" description="Corporate Bond Prices" url="/platform/reference/fixedincome/corporate/bond_prices" />
 <ReferenceCard title="hqm" description="High Quality Market Corporate Bond" url="/platform/reference/fixedincome/corporate/hqm" />
-<ReferenceCard title="ice bofa" description="ICE BofA US Corporate Bond Indices" url="/platform/reference/fixedincome/corporate/ice_bofa" />
 <ReferenceCard title="moody" description="Moody Corporate Bond Index" url="/platform/reference/fixedincome/corporate/moody" />
-<ReferenceCard title="spot rates" description="Spot Rates" url="/platform/reference/fixedincome/corporate/spot_rates" />
 <ReferenceCard title="commercial paper" description="Commercial Paper" url="/platform/reference/fixedincome/corporate/commercial_paper" />
+<ReferenceCard title="spot rates" description="Spot Rates" url="/platform/reference/fixedincome/corporate/spot_rates" />
 </ul>
 
 
@@ -122344,11 +122344,11 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 
 ### Commands
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
-<ReferenceCard title="treasury auctions" description="Government Treasury Auctions" url="/platform/reference/fixedincome/government/treasury_auctions" />
 <ReferenceCard title="yield curve" description="Get yield curve data by country and date" url="/platform/reference/fixedincome/government/yield_curve" />
 <ReferenceCard title="tips yields" description="Get current Treasury inflation-protected securities yields" url="/platform/reference/fixedincome/government/tips_yields" />
-<ReferenceCard title="treasury rates" description="Government Treasury Rates" url="/platform/reference/fixedincome/government/treasury_rates" />
 <ReferenceCard title="treasury prices" description="Government Treasury Prices by date" url="/platform/reference/fixedincome/government/treasury_prices" />
+<ReferenceCard title="treasury auctions" description="Government Treasury Auctions" url="/platform/reference/fixedincome/government/treasury_auctions" />
+<ReferenceCard title="treasury rates" description="Government Treasury Rates" url="/platform/reference/fixedincome/government/treasury_rates" />
 </ul>
 
 
@@ -124771,10 +124771,10 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 
 ### Menus
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
-<ReferenceCard title="Corporate" description="bond_prices, hqm, ice_bofa, moody, spot_rates, commercial_paper" url="/platform/reference/fixedincome/corporate" />
-<ReferenceCard title="Government" description="treasury_auctions, yield_curve, tips_yields, treasury_rates, treasury_prices" url="/platform/reference/fixedincome/government" />
-<ReferenceCard title="Rate" description="ecb, estr, dpcredit, effr, effr_forecast, overnight_bank_funding, sofr, ameribor,..." url="/platform/reference/fixedincome/rate" />
-<ReferenceCard title="Spreads" description="tcm_effr, tcm, treasury_effr" url="/platform/reference/fixedincome/spreads" />
+<ReferenceCard title="Corporate" description="ice_bofa, bond_prices, hqm, moody, commercial_paper, spot_rates" url="/platform/reference/fixedincome/corporate" />
+<ReferenceCard title="Government" description="yield_curve, tips_yields, treasury_prices, treasury_auctions, treasury_rates" url="/platform/reference/fixedincome/government" />
+<ReferenceCard title="Rate" description="iorb, effr, overnight_bank_funding, effr_forecast, ameribor, estr, sonia, sofr,..." url="/platform/reference/fixedincome/rate" />
+<ReferenceCard title="Spreads" description="tcm_effr, treasury_effr, tcm" url="/platform/reference/fixedincome/spreads" />
 </ul>
 
 ### Commands
@@ -126422,16 +126422,16 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 
 ### Commands
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
-<ReferenceCard title="ecb" description="European Central Bank Interest Rates" url="/platform/reference/fixedincome/rate/ecb" />
-<ReferenceCard title="estr" description="Euro Short-Term Rate" url="/platform/reference/fixedincome/rate/estr" />
-<ReferenceCard title="dpcredit" description="Discount Window Primary Credit Rate" url="/platform/reference/fixedincome/rate/dpcredit" />
-<ReferenceCard title="effr" description="Fed Funds Rate" url="/platform/reference/fixedincome/rate/effr" />
-<ReferenceCard title="effr forecast" description="Fed Funds Rate Projections" url="/platform/reference/fixedincome/rate/effr_forecast" />
-<ReferenceCard title="overnight bank funding" description="Overnight Bank Funding" url="/platform/reference/fixedincome/rate/overnight_bank_funding" />
-<ReferenceCard title="sofr" description="Secured Overnight Financing Rate" url="/platform/reference/fixedincome/rate/sofr" />
-<ReferenceCard title="ameribor" description="AMERIBOR" url="/platform/reference/fixedincome/rate/ameribor" />
 <ReferenceCard title="iorb" description="Interest on Reserve Balances" url="/platform/reference/fixedincome/rate/iorb" />
+<ReferenceCard title="effr" description="Fed Funds Rate" url="/platform/reference/fixedincome/rate/effr" />
+<ReferenceCard title="overnight bank funding" description="Overnight Bank Funding" url="/platform/reference/fixedincome/rate/overnight_bank_funding" />
+<ReferenceCard title="effr forecast" description="Fed Funds Rate Projections" url="/platform/reference/fixedincome/rate/effr_forecast" />
+<ReferenceCard title="ameribor" description="AMERIBOR" url="/platform/reference/fixedincome/rate/ameribor" />
+<ReferenceCard title="estr" description="Euro Short-Term Rate" url="/platform/reference/fixedincome/rate/estr" />
 <ReferenceCard title="sonia" description="Sterling Overnight Index Average" url="/platform/reference/fixedincome/rate/sonia" />
+<ReferenceCard title="sofr" description="Secured Overnight Financing Rate" url="/platform/reference/fixedincome/rate/sofr" />
+<ReferenceCard title="dpcredit" description="Discount Window Primary Credit Rate" url="/platform/reference/fixedincome/rate/dpcredit" />
+<ReferenceCard title="ecb" description="European Central Bank Interest Rates" url="/platform/reference/fixedincome/rate/ecb" />
 </ul>
 
 
@@ -127697,8 +127697,8 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 ### Commands
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
 <ReferenceCard title="tcm effr" description="Select Treasury Constant Maturity" url="/platform/reference/fixedincome/spreads/tcm_effr" />
-<ReferenceCard title="tcm" description="Treasury Constant Maturity" url="/platform/reference/fixedincome/spreads/tcm" />
 <ReferenceCard title="treasury effr" description="Select Treasury Bill" url="/platform/reference/fixedincome/spreads/treasury_effr" />
+<ReferenceCard title="tcm" description="Treasury Constant Maturity" url="/platform/reference/fixedincome/spreads/tcm" />
 </ul>
 
 
@@ -128741,12 +128741,12 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 
 ### Commands
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
-<ReferenceCard title="search" description="Filter indices for rows containing the query" url="/platform/reference/index/search" />
 <ReferenceCard title="constituents" description="Get Index Constituents" url="/platform/reference/index/constituents" />
-<ReferenceCard title="sp500 multiples" description="Get historical S&P 500 multiples and Shiller PE ratios" url="/platform/reference/index/sp500_multiples" />
-<ReferenceCard title="available" description="All indices available from a given provider" url="/platform/reference/index/available" />
-<ReferenceCard title="snapshots" description="Index Snapshots" url="/platform/reference/index/snapshots" />
 <ReferenceCard title="sectors" description="Get Index Sectors" url="/platform/reference/index/sectors" />
+<ReferenceCard title="available" description="All indices available from a given provider" url="/platform/reference/index/available" />
+<ReferenceCard title="sp500 multiples" description="Get historical S&P 500 multiples and Shiller PE ratios" url="/platform/reference/index/sp500_multiples" />
+<ReferenceCard title="search" description="Filter indices for rows containing the query" url="/platform/reference/index/search" />
+<ReferenceCard title="snapshots" description="Index Snapshots" url="/platform/reference/index/snapshots" />
 </ul>
 
 
@@ -130183,7 +130183,7 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 <ul className="grid grid-cols-1 gap-4 -ml-6">
 <ReferenceCard
     title="Commodity"
-    description="petroleum_status_report, short_term_energy_outlook, spot"
+    description="short_term_energy_outlook, petroleum_status_report, spot"
     url="/platform/reference/commodity"
 />
 <ReferenceCard
@@ -130193,67 +130193,67 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 />
 <ReferenceCard
     title="Currency"
-    description="search, reference_rates, snapshots, historical"
+    description="reference_rates, search, snapshots, historical"
     url="/platform/reference/currency"
 />
 <ReferenceCard
     title="Derivatives"
-    description="historical, instruments, curve, info, unusual, snapshots, chains, surface"
+    description="chains, snapshots, surface, unusual, instruments, historical, info, curve"
     url="/platform/reference/derivatives"
 />
 <ReferenceCard
     title="Econometrics"
-    description="autocorrelation, correlation_matrix, panel_fixed, variance_inflation_factor, ols_regression_summary, residual_autocorrelation, causality, panel_first_difference,..."
+    description="panel_random_effects, panel_first_difference, panel_pooled, correlation_matrix, cointegration, variance_inflation_factor, panel_fixed, causality,..."
     url="/platform/reference/econometrics"
 />
 <ReferenceCard
     title="Economy"
-    description="balance_of_payments, primary_dealer_fails, money_measures, fred_search, fomc_documents, direction_of_trade, indicators, retail_prices,..."
+    description="unemployment, country_profile, house_price_index, share_price_index, balance_of_payments, calendar, interest_rates, direction_of_trade,..."
     url="/platform/reference/economy"
 />
 <ReferenceCard
     title="Equity"
-    description="screener, search, market_snapshots, historical_market_cap, profile, earnings, ipo, splits,..."
+    description="screener, market_snapshots, historical_market_cap, search, profile, forward_sales, forward_ebitda, price_target,..."
     url="/platform/reference/equity"
 />
 <ReferenceCard
     title="Etf"
-    description="historical, search, equity_exposure, info, price_performance, holdings_date, countries, holdings,..."
+    description="sectors, holdings, historical, search, info, countries, holdings_date, price_performance,..."
     url="/platform/reference/etf"
 />
 <ReferenceCard
     title="Famafrench"
-    description="breakpoints, regional_portfolio_returns, country_portfolio_returns, us_portfolio_returns, factors, international_index_returns"
+    description="international_index_returns, regional_portfolio_returns, country_portfolio_returns, us_portfolio_returns, factors, breakpoints"
     url="/platform/reference/famafrench"
 />
 <ReferenceCard
     title="Fixedincome"
-    description="bond_indices, mortgage_indices, sofr, tcm_effr, tcm, treasury_effr, bond_prices, hqm,..."
+    description="bond_indices, mortgage_indices, sofr, iorb, effr, overnight_bank_funding, effr_forecast, ameribor,..."
     url="/platform/reference/fixedincome"
 />
 <ReferenceCard
     title="Index"
-    description="search, constituents, sp500_multiples, available, snapshots, sectors, historical"
+    description="constituents, sectors, available, sp500_multiples, search, snapshots, historical"
     url="/platform/reference/index"
 />
 <ReferenceCard
     title="News"
-    description="world, company"
+    description="company, world"
     url="/platform/reference/news"
 />
 <ReferenceCard
     title="Quantitative"
-    description="unitroot_test, normality, capm, summary, sharpe_ratio, sortino_ratio, omega_ratio, quantile,..."
+    description="normality, capm, unitroot_test, summary, sortino_ratio, omega_ratio, sharpe_ratio, skew,..."
     url="/platform/reference/quantitative"
 />
 <ReferenceCard
     title="Regulators"
-    description="cot, cot_search, filing_headers, cik_map, schema_files, rss_litigation, institutions_search, htm_file,..."
+    description="rss_litigation, cik_map, symbol_map, sic_search, htm_file, schema_files, institutions_search, filing_headers,..."
     url="/platform/reference/regulators"
 />
 <ReferenceCard
     title="Technical"
-    description="clenow, zlma, wma, macd, ema, adosc, ichimoku, fisher,..."
+    description="fib, demark, relative_rotation, atr, cg, clenow, aroon, macd,..."
     url="/platform/reference/technical"
 />
 </ul>
@@ -131238,8 +131238,8 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 
 ### Commands
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
-<ReferenceCard title="world" description="World News" url="/platform/reference/news/world" />
 <ReferenceCard title="company" description="Company News" url="/platform/reference/news/company" />
+<ReferenceCard title="world" description="World News" url="/platform/reference/news/world" />
 </ul>
 
 
@@ -132140,16 +132140,16 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 
 ### Menus
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
-<ReferenceCard title="Performance" description="sharpe_ratio, sortino_ratio, omega_ratio" url="/platform/reference/quantitative/performance" />
-<ReferenceCard title="Rolling" description="quantile, variance, stdev, mean, kurtosis, skew" url="/platform/reference/quantitative/rolling" />
-<ReferenceCard title="Stats" description="quantile, variance, stdev, mean, kurtosis, skew" url="/platform/reference/quantitative/stats" />
+<ReferenceCard title="Performance" description="sortino_ratio, omega_ratio, sharpe_ratio" url="/platform/reference/quantitative/performance" />
+<ReferenceCard title="Rolling" description="skew, stdev, quantile, variance, mean, kurtosis" url="/platform/reference/quantitative/rolling" />
+<ReferenceCard title="Stats" description="skew, stdev, quantile, variance, mean, kurtosis" url="/platform/reference/quantitative/stats" />
 </ul>
 
 ### Commands
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
-<ReferenceCard title="unitroot test" description="Get Unit Root Test" url="/platform/reference/quantitative/unitroot_test" />
 <ReferenceCard title="normality" description="Get Normality Statistics" url="/platform/reference/quantitative/normality" />
 <ReferenceCard title="capm" description="Get Capital Asset Pricing Model (CAPM)" url="/platform/reference/quantitative/capm" />
+<ReferenceCard title="unitroot test" description="Get Unit Root Test" url="/platform/reference/quantitative/unitroot_test" />
 <ReferenceCard title="summary" description="Get Summary Statistics" url="/platform/reference/quantitative/summary" />
 </ul>
 
@@ -132291,9 +132291,9 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 
 ### Commands
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
-<ReferenceCard title="sharpe ratio" description="Get Rolling Sharpe Ratio" url="/platform/reference/quantitative/performance/sharpe_ratio" />
 <ReferenceCard title="sortino ratio" description="Get rolling Sortino Ratio" url="/platform/reference/quantitative/performance/sortino_ratio" />
 <ReferenceCard title="omega ratio" description="Calculate the Omega Ratio" url="/platform/reference/quantitative/performance/omega_ratio" />
+<ReferenceCard title="sharpe ratio" description="Get Rolling Sharpe Ratio" url="/platform/reference/quantitative/performance/sharpe_ratio" />
 </ul>
 
 
@@ -132715,12 +132715,12 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 
 ### Commands
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
+<ReferenceCard title="skew" description="Get Rolling Skew" url="/platform/reference/quantitative/rolling/skew" />
+<ReferenceCard title="stdev" description="Calculate the rolling standard deviation of a target column within a given window size" url="/platform/reference/quantitative/rolling/stdev" />
 <ReferenceCard title="quantile" description="Calculate the rolling quantile of a target column within a given window size at a specified quantile percentage" url="/platform/reference/quantitative/rolling/quantile" />
 <ReferenceCard title="variance" description="Calculate the rolling variance of a target column within a given window size" url="/platform/reference/quantitative/rolling/variance" />
-<ReferenceCard title="stdev" description="Calculate the rolling standard deviation of a target column within a given window size" url="/platform/reference/quantitative/rolling/stdev" />
 <ReferenceCard title="mean" description="Calculate the rolling average of a target column within a given window size" url="/platform/reference/quantitative/rolling/mean" />
 <ReferenceCard title="kurtosis" description="Calculate the rolling kurtosis of a target column within a given window size" url="/platform/reference/quantitative/rolling/kurtosis" />
-<ReferenceCard title="skew" description="Get Rolling Skew" url="/platform/reference/quantitative/rolling/skew" />
 </ul>
 
 
@@ -133467,12 +133467,12 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 
 ### Commands
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
+<ReferenceCard title="skew" description="Get the skew of the data set" url="/platform/reference/quantitative/stats/skew" />
+<ReferenceCard title="stdev" description="Calculate the rolling standard deviation of a target column" url="/platform/reference/quantitative/stats/stdev" />
 <ReferenceCard title="quantile" description="Calculate the quantile of a target column at a specified quantile percentage" url="/platform/reference/quantitative/stats/quantile" />
 <ReferenceCard title="variance" description="Calculate the variance of a target column" url="/platform/reference/quantitative/stats/variance" />
-<ReferenceCard title="stdev" description="Calculate the rolling standard deviation of a target column" url="/platform/reference/quantitative/stats/stdev" />
 <ReferenceCard title="mean" description="Calculate the average of a target column" url="/platform/reference/quantitative/stats/mean" />
 <ReferenceCard title="kurtosis" description="Calculate the rolling kurtosis of a target column" url="/platform/reference/quantitative/stats/kurtosis" />
-<ReferenceCard title="skew" description="Get the skew of the data set" url="/platform/reference/quantitative/stats/skew" />
 </ul>
 
 
@@ -134892,7 +134892,7 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 ### Menus
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
 <ReferenceCard title="Cftc" description="cot, cot_search" url="/platform/reference/regulators/cftc" />
-<ReferenceCard title="Sec" description="filing_headers, cik_map, schema_files, rss_litigation, institutions_search, htm_file, symbol_map, sic_search" url="/platform/reference/regulators/sec" />
+<ReferenceCard title="Sec" description="rss_litigation, cik_map, symbol_map, sic_search, htm_file, schema_files, institutions_search, filing_headers" url="/platform/reference/regulators/sec" />
 </ul>
 
 
@@ -135331,14 +135331,14 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 
 ### Commands
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
-<ReferenceCard title="filing headers" description="Download the index headers, and cover page if available, for any SEC filing" url="/platform/reference/regulators/sec/filing_headers" />
-<ReferenceCard title="cik map" description="Map a ticker symbol to a CIK number" url="/platform/reference/regulators/sec/cik_map" />
-<ReferenceCard title="schema files" description="Use tool for navigating the directory of SEC XML schema files by year" url="/platform/reference/regulators/sec/schema_files" />
 <ReferenceCard title="rss litigation" description="Get the RSS feed that provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court" url="/platform/reference/regulators/sec/rss_litigation" />
-<ReferenceCard title="institutions search" description="Search SEC-regulated institutions by name and return a list of results with CIK numbers" url="/platform/reference/regulators/sec/institutions_search" />
-<ReferenceCard title="htm file" description="Download a raw HTML object from the SEC website" url="/platform/reference/regulators/sec/htm_file" />
+<ReferenceCard title="cik map" description="Map a ticker symbol to a CIK number" url="/platform/reference/regulators/sec/cik_map" />
 <ReferenceCard title="symbol map" description="Map a CIK number to a ticker symbol, leading 0s can be omitted or included" url="/platform/reference/regulators/sec/symbol_map" />
 <ReferenceCard title="sic search" description="Search for Industry Titles, Reporting Office, and SIC Codes" url="/platform/reference/regulators/sec/sic_search" />
+<ReferenceCard title="htm file" description="Download a raw HTML object from the SEC website" url="/platform/reference/regulators/sec/htm_file" />
+<ReferenceCard title="schema files" description="Use tool for navigating the directory of SEC XML schema files by year" url="/platform/reference/regulators/sec/schema_files" />
+<ReferenceCard title="institutions search" description="Search SEC-regulated institutions by name and return a list of results with CIK numbers" url="/platform/reference/regulators/sec/institutions_search" />
+<ReferenceCard title="filing headers" description="Download the index headers, and cover page if available, for any SEC filing" url="/platform/reference/regulators/sec/filing_headers" />
 </ul>
 
 
@@ -138515,33 +138515,33 @@ import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 
 ### Commands
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
-<ReferenceCard title="clenow" description="Calculate the Clenow Volatility Adjusted Momentum" url="/platform/reference/technical/clenow" />
-<ReferenceCard title="zlma" description="Calculate the zero lag exponential moving average (ZLEMA)" url="/platform/reference/technical/zlma" />
-<ReferenceCard title="wma" description="Calculate the Weighted Moving Average (WMA)" url="/platform/reference/technical/wma" />
-<ReferenceCard title="macd" description="Calculate the Moving Average Convergence Divergence (MACD)" url="/platform/reference/technical/macd" />
-<ReferenceCard title="ema" description="Calculate the Exponential Moving Average (EMA)" url="/platform/reference/technical/ema" />
-<ReferenceCard title="adosc" description="Calculate the Accumulation/Distribution Oscillator" url="/platform/reference/technical/adosc" />
-<ReferenceCard title="ichimoku" description="Calculate the Ichimoku Cloud" url="/platform/reference/technical/ichimoku" />
-<ReferenceCard title="fisher" description="Perform the Fisher Transform" url="/platform/reference/technical/fisher" />
 <ReferenceCard title="fib" description="Create Fibonacci Retracement Levels" url="/platform/reference/technical/fib" />
-<ReferenceCard title="adx" description="Calculate the Average Directional Index (ADX)" url="/platform/reference/technical/adx" />
-<ReferenceCard title="kc" description="Calculate the Keltner Channels" url="/platform/reference/technical/kc" />
-<ReferenceCard title="obv" description="Calculate the On Balance Volume (OBV)" url="/platform/reference/technical/obv" />
-<ReferenceCard title="donchian" description="Calculate the Donchian Channels" url="/platform/reference/technical/donchian" />
-<ReferenceCard title="hma" description="Calculate the Hull Moving Average (HMA)" url="/platform/reference/technical/hma" />
-<ReferenceCard title="vwap" description="Calculate the Volume Weighted Average Price (VWAP)" url="/platform/reference/technical/vwap" />
 <ReferenceCard title="demark" description="Calculate the Demark sequential indicator" url="/platform/reference/technical/demark" />
-<ReferenceCard title="aroon" description="Calculate the Aroon Indicator" url="/platform/reference/technical/aroon" />
-<ReferenceCard title="stoch" description="Calculate the Stochastic Oscillator" url="/platform/reference/technical/stoch" />
-<ReferenceCard title="sma" description="Calculate the Simple Moving Average (SMA)" url="/platform/reference/technical/sma" />
-<ReferenceCard title="ad" description="Calculate the Accumulation/Distribution Line" url="/platform/reference/technical/ad" />
 <ReferenceCard title="relative rotation" description="Calculate the Relative Strength Ratio and Relative Strength Momentum for a group of symbols against a benchmark" url="/platform/reference/technical/relative_rotation" />
-<ReferenceCard title="bbands" description="Calculate the Bollinger Bands" url="/platform/reference/technical/bbands" />
-<ReferenceCard title="cones" description="Calculate the realized volatility quantiles over rolling windows of time" url="/platform/reference/technical/cones" />
-<ReferenceCard title="cci" description="Calculate the Commodity Channel Index (CCI)" url="/platform/reference/technical/cci" />
-<ReferenceCard title="rsi" description="Calculate the Relative Strength Index (RSI)" url="/platform/reference/technical/rsi" />
-<ReferenceCard title="cg" description="Calculate the Center of Gravity" url="/platform/reference/technical/cg" />
 <ReferenceCard title="atr" description="Calculate the Average True Range" url="/platform/reference/technical/atr" />
+<ReferenceCard title="cg" description="Calculate the Center of Gravity" url="/platform/reference/technical/cg" />
+<ReferenceCard title="clenow" description="Calculate the Clenow Volatility Adjusted Momentum" url="/platform/reference/technical/clenow" />
+<ReferenceCard title="aroon" description="Calculate the Aroon Indicator" url="/platform/reference/technical/aroon" />
+<ReferenceCard title="macd" description="Calculate the Moving Average Convergence Divergence (MACD)" url="/platform/reference/technical/macd" />
+<ReferenceCard title="hma" description="Calculate the Hull Moving Average (HMA)" url="/platform/reference/technical/hma" />
+<ReferenceCard title="rsi" description="Calculate the Relative Strength Index (RSI)" url="/platform/reference/technical/rsi" />
+<ReferenceCard title="vwap" description="Calculate the Volume Weighted Average Price (VWAP)" url="/platform/reference/technical/vwap" />
+<ReferenceCard title="kc" description="Calculate the Keltner Channels" url="/platform/reference/technical/kc" />
+<ReferenceCard title="sma" description="Calculate the Simple Moving Average (SMA)" url="/platform/reference/technical/sma" />
+<ReferenceCard title="fisher" description="Perform the Fisher Transform" url="/platform/reference/technical/fisher" />
+<ReferenceCard title="obv" description="Calculate the On Balance Volume (OBV)" url="/platform/reference/technical/obv" />
+<ReferenceCard title="cci" description="Calculate the Commodity Channel Index (CCI)" url="/platform/reference/technical/cci" />
+<ReferenceCard title="ema" description="Calculate the Exponential Moving Average (EMA)" url="/platform/reference/technical/ema" />
+<ReferenceCard title="bbands" description="Calculate the Bollinger Bands" url="/platform/reference/technical/bbands" />
+<ReferenceCard title="adosc" description="Calculate the Accumulation/Distribution Oscillator" url="/platform/reference/technical/adosc" />
+<ReferenceCard title="wma" description="Calculate the Weighted Moving Average (WMA)" url="/platform/reference/technical/wma" />
+<ReferenceCard title="donchian" description="Calculate the Donchian Channels" url="/platform/reference/technical/donchian" />
+<ReferenceCard title="ad" description="Calculate the Accumulation/Distribution Line" url="/platform/reference/technical/ad" />
+<ReferenceCard title="cones" description="Calculate the realized volatility quantiles over rolling windows of time" url="/platform/reference/technical/cones" />
+<ReferenceCard title="zlma" description="Calculate the zero lag exponential moving average (ZLEMA)" url="/platform/reference/technical/zlma" />
+<ReferenceCard title="adx" description="Calculate the Average Directional Index (ADX)" url="/platform/reference/technical/adx" />
+<ReferenceCard title="stoch" description="Calculate the Stochastic Oscillator" url="/platform/reference/technical/stoch" />
+<ReferenceCard title="ichimoku" description="Calculate the Ichimoku Cloud" url="/platform/reference/technical/ichimoku" />
 </ul>
 
 
