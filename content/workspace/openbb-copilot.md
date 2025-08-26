@@ -313,7 +313,7 @@ The Copilot's unstructured data processing capabilities enable comprehensive ana
   />
 </div>
 
-## Tools
+## Data Widgets
 
 ### Widgets
 
@@ -338,7 +338,7 @@ This eliminates the need for manual widget configuration and enables the Copilot
   />
 </div>
 
-### Web search
+## Web search
 
 The integrated web search capability extends the Copilot's knowledge beyond the OpenBB Workspace ecosystem to access real-time information from across the internet.
 
@@ -356,6 +356,7 @@ The system filters and prioritizes results based on relevance and credibility, t
 </div>
 
 <!--
+
 ### Code interpreter (soon)
 
 The secure code execution environment will enable the Copilot to perform advanced quantitative analysis through custom Python code generation and execution.
@@ -384,48 +385,154 @@ When the code interpreter outpus a Plotly, we are able to create a widget to add
   />
 </div>
 
-### MCP Server (soon)
+-->
 
-Model Context Protocol (MCP) integration will enable seamless connection to third-party data providers, analytical services, and specialized financial tools without requiring custom development within the OpenBB Workspace.
+## MCP
 
-This extensibility framework will support integration with proprietary databases, alternative data providers, risk management systems, and specialized analytical platforms.
-
-Organizations will be able to maintain their existing technology stack while providing the Copilot with unified access to all relevant data sources and tools through standardized protocol connections.
-
-1. Configure your MCP Servers
+Model Context Protocol (MCP) integration enables seamless connection to third-party data providers, analytical services, and specialized financial tools without requiring custom development within the OpenBB Workspace.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
 >
   <img
-    src="https://openbb-cms.directus.app/assets/d1aee6f5-8dd3-4130-83e7-a359bd59751b.png"
+    src="https://openbb-cms.directus.app/assets/a90d6500-2026-48ef-b5fa-f354e1dddac4.png"
     width="100%"
   />
 </div>
 
-2. Set their settings (i.e. which ones are you interested in integrating)
+We are utilizing the [use-mcp library](https://github.com/modelcontextprotocol/use-mcp) and we support both MCP and SSE protocol. But not STDIO. If you are interested in stdio, we recommend users looking into something like [https://github.com/supercorp-ai/supergateway](https://github.com/supercorp-ai/supergateway).
+
+### Configure your MCP Servers
+
+By clicking on this button, you will open the MCP servers enabled/disabled menu selection.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
 >
   <img
-    src="https://openbb-cms.directus.app/assets/bb3675df-8673-44bb-86c2-4d1a63129552.png"
-    width="100%"
+    src="https://openbb-cms.directus.app/assets/2d50c181-6fa0-4ec4-81b6-3faa936af17e.png"
+    width="40%"
   />
 </div>
 
-3. Utilize.
+This is where you will find the "+" icon that will allow you to add/edit a new MCP server.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
 >
   <img
-    src="https://openbb-cms.directus.app/assets/fef5096c-9b99-4bc0-8a28-7045a42fe654.png"
+    src="https://openbb-cms.directus.app/assets/7e4f84d4-6ded-481a-8d6a-4260ad424de5.png"
+    width="60%"
+  />
+</div>
+
+When you click in the "+" the MCP Servers configuration dialog will open.
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/1d12fdc5-4424-4858-8c34-85db9c18ba2e.png"
     width="100%"
   />
 </div>
 
---->
+In it you can click on "Add Server" which will open the following pop-up.
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/15e88b0c-d9d0-4697-87f0-2c82f0213d0f.png"
+    width="100%"
+  />
+</div>
+
+Once you click on "Add" the connection will occur, regardless of whether Oauth is set up or not.
+
+Here's how an Oauth looks if you are connecting with [Smithery.ai](https://smithery.ai/) a directory with over 6000 MCP servers.
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/0ef5c823-a1fe-4fec-9d17-9165e0d282b1.png"
+    width="100%"
+  />
+</div>
+
+Once you connect, you go back to the Workspace where you will see the "Authenticating..."
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/2b3b1671-20c3-46de-9985-5c55ba22c2c5.png"
+    width="100%"
+  />
+</div>
+
+When you are in the MCP Servers Configuration dialog, and a Server has been successfully connected, you can click on the MCP Server and it will show you the tools discovered. You are then capable of opening those tools and seeing their description.
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/3d2e53ed-5d63-46e8-b369-d0e19c7017ef.png"
+    width="100%"
+  />
+</div>
+
+### Select MCP Server tools
+
+When you have the MCP Tools dialog open, you are able to turn on/off the MCP tools that you want copilot to have access to.
+
+If the MCP Server has been disconnected, then you will have a disabled MCP Server, as seen below:
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/e9805694-a186-42cd-aa7a-baa6b33e5e29.png"
+    width="100%"
+  />
+</div>
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/7e4f84d4-6ded-481a-8d6a-4260ad424de5.png"
+    width="60%"
+  />
+</div>
+
+Provided the MCP Server has been successfully connected, you are able to:
+
+1. Turn ON/OFF a specific MCP Server.
+
+This means that all the fine-grained control at tool level is either enabled or disabled. This is the best way to turn off an MCP Server that you don't want to add to the copilot context.
+
+2. Turn ON/OFF a specific set of tools from an MCP Server.
+
+This only matters if the MCP Server is turned on, where you can manually select what are the tools that you want enabled.
+
+Note: Having all enabled doesn't mean that copilot will utilize all of them, but it means that it will be able to select from all of them. The reason you want this granular control is to narrow the context that OpenBB Copilot has for what is relevant to you.
+
+### MCP in action
+
+Finally, once you ask something to copilot (with MCP tools enabled) - it will be able to utilize 1 or more (see example below) based on the user prompt. It will also be able to use these sequentially.
+
+For instance, to get access to OpenBB docs, there are two tools that are required to be used from the same MCP Server. Copilot can figure this out on behalf of the user.
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/2ce89471-a94c-495b-9b29-9ea64fb51ade.png"
+    width="100%"
+  />
+</div>
 
 ## Step-by-step reasoning
 
@@ -615,13 +722,16 @@ The thumbs down asks for clarification of what went wrong.
   />
 </div>
 
-<!--
-## Generative UI (soon)
+## Generative UI (beta)
 
-The generative user interface capability will enable the Copilot to directly manipulate and orchestrate your workspace environment through natural language commands. This advanced functionality will include:
+The Generative UI capability enables the Copilot to directly manipulate and orchestrate your workspace environment through natural language commands.
 
-- **Multi-widget deployment:** Automatically adding complementary widgets to your dashboard in optimal arrangements based on analytical requirements.
-- **Dynamic parameter synchronization:** Real-time updating of existing widget parameters across your dashboard to maintain consistency and support comparative analysis.
-- **Complete dashboard generation:** Creating fully functional, professionally arranged dashboards from single natural language descriptions, incorporating appropriate data sources, analytical tools, and visualization components tailored to specific analytical objectives or industry use cases.
+The agent can:
 
--->
+1. Adding widgets (from Global Data) with the correct parameters.
+
+2. Modify parameters from widgets on the dashboards.
+
+3. Add a specific markdown widget on the fly.
+
+Note: It doesn't (yet) allow to add new tables or charts from the AI chat currently or on the fly.
