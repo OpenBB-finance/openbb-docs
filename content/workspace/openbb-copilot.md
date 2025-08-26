@@ -400,11 +400,11 @@ Model Context Protocol (MCP) integration enables seamless connection to third-pa
   />
 </div>
 
-We are utilizing the [use-mcp library](https://github.com/modelcontextprotocol/use-mcp) and we support both MCP and SSE protocol. But not STDIO. If you are interested in stdio, we recommend users looking into something like [https://github.com/supercorp-ai/supergateway](https://github.com/supercorp-ai/supergateway).
+We utilize the [use-mcp library](https://github.com/modelcontextprotocol/use-mcp) and support both MCP and SSE protocols, but not STDIO. If you are interested in STDIO support, we recommend exploring solutions like [https://github.com/supercorp-ai/supergateway](https://github.com/supercorp-ai/supergateway).
 
 ### Configure your MCP Servers
 
-By clicking on this button, you will open the MCP servers enabled/disabled menu selection.
+Clicking this button opens the MCP server enable/disable menu.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
@@ -415,7 +415,7 @@ By clicking on this button, you will open the MCP servers enabled/disabled menu 
   />
 </div>
 
-This is where you will find the "+" icon that will allow you to add/edit a new MCP server.
+Here you'll find the "+" icon that allows you to add or edit MCP servers.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
@@ -426,7 +426,7 @@ This is where you will find the "+" icon that will allow you to add/edit a new M
   />
 </div>
 
-When you click in the "+" the MCP Servers configuration dialog will open.
+Clicking the "+" icon opens the MCP Servers configuration dialog.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
@@ -437,7 +437,7 @@ When you click in the "+" the MCP Servers configuration dialog will open.
   />
 </div>
 
-In it you can click on "Add Server" which will open the following pop-up.
+Within this dialog, clicking "Add Server" opens the following pop-up window.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
@@ -448,9 +448,9 @@ In it you can click on "Add Server" which will open the following pop-up.
   />
 </div>
 
-Once you click on "Add" the connection will occur, regardless of whether Oauth is set up or not.
+Clicking "Add" initiates the connection, regardless of OAuth configuration.
 
-Here's how an Oauth looks if you are connecting with [Smithery.ai](https://smithery.ai/) a directory with over 6000 MCP servers.
+Here's how OAuth appears when connecting to [Smithery.ai](https://smithery.ai/), a directory containing over 6,000 MCP servers.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
@@ -461,7 +461,7 @@ Here's how an Oauth looks if you are connecting with [Smithery.ai](https://smith
   />
 </div>
 
-Once you connect, you go back to the Workspace where you will see the "Authenticating..."
+After connecting, you'll return to the Workspace and see "Authenticating..." displayed.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
@@ -472,7 +472,7 @@ Once you connect, you go back to the Workspace where you will see the "Authentic
   />
 </div>
 
-When you are in the MCP Servers Configuration dialog, and a Server has been successfully connected, you can click on the MCP Server and it will show you the tools discovered. You are then capable of opening those tools and seeing their description.
+In the MCP Servers Configuration dialog, clicking on a successfully connected server displays the discovered tools. You can then open these tools to view their descriptions.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
@@ -485,9 +485,9 @@ When you are in the MCP Servers Configuration dialog, and a Server has been succ
 
 ### Select MCP Server tools
 
-When you have the MCP Tools dialog open, you are able to turn on/off the MCP tools that you want copilot to have access to.
+With the MCP Tools dialog open, you can enable or disable specific MCP tools for Copilot access.
 
-If the MCP Server has been disconnected, then you will have a disabled MCP Server, as seen below:
+If the MCP Server becomes disconnected, it will appear as disabled, as shown below:
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
@@ -507,23 +507,23 @@ If the MCP Server has been disconnected, then you will have a disabled MCP Serve
   />
 </div>
 
-Provided the MCP Server has been successfully connected, you are able to:
+Once an MCP Server is successfully connected, you can:
 
 1. Turn ON/OFF a specific MCP Server.
 
-This means that all the fine-grained control at tool level is either enabled or disabled. This is the best way to turn off an MCP Server that you don't want to add to the copilot context.
+This toggles all fine-grained tool-level controls simultaneously. It's the most efficient way to exclude an MCP Server from Copilot's context.
 
 2. Turn ON/OFF a specific set of tools from an MCP Server.
 
-This only matters if the MCP Server is turned on, where you can manually select what are the tools that you want enabled.
+This option is only relevant when the MCP Server is enabled, allowing you to manually select which specific tools to activate.
 
-Note: Having all enabled doesn't mean that copilot will utilize all of them, but it means that it will be able to select from all of them. The reason you want this granular control is to narrow the context that OpenBB Copilot has for what is relevant to you.
+Note: Enabling all tools doesn't guarantee Copilot will use every tool; rather, it makes them available for selection. This granular control helps narrow OpenBB Copilot's context to what's most relevant to your needs.
 
 ### MCP in action
 
-Finally, once you ask something to copilot (with MCP tools enabled) - it will be able to utilize 1 or more (see example below) based on the user prompt. It will also be able to use these sequentially.
+When you submit a query to Copilot with MCP tools enabled, it can utilize one or more tools based on your prompt, including sequential tool usage when necessary.
 
-For instance, to get access to OpenBB docs, there are two tools that are required to be used from the same MCP Server. Copilot can figure this out on behalf of the user.
+For example, accessing OpenBB documentation requires two tools from the same MCP Server. Copilot automatically determines and executes this sequence on your behalf.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
