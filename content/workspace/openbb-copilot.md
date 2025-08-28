@@ -395,7 +395,7 @@ Model Context Protocol (MCP) integration enables seamless connection to third-pa
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
 >
   <img
-    src="https://openbb-cms.directus.app/assets/a90d6500-2026-48ef-b5fa-f354e1dddac4.png"
+    src="https://openbb-cms.directus.app/assets/9e4121a3-a422-41fb-aaac-888f66b18fb2.png"
     width="100%"
   />
 </div>
@@ -421,7 +421,7 @@ Here you'll find the "+" icon that allows you to add or edit MCP servers.
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
 >
   <img
-    src="https://openbb-cms.directus.app/assets/7e4f84d4-6ded-481a-8d6a-4260ad424de5.png"
+    src="https://openbb-cms.directus.app/assets/861831f2-9bfc-41d2-bdd7-bc673ad39656.png"
     width="60%"
   />
 </div>
@@ -487,37 +487,37 @@ In the MCP Servers Configuration dialog, clicking on a successfully connected se
 
 With the MCP Tools dialog open, you can enable or disable specific MCP tools for Copilot access.
 
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/861831f2-9bfc-41d2-bdd7-bc673ad39656.png"
+    width="100%"
+  />
+</div>
+
+Once an MCP Server is successfully connected, you can:
+
+1. Select all or none of the tools of a specific MCP Server.
+
+This toggles all fine-grained tool-level controls simultaneously. It's the most efficient way to exclude an MCP Server from Copilot's context.
+
+2. Turn ON/OFF a specific set of tools from an MCP Server.
+
+Note: Enabling all tools doesn't guarantee Copilot will use every tool; rather, it makes them available for selection. This granular control helps narrow OpenBB Copilot's context to what's most relevant to your needs.
+
+---
+
 If the MCP Server becomes disconnected, it will appear as disabled, as shown below:
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
 >
   <img
-    src="https://openbb-cms.directus.app/assets/e9805694-a186-42cd-aa7a-baa6b33e5e29.png"
+    src="https://openbb-cms.directus.app/assets/d983cab2-9cf0-4d2a-85d2-0226860b890d.png"
     width="100%"
   />
 </div>
-
-<div
-  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
->
-  <img
-    src="https://openbb-cms.directus.app/assets/7e4f84d4-6ded-481a-8d6a-4260ad424de5.png"
-    width="60%"
-  />
-</div>
-
-Once an MCP Server is successfully connected, you can:
-
-1. Turn ON/OFF a specific MCP Server.
-
-This toggles all fine-grained tool-level controls simultaneously. It's the most efficient way to exclude an MCP Server from Copilot's context.
-
-2. Turn ON/OFF a specific set of tools from an MCP Server.
-
-This option is only relevant when the MCP Server is enabled, allowing you to manually select which specific tools to activate.
-
-Note: Enabling all tools doesn't guarantee Copilot will use every tool; rather, it makes them available for selection. This granular control helps narrow OpenBB Copilot's context to what's most relevant to your needs.
 
 ### MCP in action
 
@@ -529,7 +529,7 @@ For example, accessing OpenBB documentation requires two tools from the same MCP
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
 >
   <img
-    src="https://openbb-cms.directus.app/assets/2ce89471-a94c-495b-9b29-9ea64fb51ade.png"
+    src="https://openbb-cms.directus.app/assets/5a9ef8ee-89e0-4f7c-853c-77fda234de00.png"
     width="100%"
   />
 </div>
