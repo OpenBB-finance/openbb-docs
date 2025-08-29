@@ -50,6 +50,7 @@ export default function NavbarLayout({ children }) {
 		} else if (
 			cleanedPath.startsWith("/sdk") ||
 			cleanedPath.startsWith("/cli") ||
+			cleanedPath.startsWith("/odp") ||
 			cleanedPath.startsWith("/platform")
 		) {
 			if (document.documentElement.getAttribute("data-theme") === "dark") {
@@ -106,6 +107,7 @@ export default function NavbarLayout({ children }) {
 					header_docs_sdk:
 						cleanedPathForClassName.startsWith("/sdk") ||
 						cleanedPathForClassName.startsWith("/cli") ||
+						cleanedPathForClassName.startsWith("/odp") ||
 						cleanedPathForClassName.startsWith("/platform"),
 					header_docs_bot: cleanedPathForClassName.startsWith("/bot"),
 					header_docs:
@@ -115,6 +117,7 @@ export default function NavbarLayout({ children }) {
 						!cleanedPathForClassName.startsWith("/bot") &&
 						!cleanedPathForClassName.startsWith("/pro") &&
 						!cleanedPathForClassName.startsWith("/excel") &&
+						!cleanedPathForClassName.startsWith("/odp") &&
 						!cleanedPathForClassName.startsWith("/cli"),
 				},
 				"navbar",
