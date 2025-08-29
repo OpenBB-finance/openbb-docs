@@ -1,6 +1,6 @@
 ---
 title: AgGrid Table Charts
-sidebar_position: 13
+sidebar_position: 8
 description: AgGrid Table Charts
 keywords:
 - asd

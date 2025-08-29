@@ -1,6 +1,6 @@
 ---
 title: Overview
-sidebar_position: 25
+sidebar_position: 36
 description: Learn how to integrate and customize AI agents in OpenBB Workspace for enhanced financial analysis and research capabilities
 keywords:
 - AI

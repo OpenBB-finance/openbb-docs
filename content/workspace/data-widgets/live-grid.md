@@ -1,6 +1,6 @@
 ---
 title: Live Grid
-sidebar_position: 16
+sidebar_position: 11
 description: Create a real-time data grid widget for OpenBB Workspace that displays live updates in a table format
 keywords:
 - live grid

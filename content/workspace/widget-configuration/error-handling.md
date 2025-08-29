@@ -1,6 +1,6 @@
 ---
 title: Error Handling
-sidebar_position: 3
+sidebar_position: 17
 description: Learn how to handle errors in your widgets in OpenBB Workspace.
 keywords:
 - error handling

@@ -1,6 +1,6 @@
 ---
 title: Dependent Dropdown
-sidebar_position: 26
+sidebar_position: 29
 description: Learn how to implement and use dependent dropdown parameters in OpenBB Workspace widgets, where options in one dropdown depend on the selection in another
 keywords:
 - dependent dropdown

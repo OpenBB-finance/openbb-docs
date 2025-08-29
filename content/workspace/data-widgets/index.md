@@ -1,6 +1,6 @@
 ---
 title: Data Widgets
-sidebar_position: 11
+sidebar_position: 3
 description: Build powerful financial dashboards with OpenBB Workspace's flexible widget system
 keywords:
 - widgets

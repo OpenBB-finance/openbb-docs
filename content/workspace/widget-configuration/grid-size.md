@@ -1,6 +1,6 @@
 ---
 title: Grid Size
-sidebar_position: 1
+sidebar_position: 15
 description: Learn about the grid-based layout system for widgets in OpenBB Workspace, including width and height specifications.
 keywords:
 - grid

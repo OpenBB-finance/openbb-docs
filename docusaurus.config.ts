@@ -48,22 +48,22 @@ export default {
 					},
 					{
 						from: "/pro/enterprise",
-						to: "/workspace/enterprise",
+						to: "/excel/enterprise",
 					},
 					{
 						from: "/pro/openbb-copilot",
-						to: "/workspace/openbb-copilot",
+						to: "/excel/copilot-basics",
 					},
 					{
 						from: "/pro/platform-installer",
-						to: "/workspace/platform-installer",
+						to: "/excel/platform-installer",
 					},
 					{
 						from: "/workspace/data-connector",
 						to: "/workspace/data-integration",
 					},
 					{
-						from: "/workspace/enterprise",
+						from: "/excel/enterprise",
 						to: "https://openbb.co/pricing",
 					},
 					{

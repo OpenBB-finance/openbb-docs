@@ -1,6 +1,6 @@
 ---
 title: Apps
-sidebar_position: 30
+sidebar_position: 33
 description: Create and customize your own OpenBB Apps for optimized workflows
 keywords:
 - OpenBB Apps

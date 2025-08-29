@@ -1,6 +1,6 @@
 ---
 title: Plotly Charts
-sidebar_position: 14
+sidebar_position: 9
 description: Plotly Charts
 keywords:
 - plotly

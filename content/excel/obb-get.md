@@ -1,6 +1,6 @@
 ---
 title: OBB.GET
-sidebar_position: 3
+sidebar_position: 15
 description: Extract and slice specific data from Excel ranges using labels or indices
 keywords:
 - Microsoft Excel

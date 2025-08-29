@@ -1,6 +1,6 @@
 ---
 title: Date Picker
-sidebar_position: 20
+sidebar_position: 23
 description: Learn how to implement and use date picker parameters in OpenBB Workspace widgets, including configuration options and example usage
 keywords:
 - date picker

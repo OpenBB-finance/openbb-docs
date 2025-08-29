@@ -70,24 +70,13 @@ export default function DocSidebarItem({ item, ...props }) {
 					}}
 				/>
 			);
-		} else if (item.docId === "workspace/data-integration") {
+		} else if (item.docId === "workspace/data-widgets/index") {
 			addedHtml = (
 				<DocSidebarItemHtml
 					item={{
 						type: "html",
 						className: "sidebar-title !mt-6",
-						value: "Data Integration",
-						defaultStyle: true,
-					}}
-				/>
-			);
-		} else if (item.docId === "workspace/ai-agents") {
-			addedHtml = (
-				<DocSidebarItemHtml
-					item={{
-						type: "html",
-						className: "sidebar-title !mt-6",
-						value: "AI Agents",
+						value: "Widgets",
 						defaultStyle: true,
 					}}
 				/>
@@ -99,6 +88,17 @@ export default function DocSidebarItem({ item, ...props }) {
 						type: "html",
 						className: "sidebar-title !mt-6",
 						value: "Apps",
+						defaultStyle: true,
+					}}
+				/>
+			);
+		} else if (item.docId === "workspace/ai-agents") {
+			addedHtml = (
+				<DocSidebarItemHtml
+					item={{
+						type: "html",
+						className: "sidebar-title !mt-6",
+						value: "AI Agents",
 						defaultStyle: true,
 					}}
 				/>
@@ -128,6 +128,87 @@ export default function DocSidebarItem({ item, ...props }) {
 		}
 	}
 
+	if (item.href?.startsWith("/excel")) {
+		if (item.docId === "excel/index") {
+			addedHtml = (
+				<DocSidebarItemHtml
+					item={{
+						type: "html",
+						className: "sidebar-title !mt-2",
+						value: "User Interface",
+						defaultStyle: true,
+					}}
+				/>
+			);
+		} else if (item.docId === "excel/core-widgets") {
+			addedHtml = (
+				<DocSidebarItemHtml
+					item={{
+						type: "html",
+						className: "sidebar-title !mt-6",
+						value: "Widgets",
+						defaultStyle: true,
+					}}
+				/>
+			);
+		} else if (item.docId === "excel/gallery") {
+			addedHtml = (
+				<DocSidebarItemHtml
+					item={{
+						type: "html",
+						className: "sidebar-title !mt-6",
+						value: "Apps",
+						defaultStyle: true,
+					}}
+				/>
+			);
+		} else if (item.docId === "excel/copilot-basics") {
+			addedHtml = (
+				<DocSidebarItemHtml
+					item={{
+						type: "html",
+						className: "sidebar-title !mt-6",
+						value: "AI Features",
+						defaultStyle: true,
+					}}
+				/>
+			);
+		} else if (item.docId === "excel/enterprise") {
+			addedHtml = (
+				<DocSidebarItemHtml
+					item={{
+						type: "html",
+						className: "sidebar-title !mt-6",
+						value: "Enterprise Features",
+						defaultStyle: true,
+					}}
+				/>
+			);
+		} else if (item.docId === "excel/excel-installation") {
+			addedHtml = (
+				<DocSidebarItemHtml
+					item={{
+						type: "html",
+						className: "sidebar-title !mt-6",
+						value: "Excel Add-in",
+						defaultStyle: true,
+					}}
+				/>
+			);
+		} else if (item.docId === "excel/faqs") {
+			addedHtml = (
+				<DocSidebarItemHtml
+					item={{
+						type: "html",
+						className: "sidebar-title !mt-6",
+						value: "Others",
+						defaultStyle: true,
+					}}
+				/>
+			);
+		}
+	}
+
 	switch (item.type) {
 		case "category":
 			return (
@@ -136,7 +217,7 @@ export default function DocSidebarItem({ item, ...props }) {
 					<DocSidebarItemCategory 
 						item={{
 							...item,
-							collapsed: isPro && item.label === "OpenBB Workspace" && pathname === "/workspace" ? false : item.collapsed
+							collapsed: (isPro || isExcel) && (item.label === "Developers" || item.label === "Analyst") && (pathname === "/workspace" || pathname === "/excel") ? false : item.collapsed
 						}} 
 						{...props} 
 					/>

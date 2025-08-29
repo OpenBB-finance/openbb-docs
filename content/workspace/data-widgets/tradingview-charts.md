@@ -1,6 +1,6 @@
 ---
 title: TradingView Charts
-sidebar_position: 15
+sidebar_position: 10
 description: How to implement TradingView charts in OpenBB using UDF (Universal Data Feed)
 keywords:
 - tradingview

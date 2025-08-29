@@ -1,6 +1,6 @@
 ---
 title: OpenBB Platform
-sidebar_position: 33
+sidebar_position: 6
 description: Learn how to integrate the OpenBB Platform data to OpenBB Workspace
 keywords:
 - widgets.json
@@ -70,7 +70,7 @@ Note: This assumes that the user has spent time setting up their API keys [here]
 5. Finally, you simply need to set up the custom backend on OpenBB Workspace.
 
 :::note
-If you are using Brave/Safari you will need an HTTPS connection - see how [here](https://docs.openbb.co/workspace/faqs)
+If you are using Brave/Safari you will need an HTTPS connection - see how [here](https://docs.openbb.co/excel/faqs)
 :::
 
 <!-- TODO - We cant do this yet - issue with localhost in name - You can do so by clicking on this [link](http://pro.openbb.co/app/data-connectors?tab=my-data&modal=data-connectors&dcTab=backend&name=OpenBB%20Platform&url=http://localhost:6900). -->

@@ -1,6 +1,6 @@
 ---
 title: Refetch Interval
-sidebar_position: 6
+sidebar_position: 20
 description: Learn about configuring refetch intervals for widgets in OpenBB Workspace.
 keywords:
 - refetch interval

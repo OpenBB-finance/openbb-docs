@@ -1,6 +1,6 @@
 ---
 title: OBB.WIDGET
-sidebar_position: 2
+sidebar_position: 16
 description: This page provides an overview of the basics of the OpenBB add-in for Microsoft Excel. It covers the basic usage of the add-in and the available functions.
 keywords:
   - Microsoft Excel

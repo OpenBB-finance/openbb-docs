@@ -1,6 +1,6 @@
 ---
-title: Overview
-sidebar_position: 0
+title: Overview  
+sidebar_position: 1
 description: The OpenBB Add-in for Excel is a powerful integration that enables direct access to financial data within Microsoft Excel. This seamless integration allows you to create sophisticated financial models and perform comprehensive analysis without leaving your spreadsheet environment.
 keywords:
 - excel add-in

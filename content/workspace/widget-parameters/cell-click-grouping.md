@@ -1,6 +1,6 @@
 ---
 title: Cell Click Grouping
-sidebar_position: 28
+sidebar_position: 31
 description: Learn how to implement cell click grouping in OpenBB Workspace widgets, allowing users to click on cells in a table to update related widgets
 keywords:
 - cell click grouping

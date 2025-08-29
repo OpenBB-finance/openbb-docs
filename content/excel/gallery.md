@@ -1,6 +1,6 @@
 ---
 title: Apps Gallery
-sidebar_position: 31
+sidebar_position: 5
 description: Browse our curated collection of apps for financial analysis, market research, portfolio management and much more.
 keywords:
 - Dashboard Templates
@@ -91,7 +91,7 @@ Access and analyze Federal Reserve Economic Data (FRED) with real-time updates o
 
 <img width="800" alt="FRED Economic Data Dashboard" src="https://openbb-cms.directus.app/assets/6d218f61-4702-4998-8dad-f590aaae616b.png" />
 
-- Part of the [OpenBB Platform](/workspace/platform-installer) package.
+- Part of the [OpenBB Platform](/excel/platform-installer) package.
 - API key required.
 
 ## BLS Statistics
@@ -100,7 +100,7 @@ Track Bureau of Labor Statistics (BLS) data including employment, inflation, and
 
 <img width="800" alt="BLS Statistics Dashboard" src="https://openbb-cms.directus.app/assets/f3b176e5-e362-4e4f-8a47-2aed57100279.png" />
 
-- Part of the [OpenBB Platform](/workspace/platform-installer) package.
+- Part of the [OpenBB Platform](/excel/platform-installer) package.
 - API key required.
 
 ## IMF Data
@@ -109,7 +109,7 @@ Access International Monetary Fund (IMF) data and analysis on global economic tr
 
 <img width="800" alt="IMF Data Dashboard" src="https://openbb-cms.directus.app/assets/08fde756-98e5-474a-8f00-8233dfdbb49f.png" />
 
-- Part of the [OpenBB Platform](/workspace/platform-installer) package.
+- Part of the [OpenBB Platform](/excel/platform-installer) package.
 - API key required.
 
 ## Charting

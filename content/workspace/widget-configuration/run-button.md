@@ -1,6 +1,6 @@
 ---
 title: Run Button
-sidebar_position: 4
+sidebar_position: 18
 description: Learn about the run button functionality in OpenBB Workspace widgets.
 keywords:
 - run button

@@ -1,6 +1,6 @@
 ---
 title: File Viewer
-sidebar_position: 7
+sidebar_position: 6
 description: Guide to using PDF and multi-PDF viewer widgets in OpenBB Workspace
 keywords:
 - widgets

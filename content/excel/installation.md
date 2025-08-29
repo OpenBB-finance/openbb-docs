@@ -1,48 +1,99 @@
 ---
-title: Getting Started
-sidebar_position: 1
-description: This page presents the general requirements and the steps to install the OpenBB Add-in for Excel. The OpenBB Add-in for Excel is available on Windows, Mac, and Excel on the web. It can be installed by an administrator or by individual users.
+title: Native Installation (PWA)
+description: Learn how to install and use OpenBB Workspace as a Progressive Web App (PWA) on your desktop and mobile devices.
+sidebar_position: 2
 keywords:
-- Microsoft Excel
-- Add-in
+- OpenBB Workspace
+- PWA installation
+- Desktop application
+- iOS application
+- Android application
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Getting Started | OpenBB Add-in for Excel Docs" />
+<HeadTitle title="Native Installation (PWA) | OpenBB Workspace Docs" />
 
-## Requirements
+OpenBB Workspace is now available as a Progressive Web App (PWA), providing a seamless, native-like experience across all your devices.
 
-- The OpenBB Add-in for Excel is available on the following platforms: Windows (Microsoft 365), Mac (Microsoft 365), Excel on the web.
-- Access to OpenBB Workspace. If you don't have access you can sign up [here](https://my.openbb.co/app/pro).
+<img width="800" alt="PWA" src="https://openbb-cms.directus.app/assets/b1d5b799-3abe-4d45-b04c-601e2b652b18.png" />
 
-## Installation
+This installation method offers several advantages:
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-    <iframe
-        style={{width: '800px', height: '450px', display: 'block', margin: '0 auto'}}
-        src="https://www.youtube.com/embed/Rn3M36H_6Cw?si=6PdxyssA21461hUr)"
-        title="YouTube video player"
-        frameBorder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-    />
-</div>
+- **Offline Access**: Continue working even without an internet connection
+- **Native Performance**: Faster loading times and smoother interactions
+- **Cross-Platform**: Consistent experience across desktop and mobile devices
+- **Automatic Updates**: Always have the latest features without manual updates
 
-The OpenBB Add-in for Excel is available on the [Microsoft AppSource](https://appsource.microsoft.com/product/office/wa200006381?tab=overview). It can be installed by an administrator or by individual users.
+## Desktop Installation
 
-### Individual user
+The desktop PWA provides the most complete OpenBB experience, with full keyboard support and optimized screen real estate.
 
-1. Open Microsoft Excel.
-2. Go to **Home** tab.
-3. Click in the **Add-ins** button and then **More add-ins**.
-4. In the **Office Add-ins** dialog box **STORE** tab, search for **OpenBB** and select the add-in.
-5. Click **Add**.
+### Installation Steps
 
-### Administrator
+1. Launch Chrome, Edge, or any Chromium-based browser
+2. Navigate to [https://pro.openbb.co](https://pro.openbb.co)
+3. Click the install icon in the address bar (typically a plus sign or computer icon)
+4. Follow the installation prompts to add OpenBB to your desktop
 
-1. Go to Microsoft 365 admin center.
-2. Click **Settings** > **Integrated apps**.
-3. Click **Get apps**.
-4. Search for **OpenBB** and select the add-in.
-5. Click **Get in now**.
-6. Go through the deployment wizard to complete the installation.
+<video width="100%" controls>
+  <source src="https://openbb-cms.directus.app/assets/36685e54-d8c1-47ba-acd6-1692fabd768e" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+## Mobile Installation
+
+### iOS Devices
+
+1. Open Safari and navigate to [https://pro.openbb.co](https://pro.openbb.co)
+2. Tap the share button (square with upward arrow) at the bottom of the screen
+3. Select "Add to Home Screen" from the share menu
+4. Name the app "OpenBB" and tap "Add"
+5. The OpenBB icon will appear on your home screen
+
+<video controls>
+  <source src="https://openbb-cms.directus.app/assets/9bd37920-5776-4004-b6de-8650cd1f8c2a" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+### Android Devices
+
+1. Open Chrome and navigate to [https://pro.openbb.co](https://pro.openbb.co)
+2. Tap the three-dot menu in the top-right corner
+3. Select "Add to Home screen" from the menu
+4. Name the app "OpenBB" and tap "Add"
+5. The OpenBB icon will appear on your home screen
+
+<video controls>
+  <source src="https://openbb-cms.directus.app/assets/5699793b-cef4-4fbb-8f2c-1deeca26ea41" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+## Using OpenBB PWA
+
+The PWA version of OpenBB Workspace provides a consistent experience across all your devices while maintaining full functionality. Key features include:
+
+- **Responsive Design**: Optimized layouts for desktop, tablet, and mobile screens
+- **Touch Support**: Intuitive touch controls for mobile devices
+- **Offline Capabilities**: Access key features without an internet connection
+- **Cross-Device Sync**: Seamlessly continue your work across different devices
+
+### Best Practices
+
+- Use Chrome or Edge for the best desktop experience
+- Keep your browser updated to the latest version
+- Ensure you have sufficient storage space on your device
+- Connect to a stable internet connection for initial setup
+
+### Troubleshooting
+
+If you encounter any issues during installation:
+
+1. Clear your browser cache and try again
+2. Ensure you're using a supported browser version
+3. Check your device's storage space
+4. Verify your internet connection
+
+## Learn More
+
+For a deeper dive into the OpenBB PWA, including its development journey and technical implementation, read our detailed blog post: [OpenBB Workspace is Now Available on Mobile](https://openbb.co/blog/openbb-terminal-is-now-available-on-mobile)

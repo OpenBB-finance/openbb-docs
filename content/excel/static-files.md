@@ -1,6 +1,6 @@
 ---
 title: Static Files
-sidebar_position: 14
+sidebar_position: 4
 description: Learn how to import and manage static files in OpenBB, including structured and unstructured data formats, with support for PDF, CSV, JSON, PNG, and JPG files.
 keywords:
 - file import

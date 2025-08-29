@@ -1,6 +1,6 @@
 ---
 title: SSRM Mode
-sidebar_position: 17
+sidebar_position: 7
 description: Server-Side Rendered Mode for handling large datasets efficiently in OpenBB Workspace widgets
 keywords:
 - SSRM

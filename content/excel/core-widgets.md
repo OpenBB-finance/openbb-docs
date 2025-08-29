@@ -1,6 +1,6 @@
 ---
 title: Core Widgets
-sidebar_position: 13
+sidebar_position: 3
 description: Master OpenBB's essential widgets for building powerful financial dashboards, including navigation, notes, API integration, and real-time data visualization tools.
 keywords:
 - dashboard widgets

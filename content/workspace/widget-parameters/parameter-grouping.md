@@ -1,6 +1,6 @@
 ---
 title: Parameter Grouping
-sidebar_position: 29
+sidebar_position: 32
 description: Learn how to implement parameter grouping in OpenBB Workspace widgets, allowing multiple widgets to share and respond to the same parameter input
 keywords:
 - parameter grouping

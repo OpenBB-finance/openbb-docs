@@ -1,6 +1,6 @@
 ---
 title: Troubleshooting
-sidebar_position: 5
+sidebar_position: 17
 description: Common issues and solutions for the OpenBB Add-in for Excel, including error handling, installation problems, and connection troubleshooting.
 keywords:
   - Microsoft Excel

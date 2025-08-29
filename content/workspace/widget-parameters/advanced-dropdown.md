@@ -1,6 +1,6 @@
 ---
 title: Advanced Dropdown
-sidebar_position: 25
+sidebar_position: 28
 description: Learn how to implement and use advanced dropdown parameters in OpenBB Workspace widgets, including dynamic options from endpoints and additional information display
 keywords:
 - advanced dropdown

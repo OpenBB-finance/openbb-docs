@@ -1,6 +1,6 @@
 ---
 title: Dropdown
-sidebar_position: 24
+sidebar_position: 27
 description: Learn how to implement and use dropdown parameters in OpenBB Workspace widgets, including configuration options and example usage
 keywords:
 - dropdown

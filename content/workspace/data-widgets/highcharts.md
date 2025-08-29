@@ -1,6 +1,6 @@
 ---
 title: Highcharts Chart
-sidebar_position: 18
+sidebar_position: 13
 description: Learn how to create Highcharts widgets for OpenBB Workspace, with step-by-step instructions for backend integration, configuration, and theme support.
 keywords:
 - widgets.json

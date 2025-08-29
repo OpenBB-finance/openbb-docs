@@ -1,6 +1,6 @@
 ---
 title: Categories and Subcategories
-sidebar_position: 2
+sidebar_position: 16
 description: Learn how to organize widgets using categories and subcategories in OpenBB Workspace.
 keywords:
 - category
