@@ -26,10 +26,12 @@ The Open Data Platform (ODP) desktop application (macOS/Windows) is a light-weig
 It's a convenient way to install and use the OpenBB Platform Python [packages](/platform/usage/extensions/data_extensions), along with your favourite developer tools and data sources. Under the hood, it uses Miniforge to manage environments and solve for dependencies.
 
 The features are well-suited for building OpenBB Workspace [Applications](/workspace/apps) and agentic workflows.
-![navigation.png](navigation.png)
+
+<img width="852" height="540" alt="navigation" src="https://github.com/user-attachments/assets/3543de57-7122-47c4-8bab-49ee50d9c84b" />
 
 ## Overview
 The application operates as a system tray icon, and its main window is divided into three main areas:
+
 <ul className="grid grid-cols-1 gap-2 -ml-6">
   <NewReferenceCard
     title="Backends"
@@ -90,18 +92,20 @@ This is where Miniforge, environments, and other application data will be stored
 The user data directory is where the OpenBB Python packages should store data, such as data/HTTP cache. It is recommeneded to use separate locations for each.
 
 Click, Begin Installation, when you're ready.
-![Install Miniforge](miniforge.png)
+<img width="955" height="632" alt="miniforge" src="https://github.com/user-attachments/assets/c22332f3-3d95-4033-b503-fd905b14bd16" />
 
 ### OpenBB Environment
 
 After Miniforge is installed, you will be directed to pick a version of Python for the initial environment.
 
 Upon clicking the, Next Step, button, an `openbb` environment will be created with the core packages.
-![Step 2: Python Version](install-step2.png)
+<img width="852" height="632" alt="install-step2" src="https://github.com/user-attachments/assets/14303a42-1f9e-46e5-a6e2-1418bff56d43" />
+
 When complete, you can customize the environment by adding OpenBB Python modules or arbitrary libraries from PyPI. 
-![Step 3: Add Packages](install-step3.png)
-Finally, click the, Continue to Open Data Navigator, button to begin using.
-![Installation Complete](installation-complete.png)
+<img width="1013" height="1085" alt="install-step3" src="https://github.com/user-attachments/assets/d77badb3-47bd-464b-b384-722e29ccd0d8" />
+
+Finally, clicking, Continue to Open Data Navigator, will take you to the [Environments](/odp/environments) page.
+<img width="852" height="688" alt="installation-complete" src="https://github.com/user-attachments/assets/c414e09d-b85d-4016-851b-50e65c43830f" />
 
 ## Quick Start
 
@@ -111,10 +115,17 @@ With the steps above compelete, you are now ready to start a backend server and 
 2. Navigate to the [Backends](/odp/backends) page by clicking on it in the header, or selecting from the tray icon's menu.
 3. Press the, `Start`, button for the `OpenBB API` backend.
     - By default, this will run: `openbb-api --host 127.0.0.1 --port 6900`
-![Backend Running](backend-running.png)
-4. Open Workspace in your browser and connect to `http://127.0.0.1:6900`.  You now have a fully local data stack.
- ![Add To Workspace](https://openbb-cms.directus.app/assets/563aca68-1ec3-48c7-86d8-9129e0e5fd8c.png)
-**Note**: Number of widgets and applications will depend on packages and versions installed in the environment.
+
+<img width="852" height="613" alt="backend-running" src="https://github.com/user-attachments/assets/4f257265-197b-4d09-9a6f-e54eba79c05f" />
+
+4. Open Workspace in your browser and connect to http://127.0.0.1:6900.  You now have a fully local data stack.
+
+![Add To Workspace](https://openbb-cms.directus.app/assets/563aca68-1ec3-48c7-86d8-9129e0e5fd8c.png)
+
+:::note
+Number of widgets and applications will depend on packages and versions installed in the environment.
+:::
+
 ---
 ## Next steps
 
