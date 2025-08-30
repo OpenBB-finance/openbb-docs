@@ -46,19 +46,6 @@ The Note widget transforms your dashboard into a dynamic research platform, enab
   <img className="pro-border-gradient" width="600" alt="Note widget interface showing text editing capabilities" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/note_widget.png" />
 </div>
 
-### AI Integration
-
-The Note widget's AI integration capabilities enhance your analysis workflow by:
-
-- Maintaining a library of effective prompts
-- Providing context for AI analysis
-- Creating a seamless workflow between manual research and automated insights
-- Enabling intelligent data processing and interpretation
-
-<div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="Note widget being used as AI context" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/note_context.png" />
-</div>
-
 ## Website and Iframe Widget
 
 The Website widget brings external data sources directly into your dashboard, creating a unified research environment. This powerful integration enables you to:
@@ -139,12 +126,16 @@ For additional support, contact [support@openbb.finance](mailto:support@openbb.f
 
 ### Pre-configured API Endpoints
 
-We provide several pre-configured API endpoints for immediate use:
+Here are examples of pre-configured API endpoints for immediate use:
 
-| Widget Title | Public URL | Category | Subcategory | Source | Description | Add to Pro |
-| ------------ | ---------- | -------- | ----------- | ------ | ----------- | ---------- |
-| Protocols | https://defillama-datasets.llama.fi/lite/v2/protocols | DeFi | TVL | DefiLLama | Comprehensive list of DeFi protocols with TVL data | <a href="https://pro.openbb.co/app?modal=data-connectors&dcTab=single&endpoint=https://defillama-datasets.llama.fi/lite/v2/protocols&name=Protocols" target="_blank"> <button className="_btn text-xs">Add</button> </a> |
-| Historical Chain TVL | https://api.llama.fi/v2/historicalChainTvl | DeFi | TVL | DefiLLama | Historical TVL data across all DeFi chains | <a href="https://pro.openbb.co/app?modal=data-connectors&dcTab=single&endpoint=https://api.llama.fi/v2/historicalChainTvl&name=Historical Chain TVL" target="_blank"> <button className="_btn text-xs">Add</button> </a> |
-| Chains | https://api.llama.fi/v2/chains | DeFi | TVL | DefiLLama | Current TVL metrics for all chains | <a href="https://pro.openbb.co/app?modal=data-connectors&dcTab=single&endpoint=https://api.llama.fi/v2/chains&name=Chains" target="_blank"> <button className="_btn text-xs">Add</button> </a> |
-| TAO stats | https://taostats.io/data.json | Crypto | | Tao | Real-time $TAO token and subnet metrics | <a href="https://pro.openbb.co/app?modal=data-connectors&dcTab=single&endpoint=https://taostats.io/data.json&name=TAO stats" target="_blank"> <button className="_btn text-xs">Add</button> </a> |
+| Widget Title | Public URL | Description | Add to Workspace |
+| ------------ | ---------- | ----------- | ---------- |
+| DeFi Protocols | https://defillama-datasets.llama.fi/lite/v2/protocols | Comprehensive list of DeFi protocols with TVL data | <a href="https://pro.openbb.co/app?modal=data-connectors&dcTab=single&endpoint=https://defillama-datasets.llama.fi/lite/v2/protocols&name=Protocols" target="_blank"> <button className="_btn text-xs">Add Widget</button> </a> |
+| Historical Chain TVL | https://api.llama.fi/v2/historicalChainTvl | Historical TVL data across all DeFi chains | <a href="https://pro.openbb.co/app?modal=data-connectors&dcTab=single&endpoint=https://api.llama.fi/v2/historicalChainTvl&name=Historical Chain TVL" target="_blank"> <button className="_btn text-xs">Add Widget</button> </a> |
+| Chain TVL Rankings | https://api.llama.fi/v2/chains | Current TVL metrics for all chains | <a href="https://pro.openbb.co/app?modal=data-connectors&dcTab=single&endpoint=https://api.llama.fi/v2/chains&name=Chains" target="_blank"> <button className="_btn text-xs">Add Widget</button> </a> |
 
+These quick-add links demonstrate the simplest form of widget creation using the `single` endpoint type. The URL structure includes both the API endpoint and a pre-configured widget name, making it a one-click solution for basic data integration. E.g. [https://pro.openbb.co/app?modal=data-connectors&dcTab=single&endpoint=https://defillama-datasets.llama.fi/lite/v2/protocols&name=Protocols](https://pro.openbb.co/app?modal=data-connectors&dcTab=single&endpoint=https://defillama-datasets.llama.fi/lite/v2/protocols&name=Protocols).
+
+However, most real-world widgets require more sophisticated configuration. Complex endpoints often need JSON processing to extract specific data fields, parameter definitions for user customization, and comprehensive metadata including category, subcategory, source, and detailed descriptions. For these advanced use cases, you'll want to explore custom widget development through the Data Integration features, which provide full control over widget behavior and appearance.
+
+These pre-configured examples serve as starting points to understand widget capabilities before building more sophisticated, parameterized widgets tailored to your specific analytical needs.
