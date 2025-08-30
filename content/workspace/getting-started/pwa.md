@@ -1,29 +1,32 @@
 ---
-title: Installation Guide
-description: Learn how to install and use OpenBB Workspace as a Progressive Web App (PWA) on your desktop and mobile devices.
+title: Progressive Web App (PWA)
+description: Install OpenBB Workspace as a Progressive Web App for a native experience on desktop and mobile devices.
 sidebar_position: 6
 keywords:
 - OpenBB Workspace
+- Progressive Web App
 - PWA installation
 - Desktop application
 - iOS application
 - Android application
+- Native app experience
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Native Installation (PWA) | OpenBB Workspace Docs" />
+<HeadTitle title="Progressive Web App (PWA) | OpenBB Workspace Docs" />
 
 OpenBB Workspace is now available as a Progressive Web App (PWA), providing a seamless, native-like experience across all your devices.
 
 <img width="800" alt="PWA" src="https://openbb-cms.directus.app/assets/b1d5b799-3abe-4d45-b04c-601e2b652b18.png" />
 
-This installation method offers several advantages:
+Installing as a PWA offers several advantages:
 
-- **Offline Access**: Continue working even without an internet connection
-- **Native Performance**: Faster loading times and smoother interactions
+- **App-like Experience**: Runs in its own window without browser UI, providing a cleaner, focused workspace
+- **Quick Access**: Launch directly from your dock, taskbar, or home screen without opening a browser
 - **Cross-Platform**: Consistent experience across desktop and mobile devices
-- **Automatic Updates**: Always have the latest features without manual updates
+- **Seamless Updates**: Automatically receives the latest features when you're online
+- **Better Performance**: Cached resources provide faster load times for frequently used components
 
 ## Desktop Installation
 

@@ -1,7 +1,7 @@
 ---
 title: FAQs
 sidebar_position: 7
-description: Comprehensive guide to frequently asked questions about OpenBB Workspace data integration, custom backend setup, widget configuration, and troubleshooting common issues.
+description: Common questions and answers about OpenBB Workspace, data integration, custom backends, and troubleshooting.
 keywords:
   - FAQs
   - Data Integration
@@ -14,100 +14,182 @@ keywords:
   - Troubleshooting
   - Data Sources
 ---
+
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="FAQs | OpenBB Docs" />
+<HeadTitle title="FAQs | OpenBB Workspace Docs" />
 
-### General
+# Frequently Asked Questions
 
-**Q: What is the purpose of a custom backend in OpenBB Workspace?**
+Find answers to common questions about OpenBB Workspace, organized by topic.
 
-A: A custom backend allows you to integrate your own data sources into OpenBB Workspace, enabling the creation of personalized widgets, dashboards, and templates that display your data in various ways. For more details, see the [Overview](/workspace/data-integration#1-create-the-api-server) section.
+---
 
-**Q: What technologies are required to set up a custom backend?**
+## General Questions
 
-A: You will need to use an API framework and a `widgets.json` file to define widget configurations. Optionally, you can use a `apps.json` file for layout configurations. Refer to the [Creating your own custom backend](/workspace/widget-types) section for more information.
+### What is the purpose of a custom backend in OpenBB Workspace?
 
-### Setup and Configuration
+A custom backend allows you to integrate your own data sources into OpenBB Workspace, enabling the creation of personalized widgets, dashboards, and templates that display your data in various ways. This gives you complete control over your data pipeline while leveraging OpenBB's visualization and AI capabilities.
 
-**Q: How do I start setting up a custom backend?**
+For more details, see the [Data Integration Overview](/workspace/developers/backend-integration).
 
-A: Follow the structure outlined in the [Overview](/workspace/data-integration#getting-started-hello-world-example) section.
+### What technologies are required to set up a custom backend?
 
-**Q: What is the `widgets.json` file, and why is it important?**
+You'll need:
+- An API framework (FastAPI, Flask, Express, etc.)
+- A `widgets.json` file to define widget configurations
+- Optionally, an `apps.json` file for layout configurations
 
-A: The `widgets.json` file is a configuration file that connects your custom backend data to the widgets displayed in OpenBB Workspace. It defines widget properties such as name, description, category, endpoint, and more. See the [Example Widgets Configuration](/workspace/widgets-json-reference#example-widgets-json) section for details.
+Refer to the [Creating your own custom backend](/workspace/developers/backend-integration) section for detailed setup instructions.
 
-**Q: How do I add Authorization to my custom backend?**
+---
 
-A: We provide an the ability when adding a custom backend to pass a custom Header or Query Parameter to your backend on every request. You can then verify this in your backend and either allow or deny access to the request.
+## Setup and Configuration
 
-<details>
-<summary mdxType="summary">Authorization</summary>
+### How do I start setting up a custom backend?
 
-<div style={{display: 'flex', justifyContent: 'left'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/authorization.png" />
+Start with our Hello World example that demonstrates the basic structure:
+
+1. Create your API server
+2. Define your widgets.json configuration
+3. Connect to OpenBB Workspace
+
+Follow the complete guide in the [Getting Started](/workspace/developers/backend-integration) section.
+
+### What is the widgets.json file, and why is it important?
+
+The `widgets.json` file is the bridge between your backend and OpenBB Workspace. It defines:
+- Widget metadata (name, description, category)
+- Data endpoints
+- Display configurations
+- Parameter definitions
+
+This file tells OpenBB how to display and interact with your data. See the [Widgets Configuration Reference](/workspace/developers/widgets-json) for complete documentation.
+
+### How do I add authorization to my custom backend?
+
+OpenBB Workspace supports passing custom headers or query parameters to your backend on every request. You can use these for authentication:
+
+1. Configure the authentication method when adding your backend
+2. Choose between Header or Query Parameter authentication
+3. Verify the token/key in your backend to allow or deny access
+
+<div style={{display: 'flex', justifyContent: 'center', marginTop: '1rem', marginBottom: '1rem'}}>
+  <img className="pro-border-gradient" width="600" alt="Authorization configuration" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/authorization.png" />
 </div>
-</details>
 
-### Widgets and Templates
+---
 
-**Q: How can I create a new widget?**
+## Widgets and Apps
 
-A: Define the widget in the `widgets.json` file with necessary properties like name, description, category, and endpoint. Then, create an endpoint in your FastAPI application to serve the data for this widget. Check the [Widgets json reference](/workspace/widgets-json-reference) page for guidance.
+### How can I create a new widget?
 
-**Q: Can I customize the appearance of widgets?**
+Creating a widget involves two steps:
 
-A: Yes, you can customize widget appearance using properties in the `widgets.json` file, such as `gridData` for size and `columnsDefs` for table widgets. More information is available in the [Customizing Widgets](/workspace/widgets-json-reference) section.
+**1. Define the widget in `widgets.json`:**
+- Set metadata (name, description, category)
+- Specify the data endpoint
+- Configure display options
 
-**Q: What are apps, and how do I use them?**
+**2. Create the data endpoint in your backend:**
+- Return data in the expected format
+- Handle any parameters
 
-A: Apps allow you to build tailored solutions for your specific needs. In the `apps.json` file, you can specify the list of data widgets, prompts and AI agents that make up your app and serve them via an API endpoint. See the [Apps](/workspace/apps) section for more details.
+See the [Widget Creation Guide](/workspace/developers/widgets-json) for complete examples.
 
-**Q: How do I implement dynamic dropdown options in widgets?**
+### Can I customize the appearance of widgets?
 
-A: Use the `type: "endpoint"` in your parameter configuration and specify an `optionsEndpoint` that returns the available options. See the [Input Parameters](/workspace/widget-parameters/advanced-dropdown) page for implementation details.
+Yes! Widget appearance is highly customizable through the `widgets.json` file:
 
-**Q: Can I group widgets to share parameters?**
+- **Size**: Use `gridData` to set widget dimensions
+- **Tables**: Configure columns with `columnDefs`
+- **Charts**: Set chart type, colors, and axes
+- **Layouts**: Define default positions and groupings
 
-A: Yes, widgets can be grouped by using the same parameter configuration. This allows a single parameter selection to update all related widgets. More information is available in the [Parameter Grouping](/workspace/widget-parameters/parameter-grouping) page.
+Learn more in the [Widget Customization](/workspace/developers/widgets-json) documentation.
 
-### Troubleshooting
+### What are apps, and how do I use them?
 
-**Q: I can't connect to my backend using Safari/Brave. What should I do?**
+Apps are pre-configured collections of widgets, AI agents, and prompts designed for specific workflows. They provide:
 
-A: Ensure your API is running over HTTPS. You may need to create a self-signed certificate and configure your browser to trust it.
+- Curated widget selections
+- Pre-linked parameters
+- Custom AI prompts
+- Ready-to-use dashboards
 
-<details>
-<summary mdxType="summary">Safari/Brave HTTPS Setup</summary>
+Define apps in the `apps.json` file and serve them via your API. See the [Apps Documentation](/workspace/analysts/apps) for details.
 
-OpenBB Platform API Over HTTPS
+### How do I implement dynamic dropdown options in widgets?
 
-To run the API over the HTTPS protocol, you must first create a self-signed certificate and the associated key. After steps 1 & 2 above, you can generate the files by entering this to the command line:
+Dynamic dropdowns fetch options from your backend in real-time:
+
+1. Set parameter `type: "endpoint"`
+2. Specify an `optionsEndpoint` URL
+3. Return options array from your backend
+
+This is perfect for data that changes frequently (e.g., available tickers, date ranges). See the [Dynamic Parameters](/workspace/developers/backend-integration) guide.
+
+### Can I group widgets to share parameters?
+
+Yes! Parameter grouping creates synchronized widget sets:
+
+- Use identical parameter names across widgets
+- When one updates, all linked widgets refresh
+- Perfect for creating cohesive dashboards
+
+Learn more in the [Parameter Grouping](/workspace/developers/backend-integration) documentation.
+
+---
+
+## Troubleshooting
+
+### I can't connect to my backend using Safari/Brave. What should I do?
+
+Safari and Brave require HTTPS for local connections. You'll need to set up SSL certificates for your backend.
+
+**Setting up HTTPS for your API:**
+
+**Step 1:** Create a self-signed certificate and key:
 
 ```sh
-openssl req -x509 -days 3650 -out localhost.crt -keyout localhost.key   -newkey rsa:4096 -nodes -sha256   -subj '/CN=localhost' -extensions EXT -config <( \
-   printf "[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth")
+openssl req -x509 -days 3650 -out localhost.crt -keyout localhost.key \
+  -newkey rsa:4096 -nodes -sha256 \
+  -subj '/CN=localhost' -extensions EXT -config <( \
+  printf "[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth")
 ```
 
-Two files will be created, in the current working directory, that are passed as keyword arguments to the `openbb-api` entry point.
+**Step 2:** Run your API with SSL:
 
 ```sh
 openbb-api --ssl_keyfile localhost.key --ssl_certfile localhost.crt
 ```
 
-**Note**: Adjust the command to include the full path to the file if the current working directory is not where they are located.
+**Step 3:** Trust the certificate:
+- Visit your API URL in the browser
+- Accept the security warning
+- Or add `localhost.crt` to your system's trust store
 
-The certificate - `localhost.crt` - will need to be added to system's trust store. The process for this will depend on the operating system and the user account privilege.
+> **Note**: For work devices, contact your system administrator if you need additional permissions.
 
-A quick solution is to visit the server's URL, show the details of the warning, and choose to continue anyways.
+### My widget data is not refreshing as expected. What could be wrong?
 
-Contact the system administrator if you are using a work device and require additional permissions to complete the configuration.
+Check these common causes:
 
-![This Connection Is Not Private](https://in.norton.com/content/dam/blogs/images/norton/am/this_connection_not_is_private.png)
+1. **Refetch Settings**: Verify `refetchInterval` and `staleTime` in your `widgets.json`
+2. **Run Button**: If `runButton: true`, data only refreshes on manual trigger
+3. **Cache Settings**: Ensure cache duration matches your needs
+4. **Network Issues**: Check browser console for API errors
 
-</details>
+See the [Data Refresh Configuration](/workspace/developers/backend-integration) guide for optimal settings.
 
-**Q: My widget data is not refreshing as expected. What could be wrong?**
+### How do I debug widget connection issues?
 
-A: Check the `refetchInterval` and `staleTime` settings in your `widgets.json` file. Ensure they are set appropriately for your data's update frequency. Refer to the [Refetch Interval](/workspace/widget-configuration/refetch-interval) section for more information. Or you have set the [`runButton`](/workspace/widget-configuration/run-button) to `true` in the `widgets.json` file which doesn't refresh the data until you click on it.
+Follow this troubleshooting checklist:
+
+1. **Check Backend Status**: Ensure your API is running and accessible
+2. **Verify URL**: Confirm the backend URL in OpenBB settings
+3. **Test Endpoints**: Use curl or Postman to test your endpoints directly
+4. **Review Browser Console**: Look for CORS or network errors
+5. **Validate JSON**: Ensure widgets.json has valid syntax
+
+For detailed debugging steps, see the [Troubleshooting Guide](/workspace/developers/backend-integration).
