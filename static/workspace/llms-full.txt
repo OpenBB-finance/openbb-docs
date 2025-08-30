@@ -2484,7 +2484,7 @@ OpenBB Apps are comprehensive solutions that combine:
 
 ## Creating Your Own App
 
-1. Integrate your data widgets in OpenBB Workspace, as seen in <a href="/workspace/data-widgets" target="_blank" rel="noopener noreferrer">Data Widgets</a>.
+1. Integrate your data widgets in OpenBB Workspace, as seen in <a href="/workspace/widgets" target="_blank" rel="noopener noreferrer">Data Widgets</a>.
 2. Organize them in a certain layout
 3. Group widgets together and/or change their display (e.g. table or charts)
 4. Right click on the dashboard and select "Export apps.json"
@@ -3007,6 +3007,167 @@ You can then add this backend to OpenBB Workspace by right clicking on the dashb
 ---
 
 ---
+title: Overview
+sidebar_position: -1
+description: OpenBB Workspace is a secure enterprise UI platform for AI workflows, featuring data integration, AI model deployment, flexible UI customization, and on-premises deployment capabilities.
+keywords:
+- enterprise AI platform
+- data integration
+- AI model deployment
+- flexible UI
+- on-premises deployment
+- secure platform
+- team collaboration
+- OpenBB Apps
+- proprietary data
+- licensed data
+- AI workflows
+- enterprise security
+- private cloud
+- data privacy
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="OpenBB Workspace Docs" />
+
+# OpenBB Workspace: Your Enterprise AI Platform
+
+OpenBB Workspace is a powerful, secure platform designed specifically for enterprise AI workflows. It combines flexible data integration, customizable UI components, and robust AI capabilities in a single, cohesive solution.
+
+<img src="https://openbb-cms.directus.app/assets/8aa1a314-0e2c-41f0-a3cf-ef621e5f2a13.png" alt="OpenBB Workspace Platform Interface" width="100%" />
+
+## Core Capabilities
+
+### Production-Ready UI Framework
+
+Transform your workflows with a fully customizable UI that adapts to your team's specific needs:
+
+- **Complete Control**: Customize every aspect of the interface to match your workflow requirements
+- **Team Collaboration**: Enable seamless teamwork through shared dashboards and applications
+- **Application Development**: Build comprehensive solutions from data visualization to complex AI workflows
+
+### Unified Data Integration
+
+Bring all your data sources together in one secure, scalable platform:
+
+- **Comprehensive Data Access**: Integrate proprietary, licensed, and public data sources
+- **Flexible Data Types**: Support for both structured and unstructured data
+- **Future-Proof**: Avoid vendor lock-in with our open architecture
+
+### AI Model Integration
+
+Deploy and manage AI models in a secure, controlled environment:
+
+- **Model Flexibility**: Integrate any AI model that supports your workflows
+- **Secure Deployment**: Run AI models in a protected environment with controlled data access
+- **Workflow Integration**: Seamlessly connect AI capabilities with your existing processes
+
+### Enterprise-Grade Deployment
+
+Deploy with confidence using our on-premises or private cloud options:
+
+- **Complete Control**: Deploy securely on-premises or in your private cloud
+- **Data Security**: Keep sensitive data within your infrastructure
+- **Access Management**: Implement role-based access control for enhanced security
+
+## Key Concepts
+
+### Widgets: Your Data Building Blocks
+
+Widgets are the fundamental data units in OpenBB Workspace. Each widget represents a self-contained data component with:
+
+- **Data Source**: Integration with internal or external data sources
+- **Metadata**: Title, description, category, sub-category and source information
+- **Visual Layer**: Presentation through PDF, table, chart, or feed formats
+- **Parameters**: Configurable options for data display and interaction
+
+<img width="800" alt="Widget Metadata Structure and Components" src="https://openbb-cms.directus.app/assets/132e5cda-b062-4094-8036-8c2d41db1527.png" />
+
+### Dashboards: Your Financial Analysis Workspace
+
+Dashboards serve as your primary workspace for organizing and analyzing financial data through customizable widgets. Each dashboard acts as a dedicated canvas where you can arrange and combine different data visualizations to create comprehensive financial analysis views.
+
+<img width="800" alt="OpenBB Workspace Dashboard Interface" src="https://openbb-cms.directus.app/assets/fbf80af0-8bc3-4ac6-b349-f8e1ec388cee.png" />
+
+#### Managing Your Dashboards
+
+Access dashboard management options by clicking the ellipsis in the left sidebar next to the dashboard of interest. This opens a menu with the following capabilities:
+
+- **Rename** - Customize your dashboard's name for better organization
+- **Move to** - Organize dashboards by moving them into folders
+- **Duplicate** - Create a copy of your dashboard with all its widgets and settings
+- **Open in new window** - Expand your workspace across multiple screens
+- **Share** - Collaborate by sharing dashboards with team members in your organization
+- **Delete** - Remove unused dashboards
+- **Export report** - Generate static reports in PDF or PNG format
+- **Refresh data** - Update all widget data to the latest available
+
+Note: Some dashboards may be hidden by a folder. By clicking in the folder, you will be able to expand the dashboards contained within.
+
+#### Collaboration Features
+
+Share dashboards with team members by right-clicking and selecting "Share". Search for team members within your organization, and recipients without OpenBB Pro access will receive an email invitation. Shared dashboards appear in the recipient's sidebar with read-only access. Recipients can duplicate the dashboard to create their own editable version while maintaining the original.
+
+#### Creating Static Reports
+
+Export your interactive dashboards as static reports in PDF or PNG format. Include notes and insights from the note widget to capture the exact state of your analysis. This feature enables you to create periodic analysis reports, document investment decisions, share insights with stakeholders, and maintain historical records of your analysis.
+
+### AI Agents: Intelligent Automation
+
+Create AI agents to automate tasks and enhance your dashboards with this intelligence layer.
+
+<img width="800" alt="OpenBB Workspace AI Agents Interface" src="https://openbb-cms.directus.app/assets/ac287dfe-e279-42bb-8f84-a616ff9df8a8.png" />
+
+The reason why AI agents work on OpenBB workspace is due to the metadata from each widget which allows AI to understand which widget has access to the right dataset and query it accordingly (along with the right parameters!).
+
+<img width="800" alt="OpenBB Workspace AI Agent Widget Integration" src="https://openbb-cms.directus.app/assets/2b463b3b-e1cf-4079-8c11-b49cdcda60ac" />
+
+### Apps: End-to-End Workflows
+
+Combine dashboards and AI agents to create powerful applications:
+
+- **Integrated Workflows**: AI agents can access and process all dashboard data
+- **Data Integration**: Connect your existing systems and services
+- **Scalable Architecture**: Create and manage multiple applications within the platform
+
+<img width="800" alt="OpenBB Workspace Applications Overview" src="https://openbb-cms.directus.app/assets/5778561c-5c09-4d70-bde8-952acbccaa01.png" />
+
+You can have a large amount of different applications on OpenBB.
+
+<img width="800" alt="OpenBB Workspace Multiple Applications View" src="https://openbb-cms.directus.app/assets/2fc9097e-0941-49df-8d83-7d6b5a87bb45.png" />
+
+#### Prompts: Reusable AI Interactions
+
+Enhance your applications with reusable prompts:
+
+- **Workflow Efficiency**: Save and reuse common AI interactions
+- **Consistent Results**: Maintain standardized AI responses across your team
+- **Process Automation**: Streamline repetitive AI tasks
+
+## See It in Action
+
+Watch our comprehensive demo to see OpenBB Workspace in action:
+
+<div style={{position: 'relative', paddingBottom: '56.25%', height: '0', overflow: 'hidden', maxWidth: '100%'}}>
+    <iframe 
+    style={{position: 'absolute', top: '0', left: '0', width: '100%', height: '100%', display: 'block', margin: '0 auto'}} 
+    src="https://www.youtube.com/embed/Gll8bRSoyGM?si=X7xpy9yPBaBeEjbg" 
+    title="YouTube video player" 
+    frameBorder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+    referrerPolicy="strict-origin-when-cross-origin" 
+    allowFullScreen></iframe>
+</div>
+
+Join thousands of professionals already using OpenBB Workspace.
+
+Start with our generous free tier at [pro.openbb.co](https://pro.openbb.co).
+
+
+---
+
+---
 title: AgGrid Table Charts
 sidebar_position: 8
 description: AgGrid Table Charts
@@ -3278,7 +3439,7 @@ def table_widget_with_render_functions():
     return mock_data
 ```
 
-For more information on this, check [Render functions](/workspace/widget-configuration/render-functions).
+For more information on this, check [Render functions](widget-configuration/render-functions).
 
 ## Table Widget with Hover Card
 
@@ -3734,7 +3895,7 @@ The formatter function receives parameters including:
 - **Padding**: `top`, `right`, `bottom`, `left`
 - **Direction**: `vertical`, `horizontal` (for bar charts)
 
-For more detailed configuration options, refer to the [Widgets JSON Reference](/workspace/widgets-json-reference) or our examples backends [here](https://github.com/OpenBB-finance/backends-for-openbb/tree/main/getting-started/reference-backend).
+For more detailed configuration options, refer to the [Widgets JSON Reference](widgets-json-reference) or our examples backends [here](https://github.com/OpenBB-finance/backends-for-openbb/tree/main/getting-started/reference-backend).
 
 ## OTHERS
 
@@ -4384,7 +4545,7 @@ To get started, create the main application file and the widget configuration fi
 - `main.py`: This file will contain your FastAPI application code.
 - `widgets.json`: This file will define the configuration for your widget.
 
-The backend will use the same FastAPI setup and structure as described in the [Overview](/workspace/data-integration#1-create-the-api-server) page.
+The backend will use the same FastAPI setup and structure as described in the [Overview](/workspace/getting-started/data-integration#1-create-the-api-server) page.
 
 ## Step 2: Create the Chart Endpoint
 
@@ -4574,7 +4735,7 @@ OpenBB Workspace provides a powerful and flexible UI framework that lets you cre
 
 ## Getting Started
 
-In our [Data Integration](../data-integration.md) guide, we introduced the basic structure using `main.py` and `widgets.json`. To make development even easier, we've created a Python decorator that keeps your widget specifications right next to their implementation code. You can add it as part of the initial boilerplate, so you can build a backend with a single `main.py` file:
+In our [Data Integration](../getting-started/data-integration.md) guide, we introduced the basic structure using `main.py` and `widgets.json`. To make development even easier, we've created a Python decorator that keeps your widget specifications right next to their implementation code. You can add it as part of the initial boilerplate, so you can build a backend with a single `main.py` file:
 
 ```python
 # Import required libraries
@@ -4746,7 +4907,7 @@ To get started, create the main application file and the widget configuration fi
 - `main.py`: This file will contain your FastAPI application code.
 - `widgets.json`: This file will define the configuration for your widget.
 
-The backend will use the same FastAPI setup and structure as described in the [Overview](/workspace/data-integration#1-create-the-api-server) page.
+The backend will use the same FastAPI setup and structure as described in the [Overview](/workspace/getting-started/data-integration#1-create-the-api-server) page.
 
 ## Step 2: Create the Live Feed Endpoints
 
@@ -4939,7 +5100,7 @@ A few key points:
 - The `wsEndpoint` is the endpoint that will be used to get the live updates for the widget.
 - The `enableCellChangeWs` is a boolean that will be used to determine if the cell change will be sent over the WebSocket. Use this to prevent the cell from being updated over the WebSocket. By default, it is set to `true` for fields that are sent in the websocket and appear in the data. The only field that is special here is the `wsRowIdColumn` which is the column that will be used to identify the row.
 - The `wsRowIdColumn` is the column that will be used to identify the row. This is important to set correctly to ensure the live updates are displayed correctly. This the key between your ws and the initial data.
-- The `renderFn` is the function that will be used to render the cell. You can find more information on the [Render Functions](/content/workspace/widget-configuration/render-functions.md) page. In our case we are using a custom function `showCellChange` to display the change in price and providing the key to use.
+- The `renderFn` is the function that will be used to render the cell. You can find more information on the [Render Functions](widget-configuration/render-functions.md) page. In our case we are using a custom function `showCellChange` to display the change in price and providing the key to use.
 
 ## Step 3: Run the Application
 
@@ -5003,7 +5164,7 @@ def markdown_widget():
     return "# Markdown Widget"
 ```
 
-The gridData parameter specifies the widget's size in the OpenBB Workspace grid system. More on that can be found [here](/workspace/widget-configuration/grid-size).
+The gridData parameter specifies the widget's size in the OpenBB Workspace grid system. More on that can be found [here](widget-configuration/grid-size).
 
 ## Data rich markdown
 
@@ -5274,7 +5435,7 @@ To get started, create the main application file and the widget configuration fi
 - `main.py`: This file will contain your FastAPI application code.
 - `widgets.json`: This file will define the configuration for your widget.
 
-The backend will use the same FastAPI setup and structure as described in the [Overview](/workspace/data-integration#1-create-the-api-server) page.
+The backend will use the same FastAPI setup and structure as described in the [Overview](/workspace/getting-started/data-integration#1-create-the-api-server) page.
 
 ## Step 2: Create the Newsfeed Endpoint
 
@@ -6409,6 +6570,112 @@ For more information on setting up and configuring Plotly charts within the Open
 ---
 
 ---
+title: SSRM Mode
+sidebar_position: 7
+description: Server-Side Rendered Mode for handling large datasets efficiently in OpenBB Workspace widgets
+keywords:
+- SSRM
+- server-side rendering
+- large datasets
+- performance
+- data optimization
+- advanced widgets
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="SSRM Mode | OpenBB Workspace Docs" />
+
+# Server-Side Rendered Mode (SSRM)
+
+Server-Side Rendered Mode (SSRM) is an advanced widget implementation approach designed to handle large datasets efficiently in OpenBB Workspace. Unlike traditional widgets that load all data at once, SSRM mode enables server-side pagination, filtering, and sorting, making it ideal for displaying massive datasets without compromising performance.
+
+## Key Features & Use Cases
+
+SSRM mode is designed for enterprise applications that need to handle **large datasets** (200,000+ rows) efficiently. Instead of loading all data at once, it provides server-side operations that optimize performance and user experience.
+
+## How SSRM Differs from Standard Table Widget
+
+| Aspect | Standard Table Widget | SSRM Mode |
+|--------|------------------|-----------|
+| Data Loading | All data loaded at once | Data loaded on-demand |
+| Filtering | Client-side filtering | Server-side filtering |
+| Sorting | Client-side sorting | Server-side sorting |
+| Memory Usage | High for large datasets | Optimized memory usage |
+| Initial Load Time | Slower for large datasets | Fast initial load |
+| Network Traffic | High initial payload | Optimized payloads |
+| Complexity | Simple implementation | Advanced server logic |
+
+## Widget Configuration
+
+To use SSRM mode, your widget configuration must specify the correct widget type:
+
+```json
+{
+  "name": "SSRM Data Table",
+  "description": "Server-side rendered table for large datasets",
+  "type": "ssrm_table",
+  "endpoint": "data-ssrm",
+  "gridData": {"w": 12, "h": 8}
+}
+```
+
+**Important**: The widget type must be set to `"ssrm_table"` to enable server-side row model functionality. This tells OpenBB Workspace to use the SSRM interface instead of the normal table widget.
+
+## Implementation Overview
+
+The SSRM example implementation is built as a FastAPI server that handles AgGrid's Server-Side Row Model requests.
+
+For complete implementation examples and code samples, refer to the [SSRM Mode Examples Repository](https://github.com/OpenBB-finance/backends-for-openbb/tree/main/widget-examples/ssrm_mode).
+
+Here's what the implementation provides:
+
+### Core Architecture
+
+- **FastAPI Server**: Main application handling SSRM requests from the widget
+- **Database Manager**: Multi-database interface supporting SQLite, MySql, and Snowflake 
+- **Custom Models**: `AgGridOptions` and `AgRows` models for structured data handling
+- **Query Engine**: Modular system for converting AgGrid requests to optimized SQL queries
+
+### Key Endpoint: `/data-ssrm`
+
+The main POST endpoint processes AgGrid SSRM requests and handles:
+
+- **Pagination**: Processes `startRow`/`endRow` parameters for efficient data paging
+- **Filtering**: Supports text, number, and set filters with various operators (contains, equals, greaterThan, etc.)
+- **Sorting**: Multi-column sorting with ascending/descending directions
+- **Grouping**: Row grouping with COUNT aggregation and hierarchical support
+
+### Request/Response Flow
+
+1. AgGrid frontend sends SSRM request with pagination, filters, sorting, and grouping parameters
+2. Server converts request to a valid query using the `AgRows` model
+3. Database manager executes query against the database
+4. Results are formatted and returned with `rowData` and `rowCount` for AgGrid consumption
+
+## AI Data
+
+When using SSRM mode with AI functionality in OpenBB Workspace, there's an important limitation to understand:
+
+**"What You See Is What You Get"**: AI can only access and analyze the data that is currently visible in the table widget. This means:
+
+- AI will only see the specific rows that are loaded and displayed on screen
+- If your dataset has 15 million rows but only 100 are currently visible, AI can only work with those 100 rows
+- Pagination, filtering, and sorting affect what data is available to AI analysis
+- AI cannot access the entire dataset that exists in your database
+
+### Current Implementation
+This is the current approach for AI data access in SSRM mode. Future implementations are planned to make this more robust and provide broader data access capabilities for AI analysis.
+
+### Best Practices for AI Integration
+- Load relevant data subsets that you want AI to analyze
+- Use filtering to focus on specific data ranges before engaging AI
+- Consider the scope of your analysis when working with paginated data
+- Be aware that AI insights will be limited to the currently displayed dataset 
+
+---
+
+---
 title: TradingView Charts
 sidebar_position: 10
 description: How to implement TradingView charts in OpenBB using UDF (Universal Data Feed)
@@ -6653,273 +6920,6 @@ def generate_mock_price_data(symbol: str, from_time: int, to_time: int, resoluti
 - [UDF Protocol Documentation](https://www.tradingview.com/charting-library-docs/latest/connecting_data/UDF)
 
 The charting technology is provided by TradingView — a platform for traders and investors offering real-time market data, crypto heatmaps, screeners, and other professional tools, making it easy to follow Bitcoin, [Ethereum price](https://www.tradingview.com/symbols/ETHUSD/), and charts for any other asset.
-
----
-
----
-title: Overview
-sidebar_position: -1
-description: OpenBB Workspace is a secure enterprise UI platform for AI workflows, featuring data integration, AI model deployment, flexible UI customization, and on-premises deployment capabilities.
-keywords:
-- enterprise AI platform
-- data integration
-- AI model deployment
-- flexible UI
-- on-premises deployment
-- secure platform
-- team collaboration
-- OpenBB Apps
-- proprietary data
-- licensed data
-- AI workflows
-- enterprise security
-- private cloud
-- data privacy
----
-
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="OpenBB Workspace Docs" />
-
-# OpenBB Workspace: Your Enterprise AI Platform
-
-OpenBB Workspace is a powerful, secure platform designed specifically for enterprise AI workflows. It combines flexible data integration, customizable UI components, and robust AI capabilities in a single, cohesive solution.
-
-<img src="https://openbb-cms.directus.app/assets/8aa1a314-0e2c-41f0-a3cf-ef621e5f2a13.png" alt="OpenBB Workspace Platform Interface" width="100%" />
-
-## Core Capabilities
-
-### Production-Ready UI Framework
-
-Transform your workflows with a fully customizable UI that adapts to your team's specific needs:
-
-- **Complete Control**: Customize every aspect of the interface to match your workflow requirements
-- **Team Collaboration**: Enable seamless teamwork through shared dashboards and applications
-- **Application Development**: Build comprehensive solutions from data visualization to complex AI workflows
-
-### Unified Data Integration
-
-Bring all your data sources together in one secure, scalable platform:
-
-- **Comprehensive Data Access**: Integrate proprietary, licensed, and public data sources
-- **Flexible Data Types**: Support for both structured and unstructured data
-- **Future-Proof**: Avoid vendor lock-in with our open architecture
-
-### AI Model Integration
-
-Deploy and manage AI models in a secure, controlled environment:
-
-- **Model Flexibility**: Integrate any AI model that supports your workflows
-- **Secure Deployment**: Run AI models in a protected environment with controlled data access
-- **Workflow Integration**: Seamlessly connect AI capabilities with your existing processes
-
-### Enterprise-Grade Deployment
-
-Deploy with confidence using our on-premises or private cloud options:
-
-- **Complete Control**: Deploy securely on-premises or in your private cloud
-- **Data Security**: Keep sensitive data within your infrastructure
-- **Access Management**: Implement role-based access control for enhanced security
-
-## Key Concepts
-
-### Widgets: Your Data Building Blocks
-
-Widgets are the fundamental data units in OpenBB Workspace. Each widget represents a self-contained data component with:
-
-- **Data Source**: Integration with internal or external data sources
-- **Metadata**: Title, description, category, sub-category and source information
-- **Visual Layer**: Presentation through PDF, table, chart, or feed formats
-- **Parameters**: Configurable options for data display and interaction
-
-<img width="800" alt="Widget Metadata Structure and Components" src="https://openbb-cms.directus.app/assets/132e5cda-b062-4094-8036-8c2d41db1527.png" />
-
-### Dashboards: Your Financial Analysis Workspace
-
-Dashboards serve as your primary workspace for organizing and analyzing financial data through customizable widgets. Each dashboard acts as a dedicated canvas where you can arrange and combine different data visualizations to create comprehensive financial analysis views.
-
-<img width="800" alt="OpenBB Workspace Dashboard Interface" src="https://openbb-cms.directus.app/assets/fbf80af0-8bc3-4ac6-b349-f8e1ec388cee.png" />
-
-#### Managing Your Dashboards
-
-Access dashboard management options by clicking the ellipsis in the left sidebar next to the dashboard of interest. This opens a menu with the following capabilities:
-
-- **Rename** - Customize your dashboard's name for better organization
-- **Move to** - Organize dashboards by moving them into folders
-- **Duplicate** - Create a copy of your dashboard with all its widgets and settings
-- **Open in new window** - Expand your workspace across multiple screens
-- **Share** - Collaborate by sharing dashboards with team members in your organization
-- **Delete** - Remove unused dashboards
-- **Export report** - Generate static reports in PDF or PNG format
-- **Refresh data** - Update all widget data to the latest available
-
-Note: Some dashboards may be hidden by a folder. By clicking in the folder, you will be able to expand the dashboards contained within.
-
-#### Collaboration Features
-
-Share dashboards with team members by right-clicking and selecting "Share". Search for team members within your organization, and recipients without OpenBB Pro access will receive an email invitation. Shared dashboards appear in the recipient's sidebar with read-only access. Recipients can duplicate the dashboard to create their own editable version while maintaining the original.
-
-#### Creating Static Reports
-
-Export your interactive dashboards as static reports in PDF or PNG format. Include notes and insights from the note widget to capture the exact state of your analysis. This feature enables you to create periodic analysis reports, document investment decisions, share insights with stakeholders, and maintain historical records of your analysis.
-
-### AI Agents: Intelligent Automation
-
-Create AI agents to automate tasks and enhance your dashboards with this intelligence layer.
-
-<img width="800" alt="OpenBB Workspace AI Agents Interface" src="https://openbb-cms.directus.app/assets/ac287dfe-e279-42bb-8f84-a616ff9df8a8.png" />
-
-The reason why AI agents work on OpenBB workspace is due to the metadata from each widget which allows AI to understand which widget has access to the right dataset and query it accordingly (along with the right parameters!).
-
-<img width="800" alt="OpenBB Workspace AI Agent Widget Integration" src="https://openbb-cms.directus.app/assets/2b463b3b-e1cf-4079-8c11-b49cdcda60ac" />
-
-### Apps: End-to-End Workflows
-
-Combine dashboards and AI agents to create powerful applications:
-
-- **Integrated Workflows**: AI agents can access and process all dashboard data
-- **Data Integration**: Connect your existing systems and services
-- **Scalable Architecture**: Create and manage multiple applications within the platform
-
-<img width="800" alt="OpenBB Workspace Applications Overview" src="https://openbb-cms.directus.app/assets/5778561c-5c09-4d70-bde8-952acbccaa01.png" />
-
-You can have a large amount of different applications on OpenBB.
-
-<img width="800" alt="OpenBB Workspace Multiple Applications View" src="https://openbb-cms.directus.app/assets/2fc9097e-0941-49df-8d83-7d6b5a87bb45.png" />
-
-#### Prompts: Reusable AI Interactions
-
-Enhance your applications with reusable prompts:
-
-- **Workflow Efficiency**: Save and reuse common AI interactions
-- **Consistent Results**: Maintain standardized AI responses across your team
-- **Process Automation**: Streamline repetitive AI tasks
-
-## See It in Action
-
-Watch our comprehensive demo to see OpenBB Workspace in action:
-
-<div style={{position: 'relative', paddingBottom: '56.25%', height: '0', overflow: 'hidden', maxWidth: '100%'}}>
-    <iframe 
-    style={{position: 'absolute', top: '0', left: '0', width: '100%', height: '100%', display: 'block', margin: '0 auto'}} 
-    src="https://www.youtube.com/embed/Gll8bRSoyGM?si=X7xpy9yPBaBeEjbg" 
-    title="YouTube video player" 
-    frameBorder="0" 
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-    referrerPolicy="strict-origin-when-cross-origin" 
-    allowFullScreen></iframe>
-</div>
-
-Join thousands of professionals already using OpenBB Workspace.
-
-Start with our generous free tier at [pro.openbb.co](https://pro.openbb.co).
-
-
----
-
----
-title: SSRM Mode
-sidebar_position: 7
-description: Server-Side Rendered Mode for handling large datasets efficiently in OpenBB Workspace widgets
-keywords:
-- SSRM
-- server-side rendering
-- large datasets
-- performance
-- data optimization
-- advanced widgets
----
-
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="SSRM Mode | OpenBB Workspace Docs" />
-
-# Server-Side Rendered Mode (SSRM)
-
-Server-Side Rendered Mode (SSRM) is an advanced widget implementation approach designed to handle large datasets efficiently in OpenBB Workspace. Unlike traditional widgets that load all data at once, SSRM mode enables server-side pagination, filtering, and sorting, making it ideal for displaying massive datasets without compromising performance.
-
-## Key Features & Use Cases
-
-SSRM mode is designed for enterprise applications that need to handle **large datasets** (200,000+ rows) efficiently. Instead of loading all data at once, it provides server-side operations that optimize performance and user experience.
-
-## How SSRM Differs from Standard Table Widget
-
-| Aspect | Standard Table Widget | SSRM Mode |
-|--------|------------------|-----------|
-| Data Loading | All data loaded at once | Data loaded on-demand |
-| Filtering | Client-side filtering | Server-side filtering |
-| Sorting | Client-side sorting | Server-side sorting |
-| Memory Usage | High for large datasets | Optimized memory usage |
-| Initial Load Time | Slower for large datasets | Fast initial load |
-| Network Traffic | High initial payload | Optimized payloads |
-| Complexity | Simple implementation | Advanced server logic |
-
-## Widget Configuration
-
-To use SSRM mode, your widget configuration must specify the correct widget type:
-
-```json
-{
-  "name": "SSRM Data Table",
-  "description": "Server-side rendered table for large datasets",
-  "type": "ssrm_table",
-  "endpoint": "data-ssrm",
-  "gridData": {"w": 12, "h": 8}
-}
-```
-
-**Important**: The widget type must be set to `"ssrm_table"` to enable server-side row model functionality. This tells OpenBB Workspace to use the SSRM interface instead of the normal table widget.
-
-## Implementation Overview
-
-The SSRM example implementation is built as a FastAPI server that handles AgGrid's Server-Side Row Model requests.
-
-For complete implementation examples and code samples, refer to the [SSRM Mode Examples Repository](https://github.com/OpenBB-finance/backends-for-openbb/tree/main/widget-examples/ssrm_mode).
-
-Here's what the implementation provides:
-
-### Core Architecture
-
-- **FastAPI Server**: Main application handling SSRM requests from the widget
-- **Database Manager**: Multi-database interface supporting SQLite, MySql, and Snowflake 
-- **Custom Models**: `AgGridOptions` and `AgRows` models for structured data handling
-- **Query Engine**: Modular system for converting AgGrid requests to optimized SQL queries
-
-### Key Endpoint: `/data-ssrm`
-
-The main POST endpoint processes AgGrid SSRM requests and handles:
-
-- **Pagination**: Processes `startRow`/`endRow` parameters for efficient data paging
-- **Filtering**: Supports text, number, and set filters with various operators (contains, equals, greaterThan, etc.)
-- **Sorting**: Multi-column sorting with ascending/descending directions
-- **Grouping**: Row grouping with COUNT aggregation and hierarchical support
-
-### Request/Response Flow
-
-1. AgGrid frontend sends SSRM request with pagination, filters, sorting, and grouping parameters
-2. Server converts request to a valid query using the `AgRows` model
-3. Database manager executes query against the database
-4. Results are formatted and returned with `rowData` and `rowCount` for AgGrid consumption
-
-## AI Data
-
-When using SSRM mode with AI functionality in OpenBB Workspace, there's an important limitation to understand:
-
-**"What You See Is What You Get"**: AI can only access and analyze the data that is currently visible in the table widget. This means:
-
-- AI will only see the specific rows that are loaded and displayed on screen
-- If your dataset has 15 million rows but only 100 are currently visible, AI can only work with those 100 rows
-- Pagination, filtering, and sorting affect what data is available to AI analysis
-- AI cannot access the entire dataset that exists in your database
-
-### Current Implementation
-This is the current approach for AI data access in SSRM mode. Future implementations are planned to make this more robust and provide broader data access capabilities for AI analysis.
-
-### Best Practices for AI Integration
-- Load relevant data subsets that you want AI to analyze
-- Use filtering to focus on specific data ranges before engaging AI
-- Consider the scope of your analysis when working with paginated data
-- Be aware that AI insights will be limited to the currently displayed dataset 
 
 ---
 
@@ -7238,7 +7238,7 @@ In the `widgets.json` configuration, you can specify render functions to customi
 | `hoverCard` | Displays additional information when hovering over a cell |
 | `cellOnClick` | Triggers an action when a cell is clicked |
 | `columnColor` | Changes the color of a column based on specified rules |
-| `showCellChange` | Highlights cells when their values change via WebSocket updates. Only used with the [Live Grid Widget](/content/workspace/data-widgets/live-grid.md) |
+| `showCellChange` | Highlights cells when their values change via WebSocket updates. Only used with the [Live Grid Widget](../live-grid.md) |
 
 ### Render Function Parameters
 
@@ -7419,7 +7419,7 @@ The hover card example would use the below data to display the hover card.
 
 ### Prefix and Suffix
 
-The `prefix` and `suffix` parameters can also be used in the `columnsDefs` to add a prefix or suffix to the column values. [See the widgets-json-reference](/content/workspace/widgets-json-reference.md) for more information.
+The `prefix` and `suffix` parameters can also be used in the `columnsDefs` to add a prefix or suffix to the column values. [See the widgets-json-reference](../widgets-json-reference.md) for more information.
 
 ### Send to Agent
 
@@ -9225,7 +9225,7 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
 
       - **renderFn**
         _Type:_ `string` or `array`
-        Specifies a rendering function for cell data. See [Render Functions](../workspace/widget-configuration/render-functions.md) for more information.
+        Specifies a rendering function for cell data. See [Render Functions](widget-configuration/render-functions.md) for more information.
         _Example:_ `"titleCase"`
         _Possible values:_ `"greenRed"`, `"titleCase"`, `"hoverCard"`, `"cellOnClick"`, `"columnColor"`, `"showCellChange"`
 

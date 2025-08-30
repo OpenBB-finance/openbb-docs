@@ -44,23 +44,23 @@ export default {
 					},
 					{
 						from: "/pro/",
-						to: "/workspace/",
+						to: "/workspace",
 					},
 					{
 						from: "/pro/enterprise",
-						to: "/excel/enterprise",
+						to: "/excel/enterprise-features/enterprise",
 					},
 					{
 						from: "/pro/openbb-copilot",
-						to: "/excel/copilot-basics",
+						to: "/excel/ai-features/copilot-basics",
 					},
 					{
 						from: "/pro/platform-installer",
-						to: "/excel/platform-installer",
+						to: "/excel/apps/platform-installer",
 					},
 					{
 						from: "/workspace/data-connector",
-						to: "/workspace/data-integration",
+						to: "/workspace/getting-started/data-integration",
 					},
 					{
 						from: "/excel/enterprise",

@@ -613,156 +613,318 @@ The system filters and prioritizes results based on relevance and credibility, t
 ---
 
 ---
-title: Core Widgets
-sidebar_position: 3
-description: Master OpenBB's essential widgets for building powerful financial dashboards, including navigation, notes, API integration, and real-time data visualization tools.
+title: Apps Gallery
+sidebar_position: 5
+description: Browse our curated collection of apps for financial analysis, market research, portfolio management and much more.
 keywords:
-- dashboard widgets
-- financial analysis
-- data visualization
-- navigation tools
-- note taking
-- API integration
-- RSS feeds
-- market monitoring
-- time tracking
+- Dashboard Templates
+- Financial Analysis
+- Market Research
+- Portfolio Management
+- Charting
+- News
+- Equity Research
+- Economic Indicators
+- ETF Analysis
+- Community Templates
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Core Widgets | OpenBB Workspace Docs" />
+<HeadTitle title="Apps Gallery | OpenBB Workspace Docs" />
 
-OpenBB's core widgets form the foundation of your financial analysis workspace. These essential components enable you to organize information, capture insights, and integrate external data sources within a unified interface, creating a powerful environment for financial analysis and decision-making.
+This is an example of what your Apps page may look like for different workflows & apps.
 
-## Navigation Bar
+<img width="800" alt="OpenBB Workspace Multiple Applications View" src="https://openbb-cms.directus.app/assets/2fc9097e-0941-49df-8d83-7d6b5a87bb45.png" />
 
-The Navigation Bar serves as your dashboard's command center, providing intuitive organization for complex information. This powerful tool enables you to:
+## Portfolio Risk Management
 
-- Create and manage multiple tabs for different analysis contexts
-- Organize information into logical sections
-- Separate research from analysis
-- Track different market sectors
-- Monitor various portfolios
+Monitor and analyze your portfolio's risk metrics, including volatility, beta, and correlation analysis. This dashboard helps you make informed decisions about risk management and portfolio optimization.
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="Navigation bar interface showing multiple tabs" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/navigation_bar.png" />
+<img width="800" alt="Portfolio Risk Management Dashboard" src="https://openbb-cms.directus.app/assets/b1d5b799-3abe-4d45-b04c-601e2b652b18.png" />
+
+- Code open source [here](https://github.com/OpenBB-finance/backend-examples-for-openbb-workspace/tree/main/demo-apps/demo-risk).
+- Available to be added with https://openbb-demo-risk.fly.dev
+
+## DTCC Trades
+
+Track and analyze Depository Trust & Clearing Corporation (DTCC) trades in real-time. Monitor large transactions, identify unusual trading patterns, and stay informed about market movements.
+
+<img width="800" alt="DTCC Trades Dashboard" src="https://openbb-cms.directus.app/assets/4e3dc7ec-3b79-447d-b573-9762212f715f.png" />
+
+- Open source code [here](https://github.com/OpenBB-finance/backend-examples-for-openbb-workspace/tree/main/demo-apps/dtcc_trade_repository).
+- Available to be added with https://dtcc-trade-repo.fly.dev
+
+## FED Net Liquidity
+
+Monitor the Federal Reserve's net liquidity measures and their impact on financial markets. Track changes in the Fed's balance sheet and understand their implications for market conditions.
+
+<img width="800" alt="FED Net Liquidity Dashboard" src="https://openbb-cms.directus.app/assets/93280111-380d-4620-b7a9-487ec7db2e71.png" />
+
+- Open source code [here](https://github.com/DidierRLopes/dharmatech-openbb).
+- Available to be added with https://dharmatech-openbb.fly.dev
+
+## Macro Analysis
+
+Comprehensive macroeconomic analysis dashboard featuring key economic indicators, market trends, and global economic data. Stay informed about broader market conditions and economic trends.
+
+<img width="800" alt="Macro Analysis Dashboard" src="https://openbb-cms.directus.app/assets/5648c15c-9f75-44c3-b4fa-b17cfde5974a.png" />
+
+- Blog on this app: https://openbb.co/blog/from-excel-to-agents-rebuilding-the-macro-research-workflow-for-the-ai-era
+
+## Congressional Data & Executive Orders
+
+Track and analyze legislative activities and executive actions that impact financial markets. Monitor congressional bills, voting records, and executive orders to stay informed about potential regulatory changes and policy developments that could affect your investments.
+
+<img width="800" alt="Congressional Data & Executive Orders Dashboard" src="https://openbb-cms.directus.app/assets/bd8eb192-ec73-4fb4-9bce-038af1928016.png" />
+
+- Open source code [here](https://github.com/andrewkenreich/congress).
+- API key required.
+
+## Crypto Analysis
+
+Comprehensive cryptocurrency analysis platform built by Matt, featuring real-time price data, market trends, and trading insights. Monitor crypto markets and make informed investment decisions.
+
+<img width="800" alt="Crypto Analysis Dashboard" src="https://openbb-cms.directus.app/assets/441e937c-e8aa-49f8-a3e9-5b4463192e9d.png" />
+
+- Open source code [here](https://github.com/MattMaximo/CryptoBB).
+- API key required.
+
+## Opening Bell Daily
+
+Start your trading day with the Opening Bell Daily dashboard, providing pre-market analysis, key events, and market-moving news to help you prepare for the trading session. This highlights how you can use your watermark.
+
+<img width="800" alt="Opening Bell Daily Dashboard" src="https://openbb-cms.directus.app/assets/3f92b5d8-9942-4b9e-81cf-8722a1296f2c.png" />
+
+- Open source code [here](https://openbb-opening-bell-daily.fly.dev).
+- Available to be added with https://openbb-opening-bell-daily.fly.dev
+
+## FRED Economic Data
+
+Access and analyze Federal Reserve Economic Data (FRED) with real-time updates on economic indicators, historical data, and trend analysis. Monitor key economic metrics that influence market movements.
+
+<img width="800" alt="FRED Economic Data Dashboard" src="https://openbb-cms.directus.app/assets/6d218f61-4702-4998-8dad-f590aaae616b.png" />
+
+- Part of the [OpenBB Platform](/excel/platform-installer) package.
+- API key required.
+
+## BLS Statistics
+
+Track Bureau of Labor Statistics (BLS) data including employment, inflation, and other key economic indicators. Stay updated with the latest labor market trends and economic statistics.
+
+<img width="800" alt="BLS Statistics Dashboard" src="https://openbb-cms.directus.app/assets/f3b176e5-e362-4e4f-8a47-2aed57100279.png" />
+
+- Part of the [OpenBB Platform](/excel/platform-installer) package.
+- API key required.
+
+## IMF Data
+
+Access International Monetary Fund (IMF) data and analysis on global economic trends, financial stability, and economic forecasts. Monitor international economic developments and their impact on markets.
+
+<img width="800" alt="IMF Data Dashboard" src="https://openbb-cms.directus.app/assets/08fde756-98e5-474a-8f00-8233dfdbb49f.png" />
+
+- Part of the [OpenBB Platform](/excel/platform-installer) package.
+- API key required.
+
+## Charting
+
+Visualize price action, perform technical analysis, and overlay multiple time series. Our platform supports a wide range of time series, including stocks, funds, ETFs, and economic data.
+
+<img className="pro-border-gradient" width="800" alt="Advanced Charting Dashboard" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/new_charting.png" />
+
+## News
+
+Stay up-to-date with the latest global and industry news, featuring over 200 full-length stories and 1,000 content pieces added daily. Use our RSS feeds to manage and add custom feeds of your choice.
+
+<img className="pro-border-gradient" width="800" alt="News Dashboard" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/new_news_template.png" />
+
+## Equity Research
+
+Research any company's business and financial performance, including company details, financial metrics, comparative analysis, ownership insights, event calendars, and analyst estimates.
+
+<img className="pro-border-gradient" width="800" alt="Equity Research Dashboard" src="https://openbb-assets.s3.amazonaws.com/docs/pro/equity-template.png" />
+
+## Analyst Dashboard
+
+Manage your portfolio holdings and their latest updates using our Watchlist widget, along with real-time news, valuation multiples, price targets, and analyst estimates.
+
+<img className="pro-border-gradient" width="800" alt="Analyst Dashboard" src="https://openbb-assets.s3.amazonaws.com/docs/pro/analyst-template.png" />
+
+## World Economics
+
+Stay updated with near real-time economic calendars and the historical performance of global currency pairs.
+
+<img className="pro-border-gradient" width="800" alt="World Economics Dashboard" src="https://openbb-assets.s3.amazonaws.com/docs/pro/world-economics.png" />
+
+## Country Economics
+
+Research country-specific economic indicators, including GDP, inflation, and unemployment rates.
+
+<img className="pro-border-gradient" width="800" alt="Country Economics Dashboard" src="https://openbb-assets.s3.amazonaws.com/docs/pro/country-economics.png" />
+
+## ETF Analysis
+
+Research ETFs with information on metadata, price performance, classification, and historical holdings.
+
+<img className="pro-border-gradient" width="800" alt="ETF Analysis Dashboard" src="https://openbb-assets.s3.amazonaws.com/docs/pro/etf-template.png" />
+
+## Comparison Analysis
+
+Quickly Compare any two companies' performance, including valuation multiples, analyst estimates, price performance, and price targets.
+
+<img className="pro-border-gradient" width="800" alt="Company Comparison Dashboard" src="https://openbb-assets.s3.amazonaws.com/docs/pro/comparison-template.png" />
+
+
+---
+
+---
+title: OpenBB Platform
+sidebar_position: 6
+description: Learn how to integrate the OpenBB Platform data to OpenBB Workspace
+keywords:
+- widgets.json
+- OpenBB API
+- Endpoint integration
+- widget configuration
+- Workspace widgets
+- OpenBB Platform Installer
+- Widget filtering
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Open source platform integration | OpenBB Workspace Docs" />
+
+This section will highlight how you can run the [OpenBB Platform](https://github.com/OpenBB-finance/OpenBB) locally and integrate 350+ different datasets into the OpenBB Workspace in under 5 minutes.
+
+If you want to learn more about the open source platform, check [our documentation](https://docs.openbb.co/platform).
+
+Here's a video that you can use to follow step-by-step instructions.
+
+:::warning
+
+We've removed the "Data Connectors" tab. So instead of Data Connectors > Add Data > Custom Backend, go to Apps > Connect Backend.
+
+:::
+
+<div style={{position: 'relative', paddingBottom: '56.25%', height: '0', overflow: 'hidden', maxWidth: '100%'}}>
+    <iframe 
+    style={{position: 'absolute', top: '0', left: '0', width: '100%', height: '100%', display: 'block', margin: '0 auto'}} 
+    src="https://www.youtube.com/embed/DFz1WQJbT6c?si=_K3amHb8p4fkTKaj" 
+    title="YouTube video player" 
+    frameBorder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+    referrerPolicy="strict-origin-when-cross-origin" 
+    allowFullScreen></iframe>
 </div>
 
-## Note Widget
+## Step by step
 
-The Note widget transforms your dashboard into a dynamic research platform, enabling you to capture and organize your insights effectively. This versatile tool allows you to:
+The steps are also described below:
 
-- Document real-time insights during market analysis
-- Record key findings and observations
-- Store and organize prompts for AI-powered analysis
-- Create a searchable knowledge base of your research
+1. Download the OpenBB Platform Installer which can be found [here](https://my.openbb.co/app/platform/downloads).
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="Note widget interface showing text editing capabilities" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/note_widget.png" />
-</div>
+<img className="pro-border-gradient" width="1000" alt="Installer" src="https://github.com/user-attachments/assets/f161c50a-93a4-45db-a504-9c9c45f59082" />
 
-### AI Integration
 
-The Note widget's AI integration capabilities enhance your analysis workflow by:
+Select the right installer based on your OS and architecture. Then install it.
 
-- Maintaining a library of effective prompts
-- Providing context for AI analysis
-- Creating a seamless workflow between manual research and automated insights
-- Enabling intelligent data processing and interpretation
+2. Once installation is complete, find the `OpenBB` folder that has been created in the installation directory selected. Double click on `OpenBB/openbb-api`.
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="Note widget being used as AI context" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/note_context.png" />
-</div>
+<img className="pro-border-gradient" width="1000" alt="OpenBB API" src="https://github.com/user-attachments/assets/baba4613-8253-431c-bce2-f9764533de41" />
 
-## Website and Iframe Widget
+3. A popup should be initiated, and you will be prompted to insert your personal access token (PAT), which can be retrieved from [here](https://my.openbb.co/app/platform/pat).
 
-The Website widget brings external data sources directly into your dashboard, creating a unified research environment. This powerful integration enables you to:
+<img className="pro-border-gradient" width="1000" alt="PAT" src="https://github.com/user-attachments/assets/43ac8f94-a0ce-4c38-9589-94d03322cfd7" />
 
-- Access and interact with external websites without leaving OpenBB
-- Compare data from multiple sources side by side
-- Create a comprehensive research workspace
-- Maintain context while analyzing multiple data sources
+Note: This assumes that the user has spent time setting up their API keys [here](https://my.openbb.co/app/platform/credentials).
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="Website widget showing embedded webpage" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/website.png" />
-</div>
+<img className="pro-border-gradient" width="1000" alt="API Keys" src="https://github.com/user-attachments/assets/f3e565c7-d343-421a-bfee-6be7acb79042" />
 
-> **Note:** Some websites may restrict embedding. OpenBB automatically checks and only displays websites that permit embedding.
 
-## RSS Feeds Widget
+4. The OpenBB Platform API should now be up and running.
 
-The RSS Feeds widget serves as your personal news aggregator within OpenBB, keeping you informed with market-moving information. This essential tool provides:
+<img className="pro-border-gradient" width="1000" alt="OpenBB Platform API" src="https://github.com/user-attachments/assets/5015a675-7953-4807-98d2-94cdc041fd64" />
 
-- Curated financial news from top sources
-- Customizable news feed preferences
-- Real-time market updates
-- Integrated news analysis within your research workflow
+5. Finally, you simply need to set up the custom backend on OpenBB Workspace.
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="RSS Feeds widget showing news headlines" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/rss.png" />
-</div>
+:::note
+If you are using Brave/Safari you will need an HTTPS connection - see how [here](https://docs.openbb.co/excel/faqs)
+:::
 
-## Clock Widget
+<!-- TODO - We cant do this yet - issue with localhost in name - You can do so by clicking on this [link](http://pro.openbb.co/app/data-connectors?tab=my-data&modal=data-connectors&dcTab=backend&name=OpenBB%20Platform&url=http://localhost:6900). -->
 
-The Clock widget helps you track global market hours and coordinate across time zones, essential for international trading and analysis. This tool is particularly valuable for:
+Right click on a dashboard, then click "Add data".
 
-- Monitoring market open/close times across different regions
-- Coordinating with international teams
-- Planning trades across multiple time zones
-- Staying aware of global market events
+<img className="pro-border-gradient" width="200" alt="Table Widget Example" src="https://openbb-cms.directus.app/assets/0c2c8866-54a8-4137-90b6-bf0db365ca6e.png" />
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="Clock widget showing multiple time zones" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/clock.png" />
-</div>
+Then fill in the information as shown below:
 
-## Simple API Endpoints
+<img className="pro-border-gradient" width="800" alt="Table Widget Example" src="https://openbb-cms.directus.app/assets/563aca68-1ec3-48c7-86d8-9129e0e5fd8c.png" />
 
-The Simple API Endpoints widget provides a direct path to integrate custom data into your dashboard, enabling real-time data updates and analysis. This powerful feature:
+Or you could also click this link to have it all filed in: https://pro.openbb.co/app?modal=connect-backend&name=OpenBB%20Platform&url=https://127.0.0.1:6900
 
-- Converts API responses into interactive tables
-- Requires minimal configuration
-- Supports JSON data formats
-- Enables real-time data updates
 
-### Implementation Guide
+6. Voila. You are now ready to access 300+ data widgets from OpenBB. For free.
 
-1. Enter your API endpoint URL
-2. Configure any required connection details
-3. Select the relevant metadata
-4. The widget automatically renders your data in table format
+These are some apps available out of the box:
 
-### Troubleshooting Guide
+<img className="pro-border-gradient" width="800" alt="Table Widget Example" src="https://openbb-cms.directus.app/assets/9d5f9dba-1603-489c-ad47-ae0f9b7bd0da.png" />
 
-#### Data Not Displaying
+## Advanced - Access this data on mobile
 
-- Verify your endpoint returns JSON format
-- Check API response structure
-- Ensure proper authentication if required
+This section will use `ngrok` as the proxy between our platform API endpoints running locally and the internet. You can do this in ngrok free plan.
 
-#### Connection Errors
+1. Install ngrok by following [these](https://ngrok.com/docs/getting-started/) instructions.
 
-- Use the '+ Add Headers' button to include required authentication
-- Verify endpoint accessibility
-- Check network connectivity
+2. Open a terminal and run `ngrok http 6900`. This assume that the open source platform API is running on http://localhost:6900.
 
-#### Data Structure Issues
+If that runs correctly, you'll get an output similar to the following.
 
-- Use the "Data Key" parameter for nested JSON structures
-- Consider using [Data Integration](/content/workspace/data-widgets/index.md) for complex data processing
+<img className="pro-border-gradient" width="1000" alt="ngrok" src="https://github.com/user-attachments/assets/e938b28b-359b-41e7-b822-6fc400e36819" />
 
-For additional support, contact [support@openbb.finance](mailto:support@openbb.finance) with specific details about your issue.
+Note the **Forwarding** row. That will contain a public URL that has access to your endpoint.
 
-### Pre-configured API Endpoints
+3. Update your localhost endpoint with the public URL provided by ngrok.
 
-We provide several pre-configured API endpoints for immediate use:
+<img className="pro-border-gradient" width="1000" alt="ngrok-2" src="https://github.com/user-attachments/assets/1ceed65b-3601-4a7c-8fd5-ee79cdde3917" />
 
-| Widget Title | Public URL | Category | Subcategory | Source | Description | Add to Pro |
-| ------------ | ---------- | -------- | ----------- | ------ | ----------- | ---------- |
-| Protocols | https://defillama-datasets.llama.fi/lite/v2/protocols | DeFi | TVL | DefiLLama | Comprehensive list of DeFi protocols with TVL data | <a href="https://pro.openbb.co/app?modal=data-connectors&dcTab=single&endpoint=https://defillama-datasets.llama.fi/lite/v2/protocols&name=Protocols" target="_blank"> <button className="_btn text-xs">Add</button> </a> |
-| Historical Chain TVL | https://api.llama.fi/v2/historicalChainTvl | DeFi | TVL | DefiLLama | Historical TVL data across all DeFi chains | <a href="https://pro.openbb.co/app?modal=data-connectors&dcTab=single&endpoint=https://api.llama.fi/v2/historicalChainTvl&name=Historical Chain TVL" target="_blank"> <button className="_btn text-xs">Add</button> </a> |
-| Chains | https://api.llama.fi/v2/chains | DeFi | TVL | DefiLLama | Current TVL metrics for all chains | <a href="https://pro.openbb.co/app?modal=data-connectors&dcTab=single&endpoint=https://api.llama.fi/v2/chains&name=Chains" target="_blank"> <button className="_btn text-xs">Add</button> </a> |
-| TAO stats | https://taostats.io/data.json | Crypto | | Tao | Real-time $TAO token and subnet metrics | <a href="https://pro.openbb.co/app?modal=data-connectors&dcTab=single&endpoint=https://taostats.io/data.json&name=TAO stats" target="_blank"> <button className="_btn text-xs">Add</button> </a> |
+4. Add a request header as authentication.
 
+Click on "Add Authentication" button, and add the following:
+
+Key: ngrok-skip-browser-warning
+Value: x
+Location: Header
+
+You have to include the request header `ngrok-skip-browser-warning` with any value in the request header, to bypass the Ngrok Browser Warning.
+
+<img className="pro-border-gradient" width="1000" alt="ngrok-3" src="https://github.com/user-attachments/assets/03968960-e09a-46d8-98b9-718b6ae1b0db" />
+
+You are now ready to access this data on your phone, just ensure that you keep running the API endpoint and ngrok locally.
+
+## Advanced - Filter widgets
+
+If you run the steps above, you will have access to a dozen different data vendors and hundreds of different widgets. However, some of these may not work because you haven't set up the API key for the data vendor or you may not be interested to bring some of those widgets into your OpenBB Workspace.
+
+This section will explore how you can filter the platform integration datasets that are made available on OpenBB.
+
+1. Go to the [widgets filter page](https://my.openbb.co/app/platform/widgets) where you can set the data vendors you are interested and also select the widgets within. Once you are happy you can download the `widget_settings.json` configuration file by clicking on **Download**.
+
+<img className="pro-border-gradient" width="1000" alt="widgets" src="https://github.com/user-attachments/assets/c978c28d-e53a-4f83-9488-dcb524572b86" />
+
+2. In the `OpenBB` folder that has been created when you installed the Platform. There must be a `Settings` folder within. This folder should be the destination of your widget setttings file (`widget_settings.json`), which will serve as the configuration file for your custom backend.
+
+Now, similarly to the previous section, you should:
+- Run `OpenBB/openbb-api`
+- Set your PAT
+- Refresh the connection inside the ["Manage Backends"](https://pro.openbb.co/app) button or follow instructions above to add again.
+
+<!-- (http://pro.openbb.co/app/data-connectors?tab=my-data&modal=data-connectors&dcTab=backend&name=OpenBB%20Platform&url=http://localhost:6900) -->
+
+> Take into consideration that, if you change the default configurations on the OpenBB Platform settings, the URL (http://127.0.0.1:6900) might differ.
+
+<img className="pro-border-gradient" width="1000" alt="widgets-filter" src="https://github.com/user-attachments/assets/692e8da3-57fb-4cff-b566-adf8d5539530" />
 
 
 ---
@@ -1082,501 +1244,6 @@ The OpenBB Add-in for Excel is available on the [Microsoft AppSource](https://ap
 ---
 
 ---
-title: FAQs
-sidebar_position: 18
-description: Comprehensive guide to frequently asked questions about OpenBB Workspace data integration, custom backend setup, widget configuration, and troubleshooting common issues.
-keywords:
-  - FAQs
-  - Data Integration
-  - Custom Backend
-  - Widget Configuration
-  - API Integration
-  - OpenBB Workspace
-  - Backend Setup
-  - Widget Templates
-  - Troubleshooting
-  - Data Sources
----
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="FAQs | OpenBB Workspace Docs" />
-
-### General
-
-**Q: What is the purpose of a custom backend in OpenBB Workspace?**
-
-A: A custom backend allows you to integrate your own data sources into OpenBB Workspace, enabling the creation of personalized widgets, dashboards, and templates that display your data in various ways. For more details, see the [Overview](/workspace/data-integration#1-create-the-api-server) section.
-
-**Q: What technologies are required to set up a custom backend?**
-
-A: You will need to use an API framework and a `widgets.json` file to define widget configurations. Optionally, you can use a `apps.json` file for layout configurations. Refer to the [Creating your own custom backend](/workspace/data-widgets) section for more information.
-
-### Setup and Configuration
-
-**Q: How do I start setting up a custom backend?**
-
-A: Follow the structure outlined in the [Overview](/workspace/data-integration#getting-started-hello-world-example) section.
-
-**Q: What is the `widgets.json` file, and why is it important?**
-
-A: The `widgets.json` file is a configuration file that connects your custom backend data to the widgets displayed in OpenBB Workspace. It defines widget properties such as name, description, category, endpoint, and more. See the [Example Widgets Configuration](/workspace/widgets-json-reference#example-widgets-json) section for details.
-
-**Q: How do I add Authorization to my custom backend?**
-
-A: We provide an the ability when adding a custom backend to pass a custom Header or Query Parameter to your backend on every request. You can then verify this in your backend and either allow or deny access to the request.
-
-<details>
-<summary mdxType="summary">Authorization</summary>
-
-<div style={{display: 'flex', justifyContent: 'left'}}>
-  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/authorization.png" />
-</div>
-</details>
-
-### Widgets and Templates
-
-**Q: How can I create a new widget?**
-
-A: Define the widget in the `widgets.json` file with necessary properties like name, description, category, and endpoint. Then, create an endpoint in your FastAPI application to serve the data for this widget. Check the [Widgets json reference](/workspace/widgets-json-reference) page for guidance.
-
-**Q: Can I customize the appearance of widgets?**
-
-A: Yes, you can customize widget appearance using properties in the `widgets.json` file, such as `gridData` for size and `columnsDefs` for table widgets. More information is available in the [Customizing Widgets](/workspace/widgets-json-reference) section.
-
-**Q: What are apps, and how do I use them?**
-
-A: Apps allow you to build tailored solutions for your specific needs. In the `apps.json` file, you can specify the list of data widgets, prompts and AI agents that make up your app and serve them via an API endpoint. See the [Apps](/workspace/apps) section for more details.
-
-**Q: How do I implement dynamic dropdown options in widgets?**
-
-A: Use the `type: "endpoint"` in your parameter configuration and specify an `optionsEndpoint` that returns the available options. See the [Input Parameters](/workspace/widget-parameters/advanced-dropdown) page for implementation details.
-
-**Q: Can I group widgets to share parameters?**
-
-A: Yes, widgets can be grouped by using the same parameter configuration. This allows a single parameter selection to update all related widgets. More information is available in the [Parameter Grouping](/workspace/widget-parameters/parameter-grouping) page.
-
-### Troubleshooting
-
-**Q: I can't connect to my backend using Safari/Brave. What should I do?**
-
-A: Ensure your API is running over HTTPS. You may need to create a self-signed certificate and configure your browser to trust it.
-
-<details>
-<summary mdxType="summary">Safari/Brave HTTPS Setup</summary>
-
-OpenBB Platform API Over HTTPS
-
-To run the API over the HTTPS protocol, you must first create a self-signed certificate and the associated key. After steps 1 & 2 above, you can generate the files by entering this to the command line:
-
-```sh
-openssl req -x509 -days 3650 -out localhost.crt -keyout localhost.key   -newkey rsa:4096 -nodes -sha256   -subj '/CN=localhost' -extensions EXT -config <( \
-   printf "[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth")
-```
-
-Two files will be created, in the current working directory, that are passed as keyword arguments to the `openbb-api` entry point.
-
-```sh
-openbb-api --ssl_keyfile localhost.key --ssl_certfile localhost.crt
-```
-
-**Note**: Adjust the command to include the full path to the file if the current working directory is not where they are located.
-
-The certificate - `localhost.crt` - will need to be added to system's trust store. The process for this will depend on the operating system and the user account privilege.
-
-A quick solution is to visit the server's URL, show the details of the warning, and choose to continue anyways.
-
-Contact the system administrator if you are using a work device and require additional permissions to complete the configuration.
-
-![This Connection Is Not Private](https://in.norton.com/content/dam/blogs/images/norton/am/this_connection_not_is_private.png)
-
-</details>
-
-**Q: My widget data is not refreshing as expected. What could be wrong?**
-
-A: Check the `refetchInterval` and `staleTime` settings in your `widgets.json` file. Ensure they are set appropriately for your data's update frequency. Refer to the [Refetch Interval](/workspace/widget-configuration/refetch-interval) section for more information. Or you have set the [`runButton`](/workspace/widget-configuration/run-button) to `true` in the `widgets.json` file which doesn't refresh the data until you click on it.
-
-
----
-
----
-title: Apps Gallery
-sidebar_position: 5
-description: Browse our curated collection of apps for financial analysis, market research, portfolio management and much more.
-keywords:
-- Dashboard Templates
-- Financial Analysis
-- Market Research
-- Portfolio Management
-- Charting
-- News
-- Equity Research
-- Economic Indicators
-- ETF Analysis
-- Community Templates
----
-
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="Apps Gallery | OpenBB Workspace Docs" />
-
-This is an example of what your Apps page may look like for different workflows & apps.
-
-<img width="800" alt="OpenBB Workspace Multiple Applications View" src="https://openbb-cms.directus.app/assets/2fc9097e-0941-49df-8d83-7d6b5a87bb45.png" />
-
-## Portfolio Risk Management
-
-Monitor and analyze your portfolio's risk metrics, including volatility, beta, and correlation analysis. This dashboard helps you make informed decisions about risk management and portfolio optimization.
-
-<img width="800" alt="Portfolio Risk Management Dashboard" src="https://openbb-cms.directus.app/assets/b1d5b799-3abe-4d45-b04c-601e2b652b18.png" />
-
-- Code open source [here](https://github.com/OpenBB-finance/backend-examples-for-openbb-workspace/tree/main/demo-apps/demo-risk).
-- Available to be added with https://openbb-demo-risk.fly.dev
-
-## DTCC Trades
-
-Track and analyze Depository Trust & Clearing Corporation (DTCC) trades in real-time. Monitor large transactions, identify unusual trading patterns, and stay informed about market movements.
-
-<img width="800" alt="DTCC Trades Dashboard" src="https://openbb-cms.directus.app/assets/4e3dc7ec-3b79-447d-b573-9762212f715f.png" />
-
-- Open source code [here](https://github.com/OpenBB-finance/backend-examples-for-openbb-workspace/tree/main/demo-apps/dtcc_trade_repository).
-- Available to be added with https://dtcc-trade-repo.fly.dev
-
-## FED Net Liquidity
-
-Monitor the Federal Reserve's net liquidity measures and their impact on financial markets. Track changes in the Fed's balance sheet and understand their implications for market conditions.
-
-<img width="800" alt="FED Net Liquidity Dashboard" src="https://openbb-cms.directus.app/assets/93280111-380d-4620-b7a9-487ec7db2e71.png" />
-
-- Open source code [here](https://github.com/DidierRLopes/dharmatech-openbb).
-- Available to be added with https://dharmatech-openbb.fly.dev
-
-## Macro Analysis
-
-Comprehensive macroeconomic analysis dashboard featuring key economic indicators, market trends, and global economic data. Stay informed about broader market conditions and economic trends.
-
-<img width="800" alt="Macro Analysis Dashboard" src="https://openbb-cms.directus.app/assets/5648c15c-9f75-44c3-b4fa-b17cfde5974a.png" />
-
-- Blog on this app: https://openbb.co/blog/from-excel-to-agents-rebuilding-the-macro-research-workflow-for-the-ai-era
-
-## Congressional Data & Executive Orders
-
-Track and analyze legislative activities and executive actions that impact financial markets. Monitor congressional bills, voting records, and executive orders to stay informed about potential regulatory changes and policy developments that could affect your investments.
-
-<img width="800" alt="Congressional Data & Executive Orders Dashboard" src="https://openbb-cms.directus.app/assets/bd8eb192-ec73-4fb4-9bce-038af1928016.png" />
-
-- Open source code [here](https://github.com/andrewkenreich/congress).
-- API key required.
-
-## Crypto Analysis
-
-Comprehensive cryptocurrency analysis platform built by Matt, featuring real-time price data, market trends, and trading insights. Monitor crypto markets and make informed investment decisions.
-
-<img width="800" alt="Crypto Analysis Dashboard" src="https://openbb-cms.directus.app/assets/441e937c-e8aa-49f8-a3e9-5b4463192e9d.png" />
-
-- Open source code [here](https://github.com/MattMaximo/CryptoBB).
-- API key required.
-
-## Opening Bell Daily
-
-Start your trading day with the Opening Bell Daily dashboard, providing pre-market analysis, key events, and market-moving news to help you prepare for the trading session. This highlights how you can use your watermark.
-
-<img width="800" alt="Opening Bell Daily Dashboard" src="https://openbb-cms.directus.app/assets/3f92b5d8-9942-4b9e-81cf-8722a1296f2c.png" />
-
-- Open source code [here](https://openbb-opening-bell-daily.fly.dev).
-- Available to be added with https://openbb-opening-bell-daily.fly.dev
-
-## FRED Economic Data
-
-Access and analyze Federal Reserve Economic Data (FRED) with real-time updates on economic indicators, historical data, and trend analysis. Monitor key economic metrics that influence market movements.
-
-<img width="800" alt="FRED Economic Data Dashboard" src="https://openbb-cms.directus.app/assets/6d218f61-4702-4998-8dad-f590aaae616b.png" />
-
-- Part of the [OpenBB Platform](/excel/platform-installer) package.
-- API key required.
-
-## BLS Statistics
-
-Track Bureau of Labor Statistics (BLS) data including employment, inflation, and other key economic indicators. Stay updated with the latest labor market trends and economic statistics.
-
-<img width="800" alt="BLS Statistics Dashboard" src="https://openbb-cms.directus.app/assets/f3b176e5-e362-4e4f-8a47-2aed57100279.png" />
-
-- Part of the [OpenBB Platform](/excel/platform-installer) package.
-- API key required.
-
-## IMF Data
-
-Access International Monetary Fund (IMF) data and analysis on global economic trends, financial stability, and economic forecasts. Monitor international economic developments and their impact on markets.
-
-<img width="800" alt="IMF Data Dashboard" src="https://openbb-cms.directus.app/assets/08fde756-98e5-474a-8f00-8233dfdbb49f.png" />
-
-- Part of the [OpenBB Platform](/excel/platform-installer) package.
-- API key required.
-
-## Charting
-
-Visualize price action, perform technical analysis, and overlay multiple time series. Our platform supports a wide range of time series, including stocks, funds, ETFs, and economic data.
-
-<img className="pro-border-gradient" width="800" alt="Advanced Charting Dashboard" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/new_charting.png" />
-
-## News
-
-Stay up-to-date with the latest global and industry news, featuring over 200 full-length stories and 1,000 content pieces added daily. Use our RSS feeds to manage and add custom feeds of your choice.
-
-<img className="pro-border-gradient" width="800" alt="News Dashboard" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/new_news_template.png" />
-
-## Equity Research
-
-Research any company's business and financial performance, including company details, financial metrics, comparative analysis, ownership insights, event calendars, and analyst estimates.
-
-<img className="pro-border-gradient" width="800" alt="Equity Research Dashboard" src="https://openbb-assets.s3.amazonaws.com/docs/pro/equity-template.png" />
-
-## Analyst Dashboard
-
-Manage your portfolio holdings and their latest updates using our Watchlist widget, along with real-time news, valuation multiples, price targets, and analyst estimates.
-
-<img className="pro-border-gradient" width="800" alt="Analyst Dashboard" src="https://openbb-assets.s3.amazonaws.com/docs/pro/analyst-template.png" />
-
-## World Economics
-
-Stay updated with near real-time economic calendars and the historical performance of global currency pairs.
-
-<img className="pro-border-gradient" width="800" alt="World Economics Dashboard" src="https://openbb-assets.s3.amazonaws.com/docs/pro/world-economics.png" />
-
-## Country Economics
-
-Research country-specific economic indicators, including GDP, inflation, and unemployment rates.
-
-<img className="pro-border-gradient" width="800" alt="Country Economics Dashboard" src="https://openbb-assets.s3.amazonaws.com/docs/pro/country-economics.png" />
-
-## ETF Analysis
-
-Research ETFs with information on metadata, price performance, classification, and historical holdings.
-
-<img className="pro-border-gradient" width="800" alt="ETF Analysis Dashboard" src="https://openbb-assets.s3.amazonaws.com/docs/pro/etf-template.png" />
-
-## Comparison Analysis
-
-Quickly Compare any two companies' performance, including valuation multiples, analyst estimates, price performance, and price targets.
-
-<img className="pro-border-gradient" width="800" alt="Company Comparison Dashboard" src="https://openbb-assets.s3.amazonaws.com/docs/pro/comparison-template.png" />
-
-
----
-
----
-title: Overview  
-sidebar_position: 1
-description: The OpenBB Add-in for Excel is a powerful integration that enables direct access to financial data within Microsoft Excel. This seamless integration allows you to create sophisticated financial models and perform comprehensive analysis without leaving your spreadsheet environment.
-keywords:
-- excel add-in
-- financial data integration
-- dynamic widgets
-- excel formulas
-- dashboard export
-- financial modeling
----
-
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="OpenBB Add-in for Excel Docs" />
-
-The OpenBB Add-in for Excel enables enterprise users to access all available data from their OpenBB Workspace through interactive widgets.
-
-## OpenBB Widgets
-
-Enterprise users with access to the OpenBB Add-in for Excel can utilize the **Excel formula** option in their widget settings to access widget data directly in Excel.
-
-<center>
-<img src="https://openbb-cms.directus.app/assets/cf39abef-9a93-42fa-b98f-d1e7a2e38c77.png" alt="Excel formula dropdown in widget settings" width="900px" />
-</center>
-
-### Dynamic Widgets with Implicit Parameters
-
-When accessing the **Excel formula** dropdown, users will see the following interface:
-
-<center>
-<img src="https://openbb-cms.directus.app/assets/fd7f2baf-edd3-48b9-a3d8-6bc3f33c0c68.png" alt="Excel formula interface" width="900px" />
-</center>
-
-The interface displays the widget name, backend information, and the corresponding Excel formula. For example:
-
-```excel
-=OBB.WIDGET("DTCC Trades","swap_rate_levels_custom_obb",{"currency","USD";"swap_type","OIS";"period","1y"})
-```
-
-Note: The formula is displayed with indentation for better readability, but when copied to the clipboard, it will be formatted as a single line for Excel compatibility.
-
-Here's how it appears in Excel:
-
-<center>
-<img src="https://openbb-cms.directus.app/assets/7478fdf5-de07-472b-993f-45bfbef4b1e2.png" alt="Excel formula implementation" width="600px" />
-</center>
-
-### Dynamic Widgets with Explicit Parameters
-
-Users can enable an alternative mode by selecting the "with explicit parameters" checkbox. This mode separates the parameters from the formula, creating a more flexible widget-like experience in Excel.
-
-<center>
-<img src="https://openbb-cms.directus.app/assets/22ce67c6-efec-4021-886d-0452891a2af9.png" alt="Explicit parameters interface" width="900px" />
-</center>
-
-Implementation example:
-
-<center>
-<img src="https://openbb-cms.directus.app/assets/aa48622e-a634-4565-a5e4-03ee0cfd5a3a.png" alt="Explicit parameters in Excel" width="600px" />
-</center>
-
-Note: The formula and parameters are initially set to cell A1, but users can modify the formula parameters to reference different cell ranges based on their specific needs.
-
-## Dashboard to Excel Export
-
-Users can export entire dashboard data to Excel using the left sidebar export functionality.
-
-<center>
-<img src="https://openbb-cms.directus.app/assets/6bf99ebf-7c9e-4a3a-b83b-ee5b466ffd9c.png" alt="Dashboard export options" width="400px" />
-</center>
-
-Three export options are available:
-
-<center>
-<img src="https://openbb-cms.directus.app/assets/eb099308-327b-4bb5-8e5c-1e9d45534512.png" alt="Export options menu" width="400px" />
-</center>
-
-The first worksheet of the exported Excel file contains comprehensive dashboard information:
-
-<center>
-<img src="https://openbb-cms.directus.app/assets/c4f4973d-5f8e-411c-a238-370eb0f45ea9.png" alt="Dashboard information in Excel" width="900px" />
-</center>
-
-This includes:
-- Widget metadata
-- Parameter configurations
-- Dashboard name
-- Export timestamp
-
-### Static Data Export
-
-When exporting in static data mode, a progress dialog appears to indicate the export status:
-
-<center>
-<img src="https://openbb-cms.directus.app/assets/db4784db-630e-458c-b60e-699a4444e054.png" alt="Static data export progress" width="400px" />
-</center>
-
-Each OpenBB widget is exported to a separate worksheet, containing both the parameters used and the corresponding data:
-
-<center>
-<img src="https://openbb-cms.directus.app/assets/a9864e6d-16cc-468f-8045-4e3b1689d6c4.png" alt="Widget data in Excel" width="600px" />
-</center>
-
-### Dynamic Export
-
-For dynamic exports (both implicit and explicit parameter modes), the exported Excel file will utilize the OpenBB Add-in formulas as described in the previous sections.
-
----
-
----
-title: Native Installation (PWA)
-description: Learn how to install and use OpenBB Workspace as a Progressive Web App (PWA) on your desktop and mobile devices.
-sidebar_position: 2
-keywords:
-- OpenBB Workspace
-- PWA installation
-- Desktop application
-- iOS application
-- Android application
----
-
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="Native Installation (PWA) | OpenBB Workspace Docs" />
-
-OpenBB Workspace is now available as a Progressive Web App (PWA), providing a seamless, native-like experience across all your devices.
-
-<img width="800" alt="PWA" src="https://openbb-cms.directus.app/assets/b1d5b799-3abe-4d45-b04c-601e2b652b18.png" />
-
-This installation method offers several advantages:
-
-- **Offline Access**: Continue working even without an internet connection
-- **Native Performance**: Faster loading times and smoother interactions
-- **Cross-Platform**: Consistent experience across desktop and mobile devices
-- **Automatic Updates**: Always have the latest features without manual updates
-
-## Desktop Installation
-
-The desktop PWA provides the most complete OpenBB experience, with full keyboard support and optimized screen real estate.
-
-### Installation Steps
-
-1. Launch Chrome, Edge, or any Chromium-based browser
-2. Navigate to [https://pro.openbb.co](https://pro.openbb.co)
-3. Click the install icon in the address bar (typically a plus sign or computer icon)
-4. Follow the installation prompts to add OpenBB to your desktop
-
-<video width="100%" controls>
-  <source src="https://openbb-cms.directus.app/assets/36685e54-d8c1-47ba-acd6-1692fabd768e" type="video/mp4" />
-  Your browser does not support the video tag.
-</video>
-
-## Mobile Installation
-
-### iOS Devices
-
-1. Open Safari and navigate to [https://pro.openbb.co](https://pro.openbb.co)
-2. Tap the share button (square with upward arrow) at the bottom of the screen
-3. Select "Add to Home Screen" from the share menu
-4. Name the app "OpenBB" and tap "Add"
-5. The OpenBB icon will appear on your home screen
-
-<video controls>
-  <source src="https://openbb-cms.directus.app/assets/9bd37920-5776-4004-b6de-8650cd1f8c2a" type="video/mp4" />
-  Your browser does not support the video tag.
-</video>
-
-### Android Devices
-
-1. Open Chrome and navigate to [https://pro.openbb.co](https://pro.openbb.co)
-2. Tap the three-dot menu in the top-right corner
-3. Select "Add to Home screen" from the menu
-4. Name the app "OpenBB" and tap "Add"
-5. The OpenBB icon will appear on your home screen
-
-<video controls>
-  <source src="https://openbb-cms.directus.app/assets/5699793b-cef4-4fbb-8f2c-1deeca26ea41" type="video/mp4" />
-  Your browser does not support the video tag.
-</video>
-
-## Using OpenBB PWA
-
-The PWA version of OpenBB Workspace provides a consistent experience across all your devices while maintaining full functionality. Key features include:
-
-- **Responsive Design**: Optimized layouts for desktop, tablet, and mobile screens
-- **Touch Support**: Intuitive touch controls for mobile devices
-- **Offline Capabilities**: Access key features without an internet connection
-- **Cross-Device Sync**: Seamlessly continue your work across different devices
-
-### Best Practices
-
-- Use Chrome or Edge for the best desktop experience
-- Keep your browser updated to the latest version
-- Ensure you have sufficient storage space on your device
-- Connect to a stable internet connection for initial setup
-
-### Troubleshooting
-
-If you encounter any issues during installation:
-
-1. Clear your browser cache and try again
-2. Ensure you're using a supported browser version
-3. Check your device's storage space
-4. Verify your internet connection
-
-## Learn More
-
-For a deeper dive into the OpenBB PWA, including its development journey and technical implementation, read our detailed blog post: [OpenBB Workspace is Now Available on Mobile](https://openbb.co/blog/openbb-terminal-is-now-available-on-mobile)
-
----
-
----
 title: OBB.GET
 sidebar_position: 15
 description: Extract and slice specific data from Excel ranges using labels or indices
@@ -1809,153 +1476,551 @@ where:
 ---
 
 ---
-title: OpenBB Platform
-sidebar_position: 6
-description: Learn how to integrate the OpenBB Platform data to OpenBB Workspace
+title: Troubleshooting
+sidebar_position: 17
+description: Common issues and solutions for the OpenBB Add-in for Excel, including error handling, installation problems, and connection troubleshooting.
 keywords:
-- widgets.json
-- OpenBB API
-- Endpoint integration
-- widget configuration
-- Workspace widgets
-- OpenBB Platform Installer
-- Widget filtering
+  - Microsoft Excel
+  - Excel Add-in
+  - Troubleshooting
+  - Error Handling
+  - Permission Error
+  - Connection Issues
+  - Duplicate Ribbon
+  - Excel Help
+  - OpenBB Support
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Troubleshooting | OpenBB Add-in for Excel Docs" />
+
+If you face specific issues while using the add-in and the solutions provided here don't resolve them, don't hesitate to reach out to us for further assistance. You can contact us through [support@openbb.finance](mailto:support@openbb.finance).
+
+### #VALUE! Error
+
+If you encounter a '#VALUE!' error when running an OBB function, first verify that you are using the correct syntax. Either [OBB.WIDGET](/excel/obb-widget) or [OBB.GET](/excel/obb-get).
+
+- If you have just opened your workbook and see this error, try recalculating the cell - this is a known issue with Excel add-ins that sometimes requires a refresh.
+
+### Add-in Not Available
+
+If the OBB functions are not appearing after installation, try these troubleshooting steps:
+
+- Verify that the OpenBB Add-in appears in your Excel ribbon
+- If not visible, go to **Insert** > **Get Add-ins** > **My Add-ins**, hover over the OpenBB add-in, click '...', remove it, and reinstall
+- If the issue persists, restart your computer or [clear the Office cache](https://learn.microsoft.com/en-us/office/dev/add-ins/testing/clear-cache)
+
+### Permission Error
+
+If you see the message "You don't have permission to use this add-in. Contact your system administrator to request access", try these solutions:
+
+- Confirm that your account has the necessary permissions to use the add-in
+- If permissions are correct, try restarting your computer or [clearing the Office cache](https://learn.microsoft.com/en-us/office/dev/add-ins/testing/clear-cache)
+
+### Duplicate Ribbon Tab
+
+If you notice duplicate 'OpenBB' tabs in the ribbon after editing a workbook in both browser and desktop versions, this is a known Excel issue. While there's no permanent fix, you can resolve it using these workarounds:
+
+- **Windows users**: Go to File > Info > Inspect Workbook > Check 'Task Pane Add-ins' > Click 'OK'. This will remove the duplicate add-in reference created by Excel in the browser
+
+- **Mac users**: 
+  1. Rename your file from .xlsx to .zip
+  2. Use WinZip for Mac to unzip the file (the default unzip tool won't work for this)
+  3. Delete the webextension1.xml file from the webextensions folder
+  4. Rename the file back to .xlsx
+
+### Connection Issues
+
+If you're unable to retrieve data through OBB.WIDGET from your backend, check these common issues:
+
+- Ensure your backend server is running and accessible from your network
+- For Mac or Safari users: Verify that your backend is using HTTPS with a valid SSL certificate
+
+
+---
+
+---
+title: FAQs
+sidebar_position: 18
+description: Comprehensive guide to frequently asked questions about OpenBB Workspace data integration, custom backend setup, widget configuration, and troubleshooting common issues.
+keywords:
+  - FAQs
+  - Data Integration
+  - Custom Backend
+  - Widget Configuration
+  - API Integration
+  - OpenBB Workspace
+  - Backend Setup
+  - Widget Templates
+  - Troubleshooting
+  - Data Sources
+---
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="FAQs | OpenBB Workspace Docs" />
+
+### General
+
+**Q: What is the purpose of a custom backend in OpenBB Workspace?**
+
+A: A custom backend allows you to integrate your own data sources into OpenBB Workspace, enabling the creation of personalized widgets, dashboards, and templates that display your data in various ways. For more details, see the [Overview](/workspace/getting-started/data-integration#1-create-the-api-server) section.
+
+**Q: What technologies are required to set up a custom backend?**
+
+A: You will need to use an API framework and a `widgets.json` file to define widget configurations. Optionally, you can use a `apps.json` file for layout configurations. Refer to the [Creating your own custom backend](/workspace/widgets) section for more information.
+
+### Setup and Configuration
+
+**Q: How do I start setting up a custom backend?**
+
+A: Follow the structure outlined in the [Overview](/workspace/getting-started/data-integration#getting-started-hello-world-example) section.
+
+**Q: What is the `widgets.json` file, and why is it important?**
+
+A: The `widgets.json` file is a configuration file that connects your custom backend data to the widgets displayed in OpenBB Workspace. It defines widget properties such as name, description, category, endpoint, and more. See the [Example Widgets Configuration](/workspace/widgets/widgets-json-reference#example-widgets-json) section for details.
+
+**Q: How do I add Authorization to my custom backend?**
+
+A: We provide an the ability when adding a custom backend to pass a custom Header or Query Parameter to your backend on every request. You can then verify this in your backend and either allow or deny access to the request.
+
+<details>
+<summary mdxType="summary">Authorization</summary>
+
+<div style={{display: 'flex', justifyContent: 'left'}}>
+  <img className="pro-border-gradient" width="600" alt="folder" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/authorization.png" />
+</div>
+</details>
+
+### Widgets and Templates
+
+**Q: How can I create a new widget?**
+
+A: Define the widget in the `widgets.json` file with necessary properties like name, description, category, and endpoint. Then, create an endpoint in your FastAPI application to serve the data for this widget. Check the [Widgets json reference](/workspace/widgets/widgets-json-reference) page for guidance.
+
+**Q: Can I customize the appearance of widgets?**
+
+A: Yes, you can customize widget appearance using properties in the `widgets.json` file, such as `gridData` for size and `columnsDefs` for table widgets. More information is available in the [Customizing Widgets](/workspace/widgets/widgets-json-reference) section.
+
+**Q: What are apps, and how do I use them?**
+
+A: Apps allow you to build tailored solutions for your specific needs. In the `apps.json` file, you can specify the list of data widgets, prompts and AI agents that make up your app and serve them via an API endpoint. See the [Apps](/workspace/apps) section for more details.
+
+**Q: How do I implement dynamic dropdown options in widgets?**
+
+A: Use the `type: "endpoint"` in your parameter configuration and specify an `optionsEndpoint` that returns the available options. See the [Input Parameters](/workspace/widgets/widget-parameters/advanced-dropdown) page for implementation details.
+
+**Q: Can I group widgets to share parameters?**
+
+A: Yes, widgets can be grouped by using the same parameter configuration. This allows a single parameter selection to update all related widgets. More information is available in the [Parameter Grouping](/workspace/widgets/widget-parameters/parameter-grouping) page.
+
+### Troubleshooting
+
+**Q: I can't connect to my backend using Safari/Brave. What should I do?**
+
+A: Ensure your API is running over HTTPS. You may need to create a self-signed certificate and configure your browser to trust it.
+
+<details>
+<summary mdxType="summary">Safari/Brave HTTPS Setup</summary>
+
+OpenBB Platform API Over HTTPS
+
+To run the API over the HTTPS protocol, you must first create a self-signed certificate and the associated key. After steps 1 & 2 above, you can generate the files by entering this to the command line:
+
+```sh
+openssl req -x509 -days 3650 -out localhost.crt -keyout localhost.key   -newkey rsa:4096 -nodes -sha256   -subj '/CN=localhost' -extensions EXT -config <( \
+   printf "[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth")
+```
+
+Two files will be created, in the current working directory, that are passed as keyword arguments to the `openbb-api` entry point.
+
+```sh
+openbb-api --ssl_keyfile localhost.key --ssl_certfile localhost.crt
+```
+
+**Note**: Adjust the command to include the full path to the file if the current working directory is not where they are located.
+
+The certificate - `localhost.crt` - will need to be added to system's trust store. The process for this will depend on the operating system and the user account privilege.
+
+A quick solution is to visit the server's URL, show the details of the warning, and choose to continue anyways.
+
+Contact the system administrator if you are using a work device and require additional permissions to complete the configuration.
+
+![This Connection Is Not Private](https://in.norton.com/content/dam/blogs/images/norton/am/this_connection_not_is_private.png)
+
+</details>
+
+**Q: My widget data is not refreshing as expected. What could be wrong?**
+
+A: Check the `refetchInterval` and `staleTime` settings in your `widgets.json` file. Ensure they are set appropriately for your data's update frequency. Refer to the [Refetch Interval](/workspace/widgets/widget-configuration/refetch-interval) section for more information. Or you have set the [`runButton`](/workspace/widgets/widget-configuration/run-button) to `true` in the `widgets.json` file which doesn't refresh the data until you click on it.
+
+
+---
+
+---
+title: Overview  
+sidebar_position: 1
+description: The OpenBB Add-in for Excel is a powerful integration that enables direct access to financial data within Microsoft Excel. This seamless integration allows you to create sophisticated financial models and perform comprehensive analysis without leaving your spreadsheet environment.
+keywords:
+- excel add-in
+- financial data integration
+- dynamic widgets
+- excel formulas
+- dashboard export
+- financial modeling
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Open source platform integration | OpenBB Workspace Docs" />
+<HeadTitle title="OpenBB Add-in for Excel Docs" />
 
-This section will highlight how you can run the [OpenBB Platform](https://github.com/OpenBB-finance/OpenBB) locally and integrate 350+ different datasets into the OpenBB Workspace in under 5 minutes.
+The OpenBB Add-in for Excel enables enterprise users to access all available data from their OpenBB Workspace through interactive widgets.
 
-If you want to learn more about the open source platform, check [our documentation](https://docs.openbb.co/platform).
+## OpenBB Widgets
 
-Here's a video that you can use to follow step-by-step instructions.
+Enterprise users with access to the OpenBB Add-in for Excel can utilize the **Excel formula** option in their widget settings to access widget data directly in Excel.
 
-:::warning
+<center>
+<img src="https://openbb-cms.directus.app/assets/cf39abef-9a93-42fa-b98f-d1e7a2e38c77.png" alt="Excel formula dropdown in widget settings" width="900px" />
+</center>
 
-We've removed the "Data Connectors" tab. So instead of Data Connectors > Add Data > Custom Backend, go to Apps > Connect Backend.
+### Dynamic Widgets with Implicit Parameters
 
-:::
+When accessing the **Excel formula** dropdown, users will see the following interface:
 
-<div style={{position: 'relative', paddingBottom: '56.25%', height: '0', overflow: 'hidden', maxWidth: '100%'}}>
-    <iframe 
-    style={{position: 'absolute', top: '0', left: '0', width: '100%', height: '100%', display: 'block', margin: '0 auto'}} 
-    src="https://www.youtube.com/embed/DFz1WQJbT6c?si=_K3amHb8p4fkTKaj" 
-    title="YouTube video player" 
-    frameBorder="0" 
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-    referrerPolicy="strict-origin-when-cross-origin" 
-    allowFullScreen></iframe>
+<center>
+<img src="https://openbb-cms.directus.app/assets/fd7f2baf-edd3-48b9-a3d8-6bc3f33c0c68.png" alt="Excel formula interface" width="900px" />
+</center>
+
+The interface displays the widget name, backend information, and the corresponding Excel formula. For example:
+
+```excel
+=OBB.WIDGET("DTCC Trades","swap_rate_levels_custom_obb",{"currency","USD";"swap_type","OIS";"period","1y"})
+```
+
+Note: The formula is displayed with indentation for better readability, but when copied to the clipboard, it will be formatted as a single line for Excel compatibility.
+
+Here's how it appears in Excel:
+
+<center>
+<img src="https://openbb-cms.directus.app/assets/7478fdf5-de07-472b-993f-45bfbef4b1e2.png" alt="Excel formula implementation" width="600px" />
+</center>
+
+### Dynamic Widgets with Explicit Parameters
+
+Users can enable an alternative mode by selecting the "with explicit parameters" checkbox. This mode separates the parameters from the formula, creating a more flexible widget-like experience in Excel.
+
+<center>
+<img src="https://openbb-cms.directus.app/assets/22ce67c6-efec-4021-886d-0452891a2af9.png" alt="Explicit parameters interface" width="900px" />
+</center>
+
+Implementation example:
+
+<center>
+<img src="https://openbb-cms.directus.app/assets/aa48622e-a634-4565-a5e4-03ee0cfd5a3a.png" alt="Explicit parameters in Excel" width="600px" />
+</center>
+
+Note: The formula and parameters are initially set to cell A1, but users can modify the formula parameters to reference different cell ranges based on their specific needs.
+
+## Dashboard to Excel Export
+
+Users can export entire dashboard data to Excel using the left sidebar export functionality.
+
+<center>
+<img src="https://openbb-cms.directus.app/assets/6bf99ebf-7c9e-4a3a-b83b-ee5b466ffd9c.png" alt="Dashboard export options" width="400px" />
+</center>
+
+Three export options are available:
+
+<center>
+<img src="https://openbb-cms.directus.app/assets/eb099308-327b-4bb5-8e5c-1e9d45534512.png" alt="Export options menu" width="400px" />
+</center>
+
+The first worksheet of the exported Excel file contains comprehensive dashboard information:
+
+<center>
+<img src="https://openbb-cms.directus.app/assets/c4f4973d-5f8e-411c-a238-370eb0f45ea9.png" alt="Dashboard information in Excel" width="900px" />
+</center>
+
+This includes:
+- Widget metadata
+- Parameter configurations
+- Dashboard name
+- Export timestamp
+
+### Static Data Export
+
+When exporting in static data mode, a progress dialog appears to indicate the export status:
+
+<center>
+<img src="https://openbb-cms.directus.app/assets/db4784db-630e-458c-b60e-699a4444e054.png" alt="Static data export progress" width="400px" />
+</center>
+
+Each OpenBB widget is exported to a separate worksheet, containing both the parameters used and the corresponding data:
+
+<center>
+<img src="https://openbb-cms.directus.app/assets/a9864e6d-16cc-468f-8045-4e3b1689d6c4.png" alt="Widget data in Excel" width="600px" />
+</center>
+
+### Dynamic Export
+
+For dynamic exports (both implicit and explicit parameter modes), the exported Excel file will utilize the OpenBB Add-in formulas as described in the previous sections.
+
+---
+
+---
+title: Native Installation (PWA)
+description: Learn how to install and use OpenBB Workspace as a Progressive Web App (PWA) on your desktop and mobile devices.
+sidebar_position: 2
+keywords:
+- OpenBB Workspace
+- PWA installation
+- Desktop application
+- iOS application
+- Android application
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Native Installation (PWA) | OpenBB Workspace Docs" />
+
+OpenBB Workspace is now available as a Progressive Web App (PWA), providing a seamless, native-like experience across all your devices.
+
+<img width="800" alt="PWA" src="https://openbb-cms.directus.app/assets/b1d5b799-3abe-4d45-b04c-601e2b652b18.png" />
+
+This installation method offers several advantages:
+
+- **Offline Access**: Continue working even without an internet connection
+- **Native Performance**: Faster loading times and smoother interactions
+- **Cross-Platform**: Consistent experience across desktop and mobile devices
+- **Automatic Updates**: Always have the latest features without manual updates
+
+## Desktop Installation
+
+The desktop PWA provides the most complete OpenBB experience, with full keyboard support and optimized screen real estate.
+
+### Installation Steps
+
+1. Launch Chrome, Edge, or any Chromium-based browser
+2. Navigate to [https://pro.openbb.co](https://pro.openbb.co)
+3. Click the install icon in the address bar (typically a plus sign or computer icon)
+4. Follow the installation prompts to add OpenBB to your desktop
+
+<video width="100%" controls>
+  <source src="https://openbb-cms.directus.app/assets/36685e54-d8c1-47ba-acd6-1692fabd768e" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+## Mobile Installation
+
+### iOS Devices
+
+1. Open Safari and navigate to [https://pro.openbb.co](https://pro.openbb.co)
+2. Tap the share button (square with upward arrow) at the bottom of the screen
+3. Select "Add to Home Screen" from the share menu
+4. Name the app "OpenBB" and tap "Add"
+5. The OpenBB icon will appear on your home screen
+
+<video controls>
+  <source src="https://openbb-cms.directus.app/assets/9bd37920-5776-4004-b6de-8650cd1f8c2a" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+### Android Devices
+
+1. Open Chrome and navigate to [https://pro.openbb.co](https://pro.openbb.co)
+2. Tap the three-dot menu in the top-right corner
+3. Select "Add to Home screen" from the menu
+4. Name the app "OpenBB" and tap "Add"
+5. The OpenBB icon will appear on your home screen
+
+<video controls>
+  <source src="https://openbb-cms.directus.app/assets/5699793b-cef4-4fbb-8f2c-1deeca26ea41" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+## Using OpenBB PWA
+
+The PWA version of OpenBB Workspace provides a consistent experience across all your devices while maintaining full functionality. Key features include:
+
+- **Responsive Design**: Optimized layouts for desktop, tablet, and mobile screens
+- **Touch Support**: Intuitive touch controls for mobile devices
+- **Offline Capabilities**: Access key features without an internet connection
+- **Cross-Device Sync**: Seamlessly continue your work across different devices
+
+### Best Practices
+
+- Use Chrome or Edge for the best desktop experience
+- Keep your browser updated to the latest version
+- Ensure you have sufficient storage space on your device
+- Connect to a stable internet connection for initial setup
+
+### Troubleshooting
+
+If you encounter any issues during installation:
+
+1. Clear your browser cache and try again
+2. Ensure you're using a supported browser version
+3. Check your device's storage space
+4. Verify your internet connection
+
+## Learn More
+
+For a deeper dive into the OpenBB PWA, including its development journey and technical implementation, read our detailed blog post: [OpenBB Workspace is Now Available on Mobile](https://openbb.co/blog/openbb-terminal-is-now-available-on-mobile)
+
+---
+
+---
+title: Core Widgets
+sidebar_position: 3
+description: Master OpenBB's essential widgets for building powerful financial dashboards, including navigation, notes, API integration, and real-time data visualization tools.
+keywords:
+- dashboard widgets
+- financial analysis
+- data visualization
+- navigation tools
+- note taking
+- API integration
+- RSS feeds
+- market monitoring
+- time tracking
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Core Widgets | OpenBB Workspace Docs" />
+
+OpenBB's core widgets form the foundation of your financial analysis workspace. These essential components enable you to organize information, capture insights, and integrate external data sources within a unified interface, creating a powerful environment for financial analysis and decision-making.
+
+## Navigation Bar
+
+The Navigation Bar serves as your dashboard's command center, providing intuitive organization for complex information. This powerful tool enables you to:
+
+- Create and manage multiple tabs for different analysis contexts
+- Organize information into logical sections
+- Separate research from analysis
+- Track different market sectors
+- Monitor various portfolios
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="600" alt="Navigation bar interface showing multiple tabs" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/navigation_bar.png" />
 </div>
 
-## Step by step
+## Note Widget
 
-The steps are also described below:
+The Note widget transforms your dashboard into a dynamic research platform, enabling you to capture and organize your insights effectively. This versatile tool allows you to:
 
-1. Download the OpenBB Platform Installer which can be found [here](https://my.openbb.co/app/platform/downloads).
+- Document real-time insights during market analysis
+- Record key findings and observations
+- Store and organize prompts for AI-powered analysis
+- Create a searchable knowledge base of your research
 
-<img className="pro-border-gradient" width="1000" alt="Installer" src="https://github.com/user-attachments/assets/f161c50a-93a4-45db-a504-9c9c45f59082" />
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="600" alt="Note widget interface showing text editing capabilities" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/note_widget.png" />
+</div>
 
+### AI Integration
 
-Select the right installer based on your OS and architecture. Then install it.
+The Note widget's AI integration capabilities enhance your analysis workflow by:
 
-2. Once installation is complete, find the `OpenBB` folder that has been created in the installation directory selected. Double click on `OpenBB/openbb-api`.
+- Maintaining a library of effective prompts
+- Providing context for AI analysis
+- Creating a seamless workflow between manual research and automated insights
+- Enabling intelligent data processing and interpretation
 
-<img className="pro-border-gradient" width="1000" alt="OpenBB API" src="https://github.com/user-attachments/assets/baba4613-8253-431c-bce2-f9764533de41" />
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="600" alt="Note widget being used as AI context" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/note_context.png" />
+</div>
 
-3. A popup should be initiated, and you will be prompted to insert your personal access token (PAT), which can be retrieved from [here](https://my.openbb.co/app/platform/pat).
+## Website and Iframe Widget
 
-<img className="pro-border-gradient" width="1000" alt="PAT" src="https://github.com/user-attachments/assets/43ac8f94-a0ce-4c38-9589-94d03322cfd7" />
+The Website widget brings external data sources directly into your dashboard, creating a unified research environment. This powerful integration enables you to:
 
-Note: This assumes that the user has spent time setting up their API keys [here](https://my.openbb.co/app/platform/credentials).
+- Access and interact with external websites without leaving OpenBB
+- Compare data from multiple sources side by side
+- Create a comprehensive research workspace
+- Maintain context while analyzing multiple data sources
 
-<img className="pro-border-gradient" width="1000" alt="API Keys" src="https://github.com/user-attachments/assets/f3e565c7-d343-421a-bfee-6be7acb79042" />
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="600" alt="Website widget showing embedded webpage" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/website.png" />
+</div>
 
+> **Note:** Some websites may restrict embedding. OpenBB automatically checks and only displays websites that permit embedding.
 
-4. The OpenBB Platform API should now be up and running.
+## RSS Feeds Widget
 
-<img className="pro-border-gradient" width="1000" alt="OpenBB Platform API" src="https://github.com/user-attachments/assets/5015a675-7953-4807-98d2-94cdc041fd64" />
+The RSS Feeds widget serves as your personal news aggregator within OpenBB, keeping you informed with market-moving information. This essential tool provides:
 
-5. Finally, you simply need to set up the custom backend on OpenBB Workspace.
+- Curated financial news from top sources
+- Customizable news feed preferences
+- Real-time market updates
+- Integrated news analysis within your research workflow
 
-:::note
-If you are using Brave/Safari you will need an HTTPS connection - see how [here](https://docs.openbb.co/excel/faqs)
-:::
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="600" alt="RSS Feeds widget showing news headlines" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/rss.png" />
+</div>
 
-<!-- TODO - We cant do this yet - issue with localhost in name - You can do so by clicking on this [link](http://pro.openbb.co/app/data-connectors?tab=my-data&modal=data-connectors&dcTab=backend&name=OpenBB%20Platform&url=http://localhost:6900). -->
+## Clock Widget
 
-Right click on a dashboard, then click "Add data".
+The Clock widget helps you track global market hours and coordinate across time zones, essential for international trading and analysis. This tool is particularly valuable for:
 
-<img className="pro-border-gradient" width="200" alt="Table Widget Example" src="https://openbb-cms.directus.app/assets/0c2c8866-54a8-4137-90b6-bf0db365ca6e.png" />
+- Monitoring market open/close times across different regions
+- Coordinating with international teams
+- Planning trades across multiple time zones
+- Staying aware of global market events
 
-Then fill in the information as shown below:
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="600" alt="Clock widget showing multiple time zones" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/clock.png" />
+</div>
 
-<img className="pro-border-gradient" width="800" alt="Table Widget Example" src="https://openbb-cms.directus.app/assets/563aca68-1ec3-48c7-86d8-9129e0e5fd8c.png" />
+## Simple API Endpoints
 
-Or you could also click this link to have it all filed in: https://pro.openbb.co/app?modal=connect-backend&name=OpenBB%20Platform&url=https://127.0.0.1:6900
+The Simple API Endpoints widget provides a direct path to integrate custom data into your dashboard, enabling real-time data updates and analysis. This powerful feature:
 
+- Converts API responses into interactive tables
+- Requires minimal configuration
+- Supports JSON data formats
+- Enables real-time data updates
 
-6. Voila. You are now ready to access 300+ data widgets from OpenBB. For free.
+### Implementation Guide
 
-These are some apps available out of the box:
+1. Enter your API endpoint URL
+2. Configure any required connection details
+3. Select the relevant metadata
+4. The widget automatically renders your data in table format
 
-<img className="pro-border-gradient" width="800" alt="Table Widget Example" src="https://openbb-cms.directus.app/assets/9d5f9dba-1603-489c-ad47-ae0f9b7bd0da.png" />
+### Troubleshooting Guide
 
-## Advanced - Access this data on mobile
+#### Data Not Displaying
 
-This section will use `ngrok` as the proxy between our platform API endpoints running locally and the internet. You can do this in ngrok free plan.
+- Verify your endpoint returns JSON format
+- Check API response structure
+- Ensure proper authentication if required
 
-1. Install ngrok by following [these](https://ngrok.com/docs/getting-started/) instructions.
+#### Connection Errors
 
-2. Open a terminal and run `ngrok http 6900`. This assume that the open source platform API is running on http://localhost:6900.
+- Use the '+ Add Headers' button to include required authentication
+- Verify endpoint accessibility
+- Check network connectivity
 
-If that runs correctly, you'll get an output similar to the following.
+#### Data Structure Issues
 
-<img className="pro-border-gradient" width="1000" alt="ngrok" src="https://github.com/user-attachments/assets/e938b28b-359b-41e7-b822-6fc400e36819" />
+- Use the "Data Key" parameter for nested JSON structures
+- Consider using [Data Integration](/workspace/widgets/index.md) for complex data processing
 
-Note the **Forwarding** row. That will contain a public URL that has access to your endpoint.
+For additional support, contact [support@openbb.finance](mailto:support@openbb.finance) with specific details about your issue.
 
-3. Update your localhost endpoint with the public URL provided by ngrok.
+### Pre-configured API Endpoints
 
-<img className="pro-border-gradient" width="1000" alt="ngrok-2" src="https://github.com/user-attachments/assets/1ceed65b-3601-4a7c-8fd5-ee79cdde3917" />
+We provide several pre-configured API endpoints for immediate use:
 
-4. Add a request header as authentication.
+| Widget Title | Public URL | Category | Subcategory | Source | Description | Add to Pro |
+| ------------ | ---------- | -------- | ----------- | ------ | ----------- | ---------- |
+| Protocols | https://defillama-datasets.llama.fi/lite/v2/protocols | DeFi | TVL | DefiLLama | Comprehensive list of DeFi protocols with TVL data | <a href="https://pro.openbb.co/app?modal=data-connectors&dcTab=single&endpoint=https://defillama-datasets.llama.fi/lite/v2/protocols&name=Protocols" target="_blank"> <button className="_btn text-xs">Add</button> </a> |
+| Historical Chain TVL | https://api.llama.fi/v2/historicalChainTvl | DeFi | TVL | DefiLLama | Historical TVL data across all DeFi chains | <a href="https://pro.openbb.co/app?modal=data-connectors&dcTab=single&endpoint=https://api.llama.fi/v2/historicalChainTvl&name=Historical Chain TVL" target="_blank"> <button className="_btn text-xs">Add</button> </a> |
+| Chains | https://api.llama.fi/v2/chains | DeFi | TVL | DefiLLama | Current TVL metrics for all chains | <a href="https://pro.openbb.co/app?modal=data-connectors&dcTab=single&endpoint=https://api.llama.fi/v2/chains&name=Chains" target="_blank"> <button className="_btn text-xs">Add</button> </a> |
+| TAO stats | https://taostats.io/data.json | Crypto | | Tao | Real-time $TAO token and subnet metrics | <a href="https://pro.openbb.co/app?modal=data-connectors&dcTab=single&endpoint=https://taostats.io/data.json&name=TAO stats" target="_blank"> <button className="_btn text-xs">Add</button> </a> |
 
-Click on "Add Authentication" button, and add the following:
-
-Key: ngrok-skip-browser-warning
-Value: x
-Location: Header
-
-You have to include the request header `ngrok-skip-browser-warning` with any value in the request header, to bypass the Ngrok Browser Warning.
-
-<img className="pro-border-gradient" width="1000" alt="ngrok-3" src="https://github.com/user-attachments/assets/03968960-e09a-46d8-98b9-718b6ae1b0db" />
-
-You are now ready to access this data on your phone, just ensure that you keep running the API endpoint and ngrok locally.
-
-## Advanced - Filter widgets
-
-If you run the steps above, you will have access to a dozen different data vendors and hundreds of different widgets. However, some of these may not work because you haven't set up the API key for the data vendor or you may not be interested to bring some of those widgets into your OpenBB Workspace.
-
-This section will explore how you can filter the platform integration datasets that are made available on OpenBB.
-
-1. Go to the [widgets filter page](https://my.openbb.co/app/platform/widgets) where you can set the data vendors you are interested and also select the widgets within. Once you are happy you can download the `widget_settings.json` configuration file by clicking on **Download**.
-
-<img className="pro-border-gradient" width="1000" alt="widgets" src="https://github.com/user-attachments/assets/c978c28d-e53a-4f83-9488-dcb524572b86" />
-
-2. In the `OpenBB` folder that has been created when you installed the Platform. There must be a `Settings` folder within. This folder should be the destination of your widget setttings file (`widget_settings.json`), which will serve as the configuration file for your custom backend.
-
-Now, similarly to the previous section, you should:
-- Run `OpenBB/openbb-api`
-- Set your PAT
-- Refresh the connection inside the ["Manage Backends"](https://pro.openbb.co/app) button or follow instructions above to add again.
-
-<!-- (http://pro.openbb.co/app/data-connectors?tab=my-data&modal=data-connectors&dcTab=backend&name=OpenBB%20Platform&url=http://localhost:6900) -->
-
-> Take into consideration that, if you change the default configurations on the OpenBB Platform settings, the URL (http://127.0.0.1:6900) might differ.
-
-<img className="pro-border-gradient" width="1000" alt="widgets-filter" src="https://github.com/user-attachments/assets/692e8da3-57fb-4cff-b566-adf8d5539530" />
 
 
 ---
@@ -2039,68 +2104,3 @@ OpenBB supports three types of unstructured data, each serving different analyti
 <div style={{display: 'flex', justifyContent: 'center'}}>
   <img className="pro-border-gradient" width="600" alt="Example of unstructured data visualization" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/unstructured_data.png" />
 </div>
-
-
----
-
----
-title: Troubleshooting
-sidebar_position: 17
-description: Common issues and solutions for the OpenBB Add-in for Excel, including error handling, installation problems, and connection troubleshooting.
-keywords:
-  - Microsoft Excel
-  - Excel Add-in
-  - Troubleshooting
-  - Error Handling
-  - Permission Error
-  - Connection Issues
-  - Duplicate Ribbon
-  - Excel Help
-  - OpenBB Support
----
-
-import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
-
-<HeadTitle title="Troubleshooting | OpenBB Add-in for Excel Docs" />
-
-If you face specific issues while using the add-in and the solutions provided here don't resolve them, don't hesitate to reach out to us for further assistance. You can contact us through [support@openbb.finance](mailto:support@openbb.finance).
-
-### #VALUE! Error
-
-If you encounter a '#VALUE!' error when running an OBB function, first verify that you are using the correct syntax. Either [OBB.WIDGET](/excel/obb-widget) or [OBB.GET](/excel/obb-get).
-
-- If you have just opened your workbook and see this error, try recalculating the cell - this is a known issue with Excel add-ins that sometimes requires a refresh.
-
-### Add-in Not Available
-
-If the OBB functions are not appearing after installation, try these troubleshooting steps:
-
-- Verify that the OpenBB Add-in appears in your Excel ribbon
-- If not visible, go to **Insert** > **Get Add-ins** > **My Add-ins**, hover over the OpenBB add-in, click '...', remove it, and reinstall
-- If the issue persists, restart your computer or [clear the Office cache](https://learn.microsoft.com/en-us/office/dev/add-ins/testing/clear-cache)
-
-### Permission Error
-
-If you see the message "You don't have permission to use this add-in. Contact your system administrator to request access", try these solutions:
-
-- Confirm that your account has the necessary permissions to use the add-in
-- If permissions are correct, try restarting your computer or [clearing the Office cache](https://learn.microsoft.com/en-us/office/dev/add-ins/testing/clear-cache)
-
-### Duplicate Ribbon Tab
-
-If you notice duplicate 'OpenBB' tabs in the ribbon after editing a workbook in both browser and desktop versions, this is a known Excel issue. While there's no permanent fix, you can resolve it using these workarounds:
-
-- **Windows users**: Go to File > Info > Inspect Workbook > Check 'Task Pane Add-ins' > Click 'OK'. This will remove the duplicate add-in reference created by Excel in the browser
-
-- **Mac users**: 
-  1. Rename your file from .xlsx to .zip
-  2. Use WinZip for Mac to unzip the file (the default unzip tool won't work for this)
-  3. Delete the webextension1.xml file from the webextensions folder
-  4. Rename the file back to .xlsx
-
-### Connection Issues
-
-If you're unable to retrieve data through OBB.WIDGET from your backend, check these common issues:
-
-- Ensure your backend server is running and accessible from your network
-- For Mac or Safari users: Verify that your backend is using HTTPS with a valid SSL certificate

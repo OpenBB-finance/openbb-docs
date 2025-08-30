@@ -25,7 +25,7 @@ To get started, create the main application file and the widget configuration fi
 - `main.py`: This file will contain your FastAPI application code.
 - `widgets.json`: This file will define the configuration for your widget.
 
-The backend will use the same FastAPI setup and structure as described in the [Overview](/workspace/data-integration#1-create-the-api-server) page.
+The backend will use the same FastAPI setup and structure as described in the [Overview](/getting-started/data-integration#1-create-the-api-server) page.
 
 ## Step 2: Create the Live Feed Endpoints
 
@@ -218,7 +218,7 @@ A few key points:
 - The `wsEndpoint` is the endpoint that will be used to get the live updates for the widget.
 - The `enableCellChangeWs` is a boolean that will be used to determine if the cell change will be sent over the WebSocket. Use this to prevent the cell from being updated over the WebSocket. By default, it is set to `true` for fields that are sent in the websocket and appear in the data. The only field that is special here is the `wsRowIdColumn` which is the column that will be used to identify the row.
 - The `wsRowIdColumn` is the column that will be used to identify the row. This is important to set correctly to ensure the live updates are displayed correctly. This the key between your ws and the initial data.
-- The `renderFn` is the function that will be used to render the cell. You can find more information on the [Render Functions](/content/workspace/widget-configuration/render-functions.md) page. In our case we are using a custom function `showCellChange` to display the change in price and providing the key to use.
+- The `renderFn` is the function that will be used to render the cell. You can find more information on the [Render Functions](widget-configuration/render-functions.md) page. In our case we are using a custom function `showCellChange` to display the change in price and providing the key to use.
 
 ## Step 3: Run the Application
 

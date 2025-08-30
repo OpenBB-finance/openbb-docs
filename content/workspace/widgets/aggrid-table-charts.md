@@ -270,7 +270,7 @@ def table_widget_with_render_functions():
     return mock_data
 ```
 
-For more information on this, check [Render functions](/workspace/widget-configuration/render-functions).
+For more information on this, check [Render functions](widget-configuration/render-functions).
 
 ## Table Widget with Hover Card
 
@@ -726,7 +726,7 @@ The formatter function receives parameters including:
 - **Padding**: `top`, `right`, `bottom`, `left`
 - **Direction**: `vertical`, `horizontal` (for bar charts)
 
-For more detailed configuration options, refer to the [Widgets JSON Reference](/workspace/widgets-json-reference) or our examples backends [here](https://github.com/OpenBB-finance/backends-for-openbb/tree/main/getting-started/reference-backend).
+For more detailed configuration options, refer to the [Widgets JSON Reference](widgets-json-reference) or our examples backends [here](https://github.com/OpenBB-finance/backends-for-openbb/tree/main/getting-started/reference-backend).
 
 ## OTHERS
 

@@ -1,6 +1,6 @@
 ---
 title: Data Integration
-sidebar_position: 2
+sidebar_position: 5
 description: Learn how to integrate your own data sources and APIs into OpenBB Workspace with a custom backend solution.
 keywords:
   - Data Integration

@@ -2,21 +2,21 @@
 
 ## Docs
 
-- [Copilot Basics](https://docs.openbb.co/excel/copilot-basics): Learn the basics of OpenBB Copilot interface and functionality
-- [Context Management](https://docs.openbb.co/excel/copilot-context): Understanding how OpenBB Copilot manages and prioritizes context
-- [Data Handling](https://docs.openbb.co/excel/copilot-data-handling): How OpenBB Copilot processes structured and unstructured data
-- [Output Formats](https://docs.openbb.co/excel/copilot-output): Understanding OpenBB Copilot's output formats and capabilities
-- [Step-by-Step Reasoning](https://docs.openbb.co/excel/copilot-reasoning): Understanding the transparent reasoning process of OpenBB Copilot
-- [Tools](https://docs.openbb.co/excel/copilot-tools): Understanding the tools available to OpenBB Copilot
-- [Core Widgets](https://docs.openbb.co/excel/core-widgets): Master OpenBB's essential widgets for building powerful financial dashboards, including navigation, notes, API integration, and real-time data visualization tools.
-- [Enterprise](https://docs.openbb.co/excel/enterprise): Comprehensive guide to OpenBB Workspace Enterprise features, including role-based access control, security compliance, team collaboration, and on-premises deployment capabilities.
-- [Excel Add-in Installation](https://docs.openbb.co/excel/excel-installation): This page presents the general requirements and the steps to install the OpenBB Add-in for Excel. The OpenBB Add-in for Excel is available on Windows, Mac, and Excel on the web. It can be installed by an administrator or by individual users.
-- [FAQs](https://docs.openbb.co/excel/faqs): Comprehensive guide to frequently asked questions about OpenBB Workspace data integration, custom backend setup, widget configuration, and troubleshooting common issues.
-- [Apps Gallery](https://docs.openbb.co/excel/gallery): Browse our curated collection of apps for financial analysis, market research, portfolio management and much more.
-- [Overview](https://docs.openbb.co/excel/index): The OpenBB Add-in for Excel is a powerful integration that enables direct access to financial data within Microsoft Excel. This seamless integration allows you to create sophisticated financial models and perform comprehensive analysis without leaving your spreadsheet environment.
-- [Native Installation (PWA)](https://docs.openbb.co/excel/installation): Learn how to install and use OpenBB Workspace as a Progressive Web App (PWA) on your desktop and mobile devices.
-- [OBB.GET](https://docs.openbb.co/excel/obb-get): Extract and slice specific data from Excel ranges using labels or indices
-- [OBB.WIDGET](https://docs.openbb.co/excel/obb-widget): This page provides an overview of the basics of the OpenBB add-in for Microsoft Excel. It covers the basic usage of the add-in and the available functions.
-- [OpenBB Platform](https://docs.openbb.co/excel/platform-installer): Learn how to integrate the OpenBB Platform data to OpenBB Workspace
-- [Static Files](https://docs.openbb.co/excel/static-files): Learn how to import and manage static files in OpenBB, including structured and unstructured data formats, with support for PDF, CSV, JSON, PNG, and JPG files.
-- [Troubleshooting](https://docs.openbb.co/excel/troubleshooting): Common issues and solutions for the OpenBB Add-in for Excel, including error handling, installation problems, and connection troubleshooting.
+- [Copilot Basics](https://docs.openbb.co/excel/ai-features/copilot-basics): Learn the basics of OpenBB Copilot interface and functionality
+- [Context Management](https://docs.openbb.co/excel/ai-features/copilot-context): Understanding how OpenBB Copilot manages and prioritizes context
+- [Data Handling](https://docs.openbb.co/excel/ai-features/copilot-data-handling): How OpenBB Copilot processes structured and unstructured data
+- [Output Formats](https://docs.openbb.co/excel/ai-features/copilot-output): Understanding OpenBB Copilot's output formats and capabilities
+- [Step-by-Step Reasoning](https://docs.openbb.co/excel/ai-features/copilot-reasoning): Understanding the transparent reasoning process of OpenBB Copilot
+- [Tools](https://docs.openbb.co/excel/ai-features/copilot-tools): Understanding the tools available to OpenBB Copilot
+- [Apps Gallery](https://docs.openbb.co/excel/apps/gallery): Browse our curated collection of apps for financial analysis, market research, portfolio management and much more.
+- [OpenBB Platform](https://docs.openbb.co/excel/apps/platform-installer): Learn how to integrate the OpenBB Platform data to OpenBB Workspace
+- [Enterprise](https://docs.openbb.co/excel/enterprise-features/enterprise): Comprehensive guide to OpenBB Workspace Enterprise features, including role-based access control, security compliance, team collaboration, and on-premises deployment capabilities.
+- [Excel Add-in Installation](https://docs.openbb.co/excel/excel-addin/excel-installation): This page presents the general requirements and the steps to install the OpenBB Add-in for Excel. The OpenBB Add-in for Excel is available on Windows, Mac, and Excel on the web. It can be installed by an administrator or by individual users.
+- [OBB.GET](https://docs.openbb.co/excel/excel-addin/obb-get): Extract and slice specific data from Excel ranges using labels or indices
+- [OBB.WIDGET](https://docs.openbb.co/excel/excel-addin/obb-widget): This page provides an overview of the basics of the OpenBB add-in for Microsoft Excel. It covers the basic usage of the add-in and the available functions.
+- [Troubleshooting](https://docs.openbb.co/excel/excel-addin/troubleshooting): Common issues and solutions for the OpenBB Add-in for Excel, including error handling, installation problems, and connection troubleshooting.
+- [FAQs](https://docs.openbb.co/excel/others/faqs): Comprehensive guide to frequently asked questions about OpenBB Workspace data integration, custom backend setup, widget configuration, and troubleshooting common issues.
+- [Overview](https://docs.openbb.co/excel/user-interface/index): The OpenBB Add-in for Excel is a powerful integration that enables direct access to financial data within Microsoft Excel. This seamless integration allows you to create sophisticated financial models and perform comprehensive analysis without leaving your spreadsheet environment.
+- [Native Installation (PWA)](https://docs.openbb.co/excel/user-interface/installation): Learn how to install and use OpenBB Workspace as a Progressive Web App (PWA) on your desktop and mobile devices.
+- [Core Widgets](https://docs.openbb.co/excel/widgets/core-widgets): Master OpenBB's essential widgets for building powerful financial dashboards, including navigation, notes, API integration, and real-time data visualization tools.
+- [Static Files](https://docs.openbb.co/excel/widgets/static-files): Learn how to import and manage static files in OpenBB, including structured and unstructured data formats, with support for PDF, CSV, JSON, PNG, and JPG files.

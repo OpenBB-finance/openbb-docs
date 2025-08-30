@@ -21,7 +21,7 @@ OpenBB Workspace provides a powerful and flexible UI framework that lets you cre
 
 ## Getting Started
 
-In our [Data Integration](../data-integration.md) guide, we introduced the basic structure using `main.py` and `widgets.json`. To make development even easier, we've created a Python decorator that keeps your widget specifications right next to their implementation code. You can add it as part of the initial boilerplate, so you can build a backend with a single `main.py` file:
+In our [Data Integration](/getting-started/data-integration) guide, we introduced the basic structure using `main.py` and `widgets.json`. To make development even easier, we've created a Python decorator that keeps your widget specifications right next to their implementation code. You can add it as part of the initial boilerplate, so you can build a backend with a single `main.py` file:
 
 ```python
 # Import required libraries

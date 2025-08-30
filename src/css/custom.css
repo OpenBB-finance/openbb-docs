@@ -608,3 +608,30 @@ div[role="dialog"][data-state="open"] button:hover {
 [data-theme="dark"] .toc-link-active {
   color: #fff !important;     /* white for dark mode */
 }
+
+/* Sidebar Section Headers */
+.sidebar-section-header {
+  font-size: 0.85rem;
+  letter-spacing: 0.08rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--ifm-color-gray-700);
+  padding: 0.75rem 1rem 0.5rem 1rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--ifm-color-gray-300);
+}
+
+html[data-theme="dark"] .sidebar-section-header {
+  color: var(--ifm-color-gray-300);
+  border-bottom: 1px solid var(--ifm-color-gray-700);
+}
+
+.sidebar-section:first-child .sidebar-section-header {
+  margin-top: 0.5rem;
+}
+
+/* Hide sidebar sections when not in the appropriate route */
+.menu__list .sidebar-section {
+  display: block;
+}
