@@ -22,21 +22,21 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 **Q: What is the purpose of a custom backend in OpenBB Workspace?**
 
-A: A custom backend allows you to integrate your own data sources into OpenBB Workspace, enabling the creation of personalized widgets, dashboards, and templates that display your data in various ways. For more details, see the [Overview](/getting-started/data-integration#1-create-the-api-server) section.
+A: A custom backend allows you to integrate your own data sources into OpenBB Workspace, enabling the creation of personalized widgets, dashboards, and templates that display your data in various ways. For more details, see the [Overview](/workspace/data-integration#1-create-the-api-server) section.
 
 **Q: What technologies are required to set up a custom backend?**
 
-A: You will need to use an API framework and a `widgets.json` file to define widget configurations. Optionally, you can use a `apps.json` file for layout configurations. Refer to the [Creating your own custom backend](/workspace/widgets) section for more information.
+A: You will need to use an API framework and a `widgets.json` file to define widget configurations. Optionally, you can use a `apps.json` file for layout configurations. Refer to the [Creating your own custom backend](/workspace/widget-types) section for more information.
 
 ### Setup and Configuration
 
 **Q: How do I start setting up a custom backend?**
 
-A: Follow the structure outlined in the [Overview](/getting-started/data-integration#getting-started-hello-world-example) section.
+A: Follow the structure outlined in the [Overview](/workspace/data-integration#getting-started-hello-world-example) section.
 
 **Q: What is the `widgets.json` file, and why is it important?**
 
-A: The `widgets.json` file is a configuration file that connects your custom backend data to the widgets displayed in OpenBB Workspace. It defines widget properties such as name, description, category, endpoint, and more. See the [Example Widgets Configuration](/workspace/widgets/widgets-json-reference#example-widgets-json) section for details.
+A: The `widgets.json` file is a configuration file that connects your custom backend data to the widgets displayed in OpenBB Workspace. It defines widget properties such as name, description, category, endpoint, and more. See the [Example Widgets Configuration](/workspace/widgets-json-reference#example-widgets-json) section for details.
 
 **Q: How do I add Authorization to my custom backend?**
 
@@ -54,11 +54,11 @@ A: We provide an the ability when adding a custom backend to pass a custom Heade
 
 **Q: How can I create a new widget?**
 
-A: Define the widget in the `widgets.json` file with necessary properties like name, description, category, and endpoint. Then, create an endpoint in your FastAPI application to serve the data for this widget. Check the [Widgets json reference](/workspace/widgets/widgets-json-reference) page for guidance.
+A: Define the widget in the `widgets.json` file with necessary properties like name, description, category, and endpoint. Then, create an endpoint in your FastAPI application to serve the data for this widget. Check the [Widgets json reference](/workspace/widgets-json-reference) page for guidance.
 
 **Q: Can I customize the appearance of widgets?**
 
-A: Yes, you can customize widget appearance using properties in the `widgets.json` file, such as `gridData` for size and `columnsDefs` for table widgets. More information is available in the [Customizing Widgets](/workspace/widgets/widgets-json-reference) section.
+A: Yes, you can customize widget appearance using properties in the `widgets.json` file, such as `gridData` for size and `columnsDefs` for table widgets. More information is available in the [Customizing Widgets](/workspace/widgets-json-reference) section.
 
 **Q: What are apps, and how do I use them?**
 
@@ -66,11 +66,11 @@ A: Apps allow you to build tailored solutions for your specific needs. In the `a
 
 **Q: How do I implement dynamic dropdown options in widgets?**
 
-A: Use the `type: "endpoint"` in your parameter configuration and specify an `optionsEndpoint` that returns the available options. See the [Input Parameters](/workspace/widgets/widget-parameters/advanced-dropdown) page for implementation details.
+A: Use the `type: "endpoint"` in your parameter configuration and specify an `optionsEndpoint` that returns the available options. See the [Input Parameters](/workspace/widget-parameters/advanced-dropdown) page for implementation details.
 
 **Q: Can I group widgets to share parameters?**
 
-A: Yes, widgets can be grouped by using the same parameter configuration. This allows a single parameter selection to update all related widgets. More information is available in the [Parameter Grouping](/workspace/widgets/widget-parameters/parameter-grouping) page.
+A: Yes, widgets can be grouped by using the same parameter configuration. This allows a single parameter selection to update all related widgets. More information is available in the [Parameter Grouping](/workspace/widget-parameters/parameter-grouping) page.
 
 ### Troubleshooting
 
@@ -110,4 +110,4 @@ Contact the system administrator if you are using a work device and require addi
 
 **Q: My widget data is not refreshing as expected. What could be wrong?**
 
-A: Check the `refetchInterval` and `staleTime` settings in your `widgets.json` file. Ensure they are set appropriately for your data's update frequency. Refer to the [Refetch Interval](/workspace/widgets/widget-configuration/refetch-interval) section for more information. Or you have set the [`runButton`](/workspace/widgets/widget-configuration/run-button) to `true` in the `widgets.json` file which doesn't refresh the data until you click on it.
+A: Check the `refetchInterval` and `staleTime` settings in your `widgets.json` file. Ensure they are set appropriately for your data's update frequency. Refer to the [Refetch Interval](/workspace/widget-configuration/refetch-interval) section for more information. Or you have set the [`runButton`](/workspace/widget-configuration/run-button) to `true` in the `widgets.json` file which doesn't refresh the data until you click on it.

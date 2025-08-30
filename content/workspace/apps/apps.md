@@ -47,7 +47,7 @@ OpenBB Apps are comprehensive solutions that combine:
 
 ## Creating Your Own App
 
-1. Integrate your data widgets in OpenBB Workspace, as seen in <a href="/workspace/widgets" target="_blank" rel="noopener noreferrer">Data Widgets</a>.
+1. Integrate your data widgets in OpenBB Workspace, as seen in <a href="/workspace/widget-types" target="_blank" rel="noopener noreferrer">Data Widgets</a>.
 2. Organize them in a certain layout
 3. Group widgets together and/or change their display (e.g. table or charts)
 4. Right click on the dashboard and select "Export apps.json"

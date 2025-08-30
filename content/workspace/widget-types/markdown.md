@@ -37,7 +37,7 @@ def markdown_widget():
     return "# Markdown Widget"
 ```
 
-The gridData parameter specifies the widget's size in the OpenBB Workspace grid system. More on that can be found [here](widget-configuration/grid-size).
+The gridData parameter specifies the widget's size in the OpenBB Workspace grid system. More on that can be found [here](../widget-configuration/grid-size).
 
 ## Data rich markdown
 

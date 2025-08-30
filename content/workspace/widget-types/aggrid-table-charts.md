@@ -270,7 +270,7 @@ def table_widget_with_render_functions():
     return mock_data
 ```
 
-For more information on this, check [Render functions](widget-configuration/render-functions).
+For more information on this, check [Render functions](../widget-configuration/render-functions).
 
 ## Table Widget with Hover Card
 

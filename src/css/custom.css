@@ -555,10 +555,6 @@ div[role="dialog"][data-state="open"] button:hover {
   @apply text-[#717177] dark:text-[#B8B9BC] hover:text-black dark:hover:text-white hover:bg-[#EBEBED] dark:hover:bg-[#212126] rounded-md transition-colors;
 }
 
-/* If you want different padding for different levels */
-.theme-doc-sidebar-item-category-level-1 {
-  padding-bottom: 15px;
-}
 
 .menu__list-item-collapsible {
   @apply hover:bg-[#EBEBED] dark:hover:bg-[#212126];
@@ -634,4 +630,39 @@ html[data-theme="dark"] .sidebar-section-header {
 /* Hide sidebar sections when not in the appropriate route */
 .menu__list .sidebar-section {
   display: block;
+}
+
+/* Improve spacing between sidebar items within sections */
+.theme-doc-sidebar-menu .menu__list-item {
+  margin-bottom: 0.125rem;
+}
+
+/* Add consistent padding between collapsible items */
+.theme-doc-sidebar-item-category {
+  margin-bottom: 0.125rem;
+}
+
+/* Normalize spacing for both collapsible and non-collapsible items */
+.theme-doc-sidebar-item-link,
+.theme-doc-sidebar-item-category,
+.theme-doc-sidebar-item-html {
+  margin-bottom: 0.125rem;
+}
+
+/* Ensure collapsible items don't have extra spacing */
+.theme-doc-sidebar-item-category-level-1,
+.theme-doc-sidebar-item-category-level-2,
+.theme-doc-sidebar-item-category-level-3 {
+  padding-bottom: 0;
+  margin-bottom: 0.125rem;
+}
+
+/* Ensure proper spacing after section headers */
+.sidebar-section .menu__list {
+  margin-top: 0.25rem;
+}
+
+/* Add spacing between different sections */
+.sidebar-section + .sidebar-section {
+  margin-top: 1rem;
 }

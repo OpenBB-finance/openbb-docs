@@ -1,6 +1,6 @@
 ---
 title: Enterprise
-sidebar_position: 13
+sidebar_position: 6.5
 description: Comprehensive guide to OpenBB Workspace Enterprise features, including role-based access control, security compliance, team collaboration, and on-premises deployment capabilities.
 keywords:
 - OpenBB Workspace Enterprise

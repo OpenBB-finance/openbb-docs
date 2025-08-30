@@ -44,11 +44,11 @@ export default {
 					},
 					{
 						from: "/pro/",
-						to: "/workspace",
+						to: "/workspace/data-integration",
 					},
 					{
 						from: "/pro/enterprise",
-						to: "/excel/enterprise-features/enterprise",
+						to: "/getting-started/enterprise",
 					},
 					{
 						from: "/pro/openbb-copilot",
@@ -60,7 +60,7 @@ export default {
 					},
 					{
 						from: "/workspace/data-connector",
-						to: "/workspace/getting-started/data-integration",
+						to: "/workspace/data-integration",
 					},
 					{
 						from: "/excel/enterprise",

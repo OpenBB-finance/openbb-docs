@@ -1,6 +1,6 @@
 ---
-title: Overview
-sidebar_position: -1
+title: Workspace Overview
+sidebar_position: 0
 description: OpenBB Workspace is a secure enterprise UI platform for AI workflows, featuring data integration, AI model deployment, flexible UI customization, and on-premises deployment capabilities.
 keywords:
 - enterprise AI platform
