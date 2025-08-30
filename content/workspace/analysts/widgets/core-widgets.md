@@ -1,17 +1,16 @@
 ---
 title: Core Widgets
-sidebar_position: 3
-description: Master OpenBB's essential widgets for building powerful financial dashboards, including navigation, notes, API integration, and real-time data visualization tools.
+sidebar_position: 2
+description: Essential widgets that form the foundation of every OpenBB dashboard - navigation, notes, data integration, and productivity tools.
 keywords:
-- dashboard widgets
-- financial analysis
-- data visualization
-- navigation tools
-- note taking
+- core widgets
+- dashboard essentials
+- navigation widgets
+- note widgets
 - API integration
 - RSS feeds
-- market monitoring
-- time tracking
+- productivity tools
+- data connectors
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

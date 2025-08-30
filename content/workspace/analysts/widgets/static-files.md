@@ -1,16 +1,16 @@
 ---
 title: Static Files
 sidebar_position: 4
-description: Learn how to import and manage static files in OpenBB, including structured and unstructured data formats, with support for PDF, CSV, JSON, PNG, and JPG files.
+description: Upload and integrate your own files into OpenBB Workspace - transform spreadsheets, PDFs, and images into interactive dashboard widgets.
 keywords:
-- file import
-- data import
-- structured data
-- unstructured data
-- file formats
-- data management
 - file upload
-- data visualization
+- static files
+- custom data
+- spreadsheet widgets
+- PDF widgets
+- image widgets
+- proprietary data
+- file integration
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
