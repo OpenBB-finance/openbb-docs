@@ -1,7 +1,7 @@
 ---
 title: Custom Widgets
 sidebar_position: 3
-description: Explore the diverse types of custom widgets available in OpenBB Workspace - from real-time data feeds to static reports and proprietary integrations.
+description: Explore the diverse types of custom widgets available in OpenBB Workspace - from interactive tables to advanced charts and document viewers.
 keywords:
 - custom widgets
 - widget types
@@ -9,8 +9,8 @@ keywords:
 - chart widgets
 - PDF widgets
 - feed widgets
-- sandbox data
-- proprietary data
+- metric widgets
+- markdown widgets
 - data visualization
 ---
 
@@ -20,228 +20,226 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 # Custom Widgets
 
-Beyond the core widgets that provide foundational functionality, OpenBB Workspace offers a rich ecosystem of custom widgets designed for specialized financial analysis. These widgets transform various data types into powerful analytical tools, from real-time market feeds to proprietary research reports.
+Beyond the core widgets that provide foundational functionality, OpenBB Workspace offers a rich ecosystem of custom widgets designed for specialized financial analysis. Each widget type is optimized for specific data characteristics and analytical needs.
 
-## Understanding Widget Types
+## Markdown
 
-Each widget type is optimized for specific data characteristics and analytical needs. Choosing the right widget type ensures your data is presented in the most effective format for decision-making.
+Markdown widgets enable rich text content and documentation integration within your analytical workspace. Perfect for creating dynamic reports that combine formatted text with live data integration.
 
-### Table Widgets
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="800" alt="markdown" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/markdown-widget.png" />
+</div>
 
-Table widgets excel at displaying structured, detailed data that requires sorting, filtering, and deep exploration. These are your workhorses for fundamental analysis and detailed data review.
+**Benefits:**
 
-**Perfect for:**
-- Financial statements and metrics
-- Portfolio holdings and positions
-- Transaction histories
-- Screening results
-- Comparative analysis
+- Create comprehensive analysis reports with formatted text, headers, and structured content
+- Embed images directly in your documentation (both local files and web-based images)
+- Generate dynamic content that updates with live data from APIs
+- Document methodologies and analysis approaches within your dashboard
+- Build standardized reporting templates with consistent formatting
 
-**Key Features:**
-- Sortable columns for quick analysis
-- Filterable data for focused investigation
-- Exportable to Excel/CSV for further analysis
-- Customizable column configurations
-- Cell formatting based on data types
+## Metric
 
-**Example Use Cases:**
-- Analyzing quarterly earnings across multiple companies
-- Reviewing portfolio performance metrics
-- Comparing valuations across sectors
-- Tracking order execution details
+Metric widgets display key performance indicators and statistics with clear visual emphasis on trends and changes. Essential for tracking critical numbers at a glance.
 
-### Chart Widgets
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="900" alt="Metric Widget Example" src="https://openbb-cms.directus.app/assets/ba37bbbb-371a-40e8-a7e1-e48edcc6c0c8.png" />
+</div>
 
-Chart widgets transform numerical data into visual insights, making patterns, trends, and anomalies immediately apparent. These widgets are essential for technical analysis and trend identification.
+**Benefits:**
 
-**Perfect for:**
-- Price movements and trends
-- Volume analysis
-- Performance comparisons
-- Economic indicators
-- Risk metrics visualization
+- Monitor essential KPIs with clean, focused displays showing label, value, and change indicators
+- Track performance metrics with automatic color-coding for positive and negative trends
+- Create executive dashboard summaries with multiple metrics in compact layouts
+- Display portfolio performance, risk metrics, and trading statistics efficiently
+- Support for custom units and formatting to match your analytical requirements
 
-**Key Features:**
-- Multiple chart types (line, bar, candlestick, scatter)
-- Interactive zooming and panning
-- Multiple series overlay
-- Customizable axes and scales
-- Annotation capabilities
+## File Viewer
 
-**Example Use Cases:**
-- Tracking stock price movements with volume overlay
-- Comparing sector performance over time
-- Visualizing portfolio risk metrics
-- Analyzing correlation patterns
+File viewer widgets bring external documents and reports directly into your analytical workspace, enabling seamless integration of static content with live data analysis.
 
-### PDF Widgets
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="800" alt="multi-file-viewer" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/multi-file-viewer.png" />
+</div>
 
-PDF widgets bring static documents and reports directly into your dashboard, maintaining document fidelity while enabling seamless integration with your analytical workflow.
+### Adding documents to context
 
-**Perfect for:**
-- Research reports
-- Regulatory filings
-- Company presentations
-- Static analysis documents
-- Reference materials
+You are able to select all documents from this multi-file viewer to be added to the context of your AI agent. Or do an individual selection.
 
-**Key Features:**
-- Full document rendering
-- Page navigation controls
-- Zoom functionality
-- Search within documents
-- Side-by-side comparison capability
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="800" alt="Multi PDF Viewer with Base64 Example" src="https://openbb-cms.directus.app/assets/610ec2bc-2768-4d48-9f0b-0ad08a69b41e.png" />
+</div>
 
-**Example Use Cases:**
-- Reviewing analyst research reports
-- Accessing company investor presentations
-- Referencing regulatory filings
-- Displaying custom generated reports
+**Benefits:**
 
-### Feed Widgets
+- Access research reports, regulatory filings, and company presentations without leaving your dashboard
+- Compare multiple documents side by side for comprehensive analysis
+- Navigate large documents with built-in page controls and search functionality
+- Integrate both local files and cloud-hosted documents through URL references
+- Maintain document formatting and quality for professional presentation
 
-Feed widgets provide real-time streaming data, keeping you connected to market movements and breaking information as it happens.
+## AgGrid Table Charts
 
-**Perfect for:**
-- News feeds
-- Market data streams
-- Social media sentiment
-- Economic releases
-- Alert notifications
+Advanced table widgets powered by AgGrid that provide comprehensive data manipulation capabilities for detailed analytical workflows.
 
-**Key Features:**
-- Real-time updates
-- Customizable refresh rates
-- Filtering capabilities
-- Historical feed access
-- Alert integration
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="900" alt="selection-charting" src="https://openbb-assets.s3.amazonaws.com/docs/pro/selection-charting-1.png" />
+</div>
 
-**Example Use Cases:**
-- Monitoring breaking market news
-- Tracking social sentiment on specific stocks
-- Following economic data releases
-- Watching order flow updates
+### Table Interface
 
-## Sandbox Data Widgets
+The AgGrid table widget offers comprehensive data manipulation and visualization capabilities:
 
-OpenBB provides sandbox widgets with demonstration data, allowing you to explore widget capabilities without connecting to live data sources. These widgets are perfect for:
+- **Column Resizing**: Adjust column widths manually or use the "Autosize all columns" feature for automatic optimization
+- **Column Reorganization**: Drag-and-drop functionality to reorder columns - click and hold any column header to reposition it
+- **Column Filtering**: Toggle column visibility through column settings to focus on relevant data for your analysis
+- **Sorting**: Click column headers to sort data in ascending or descending order
+- **Data Selection**: Select specific data points or ranges to generate visualizations
+- **Sparklines**: Visualize trends directly within table cells with line, area, and bar sparklines
+- **Hover Cards**: Access additional context and detailed information on specific data points
 
-### Learning and Training
-- Understanding widget functionality
-- Training new team members
-- Testing dashboard configurations
-- Exploring analytical workflows
+### Table to Chart Conversion
 
-### Proof of Concept
-- Demonstrating capabilities to stakeholders
-- Testing integration possibilities
-- Validating analytical approaches
-- Building dashboard templates
+The widget supports seamless conversion between table and chart views:
 
-Sandbox widgets include:
-- Sample market data with realistic patterns
-- Demo portfolio data for testing analytics
-- Example news feeds and alerts
-- Template financial statements
+1. **Selection-based Charting**: Select desired data points, choose a chart type, and generate visualizations instantly
+2. **ChartView Mode**: Access the "ChartView" icon to transform the entire table into a dynamic chart
 
-To identify sandbox widgets, look for the "Sandbox" or "Demo" label in the widget library. These widgets function identically to live data widgets but use static or simulated data.
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="900" alt="chartview" src="https://openbb-assets.s3.amazonaws.com/docs/pro/chartview-setting.png" />
+</div>
 
-## Static File Widgets
+### Chart Customization
 
-Transform your existing files and data into interactive widgets by uploading them directly to OpenBB Workspace. This powerful feature bridges the gap between your proprietary data and OpenBB's analytical capabilities.
+You can change the chart settings by clicking on the three dots and then the `Chart Settings` in the dropdown menu.
 
-### Supported File Types
+<img className="pro-border-gradient" width="400" alt="chart" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/chart+settings.png" />
 
-**Spreadsheets (Excel, CSV)**
-- Automatically converts to interactive table widgets
-- Preserves formatting and formulas where applicable
-- Enables sorting and filtering on uploaded data
-- Perfect for proprietary models and custom datasets
+Here you can change the chart type, the chart settings, and some other settings in each tab.
 
-**PDFs and Documents**
-- Renders as PDF widgets for easy viewing
-- Maintains document formatting and layout
-- Ideal for research reports and presentations
-- Supports multi-page documents
+<img className="pro-border-gradient" width="400" alt="chart" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/chart+settings+2.png" />
 
-**Images and Charts**
-- Displays static visualizations
-- Useful for reference materials
-- Can include annotated charts
-- Supports common image formats (PNG, JPG, SVG)
+The customization interface provides three main configuration areas:
 
-### Upload Process
+- **Visual Customization**: Modify chart appearance, including titles, colors, and styling elements.
+- **Data Series Management**: Control the visibility and configuration of data series.
+- **Chart Type Selection**: Choose from various chart types to best represent your data.
 
-1. **Select File**: Click the "Upload File" option in the widget menu
-2. **Configure Display**: Choose how the file should be rendered
-3. **Set Metadata**: Add title, description, and categorization
-4. **Place on Dashboard**: Position the widget in your layout
+Example of a customized chart with multiple visualization types:
 
-### Use Cases for Static Files
+<div style={{display: 'flex', justifyContent: 'center'}}>
+<img className="pro-border-gradient" width="800" alt="example" src="https://openbb-assets.s3.amazonaws.com/docs/pro/combo-chart.png" />
+</div>
 
-**Proprietary Analysis**
-- Upload Excel models that update with new data
-- Share custom research reports
-- Display proprietary indicators
-- Include internal dashboards
+The final example demonstrates how to combine different chart types for enhanced data visualization.
+## SSRM Mode
 
-**Historical Reference**
-- Archive important analysis
-- Maintain decision documentation
-- Create audit trails
-- Build knowledge libraries
+Server-Side Rendered Mode enables efficient analysis of massive datasets that would otherwise overwhelm traditional table widgets. Designed for enterprise-scale data exploration.
 
-**Collaboration**
-- Share analysis with team members
-- Distribute reports across the organization
-- Standardize reporting templates
-- Maintain version control
+**Benefits:**
 
-## Widget Customization
+- Analyze datasets with hundreds of thousands or millions of rows without performance degradation
+- Use real-time filtering and sorting on massive datasets with instant response times
+- Reduce memory usage and maintain fast dashboard performance even with complex data
+- Access enterprise databases directly through optimized query engines
+- Maintain full analytical capabilities regardless of dataset size
 
-Every custom widget can be tailored to your specific needs:
+## Plotly Charts
 
-### Visual Customization
-- Adjust size and positioning
-- Configure color schemes
-- Set display preferences
-- Customize headers and labels
+Plotly charts provide unlimited flexibility for creating any type of interactive visualization, from simple line charts to complex 3D plots and heatmaps.
 
-### Data Configuration
-- Define refresh intervals
-- Set parameter defaults
-- Configure data ranges
-- Enable/disable features
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="900" alt="Plotly Chart with Raw Data Switch" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/plotly+switch.png" />
+</div>
 
-### Interaction Settings
-- Link parameters across widgets
-- Set up drill-down capabilities
-- Configure export options
-- Enable collaboration features
+**Benefits:**
 
-## Best Practices
+- Create any visualization type supported by Plotly including heatmaps, 3D plots, scatter plots, and statistical charts
+- Benefit from automatic theme adaptation that matches your workspace appearance in both light and dark modes
+- Use interactive toolbars with drawing tools, annotation capabilities, and advanced analytical features
+- Build complex multi-axis charts for comparing different data series and relationships
 
-### Widget Selection
-- Choose table widgets for detailed data exploration
-- Use charts for trend analysis and pattern recognition
-- Deploy PDF widgets for static reference materials
-- Implement feeds for real-time monitoring
+### Raw Data Toggle
 
-### Dashboard Organization
-- Group related widgets together
-- Use consistent widget sizes for visual harmony
-- Place high-priority widgets prominently
-- Balance real-time and static content
+Plotly charts include a powerful raw data feature that enhances AI integration:
 
-### Performance Optimization
-- Limit the number of real-time feed widgets
-- Use appropriate refresh intervals
-- Cache static content when possible
-- Archive historical widgets regularly
+- Toggle between chart visualization and raw data view using the switch in the top-right corner
+- Enable AI copilot to better understand and analyze the underlying data
+- Access both visual insights and raw datasets within the same widget
+- Maintain data accessibility for AI-driven analysis while preserving visual presentation
 
-## Next Steps
+## TradingView Charts
 
-- Explore the [Widget Library](/workspace/analysts/widgets/overview) to discover available options
-- Learn about [Static Files](/workspace/analysts/widgets/static-files) integration
-- Review [Core Widgets](/workspace/analysts/widgets/core-widgets) for essential functionality
-- Start building your custom dashboard with the perfect widget combination
+TradingView charts deliver professional-grade trading visualization with the same interface trusted by millions of traders worldwide.
+
+**Benefits:**
+
+- Access the complete TradingView interface with professional technical indicators and drawing tools
+- Analyze real-time and historical market data with industry-standard charting capabilities
+- Use advanced technical analysis tools including trend lines, Fibonacci retracements, and pattern recognition
+- Switch between multiple timeframes seamlessly for comprehensive market analysis
+- Leverage the same visualization platform used by professional traders and institutional analysts
+
+## Live Grid
+
+Live grid widgets display real-time streaming data in table format, perfect for monitoring live market conditions and tracking dynamic information.
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="800" alt="live-feed" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/live_grid.png" />
+</div>
+
+**Benefits:**
+
+- Monitor live market data with real-time updates that highlight changing values
+- Track multiple securities simultaneously with automatic refresh and change visualization
+- Configure which data points update in real-time to focus on critical metrics
+- Use color-coded change indicators to quickly identify market movements
+- Maintain awareness of live market conditions while conducting other analysis
+
+## Newsfeed
+
+Newsfeed widgets aggregate breaking news and market information directly within your analytical workspace, keeping you informed of market-moving events.
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="800" alt="newsfeed" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/newsfeed.png" />
+</div>
+
+**Benefits:**
+
+- Stay informed with curated financial news from multiple sources without leaving your analysis
+- Access article previews and full-text content for comprehensive market intelligence
+- Filter and categorize news feeds to focus on relevant sectors or topics
+- Maintain historical news access for retrospective analysis and event correlation
+- Integrate breaking news awareness directly into your analytical workflow
+
+## Highcharts
+
+Highcharts provides enterprise-grade charting optimized for performance and professional presentation, ideal for client-facing analysis and reports.
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="800" alt="highcharts-chart" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/highcharts.png" />
+</div>
+
+**Benefits:**
+
+- Create professional-quality charts suitable for client presentations and executive reports
+- Handle large datasets efficiently without compromising visualization quality or performance
+- Access extensive chart type library with enterprise features and customization options
+- Benefit from advanced accessibility features that ensure compliance with organizational standards
+- Use sophisticated animation and interaction capabilities for engaging presentations
+
+## Omni
+
+Omni widgets provide ultimate flexibility by dynamically returning different content types based on your input parameters, making them ideal for AI-driven analysis and adaptive workflows.
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="800" alt="Omni Widget Example" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/omni-widget.png" />
+</div>
+
+**Benefits:**
+
+- Receive different visualizations (text, tables, or charts) based on your specific analytical needs
+- Integrate seamlessly with AI agents through built-in prompt handling and citation support
+- Track data sources and methodology through comprehensive citation management
+- Access flexible parameter handling for complex analytical workflows
+- Use single widgets that adapt their output format based on the type of analysis required
