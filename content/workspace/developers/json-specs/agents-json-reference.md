@@ -1,6 +1,6 @@
 ---
 title: agents.json Reference
-sidebar_position: 9
+sidebar_position: 3
 description: Complete reference guide for configuring custom AI agents in OpenBB Workspace using the agents.json endpoint
 keywords:
 - agents.json

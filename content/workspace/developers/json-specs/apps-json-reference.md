@@ -1,6 +1,6 @@
 ---
 title: apps.json Reference
-sidebar_position: 8
+sidebar_position: 2
 description: Learn about the structure and configuration of apps.json for creating custom applications in OpenBB Workspace
 keywords:
 - apps.json
