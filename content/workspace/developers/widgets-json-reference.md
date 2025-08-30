@@ -1,6 +1,6 @@
 ---
 title: widgets.json Reference
-sidebar_position: 8
+sidebar_position: 7
 description: Learn how to integrate your own backend with OpenBB Workspace using
   the cookie-cutter or language-agnostic API approaches, with illustrative guides
   and principles for handling widget.json files, APIs, interfaces, Python, FastAPI
