@@ -9882,7 +9882,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Quickstart - Workspace Custom Backend | OpenBB Platform Docs" />
 
-The OpenBB Platform can be used as a [Workspace custom backend](/workspace/getting-started/data-integration), both as a fully-loaded data source, or as the bare shell and launcher of a FastAPI application.
+The OpenBB Platform can be used as a [Workspace custom backend](/workspace/data-integration), both as a fully-loaded data source, or as the bare shell and launcher of a FastAPI application.
 
 The sections below will outline a few scenarios.
 
