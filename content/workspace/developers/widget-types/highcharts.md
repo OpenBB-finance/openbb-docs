@@ -29,7 +29,7 @@ To get started, create the main application file and the widget configuration fi
 - `main.py`: This file will contain your FastAPI application code.
 - `widgets.json`: This file will define the configuration for your widget.
 
-The backend will use the same FastAPI setup and structure as described in the [Overview](/workspace/data-integration#1-create-the-api-server) page.
+The backend will use the same FastAPI setup and structure as described in the [Overview](/workspace/developers/data-integration#1-create-the-api-server) page.
 
 ## Step 2: Create the Chart Endpoint
 
@@ -165,7 +165,7 @@ Edit the `widgets.json` file and add the following JSON data. This configuration
 
 Note that for Highcharts, the `type` field is set to `"chart-highcharts"` instead of just `"chart"` which is used for Plotly charts.
 
-For more information on the `widgets.json` file, see the [Widgets.json](../widgets-json-reference) page.
+For more information on the `widgets.json` file, see the [Widgets.json](../json-specs/widgets-json-reference) page.
 
 ## Step 4: Run the Application
 

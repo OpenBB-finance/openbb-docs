@@ -15,7 +15,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Apps.json Reference | OpenBB Workspace Docs" />
 
-While it is expected for users to create their apps.json from the UI directly, as demonstrated in [/workspace/apps](/workspace/apps). The `apps.json` file follows this structure:
+While it is expected for users to create their apps.json from the UI directly, as demonstrated in [Apps](/workspace/analysts/apps). The `apps.json` file follows this structure:
 
 | Property | Type | Description |
 |----------|------|-------------|

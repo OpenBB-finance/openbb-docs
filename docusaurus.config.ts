@@ -202,7 +202,7 @@ export default {
 					const sectionRoutes: Record<string, string[]> = {
 						workspace: [],
 						platform: [],
-						excel: [],
+						cli: [],
 					};
 
 					for (const [path, record] of Object.entries(

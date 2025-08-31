@@ -22,7 +22,7 @@ If you face specific issues while using the add-in and the solutions provided he
 
 ### #VALUE! Error
 
-If you encounter a '#VALUE!' error when running an OBB function, first verify that you are using the correct syntax. Either [OBB.WIDGET](/excel/obb-widget) or [OBB.GET](/excel/obb-get).
+If you encounter a '#VALUE!' error when running an OBB function, first verify that you are using the correct syntax. Either [OBB.WIDGET](obb-widget) or [OBB.GET](obb-get).
 
 - If you have just opened your workbook and see this error, try recalculating the cell - this is a known issue with Excel add-ins that sometimes requires a refresh.
 

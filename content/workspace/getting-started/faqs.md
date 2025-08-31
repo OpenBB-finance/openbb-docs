@@ -31,7 +31,7 @@ Find answers to common questions about OpenBB Workspace, organized by topic.
 
 A custom backend allows you to integrate your own data sources into OpenBB Workspace, enabling the creation of personalized widgets, dashboards, and templates that display your data in various ways. This gives you complete control over your data pipeline while leveraging OpenBB's visualization and AI capabilities.
 
-For more details, see the [Data Integration Overview](/workspace/developers/backend-integration).
+For more details, see the [Data Integration Overview](/workspace/developers/data-integration).
 
 ### What technologies are required to set up a custom backend?
 
@@ -40,7 +40,7 @@ You'll need:
 - A `widgets.json` file to define widget configurations
 - Optionally, an `apps.json` file for layout configurations
 
-Refer to the [Creating your own custom backend](/workspace/developers/backend-integration) section for detailed setup instructions.
+Refer to the [Creating your own custom backend](/workspace/developers/data-integration) section for detailed setup instructions.
 
 ---
 
@@ -54,7 +54,7 @@ Start with our Hello World example that demonstrates the basic structure:
 2. Define your widgets.json configuration
 3. Connect to OpenBB Workspace
 
-Follow the complete guide in the [Getting Started](/workspace/developers/backend-integration) section.
+Follow the complete guide in the [Getting Started](/workspace/developers/data-integration) section.
 
 ### What is the widgets.json file, and why is it important?
 
@@ -64,7 +64,7 @@ The `widgets.json` file is the bridge between your backend and OpenBB Workspace.
 - Display configurations
 - Parameter definitions
 
-This file tells OpenBB how to display and interact with your data. See the [Widgets Configuration Reference](/workspace/developers/widgets-json) for complete documentation.
+This file tells OpenBB how to display and interact with your data. See the [Widgets Configuration Reference](/workspace/developers/json-specs/widgets-json-reference) for complete documentation.
 
 ### How do I add authorization to my custom backend?
 
@@ -95,7 +95,7 @@ Creating a widget involves two steps:
 - Return data in the expected format
 - Handle any parameters
 
-See the [Widget Creation Guide](/workspace/developers/widgets-json) for complete examples.
+See the [Widget Creation Guide](/workspace/developers/json-specs/widgets-json-reference) for complete examples.
 
 ### Can I customize the appearance of widgets?
 
@@ -106,7 +106,7 @@ Yes! Widget appearance is highly customizable through the `widgets.json` file:
 - **Charts**: Set chart type, colors, and axes
 - **Layouts**: Define default positions and groupings
 
-Learn more in the [Widget Customization](/workspace/developers/widgets-json) documentation.
+Learn more in the [Widget Customization](/workspace/developers/json-specs/widgets-json-reference) documentation.
 
 ### What are apps, and how do I use them?
 
@@ -127,7 +127,7 @@ Dynamic dropdowns fetch options from your backend in real-time:
 2. Specify an `optionsEndpoint` URL
 3. Return options array from your backend
 
-This is perfect for data that changes frequently (e.g., available tickers, date ranges). See the [Dynamic Parameters](/workspace/developers/backend-integration) guide.
+This is perfect for data that changes frequently (e.g., available tickers, date ranges). See the [Dynamic Parameters](/workspace/developers/data-integration) guide.
 
 ### Can I group widgets to share parameters?
 
@@ -137,7 +137,7 @@ Yes! Parameter grouping creates synchronized widget sets:
 - When one updates, all linked widgets refresh
 - Perfect for creating cohesive dashboards
 
-Learn more in the [Parameter Grouping](/workspace/developers/backend-integration) documentation.
+Learn more in the [Parameter Grouping](/workspace/developers/data-integration) documentation.
 
 ---
 
@@ -180,7 +180,7 @@ Check these common causes:
 3. **Cache Settings**: Ensure cache duration matches your needs
 4. **Network Issues**: Check browser console for API errors
 
-See the [Data Refresh Configuration](/workspace/developers/backend-integration) guide for optimal settings.
+See the [Data Refresh Configuration](/workspace/developers/data-integration) guide for optimal settings.
 
 ### How do I debug widget connection issues?
 
@@ -192,4 +192,4 @@ Follow this troubleshooting checklist:
 4. **Review Browser Console**: Look for CORS or network errors
 5. **Validate JSON**: Ensure widgets.json has valid syntax
 
-For detailed debugging steps, see the [Troubleshooting Guide](/workspace/developers/backend-integration).
+For detailed debugging steps, see the [Troubleshooting Guide](/workspace/developers/data-integration).

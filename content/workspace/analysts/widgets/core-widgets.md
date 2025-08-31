@@ -120,7 +120,7 @@ The Simple API Endpoints widget provides a direct path to integrate custom data 
 #### Data Structure Issues
 
 - Use the "Data Key" parameter for nested JSON structures
-- Consider using [Data Integration](/workspace/widget-types) for complex data processing
+- Consider using [Data Integration](/workspace/developers/data-integration) for complex data processing
 
 For additional support, contact [support@openbb.finance](mailto:support@openbb.finance) with specific details about your issue.
 

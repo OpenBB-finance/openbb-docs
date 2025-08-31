@@ -206,7 +206,7 @@ The hover card example would use the below data to display the hover card.
 
 ### Prefix and Suffix
 
-The `prefix` and `suffix` parameters can also be used in the `columnsDefs` to add a prefix or suffix to the column values. [See the widgets-json-reference](../widgets-json-reference.md) for more information.
+The `prefix` and `suffix` parameters can also be used in the `columnsDefs` to add a prefix or suffix to the column values. [See the widgets-json-reference](../json-specs/widgets-json-reference) for more information.
 
 ### Send to Agent
 

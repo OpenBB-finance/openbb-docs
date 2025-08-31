@@ -108,13 +108,13 @@ Meet regulatory requirements with:
 
 Transform your analytical workflows with our AI-powered assistant that understands your data context and automates complex tasks. OpenBB Copilot leverages widget metadata to intelligently query the right datasets, generate insights, and create visualizations. Whether you're conducting earnings analysis, monitoring market conditions, or building investment reports, Copilot accelerates your workflow while maintaining accuracy and consistency.
 
-Learn more about [AI Features and Copilot capabilities](/workspace/analysts/ai-features).
+Learn more about [AI Features and Copilot capabilities](/workspace/analysts/ai-features/copilot-basics).
 
 ### Excel Add-in
 
 Bridge the gap between advanced analytics and familiar spreadsheet workflows with our native Excel integration. The OpenBB Add-in enables your team to pull real-time financial data, run complex queries, and refresh datasets directly within Excel - no coding required. Perfect for teams transitioning from traditional spreadsheet analysis to modern data platforms while maintaining productivity.
 
-Explore the full [Excel Add-in documentation and installation guide](/workspace/analysts/excel-addin).
+Explore the full [Excel Add-in documentation and installation guide](/workspace/analysts/excel-addin/excel-overview).
 
 ## Enterprise Support
 

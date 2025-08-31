@@ -141,4 +141,4 @@ To do this, navigate to the "Add AI agent" section and follow the prompts:
 - [Agent Examples Repository](https://github.com/OpenBB-finance/agents-for-openbb)
 - [OpenBB Workspace Documentation](/workspace)
 
-For more detailed information about agent configuration, see the [agents.json Reference](/workspace/developers/agents-json-reference) documentation.
+For more detailed information about agent configuration, see the [agents.json Reference](/workspace/developers/json-specs/agents-json-reference) documentation.

@@ -726,7 +726,7 @@ The formatter function receives parameters including:
 - **Padding**: `top`, `right`, `bottom`, `left`
 - **Direction**: `vertical`, `horizontal` (for bar charts)
 
-For more detailed configuration options, refer to the [Widgets JSON Reference](widgets-json-reference) or our examples backends [here](https://github.com/OpenBB-finance/backends-for-openbb/tree/main/getting-started/reference-backend).
+For more detailed configuration options, refer to the [Widgets JSON Reference](../json-specs/widgets-json-reference) or our examples backends [here](https://github.com/OpenBB-finance/backends-for-openbb/tree/main/getting-started/reference-backend).
 
 ## OTHERS
 

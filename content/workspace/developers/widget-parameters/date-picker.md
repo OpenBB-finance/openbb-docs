@@ -46,4 +46,4 @@ Selected date: {date_picker}
 """
 ```
 
-Note : We use the `$currentDate` variable to get the current date. More info here : [Date Modifier in widgets.json](../widgets-json-reference#date-modifier)
+Note : We use the `$currentDate` variable to get the current date. More info here : [Date Modifier in widgets.json](../json-specs/widgets-json-reference#date-modifier)
