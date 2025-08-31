@@ -548,7 +548,7 @@ def get_plotly_heatmap(color_scale: str = "RdBu_r", theme: str = "dark"):
 
 This widget demonstrates how to create a Plotly chart that can toggle between displaying the chart visualization and showing the raw data. The button to switch can be found in the top right corner of the widget like seen below.
 
-When `raw` is `True`, you will be able to switch between the data on the widget and our copilot will better understand the data in the chart.
+When `raw` is `True`, you will be able to switch between the data on the widget and our copilot will better understand the data in the chart. Remember that you need to set the "raw": true in the widgets.json, and raw needs to be a input parameter that is set to False so that the default view is chart.
 
 <img className="pro-border-gradient" width="800" alt="Plotly Chart with Raw Data Switch" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/plotly+switch.png" />
 
@@ -561,7 +561,6 @@ When `raw` is `True`, you will be able to switch between the data on the widget 
     "gridData": {"w": 40, "h": 9},
     "raw": true,
 })
-
 @app.get("/chains")
 def get_chains(raw: bool = False, theme: str = "dark"):
     """Get current TVL of all chains using Defi Llama"""
