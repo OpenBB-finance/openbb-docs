@@ -548,9 +548,9 @@ def get_plotly_heatmap(color_scale: str = "RdBu_r", theme: str = "dark"):
 
 This widget demonstrates how to create a Plotly chart that can toggle between displaying the chart visualization and showing the raw data. The button to switch can be found in the top right corner of the widget like seen below.
 
-When `raw` is `True`, you will be able to switch between the data on the widget and our copilot will better understand the data in the chart. Remember that you need to set the "raw": true in the widgets.json, and raw needs to be a input parameter that is set to False so that the default view is chart.
+When `raw` is `True`, you will be able to switch between the data on the widget and our copilot will better understand the data in the chart. Remember that you need to set the "raw": true in the widgets.json, and raw needs to be a input parameter that is set to False so that the default view is chart. Also the data output in case raw is True, is the underlying data that is utilized for the plotly chart (and not the input parameters!).
 
-As output note that you either return JSON output for raw data or for plotly chart, but not combined.
+As output, you either return JSON output for raw data or for plotly chart, but never both combined.
 
 <img className="pro-border-gradient" width="800" alt="Plotly Chart with Raw Data Switch" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/plotly+switch.png" />
 
