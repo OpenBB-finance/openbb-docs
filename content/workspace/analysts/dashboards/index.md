@@ -21,26 +21,17 @@ Dashboards are the central workspace in OpenBB where you organize, visualize, an
 
 ## What are Dashboards?
 
-Dashboards serve as interactive workspaces where you can:
-- Arrange and organize multiple data widgets
-- Create custom layouts for different analysis workflows
-- Monitor real-time market data and indicators
-- Share insights and collaborate with team members
-- Generate static reports for documentation and presentations
+Dashboards provide a centralized environment where you can arrange and organize multiple data widgets into cohesive analytical views. They enable you to create custom layouts for different analysis workflows, monitor real-time market data and indicators, share insights with team members, and generate professional reports for documentation and presentations.
 
-## Key Features
+The flexible layout system allows you to drag and drop widgets exactly where you need them, resizing and arranging components to emphasize important data and create visual hierarchies that match your analytical priorities. Dashboards automatically refresh with the latest available data, ensuring your analysis always reflects current market conditions. Collaboration is built into the platform through dashboard sharing capabilities. Team members can view shared dashboards and create their own copies for further customization while preserving the original configuration.
 
-### Flexible Layout System
-Create custom layouts by dragging and dropping widgets exactly where you need them. Resize widgets to emphasize important data and create visual hierarchies that match your analytical priorities.
+## Dashboard Folders
 
-### Real-Time Data Updates
-Dashboards automatically refresh with the latest available data, ensuring your analysis always reflects current market conditions. Configure refresh intervals to match your workflow requirements.
+Organize your analytical workspace by creating folders in the left sidebar to group related dashboards together. This organizational structure helps maintain clarity and efficiency as your collection of dashboards grows.
 
-### Collaboration Tools
-Share dashboards with team members to facilitate collaborative analysis. Recipients can view shared dashboards and create their own copies for further customization while preserving the original.
+To create a new folder, click the "+" icon in the sidebar and select "New Folder". Name your folder descriptively to reflect its contents, such as "Portfolio Analysis", "Market Research", or "Daily Reports". You can then drag and drop existing dashboards into these folders or use the "Move to" option from the dashboard's ellipsis menu.
 
-### Export Capabilities
-Generate professional reports by exporting dashboards as PDF or PNG files. Include notes and annotations to capture your analytical insights alongside the data visualizations.
+Folders can be nested to create hierarchical organization structures that match your workflow. For example, you might have a main "Research" folder with subfolders for different sectors or asset classes. This flexibility allows you to maintain a clean, navigable workspace even with dozens or hundreds of dashboards.
 
 ## Dashboard Management
 
@@ -52,37 +43,37 @@ Access comprehensive management options through the ellipsis menu next to each d
 - **Open in new window** - Expand across multiple monitors
 - **Share** - Collaborate with team members
 - **Delete** - Remove unused dashboards
-- **Export report** - Generate static PDF or PNG reports
+- **Export PDF** - Generate static PDF from the dashboard
+- **Export Excel** - Generate .xlsx file with data or formulas from the dashboard (based on existing table widget)
 - **Refresh data** - Update all widget data immediately
+
+## Dashboard Actions
+
+Right-clicking anywhere on the dashboard canvas provides quick access to essential functions:
+
+- **Add widget** - Quickly add a new widget to your dashboard
+- **Add data** - Import new data sources directly from the dashboard
+- **Refresh data** - Update all widget data with the latest information
+- **Refresh backends** - Reload backend connections and configurations (good for development purposes)
+- **Export apps.json** - Export your dashboard configuration as an `apps.json`
+- **Disable grouping** - Toggle widget grouping functionality
 
 ## Creating Your First Dashboard
 
 1. Click the "+" button in the sidebar to create a new dashboard
 2. Give your dashboard a descriptive name
-3. Add widgets by clicking the "Add Widget" button
+3. Add widgets by clicking the "Add Widget" button (or right clicking and selecting "Add Widget")
 4. Arrange widgets by dragging them to desired positions
 5. Resize widgets to create your optimal layout
-6. Save your dashboard to preserve your configuration
+6. Add a navigation bar widget so you can separate widgets based on different categories
+7. Save your dashboard to preserve your configuration
 
-## Best Practices
+If you are happy with your dashboard, you can actually turn this into an App template.
 
-### Organization
-- Use folders to group related dashboards
-- Maintain consistent naming conventions
-- Create template dashboards for recurring analyses
+## Apps to Dashboards
 
-### Performance
-- Limit the number of widgets per dashboard for optimal performance
-- Use data refresh settings appropriate to your data update frequency
-- Close unused dashboards to conserve system resources
+Apps in OpenBB Workspace function as dashboard templates that provide instant access to pre-configured analytical environments. When you click on an app, you're essentially creating a new dashboard from a carefully crafted template that someone has already designed and optimized.
 
-### Collaboration
-- Document your dashboards with note widgets
-- Share read-only versions to prevent unintended modifications
-- Create team templates for standardized analysis workflows
+This template approach offers significant advantages for getting started with complex analysis. The app provides all relevant widgets pre-selected and intelligently grouped together, with appropriate sizing and positioning already configured. You receive a complete analytical framework immediately, but retain full control to customize, add, remove, or rearrange any elements to match your specific needs.
 
-## Next Steps
-
-- Explore [Widgets](/workspace/analysts/widgets) to understand the building blocks of dashboards
-- Learn about [Apps](/workspace/analysts/apps) to create comprehensive workflows
-- Discover [AI Features](/workspace/analysts/ai-features) to enhance your dashboards with intelligent automation
+Apps serve as both starting points for new analysis and examples of best practices in dashboard design. They demonstrate effective widget combinations, logical data groupings, and optimal layouts for specific analytical scenarios.
