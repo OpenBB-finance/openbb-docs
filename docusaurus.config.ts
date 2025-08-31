@@ -56,7 +56,7 @@ export default {
 					},
 					{
 						from: "/pro/platform-installer",
-						to: "/workspace/analysts/apps/platform-installer",
+						to: "/workspace/getting-started/platform-installer",
 					},
 					{
 						from: "/workspace/data-connector",
@@ -82,7 +82,7 @@ export default {
 					},
 					{
 						from: "/getting-started/excel-installation",
-						to: "/workspace/getting-started/excel-installation",
+						to: "/workspace/analysts/excel-addin/excel-installation",
 					},
 					{
 						from: "/getting-started/faqs",
