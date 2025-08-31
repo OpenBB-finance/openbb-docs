@@ -550,6 +550,8 @@ This widget demonstrates how to create a Plotly chart that can toggle between di
 
 When `raw` is `True`, you will be able to switch between the data on the widget and our copilot will better understand the data in the chart. Remember that you need to set the "raw": true in the widgets.json, and raw needs to be a input parameter that is set to False so that the default view is chart.
 
+As output note that you either return JSON output for raw data or for plotly chart, but not combined.
+
 <img className="pro-border-gradient" width="800" alt="Plotly Chart with Raw Data Switch" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/plotly+switch.png" />
 
 ```python
