@@ -1,6 +1,6 @@
 ---
 title: FAQs
-sidebar_position: 7
+sidebar_position: 8
 description: Common questions and answers about OpenBB Workspace, data integration, custom backends, and troubleshooting.
 keywords:
   - FAQs

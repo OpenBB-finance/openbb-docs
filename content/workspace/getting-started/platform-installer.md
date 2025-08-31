@@ -1,6 +1,6 @@
 ---
 title: OpenBB Platform
-sidebar_position: 6
+sidebar_position: 7
 description: Learn how to integrate the OpenBB Platform data to OpenBB Workspace
 keywords:
 - widgets.json
