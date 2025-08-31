@@ -1,6 +1,6 @@
 ---
 title: Sandbox Widgets
-sidebar_position: 5
+sidebar_position: 6
 description: Explore OpenBB's pre-built demonstration widgets that showcase platform capabilities upon login.
 keywords:
 - sandbox widgets

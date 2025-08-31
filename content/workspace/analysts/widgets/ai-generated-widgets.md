@@ -1,6 +1,6 @@
 ---
-title: AI Generated
-sidebar_position: 37
+title: AI-generated Widgets
+sidebar_position: 5
 description: Learn how to use AI agent outputs as widgets in your OpenBB dashboard
 keywords:
 - AI
@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="AI generated | OpenBB Workspace Docs" />
+<HeadTitle title="AI-generated Widgets | OpenBB Workspace Docs" />
 
 OpenBB's AI agents can generate various types of outputs including text analysis, charts, and data visualizations. These outputs can be saved as widgets in your dashboard for future reference and analysis.
 

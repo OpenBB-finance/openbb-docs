@@ -27,10 +27,13 @@ The agent prioritizes context in the following order:
 | 1 | Explicit | Widgets added to context specifically. |
 | 2 | Attached files | Files uploaded directly to the Copilot |
 | 3 | Dashboard | All widgets currently on your dashboard (in all tabs). |
-| 4 | Global | All widgets available within the OpenBB Workspace. |
-| 5 | Conversation | The history of your current conversation. |
+| 4 | Conversation | The history of your current conversation. |
+| 5 | Global | All widgets available within the OpenBB Workspace. If Global Data enabled. |
+| 6 | Web search | Retrieve infromation from the web. If Web Search enabled. |
 
-## Explicit context
+## Context Types
+
+### Explicit Context
 
 Explicit context represents the highest priority information source, allowing you to precisely direct the Copilot's attention to specific datasets or widgets. This mechanism is particularly powerful for ensuring accuracy when working with multiple similar datasets or when you need analysis focused on a specific dataset.
 
@@ -56,20 +59,7 @@ When you use the "@" symbol followed by a widget name and the prompt is sent, th
   />
 </div>
 
-## Dashboard
-
-The dashboard context provides the Copilot with comprehensive awareness of your currently active dashboard. All widgets on your active dashboard become automatically available as data sources, allowing the Copilot to understand the broader context of your work session. It also has access to the widgets metadata and the current parameters selected.
-
-<div
-  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
->
-  <img
-    src="https://openbb-cms.directus.app/assets/2fc343e5-6eb2-4ef6-ba10-f687868bdff4.png"
-    width="100%"
-  />
-</div>
-
-## Attached Files
+### Attached Files
 
 The attachment system enables the Copilot to process documents and datasets that aren't part of your current workspace widgets. Supported file types include PDF, Excel, CSV, and various other document formats.
 
@@ -86,7 +76,37 @@ Please note that for PDF files, text must be selectable as Optical Character Rec
   />
 </div>
 
-## Global Retrieval
+### Dashboard Context
+
+The dashboard context provides the Copilot with comprehensive awareness of your currently active dashboard. All widgets on your active dashboard become automatically available as data sources, allowing the Copilot to understand the broader context of your work session. It also has access to the widgets metadata and the current parameters selected.
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/2fc343e5-6eb2-4ef6-ba10-f687868bdff4.png"
+    width="100%"
+  />
+</div>
+
+### Conversation History
+
+Conversational context enables natural, iterative analysis by maintaining awareness of your entire dialogue history within the current session.
+
+The Copilot tracks your explicit questions and its responses. This memory allows for follow-up queries, refinement of analysis parameters, and building upon previous insights without needing to re-establish context.
+
+The system understands references to "the previous chart", "that analysis", or "the data we discussed" and can seamlessly continue complex analytical workflows across multiple conversation turns.
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/49ed1729-674a-4d45-bf73-ba9bd3918bed.png"
+    width="70%"
+  />
+</div>
+
+### Global Retrieval (ON/OFF flag)
 
 The global retrieval system provides the Copilot with access to the entire OpenBB Workspace widget library, extending far beyond your current dashboard widgets.
 
@@ -103,7 +123,7 @@ This is only possible due to the metadata associated with each widget and is why
   />
 </div>
 
-## Web Search
+### Web Search (ON/OFF flag)
 
 The web search capability enables the Copilot to access real-time information from across the internet when:
 
@@ -118,22 +138,5 @@ This feature automatically activates as a fallback mechanism, ensuring comprehen
   <img
     src="https://openbb-cms.directus.app/assets/3dffe668-2114-4c4c-b822-395da193f2a0.png"
     width="100%"
-  />
-</div>
-
-## Conversation
-
-Conversational context enables natural, iterative analysis by maintaining awareness of your entire dialogue history within the current session.
-
-The Copilot tracks your explicit questions and its responses. This memory allows for follow-up queries, refinement of analysis parameters, and building upon previous insights without needing to re-establish context.
-
-The system understands references to "the previous chart", "that analysis", or "the data we discussed" and can seamlessly continue complex analytical workflows across multiple conversation turns.
-
-<div
-  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
->
-  <img
-    src="https://openbb-cms.directus.app/assets/49ed1729-674a-4d45-bf73-ba9bd3918bed.png"
-    width="70%"
   />
 </div>

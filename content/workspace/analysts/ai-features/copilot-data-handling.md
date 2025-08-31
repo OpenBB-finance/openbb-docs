@@ -30,7 +30,7 @@ The Copilot excels at processing and analyzing structured financial datasets thr
   />
 </div>
 
-- **Plotly widgets:** Full-featured charting engine that not only generates interactive visualizations but also allows developers to provide the underlying data. The Copilot can extract specific data points, and create derivative analyses from existing visualizations.
+- **Plotly widgets:** Full-featured charting engine that not only generates interactive visualizations but also allows developers to provide the underlying data. The Copilot can extract specific data points, and create derivative analyses from existing visualizations. The AI agent will have better results in case the Plotly widget has raw data associated with it.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
