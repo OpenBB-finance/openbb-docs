@@ -38,6 +38,23 @@ Markdown widgets enable rich text content and documentation integration within y
 - Document methodologies and analysis approaches within your dashboard
 - Build standardized reporting templates with consistent formatting
 
+## HTML
+
+HTML widgets provide control over visualization design through server-rendered HTML, enabling the creation of custom styled dashboards and data displays. Note that these widgets render static HTML content - JavaScript execution is not supported for security reasons.
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="900" alt="HTML Widget Example" src="https://openbb-cms.directus.app/assets/8234f346-6b2e-49b2-b5de-7150c770a756.png" />
+</div>
+
+**Benefits:**
+
+- Build custom dashboard interfaces with flexible layouts using HTML markup and inline CSS styling
+- Create visually rich displays with CSS animations, gradients, and responsive layouts
+- Design professional-grade interfaces that match your organization's branding through custom styling
+- Generate dynamic HTML content server-side based on real-time data and calculations
+- Render complex data visualizations as pre-calculated HTML elements with progress bars, charts, and tables
+- Maintain security by rendering content server-side without client-side script execution
+
 ## Metric
 
 Metric widgets display key performance indicators and statistics with clear visual emphasis on trends and changes. Essential for tracking critical numbers at a glance.
@@ -171,6 +188,10 @@ Plotly charts include a powerful raw data feature that enhances AI integration:
 ## TradingView Charts
 
 TradingView charts deliver professional-grade trading visualization with the same interface trusted by millions of traders worldwide.
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="900" alt="Metric Widget Example" src="https://openbb-cms.directus.app/assets/1e1dff4c-8698-4a82-9863-31e911e7cf3b.png" />
+</div>
 
 **Benefits:**
 
