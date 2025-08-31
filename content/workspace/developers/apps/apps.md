@@ -24,36 +24,17 @@ OpenBB Apps are powerful, customizable solutions that combine data widgets, prom
 
 Built on the principle that there's no one-size-fits-all approach to financial analysis, Apps empower you to own your workflows end-to-end.
 
-## What are OpenBB Apps?
-
-OpenBB Apps are comprehensive solutions that combine:
-
-- **Data Integration**: Seamless connection with your data sources
-- **Custom Dashboards**: Pre-configured layouts with specialized widgets
-- **AI Agents**: Intelligent automation for your analysis workflows
-- **Pre-saved Prompts**: Reusable AI interactions for consistent results
-
-
-## Why use OpenBB Apps?
-
-- **Complete Control**
-  Build solutions tailored to your specific workflows, integrate your proprietary data and preferred AI models, and customize every aspect of your analysis environment.
-
-- **No Vendor Lock-in**
-  Avoid being limited by vendor data or technology, maintain ownership of your workflows and data, and choose your preferred data sources and AI models.
-
-- **Optimized Workflows**
-  Save time with pre-configured analysis templates, automate repetitive tasks with AI agents, and create consistent, reproducible analysis processes.
-
 ## Creating Your Own App
 
-1. Integrate your data widgets in OpenBB Workspace, as seen in <a href="/workspace/widget-types" target="_blank" rel="noopener noreferrer">Data Widgets</a>.
+1. Integrate your data widgets in OpenBB Workspace.
 2. Organize them in a certain layout
 3. Group widgets together and/or change their display (e.g. table or charts)
-4. Right click on the dashboard and select "Export apps.json"
+4. Right click on the dashboard and select "Export apps.json".
+
 <img className="pro-border-gradient" width="800" alt="OpenBB Apps Example" src="https://openbb-cms.directus.app/assets/fd20914a-5557-43fd-a320-96dec1e70a38.png" />
 
-5. This will create a `apps.json` file with your configuration
+5. This will create a `apps.json` file with your configuration.
+
 <img className="pro-border-gradient" width="800" alt="OpenBB Apps Example" src="https://openbb-cms.directus.app/assets/2250bf63-e7e9-447d-b2e3-14d71d23fe92.png" />
 
 This is what you should expect as a file:

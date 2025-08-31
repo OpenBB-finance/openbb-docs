@@ -237,3 +237,18 @@ You can then add this backend to OpenBB Workspace by right clicking on the dashb
 ### 6. Voila
 
 <img width="800" alt="Apps" src="https://openbb-cms.directus.app/assets/b34f315c-0f17-4e14-9b0d-0288d1cf7a5c.png" />
+
+## Reference Backend
+
+The [reference backend](https://github.com/OpenBB-finance/backends-for-openbb/tree/main/getting-started/reference-backend) serves as a comprehensive example repository showcasing implementations of most widget types and configuration patterns available in OpenBB Workspace.
+
+This backend provides practical examples for:
+
+- **Complete Widget Type Coverage**: Examples for table, chart, metric, markdown, file viewer, and specialized widget implementations
+- **Advanced Configuration Patterns**: Demonstrations of parameter linking, dynamic dropdowns, render functions, and custom formatting
+- **Real-world Data Integration**: Working examples with external APIs, data transformation, and error handling
+- **Best Practice Implementations**: Production-ready code patterns with proper authentication, caching, and performance optimization
+
+The reference backend functions both as a learning resource and a foundation for your own backend development. You can clone the repository, study the implementations, and adapt the patterns to your specific data sources and analytical requirements.
+
+Whether you're implementing your first widget or exploring advanced features like sparklines and custom formatters, the reference backend provides tested, documented examples that demonstrate the full capabilities of the OpenBB integration framework.
