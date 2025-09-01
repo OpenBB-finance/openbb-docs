@@ -29,13 +29,11 @@ The **Backends** screen is a central location for development server entry point
 A preset for the OpenBB API is created with default settings during the initial environment installation.
 :::
 
-Create a new backend by pressing the, `New Backend`, button near the top of the page.
-
 ## Features
 
 - Configure, control, and monitor multiple application servers from a simple interface.
 - Use any executable available to the selected environment from the command line.
-- Copy and paste multi-line text for environment variables, and/or add a `.env` file.
+- User-friendly environment variable management.
 - Start services on operating system login.
 - Generate X.509 certificates and PKCS#12 bundles to easily run over HTTPS.
 - All backends terminate on application exit.
@@ -168,4 +166,4 @@ Backend server management is intended for single-user, desktop operating systems
 | How do I expose the API to my LAN? | Set the `--host` runtime argument as, `0.0.0.0`, and ensure the firewall allows the chosen port. |
 | Can I run non-Python services? | Yes – any executable/script is allowed as long as it runs inside the selected Conda environment. |
 | Status shows as running, but backend failed to start. | Refresh the window by right-clicking and selecting reload. Does the status change? Press **Stop**. Is the process terminated? Consult the logs and report unexpected outcomes on [Github](https://github.com/OpenBB-finance/OpenBB/issues/). | 
-| Service fails to terminate on ODP exit. | This is likely a bug, please report on [Github](https://github.com/OpenBB-finance/OpenBB/issues/) with contextual details.
+| Backend fails to terminate on ODP exit. | This is likely a bug, please report on [Github](https://github.com/OpenBB-finance/OpenBB/issues/), with context.
