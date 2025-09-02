@@ -19,21 +19,21 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 # Apps
 
-Apps in OpenBB Workspace are pre-configured dashboard templates that combine widgets, AI agents, and custom prompts to create optimized analytical workflows. Unlike individual dashboards that you build from scratch, Apps provide instant access to complete analytical environments designed for specific use cases.
+Apps in OpenBB Workspace are pre-configured dashboard templates that combine widgets, pre-selected AI agents, and custom prompts to create optimized analytical workflows. Unlike individual dashboards that you build from scratch, Apps provide instant access to complete analytical environments designed for specific use cases.
 
 <img width="800" alt="OpenBB Workspace Multiple Applications View" src="https://openbb-cms.directus.app/assets/2fc9097e-0941-49df-8d83-7d6b5a87bb45.png" />
 
 ## What are Apps?
 
-Apps function as analytical templates that combine three core components: widgets, prompts, and agents.
+Apps function as analytical templates that combine three core components: widgets, prompts, and pre-selected agents.
 
 ### Widgets
 
-Apps include curated sets of widgets that are specifically optimized for their analytical workflow. These widgets come with intelligent parameter synchronization, automatically linking shared parameters to maintain analytical coherence across all components. The layout design positions and sizes widgets optimally for data visualization and workflow efficiency, eliminating the need for manual arrangement and configuration.
+Apps include curated sets of widgets that are specifically optimized for their analytical workflow. These widgets come with parameter synchronization, automatically linking shared parameters to maintain analytical coherence across all components. The layout design positions and sizes widgets optimally for data visualization and workflow efficiency.
 
 ### Prompts
 
-Each App includes a custom prompt library with pre-written prompts tailored to its analytical focus. These prompts provide context-aware AI assistance and enable more effective interactions with the specialized agent. Apps can include these prompt libraries in their configuration. E.g.:
+An App can include a custom library of pre-written prompts tailored to its analytical focus. These prompts provide app-aware AI instructions and enable more effective interactions with the specialized agent. E.g.:
 
 - "Please analyze my current portfolio holdings. What are the top 5 positions by weight? Are there any concentration risks I should be aware of?"
 - "What are the strongest correlations between my portfolio holdings? Which positions might provide good diversification benefits?"
@@ -43,7 +43,7 @@ These prompts are specifically crafted for the App's analytical context, enablin
 
 ### Agents
 
-Apps can specify particular AI agents that are optimized for their analytical domain. When you click on an App with a specified agent ID, OpenBB Workspace automatically loads the corresponding AI agent, ensuring that AI assistance is perfectly aligned with the App's analytical purpose and data context.
+Apps can advertise a particular AI agent that is optimized for its analytical domain. When you click on an App with a specified agent ID, OpenBB Workspace automatically selects the corresponding AI agent.
 
 ## How Apps Differ from Dashboards
 
@@ -52,11 +52,11 @@ While dashboards are blank canvases that you customize entirely yourself, Apps p
 | **Apps** | **Dashboards** |
 |----------|----------------|
 | Pre-configured templates with specific analytical purpose | Blank canvas for custom configuration |
-| Widgets pre-linked with optimized parameters | Manual parameter configuration required |
+| Widgets with pre-linked parameters | Manual parameter configuration required |
 | Come with curated prompt libraries | Start with no predefined prompts |
 | Designed by domain experts for specific workflows | General-purpose analytical workspace |
 
-But once you click on an App, it gets immediately rendered as a dashboard that you can also customize.
+Once you click on an App, it gets immediately rendered as a dashboard that you can also customize.
 
 ## Apps Gallery
 

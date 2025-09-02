@@ -17,23 +17,21 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Static Files | OpenBB Workspace Docs" />
 
-OpenBB provides a powerful and intuitive way to import data through file uploads. This feature supports a wide range of file formats, allowing you to seamlessly integrate both structured and unstructured data into your analysis workflow.
+OpenBB provides an intuitive way to import data through file uploads. This feature supports a wide range of file formats, allowing you to integrate both structured and unstructured data into your analysis workflow.
 
 ## File Upload Process
 
-The file upload interface offers a straightforward way to import your data. You can either select files individually or drag and drop them into the Add Data pop-up window. This flexibility supports importing multiple files simultaneously, regardless of their format.
+The file upload interface is straightforward. You can either drag and drop them onto the dashboard or select files individually in the Add Data pop-up window. This flexibility supports importing multiple files simultaneously, regardless of their format.
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
   <img className="pro-border-gradient" width="600" alt="File upload interface showing the Add Data pop-up" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/upload_file.png" />
 </div>
 
-### File Size Limitations
-
-To ensure optimal performance and processing capabilities, OpenBB maintains a 25MB file size limit. While the system can technically handle larger files, this limit ensures that OpenBB Copilot can process your data effectively and provide meaningful insights.
+To ensure optimal performance for all application users, OpenBB maintains a 25MB file size limit.
 
 ### Metadata Management
 
-Upon uploading your files, OpenBB automatically generates initial metadata for the widget, including the name and description. You have the flexibility to modify these fields to better suit your needs. Note that Enterprise customers can customize this automatic metadata generation feature.
+Upon uploading your files, OpenBB automatically generates initial metadata for the widget, including the name and description. You might want to adjust these fields to better reflect the nuances of your data. Note that Enterprise customers can customize this automatic metadata generation feature.
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
   <img className="pro-border-gradient" width="600" alt="Metadata configuration interface" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/metadata.png" />
@@ -72,8 +70,10 @@ OpenBB supports three types of unstructured data, each serving different analyti
 
 - Images (PNG and JPG): Perfect for visual analysis and documentation
 - PDF Documents: Ideal for research papers, reports, and documentation
-- Text Files (TXT and DOCX): Suitable for notes, research, and qualitative analysis
+- Text Files (like TXT and DOCX): Suitable for notes, research, and qualitative analysis
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
   <img className="pro-border-gradient" width="600" alt="Example of unstructured data visualization" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/unstructured_data.png" />
 </div>
+
+Note that scanned images are better handled when uploaded as images (PNG or JPG) rather than PDFs.

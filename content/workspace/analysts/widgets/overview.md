@@ -21,38 +21,42 @@ Widgets are the fundamental building blocks of OpenBB Workspace, transforming ra
 
 ## What is a Widget?
 
-A widget is more than just a chart or table – it's an intelligent data container that knows how to fetch, process, and display information relevant to your analysis. Think of widgets as specialized financial instruments, each designed to answer specific questions about markets, portfolios, or economic conditions.
+A widget is more than just a chart or table – it's a data container designed to answer a specific analytical question.
 
 <img width="800" alt="Widget Metadata Structure and Components" src="https://openbb-cms.directus.app/assets/132e5cda-b062-4094-8036-8c2d41db1527.png" />
 
 ## Anatomy of a Widget
 
-Every widget in OpenBB Workspace consists of four essential components that work together seamlessly:
+Every widget in OpenBB Workspace consists of four essential components that work together:
 
 ### 1. Data Source
-The foundation of every widget – where the information comes from. This could be: Real-time market data feeds, Historical price databases, Company fundamental data, Economic indicators, Custom data from your organization, Static files you've uploaded and more.
+
+The foundation of every widget – where the information comes from. This could be: data feeds, databases, custom data from your organization, static files you've uploaded and more.
 
 ### 2. Metadata Layer
-The intelligence that makes widgets discoverable and usable:
+
+The information that makes widgets discoverable and usable:
+
 - **Title**: Clear identification of what the widget shows
 - **Description**: Context about the data and its purpose
 - **Category**: Logical grouping (e.g., Equity, Fixed Income, Macro)
-- **Sub-category**: Further classification for easy navigation
+- **Sub-category**: Further classification for better navigation
 - **Source**: Attribution and data provenance
 
 ### 3. Visual Presentation
+
 How the data comes to life on your dashboard:
-- **Tables**: For detailed, sortable data exploration
-- **Charts**: For trend analysis and pattern recognition
+
+- **Tables**: For detailed, sortable and filterable data exploration
+- **Charts**: For visual analysis and trend/pattern recognition
 - **PDFs**: For reports and static documents
-- **Feeds**: For real-time streaming information
 - **Custom Views**: Tailored to specific data types
 
 ### 4. Parameters
 
-Interactive elements that customize what data your widget displays. Input parameters allow you to focus your analysis by setting date ranges, selecting specific tickers, or applying filters that narrow down the dataset to exactly what you need. These parameters transform generic widgets into personalized analytical tools tailored to your specific research questions.
+Interactive elements that customize what data your widget displays. Input parameters allow you to focus your analysis by setting date ranges, selecting specific tickers, or applying filters that narrow down the dataset to exactly what you need.
 
-Linked parameters create powerful synchronization across multiple widgets on your dashboard. When you change a ticker symbol or date range in one widget, all widgets sharing that parameter update automatically, maintaining consistency across your entire analytical workspace. This creates a cohesive experience where your dashboard responds intelligently to your focus areas.
+Parameters that are linked via the grouping mechanism create synchronization across multiple widgets on your dashboard. When you change a ticker symbol or date range in one widget, all widgets in the group sharing that parameter will update automatically. This creates a cohesive experience where your dashboard responds automatically to your actions.
 
 ### 5. Controls
 
@@ -70,22 +74,24 @@ Table widgets also generate Excel Add-in formulas automatically, allowing you to
 
 Widgets operate on a simple yet powerful principle: they connect to data sources, apply your configurations, and render the results in real-time. Here's their data flow:
 
-1. **Request**: Widget sends a query with your parameters
-2. **Processing**: Backend systems fetch and prepare the data
-3. **Delivery**: Formatted data returns to the widget (via `widgets.json`)
+1. **Request**: Widget queries the data source with your parameters
+2. **Processing**: Data sources prepare the data
+3. **Delivery**: Formatted data returns to the widget
 4. **Rendering**: Widget displays the information visually
 5. **Interaction**: You can interact with the data in the widget
 
-Beyond this data flow, widgets exhibit two powerful capabilities that transform them from simple displays into intelligent analytical tools.
+Beyond this data flow, widgets exhibit two powerful features that transform them from simple displays into intelligent analytical tools.
 
-**Parameter linking** creates seamless coordination across your dashboard. When widgets share parameter names, changing a ticker symbol or date range in one widget automatically updates all linked widgets, ensuring your entire analysis remains synchronized and focused on the same context without manual intervention.
+**Parameter linking** creates synchronization across your dashboard. When widgets share parameter names, changing a ticker symbol or date range in one widget automatically updates all linked widgets.
 
-**AI-readable metadata** enables intelligent automation through rich widget metadata that AI agents can interpret and act upon. Unlike simple screen scraping, AI agents understand the underlying data source, parameter structure, and query methods for each widget. This deep understanding allows agents to dynamically request data with different parameters to answer your specific questions, accessing the full dataset behind each widget rather than just the currently displayed information.
+**AI-readable metadata** exposes the widget metadata to AI agents so that they can interpret and act upon it. Unlike screen scraping, AI agents understand the underlying data source, parameter structure, and query methods for each widget. This understanding allows agents to dynamically request data with different parameters to answer your specific questions, accessing source datasets behind each widget rather than only the information that is currently displayed.
 
 ## Your Widget Library
 
-OpenBB Workspace enables you to build a comprehensive widget library containing thousands of different data widgets, all easily accessible and intelligently categorized for efficient analysis. This library becomes your personal data universe, where every piece of financial information you need is just a search away.
+OpenBB Workspace enables you to build a scalable library of widgets, instantly searchable and logically categorized to match your analytical workflow. This library centralizes your financial data visualizations, making them easily discoverable through search and category navigation.
 
-The beauty of the widget library lies in its organization and accessibility. Whether you're analyzing portfolios, tracking macro trends, researching equities, or monitoring alternative investments, your widgets are categorized in ways that match your analytical thinking. Need to analyze a specific stock? Search for equity widgets and instantly access price data, fundamentals, options chains, and analyst estimates. Working on portfolio analysis? Find all your position tracking, performance attribution, and risk widgets grouped together.
+Widgets are grouped in ways that reflect real-world analytical workflows. Whether analyzing portfolios, tracking macro trends, or researching equities, relevant widgets are organized for quick access.
 
-This approach transforms data consumption from a tedious search process into an intuitive discovery experience. Instead of remembering complex data sources or navigating multiple platforms, you simply search your widget library and add the exact data visualization you need to your dashboard. The categorization system grows with your needs, accommodating new data sources and custom integrations while maintaining the logical organization that makes thousands of widgets manageable and useful.
+Example: Searching for an equity widget, for example, gives you immediate access to price data, fundamentals, options chains, and analyst estimates. For portfolio analysis, position tracking, performance attribution, and risk metrics are grouped together.
+
+By organizing widgets through consistent metadata and categories, OpenBB Workspace reduces the time spent searching for data, allowing you to focus on analysis. The system supports new data sources and custom integrations while maintaining a clear structure that keeps thousands of widgets manageable and accessible.

@@ -17,13 +17,13 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 # Dashboards
 
-Dashboards are the central workspace in OpenBB where you organize, visualize, and analyze financial data. They provide a flexible canvas for combining multiple widgets into comprehensive analytical views tailored to your specific needs.
+Dashboards are the interactive environments where you bring financial data to life in OpenBB Workspace. They let you organize multiple widgets into cohesive analytical views, combining visualization and analysis in a flexible layout tailored to your needs.
 
 ## What are Dashboards?
 
-Dashboards provide a centralized environment where you can arrange and organize multiple data widgets into cohesive analytical views. They enable you to create custom layouts for different analysis workflows, monitor real-time market data and indicators, share insights with team members, and generate professional reports for documentation and presentations.
+Dashboards provide a canvas where you arrange and organize multiple data widgets into cohesive analytical views. They enable you to create custom layouts for different analysis workflows, monitor real-time market data and indicators, share insights with team members, and generate professional reports for documentation and presentations.
 
-The flexible layout system allows you to drag and drop widgets exactly where you need them, resizing and arranging components to emphasize important data and create visual hierarchies that match your analytical priorities. Dashboards automatically refresh with the latest available data, ensuring your analysis always reflects current market conditions. Collaboration is built into the platform through dashboard sharing capabilities. Team members can view shared dashboards and create their own copies for further customization while preserving the original configuration.
+The flexible layout system allows you to drag and drop widgets exactly where you need them, resizing and arranging components to emphasize important data and create visual hierarchies that match your analytical priorities. Dashboards refresh automatically so that your analysis always reflects current data conditions. Collaboration is built into the application through dashboard sharing capabilities. Team members can view shared dashboards and create their own copies for further customization while preserving the original configuration.
 
 ## Dashboard Folders
 
@@ -35,7 +35,7 @@ Folders can be nested to create hierarchical organization structures that match 
 
 ## Dashboard Management
 
-Access comprehensive management options through the ellipsis menu next to each dashboard in the sidebar:
+Access the management options through the ellipsis menu next to each dashboard in the sidebar:
 
 - **Rename** - Customize dashboard names for better organization
 - **Move to** - Organize dashboards into folders for structured workflows
@@ -43,8 +43,8 @@ Access comprehensive management options through the ellipsis menu next to each d
 - **Open in new window** - Expand across multiple monitors
 - **Share** - Collaborate with team members
 - **Delete** - Remove unused dashboards
-- **Export PDF** - Generate static PDF from the dashboard
-- **Export Excel** - Generate .xlsx file with data or formulas from the dashboard (based on existing table widget)
+<!-- - **Export PDF** - Generate static PDF from the dashboard -->
+<!-- - **Export Excel** - Generate .xlsx file with data or formulas from the dashboard (based on existing table widget) -->
 - **Refresh data** - Update all widget data immediately
 
 ## Dashboard Actions
@@ -68,7 +68,10 @@ Right-clicking anywhere on the dashboard canvas provides quick access to essenti
 6. Add a navigation bar widget so you can separate widgets based on different categories
 7. Save your dashboard to preserve your configuration
 
-If you are happy with your dashboard, you can actually turn this into an App template.
+
+<!-- Theo: I commented out this flow for the analyst for it to be replaced with the app-studio flow. The current flow is a bit too developer-ish -->
+
+<!-- If you are happy with your dashboard, you can actually turn this into an App template.
 
 ## Apps to Dashboards
 
@@ -76,4 +79,4 @@ Apps in OpenBB Workspace function as dashboard templates that provide instant ac
 
 This template approach offers significant advantages for getting started with complex analysis. The app provides all relevant widgets pre-selected and intelligently grouped together, with appropriate sizing and positioning already configured. You receive a complete analytical framework immediately, but retain full control to customize, add, remove, or rearrange any elements to match your specific needs.
 
-Apps serve as both starting points for new analysis and examples of best practices in dashboard design. They demonstrate effective widget combinations, logical data groupings, and optimal layouts for specific analytical scenarios.
+Apps serve as both starting points for new analysis and examples of best practices in dashboard design. They demonstrate effective widget combinations, logical data groupings, and optimal layouts for specific analytical scenarios. -->
