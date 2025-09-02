@@ -16,30 +16,11 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 ## Launch
 
+- Configure any data provider credentials in the [`user_settings.json`](/platform/settings/user_settings/api_keys) file.
 - Open a Terminal and activate the environment where the `openbb-cli` package was installed.
 - On the command line, enter: `openbb`
 
 ![CLI Home](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/d1617c3b-c83d-4491-a7bc-986321fd7230)
-
-## Login
-
-Login to your [OpenBB Hub account](https://my.openbb.co) to add stored keys to the session.
-
-```console
-/account/login --pat REPLACE_WITH_YOUR_PAT
-```
-
-:::tip
-Add `--remember-me` to the command to persist the login until actively logging out.
-:::
-
-Login by email & password is also possible.
-
-```console
-/account/login --email my@emailaddress.com --password n0Ts3CuR3L!kEPAT
-```
-
-Find all data providers [here](https://docs.openbb.co/platform/usage/extensions/overview#data-extensions), and manage all your credentials directly on the [OpenBB Hub](https://my.openbb.co/app/platform/credentials).
 
 ## Menus
 

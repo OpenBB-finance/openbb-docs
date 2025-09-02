@@ -77,10 +77,6 @@ Some asset classes have been renamed:
 
 V3 SDK users should note that the `source` parameter is now, `provider`.
 
-:::note
-OpenBB Hub Preferences for default sources do not currently sync with V4 Platform, and some API keys not used in the Platform CLI are not able to be saved to the Hub.
-:::
-
 ### API Key Management
 
 API keys and user preferences are stored in a JSON file - `$HOME/.openbb_platform/user_settings.json` - instead of the `ENV` file in `$HOME/.openbb_sdk/.env`.
@@ -90,15 +86,6 @@ Credentials can be entered directly from the Python interface:
 ```python
 from openbb import obb
 obb.user.credentials.fmp_api_key="REPLACE_WITH_YOUR_KEY"
-```
-
-### OpenBB Hub Login
-
-Login to your OpenBB Hub account with an email/password combo or a revokable Personal Access Token (recommended):
-
-```python
-from openbb import obb
-obb.account.login()
 ```
 
 ### Function Outputs

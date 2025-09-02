@@ -29,8 +29,6 @@ Other software like STATA, SPSS, and R-Studio share similar functionality in the
 
 Routines make it easy to automate a series of processes, and this includes mining and dumping large amounts of data to organized spreadsheets.  Making use of `--export` and `--sheet-name`, data collection is more efficient and reliable, with results that are easily replicable.
 
-A pipeline of commands is difficult to share, so to encourage users to share ideas and processes, we created [Community Routines](community-routines.md) for the [OpenBB Hub](https://my.openbb.co/). Routines can be created, stored, and shared - executable in any OpenBB Platform CLI installation, by URL.
-
 ## Pipeline of Commands
 
 One of the main objectives of the OpenBB Platform CLI is to automate a user's investment research workflow - not just a single command, but the complete process.  This is where the pipeline of commands comes in,  running a sequence of commands.
