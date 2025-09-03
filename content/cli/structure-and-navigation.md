@@ -12,7 +12,6 @@ keywords:
 - Home
 - commands
 - menus
-- OpenBB Hub Theme Style
 - Absolute paths
 ---
 
@@ -24,7 +23,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 The OpenBB Platform CLI is a Command Line Interface (CLI) application. Functions (commands) are called through the keyboard with results returned as charts, tables, or text.  Charts and tables (if enabled) are displayed in a new window, and are fully interactive, while text prints directly to the Terminal screen.
 
-A menu is a collection of commands (and sub-menus). A menu can be distinguished from a command because the former has a `>` on the left. The color of a command and a menu also differ, but these can be changed in OpenBB Hub's theme style.
+A menu is a collection of commands (and sub-menus). A menu can be distinguished from a command because the former has a `>` on the left. The color of a command and a menu also differ.
 
 ## Navigation
 
