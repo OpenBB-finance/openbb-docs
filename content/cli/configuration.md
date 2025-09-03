@@ -23,7 +23,7 @@ In addition to the OpenBB Platform's `user_settings.json` file, described [here]
 :::important
 API credentials are defined in the `user_settings.json` file.
 
-Find all data providers [here](/platform/usage/extensions/overview), and manage all your credentials directly on the [OpenBB Hub](https://my.openbb.co/app/platform/credentials).
+Find all the current data providers maintained in the OpenBB repository [here](/platform/usage/extensions/overview).
 
 Define default data sources by following the pattern outlined [here](data-sources)
 :::

@@ -58,7 +58,11 @@ Support for Python 3.13 will be introduced in the summer of 2025.
 
 ## Installer Package
 
-An installer package is available for Mac and Windows machines. Files are available [here](https://my.openbb.co/app/platform/downloads).
+An installer package is available for Mac and Windows machines.
+
+- [Windows](https://openbb-installers.s3.amazonaws.com/OpenBB-Platform-Windows-x86_64.exe)
+- [macOS for Apple Silicon](https://openbb-installers.s3.amazonaws.com/OpenBB-Platform-MacOSX-arm64.pkg)
+- [macOS for Intel](https://openbb-installers.s3.amazonaws.com/OpenBB-Platform-MacOSX-x86_64.pkg)
 
 It will handle the installation of Python, environment setup, and OpenBB packages with the latest versions.
 
@@ -311,17 +315,3 @@ uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
 ```
 
 See more information about using the REST API in the [usage section](/platform/usage/quickstart_workspace)
-
-## Hub Synchronization
-
-Once you have installed the OpenBB Platform with the desired providers and extensions, you can synchronize with the [OpenBB Hub](https://my.openbb.co/app/hub). The main benefit of this is that you can use your single login to access your saved credentials and preferences from any instance. To login, you can use the `login` method, either using your email and password:
-
-```python
-obb.account.login(email='my_email_here', password='my_password_here')
-```
-
-Or using your personal access token:
-
-```python
-obb.account.login(pat='my_pat_here')
-```
