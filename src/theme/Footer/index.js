@@ -35,7 +35,7 @@ const nFormatter = (num, digits) => {
 function Footer() {
 	const [stars, setStars] = useState(0);
 	useEffect(() => {
-		fetch("https://api.github.com/repos/openbb-finance/openbbterminal")
+		fetch("https://api.github.com/repos/openbb-finance/openbb")
 			.then((res) => res.json())
 			.then((data) => setStars(data.stargazers_count));
 	}, []);
@@ -46,8 +46,8 @@ function Footer() {
 	}
 
 	return (
-		<footer className="px-4 border-t dark:border-grey-600/50 lg:px-12 py-14 bg-white dark:bg-grey-850 z-10 overflow-hidden flex flex-col gap-10 items-center justify-center">
-			<div className="flex w-full justify-between md:flex-row">
+		<footer className="px-4 border-t dark:border-grey-600/50 lg:px-12 py-4 bg-white dark:bg-grey-850 z-10 overflow-hidden flex flex-col gap-10 items-center justify-center">
+			<div className="flex w-full justify-between md:flex-row mt-5">
 				<div className="md:items-start mt-2">
 					<Link
 						aria-label="Home"
@@ -60,7 +60,7 @@ function Footer() {
 				<div className="justify-end">
 					<a
 						className="flex h-[32px] w-[172px] rounded-md border border-grey-300 hover:bg-grey-100 dark:border-white bg-grey-100 dark:bg-white text-xs hover:no-underline"
-						href="https://github.com/OpenBB-finance/OpenBBTerminal"
+						href="https://github.com/OpenBB-finance/OpenBB"
 						target="_blank"
 						rel="noreferrer"
 					>
@@ -101,7 +101,7 @@ function Footer() {
 						className="h-8 w-8 dark:hover:!text-white hover:text-grey-700"
 						target="_blank"
 						rel="noreferrer"
-						href="https://github.com/OpenBB-finance/OpenBBTerminal"
+						href="https://github.com/OpenBB-finance/OpenBB"
 					>
 						<GithubIcon className="h-4 w-4" />
 					</a>
@@ -260,14 +260,6 @@ const FOOTER_CONTENT = {
 				{
 					href: "https://docs.openbb.co/workspace",
 					label: "Workspace Docs",
-				},
-				{
-					href: "https://openbb.co/products/bot",
-					label: "OpenBB Bot",
-				},
-				{
-					href: "https://my.openbb.co/app/docs",
-					label: "Bot Docs",
 				},
 			],
 		},
