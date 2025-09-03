@@ -8293,31 +8293,24 @@ We've removed the "Data Connectors" tab. So instead of Data Connectors > Add Dat
 
 The steps are also described below:
 
-1. Download the OpenBB Platform Installer which can be found [here](https://my.openbb.co/app/platform/downloads).
+1. Select the right installer based on your OS and architecture.
+    - [Windows](https://openbb-installers.s3.amazonaws.com/OpenBB-Platform-Windows-x86_64.exe)
+    - [macOS for Apple Silicon](https://openbb-installers.s3.amazonaws.com/OpenBB-Platform-MacOSX-arm64.pkg)
+    - [macOS for Intel](https://openbb-installers.s3.amazonaws.com/OpenBB-Platform-MacOSX-x86_64.pkg)
 
-<img className="pro-border-gradient" width="1000" alt="Installer" src="https://github.com/user-attachments/assets/f161c50a-93a4-45db-a504-9c9c45f59082" />
-
-
-Select the right installer based on your OS and architecture. Then install it.
+Then install it.
 
 2. Once installation is complete, find the `OpenBB` folder that has been created in the installation directory selected. Double click on `OpenBB/openbb-api`.
 
-<img className="pro-border-gradient" width="1000" alt="OpenBB API" src="https://github.com/user-attachments/assets/baba4613-8253-431c-bce2-f9764533de41" />
+:::note
+Configure any data provider credentials in the [`user_settings.json`](/platform/settings/user_settings/api_keys) file before running.
+:::
 
-3. A popup should be initiated, and you will be prompted to insert your personal access token (PAT), which can be retrieved from [here](https://my.openbb.co/app/platform/pat).
-
-<img className="pro-border-gradient" width="1000" alt="PAT" src="https://github.com/user-attachments/assets/43ac8f94-a0ce-4c38-9589-94d03322cfd7" />
-
-Note: This assumes that the user has spent time setting up their API keys [here](https://my.openbb.co/app/platform/credentials).
-
-<img className="pro-border-gradient" width="1000" alt="API Keys" src="https://github.com/user-attachments/assets/f3e565c7-d343-421a-bfee-6be7acb79042" />
-
-
-4. The OpenBB Platform API should now be up and running.
+3. The OpenBB Platform API should now be up and running.
 
 <img className="pro-border-gradient" width="1000" alt="OpenBB Platform API" src="https://github.com/user-attachments/assets/5015a675-7953-4807-98d2-94cdc041fd64" />
 
-5. Finally, you simply need to set up the custom backend on OpenBB Workspace.
+4. Finally, you simply need to set up the custom backend on OpenBB Workspace.
 
 :::note
 If you are using Brave/Safari you will need an HTTPS connection - see how [here](https://docs.openbb.co/workspace/faqs)
@@ -8333,10 +8326,10 @@ Then fill in the information as shown below:
 
 <img className="pro-border-gradient" width="800" alt="Table Widget Example" src="https://openbb-cms.directus.app/assets/563aca68-1ec3-48c7-86d8-9129e0e5fd8c.png" />
 
-Or you could also click this link to have it all filed in: https://pro.openbb.co/app?modal=connect-backend&name=OpenBB%20Platform&url=https://127.0.0.1:6900
+Or you could also click this link to have it all filed in: https://pro.openbb.co/app?modal=connect-backend&name=OpenBB%20Platform&url=http://127.0.0.1:6900
 
 
-6. Voila. You are now ready to access 300+ data widgets from OpenBB. For free.
+5. Voila. You are now ready to access 300+ data widgets from OpenBB. For free.
 
 These are some apps available out of the box:
 
@@ -8373,29 +8366,6 @@ You have to include the request header `ngrok-skip-browser-warning` with any val
 <img className="pro-border-gradient" width="1000" alt="ngrok-3" src="https://github.com/user-attachments/assets/03968960-e09a-46d8-98b9-718b6ae1b0db" />
 
 You are now ready to access this data on your phone, just ensure that you keep running the API endpoint and ngrok locally.
-
-## Advanced - Filter widgets
-
-If you run the steps above, you will have access to a dozen different data vendors and hundreds of different widgets. However, some of these may not work because you haven't set up the API key for the data vendor or you may not be interested to bring some of those widgets into your OpenBB Workspace.
-
-This section will explore how you can filter the platform integration datasets that are made available on OpenBB.
-
-1. Go to the [widgets filter page](https://my.openbb.co/app/platform/widgets) where you can set the data vendors you are interested and also select the widgets within. Once you are happy you can download the `widget_settings.json` configuration file by clicking on **Download**.
-
-<img className="pro-border-gradient" width="1000" alt="widgets" src="https://github.com/user-attachments/assets/c978c28d-e53a-4f83-9488-dcb524572b86" />
-
-2. In the `OpenBB` folder that has been created when you installed the Platform. There must be a `Settings` folder within. This folder should be the destination of your widget setttings file (`widget_settings.json`), which will serve as the configuration file for your custom backend.
-
-Now, similarly to the previous section, you should:
-- Run `OpenBB/openbb-api`
-- Set your PAT
-- Refresh the connection inside the ["Manage Backends"](https://pro.openbb.co/app) button or follow instructions above to add again.
-
-<!-- (http://pro.openbb.co/app/data-connectors?tab=my-data&modal=data-connectors&dcTab=backend&name=OpenBB%20Platform&url=http://localhost:6900) -->
-
-> Take into consideration that, if you change the default configurations on the OpenBB Platform settings, the URL (http://127.0.0.1:6900) might differ.
-
-<img className="pro-border-gradient" width="1000" alt="widgets-filter" src="https://github.com/user-attachments/assets/692e8da3-57fb-4cff-b566-adf8d5539530" />
 
 
 ---
