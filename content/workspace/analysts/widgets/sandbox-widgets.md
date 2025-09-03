@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Sandbox Widgets | OpenBB Workspace Docs" />
 
-# Sandbox Widgets
-
 When you first log into OpenBB Workspace on [`pro.openbb.co`](https://pro.openbb.co), you'll discover a collection of pre-built widgets already available in your workspace. These demonstration widgets serve a single purpose: to showcase what OpenBB is capable of achieving as an analytical application.
 
 #### Purpose

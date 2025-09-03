@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Interacting With Data | OpenBB Workspace Docs" />
 
-# Interacting With Data
-
 OpenBB Workspace provides powerful tools for analysts to explore and visualize financial data through interactive tables and charts.
 
 ## Working With Parameters

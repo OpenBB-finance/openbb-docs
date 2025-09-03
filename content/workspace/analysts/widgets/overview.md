@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Widgets Overview | OpenBB Workspace Docs" />
 
-# Widgets Overview
-
 Widgets are the fundamental building blocks of OpenBB Workspace, transforming raw financial data into interactive, visual components that drive your analysis. Each widget is a self-contained unit that combines data, visualization, and interactivity into a powerful analytical tool.
 
 ## What is a Widget?

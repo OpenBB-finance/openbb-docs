@@ -21,9 +21,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="OpenBB Workspace Docs" />
-
-# OpenBB Workspace
+<HeadTitle title="OpenBB Workspace" />
 
 OpenBB Workspace is a secure application for enterprise AI workflows. It combines flexible data integration, customizable UI components, and AI capabilities in a single solution.
 
@@ -31,23 +29,23 @@ Explore OpenBB Workspace at [pro.openbb.co](https://pro.openbb.co).
 
 <img src="https://openbb-cms.directus.app/assets/8aa1a314-0e2c-41f0-a3cf-ef621e5f2a13.png" alt="OpenBB Workspace Application Interface" width="100%" />
 
-Product demo [here](https://www.youtube.com/watch?v=Gll8bRSoyGM).
+Product demo [in this video](https://www.youtube.com/watch?v=Gll8bRSoyGM).
 
 ## Core capabilities
 
-#### Production-Ready UI Framework
+### Production-Ready UI Framework
 
 Transform your workflows with a fully customizable UI that adapts to your team's specific needs. OpenBB Workspace gives you complete control over every aspect of the interface, allowing you to tailor it precisely to your workflow requirements. Teams can collaborate through shared dashboards and applications, while the flexible framework enables you to build comprehensive solutions ranging from simple data visualizations to complex AI-powered workflows.
 
-#### Unified Data Integration
+### Unified Data Integration
 
 OpenBB Workspace brings all your data sources together in one secure, scalable system. Whether you're working with proprietary internal data, licensed third-party feeds, or public datasets, the Workspace provides data access through a single interface. The system handles both structured and unstructured data with equal ease, and its open architecture supports flexibility as your needs evolve.
 
-#### AI Agent Integration
+### AI Agent Integration
 
 Deploy and manage AI agents in a secure, controlled environment that puts you in charge. OpenBB Workspace offers the flexibility to integrate any AI agent that supports your workflows, whether it's powered by a proprietary model, open-source solution, or third-party service. Agents run in a protected environment with carefully controlled data access, ensuring security and compliance when connecting AI capabilities to your existing processes. This integration happens naturally within your workflows, enhancing rather than disrupting your established practices.
 
-#### Enterprise-Grade Deployment
+### Enterprise-Grade Deployment
 
 OpenBB Workspace provides the deployment flexibility modern enterprises demand. Deploy the Workspace on-premises or in your private cloud, maintaining complete control over your infrastructure and data. Your sensitive information never leaves your environment, staying protected within your existing security perimeter. The system includes detailed role-based access controls, allowing you to implement fine-grained security policies that align with your organization's requirements and compliance standards.
 
