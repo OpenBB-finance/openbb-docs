@@ -27,10 +27,10 @@ The system understands the parameter schemas of each widget and can intelligentl
 
 This eliminates the need for manual widget configuration and enables the Copilot to perform iterative analysis with different parameters automatically, such as comparing the same analysis across different time periods or asset classes within a single conversation.
 
-<div
-  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
->
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
+    className="pro-border-gradient"
+    alt="Widget parameters"
     src="https://openbb-cms.directus.app/assets/1c0c7c36-30e8-4b89-b9ad-0b97694f2699.png"
     width="100%"
   />
@@ -44,10 +44,10 @@ This feature automatically activates as a fallback mechanism when information is
 
 The system filters and prioritizes results based on relevance and credibility, then integrates external information with your existing workspace data to provide comprehensive answers with proper source attribution.
 
-<div
-  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
->
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
+    className="pro-border-gradient"
+    alt="Web search"
     src="https://openbb-cms.directus.app/assets/d9aec63a-379f-4ced-9074-1597dabc55b6.png"
     width="100%"
   />

@@ -21,10 +21,10 @@ Comprehensive citation system ensures full traceability and verification of all 
 
 - **Widget citations:** Direct links to widgets with parameters selected. Smart linking enables "Scroll to widget" functionality for existing dashboard widgets. If the widget doesn't exist in the dashboard or has modified parameters the linking will provide a "Add widget to dashboard" options to facilitate workspace workflow.
 
-<div
-  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
->
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
+    className="pro-border-gradient"
+    alt="Widget citations"
     src="https://openbb-cms.directus.app/assets/26f4da06-acc4-4aa2-8540-d56cec931f99.png"
     width="100%"
   />
@@ -32,10 +32,10 @@ Comprehensive citation system ensures full traceability and verification of all 
 
 - **Document citations:** Precise page and section references for PDF documents with automatic highlighting of relevant content areas.
 
-<div
-  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
->
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
+    className="pro-border-gradient"
+    alt="Document citations"
     src="https://openbb-cms.directus.app/assets/05dfd0b0-b3b5-41a5-b916-0f89a8e50dd1.png"
     width="100%"
   />
@@ -43,10 +43,10 @@ Comprehensive citation system ensures full traceability and verification of all 
 
 - **Web citations:** Full URL references when web pages are utilized.
 
-<div
-  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
->
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
+    className="pro-border-gradient"
+    alt="Web citations"
     src="https://openbb-cms.directus.app/assets/6073a901-0005-4927-8951-021243333c48.png"
     width="100%"
   />
@@ -62,10 +62,10 @@ The system supports multiple artifact types including formatted text summaries, 
 
 - Text widget:
 
-<div
-  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
->
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
+    className="pro-border-gradient"
+    alt="Text widget from AI output"
     src="https://openbb-cms.directus.app/assets/517d6934-6d89-44df-ba5b-995520bcb1e6.png"
     width="100%"
   />
@@ -73,10 +73,10 @@ The system supports multiple artifact types including formatted text summaries, 
 
 - Table widget:
 
-<div
-  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
->
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
+    className="pro-border-gradient"
+    alt="Table widget from AI output"
     src="https://openbb-cms.directus.app/assets/c987377c-1dc9-4a96-b590-3694a6c764b4.png"
     width="100%"
   />
@@ -84,15 +84,14 @@ The system supports multiple artifact types including formatted text summaries, 
 
 - Chart widget:
 
-<div
-  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
->
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
+    className="pro-border-gradient"
+    alt="Chart widget from AI output"
     src="https://openbb-cms.directus.app/assets/9e7f2d80-1bd1-4238-bffc-099598c995a6.png"
     width="100%"
   />
 </div>
-
 
 ## User feedback loop
 
@@ -100,10 +99,10 @@ The thumbs up and down buttons in the agent output allow the user to provide fee
 
 While the thumbs up does not prompt the user for any additional details.
 
-<div
-  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
->
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
+    className="pro-border-gradient"
+    alt="Thumbs up"
     src="https://openbb-cms.directus.app/assets/fc1ea4d0-e0b0-4669-ae40-23871ae67790.png"
     width="80%"
   />
@@ -111,10 +110,10 @@ While the thumbs up does not prompt the user for any additional details.
 
 The thumbs down asks for clarification of what went wrong.
 
-<div
-  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
->
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
+    className="pro-border-gradient"
+    alt="Thumbs down"
     src="https://openbb-cms.directus.app/assets/e89e9f77-6d52-4921-8f81-b73d39260d6f.png"
     width="80%"
   />

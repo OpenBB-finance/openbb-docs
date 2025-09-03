@@ -21,13 +21,33 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 OpenBB Workspace provides powerful tools for analysts to explore and visualize financial data through interactive tables and charts.
 
-## Working with Parameters
+## Working With Parameters
 
-Parameters are the foundation of interactive analysis in OpenBB Workspace, allowing you to customize what data your widgets display. Input parameters let you focus your analysis by setting date ranges, selecting specific tickers, or applying filters that narrow down the dataset to exactly what you need.
+Parameters are the foundation of interactive analysis in OpenBB Workspace, allowing you to customize what data your widgets display.
 
-### Parameter Linking Through Grouping
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="Parameter selection interface"
+    src="https://openbb-web-assets.s3.us-east-1.amazonaws.com/docs/screenshots/parameters.jpg"
+    width="800"
+  />
+</div>
 
-The most powerful feature of parameters is their ability to be linked across multiple widgets through the grouping mechanism. When widgets share parameter names and options, changing a value in one widget automatically updates all linked widgets, creating a cohesive analytical experience.
+Input parameters let you focus your analysis by setting date ranges, selecting specific tickers, or applying filters that narrow down the dataset to exactly what you need.
+
+### Grouping Widgets Through Parameter Linking
+
+A powerful feature of parameters is their ability to be linked across multiple widgets. When widgets share parameter names and options, changing a value in one widget automatically updates all linked widgets, creating a cohesive analytical experience.
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="Parameter linking across widgets"
+    src="https://openbb-web-assets.s3.us-east-1.amazonaws.com/docs/screenshots/parameter-grouping.jpg"
+    width="800"
+  />
+</div>
 
 For example, when you change a ticker symbol or date range in one widget, all widgets in the same group that use that parameter will update automatically. This synchronization ensures your entire analysis remains focused on the same context without manual intervention.
 
@@ -38,7 +58,12 @@ This capability transforms your dashboard from a collection of isolated visualiz
 Interactive tables provide powerful data manipulation capabilities for detailed financial analysis. These tables have professional-grade features that allow you to explore and analyze large datasets.
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="900" alt="selection-charting" src="https://openbb-assets.s3.amazonaws.com/docs/pro/selection-charting-1.png" />
+  <img
+    className="pro-border-gradient"
+    alt="selection-charting"
+    src="https://openbb-assets.s3.amazonaws.com/docs/pro/selection-charting-1.png"
+    width="900"
+  />
 </div>
 
 ### Key Features
@@ -58,18 +83,37 @@ The widget interface supports conversion between table and chart views, enabling
 2. **Chart-view Mode**: Access the "Chart-view" icon to transform the entire table into a dynamic chart
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="900" alt="chartview" src="https://openbb-assets.s3.amazonaws.com/docs/pro/chartview-setting.png" />
+  <img
+    className="pro-border-gradient"
+    alt="chartview"
+    src="https://openbb-assets.s3.amazonaws.com/docs/pro/chartview-setting.png"
+    width="900"
+  />
 </div>
 
 ### Chart Customization
 
 You can change the chart settings by clicking on the three dots and then the `Chart Settings` in the dropdown menu.
 
-<img className="pro-border-gradient" width="400" alt="chart" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/chart+settings.png" />
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="chart"
+    src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/chart+settings.png"
+    width="400"
+  />
+</div>
 
 Here you can change the chart type, the chart settings, and some other settings in each tab.
 
-<img className="pro-border-gradient" width="400" alt="chart" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/chart+settings+2.png" />
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="chart"
+    src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/chart+settings+2.png"
+    width="400"
+  />
+</div>
 
 The customization interface provides three main configuration areas:
 
@@ -80,7 +124,12 @@ The customization interface provides three main configuration areas:
 Example of a customized chart with multiple visualization types:
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-<img className="pro-border-gradient" width="800" alt="example" src="https://openbb-assets.s3.amazonaws.com/docs/pro/combo-chart.png" />
+  <img
+    className="pro-border-gradient"
+    alt="Customized chart example"
+    src="https://openbb-assets.s3.amazonaws.com/docs/pro/combo-chart.png"
+    width="800"
+  />
 </div>
 
 The final example demonstrates how to combine different chart types for enhanced data visualization.
@@ -90,7 +139,12 @@ The final example demonstrates how to combine different chart types for enhanced
 Plotly charts give your developers complete freedom to create the right visualization for your data, whether you need a simple line chart or a complex 3D plot. The integration is straightforward, with charts automatically adapting to your workspace theme in both light and dark modes.
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="900" alt="Plotly Chart with Raw Data Switch" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/plotly+switch.png" />
+  <img
+    className="pro-border-gradient"
+    alt="Plotly Chart with Raw Data Switch"
+    src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/plotly+switch.png"
+    width="900"
+  />
 </div>
 
 As a user you will find everything you need for in-depth analysis: interactive toolbars with drawing tools and annotations.
@@ -104,7 +158,12 @@ The raw data toggle is particularly useful for AI-assisted analysis. With a simp
 TradingView charts bring professional trading visualization tools directly into your workspace, using the same interface that traders around the world rely on for their analysis.
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="900" alt="TradingView Chart Example" src="https://openbb-cms.directus.app/assets/1e1dff4c-8698-4a82-9863-31e911e7cf3b.png" />
+  <img
+    className="pro-border-gradient"
+    alt="TradingView Chart Example"
+    src="https://openbb-cms.directus.app/assets/1e1dff4c-8698-4a82-9863-31e911e7cf3b.png"
+    width="900"
+  />
 </div>
 
 You get the full TradingView experience: real-time and historical market data, technical indicators, and all the drawing tools you need for your analysis. Whether you're drawing trend lines, applying Fibonacci retracement levels, or highlighting chart patterns, everything works just like it does in the native TradingView platform. The ability to switch between timeframes makes it easy to zoom in on short-term movements or step back for a broader market view.

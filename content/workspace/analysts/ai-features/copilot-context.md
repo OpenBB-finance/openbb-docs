@@ -39,10 +39,10 @@ Explicit context represents the highest priority information source, allowing yo
 
 When you click on the "Add to context" button on any widget you're creating a direct reference that the Copilot will prioritize above all other available information. After sending the prompt, that widget will remain in context.
 
-<div
-  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
->
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
+    className="pro-border-gradient"
+    alt="Explicit context"
     src="https://openbb-cms.directus.app/assets/24947294-2053-4efc-a68b-7ec90bf9875c.png"
     width="100%"
   />
@@ -50,10 +50,10 @@ When you click on the "Add to context" button on any widget you're creating a di
 
 When you use the "@" symbol followed by a widget name and the prompt is sent, the widget will disappear from context. This is meant to be a quick tag reference.
 
-<div
-  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
->
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
+    className="pro-border-gradient"
+    alt="Explicit context with @"
     src="https://openbb-cms.directus.app/assets/3ed47f6f-52f2-4515-b401-16bc8d6a971a.png"
     width="60%"
   />
@@ -67,10 +67,10 @@ The Copilot automatically extracts and indexes content from attached files, maki
 
 Please note that for PDF files, text must be selectable as Optical Character Recognition (OCR) is not supported. However, you can integrate your own agent that performs OCR.
 
-<div
-  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
->
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
+    className="pro-border-gradient"
+    alt="Attached files"
     src="https://openbb-cms.directus.app/assets/f3a3ab07-4ecf-4b76-af74-cd2bb1f4b3b2.png"
     width="60%"
   />
@@ -80,10 +80,10 @@ Please note that for PDF files, text must be selectable as Optical Character Rec
 
 The dashboard context provides the Copilot with comprehensive awareness of your currently active dashboard. All widgets on your active dashboard become automatically available as data sources, allowing the Copilot to understand the broader context of your work session. It also has access to the widgets metadata and the current parameters selected.
 
-<div
-  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
->
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
+    className="pro-border-gradient"
+    alt="Dashboard context"
     src="https://openbb-cms.directus.app/assets/2fc343e5-6eb2-4ef6-ba10-f687868bdff4.png"
     width="100%"
   />
@@ -97,10 +97,10 @@ The Copilot tracks your explicit questions and its responses. This memory allows
 
 The system understands references to "the previous chart", "that analysis", or "the data we discussed" and can seamlessly continue complex analytical workflows across multiple conversation turns.
 
-<div
-  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
->
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
+    className="pro-border-gradient"
+    alt="Conversation history"
     src="https://openbb-cms.directus.app/assets/49ed1729-674a-4d45-bf73-ba9bd3918bed.png"
     width="70%"
   />
@@ -114,10 +114,10 @@ When your current dashboard doesn't contain the specific data or analysis tool n
 
 This is only possible due to the metadata associated with each widget and is why it's important to invest time in specifying the metadata carefully.
 
-<div
-  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
->
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
+    className="pro-border-gradient"
+    alt="Global retrieval"
     src="https://openbb-cms.directus.app/assets/f5661493-50ec-45c0-931a-8abd70d3bc9a.png"
     width="60%"
   />
@@ -132,10 +132,10 @@ The web search capability enables the Copilot to access real-time information fr
 
 This feature automatically activates as a fallback mechanism, ensuring comprehensive responses even when dealing with breaking news, recent market developments, or information not available in your current workspace widgets.
 
-<div
-  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
->
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
+    className="pro-border-gradient"
+    alt="Web search"
     src="https://openbb-cms.directus.app/assets/3dffe668-2114-4c4c-b822-395da193f2a0.png"
     width="100%"
   />

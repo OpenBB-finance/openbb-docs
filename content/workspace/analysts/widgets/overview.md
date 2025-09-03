@@ -23,7 +23,14 @@ Widgets are the fundamental building blocks of OpenBB Workspace, transforming ra
 
 A widget is more than just a chart or table – it's a data container designed to answer a specific analytical question.
 
-<img width="800" alt="Widget Metadata Structure and Components" src="https://openbb-cms.directus.app/assets/132e5cda-b062-4094-8036-8c2d41db1527.png" />
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="Widget Metadata Structure and Components"
+    src="https://openbb-cms.directus.app/assets/132e5cda-b062-4094-8036-8c2d41db1527.png"
+    width="800"
+  />
+</div>
 
 ## Anatomy of a Widget
 
@@ -58,17 +65,49 @@ Interactive elements that customize what data your widget displays. Input parame
 
 Parameters that are linked via the grouping mechanism create synchronization across multiple widgets on your dashboard. When you change a ticker symbol or date range in one widget, all widgets in the group sharing that parameter will update automatically. This creates a cohesive experience where your dashboard responds automatically to your actions.
 
-### 5. Controls
+### 5. Widget Controls
 
-Controls are highly specific to each widget type, providing specialized functionality that matches the data and visualization format. These widget-specific controls give you powerful ways to interact with and manipulate your data directly within each widget.
+Widget controls are specific to each widget type. They provide specialized functionality that matches the data and visualization format. These widget-specific controls give you powerful ways to interact with and manipulate your data directly within each widget.
 
-Table widgets powered by AgGrid offer advanced data manipulation capabilities including column sorting, filtering, and grouping functions that let you slice and dice your data without leaving the widget. You can create custom filters, sort by multiple columns, and group data by categories to uncover patterns and insights within large datasets.
+#### Universal controls
 
-Chart widgets, particularly those using TradingView integration, provide sophisticated analytical tools including technical indicator overlays, and timeframe adjustments. Plotly charts allow to render any figure that is supported by Plotly.
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="Universal Widget Controls"
+    src="https://openbb-web-assets.s3.us-east-1.amazonaws.com/docs/screenshots/universal-controls.jpg"
+    width="800"
+  />
+</div>
 
 Universal controls available across most widget types include refresh settings for managing data update frequency, export options for saving data in formats like CSV, JSON, and Excel, and view toggles that let you switch between visual representations and raw data tables.
 
+#### Table widgets
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="Table Widget Controls"
+    src="https://openbb-web-assets.s3.us-east-1.amazonaws.com/docs/screenshots/table-controls.jpg"
+    width="800"
+  />
+</div>
+
+Table widgets powered offer advanced data manipulation capabilities including column sorting, filtering, and grouping functions that let you slice and dice your data without leaving the widget. You can create custom filters, sort by multiple columns, and group data by categories to uncover patterns and insights within large datasets.
 Table widgets also generate Excel Add-in formulas automatically, allowing you to pull the same data directly into spreadsheets for hybrid analysis workflows.
+
+#### Chart widgets
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="Chart Widget Controls"
+    src="https://openbb-web-assets.s3.us-east-1.amazonaws.com/docs/screenshots/tv-controls.jpg"
+    width="800"
+  />
+</div>
+
+Chart widgets, particularly those using TradingView integration, provide sophisticated analytical tools including technical indicator overlays, and timeframe adjustments. Plotly charts allow to render any figure that is supported by Plotly.
 
 ## How Widgets Work
 
@@ -89,6 +128,22 @@ Beyond this data flow, widgets exhibit two powerful features that transform them
 ## Your Widget Library
 
 OpenBB Workspace enables you to build a scalable library of widgets, instantly searchable and logically categorized to match your analytical workflow. This library centralizes your financial data visualizations, making them easily discoverable through search and category navigation.
+
+Bring up the Widget Library search interface by either:
+
+- Clicking the search field in the top left of the Workspace UI
+- Pressing `Cmd+K` (Mac) or `Ctrl+K` (Windows) keyboard shortcut
+- Clicking the plus `+` icon in the bottom right of any dashboard
+- Clicking the "Add Widget" button on any dashboard
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="Widget Library Interface"
+    src="https://openbb-web-assets.s3.us-east-1.amazonaws.com/docs/screenshots/widget-library.jpg"
+    width="800"
+  />
+</div>
 
 Widgets are grouped in ways that reflect real-world analytical workflows. Whether analyzing portfolios, tracking macro trends, or researching equities, relevant widgets are organized for quick access.
 

@@ -21,7 +21,14 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Apps in OpenBB Workspace are pre-configured dashboard templates that combine widgets, pre-selected AI agents, and custom prompts to create optimized analytical workflows. Unlike individual dashboards that you build from scratch, Apps provide instant access to complete analytical environments designed for specific use cases.
 
-<img width="800" alt="OpenBB Workspace Multiple Applications View" src="https://openbb-cms.directus.app/assets/2fc9097e-0941-49df-8d83-7d6b5a87bb45.png" />
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="OpenBB Workspace Multiple Applications View"
+    src="https://openbb-cms.directus.app/assets/2fc9097e-0941-49df-8d83-7d6b5a87bb45.png"
+    width="800"
+  />
+</div>
 
 ## What are Apps?
 
@@ -64,4 +71,11 @@ To see Apps examples that you can do, check [our solutions page](https://openbb.
 
 Here's an example of a Portfolio Risk Management dashboard (converted from an App).
 
-<img width="800" alt="Portfolio Risk Management Dashboard" src="https://openbb-cms.directus.app/assets/b1d5b799-3abe-4d45-b04c-601e2b652b18.png" />
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    width="800"
+    alt="Portfolio Risk Management Dashboard"
+    src="https://openbb-cms.directus.app/assets/b1d5b799-3abe-4d45-b04c-601e2b652b18.png"
+  />
+</div>

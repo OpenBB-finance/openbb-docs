@@ -30,7 +30,12 @@ The Navigation Bar serves as your dashboard's command center, providing tab-base
 - Monitor various portfolios
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="Navigation bar interface showing multiple tabs" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/navigation_bar.png" />
+  <img
+    className="pro-border-gradient"
+    alt="Navigation bar interface showing multiple tabs"
+    src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/navigation_bar.png"
+    width="600"
+  />
 </div>
 
 ## Note Widget
@@ -43,7 +48,12 @@ The Note widget transforms your dashboard into a dynamic research canvas, enabli
 - Create a searchable knowledge base of your research
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="Note widget interface showing text editing capabilities" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/note_widget.png" />
+  <img
+    className="pro-border-gradient"
+    alt="Note widget interface showing text editing capabilities"
+    src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/note_widget.png"
+    width="600"
+  />
 </div>
 
 ## Website and Iframe Widget
@@ -56,7 +66,12 @@ The Website widget brings external data sources directly into your dashboard, cr
 - Maintain context while analyzing multiple data sources
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="Website widget showing embedded webpage" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/website.png" />
+  <img
+    className="pro-border-gradient"
+    alt="Website widget showing embedded webpage"
+    src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/website.png"
+    width="600"
+  />
 </div>
 
 > **Note:** Some websites may restrict embedding. OpenBB automatically checks and only displays websites that permit embedding.
@@ -71,7 +86,12 @@ The RSS Feeds widget serves as your personal news aggregator within OpenBB, keep
 - Integrated news analysis within your research workflow
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="RSS Feeds widget showing news headlines" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/rss.png" />
+  <img
+    className="pro-border-gradient"
+    alt="RSS Feeds widget showing news headlines"
+    src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/rss.png"
+    width="600"
+  />
 </div>
 
 ## Clock Widget
@@ -84,5 +104,10 @@ The Clock widget helps you track global market hours and coordinate across time 
 - Staying aware of global market events
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="Clock widget showing multiple time zones" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/clock.png" />
+  <img
+    className="pro-border-gradient"
+    alt="Clock widget showing multiple time zones"
+    src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/clock.png"
+    width="600"
+  />
 </div>
