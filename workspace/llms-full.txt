@@ -12708,7 +12708,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="OpenBB Workspace" />
+<HeadTitle title="OpenBB Workspace Docs" />
 
 OpenBB Workspace is a secure application for enterprise AI workflows. It combines flexible data integration, customizable UI components, and AI capabilities in a single solution.
 
