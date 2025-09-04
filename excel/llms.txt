@@ -2,8 +2,3 @@
 
 ## Docs
 
-- [Overview](https://docs.openbb.co/excel/index): The OpenBB Add-in for Excel is a powerful integration that enables direct access to financial data within Microsoft Excel. This seamless integration allows you to create sophisticated financial models and perform comprehensive analysis without leaving your spreadsheet environment.
-- [Getting Started](https://docs.openbb.co/excel/installation): This page presents the general requirements and the steps to install the OpenBB Add-in for Excel. The OpenBB Add-in for Excel is available on Windows, Mac, and Excel on the web. It can be installed by an administrator or by individual users.
-- [OBB.GET](https://docs.openbb.co/excel/obb-get): Extract and slice specific data from Excel ranges using labels or indices
-- [OBB.WIDGET](https://docs.openbb.co/excel/obb-widget): This page provides an overview of the basics of the OpenBB add-in for Microsoft Excel. It covers the basic usage of the add-in and the available functions.
-- [Troubleshooting](https://docs.openbb.co/excel/troubleshooting): Common issues and solutions for the OpenBB Add-in for Excel, including error handling, installation problems, and connection troubleshooting.
