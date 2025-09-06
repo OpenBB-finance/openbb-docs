@@ -164,7 +164,7 @@ Finally, you are also able to add your own logo to the product - to make it feel
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
 >
   <img
-    src="https://openbb-cms.directus.app/assets/9a99b8dd-05f0-40ce-a7d6-a5d96a859714.png"
+    src="https://openbb-cms.directus.app/assets/b1055be1-ed02-400f-8876-372ae832d37c.png"
     width="100%"
   />
 </div>
