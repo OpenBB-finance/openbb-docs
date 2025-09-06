@@ -17,9 +17,9 @@
 - [Troubleshooting](https://docs.openbb.co/workspace/analysts/excel-addin/troubleshooting): Common issues and solutions for the OpenBB Add-in for Excel, including error handling, installation problems, and connection troubleshooting.
 - [AI-generated Widgets](https://docs.openbb.co/workspace/analysts/widgets/ai-generated-widgets): Learn how to use AI agent outputs as widgets in your OpenBB dashboard
 - [Core Widgets](https://docs.openbb.co/workspace/analysts/widgets/core-widgets): Essential widgets that form the foundation of every OpenBB dashboard - navigation, notes, data integration, and productivity tools.
-- [Custom Widgets](https://docs.openbb.co/workspace/analysts/widgets/custom-widgets): Explore the diverse types of custom widgets available in OpenBB Workspace - from interactive tables to advanced charts and document viewers.
+- [Interacting With Data](https://docs.openbb.co/workspace/analysts/widgets/interacting-with-data): Learn how to work with tables and charts in OpenBB Workspace, including parameter selection and synchronization across widgets.
 - [Overview](https://docs.openbb.co/workspace/analysts/widgets/overview): Understanding widgets - the building blocks of OpenBB Workspace dashboards that transform raw data into actionable insights.
-- [Sandbox Widgets](https://docs.openbb.co/workspace/analysts/widgets/sandbox-widgets): Explore OpenBB's pre-built demonstration widgets that showcase platform capabilities upon login.
+- [Sandbox Widgets](https://docs.openbb.co/workspace/analysts/widgets/sandbox-widgets): Explore OpenBB's pre-built demonstration widgets that showcase application capabilities upon login.
 - [Static Files](https://docs.openbb.co/workspace/analysts/widgets/static-files): Upload and integrate your own files into OpenBB Workspace - transform spreadsheets, PDFs, and images into interactive dashboard widgets.
 - [Overview](https://docs.openbb.co/workspace/developers/ai-agents/ai-agents): Learn how to integrate and customize AI agents in OpenBB Workspace for enhanced financial analysis and research capabilities
 - [Apps](https://docs.openbb.co/workspace/developers/apps/apps): Create and customize your own OpenBB Apps for optimized workflows
@@ -48,6 +48,7 @@
 - [AgGrid Table Charts](https://docs.openbb.co/workspace/developers/widget-types/aggrid-table-charts): AgGrid Table Charts
 - [File Viewer](https://docs.openbb.co/workspace/developers/widget-types/file-viewer): Guide to using PDF and multi-PDF viewer widgets in OpenBB Workspace
 - [Highcharts Chart](https://docs.openbb.co/workspace/developers/widget-types/highcharts): Learn how to create Highcharts widgets for OpenBB Workspace, with step-by-step instructions for backend integration, configuration, and theme support.
+- [HTML](https://docs.openbb.co/workspace/developers/widget-types/html): Learn how to create and customize HTML widgets in OpenBB Workspace, enabling complete control over visualization and interaction design with custom HTML, CSS, and JavaScript.
 - [Live Grid](https://docs.openbb.co/workspace/developers/widget-types/live-grid): Create a real-time data grid widget for OpenBB Workspace that displays live updates in a table format
 - [Markdown](https://docs.openbb.co/workspace/developers/widget-types/markdown): Learn how to create and customize markdown widgets in OpenBB Workspace, including basic markdown display and data-rich markdown with dynamic content integration.
 - [Metric](https://docs.openbb.co/workspace/developers/widget-types/metric): Learn how to integrate your own backend with OpenBB Workspace using the cookie-cutter or language-agnostic API approaches, with illustrative guides and principles for handling widget.json files, APIs, interfaces, Python, FastAPI, and more.
@@ -60,4 +61,4 @@
 - [FAQs](https://docs.openbb.co/workspace/getting-started/faqs): Common questions and answers about OpenBB Workspace, data integration, custom backends, and troubleshooting.
 - [OpenBB Platform](https://docs.openbb.co/workspace/getting-started/platform-installer): Learn how to integrate the OpenBB Platform data to OpenBB Workspace
 - [Progressive Web App (PWA)](https://docs.openbb.co/workspace/getting-started/pwa): Install OpenBB Workspace as a Progressive Web App for a native experience on desktop and mobile devices.
-- [Workspace Overview](https://docs.openbb.co/workspace/index): OpenBB Workspace is a secure enterprise UI platform for AI workflows, featuring data integration, AI model deployment, flexible UI customization, and on-premises deployment capabilities.
+- [Workspace Overview](https://docs.openbb.co/workspace/index): OpenBB Workspace is a secure enterprise UI application for AI workflows, featuring data integration, AI model deployment, flexible UI customization, and on-premises deployment capabilities.
