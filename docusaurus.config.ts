@@ -44,36 +44,54 @@ export default {
 					},
 					{
 						from: "/pro/",
-						to: "/workspace/",
+						to: "/workspace/developers/data-integration",
 					},
 					{
 						from: "/pro/enterprise",
-						to: "/workspace/enterprise",
+						to: "/workspace/getting-started/enterprise",
 					},
 					{
 						from: "/pro/openbb-copilot",
-						to: "/workspace/openbb-copilot",
+						to: "/workspace/analysts/ai-features/copilot-basics",
 					},
 					{
 						from: "/pro/platform-installer",
-						to: "/workspace/platform-installer",
+						to: "/workspace/getting-started/platform-installer",
 					},
 					{
 						from: "/workspace/data-connector",
-						to: "/workspace/data-integration",
+						to: "/workspace/developers/data-integration",
 					},
 					{
-						from: "/workspace/enterprise",
+						from: "/excel/enterprise",
 						to: "https://openbb.co/pricing",
 					},
 					{
 						from: "/bot",
 						to: "https://openbb.co/blog/we-are-handing-over-the-openbb-bot-to-focus-on-our-mission",
 					},
+					// Add redirects for old excel paths
+					{
+						from: "/excel",
+						to: "/workspace/analysts/excel-addin/excel-overview",
+					},
+					// Add redirects for old getting-started paths  
+					{
+						from: "/getting-started/enterprise",
+						to: "/workspace/getting-started/enterprise",
+					},
+					{
+						from: "/getting-started/excel-installation",
+						to: "/workspace/analysts/excel-addin/excel-installation",
+					},
+					{
+						from: "/getting-started/faqs",
+						to: "/workspace/getting-started/faqs",
+					},
 				],
 				createRedirects: (existingPath) => {
 					if (existingPath.startsWith("/pro/")) {
-						const newPath = existingPath.replace("/pro/", "/workspace/");
+						const newPath = existingPath.replace("/pro/", "/workspace/developers/");
 						if (newPath.includes("data-connector")) {
 							return newPath.replace("/data-connector/", "/data-integration/");
 						}
@@ -109,7 +127,7 @@ export default {
 					const sectionContent: Record<string, string[]> = {
 						workspace: [],
 						platform: [],
-						excel: [],
+						cli: [],
 					};
 
 					// recursive function to get all mdx files
@@ -184,7 +202,7 @@ export default {
 					const sectionRoutes: Record<string, string[]> = {
 						workspace: [],
 						platform: [],
-						excel: [],
+						cli: [],
 					};
 
 					for (const [path, record] of Object.entries(

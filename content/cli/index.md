@@ -47,11 +47,6 @@ The CLI leverages the extendability of the OpenBB Platform architecture in an ea
     url="cli/configuration"
 />
 <NewReferenceCard
-    title="Hub Synchronization"
-    description="An overview of the `/account` menu and synchronizing settings with the OpenBB Hub."
-    url="cli/hub"
-/>
-<NewReferenceCard
     title="Data Sources"
     description="How-to switch providers for a command, and define the default source for a function."
     url="cli/data-sources"
