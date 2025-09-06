@@ -22,7 +22,7 @@ The Environments screen is for creating and managing **isolated Conda environmen
 
 Environments protect the system, and other external projects, by not using shared components. They make it easy to jump between projects, programming languages, and package versions without fear of contamination.
 
-![environments-panel](environments-panel.png)
+<img width="1704" height="1192" alt="environments-panel" src="https://github.com/user-attachments/assets/8773dab1-d682-455d-976a-f1434faabbbc" />
 
 ## Features
 
@@ -55,7 +55,7 @@ The extra tools included in this environment are:
 
 Each environment will have its own panel with dedicated action buttons (add `ipython` as a `pip` package to show button). Click on its name to expand the panel and view or manage the installed packages.
 
-![environments-panel-expanded](environments-panel-expanded.png)
+<img width="1704" height="1630" alt="environments-panel-expanded" src="https://github.com/user-attachments/assets/101a23ec-dd9b-42a7-9a4e-bf1e976f959b" />
 
 :::info
 Environments are updated with Conda's `libmamba` solver, where the packages to solve for were explicitly added to the environment or defined in the originally imported environment file. Conda itself will be updated before the environment is solved.
@@ -67,7 +67,7 @@ Updating an individual package from the panel's update button will not engage th
 
 The number of large icon buttons will depend on the environment's packages. At miniumum, there will be one for opening a system shell with the environment active, and another for opening a system shell with a Python session started.
 
-![environments-action-buttons](environments-action-buttons.png)
+<img width="604" height="108" alt="environments-action-buttons" src="https://github.com/user-attachments/assets/aab1006e-2e77-4f5e-b993-830114c3d9de" />
 
 All environments use the same Current Working Directory (CWD), which by default is, the installation folder selected during the initial setup.
 
@@ -113,7 +113,7 @@ Manual edits can be reflected in the environment by clicking the icon to the rig
 
 When complete, press `Done` to return to the Environments screen.
 
-![environments-create-done](environments-create-done.png)
+<img width="2116" height="1910" alt="environments-create-done" src="https://github.com/user-attachments/assets/95415178-78a5-47da-a16a-f8685d68a0a5" />
 
 ## Adding/Modifying Packages
 
@@ -121,7 +121,7 @@ Expand the panel of the desired environment and press the `Add Extensions` butto
 
 Define the package without a version to use the latest available. The modal supports installation of packages from Conda channels, and from `pip`.
 
-![environments-add-extensions](environments-add-extensions.png)
+<img width="1938" height="1344" alt="environments-add-extensions" src="https://github.com/user-attachments/assets/804cdb38-e5fe-40e4-8f45-f7addfa23491" />
 
 ### Version Pinning
 
