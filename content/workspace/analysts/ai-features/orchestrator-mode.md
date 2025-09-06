@@ -48,10 +48,18 @@ Users can interact with agents directly or through orchestration. Direct interac
   <img src="https://openbb-cms.directus.app/assets/5ad54690-5aa4-42d6-a0d7-c7a31fe19d58.png" alt="Direct agent interaction example" width="100%" />
 </div>
 
-With Orchestrator Mode activated, users can submit general requests to OpenBB Copilot. The orchestrator analyzes the request and determines whether specialized agent assistance would improve results. For example, a minimal or unclear prompt triggers automatic routing to a prompt optimization agent:
+With Orchestrator Mode activated, users can submit general requests to OpenBB Copilot. The orchestrator analyzes the request and determines whether specialized agent assistance would improve results.
+
+For example, a minimal or unclear prompt triggers automatic routing to a prompt optimization agent:
 
 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img src="https://openbb-cms.directus.app/assets/8a4b0c74-82b4-4e1c-ae2c-d905cf880d39.png" alt="Orchestrator routing to prompt optimizer" width="100%" />
+</div>
+
+Or routing to an agent that is better suitable to parse specific data (like FOMC document):
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img src="https://openbb-cms.directus.app/assets/6486184f-2b36-44cf-829a-aa46bf1e41d5.png" alt="Orchestrator routing to FOMC Agent" width="100%" />
 </div>
 
 ## Orchestration OFF
