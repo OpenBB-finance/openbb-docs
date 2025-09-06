@@ -22,7 +22,7 @@ The Environments screen is for creating and managing **isolated Conda environmen
 
 Environments protect the system, and other external projects, by not using shared components. They make it easy to jump between projects, programming languages, and package versions without fear of contamination.
 
-<img width="1704" height="1192" alt="environments-panel" src="https://github.com/user-attachments/assets/8773dab1-d682-455d-976a-f1434faabbbc" />
+<img width="1704" height="1192" alt="environments-panel" src="https://github.com/user-attachments/assets/dc461455-39af-4fb3-887f-42b4a7e15f4e" />
 
 ## Features
 
@@ -55,7 +55,7 @@ The extra tools included in this environment are:
 
 Each environment will have its own panel with dedicated action buttons (add `ipython` as a `pip` package to show button). Click on its name to expand the panel and view or manage the installed packages.
 
-<img width="1704" height="1630" alt="environments-panel-expanded" src="https://github.com/user-attachments/assets/101a23ec-dd9b-42a7-9a4e-bf1e976f959b" />
+<img width="1704" height="1630" alt="environments-panel-expanded" src="https://github.com/user-attachments/assets/a364d082-fb3e-4c51-8291-1850a692e6ac" />
 
 :::info
 Environments are updated with Conda's `libmamba` solver, where the packages to solve for were explicitly added to the environment or defined in the originally imported environment file. Conda itself will be updated before the environment is solved.
@@ -83,6 +83,8 @@ From left-to-right, the buttons are:
     - If the window is asking for a login, get the token from the Logs or close the window and press the button again.
   - Jupyter folder, with runtime, will be in the installation folder selected during the initial setup.
   - Server terminates on application quit, or by pressing `Stop Jupyter`.
+- Update environment and engage the Conda solver.
+- Delete the environment.
 
 ## Creating New Environments
 
