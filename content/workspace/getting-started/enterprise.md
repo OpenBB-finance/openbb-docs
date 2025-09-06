@@ -104,6 +104,72 @@ Meet regulatory requirements with:
   <img className="pro-border-gradient" width="600" alt="Activity Log Interface" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/activity-log.png" />
 </div>
 
+### Theme Settings
+
+#### Table
+
+In the table settings, admins of the organization are able to edit general settings, border and spacing, header and cells, icons, font type, font size, font color, and many others. In addition, the admin is able to create a totally different configuration for light and dark mode.
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/c8c0241e-981c-4456-a8f2-66aafaab350a.png"
+    width="100%"
+  />
+</div>
+
+#### Chart
+
+In the chart settings, admins of the organization are able to edit base theme, palette, core settings, input settings and even background image. Similarly to table settings, the admin is able to create a totally different configuration for light and dark mode.
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/364a1419-1b57-46ea-a482-98faef8c36f3.png"
+    width="100%"
+  />
+</div>
+
+This is how it looks in practice:
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/345da327-228b-4029-9480-ef4b8777a357.png"
+    width="100%"
+  />
+</div>
+
+#### Main color branding
+
+Admins can update the main color being utilized by the product. By default, our design system sets a palette of 3 colors: a main one, a lighter version of that and a dark version of that. Once an admin selects a different main color, we will apply the same transformation to select the lighter and darker equivalent - and it will be used throughout the product. Example:
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/815dc29f-d8a8-4c1d-8ee6-0766f9762cde.png"
+    width="100%"
+  />
+</div>
+
+#### Company logo
+
+Finally, you are also able to add your own logo to the product - to make it feel even more personal.
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/9a99b8dd-05f0-40ce-a7d6-a5d96a859714.png"
+    width="100%"
+  />
+</div>
+
+
 ### OpenBB Copilot
 
 Transform your analytical workflows with our AI-powered assistant that understands your data context and automates complex tasks. OpenBB Copilot leverages widget metadata to intelligently query the right datasets, generate insights, and create visualizations. Whether you're conducting earnings analysis, monitoring market conditions, or building investment reports, Copilot accelerates your workflow while maintaining accuracy and consistency.

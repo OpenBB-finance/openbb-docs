@@ -73,6 +73,11 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
   Provides a secondary category for refining search results.
   _Example:_ `"Options"`
 
+- **imgUrl**
+  _Type:_ `string`
+  Image URL for the widget - will show a preview when hovering in search/add widget menu.
+  _Example:_ `"https://myexample-imagelink.xyw/widget1"`
+
 - **type**
   _Type:_ `string`
   Sets the default visualization type for the widget.
