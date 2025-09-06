@@ -107,6 +107,7 @@ openbb-build
 
 The bare interface includes:
 
+- *Deprecated* /account: This module is deprecated and will be removed in a future version.
 - /user: The [`user_settings.json`](/platform/settings/environment_variables) object.
 - /system: The [`system_settings.json`](/platform/settings/system_settings) object.
 - /coverage: Information and metadata about the data provider extensions and their definitions (providers, commands, command_model, command_schemas, reference)
@@ -5518,7 +5519,11 @@ Support for Python 3.13 will be introduced in the summer of 2025.
 
 ## Installer Package
 
-An installer package is available for Mac and Windows machines. Files are available [here](https://my.openbb.co/app/platform/downloads).
+An installer package is available for Mac and Windows machines.
+
+- [Windows](https://openbb-installers.s3.amazonaws.com/OpenBB-Platform-Windows-x86_64.exe)
+- [macOS for Apple Silicon](https://openbb-installers.s3.amazonaws.com/OpenBB-Platform-MacOSX-arm64.pkg)
+- [macOS for Intel](https://openbb-installers.s3.amazonaws.com/OpenBB-Platform-MacOSX-x86_64.pkg)
 
 It will handle the installation of Python, environment setup, and OpenBB packages with the latest versions.
 
@@ -5772,6 +5777,7 @@ uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
 
 See more information about using the REST API in the [usage section](/platform/usage/quickstart_workspace)
 
+
 ---
 
 ---
@@ -5838,6 +5844,7 @@ keywords:
   - OpenBB Platform
   - Python client
   - getting started
+  - OpenBB Hub
   - local environment
   - environment variables
 ---
@@ -6016,6 +6023,37 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 By default, authorization is not required to initialize and use the core services. Most data providers, however, require an API key to access their data. Keys are stored locally, in the `~/.openbb_platform/user_settings.json` file, under the `credentials` object.
 
+### OpenBB Hub
+
+:::warning
+The OpenBB Hub is deprecated and support for remote credential storage will be phased out. Please transition to use the configuration files.
+:::
+
+Data provider credentials and user preferences can be securely stored on the OpenBB Hub and accessed in Python using a revokable Personal Access Token (PAT). Login to the [Hub](https://my.openbb.co/) to manage this method of remote authorization.
+
+```python
+from openbb import obb
+
+# Login with personal access token
+obb.account.login(pat="my_pat", remember_me=True)
+
+# Alternatively, login with email and password
+obb.account.login(email="my_email", password="my_password", remember_me=True)
+
+# Change a credential
+obb.user.credentials.polygon_api_key = "my_api_key"
+
+# Save account changes to the Hub
+obb.account.save()
+
+# Refresh account with latest changes
+obb.account.refresh()
+
+# Logout
+obb.account.logout()
+```
+
+Set `remember_me` as `False` to discard all credentials at the end of the session.
 
 ### Local Environment
 
@@ -9826,7 +9864,7 @@ openbb-api
 ```
 :::
 
-- Next, open your browswer and login to [pro.openbb.co](https://pro.openbb.co).
+- Next, open your browser and login to [pro.openbb.co](https://pro.openbb.co).
 
 - From the sidebar, click "Data Connectors".
 
@@ -9843,7 +9881,7 @@ If a connection error displays after pressing the "Test" button, your browser mi
 
 Try using Chrome, specifically, or start the server over HTTPS.
 
-See the page [here](/workspace/getting-started/faqs) for the steps to do it.
+See the [getting started page](/workspace/getting-started/faqs) for the steps to do it.
 :::
 
 - Finally, click the "Add" button.
