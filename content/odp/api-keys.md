@@ -25,9 +25,10 @@ The initial installation will add entries for each selected extension requiring 
 
 For example, if `openbb-fred` was selected, `fred_api_key` will appear on the screen.
 
-![api-keys-provider](api-keys-provider.png)
+<img width="601" height="149" alt="api-keys-provider" src="https://github.com/user-attachments/assets/da7502a2-2a3c-44d2-8550-233004eeb882" />
 
-![api-keys-empty](api-keys-empty.png)
+<img width="908" height="84" alt="api-keys-empty" src="https://github.com/user-attachments/assets/5b387002-834e-4365-b00b-4e541fc1ec35" />
+
 :::
 
 ## Features
@@ -39,7 +40,7 @@ For example, if `openbb-fred` was selected, `fred_api_key` will appear on the sc
   - `system_settings.json` (see the docs [here](/platform/settings/system_settings).)
   - `.env` (see the docs [here](/platform/settings/environment_variables).)
 
-![api-keys-screen](api-keys-screen.png)
+<img width="1706" height="1494" alt="api-keys-screen" src="https://github.com/user-attachments/assets/a9ae2873-4eda-4ef9-a407-beaba2132ed0" />
 
 ## Saving Changes
 
@@ -55,4 +56,4 @@ The `.env` file can be added to any [Backend](/odp/backends) configuration.
 
 Clicking the button will open it with the system's default text editor.
 
-![api-keys-config-files](api-keys-config-files.png)
+<img width="1704" height="1080" alt="api-keys-config-files" src="https://github.com/user-attachments/assets/3c483ce8-19a0-4f2b-86b8-1ec31c7fdd13" />
