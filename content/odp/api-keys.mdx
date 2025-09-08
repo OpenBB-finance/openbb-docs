@@ -5,56 +5,54 @@ description: Manage and store API credentials for data providers securely within
 keywords:
   - API Keys
   - Credentials
-  - OpenBB Hub
   - Configuration
+  - .env
+  - Environment
+  - user_settings.json
+  - system_settings.json
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="API keys | OpenBB Platform Docs" />
+<HeadTitle title="API Keys | ODP Desktop App Docs" />
 
-The API Keys page provides a secure and convenient way to manage and store your API credentials for various data providers.
+The API Keys screen is for managing data provider credentials accessible to the OpenBB Platform Python packages and API interface. Environment variables and credentials can be configured centrally across any environment using the `openbb-core` and its extension framework.
 
-## Key Features
+In the environment setup panels, data provider extensions highlight if an API key is required. Values there represent the name of the key(s) needing to be set.
 
-- **Add, Edit, and Remove Keys**: Easily manage your API keys directly within the interface.
-- **Secure Local Storage**: Keys are stored securely in your local user settings.
-- **Import and Export**: Import keys from `.env` or `.json` files.
-- **OpenBB Hub Integration**: Sync your keys with the OpenBB Hub using a Personal Access Token (PAT) to maintain continuity across devices.
-- **Search and Filter**: Quickly find specific API keys.
-- **View Configuration Files**: Directly open `user_settings.json`, `system_settings.json`, or the `.env` file.
-- **Toggle Visibility**: Show or hide API key values for added security.
+:::info
+The initial installation will add entries for each selected extension requiring credentials, just add your key.
 
-## Managing API Keys
+For example, if `openbb-fred` was selected, `fred_api_key` will appear on the screen.
 
-The main view of the API Keys page displays a list of your configured keys.
+![api-keys-provider](api-keys-provider.png)
 
-- **Add a New Key**: Click the "Add New Key" button to add a new, empty row to the top of the list. You will need to provide a name for the key and its value.
-- **Edit a Key**: Both the key name and its value can be edited directly in the list.
-- **Remove a Key**: Hover over an API key row to reveal a bin icon, which will remove the key from the list.
-- **Save Changes**: After adding, editing, or removing keys, a "Save API Keys" button will appear. Click this to persist your changes to `user_settings.json`.
+![api-keys-empty](api-keys-empty.png)
+:::
 
-## Importing Keys
+## Features
 
-You can import API keys from external files by clicking the "Import Keys" button. Supported formats are:
+- Interface for adding and modifying `credentials` entries stored in the [`user_settings.json`](/platform/settings/user_settings/api_keys) file.
+  - Import key:value pairs from file (`.json` or `.env`).
+- Easy access to key OpenBB Platform configuration files in the `~/.openbb_platform` directory, opening directly in the default text editor:
+  - `user_settings.json` (see the docs [here](/platform/settings/user_settings).)
+  - `system_settings.json` (see the docs [here](/platform/settings/system_settings).)
+  - `.env` (see the docs [here](/platform/settings/environment_variables).)
 
-- **`.json`**: The file can be a flat JSON object of key-value pairs, or it can match the OpenBB settings structure (with keys under a `credentials` object).
-- **`.env`**: A standard `.env` file with `KEY=VALUE` pairs.
+![api-keys-screen](api-keys-screen.png)
 
-When importing, new keys are added, and existing keys are updated with the new values from the file.
+## Saving Changes
 
-## Sync with OpenBB Hub
-
-The "Sync with Hub" feature allows you to synchronize your API keys with your OpenBB Hub account. This requires a Personal Access Token (PAT) from the Hub.
-
-- **Fetch Keys from Hub**: Pull your keys from the Hub to the local environment.
-- **Remember Token**: You can optionally have the application remember your PAT for future sessions.
+Any changes made, including importing from a file, need to be saved before leaving the screen. Press the `Save API Keys` button when done editing.
 
 ## Configuration Files
 
-The "Configuration Files" button provides a convenient way to view the raw setting files:
-- `user_settings.json`: Contains user-specific settings, including the API keys managed on this page.
-- `system_settings.json`: Contains system-level settings.
-- `.env`: For environment-specific variables.
+The button to the right of, `Import Keys`, is for opening OpenBB Platform configuration files (listed above with documentation links).
 
-Clicking "Open File" after selecting an option will open the respective file in your default editor.
+:::tip
+The `.env` file can be added to any [Backend](/odp/backends) configuration.
+:::
+
+Clicking the button will open it with the system's default text editor.
+
+![api-keys-config-files](api-keys-config-files.png)
