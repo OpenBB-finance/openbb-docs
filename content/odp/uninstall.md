@@ -20,4 +20,4 @@ When confirmed, the process will remove Miniforge, environments, all application
 On Windows, using `uninstall.exe` or removing via Control Panel will only remove the GUI. Environments and other files will not be removed.
 :::
 
-![uninstall](uninstall.png)
+<img width="1704" height="1496" alt="uninstall" src="https://github.com/user-attachments/assets/d3b35c74-a6e6-4ec3-8971-3c0d4c133e3d" />
