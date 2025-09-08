@@ -2,123 +2,63 @@
 
 ## Docs
 
-- [Overview](https://docs.openbb.co/workspace/ai-agents): Learn how to integrate and customize AI agents in OpenBB Workspace for enhanced financial analysis and research capabilities
-- [AI Generated](https://docs.openbb.co/workspace/ai-generated): Learn how to use AI agent outputs as widgets in your OpenBB dashboard
-- [Apps](https://docs.openbb.co/workspace/apps): Create and customize your own OpenBB Apps for optimized workflows
-- [apps.json Reference](https://docs.openbb.co/workspace/apps-json-reference): Learn about the structure and configuration of apps.json for creating custom applications in OpenBB Workspace
-- [Core Widgets](https://docs.openbb.co/workspace/core-widgets): Master OpenBB's essential widgets for building powerful financial dashboards, including navigation, notes, API integration, and real-time data visualization tools.
-- [Overview](https://docs.openbb.co/workspace/data-integration): Learn how to integrate your own data sources and APIs into OpenBB Workspace with a custom backend solution.
-- [AgGrid Table Charts](https://docs.openbb.co/workspace/data-widgets/aggrid-table-charts): AgGrid Table Charts
-- [File Viewer](https://docs.openbb.co/workspace/data-widgets/file-viewer): Guide to using PDF and multi-PDF viewer widgets in OpenBB Workspace
-- [Highcharts Chart](https://docs.openbb.co/workspace/data-widgets/highcharts): Learn how to create Highcharts widgets for OpenBB Workspace, with step-by-step instructions for backend integration, configuration, and theme support.
-- [Data Widgets](https://docs.openbb.co/workspace/data-widgets/index): Build powerful financial dashboards with OpenBB Workspace's flexible widget system
-- [Live Grid](https://docs.openbb.co/workspace/data-widgets/live-grid): Create a real-time data grid widget for OpenBB Workspace that displays live updates in a table format
-- [Markdown](https://docs.openbb.co/workspace/data-widgets/markdown): Learn how to create and customize markdown widgets in OpenBB Workspace, including basic markdown display and data-rich markdown with dynamic content integration.
-- [Metric](https://docs.openbb.co/workspace/data-widgets/metric): Learn how to integrate your own backend with OpenBB Workspace using the cookie-cutter or language-agnostic API approaches, with illustrative guides and principles for handling widget.json files, APIs, interfaces, Python, FastAPI, and more.
-- [Newsfeed](https://docs.openbb.co/workspace/data-widgets/newsfeed): Learn how to create a newsfeed widget for OpenBB Workspace that displays articles in a clean, organized format.
-- [Omni](https://docs.openbb.co/workspace/data-widgets/omni): Learn how to create versatile Omni widgets for OpenBB Workspace that can dynamically return different content types based on input parameters.
-- [Plotly Charts](https://docs.openbb.co/workspace/data-widgets/plotly-charts): Plotly Charts
-- [TradingView Charts](https://docs.openbb.co/workspace/data-widgets/tradingview-charts): How to implement TradingView charts in OpenBB using UDF (Universal Data Feed)
-- [Enterprise](https://docs.openbb.co/workspace/enterprise): Comprehensive guide to OpenBB Workspace Enterprise features, including role-based access control, security compliance, team collaboration, and on-premises deployment capabilities.
-- [FAQs](https://docs.openbb.co/workspace/faqs): Comprehensive guide to frequently asked questions about OpenBB Workspace data integration, custom backend setup, widget configuration, and troubleshooting common issues.
-- [Apps Gallery](https://docs.openbb.co/workspace/gallery): Browse our curated collection of apps for financial analysis, market research, portfolio management and much more.
-- [Overview](https://docs.openbb.co/workspace/index): OpenBB Workspace is a secure enterprise UI platform for AI workflows, featuring data integration, AI model deployment, flexible UI customization, and on-premises deployment capabilities.
-- [Native Installation (PWA)](https://docs.openbb.co/workspace/installation): Learn how to install and use OpenBB Workspace as a Progressive Web App (PWA) on your desktop and mobile devices.
-- [OpenBB Copilot](https://docs.openbb.co/workspace/openbb-copilot): Learn how to use OpenBB Copilot to interact with the OpenBB Workspace
-- [OpenBB Platform](https://docs.openbb.co/workspace/platform-installer): Learn how to integrate the OpenBB Platform data to OpenBB Workspace
-- [Static Files](https://docs.openbb.co/workspace/static-files): Learn how to import and manage static files in OpenBB, including structured and unstructured data formats, with support for PDF, CSV, JSON, PNG, and JPG files.
-- [Categories and Subcategories](https://docs.openbb.co/workspace/widget-configuration/category-subcategory): Learn how to organize widgets using categories and subcategories in OpenBB Workspace.
-- [Error Handling](https://docs.openbb.co/workspace/widget-configuration/error-handling): Learn how to handle errors in your widgets in OpenBB Workspace.
-- [Grid Size](https://docs.openbb.co/workspace/widget-configuration/grid-size): Learn about the grid-based layout system for widgets in OpenBB Workspace, including width and height specifications.
-- [Refetch Interval](https://docs.openbb.co/workspace/widget-configuration/refetch-interval): Learn about configuring refetch intervals for widgets in OpenBB Workspace.
-- [Render Functions](https://docs.openbb.co/workspace/widget-configuration/render-functions): Learn how to configure and use custom render functions in OpenBB Workspace to customize data display and interactions.
-- [Run Button](https://docs.openbb.co/workspace/widget-configuration/run-button): Learn about the run button functionality in OpenBB Workspace widgets.
-- [Stale Time](https://docs.openbb.co/workspace/widget-configuration/stale-time): Learn about configuring stale time for widgets in OpenBB Workspace.
-- [Advanced Dropdown](https://docs.openbb.co/workspace/widget-parameters/advanced-dropdown): Learn how to implement and use advanced dropdown parameters in OpenBB Workspace widgets, including dynamic options from endpoints and additional information display
-- [Boolean Toggle](https://docs.openbb.co/workspace/widget-parameters/boolean-toggle): Learn how to implement and use boolean toggle parameters in OpenBB Workspace widgets, including configuration options and example usage
-- [Cell Click Grouping](https://docs.openbb.co/workspace/widget-parameters/cell-click-grouping): Learn how to implement cell click grouping in OpenBB Workspace widgets, allowing users to click on cells in a table to update related widgets
-- [Date Picker](https://docs.openbb.co/workspace/widget-parameters/date-picker): Learn how to implement and use date picker parameters in OpenBB Workspace widgets, including configuration options and example usage
-- [Dependent Dropdown](https://docs.openbb.co/workspace/widget-parameters/dependent-dropdown): Learn how to implement and use dependent dropdown parameters in OpenBB Workspace widgets, where options in one dropdown depend on the selection in another
-- [Dropdown](https://docs.openbb.co/workspace/widget-parameters/dropdown): Learn how to implement and use dropdown parameters in OpenBB Workspace widgets, including configuration options and example usage
-- [Input Form](https://docs.openbb.co/workspace/widget-parameters/input-form): Input Form
-- [Number Input](https://docs.openbb.co/workspace/widget-parameters/number-input): Learn how to implement and use number input parameters in OpenBB Workspace widgets, including configuration options and example usage
-- [Parameter Grouping](https://docs.openbb.co/workspace/widget-parameters/parameter-grouping): Learn how to implement parameter grouping in OpenBB Workspace widgets, allowing multiple widgets to share and respond to the same parameter input
-- [Parameter Positioning](https://docs.openbb.co/workspace/widget-parameters/parameter-positioning): Learn how to control the layout and positioning of widget parameters in OpenBB Workspace, including row positioning and parameter ordering
-- [Text Input](https://docs.openbb.co/workspace/widget-parameters/text-input): Learn how to implement and use text input parameters in OpenBB Workspace widgets, including configuration options and example usage
-- [widgets.json Reference](https://docs.openbb.co/workspace/widgets-json-reference): Learn how to integrate your own backend with OpenBB Workspace using the cookie-cutter or language-agnostic API approaches, with illustrative guides and principles for handling widget.json files, APIs, interfaces, Python, FastAPI and more.
-- [Crypto](https://docs.openbb.co/workspace/widgets-library/crypto/index): <NewReferenceCard
-- [Live Watchlist](https://docs.openbb.co/workspace/widgets-library/crypto/pyth_price_feeds): Live price data for crypto, forex, stocks and commodities.
-- [Crypto Coins Heatmap](https://docs.openbb.co/workspace/widgets-library/crypto/tv_crypto_coins_heatmap): This widget gives you a birds-eye view of crypto. Segment by type of coin, market cap, recent performance and more.
-- [Crypto Interactive Indicators Screener](https://docs.openbb.co/workspace/widgets-library/crypto/tv_crypto_screener): Separate the wheat from the chaff with this embeddable Screener - handy for sorting symbols both by fundamental and technical indicators.
-- [Cryptocurrency Market](https://docs.openbb.co/workspace/widgets-library/crypto/tv_cryptocurrency_market): This widget displays crypto assets and then sorts them by their market capitalization.
-- [Currency Snapshot](https://docs.openbb.co/workspace/widgets-library/currency/currency_snapshot): Provides a snapshot of currency data including current rates and changes.
-- [Currency](https://docs.openbb.co/workspace/widgets-library/currency/index): <NewReferenceCard
-- [Country Indicators](https://docs.openbb.co/workspace/widgets-library/economy/country_indicators): Overview of economic indicators for a given country, including GDP, producer prices, CPI, unemployment, retail trade, government balance, current account balance, international investment, long term yield and industrial production.
-- [Economic Indicators](https://docs.openbb.co/workspace/widgets-library/economy/economic_indicators): Comprehensive overview of economic indicators.
-- [Economic Overview](https://docs.openbb.co/workspace/widgets-library/economy/economic_overview): Overview of a country's historical economic indicators, such as GDP, unemployment rate, population, and more.
-- [Economy](https://docs.openbb.co/workspace/widgets-library/economy/index): <NewReferenceCard
-- [Upcoming Economic Events](https://docs.openbb.co/workspace/widgets-library/economy/tv_upcoming_economic_events): Keep an eye on key upcoming economic events, announcements, and news. Plus, set up filters in a few clicks, selecting for event importance and affected currencies.
-- [Yield Curve](https://docs.openbb.co/workspace/widgets-library/economy/yield_curve): Sovereign debt yield curve data by country. Table will show the latest date available for the selected country and have Date, Maturity and Rate columns.
-- [Price Target By Analyst](https://docs.openbb.co/workspace/widgets-library/equity/analyst_price_target): Breakdown of price targets set by individual analysts for a particular stock, including ratings and rating changes.
-- [Company Filings](https://docs.openbb.co/workspace/widgets-library/equity/company_filings): Links for a company's historical SEC Filings.
-- [Ticker Profile](https://docs.openbb.co/workspace/widgets-library/equity/company_profile): Detailed information about a company, including sector, employees, address, exchange, and IPO date.
-- [Dividend Payment](https://docs.openbb.co/workspace/widgets-library/equity/dividend_payment): Historical stock dividend payments, including the adjusted dividend, record date, payment date, and declaration date.
-- [Earnings History](https://docs.openbb.co/workspace/widgets-library/equity/earning_history): Historical earnings data and estimates, such as EPS and Revenue, for each quarter.
-- [Earnings Calendar](https://docs.openbb.co/workspace/widgets-library/equity/earnings_calendar_quartr): Gets a list of symbols and related information for earnings events for the date range specified
-- [Earnings Transcripts](https://docs.openbb.co/workspace/widgets-library/equity/earnings_transcripts): Complete transcripts of earnings calls, providing in-depth insights into financial performance and corporate updates.
-- [Earnings Transcripts](https://docs.openbb.co/workspace/widgets-library/equity/earnings_transcripts_quartr): Complete transcripts of earnings calls, providing in-depth insights into financial performance and corporate updates.
-- [Historical Stock Price](https://docs.openbb.co/workspace/widgets-library/equity/eod_price): Historical stock price data, including open, high, low, close, volume, etc.
-- [Financial Ratios](https://docs.openbb.co/workspace/widgets-library/equity/financial_ratios): Company financial ratios about liquidity, efficiency, profitability, leverage, coverage and operating cashflow.
-- [Financial Statements](https://docs.openbb.co/workspace/widgets-library/equity/financial_statements): Income, balance, and cash flow statements
-- [Comparison Analysis](https://docs.openbb.co/workspace/widgets-library/equity/grouped_comparison): Analyze and compare financial ratios and metrics of a company and its peers, including EBITDA, quick ratio, liquidity, efficiency, profitability, leverage, coverage, operating cash flow, free cash flow, and profit margin.
-- [Equity](https://docs.openbb.co/workspace/widgets-library/equity/index): <NewReferenceCard
-- [Insider Trading](https://docs.openbb.co/workspace/widgets-library/equity/insider_trading): Recent stock transactions from company insiders.
-- [Institutional Ownership](https://docs.openbb.co/workspace/widgets-library/equity/institutional_ownership): Institutional investment changes in shares and ownership percentage by quarter.
-- [Key Metrics](https://docs.openbb.co/workspace/widgets-library/equity/key_metrics): Key stock metrics such as beta, average volume, market cap, high and low of 52-week range, dividend yield and P/E ratio.
-- [Management Team](https://docs.openbb.co/workspace/widgets-library/equity/management_team): Details about the management team of a company, including name, title, and compensation.
-- [Price performance](https://docs.openbb.co/workspace/widgets-library/equity/price_performance): Interactive chart for asset historical price data.
-- [Price Target](https://docs.openbb.co/workspace/widgets-library/equity/price_target): Comparison chart of analyst price targets against a stock's close price.
-- [Revenue Per Business Line](https://docs.openbb.co/workspace/widgets-library/equity/revenue_per_bus_line): Revenue breakdown by product category
-- [Revenue Per Geography](https://docs.openbb.co/workspace/widgets-library/equity/revenue_per_geography): A breakdown of a company's revenue by geographical region.
-- [Share Statistics](https://docs.openbb.co/workspace/widgets-library/equity/share_statistics): Share statistics such as free float, float shares, and outstanding shares.
-- [Stock Ownership](https://docs.openbb.co/workspace/widgets-library/equity/stock_ownership): Percentage of shares owned by major holders
-- [Stock Splits](https://docs.openbb.co/workspace/widgets-library/equity/stock_splits): Historical data on stock splits for a given company.
-- [Ticker Information](https://docs.openbb.co/workspace/widgets-library/equity/ticker_information): Information about a particular asset such as price, volume, industry, country, etc.
-- [Company Profile](https://docs.openbb.co/workspace/widgets-library/equity/tv_company_profile): Company description along with key categories - sector & industry.
-- [Fundamental Data](https://docs.openbb.co/workspace/widgets-library/equity/tv_fundamental_data): Kick the tires on the fundamentals with this deep dive into how a company is doing beyond simply its stock price.
-- [Stock Heatmap](https://docs.openbb.co/workspace/widgets-library/equity/tv_stock_heatmap): This widget shows off a macro view on global stocks. Perfect for segmenting by sector, country or market cap.
-- [Exchange Gainers and Losers](https://docs.openbb.co/workspace/widgets-library/equity/tv_stock_market): See the top five gaining, losing, and most active stocks for the day. It updates based on current market activity - so you'll always see the most relevant stocks.
-- [Technical Analysis Gauge](https://docs.openbb.co/workspace/widgets-library/equity/tv_ta): See what the technical analysis says about a given symbol with our display ratings, made for easy viewing.
-- [Company Timeline](https://docs.openbb.co/workspace/widgets-library/equity/tv_timeline): Help your audience keep track of what's happening in a particular company - designed to be read in 20 seconds or less.
-- [Valuation Multiples](https://docs.openbb.co/workspace/widgets-library/equity/valuation_multiples): Valuation Multiples such as P/E, P/S, P/B, EV/Sales, EV/EBITDA, and Dividend Yield.
-- [Forex](https://docs.openbb.co/workspace/widgets-library/forex/index): <NewReferenceCard
-- [Real-time Cross Rates](https://docs.openbb.co/workspace/widgets-library/forex/tv_forex_cross_rates): Display real-time quotes of selected currencies in comparison to other major currencies.
-- [Real-time Heatmap](https://docs.openbb.co/workspace/widgets-library/forex/tv_forex_heatmap): Show off a snapshot of currency market action. This widget lets you spot strong and weak currencies and see how they compare to each other, all in real-time.
-- [Forex Interactive Indicators Screener](https://docs.openbb.co/workspace/widgets-library/forex/tv_forex_screener): Separate the wheat from the chaff with this embeddable Screener - handy for sorting symbols both by fundamental and technical indicators.
-- [Widgets Library](https://docs.openbb.co/workspace/widgets-library/index): <NewReferenceCard
-- [Index](https://docs.openbb.co/workspace/widgets-library/index/index): <NewReferenceCard
-- [Market Overview](https://docs.openbb.co/workspace/widgets-library/index/market_indices): Stock market overview with recent price change for indices or stocks.
-- [Main Stories](https://docs.openbb.co/workspace/widgets-library/news/big_stories): Two main news from around the world
-- [Company News](https://docs.openbb.co/workspace/widgets-library/news/company_news): News articles, including events or announcements related to a particular company.
-- [Global News](https://docs.openbb.co/workspace/widgets-library/news/global_news): News from around the world related with business, finance and economy.
-- [News](https://docs.openbb.co/workspace/widgets-library/news/index): <NewReferenceCard
-- [Options](https://docs.openbb.co/workspace/widgets-library/options/index): <NewReferenceCard
-- [Options Chains EOD](https://docs.openbb.co/workspace/widgets-library/options/options_chains_eod): Get the complete options chain for a ticker.
-- [Charting](https://docs.openbb.co/workspace/widgets-library/others/charting): Interactive tradingview charting of time series data.
-- [Clock](https://docs.openbb.co/workspace/widgets-library/others/clock): Display the time from various timezones
-- [Iframe / Website](https://docs.openbb.co/workspace/widgets-library/others/iframe): Embed a website
-- [Others](https://docs.openbb.co/workspace/widgets-library/others/index): <NewReferenceCard
-- [Navigation Bar](https://docs.openbb.co/workspace/widgets-library/others/navigation_bar): Create nested tabs inside the main tab for navigation.
-- [Note](https://docs.openbb.co/workspace/widgets-library/others/rich_note): Create a text widget
-- [RSS Feeds](https://docs.openbb.co/workspace/widgets-library/others/rss_viewer): View and manage RSS feeds
-- [Advanced Real-time Chart Widget](https://docs.openbb.co/workspace/widgets-library/others/tv_charting): Here's a free and powerful chart for you to easily embed onto any website. Make it yours with a ton of different customization options.
-- [Global Market Performance](https://docs.openbb.co/workspace/widgets-library/others/tv_market_data): Grab an overview of global markets performance, including change values, Open, High, Low, and Close values for selected financial instruments.
-- [Macro Market Overview](https://docs.openbb.co/workspace/widgets-library/others/tv_market_overview): Built for when you need to take a macro look at the markets.
-- [Market Timeline](https://docs.openbb.co/workspace/widgets-library/others/tv_market_timeline): Help your audience keep track of what's happening in your market of interest - designed to be read in 20 seconds or less.
-- [Mini Charting](https://docs.openbb.co/workspace/widgets-library/others/tv_mini_chart): This little one lets you see a symbol's price and change percentages, alongside an even more stripped-back chart view.
-- [Real-time Ticker Value](https://docs.openbb.co/workspace/widgets-library/others/tv_single_ticker): See the price and change percentage of your preferred symbol. Nothing else.
-- [Symbol Info](https://docs.openbb.co/workspace/widgets-library/others/tv_symbol_info): Scan key symbol info in an easy-to-read format. Company financials and quotes are also available at a glance.
-- [Symbols Overview](https://docs.openbb.co/workspace/widgets-library/others/tv_symbol_overview): Embed the latest quotes, plus a simple chart of a simple, single stock.
-- [Ticker Performance](https://docs.openbb.co/workspace/widgets-library/others/tv_ticker): Grab a horizontal glance at important instrument stats.
-- [Ticker Tape Performance](https://docs.openbb.co/workspace/widgets-library/others/tv_ticker_tape): Go all vintage Wall Street with our scrolling ticker tape.
-- [Watchlist](https://docs.openbb.co/workspace/widgets-library/others/watchlist): Watchlist of multiple stocks including last price, period change such as day, month and year, P/E ratio and market cap.
+- [Copilot Basics](https://docs.openbb.co/workspace/analysts/ai-features/copilot-basics): Learn the basics of OpenBB Copilot interface and functionality
+- [Context Management](https://docs.openbb.co/workspace/analysts/ai-features/copilot-context): Understanding how OpenBB Copilot manages and prioritizes context
+- [Data Handling](https://docs.openbb.co/workspace/analysts/ai-features/copilot-data-handling): How OpenBB Copilot processes structured and unstructured data
+- [Output Formats](https://docs.openbb.co/workspace/analysts/ai-features/copilot-output): Understanding OpenBB Copilot's output formats and capabilities
+- [Step-by-Step Reasoning](https://docs.openbb.co/workspace/analysts/ai-features/copilot-reasoning): Understanding the transparent reasoning process of OpenBB Copilot
+- [Tools](https://docs.openbb.co/workspace/analysts/ai-features/copilot-tools): Understanding the tools available to OpenBB Copilot
+- [Apps](https://docs.openbb.co/workspace/analysts/apps): Discover and use OpenBB Apps - pre-configured dashboard templates with integrated AI agents and custom prompts for optimized analytical workflows.
+- [Dashboards Overview](https://docs.openbb.co/workspace/analysts/dashboards/index): Learn how to create, manage, and share interactive dashboards in OpenBB Workspace
+- [Excel Add-in Installation](https://docs.openbb.co/workspace/analysts/excel-addin/excel-installation): This page presents the general requirements and the steps to install the OpenBB Add-in for Excel. The OpenBB Add-in for Excel is available on Windows, Mac, and Excel on the web. It can be installed by an administrator or by individual users.
+- [Excel Add-in Overview](https://docs.openbb.co/workspace/analysts/excel-addin/excel-overview): The OpenBB Add-in for Excel is a powerful integration that enables direct access to financial data within Microsoft Excel. This seamless integration allows you to create sophisticated financial models and perform comprehensive analysis without leaving your spreadsheet environment.
+- [OBB.GET](https://docs.openbb.co/workspace/analysts/excel-addin/obb-get): Extract and slice specific data from Excel ranges using labels or indices
+- [OBB.WIDGET](https://docs.openbb.co/workspace/analysts/excel-addin/obb-widget): This page provides an overview of the basics of the OpenBB add-in for Microsoft Excel. It covers the basic usage of the add-in and the available functions.
+- [Troubleshooting](https://docs.openbb.co/workspace/analysts/excel-addin/troubleshooting): Common issues and solutions for the OpenBB Add-in for Excel, including error handling, installation problems, and connection troubleshooting.
+- [AI-generated Widgets](https://docs.openbb.co/workspace/analysts/widgets/ai-generated-widgets): Learn how to use AI agent outputs as widgets in your OpenBB dashboard
+- [Core Widgets](https://docs.openbb.co/workspace/analysts/widgets/core-widgets): Essential widgets that form the foundation of every OpenBB dashboard - navigation, notes, data integration, and productivity tools.
+- [Interacting With Data](https://docs.openbb.co/workspace/analysts/widgets/interacting-with-data): Learn how to work with tables and charts in OpenBB Workspace, including parameter selection and synchronization across widgets.
+- [Overview](https://docs.openbb.co/workspace/analysts/widgets/overview): Understanding widgets - the building blocks of OpenBB Workspace dashboards that transform raw data into actionable insights.
+- [Sandbox Widgets](https://docs.openbb.co/workspace/analysts/widgets/sandbox-widgets): Explore OpenBB's pre-built demonstration widgets that showcase application capabilities upon login.
+- [Static Files](https://docs.openbb.co/workspace/analysts/widgets/static-files): Upload and integrate your own files into OpenBB Workspace - transform spreadsheets, PDFs, and images into interactive dashboard widgets.
+- [Overview](https://docs.openbb.co/workspace/developers/ai-agents/ai-agents): Learn how to integrate and customize AI agents in OpenBB Workspace for enhanced financial analysis and research capabilities
+- [Apps](https://docs.openbb.co/workspace/developers/apps/apps): Create and customize your own OpenBB Apps for optimized workflows
+- [Data Integration](https://docs.openbb.co/workspace/developers/data-integration): Learn how to integrate your own data sources and APIs into OpenBB Workspace with a custom backend solution.
+- [agents.json Reference](https://docs.openbb.co/workspace/developers/json-specs/agents-json-reference): Complete reference guide for configuring custom AI agents in OpenBB Workspace using the agents.json endpoint
+- [apps.json Reference](https://docs.openbb.co/workspace/developers/json-specs/apps-json-reference): Learn about the structure and configuration of apps.json for creating custom applications in OpenBB Workspace
+- [widgets.json Reference](https://docs.openbb.co/workspace/developers/json-specs/widgets-json-reference): Learn how to integrate your own backend with OpenBB Workspace using the cookie-cutter or language-agnostic API approaches, with illustrative guides and principles for handling widget.json files, APIs, interfaces, Python, FastAPI and more.
+- [Categories and Subcategories](https://docs.openbb.co/workspace/developers/widget-configuration/category-subcategory): Learn how to organize widgets using categories and subcategories in OpenBB Workspace.
+- [Error Handling](https://docs.openbb.co/workspace/developers/widget-configuration/error-handling): Learn how to handle errors in your widgets in OpenBB Workspace.
+- [Grid Size](https://docs.openbb.co/workspace/developers/widget-configuration/grid-size): Learn about the grid-based layout system for widgets in OpenBB Workspace, including width and height specifications.
+- [Refetch Interval](https://docs.openbb.co/workspace/developers/widget-configuration/refetch-interval): Learn about configuring refetch intervals for widgets in OpenBB Workspace.
+- [Render Functions](https://docs.openbb.co/workspace/developers/widget-configuration/render-functions): Learn how to configure and use custom render functions in OpenBB Workspace to customize data display and interactions.
+- [Run Button](https://docs.openbb.co/workspace/developers/widget-configuration/run-button): Learn about the run button functionality in OpenBB Workspace widgets.
+- [Stale Time](https://docs.openbb.co/workspace/developers/widget-configuration/stale-time): Learn about configuring stale time for widgets in OpenBB Workspace.
+- [Advanced Dropdown](https://docs.openbb.co/workspace/developers/widget-parameters/advanced-dropdown): Learn how to implement and use advanced dropdown parameters in OpenBB Workspace widgets, including dynamic options from endpoints and additional information display
+- [Boolean Toggle](https://docs.openbb.co/workspace/developers/widget-parameters/boolean-toggle): Learn how to implement and use boolean toggle parameters in OpenBB Workspace widgets, including configuration options and example usage
+- [Cell Click Grouping](https://docs.openbb.co/workspace/developers/widget-parameters/cell-click-grouping): Learn how to implement cell click grouping in OpenBB Workspace widgets, allowing users to click on cells in a table to update related widgets
+- [Date Picker](https://docs.openbb.co/workspace/developers/widget-parameters/date-picker): Learn how to implement and use date picker parameters in OpenBB Workspace widgets, including configuration options and example usage
+- [Dependent Dropdown](https://docs.openbb.co/workspace/developers/widget-parameters/dependent-dropdown): Learn how to implement and use dependent dropdown parameters in OpenBB Workspace widgets, where options in one dropdown depend on the selection in another
+- [Dropdown](https://docs.openbb.co/workspace/developers/widget-parameters/dropdown): Learn how to implement and use dropdown parameters in OpenBB Workspace widgets, including configuration options and example usage
+- [Input Form](https://docs.openbb.co/workspace/developers/widget-parameters/input-form): Input Form
+- [Number Input](https://docs.openbb.co/workspace/developers/widget-parameters/number-input): Learn how to implement and use number input parameters in OpenBB Workspace widgets, including configuration options and example usage
+- [Parameter Grouping](https://docs.openbb.co/workspace/developers/widget-parameters/parameter-grouping): Learn how to implement parameter grouping in OpenBB Workspace widgets, allowing multiple widgets to share and respond to the same parameter input
+- [Parameter Positioning](https://docs.openbb.co/workspace/developers/widget-parameters/parameter-positioning): Learn how to control the layout and positioning of widget parameters in OpenBB Workspace, including row positioning and parameter ordering
+- [Text Input](https://docs.openbb.co/workspace/developers/widget-parameters/text-input): Learn how to implement and use text input parameters in OpenBB Workspace widgets, including configuration options and example usage
+- [AgGrid Table Charts](https://docs.openbb.co/workspace/developers/widget-types/aggrid-table-charts): AgGrid Table Charts
+- [File Viewer](https://docs.openbb.co/workspace/developers/widget-types/file-viewer): Guide to using PDF and multi-PDF viewer widgets in OpenBB Workspace
+- [Highcharts Chart](https://docs.openbb.co/workspace/developers/widget-types/highcharts): Learn how to create Highcharts widgets for OpenBB Workspace, with step-by-step instructions for backend integration, configuration, and theme support.
+- [HTML](https://docs.openbb.co/workspace/developers/widget-types/html): Learn how to create and customize HTML widgets in OpenBB Workspace, enabling complete control over visualization and interaction design with custom HTML, CSS, and JavaScript.
+- [Live Grid](https://docs.openbb.co/workspace/developers/widget-types/live-grid): Create a real-time data grid widget for OpenBB Workspace that displays live updates in a table format
+- [Markdown](https://docs.openbb.co/workspace/developers/widget-types/markdown): Learn how to create and customize markdown widgets in OpenBB Workspace, including basic markdown display and data-rich markdown with dynamic content integration.
+- [Metric](https://docs.openbb.co/workspace/developers/widget-types/metric): Learn how to integrate your own backend with OpenBB Workspace using the cookie-cutter or language-agnostic API approaches, with illustrative guides and principles for handling widget.json files, APIs, interfaces, Python, FastAPI, and more.
+- [Newsfeed](https://docs.openbb.co/workspace/developers/widget-types/newsfeed): Learn how to create a newsfeed widget for OpenBB Workspace that displays articles in a clean, organized format.
+- [Omni](https://docs.openbb.co/workspace/developers/widget-types/omni): Learn how to create versatile Omni widgets for OpenBB Workspace that can dynamically return different content types based on input parameters.
+- [Plotly Charts](https://docs.openbb.co/workspace/developers/widget-types/plotly-charts): Plotly Charts
+- [SSRM Mode](https://docs.openbb.co/workspace/developers/widget-types/ssrm_mode): Server-Side Rendered Mode for handling large datasets efficiently in OpenBB Workspace widgets
+- [TradingView Charts](https://docs.openbb.co/workspace/developers/widget-types/tradingview-charts): How to implement TradingView charts in OpenBB using UDF (Universal Data Feed)
+- [Enterprise](https://docs.openbb.co/workspace/getting-started/enterprise): Deploy OpenBB Workspace on-premises or in your private cloud with enterprise-grade security, compliance, and control.
+- [FAQs](https://docs.openbb.co/workspace/getting-started/faqs): Common questions and answers about OpenBB Workspace, data integration, custom backends, and troubleshooting.
+- [OpenBB Platform](https://docs.openbb.co/workspace/getting-started/platform-installer): Learn how to integrate the OpenBB Platform data to OpenBB Workspace
+- [Progressive Web App (PWA)](https://docs.openbb.co/workspace/getting-started/pwa): Install OpenBB Workspace as a Progressive Web App for a native experience on desktop and mobile devices.
+- [Workspace Overview](https://docs.openbb.co/workspace/index): OpenBB Workspace is a secure enterprise UI application for AI workflows, featuring data integration, AI model deployment, flexible UI customization, and on-premises deployment capabilities.
