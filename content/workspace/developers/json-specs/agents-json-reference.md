@@ -17,11 +17,11 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="agents.json Reference | OpenBB Workspace Docs" />
 
-The `agents.json` endpoint is a critical component of custom AI agent integration in OpenBB Workspace. This endpoint provides metadata and configuration information that tells the workspace how to interact with your custom agent.
+The `agents.json` endpoint is an important component of custom AI agent integration in OpenBB Workspace. This endpoint provides metadata and configuration information that tells the workspace how to interact with your custom agent.
 
 ## Overview
 
-When you add a custom AI agent to OpenBB Workspace, the system first queries your agent's `/agents.json` endpoint to discover its capabilities, configuration, and how to communicate with it. This configuration file acts as a contract between your agent and the workspace.
+When you add a custom AI agent to OpenBB Workspace, the system first queries your agent's `/agents.json` endpoint to discover its capabilities, configuration, and how to communicate with it. This configuration acts as a contract between your agent and the workspace.
 
 ## Endpoint Structure
 
@@ -90,8 +90,8 @@ The `agents.json` endpoint should return a JSON object with your agent(s) config
 
 - **Type**: String (URL)
 - **Required**: Yes
-- **Description**: Full URL to your agent's query endpoint that handles user interactions
-- **Example**: `"http://localhost:7777/v1/query"` or `"https://api.example.com/query"`
+- **Description**: Path or a full URL to your agent's query endpoint that handles user interactions
+- **Example**: `"/query"` or `"https://api.example.com/query"`
 
 #### features
 
@@ -100,9 +100,9 @@ Configuration object that declares your agent's capabilities:
 ##### features.streaming
 
 - **Type**: Boolean
-- **Required**: Yes
-- **Default**: N/A - Must be explicitly set to `true`
-- **Description**: Enables Server-Sent Events (SSE) for streaming responses. This must be set to `true` for OpenBB Workspace compatibility.
+- **Required**: No
+- **Default**: Defaults to `true` for all agents even if not set
+- **Description**: Enables Server-Sent Events (SSE) for streaming responses.
 - **Example**: `true`
 
 ##### features.widget-dashboard-select
@@ -132,7 +132,7 @@ Configuration object that declares your agent's capabilities:
     "description": "A basic agent that processes user queries",
     "image": "https://api.example.com/static/agent-logo.png",
     "endpoints": {
-      "query": "http://localhost:7777/v1/query"
+      "query": "/query"
     },
     "features": {
       "streaming": true,
@@ -225,7 +225,7 @@ async def get_agents_config():
             "description": "Description of my agent",
             "image": "https://api.example.com/logo.png",  # Optional
             "endpoints": {
-                "query": "http://localhost:8000/v1/query"
+                "query": "/query"
             },
             "features": {
                 "streaming": True,
@@ -260,53 +260,3 @@ app.get('/agents.json', (req, res) => {
   });
 });
 ```
-
-## Best Practices
-
-1. **Streaming Required**: Always set `streaming: true` as it's required for OpenBB Workspace compatibility
-2. **Widget Access**: Only enable widget features (`widget-dashboard-select`, `widget-dashboard-search`) if your agent actually processes widget data
-3. **Endpoint URLs**: Use full URLs for endpoints, not relative paths
-4. **Consistent Naming**: Use clear, descriptive names for your agents that reflect their purpose
-5. **Error Handling**: Ensure the endpoint always returns valid JSON, even in error cases
-6. **CORS Headers**: Configure appropriate CORS headers if your agent is hosted on a different domain
-7. **Response Time**: The endpoint should respond quickly (< 1 second) as it's queried during agent initialization
-8. **SSL/TLS**: Use HTTPS in production environments for security
-
-## Validation
-
-OpenBB Workspace validates the agents.json response to ensure:
-
-- Valid JSON syntax
-- Required fields are present (`name`, `description`, `endpoints.query`)
-- `streaming` feature is set to `true`
-- URLs are properly formatted
-- Boolean values are actual booleans (not strings)
-
-If validation fails, the agent will not be added to the workspace, and an error message will be displayed to the user.
-
-## Troubleshooting
-
-### Common Issues
-
-1. **Agent not appearing in workspace**
-   - Verify the `/agents.json` endpoint is accessible
-   - Check JSON syntax validity
-   - Ensure required fields are present (`name`, `description`, `endpoints.query`)
-   - Confirm `streaming` is set to `true`
-
-2. **Widget data not accessible**
-   - Ensure `widget-dashboard-select` and/or `widget-dashboard-search` are set to `true`
-   - Verify your query endpoint properly handles widget context data
-
-3. **Streaming not working**
-   - Confirm `streaming` feature is set to `true` (required)
-   - Verify your query endpoint implements Server-Sent Events (SSE)
-
-4. **CORS errors**
-   - Add appropriate CORS headers to your response
-   - Example: `Access-Control-Allow-Origin: *`
-
-5. **Invalid JSON response**
-   - Use a JSON validator to check syntax
-   - Ensure proper escaping of special characters
-   - Verify Content-Type header is set to `application/json`

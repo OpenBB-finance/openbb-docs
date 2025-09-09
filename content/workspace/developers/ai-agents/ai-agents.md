@@ -30,13 +30,13 @@ With this integration, you can use all of OpenBB's features while leveraging you
 
 ## Bring Your Own AI Agent
 
-You can integrate your proprietary AI agent, powered by an LLM from any vendor, into OpenBB Workspace. Custom agents can be built using the [OpenBB AI SDK](https://github.com/OpenBB-finance/openbb-ai), which provides comprehensive tools and helper functions for agent development.
+You can integrate your proprietary AI agent, powered by an LLM from any vendor, into OpenBB Workspace. Custom agents can be built using the [OpenBB AI SDK](https://github.com/OpenBB-finance/openbb-ai), which provides data schemas and helper functions for agent development.
 
 ### Key Features
 
 Custom AI agents in OpenBB Workspace can leverage several powerful features:
 
-- **Streaming Conversations**: Real-time response streaming using Server-Sent Events (SSEs) - Required for all agents
+- **Streaming Conversations**: Real-time response streaming using Server-Sent Events (SSEs)
 - **Widget Data Access**: Access to dashboard widgets through two modes:
   - **Priority Widget Access** (`widget-dashboard-select`): Access to selected/focused widgets
   - **Dashboard Search** (`widget-dashboard-search`): Access to all widgets on the current dashboard
@@ -50,7 +50,7 @@ Custom agents follow a stateless backend design with two essential endpoints:
 
 ### Getting Started
 
-Our example agents repository contains custom agents showcasing different capabilities to help you get started with development. The code is available [here](https://github.com/OpenBB-finance/agents-for-openbb).
+Our example agents repository contains custom agents showcasing different capabilities to help you get started with development. The code is available [in the GitHub repository](https://github.com/OpenBB-finance/agents-for-openbb).
 
 ### Development Requirements
 
@@ -80,10 +80,10 @@ async def agents_json():
             "description": "Specialized agent for financial analysis",
             "image": "https://example.com/agent-logo.png",
             "endpoints": {
-                "query": "http://localhost:8000/query"
+                "query": "/query"
             },
             "features": {
-                "streaming": True,  # Required
+                "streaming": True,
                 "widget-dashboard-select": True,
                 "widget-dashboard-search": False
             }
@@ -116,13 +116,34 @@ To do this, navigate to the "Add AI agent" section and follow the prompts:
 
 ### Best Practices
 
-1. **Streaming Required**: Always set `streaming: true` in your agent configuration
-2. **Stateless Design**: Keep your agent stateless to ensure scalability
-3. **Error Handling**: Implement robust error handling for API failures
-4. **Widget Access**: Only enable widget features if your agent processes dashboard data
-5. **Full URLs**: Use complete URLs for endpoints, not relative paths
-6. **Security**: Implement proper authentication and authorization
-7. **Performance**: Optimize for low latency responses
+1. **Stateless Design**: Keep your agent stateless to ensure scalability
+2. **Error Handling**: Implement robust error handling for API failures
+3. **Widget Access**: Only enable widget features if your agent processes dashboard data
+4. **Security**: Implement proper authentication and authorization
+5. **Performance**: Optimize for low latency responses
+
+### Troubleshooting Common Issues
+
+1. **Agent not appearing in workspace**
+   - Verify the `/agents.json` endpoint is accessible
+   - Check JSON syntax validity
+   - Ensure required fields are present (`name`, `description`, `endpoints.query`)
+
+2. **Widget data not accessible**
+   - Ensure `widget-dashboard-select` and/or `widget-dashboard-search` are set to `true`
+   - Verify your query endpoint properly handles widget context data
+
+3. **Streaming not working**
+   - Verify your query endpoint implements Server-Sent Events (SSE)
+
+4. **CORS errors**
+   - Add appropriate CORS headers to your response
+   - Example: use wildcard (`Access-Control-Allow-Origin: *`) for development
+
+5. **Invalid JSON response**
+   - Use a JSON validator to check syntax
+   - Ensure proper escaping of special characters
+   - Verify Content-Type header is set to `application/json`
 
 ### Resources
 
