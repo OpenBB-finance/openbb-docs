@@ -36,13 +36,10 @@ You can integrate your proprietary AI agent, powered by an LLM from any vendor, 
 
 Custom AI agents in OpenBB Workspace can leverage several powerful features:
 
-- **Streaming Conversations**: Real-time response streaming using Server-Sent Events (SSEs)
-- **Widget Data Access**: Direct access to primary, secondary, and extra widgets in the workspace
-- **Reasoning Steps**: Show intermediate thinking and processing steps to users
-- **Data Citations**: Provide sources and references for information
-- **Chart Generation**: Create interactive visualizations
-- **Table Production**: Generate structured data tables
-- **PDF Data Handling**: Process and extract information from PDF documents
+- **Streaming Conversations**: Real-time response streaming using Server-Sent Events (SSEs) - Required for all agents
+- **Widget Data Access**: Access to dashboard widgets through two modes:
+  - **Priority Widget Access** (`widget-dashboard-select`): Access to selected/focused widgets
+  - **Dashboard Search** (`widget-dashboard-search`): Access to all widgets on the current dashboard
 
 ### Architecture Overview
 
@@ -53,14 +50,14 @@ Custom agents follow a stateless backend design with two essential endpoints:
 
 ### Getting Started
 
-To help you get started with custom agent development, we provide several open-source examples that demonstrate the communication protocol between agents and the workspace:
+To help you get started with custom agent development, we provide several open-source examples that demonstrate different capabilities:
 
-1. **Raw Widget Data Agent**: Shows how to retrieve and process widget data
-2. **Reasoning Steps Agent**: Demonstrates showing intermediate processing steps
-3. **Citation Agent**: Examples of providing data sources and references
-4. **Chart Agent**: Creating visualizations from financial data
-5. **Table Agent**: Generating structured data tables
-6. **PDF Agent**: Processing PDF documents
+1. **Vanilla Agent Raw Widget Data**: Shows how to retrieve and process widget data
+2. **Vanilla Agent Reasoning Steps**: Demonstrates structured response generation
+3. **Vanilla Agent Raw Widget Data Citations**: Examples of handling widget data with proper attribution
+4. **Vanilla Agent Charts**: Creating visualizations from financial data
+5. **Vanilla Agent Tables**: Generating structured data tables
+6. **Vanilla Agent PDF**: Processing PDF documents
 
 The example code is available [here](https://github.com/OpenBB-finance/agents-for-openbb).
 
@@ -92,12 +89,12 @@ async def agents_json():
             "description": "Specialized agent for financial analysis",
             "image": "https://example.com/agent-logo.png",
             "endpoints": {
-                "query": "/query"
+                "query": "http://localhost:8000/query"
             },
             "features": {
-                "streaming": True,
+                "streaming": True,  # Required
                 "widget-dashboard-select": True,
-                "widget-filter": True
+                "widget-dashboard-search": False
             }
         }
     }
@@ -128,12 +125,13 @@ To do this, navigate to the "Add AI agent" section and follow the prompts:
 
 ### Best Practices
 
-1. **Stateless Design**: Keep your agent stateless to ensure scalability
-2. **Error Handling**: Implement robust error handling for API failures
-3. **Response Streaming**: Use SSE for real-time response delivery
-4. **Widget Filtering**: Respect user widget selections and filters
-5. **Security**: Implement proper authentication and authorization
-6. **Performance**: Optimize for low latency responses
+1. **Streaming Required**: Always set `streaming: true` in your agent configuration
+2. **Stateless Design**: Keep your agent stateless to ensure scalability
+3. **Error Handling**: Implement robust error handling for API failures
+4. **Widget Access**: Only enable widget features if your agent processes dashboard data
+5. **Full URLs**: Use complete URLs for endpoints, not relative paths
+6. **Security**: Implement proper authentication and authorization
+7. **Performance**: Optimize for low latency responses
 
 ### Resources
 
