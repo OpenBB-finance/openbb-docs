@@ -50,16 +50,7 @@ Custom agents follow a stateless backend design with two essential endpoints:
 
 ### Getting Started
 
-To help you get started with custom agent development, we provide several open-source examples that demonstrate different capabilities:
-
-1. **Vanilla Agent Raw Widget Data**: Shows how to retrieve and process widget data
-2. **Vanilla Agent Reasoning Steps**: Demonstrates structured response generation
-3. **Vanilla Agent Raw Widget Data Citations**: Examples of handling widget data with proper attribution
-4. **Vanilla Agent Charts**: Creating visualizations from financial data
-5. **Vanilla Agent Tables**: Generating structured data tables
-6. **Vanilla Agent PDF**: Processing PDF documents
-
-The example code is available [here](https://github.com/OpenBB-finance/agents-for-openbb).
+Our example agents repository contains custom agents showcasing different capabilities to help you get started with development. The code is available [here](https://github.com/OpenBB-finance/agents-for-openbb).
 
 ### Development Requirements
 
