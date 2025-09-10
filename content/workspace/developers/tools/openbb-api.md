@@ -46,7 +46,7 @@ If there are no installed extensions, and no `--app` parameter is supplied, an A
 
 Defaults are, `--host 127.0.0.1 --port 6900`, and it will fallback to the next available port if already in use.
 
-There are a number of keyword arguments to further customize the generation:
+### Keyword Arguments
 
 ```sh
 --app                           Absolute path to the Python file with the target FastAPI instance. Default is the installed OpenBB Platform API.
