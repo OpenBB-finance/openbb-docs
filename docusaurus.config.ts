@@ -128,6 +128,7 @@ export default {
 						workspace: [],
 						platform: [],
 						cli: [],
+						odp: [],
 					};
 
 					// recursive function to get all mdx files
@@ -203,6 +204,7 @@ export default {
 						workspace: [],
 						platform: [],
 						cli: [],
+						odp: [],
 					};
 
 					for (const [path, record] of Object.entries(
