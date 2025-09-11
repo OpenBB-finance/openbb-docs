@@ -221,6 +221,12 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
         _Example:_ `"text"`
         _Possible values:_ `"text"`, `"number"`, `"boolean"`, `"date"`, `"dateString"`, `"object"`
 
+      - **align**
+        _Type:_ `string`
+        Specifies the alignment of the text on the cell.
+        _Example:_ `"center"`
+        _Possible values:_ `"left"`, `"center"`, `"right"`
+
       - **enableCellChangeWs**
         _Type:_ `boolean`
         Controls whether the cell can be updated via WebSocket messages. Only used with the Live Grid Widget.
