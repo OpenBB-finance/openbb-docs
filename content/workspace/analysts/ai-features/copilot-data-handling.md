@@ -15,6 +15,23 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Data Handling | OpenBB Workspace Docs" />
 
+## Widget interaction
+
+Dynamic parameter modification represents one of the OpenBB's Copilot most powerful capabilities.
+
+The system understands the parameter schemas of each widget and can intelligently modify settings like date ranges, asset symbols, calculation periods, and analysis parameters to match your specific requirements.
+
+This eliminates the need for manual widget configuration and enables the Copilot to perform iterative analysis with different parameters automatically, such as comparing the same analysis across different time periods or asset classes within a single conversation.
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img
+    className="pro-border-gradient"
+    alt="Widget parameters"
+    src="https://openbb-cms.directus.app/assets/1c0c7c36-30e8-4b89-b9ad-0b97694f2699.png"
+    width="100%"
+  />
+</div>
+
 ## Structured data
 
 The Copilot excels at processing and analyzing structured financial datasets through multiple specialized capabilities:

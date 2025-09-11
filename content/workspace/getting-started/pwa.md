@@ -1,7 +1,7 @@
 ---
 title: Progressive Web App (PWA)
 description: Install OpenBB Workspace as a Progressive Web App for a native experience on desktop and mobile devices.
-sidebar_position: 6
+sidebar_position: 0
 keywords:
 - OpenBB Workspace
 - Progressive Web App
