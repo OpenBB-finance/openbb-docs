@@ -17,9 +17,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="OpenBB AI SDK | OpenBB Workspace Docs" />
 
-The OpenBB AI SDK helps you build stateless HTTP agents for OpenBB Workspace. It provides Pydantic models for requests and a set of helper functions that emit Server‑Sent Events (SSE) the Workspace understands.
+The OpenBB AI SDK simplifies building custom agents for OpenBB Workspace by providing type-safe models and helper functions that handle the complexity of Server-Sent Events (SSE) streaming. Instead of manually crafting SSE messages and managing event types, you can use simple Python functions to stream text, show reasoning steps, fetch widget data, and create visualizations.
 
-Agents expose two endpoints: `/agents.json` for metadata and `/query` for a streamed conversation. The SDK functions produce structured SSE events for streaming text, reasoning steps, data fetches from widgets, citations, tables, and charts.
+Agents built with the SDK expose two endpoints: `/agents.json` for metadata and `/query` for streamed conversations. The SDK handles all the SSE formatting, event sequencing, and data serialization for you.
 
 Install the package in your agent backend:
 
@@ -29,87 +29,255 @@ pip install openbb-ai
 
 Check the open source repository [here](https://github.com/OpenBB-finance/openbb-ai).
 
-## QueryRequest
+## Request Handling
 
-`openbb_ai.models.QueryRequest` carries everything the agent needs per call:
-- `messages` - full chat conversation up to this message
+The SDK provides `QueryRequest` to access everything your agent needs in a single, type-safe model:
+
+```python
+from openbb_ai.models import QueryRequest
+
+async def query(request: QueryRequest):
+    # Access chat history
+    messages = request.messages
+    
+    # Access widgets (primary, secondary, extra)
+    widgets = request.widgets
+    
+    # Use workspace context
+    timezone = request.timezone
+    workspace_state = request.workspace_state
+```
+
+**Key fields in QueryRequest:**
+
+- `messages` - full chat conversation
 - `widgets` - all widgets data
-  - `primary` - all widgets added as explicit context
-  - `secondary` - all widgets in the dashboard
-  - `extra` - artifacts in the chat or files dropped in the chat
-- `urls` - URL pages
-- `timezone` - user's timezone (e.g., "America/New_York")
-- `tools` - MCP tools available for the agent
-- `workspace_options` - available workspace features (e.g., ["workspace-web-search"])
-- `workspace_state` - current workspace state including:
-  - `action_history` - history of user actions (e.g. adding and removing widgets)
+  - `primary` - widgets added as explicit context
+  - `secondary` - widgets in the current dashboard
+  - `extra` - artifacts and files in the chat
+- `urls` - URL pages shared in chat
+- `timezone` - user's timezone
+- `tools` - available MCP tools
+- `workspace_options` - enabled features
+- `workspace_state` - dashboard state and context
+  - `action_history` - user actions history
   - `agents` - available agents
-  - `current_dashboard_uuid` - ID of the current dashboard
-  - `current_dashboard_info` - dashboard metadata (id, name, current_tab_id, tabs)
-  - `current_page_context` - current page context (e.g., "dashboard")
+  - `current_dashboard_uuid` - dashboard ID
+  - `current_dashboard_info` - dashboard metadata
+  - `current_page_context` - current page context
 
 Backends are stateless; do not cache server state between calls.
 
 ## Streaming Text
 
-Use `message_chunk(text)` to stream tokens or text fragments:
+The SDK simplifies streaming responses by handling SSE formatting automatically. Just yield message chunks:
 
 ```python
 from openbb_ai import message_chunk
-yield message_chunk(chunk).model_dump()
+
+# Stream tokens from an LLM
+for chunk in llm_response:
+    yield message_chunk(chunk).model_dump()
 ```
+
+**Related models:**
+
+- `MessageChunkSSE` - Handles text streaming with proper SSE formatting
+- `MessageArtifactSSE` - For streaming larger content blocks
 
 ## Reasoning Steps
 
-Use `reasoning_step` to emit status updates with optional key‑value details:
+Show users what your agent is thinking and doing with reasoning steps. The SDK handles the SSE event formatting:
 
 ```python
 from openbb_ai import reasoning_step
-yield reasoning_step(event_type="INFO", message="Fetching data", details={"step": 1}).model_dump()
+
+# Show progress
+yield reasoning_step(event_type="INFO", message="Analyzing market data").model_dump()
+
+# Include details
+yield reasoning_step(
+    event_type="SUCCESS", 
+    message="Data retrieved",
+    details={"records": 1000, "timeframe": "1Y"}
+).model_dump()
 ```
 
-## Retrieving Widget Data
+**Related models:**
 
-Request data from Workspace widgets via a function call SSE using `get_widget_data` and `WidgetRequest`:
+- `StatusUpdateSSE` - Formats reasoning steps and status updates
+  - Event types: `INFO`, `SUCCESS`, `WARNING`, `ERROR`
+  - Optional details dictionary for key-value pairs
+
+## Widget Data Access
+
+The SDK simplifies fetching data from dashboard widgets. Instead of manually calling APIs, use the helper functions:
 
 ```python
-from openbb_ai import get_widget_data, WidgetRequest
+from openbb_ai import get_widget_data
+from openbb_ai.models import WidgetRequest, Widget
 
+# Request data from multiple widgets
 widget_requests = [
-    WidgetRequest(widget=widget, input_arguments={p.name: p.current_value for p in widget.params})
+    WidgetRequest(
+        widget=widget,
+        input_arguments={p.name: p.current_value for p in widget.params}
+    )
 ]
+
+# SDK handles the SSE formatting
 yield get_widget_data(widget_requests).model_dump()
 ```
 
-Only declare widget features in `/agents.json` that you actually use:
+**Related models:**
 
-- `widget-dashboard-select`: enables access to user‑selected widgets
-- `widget-dashboard-search`: enables access to widgets on the current dashboard
+- `Widget` - Dashboard widget with metadata and parameters
+  - Contains widget ID, name, type
+  - Includes parameter definitions
+- `WidgetParam` - Individual parameter configuration
+  - `name` - parameter identifier
+  - `type` - data type
+  - `current_value` - current value
+- `WidgetCollection` - Container for widget groups
+  - `primary` - user-selected widgets
+  - `secondary` - dashboard widgets
+  - `extra` - artifacts and files
+- `WidgetRequest` - Data request specification
+- `FunctionCallSSE` - Handles widget data fetching events
 
-## Citations
+**Widget features to declare in `/agents.json`:**
 
-Attribute outputs to data sources using `cite` and finish with `citations`:
+- `widget-dashboard-select` - access user-selected widgets
+- `widget-dashboard-search` - access dashboard widgets
+
+## Parsing Widget Data
+
+When widgets return data, it comes in various formats that need to be parsed appropriately. The SDK provides data format models to identify and handle each type:
+
+```python
+from openbb_ai.models import (
+    PdfDataFormat,
+    ImageDataFormat,
+    SpreadsheetDataFormat,
+    RawObjectDataFormat,
+    SingleDataContent,
+    SingleFileReference,
+    DataContent,
+    DataFileReferences
+)
+
+async def handle_widget_data(data: list[DataContent | DataFileReferences]) -> str:
+    result_str = ""
+    for result in data:
+        for item in result.items:
+            if isinstance(item.data_format, PdfDataFormat):
+                # Parse PDF content
+                if isinstance(item, SingleDataContent):
+                    # Base64 encoded PDF
+                    content = base64.b64decode(item.content)
+                    # Extract text using pdfplumber or similar
+                elif isinstance(item, SingleFileReference):
+                    # PDF from URL
+                    content = await download_file(item.url)
+                    # Process PDF content
+                    
+            elif isinstance(item.data_format, SpreadsheetDataFormat):
+                # Parse Excel/CSV data
+                # Convert to dataframe or table structure
+                
+            elif isinstance(item.data_format, ImageDataFormat):
+                # Handle image data
+                # May contain charts, screenshots, etc.
+                
+            else:
+                # RawObjectDataFormat - JSON/dict data
+                result_str += str(item.content)
+                
+    return result_str
+```
+
+**Data format models:**
+
+- `PdfDataFormat` - Identifies PDF documents from widgets
+  - Contains filename and metadata
+  - Data comes as base64 or URL reference
+  - Use libraries like `pdfplumber` to extract text and tables
+  
+- `SpreadsheetDataFormat` - Identifies Excel/CSV data
+  - Tabular data from financial widgets
+  - Parse with `pandas` or similar libraries
+  
+- `ImageDataFormat` - Identifies image content
+  - Charts, graphs, screenshots from widgets
+  - May require OCR or image analysis
+  
+- `RawObjectDataFormat` - Default JSON/dictionary format
+  - Structured data from API responses
+  - Direct access to nested fields
+
+**Data delivery models:**
+
+- `SingleDataContent` - Data embedded as base64
+- `SingleFileReference` - Data available via URL
+- `DataContent` - Container for multiple data items
+- `DataFileReferences` - References to external files
+
+## Data Attribution & Citations
+
+The SDK makes it easy to cite your sources, ensuring transparency about where data comes from:
 
 ```python
 from openbb_ai import cite, citations
 
-c = cite(widget=some_widget, input_arguments={"symbol": "AAPL"}, extra_details={"Widget": some_widget.name})
-yield citations([c]).model_dump()
+# Create citations for widgets used
+citation = cite(
+    widget=price_widget,
+    input_arguments={"symbol": "AAPL"},
+    extra_details={"timeframe": "1D"}
+)
+
+# Send all citations at once
+yield citations([citation]).model_dump()
 ```
 
-## Tables and Charts
+**Related models:**
 
-Stream tables and charts as artifacts in the conversation:
+- `Citation` - Links outputs to data sources
+  - `widget` - source widget reference
+  - `input_arguments` - parameters used
+  - `extra_details` - additional metadata
+- `SourceInfo` - Provides detailed source attribution
+- `CitationHighlightBoundingBox` - Visual highlighting for citations
+
+## Visualizations
+
+The SDK abstracts the complexity of creating interactive charts and tables. Simply provide your data and configuration:
 
 ```python
 from openbb_ai import table, chart
 
-yield table(data=[{"x": 1, "y": 2}], name="My Table", description="Sample").model_dump()
-yield chart(type="line", data=[{"x": 1, "y": 2}], x_key="x", y_keys=["y"], name="My Chart").model_dump()
+# Create a data table
+yield table(
+    data=[{"symbol": "AAPL", "price": 150.25, "change": 2.5}],
+    name="Stock Prices",
+    description="Current market prices"
+).model_dump()
+
+# Create interactive charts
+yield chart(
+    type="line",
+    data=price_history,
+    x_key="date",
+    y_keys=["price"],
+    name="Price History",
+    description="Stock price over time"
+).model_dump()
 ```
 
-## Examples
+**Supported chart types and models:**
 
-The SDK README provides detailed examples and reference:
-https://github.com/OpenBB-finance/openbb-ai
-
+- `LineChartParameters` - Time series and trends
+- `BarChartParameters` - Comparisons and distributions
+- `ScatterChartParameters` - Correlations and relationships
+- `PieChartParameters` - Proportions and percentages
+- `DonutChartParameters` - Hierarchical proportions
