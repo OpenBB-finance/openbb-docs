@@ -276,6 +276,23 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Data Handling | OpenBB Workspace Docs" />
 
+## Widget interaction
+
+Dynamic parameter modification represents one of the OpenBB's Copilot most powerful capabilities.
+
+The system understands the parameter schemas of each widget and can intelligently modify settings like date ranges, asset symbols, calculation periods, and analysis parameters to match your specific requirements.
+
+This eliminates the need for manual widget configuration and enables the Copilot to perform iterative analysis with different parameters automatically, such as comparing the same analysis across different time periods or asset classes within a single conversation.
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img
+    className="pro-border-gradient"
+    alt="Widget parameters"
+    src="https://openbb-cms.directus.app/assets/1c0c7c36-30e8-4b89-b9ad-0b97694f2699.png"
+    width="100%"
+  />
+</div>
+
 ## Structured data
 
 The Copilot excels at processing and analyzing structured financial datasets through multiple specialized capabilities:
@@ -563,59 +580,301 @@ The system preserves the relationship between artifacts and their creation proce
 ---
 
 ---
-title: Tools
+title: Generative UI (Beta)
 sidebar_position: 10
-description: Understanding the tools available to OpenBB Copilot
+description: Understanding the Generative UI capabilities in OpenBB Copilot
 keywords:
-- tools
+- generative ui
 - widgets
+- dynamic creation
 - widget parameters
-- web search
+- beta features
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Tools | OpenBB Workspace Docs" />
+<HeadTitle title="Generative UI (Beta) | OpenBB Workspace Docs" />
 
-## Widgets
+When this feature is turned ON, copilot can manipulate widgets on the dashboard.
 
-The Copilot treats every widget in the OpenBB Workspace as a programmable tool in its analytical toolkit.
+## Update widget parameters
 
-The system can chain widget operations, using the output from one widget as input for another, creating sophisticated analytical pipelines automatically.
+The system understands the parameter schemas of each widget and based on a user prompt it can automatically update the parameters used in widgets on the dashboard.
 
-## Widget parameters
+## Add widgets from Global Data
 
-Dynamic parameter modification represents one of the OpenBB's Copilot most powerful capabilities.
+If global data is turned on, and the user asks information that the copilot believes exists in one of the widgets in the widget library - then that widget gets automatically added to the dashboard.
 
-The system understands the parameter schemas of each widget and can intelligently modify settings like date ranges, asset symbols, calculation periods, and analysis parameters to match your specific requirements.
+## Add markdown note widget
 
-This eliminates the need for manual widget configuration and enables the Copilot to perform iterative analysis with different parameters automatically, such as comparing the same analysis across different time periods or asset classes within a single conversation.
+The copilot can also add any type of text into a markdown widget automatically.
 
-<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+
+---
+
+---
+title: MCP Tools
+sidebar_position: 11
+description: Model Context Protocol (MCP) tools integration in OpenBB Copilot
+keywords:
+- MCP
+- Model Context Protocol
+- tools
+- integration
+- external tools
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="MCP Tools | OpenBB Workspace Docs" />
+
+Model Context Protocol (MCP) integration enables seamless connection to third-party data providers, analytical services, and specialized financial tools without requiring custom development within the OpenBB Workspace.
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
   <img
-    className="pro-border-gradient"
-    alt="Widget parameters"
-    src="https://openbb-cms.directus.app/assets/1c0c7c36-30e8-4b89-b9ad-0b97694f2699.png"
+    src="https://openbb-cms.directus.app/assets/9e4121a3-a422-41fb-aaac-888f66b18fb2.png"
     width="100%"
   />
 </div>
 
-## Web search
+We utilize the [use-mcp library](https://github.com/modelcontextprotocol/use-mcp) and support both MCP and SSE protocols, but not STDIO. If you are interested in STDIO support, we recommend exploring solutions like [https://github.com/supercorp-ai/supergateway](https://github.com/supercorp-ai/supergateway).
 
-The integrated web search capability extends the Copilot's knowledge beyond the OpenBB Workspace ecosystem to access real-time information from across the internet.
+### Configure your MCP Servers
 
-This feature automatically activates as a fallback mechanism when information is not available in your workspace, searching financial news sources, regulatory databases, company websites, and other sources.
+Clicking this button opens the MCP server enable/disable menu.
 
-The system filters and prioritizes results based on relevance and credibility, then integrates external information with your existing workspace data to provide comprehensive answers with proper source attribution.
-
-<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
   <img
-    className="pro-border-gradient"
-    alt="Web search"
-    src="https://openbb-cms.directus.app/assets/d9aec63a-379f-4ced-9074-1597dabc55b6.png"
+    src="https://openbb-cms.directus.app/assets/2d50c181-6fa0-4ec4-81b6-3faa936af17e.png"
+    width="40%"
+  />
+</div>
+
+Here you'll find the "+" icon that allows you to add or edit MCP servers.
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/861831f2-9bfc-41d2-bdd7-bc673ad39656.png"
+    width="60%"
+  />
+</div>
+
+Clicking the "+" icon opens the MCP Servers configuration dialog.
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/1d12fdc5-4424-4858-8c34-85db9c18ba2e.png"
     width="100%"
   />
 </div>
+
+Within this dialog, clicking "Add Server" opens the following pop-up window.
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/15e88b0c-d9d0-4697-87f0-2c82f0213d0f.png"
+    width="100%"
+  />
+</div>
+
+Clicking "Add" initiates the connection, regardless of OAuth configuration.
+
+Here's how OAuth appears when connecting to [Smithery.ai](https://smithery.ai/), a directory containing over 6,000 MCP servers.
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/0ef5c823-a1fe-4fec-9d17-9165e0d282b1.png"
+    width="100%"
+  />
+</div>
+
+After connecting, you'll return to the Workspace and see "Authenticating..." displayed.
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/2b3b1671-20c3-46de-9985-5c55ba22c2c5.png"
+    width="100%"
+  />
+</div>
+
+In the MCP Servers Configuration dialog, clicking on a successfully connected server displays the discovered tools. You can then open these tools to view their descriptions.
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/3d2e53ed-5d63-46e8-b369-d0e19c7017ef.png"
+    width="100%"
+  />
+</div>
+
+### Select MCP Server tools
+
+With the MCP Tools dialog open, you can enable or disable specific MCP tools for Copilot access.
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/861831f2-9bfc-41d2-bdd7-bc673ad39656.png"
+    width="100%"
+  />
+</div>
+
+Once an MCP Server is successfully connected, you can:
+
+1. Select all or none of the tools of a specific MCP Server.
+
+This toggles all fine-grained tool-level controls simultaneously. It's the most efficient way to exclude an MCP Server from Copilot's context.
+
+2. Turn ON/OFF a specific set of tools from an MCP Server.
+
+Note: Enabling all tools doesn't guarantee Copilot will use every tool; rather, it makes them available for selection. This granular control helps narrow OpenBB Copilot's context to what's most relevant to your needs.
+
+---
+
+If the MCP Server becomes disconnected, it will appear as disabled, as shown below:
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/d983cab2-9cf0-4d2a-85d2-0226860b890d.png"
+    width="100%"
+  />
+</div>
+
+### MCP in action
+
+When you submit a query to Copilot with MCP tools enabled, it can utilize one or more tools based on your prompt, including sequential tool usage when necessary.
+
+For example, accessing OpenBB documentation requires two tools from the same MCP Server. Copilot automatically determines and executes this sequence on your behalf.
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/5a9ef8ee-89e0-4f7c-853c-77fda234de00.png"
+    width="100%"
+  />
+</div>
+
+---
+
+---
+title: Orchestrator Mode
+sidebar_position: 12
+description: Understanding OpenBB Copilot's Orchestrator Mode for multi-agent workflows
+keywords:
+- Orchestrator Mode
+- Multi-agent
+- Workflow coordination
+- Task delegation
+- Agent routing
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Orchestrator Mode | OpenBB Workspace Docs" />
+
+# Orchestrator Mode
+
+Orchestrator Mode enables OpenBB Copilot to coordinate with specialized AI agents for complex analytical workflows. When activated, OpenBB Copilot becomes a central coordinator that evaluates user requests, identifies the most appropriate agents for specific tasks, and delegates work to optimize results.
+
+## Activating Orchestrator Mode
+
+After adding AI agents to your workspace, you'll see agent management settings showing available agents:
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img src="https://openbb-cms.directus.app/assets/d8223d51-17a4-4b47-914b-ff5656316fd0.png" alt="OpenBB Copilot as single enabled agent" width="40%" />
+</div>
+
+Initially, OpenBB Copilot operates as the only enabled agent. To activate Orchestrator Mode, toggle the switch next to OpenBB Copilot. This enables the copilot to delegate tasks to other available agents based on request complexity and agent specialization.
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img src="https://openbb-cms.directus.app/assets/c6a46df6-d572-414c-8cb4-c74e70ae0a1a.png" alt="Orchestrator Mode activated" width="40%" />
+</div>
+
+## Agent Detection and Routing
+
+The orchestrator systematically evaluates available agents before processing user requests. It scans agent descriptions for domain-specific expertise that matches the user query and checks agent capabilities for specialized functions like data processing, mathematical calculations, or document analysis.
+
+Task categorization determines the optimal assignment approach. Preprocessing tasks include query optimization and prompt enhancement. Domain-specific tasks involve financial analysis, technical documentation, or mathematical computations. Processing tasks handle data transformation and content generation. Post-processing tasks manage output formatting and quality assurance.
+
+Agent selection follows a hierarchy of matching criteria. Primary matches occur when agent descriptions directly mention the task domain. Feature matches identify agents with relevant capabilities for the request. Specialization advantages favor agents offering superior expertise compared to general processing capabilities.
+
+## Direct Agent Interaction vs. Orchestration
+
+Users can interact with agents directly or through orchestration. Direct interaction addresses the specific agent with targeted requests:
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img src="https://openbb-cms.directus.app/assets/5ad54690-5aa4-42d6-a0d7-c7a31fe19d58.png" alt="Direct agent interaction example" width="100%" />
+</div>
+
+With Orchestrator Mode activated, users can submit general requests to OpenBB Copilot. The orchestrator analyzes the request and determines whether specialized agent assistance would improve results.
+
+For example, a minimal or unclear prompt triggers automatic routing to a prompt optimization agent:
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img src="https://openbb-cms.directus.app/assets/8a4b0c74-82b4-4e1c-ae2c-d905cf880d39.png" alt="Orchestrator routing to prompt optimizer" width="100%" />
+</div>
+
+Or routing to an agent that is better suitable to parse specific data (like FOMC document):
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img src="https://openbb-cms.directus.app/assets/6486184f-2b36-44cf-829a-aa46bf1e41d5.png" alt="Orchestrator routing to FOMC Agent" width="100%" />
+</div>
+
+## Orchestration OFF
+
+When Orchestrator Mode is disabled, OpenBB Copilot cannot utilize any available sub-agents regardless of their specializations:
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img src="https://openbb-cms.directus.app/assets/f16d219e-98f2-487e-9969-9164377c87de.png" alt="Orchestrator Mode disabled limiting agent access" width="100%" />
+</div>
+
+
+## Task Delegation Process
+
+The orchestrator follows structured delegation protocols. Single agent assignments handle complete tasks where one agent possesses all required expertise. The orchestrator sets direct response parameters, meaning the assigned agent's output appears directly to users without additional processing.
+
+Multi-agent workflows coordinate complex requests requiring multiple specializations. The orchestrator breaks requests into discrete components, determines optimal execution sequences, and manages dependencies between tasks. Some tasks must complete before others begin, while parallel execution improves response speed for independent operations.
+
+When delegating tasks, the orchestrator provides agents with specific context including relevant data, constraints, formatting requirements, and success criteria. This ensures agents have sufficient information to complete their assigned portions effectively.
+
+## Response Coordination
+
+Single agent responses appear directly when the orchestrator delegates complete responsibility to one specialized agent. This reduces latency for straightforward requests while maintaining orchestration capabilities for complex workflows.
+
+Multi-agent responses require coordination and synthesis. The orchestrator ensures consistent formatting across agent contributions, eliminates redundancy, and maintains logical narrative flow. Error recovery mechanisms attempt alternative strategies when agents cannot complete assigned tasks.
+
+## Memory and Context Management
+
+The orchestrator maintains awareness of previous interactions and conversation history. It remembers recent widget additions, data retrievals, and analytical approaches to inform current delegation decisions. This contextual awareness prevents duplicate work and enables references to "this data" or "the previous analysis."
+
+When users reference earlier work, the orchestrator identifies the specific context and ensures relevant agents have access to that information. The system builds upon previous analyses rather than starting fresh for each request.
+
+## Best Practices
+
+Provide clear context about analytical objectives when submitting requests that might benefit from specialized expertise. Specify data sources, time frames, and analytical approaches when you have preferences about task completion methods.
+
+Reference specific data, widgets, or previous analyses when building upon earlier work. The orchestrator uses these references to maintain context continuity and optimize agent selection for follow-up tasks.
+
+Break down extremely complex queries into logical components when the orchestrator's automatic decomposition might not match your intended approach. While orchestration handles multi-step workflows effectively, clearer initial requests lead to more efficient delegation.
 
 
 ---
@@ -5334,6 +5593,11 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
   Provides a secondary category for refining search results.
   _Example:_ `"Options"`
 
+- **imgUrl**
+  _Type:_ `string`
+  Image URL for the widget - will show a preview when hovering in search/add widget menu.
+  _Example:_ `"https://myexample-imagelink.xyw/widget1"`
+
 - **type**
   _Type:_ `string`
   Sets the default visualization type for the widget.
@@ -5476,6 +5740,12 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
         Specifies the data type of the cell.
         _Example:_ `"text"`
         _Possible values:_ `"text"`, `"number"`, `"boolean"`, `"date"`, `"dateString"`, `"object"`
+
+      - **align**
+        _Type:_ `string`
+        Specifies the alignment of the text on the cell.
+        _Example:_ `"center"`
+        _Possible values:_ `"left"`, `"center"`, `"right"`
 
       - **enableCellChangeWs**
         _Type:_ `boolean`
@@ -11952,6 +12222,147 @@ The charting technology is provided by TradingView — a platform for traders an
 ---
 
 ---
+title: Administration
+sidebar_position: 4
+description: Administration and management features for OpenBB Workspace Enterprise
+keywords:
+- Administration
+- User Management
+- RBAC
+- Theme Settings
+- System Configuration
+- Monitoring
+- Branding
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Administration | OpenBB Workspace Docs" />
+
+# Administration
+
+Enterprise administrators manage users, configure access controls, customize branding, and monitor system usage through a web-based interface.
+
+## User Management
+
+Import users from CSV files or connect to directory services for automated provisioning. Bulk operations handle large user lists efficiently. Account creation includes role assignment during the onboarding process. User modifications update permissions as organizational responsibilities change. Offboarding revokes access immediately while preserving audit trails.
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="600" alt="Team Management Interface" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/team_management.png" />
+</div>
+
+Single sign-on integrates with Azure Active Directory through OpenID Connect protocol. Google Workspace authentication uses OAuth 2.0 flows. Any SAML 2.0-compatible identity provider connects through standard configuration. Just-in-time provisioning creates accounts automatically when users first authenticate.
+
+## Role-Based Access Control
+
+Define custom roles that match organizational structure. Permission levels operate at four distinct layers: applications control access to entire modules, widgets govern individual analytical tools, data sources restrict information access, and AI features manage Copilot capabilities.
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="800" alt="Role Management Interface" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/create-role-user-list.png" />
+</div>
+
+Standard roles provide starting points for customization. Admin accounts have full system access and configuration capabilities. Analysts create and share dashboards with complete data access. Viewers access shared content in read-only mode. Data Managers handle source connections and data governance. Custom roles combine these permissions to match specific organizational needs.
+
+## Theme and Branding Configuration
+
+Customize visual appearance to match corporate identity. Table settings control general layouts, borders, spacing, headers, cells, icons, and typography. Each element accepts custom styling for both light and dark themes. Configuration changes apply immediately across all user sessions.
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img src="https://openbb-cms.directus.app/assets/c8c0241e-981c-4456-a8f2-66aafaab350a.png" width="100%" />
+</div>
+
+Chart customization includes base themes, color palettes, core settings, input configurations, and background images. Color palettes define schemes for different data types and analytical contexts. Core settings manage axis, grid, and legend appearance. Background images add corporate watermarks or branding elements.
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img src="https://openbb-cms.directus.app/assets/364a1419-1b57-46ea-a482-98faef8c36f3.png" width="100%" />
+</div>
+
+Preview functionality shows customizations before applying them system-wide:
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img src="https://openbb-cms.directus.app/assets/345da327-228b-4029-9480-ef4b8777a357.png" width="100%" />
+</div>
+
+## Brand Identity
+
+Select primary brand colors through a color picker interface. The system automatically generates complementary shades for consistent application throughout the platform. Color choices maintain accessibility compliance by ensuring readable contrast ratios. Changes propagate to all interface elements within seconds.
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img src="https://openbb-cms.directus.app/assets/815dc29f-d8a8-4c1d-8ee6-0766f9762cde.png" width="100%" />
+</div>
+
+Logo upload supports PNG, SVG, and JPG formats with automatic sizing for different display contexts. The system generates favicons from uploaded logos for browser tab branding. Logo placement options include headers, login pages, and generated reports.
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img src="https://openbb-cms.directus.app/assets/b1055be1-ed02-400f-8876-372ae832d37c.png" width="100%" />
+</div>
+
+
+---
+
+---
+title: Data Control & Security
+sidebar_position: 2
+description: Data sovereignty, security architecture, and compliance features in OpenBB Workspace Enterprise
+keywords:
+- Data Sovereignty
+- Enterprise Security
+- Compliance
+- Audit Trails
+- Data Residency
+- SOC 2
+- MFA
+- SSO
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Data Control & Security | OpenBB Workspace Docs" />
+
+# Data Control & Security
+
+OpenBB Workspace Enterprise ensures complete data sovereignty by running entirely within your infrastructure. Your data, AI models, and prompts never leave your secure environment while maintaining full control over sensitive financial information and meeting regulatory requirements.
+
+## Data Sovereignty
+
+Deploy on-premises or in your private cloud (VPC) to maintain complete control over data location and access. All processing occurs within your infrastructure boundaries, ensuring compliance with data residency requirements and regulatory obligations.
+
+## Deployment Options
+
+On-premises installation provides maximum control by running directly on your servers. This approach works well for organizations with strict data residency requirements or air-gapped environments that require complete network isolation.
+
+Private cloud deployment in AWS, Azure, or GCP maintains cloud infrastructure flexibility while keeping data within your security perimeter. This option balances operational convenience with security requirements.
+
+Hybrid architecture combines on-premises core systems with cloud-based compute resources. This approach allows organizations to balance security requirements with scalability needs while maintaining data control.
+
+<img src="https://openbb-cms.directus.app/assets/2ad71c09-ae83-422f-975d-d4cdaefd2c74.png" alt="OpenBB Workspace Enterprise Architecture" width="100%" />
+
+## Enterprise Security Features
+
+The platform integrates with existing security infrastructure including SSO support for Azure and Google authentication systems. Granular role-based access control (RBAC) manages permissions across applications, widgets, data sources, and AI features. Multi-factor authentication enforcement adds security layers for all user accounts.
+
+Detailed audit logging captures all user activities, system access, and configuration changes. The platform operates with no external product analytics and minimal operational logging to maintain privacy and security standards.
+
+## Compliance and Audit Support
+
+Meet regulatory requirements through complete activity logging that tracks user actions, data access patterns, and system modifications. Export controls manage how data can be extracted or shared outside the platform. Retention policies automate data lifecycle management according to organizational and regulatory requirements.
+
+SOC 2 Type II compliance support provides standardized security controls and audit procedures. The platform maintains audit trails that support various regulatory frameworks and compliance requirements.
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="600" alt="Activity Log Interface" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/activity-log.png" />
+</div>
+
+## Implementation Process
+
+Begin with a security assessment of your current environment to understand deployment requirements and integration needs. Architecture design aligns the platform with existing security controls and network configurations. Security configuration includes authentication integration, access controls, and audit logging setup.
+
+Testing and validation ensure all security controls function correctly before production deployment. Ongoing management includes regular security reviews, access audits, and maintenance of security documentation and procedures.
+
+
+---
+
+---
 title: Enterprise
 sidebar_position: 1
 description: Deploy OpenBB Workspace on-premises or in your private cloud with enterprise-grade security, compliance, and control.
@@ -11959,148 +12370,218 @@ keywords:
 - OpenBB Workspace Enterprise
 - On-Premises Deployment
 - Private Cloud
-- Role-Based Access Control
-- Enterprise Security
-- Data Sovereignty
-- Compliance
-- RBAC
-- Team Collaboration
+- Enterprise Features
+- Financial Analytics Platform
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Enterprise | OpenBB Workspace Docs" />
 
-# Enterprise Deployment
+# Enterprise Overview
 
-OpenBB Workspace Enterprise enables organizations to deploy the entire platform within their own infrastructure, ensuring complete data sovereignty, security, and compliance.
+OpenBB Workspace Enterprise deploys within your infrastructure, ensuring data never leaves your environment. The platform operates without external dependencies while providing the same analytical capabilities as the cloud version.
 
-## Why Enterprise?
+## Deployment Control
 
-### Complete Data Sovereignty
+Deploy on-premises within your data center for maximum control over hardware, network, and security configurations. Private cloud deployment in AWS, Azure, or GCP maintains infrastructure flexibility while keeping data within your security boundaries. Hybrid architectures combine on-premises data storage with cloud compute resources when required.
 
-Deploy on-premises or in your private cloud (VPC). Your data, AI models, and prompts never leave your secure environment. Maintain full control over sensitive financial information while meeting the strictest regulatory requirements.
+All deployment options include unlimited users, unlimited data sources, and unlimited computational resources. No artificial restrictions exist on platform usage within your environment.
 
-### Enterprise-Grade Security
+[Data Control & Security Details →](/workspace/getting-started/enterprise/data-control)
 
-Integrate seamlessly with your existing security infrastructure including SSO (Azure and Google). Implement granular role-based access control (RBAC) with detailed audit logging. MFA enforced for all users with no product analytics and minimal operational logging.
+## Team Operations
 
-### Unlimited Scalability
+Multiple teams work within shared environments while maintaining separate access controls and data permissions. Shared dashboards distribute insights across departments. Real-time collaboration enables simultaneous analysis and commentary on the same datasets.
 
-No restrictions on users, data sources, or computational resources. Scale horizontally across your infrastructure to meet growing analytical demands while maintaining performance.
+Knowledge management captures institutional analytical approaches through shared widget libraries and template repositories. Team analytics show usage patterns, popular content, and collaboration effectiveness metrics.
 
-### Custom Integration
+[Team Collaboration Features →](/workspace/getting-started/enterprise/team-collaboration)
 
-Connect directly to internal data systems, proprietary databases, and third-party providers through your secure network. Build custom widgets and AI agents tailored to your specific workflows. Includes Excel add-in for seamless data integration.
+## Administrative Control
 
-<img src="https://openbb-cms.directus.app/assets/2ad71c09-ae83-422f-975d-d4cdaefd2c74.png" alt="OpenBB Workspace Enterprise Architecture" width="100%" />
+Configure user access through role-based permissions at application, widget, data source, and AI feature levels. Import users from existing directory services or manage them locally. Customize platform appearance with corporate branding, colors, and logos.
 
-## Deployment Options
+Monitor system performance, user activity, and resource consumption through administrative dashboards. Configure automated backups, retention policies, and maintenance schedules.
 
-### On-Premises
-Install OpenBB Workspace directly on your servers for maximum control. Ideal for organizations with strict data residency requirements or air-gapped environments.
+[Administration Tools →](/workspace/getting-started/enterprise/administration)
 
-### Private Cloud (VPC)
-Deploy in your AWS, Azure, or GCP private cloud. Maintain cloud flexibility while keeping data within your security perimeter.
+## Implementation Support
 
-### Hybrid Architecture
-Combine on-premises core systems with cloud-based compute resources. Balance security requirements with scalability needs.
+Professional services include infrastructure assessment, deployment planning, security configuration, and data integration. The JumpStart package delivers operational capability within four weeks through custom app development and targeted training programs.
 
-## Key Features
+Dedicated support provides priority response times with direct access to technical specialists. Customer success managers coordinate long-term platform optimization and adoption strategies.
 
-### Role-Based Access Control (RBAC)
+[Support & Services Options →](/workspace/getting-started/enterprise/support-services)
 
-Create custom roles that match your organizational structure. Control access at multiple levels:
+## Core Capabilities
 
-- **Apps**: Manage entire application access
-- **Widgets**: Granular widget-level permissions
-- **Data Sources**: Control which data each role can access
-- **AI Features**: Manage access to AI agents
+OpenBB Copilot operates entirely within your environment, processing prompts and generating responses without external communication. Custom AI agents incorporate organizational knowledge and analytical methodologies. The Excel Add-in connects spreadsheet workflows to platform data through real-time synchronization.
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="800" alt="Role Management Interface" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/create-role-user-list.png" />
-</div>
+Custom integrations connect internal systems, proprietary databases, and specialized data sources through secure network connections. Widget development creates tailored visualizations for specific analytical requirements.
 
-### Team Collaboration
+## Platform Comparison
 
-Share dashboards, insights, and analyses securely within your organization. Collaborative features include:
-- Private team workspaces
-- Controlled dashboard sharing
-- Audit trails for all activities
-- Export controls for data governance
+| Capability | Cloud | Enterprise |
+|------------|-------|------------|
+| Deployment | SaaS hosted by OpenBB | On-premises or private cloud |
+| Data location | OpenBB cloud infrastructure | Customer infrastructure |
+| User limits | Plan-based restrictions | Unlimited |
+| Customization | Standard themes | Full branding control |
+| Integrations | Public APIs only | Internal systems + public APIs |
+| Support | Standard response times | Priority support with SLA |
+| AI processing | Shared cloud models | Private model deployment |
+
+## Target Organizations
+
+Investment banks use Enterprise for equity research, trading desk analysis, risk management, and M&A advisory work. Asset management firms apply it to portfolio management, quantitative research, performance analytics, and client reporting. Hedge funds leverage the platform for systematic strategies, fundamental analysis, risk monitoring, and alpha generation research.
+
+Corporate treasury teams, FP&A departments, investor relations groups, and strategic planning functions utilize Enterprise for internal financial analysis and reporting requirements.
+
+## Getting Started
+
+Contact [sales@openbb.finance](mailto:sales@openbb.finance) for requirements assessment and deployment planning. [Schedule a demonstration](https://openbb.co/schedule-demo) to see platform capabilities with your use cases. Proof-of-concept deployments enable testing with actual organizational data and workflows.
+
+The evaluation process includes technical demonstrations, proof-of-concept testing, commercial proposals, and implementation planning. Most deployments complete within 4-8 weeks depending on integration complexity and training requirements.
+
+---
+
+---
+title: Support & Services
+sidebar_position: 5
+description: Enterprise support, professional services, and success programs for OpenBB Workspace
+keywords:
+- Enterprise Support
+- Professional Services
+- JumpStart Package
+- Training
+- Customer Success
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Support & Services | OpenBB Workspace Docs" />
+
+Enterprise customers receive dedicated support and professional services to maximize platform value and ensure successful implementation.
+
+## Production Support
+
+Enterprise support provides 8 hours daily coverage, 5 days weekly, with priority access to the support queue. Direct communication channels connect customers with technical specialists, bypassing standard routing. Priority handling ensures faster resolution of technical issues and implementation questions.
+
+## Customer Success Partnership
+
+Each enterprise customer receives a dedicated customer success manager for long-term platform optimization. Quarterly business reviews assess usage patterns, identify improvement opportunities, and align platform capabilities with evolving business objectives.
+
+Success managers provide best practices consultation based on knowledge from other enterprise deployments while maintaining appropriate confidentiality. They offer strategic guidance on expanding platform adoption across teams and integrating new analytical capabilities as organizational needs grow.
+
+## JumpStart Package
+
+The JumpStart program delivers operational capability within weeks rather than months through structured implementation and training. This accelerated approach includes custom app development, comprehensive training, and organizational best practices establishment.
+
+Custom app development creates a production-ready application incorporating your specific data sources, analytical workflows, and organizational requirements. The application functions both as an immediate productivity tool and a development template for future projects. Knowledge transfer ensures internal teams can maintain and extend the custom application after deployment.
+
+Training components address different organizational roles including administrators, analysts, and specialized users. Best practices establishment covers workflow documentation, governance procedures, and platform optimization recommendations tailored to your environment.
+
+Learn more about JumpStart implementation at [openbb.link/jumpstart](https://openbb.link/jumpstart).
+
+## Professional Training Programs
+
+Structured training programs provide role-specific education for administrators, analysts, and specialized users within your organization. Administrative training covers system configuration, user management, security implementation, and operational procedures.
+
+Analyst training focuses on dashboard development, data analysis methodologies, collaboration workflows, and platform feature utilization. Custom workshops address specific industry requirements, advanced use cases, and organizational analytical approaches.
+
+Training materials include comprehensive documentation, hands-on exercises, and reference resources for ongoing use. Follow-up sessions ensure knowledge retention and address implementation questions that arise during actual platform usage.
+
+Explore training options at [openbb.link/workshops](https://openbb.link/workshops).
+
+## Implementation Services
+
+Professional implementation services include infrastructure assessment, deployment architecture design, and integration planning. The implementation team evaluates existing environments, recommends optimal configurations, and provides guidance throughout the deployment process.
+
+Security configuration assistance ensures proper integration with authentication systems, access controls, and audit frameworks. Data integration support facilitates connections to internal systems, databases, and external sources through appropriate methods and protocols.
+
+## Enterprise Pricing
+
+OpenBB Enterprise uses a seat-based subscription model adapted to organizational requirements. Pricing factors include user count, deployment configuration (cloud, VPC, or on-premises), data integration complexity, and support level requirements.
+
+Base subscriptions include software licensing, standard support, regular updates, security patches, and documentation access. Additional services including JumpStart packages, custom development, enhanced support, and specialized training require separate pricing based on project scope.
+
+For detailed pricing information, visit [openbb.co/pricing](https://openbb.co/pricing).
+
+## Getting Started
+
+Contact the enterprise team at [sales@openbb.finance](mailto:sales@openbb.finance) for requirements assessment and pricing discussion. The evaluation process includes technical demonstrations, proof-of-concept testing with your data, and implementation planning sessions.
+
+Enterprise deployments typically complete within 1-4 weeks depending on integration requirements, customization needs, and training scope. Implementation timelines account for testing phases, user onboarding activities, and platform optimization.
+
+
+---
+
+---
+title: Team Collaboration
+sidebar_position: 3
+description: Collaborative features for teams in OpenBB Workspace Enterprise
+keywords:
+- Team Collaboration
+- Dashboard Sharing
+- Workspaces
+- Audit Trails
+- Export Controls
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Team Collaboration | OpenBB Workspace Docs" />
+
+# Team Collaboration
+
+Share dashboards, insights, and analyses securely within your organization. The collaboration system provides controlled access to analytical work while maintaining audit trails and data governance.
+
+## Private Team Workspaces
+
+Create dedicated spaces for different teams and projects. Each workspace maintains its own set of dashboards, user permissions, and access controls. Teams can collaborate on analysis within their designated workspace while maintaining separation from other organizational units.
+
+## Controlled Dashboard Sharing
+
+Share analytical dashboards with specific team members or groups. The sharing system allows dashboard owners to control who can view, interact with, or modify shared content. Recipients can access shared dashboards through their workspace interface while respecting the permissions set by the owner.
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
   <img className="pro-border-gradient" width="800" alt="Dashboard Sharing Interface" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/sharing_dashboard.png" />
 </div>
 
-### User Management
+Dashboard sharing operates through permission levels that determine user capabilities. View-only access allows users to see dashboard content without making changes. Interactive access enables parameter modifications and data exploration while preserving the original dashboard structure.
 
-Comprehensive user lifecycle management with:
-- Single sign-on (SSO) integration
-- Bulk user provisioning
-- Automated de-provisioning
-- Detailed access logs and audit trails
+## Audit Trails
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="Team Management Interface" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/team_management.png" />
-</div>
+All collaborative activities generate detailed audit records. The system logs dashboard sharing events, access attempts, and modification history. User actions include timestamps, user identification, and affected resources. This information supports compliance requirements and security monitoring.
 
-### Compliance & Audit
+Activity logging tracks when dashboards are shared, accessed, or modified. Permission changes receive separate audit entries showing who granted or revoked access to specific resources. Export activities log when data leaves the system through sharing or download functions.
 
-Meet regulatory requirements with:
-- Complete activity logging
-- Export controls
-- Retention policies
-- SOC 2 Type II compliance support
+## Export Controls
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="Activity Log Interface" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/activity-log.png" />
-</div>
+Manage how data and analyses can be extracted from the platform. Export controls operate through role-based permissions that determine which users can download data, generate reports, or share content outside the system. Administrators configure these controls to match organizational data governance policies.
 
-### OpenBB Copilot
+The export control system tracks all data movement activities. When users export dashboards or download data, the system records the action, identifies the user, and logs the specific content involved. This information supports compliance monitoring and data loss prevention initiatives.
 
-Transform your analytical workflows with our AI-powered assistant that understands your data context and automates complex tasks. OpenBB Copilot leverages widget metadata to intelligently query the right datasets, generate insights, and create visualizations. Whether you're conducting earnings analysis, monitoring market conditions, or building investment reports, Copilot accelerates your workflow while maintaining accuracy and consistency.
+## AI Features Integration
 
-Learn more about [AI Features and Copilot capabilities](/workspace/analysts/ai-features/copilot-basics).
+OpenBB Copilot operates within the collaborative environment while maintaining appropriate access controls. Team members can use AI features to analyze shared data and generate insights within their permission boundaries. AI interactions respect the same access controls that govern manual data analysis.
 
-### Excel Add-in
+Learn more about AI capabilities in the [Copilot documentation](/workspace/analysts/ai-features/copilot-basics).
 
-Bridge the gap between advanced analytics and familiar spreadsheet workflows with our native Excel integration. The OpenBB Add-in enables your team to pull real-time financial data, run complex queries, and refresh datasets directly within Excel - no coding required. Perfect for teams transitioning from traditional spreadsheet analysis to modern data platforms while maintaining productivity.
+## Excel Integration
 
-Explore the full [Excel Add-in documentation and installation guide](/workspace/analysts/excel-addin/excel-overview).
+The Excel Add-in supports collaborative workflows by enabling team members to access shared data sources through familiar spreadsheet interfaces. Excel integration maintains the same permission structure as the web platform, ensuring data access consistency across tools.
 
-## Enterprise Support
+Team members can use Excel to analyze data from shared workspaces while respecting access controls established in the main platform. Changes to data permissions automatically affect Excel access without requiring separate configuration.
 
-### Production Support
+Explore Excel integration details in the [Add-in documentation](/workspace/analysts/excel-addin/excel-overview).
 
-- 8 hours/day, 5 days/week dedicated support
-- Priority support queue
-- Direct access to technical team
-- Custom training workshops available
+## Implementation Considerations
 
-### Success Partnership
+Set up team workspaces according to organizational structure and project requirements. Define sharing policies that align with data governance requirements and compliance obligations. Establish audit review procedures to monitor collaborative activities and ensure appropriate access levels.
 
-- Dedicated customer success manager
-- Quarterly business reviews
-- Best practices consultation
-- Ongoing optimization guidance
-
-### JumpStart Package
-
-Get your team operational in just days, not months. Our JumpStart package includes building a custom app tailored to your specific use case, providing hands-on training, and establishing best practices for your organization. This accelerated onboarding ensures immediate value while creating a template for future app development. Your custom app serves as both a production tool and a learning resource for your team.
-
-Learn more about the JumpStart package from [our pricing page](https://openbb.co/pricing#jumpstart).
-
-## Pricing
-
-OpenBB Enterprise uses a seat-based subscription model tailored to your organization's needs. Pricing depends on:
-
-- Number of users
-- Deployment configuration (Cloud, VPC, or on-premises)
-- Data integration requirements
-- Support level
-
-Contact our sales team for a customized quote at [sales@openbb.finance](mailto:sales@openbb.finance)
+Train team members on sharing capabilities, permission levels, and audit requirements. Regular reviews of shared content and access permissions help maintain security and compliance standards over time.
 
 
 ---
@@ -12514,7 +12995,7 @@ This section will explore how you can filter the platform integration datasets t
 ---
 title: Progressive Web App (PWA)
 description: Install OpenBB Workspace as a Progressive Web App for a native experience on desktop and mobile devices.
-sidebar_position: 6
+sidebar_position: 0
 keywords:
 - OpenBB Workspace
 - Progressive Web App
