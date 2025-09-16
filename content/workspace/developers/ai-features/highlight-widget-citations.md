@@ -15,7 +15,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 After retrieving widget data, attribute outputs to their sources. Build `cite(...)` entries and stream them with `citations(...)` so Workspace shows a citations panel next to the answer.
 
-Reference implementation [here](https://github.com/OpenBB-finance/agents-for-openbb/blob/feat/add-agent-dashboard-widgets-example/32-vanilla-agent-raw-widget-data-citations/vanilla_agent_raw_context_citations/main.py).
+Reference implementation [here](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/32-vanilla-agent-raw-widget-data-citations/vanilla_agent_raw_context_citations/main.py).
 
 <img className="pro-border-gradient" width="800" alt="Citations" src="https://openbb-cms.directus.app/assets/0af85f66-b91f-476d-a231-973442a29957.png" />
 

@@ -15,9 +15,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Stream status updates with `reasoning_step` so users can track multi‑stage actions (fetching data, running tools, post‑processing) as tokens arrive.
 
-Reference implementation [here](https://github.com/OpenBB-finance/agents-for-openbb/blob/feat/add-agent-dashboard-widgets-example/31-vanilla-agent-reasoning-steps/vanilla_agent_reasoning_steps/main.py).
+Reference implementation [here](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/31-vanilla-agent-reasoning-steps/vanilla_agent_reasoning_steps/main.py).
 
-<img className="pro-border-gradient" width="800" alt="Reasoning" src="https://openbb-cms.directus.app/assets/dc091fbb-6882-4308-b9fb-f9671be5b026.png" />
+<img className="pro-border-gradient" width="800" alt="Reasoning" src="https://openbb-cms.directus.app/assets/eaf36840-a06d-4958-9e0d-cb2570e5a08e.png" />
 
 ## Architecture
 

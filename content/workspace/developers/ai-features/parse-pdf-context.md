@@ -15,7 +15,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Extract text from PDF inputs supplied via widget data and append it to the model context. Optionally add citation highlights to reference quotes within the PDF.
 
-Reference implementation [here](https://github.com/OpenBB-finance/agents-for-openbb/blob/feat/add-agent-dashboard-widgets-example/35-vanilla-agent-pdf/vanilla_agent_pdf/main.py).
+Reference implementation [here](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/35-vanilla-agent-pdf/vanilla_agent_pdf/main.py).
 
 <img className="pro-border-gradient" width="800" alt="Parse PDF" src="https://openbb-cms.directus.app/assets/b9e323b3-9416-4452-9d32-f6d6b8b50443.png" />
 

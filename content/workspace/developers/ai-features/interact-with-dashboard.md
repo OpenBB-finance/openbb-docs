@@ -15,7 +15,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Receive the list of widgets on the current dashboard (`secondary`) and any explicitly selected (`primary`). Summarize what’s available and fetch data for a chosen widget.
 
-Reference implementation [here](https://github.com/OpenBB-finance/agents-for-openbb/blob/feat/add-agent-dashboard-widgets-example/36-vanilla-agent-dashboard-widgets/vanilla_agent_dashboard_widgets/main.py).
+Reference implementation [here](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/36-vanilla-agent-dashboard-widgets/vanilla_agent_dashboard_widgets/main.py).
 
 Example that highlights that the agent has access to data on the dashboard (secondary) and that there are no tabs.
 

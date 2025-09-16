@@ -42,7 +42,7 @@ Ensure CORS settings are correct and SSE are configured on your service.
 
 ## Example
 
-Simplistic example that allows users to communicate with an agent that can optimize the user prompt. The code is open source [and available here](https://github.com/OpenBB-finance/agents-for-openbb/tree/feat/add-agent-dashboard-widgets-example/financial-prompt-optimizer).
+Simplistic example that allows users to communicate with an agent that can optimize the user prompt. The code is open source [and available here](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/20-financial-prompt-optimizer).
 
 <img className="pro-border-gradient" width="800" alt="No tab no param primary" src="https://openbb-cms.directus.app/assets/d2eaa645-eb6e-4411-b9d1-74b70409483a.png" />
 
