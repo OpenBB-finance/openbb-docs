@@ -14,41 +14,37 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Emit a table artifact with `table(...)`. Provide an array of objects; column names are inferred from object keys.
 
-Reference implementation: https://github.com/OpenBB-finance/agents-for-openbb/blob/feat/add-agent-dashboard-widgets-example/34-vanilla-agent-tables/vanilla_agent_tables/main.py
+Reference implementation [here](https://github.com/OpenBB-finance/agents-for-openbb/blob/feat/add-agent-dashboard-widgets-example/34-vanilla-agent-tables/vanilla_agent_tables/main.py).
 
 <img className="pro-border-gradient" width="800" alt="Tables" src="https://openbb-cms.directus.app/assets/9024844b-2b40-4878-80d0-4be2309a8297.png" />
 
 ## Architecture
 
-Emit table artifacts in‑line so tabular data renders below the answer.
+Emit table artifacts in-line so tabular data renders below the answer.
 
-- Endpoints
-  - `/agents.json` and `/v1/query` as normal.
-
-- agents.json
-  - Streaming on.
-  - Widget access optional; tables can be produced from any data source.
+`agents.json` configuration:
 
 ```python
 return JSONResponse(content={
   "vanilla_agent_tables": {
     "endpoints": {"query": "http://localhost:7777/v1/query"},
     "features": {
-      "streaming": True,
-      "widget-dashboard-select": True,   # optional here
+      "widget-dashboard-select": False,
       "widget-dashboard-search": False,
     },
   }
 })
 ```
 
-- Query flow
-  - Stream regular text with `message_chunk`.
-  - Emit a `table(data, name, description)` artifact. Column headers are inferred from keys.
+### Query flow
+- Stream regular text with `message_chunk`.
+- Emit a `table(data, name, description)` artifact. Column headers are inferred from keys.
 
-- OpenBB AI SDK helpers in use
-  - `table(data, name, description)`: constructs a table artifact SSE.
-  - `message_chunk(text)`: streams accompanying narrative.
+### OpenBB AI SDK
+- `table(data, name, description)`: constructs a table artifact SSE.
+- `message_chunk(text)`: streams accompanying narrative.
+
+## Core logic
 
 ```python
 from openbb_ai import message_chunk, table
@@ -64,8 +60,3 @@ yield table(
 ).model_dump()
 ```
 
-## Getting Started
-
-Example: https://github.com/OpenBB-finance/agents-for-openbb/tree/feat/add-agent-dashboard-widgets-example/34-vanilla-agent-tables
-
-See also: /workspace/developers/openbb-ai-sdk

@@ -15,7 +15,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Extract text from PDF inputs supplied via widget data and append it to the model context. Optionally add citation highlights to reference quotes within the PDF.
 
-Reference implementation: https://github.com/OpenBB-finance/agents-for-openbb/blob/feat/add-agent-dashboard-widgets-example/35-vanilla-agent-pdf/vanilla_agent_pdf/main.py
+Reference implementation [here](https://github.com/OpenBB-finance/agents-for-openbb/blob/feat/add-agent-dashboard-widgets-example/35-vanilla-agent-pdf/vanilla_agent_pdf/main.py).
 
 <img className="pro-border-gradient" width="800" alt="Parse PDF" src="https://openbb-cms.directus.app/assets/b9e323b3-9416-4452-9d32-f6d6b8b50443.png" />
 
@@ -23,20 +23,13 @@ Reference implementation: https://github.com/OpenBB-finance/agents-for-openbb/bl
 
 Handle PDF data delivered by the UI through the widget data tool. Support both URL and base64 PDFs and add text to the LLM context.
 
-- Endpoints
-  - `/agents.json` and `/v1/query` as normal.
-
-- agents.json
-  - Streaming on.
-  - `widget-dashboard-select`: true, since PDF data arrives via selected widgets.
-  - `widget-dashboard-search`: false.
+`agents.json` configuration with `widget-dashboard-select` feature enabled:
 
 ```python
 return JSONResponse(content={
   "vanilla_agent_pdf": {
     "endpoints": {"query": "http://localhost:7777/v1/query"},
     "features": {
-      "streaming": True,
       "widget-dashboard-select": True,
       "widget-dashboard-search": False,
     },
@@ -44,14 +37,16 @@ return JSONResponse(content={
 })
 ```
 
-- Query flow
-  - Early exit to fetch widget data if a human message has `widgets.primary`.
-  - When a subsequent tool message arrives, iterate its `data` items. If an item has `PdfDataFormat`, download or decode and extract text with `pdfplumber`, append to a context string, and feed that into the LLM.
-  - Optionally construct `cite(...)` entries with `quote_bounding_boxes` to highlight specific text ranges.
+### Query flow
+- Early exit to fetch widget data if a human message has `widgets.primary`.
+- When a subsequent tool message arrives, iterate its `data` items. If an item has `PdfDataFormat`, download or decode and extract text with `pdfplumber`, append to a context string, and feed that into the LLM.
+- Optionally construct `cite(...)` entries with `quote_bounding_boxes` to highlight specific text ranges.
 
-- OpenBB AI SDK helpers and models in use
-  - `get_widget_data`, `WidgetRequest`, `message_chunk`, `citations`, `cite`.
-  - `PdfDataFormat`, `SingleDataContent`, `SingleFileReference`, `DataContent`, `DataFileReferences`, `CitationHighlightBoundingBox`.
+### OpenBB AI SDK
+- `get_widget_data`, `WidgetRequest`, `message_chunk`, `citations`, `cite`.
+- `PdfDataFormat`, `SingleDataContent`, `SingleFileReference`, `DataContent`, `DataFileReferences`, `CitationHighlightBoundingBox`.
+
+## Core logic
 
 Detect PDF data, extract text, and accumulate as context:
 
@@ -84,8 +79,3 @@ c.quote_bounding_boxes = [[
 yield citations([c]).model_dump()
 ```
 
-## Getting Started
-
-Example: https://github.com/OpenBB-finance/agents-for-openbb/tree/feat/add-agent-dashboard-widgets-example/35-vanilla-agent-pdf
-
-See also: /workspace/developers/openbb-ai-sdk

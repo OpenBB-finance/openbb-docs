@@ -15,7 +15,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Receive the list of widgets on the current dashboard (`secondary`) and any explicitly selected (`primary`). Summarize what’s available and fetch data for a chosen widget.
 
-Reference implementation: https://github.com/OpenBB-finance/agents-for-openbb/blob/feat/add-agent-dashboard-widgets-example/36-vanilla-agent-dashboard-widgets/vanilla_agent_dashboard_widgets/main.py
+Reference implementation [here](https://github.com/OpenBB-finance/agents-for-openbb/blob/feat/add-agent-dashboard-widgets-example/36-vanilla-agent-dashboard-widgets/vanilla_agent_dashboard_widgets/main.py).
 
 <img className="pro-border-gradient" width="800" alt="No tab no param no primary" src="https://openbb-cms.directus.app/assets/2dbcd500-a801-415f-a6d2-2052fa9abc17.png" />
 <img className="pro-border-gradient" width="800" alt="No tab no param primary" src="https://openbb-cms.directus.app/assets/16b8ea4b-9dc4-487e-b9ac-14b573602684.png" />
@@ -25,15 +25,9 @@ Reference implementation: https://github.com/OpenBB-finance/agents-for-openbb/bl
 
 ## Architecture
 
-Receive dashboard metadata and selected widgets, summarize what’s available, and fetch a sample widget’s data.
+Receive dashboard metadata and selected widgets, summarize what's available, and fetch a sample widget's data.
 
-- Endpoints
-  - `/agents.json` and `/v1/query` as normal.
-
-- agents.json
-  - Streaming on.
-  - `widget-dashboard-select`: true to fetch from selected widgets.
-  - `widget-dashboard-search`: true to receive full dashboard widget metadata and tabs.
+agents.json configuration with both widget features enabled:
 
 ```python
 return JSONResponse(content={
@@ -48,14 +42,16 @@ return JSONResponse(content={
 })
 ```
 
-- Query flow
-  - Merge `widgets.primary` and `widgets.secondary` into a single list.
-  - If dashboard tabs are present (`request.dashboard`), include the active tab and per‑tab widget details.
-  - On a human message, stream a formatted widget list with `message_chunk`, then call `get_widget_data` for one widget to demonstrate retrieval.
-  - When a tool message returns, display a short sample of the returned data along with the request parameters for transparency.
+### Query flow
+- Merge `widgets.primary` and `widgets.secondary` into a single list.
+- If dashboard tabs are present (`request.dashboard`), include the active tab and per-tab widget details.
+- On a human message, stream a formatted widget list with `message_chunk`, then call `get_widget_data` for one widget to demonstrate retrieval.
+- When a tool message returns, display a short sample of the returned data along with the request parameters for transparency.
 
-- OpenBB AI SDK helpers in use
-  - `get_widget_data`, `WidgetRequest`, `message_chunk`.
+### OpenBB AI SDK
+- `get_widget_data`, `WidgetRequest`, `message_chunk`.
+
+## Core logic
 
 Unify primary and secondary widgets, render a summary, then fetch data for one widget:
 
@@ -86,8 +82,3 @@ async def flow():
 return EventSourceResponse(flow(), media_type="text/event-stream")
 ```
 
-## Getting Started
-
-Example: https://github.com/OpenBB-finance/agents-for-openbb/tree/feat/add-agent-dashboard-widgets-example/36-vanilla-agent-dashboard-widgets
-
-See also: /workspace/developers/json-specs/agents-json-reference

@@ -16,7 +16,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Retrieve data for user‑selected widgets and pass it to your model. Enable `widget-dashboard-select` and call `get_widget_data` when the latest user message arrives.
 
-Reference implementation: https://github.com/OpenBB-finance/agents-for-openbb/blob/feat/add-agent-dashboard-widgets-example/30-vanilla-agent-raw-widget-data/vanilla_agent_raw_context/main.py
+Reference implementation [here](https://github.com/OpenBB-finance/agents-for-openbb/blob/feat/add-agent-dashboard-widgets-example/30-vanilla-agent-raw-widget-data/vanilla_agent_raw_context/main.py).
 
 <img className="pro-border-gradient" width="800" alt="Raw reply without context" src="https://openbb-cms.directus.app/assets/7bbbc4c9-7cd2-4bb0-9ad9-641588cf541e.png" />
 
@@ -24,21 +24,13 @@ Reference implementation: https://github.com/OpenBB-finance/agents-for-openbb/bl
 
 This pattern uses a minimal FastAPI backend with two endpoints and OpenBB AI SDK helpers to retrieve widget data and stream results.
 
-- Endpoints
-  - `/agents.json`: declares capabilities and the `/v1/query` endpoint.
-  - `/v1/query`: handles `QueryRequest`, streams SSE with `EventSourceResponse`.
-
-- agents.json
-  - Streaming on: responses are delivered as SSE.
-  - `widget-dashboard-select`: true, to access user‑selected widgets.
-  - `widget-dashboard-search`: false, to avoid scanning the whole dashboard.
+`agents.json` configuration with `widget-dashboard-select` feature enabled:
 
 ```python
 return JSONResponse(content={
   "vanilla_agent_raw_context": {
     "endpoints": {"query": "http://localhost:7777/v1/query"},
     "features": {
-      "streaming": True,
       "widget-dashboard-select": True,
       "widget-dashboard-search": False,
     },
@@ -46,16 +38,16 @@ return JSONResponse(content={
 })
 ```
 
-- Query flow
-  - On a human message with `widgets.primary`, issue `get_widget_data` and return immediately. The UI fetches data without waiting for the LLM.
-  - On the next turn, include the latest tool result (the widget data) in the prompt sent to the LLM and stream tokens with `message_chunk`.
+### Query flow
+- On a human message with `widgets.primary`, issue `get_widget_data` and return immediately. The UI fetches data without waiting for the LLM.
+- On the next turn, include the latest tool result (the widget data) in the prompt sent to the LLM and stream tokens with `message_chunk`.
 
-- OpenBB AI SDK helpers in use
-  - `get_widget_data(widget_requests)`: requests data for one or more widgets.
-  - `WidgetRequest(widget, input_arguments)`: wraps a widget with its parameter values.
-  - `message_chunk(text)`: streams text chunks as SSE.
+### OpenBB AI SDK
+- `get_widget_data(widget_requests)`: requests data for one or more widgets.
+- `WidgetRequest(widget, input_arguments)`: wraps a widget with its parameter values.
+- `message_chunk(text)`: streams text chunks as SSE.
 
-Example core logic:
+## Core logic
 
 ```python
 from openbb_ai import get_widget_data, WidgetRequest, message_chunk
@@ -89,10 +81,4 @@ async def query(request: QueryRequest) -> EventSourceResponse:
                 yield message_chunk(chunk).model_dump()
     return EventSourceResponse(execution_loop(), media_type="text/event-stream")
 ```
-
-## Getting Started
-
-Example: https://github.com/OpenBB-finance/agents-for-openbb/tree/feat/add-agent-dashboard-widgets-example/30-vanilla-agent-raw-widget-data
-
-See also: /workspace/developers/openbb-ai-sdk
 

@@ -15,20 +15,15 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Stream status updates with `reasoning_step` so users can track multi‑stage actions (fetching data, running tools, post‑processing) as tokens arrive.
 
-Reference implementation: https://github.com/OpenBB-finance/agents-for-openbb/blob/feat/add-agent-dashboard-widgets-example/31-vanilla-agent-reasoning-steps/vanilla_agent_reasoning_steps/main.py
+Reference implementation [here](https://github.com/OpenBB-finance/agents-for-openbb/blob/feat/add-agent-dashboard-widgets-example/31-vanilla-agent-reasoning-steps/vanilla_agent_reasoning_steps/main.py).
 
-<img className="pro-border-gradient" width="800" alt="Reasoning" src="https://openbb-cms.directus.app/assets/6af86d33-8d3f-4666-be3d-8a3b9674969e.png" />
+<img className="pro-border-gradient" width="800" alt="Reasoning" src="https://openbb-cms.directus.app/assets/dc091fbb-6882-4308-b9fb-f9671be5b026.png" />
 
 ## Architecture
 
 Stream status updates alongside tokens so users see what the agent is doing.
 
-- Endpoints
-  - `/agents.json` and `/v1/query` as normal.
-
-- agents.json
-  - Streaming on.
-  - No widget access required for this pattern.
+`agents.json` configuration:
 
 ```python
 return JSONResponse(content={
@@ -43,14 +38,16 @@ return JSONResponse(content={
 })
 ```
 
-- Query flow
-  - Convert `QueryRequest.messages` to your LLM’s wire format.
-  - Yield `reasoning_step(event_type, message, details)` before and after the model stream, and at significant milestones.
-  - Stream model tokens using `message_chunk`.
+### Query flow
+- Convert `QueryRequest.messages` to your LLM's wire format.
+- Yield `reasoning_step(event_type, message, details)` before and after the model stream, and at significant milestones.
+- Stream model tokens using `message_chunk`.
 
-- OpenBB AI SDK helpers in use
-  - `reasoning_step(event_type, message, details)`: emits a status update.
-  - `message_chunk(text)`: streams token chunks.
+### OpenBB AI SDK
+- `reasoning_step(event_type, message, details)`: emits a status update.
+- `message_chunk(text)`: streams token chunks.
+
+## Core logic
 
 ```python
 from openbb_ai import reasoning_step, message_chunk
@@ -66,8 +63,3 @@ async def execution_loop():
     yield reasoning_step(event_type="INFO", message="Answering complete!").model_dump()
 ```
 
-## Getting Started
-
-Example: https://github.com/OpenBB-finance/agents-for-openbb/tree/feat/add-agent-dashboard-widgets-example/31-vanilla-agent-reasoning-steps
-
-See also: /workspace/developers/openbb-ai-sdk
