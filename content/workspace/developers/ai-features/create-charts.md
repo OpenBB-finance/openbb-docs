@@ -38,27 +38,85 @@ return JSONResponse(content={
 ```
 
 ### Query flow
-- Stream text with `message_chunk`.
-- Emit one or more `chart(...)` artifacts. Supported types include line, bar, scatter, pie, and donut.
-- For categorical charts (pie/donut), use `angle_key` and `callout_label_key`. For XY charts (line/bar/scatter), supply `x_key` and `y_keys`.
+- Process user request and prepare data for visualization
+- Stream explanatory text with `message_chunk()`
+- Create chart data as list of dictionaries
+- Choose appropriate chart type based on data characteristics:
+  - **Line/Bar/Scatter**: Use `x_key` and `y_keys` for XY data
+  - **Pie/Donut**: Use `angle_key` for values, `callout_label_key` for labels
+- Emit `chart()` artifacts with proper configuration
+- Charts render interactively below streamed content
 
 ### OpenBB AI SDK
-- `chart(type, data, ...)`: constructs a chart artifact SSE.
-- `message_chunk(text)`: introduces each chart.
+- `chart(type, data, x_key, y_keys, name, description)`: Creates `MessageArtifactSSE` for chart display
+- Chart types: `"line"`, `"bar"`, `"scatter"`, `"pie"`, `"donut"`
+- Chart parameters handled by specific models:
+  - `LineChartParameters`, `BarChartParameters`, `ScatterChartParameters`
+  - `PieChartParameters`, `DonutChartParameters`
+- `message_chunk(text)`: Streams explanatory text around charts
+- Charts support interactive features like zoom, hover, and data export
 
 ## Core logic
 
 ```python
 from openbb_ai import message_chunk, chart
+from openbb_ai.models import QueryRequest
+import datetime
 
-yield message_chunk("\n\nHere is a line chart:\n\n").model_dump()
-yield chart(
-    type="line",
-    data=[{"x": 0, "y": 1}, {"x": 1, "y": 2}],
-    x_key="x",
-    y_keys=["y"],
-    name="Line Chart",
-    description="Example line chart",
-).model_dump()
+async def query(request: QueryRequest) -> EventSourceResponse:
+    async def execution_loop():
+        # Stream introduction
+        yield message_chunk("Let me create some visualizations to illustrate the data trends.\n\n").model_dump()
+        
+        # Prepare time series data
+        price_data = [
+            {"date": "2024-01-01", "price": 150.0, "volume": 1200000},
+            {"date": "2024-01-02", "price": 152.5, "volume": 1350000},
+            {"date": "2024-01-03", "price": 148.2, "volume": 1100000},
+            {"date": "2024-01-04", "price": 155.8, "volume": 1450000},
+        ]
+        
+        # Create line chart for price trend
+        yield chart(
+            type="line",
+            data=price_data,
+            x_key="date",
+            y_keys=["price"],
+            name="Stock Price Trend",
+            description="Daily stock price movement over time"
+        ).model_dump()
+        
+        yield message_chunk("\n\nThe line chart shows an overall upward trend. Now let's look at volume distribution:\n\n").model_dump()
+        
+        # Create bar chart for volume
+        yield chart(
+            type="bar",
+            data=price_data,
+            x_key="date",
+            y_keys=["volume"],
+            name="Trading Volume",
+            description="Daily trading volume by date"
+        ).model_dump()
+        
+        # Portfolio allocation pie chart
+        portfolio_data = [
+            {"asset": "Stocks", "allocation": 60},
+            {"asset": "Bonds", "allocation": 25},
+            {"asset": "Cash", "allocation": 10},
+            {"asset": "Real Estate", "allocation": 5}
+        ]
+        
+        yield message_chunk("\n\nHere's the portfolio allocation breakdown:\n\n").model_dump()
+        
+        yield chart(
+            type="pie",
+            data=portfolio_data,
+            angle_key="allocation",
+            callout_label_key="asset",
+            name="Portfolio Allocation",
+            description="Investment portfolio distribution by asset class"
+        ).model_dump()
+    
+    return EventSourceResponse(execution_loop(), media_type="text/event-stream")
 ```
 

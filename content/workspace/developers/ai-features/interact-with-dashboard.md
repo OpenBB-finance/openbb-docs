@@ -52,13 +52,23 @@ return JSONResponse(content={
 ```
 
 ### Query flow
-- Merge `widgets.primary` and `widgets.secondary` into a single list.
-- If dashboard tabs are present (`request.dashboard`), include the active tab and per-tab widget details.
-- On a human message, stream a formatted widget list with `message_chunk`, then call `get_widget_data` for one widget to demonstrate retrieval.
-- When a tool message returns, display a short sample of the returned data along with the request parameters for transparency.
+- Access both `widgets.primary` (user-selected) and `widgets.secondary` (dashboard) widget collections
+- Combine widget lists for comprehensive dashboard overview
+- Check `workspace_state.current_dashboard_info` for tab information
+- Stream formatted widget inventory with `message_chunk()`:
+  - Widget names, types, and parameter configurations
+  - Tab organization if present
+  - Data availability status
+- Demonstrate data retrieval by fetching sample widget with `get_widget_data()`
+- Process returned data and show preview with metadata
 
 ### OpenBB AI SDK
-- `get_widget_data`, `WidgetRequest`, `message_chunk`.
+- `WidgetCollection`: Contains `primary`, `secondary`, and `extra` widget groups
+- `Widget`: Individual widget with `uuid`, `name`, `type`, and `params`
+- `WidgetParam`: Parameter definition with `name`, `type`, `current_value`
+- `get_widget_data(widget_requests)`: Fetches data from specified widgets
+- `WorkspaceState`: Provides dashboard context and tab information
+- `message_chunk(text)`: Streams widget summaries and data previews
 
 ## Core logic
 
@@ -66,28 +76,66 @@ Unify primary and secondary widgets, render a summary, then fetch data for one w
 
 ```python
 from openbb_ai import get_widget_data, WidgetRequest, message_chunk
+from openbb_ai.models import QueryRequest
 
-all_widgets = []
-if request.widgets:
-  if request.widgets.primary:
-    all_widgets.extend(request.widgets.primary)
-  if request.widgets.secondary:
-    all_widgets.extend(request.widgets.secondary)
+async def query(request: QueryRequest) -> EventSourceResponse:
+    async def execution_loop():
+        # Combine all available widgets
+        all_widgets = []
+        primary_count = 0
+        secondary_count = 0
+        
+        if request.widgets:
+            if request.widgets.primary:
+                all_widgets.extend(request.widgets.primary)
+                primary_count = len(request.widgets.primary)
+            if request.widgets.secondary:
+                all_widgets.extend(request.widgets.secondary)
+                secondary_count = len(request.widgets.secondary)
+        
+        if not all_widgets:
+            yield message_chunk("No widgets found on your dashboard.").model_dump()
+            return
+        
+        # Stream dashboard overview
+        dashboard_info = ""
+        if request.workspace_state and request.workspace_state.current_dashboard_info:
+            dashboard_name = request.workspace_state.current_dashboard_info.name
+            tab_count = len(request.workspace_state.current_dashboard_info.tabs)
+            dashboard_info = f"Dashboard: **{dashboard_name}** ({tab_count} tabs)\n\n"
+        
+        widget_summary = f"""# Dashboard Widget Analysis
 
-# show a formatted list, then fetch a sample
-async def flow():
-  if all_widgets:
-    yield message_chunk("**Available widgets**\n\n" + render_widget_table(all_widgets)).model_dump()
-    last_widget = all_widgets[-1]
-    yield get_widget_data([
-      WidgetRequest(
-        widget=last_widget,
-        input_arguments={p.name: p.current_value for p in last_widget.params},
-      )
-    ]).model_dump()
-  else:
-    yield message_chunk("No widgets found on your dashboard.").model_dump()
+{dashboard_info}## Widget Inventory
+- **Selected widgets (primary)**: {primary_count}
+- **Dashboard widgets (secondary)**: {secondary_count}
+- **Total available**: {len(all_widgets)}
 
-return EventSourceResponse(flow(), media_type="text/event-stream")
+## Available Widgets
+"""
+        
+        for i, widget in enumerate(all_widgets[:5]):  # Show first 5
+            widget_type = "🎯 Selected" if i < primary_count else "📊 Dashboard"
+            param_count = len(widget.params) if widget.params else 0
+            widget_summary += f"- **{widget.name}** ({widget_type}) - {param_count} parameters\n"
+        
+        if len(all_widgets) > 5:
+            widget_summary += f"- ... and {len(all_widgets) - 5} more widgets\n"
+        
+        yield message_chunk(widget_summary + "\n").model_dump()
+        
+        # Demonstrate data retrieval with last widget
+        if all_widgets:
+            sample_widget = all_widgets[-1]
+            yield message_chunk(f"Let me fetch data from **{sample_widget.name}** as an example:\n\n").model_dump()
+            
+            yield get_widget_data([
+                WidgetRequest(
+                    widget=sample_widget,
+                    input_arguments={p.name: p.current_value for p in sample_widget.params} if sample_widget.params else {}
+                )
+            ]).model_dump()
+    
+    return EventSourceResponse(execution_loop(), media_type="text/event-stream")
 ```
 

@@ -38,44 +38,105 @@ return JSONResponse(content={
 ```
 
 ### Query flow
-- Early exit to fetch widget data if a human message has `widgets.primary`.
-- When a subsequent tool message arrives, iterate its `data` items. If an item has `PdfDataFormat`, download or decode and extract text with `pdfplumber`, append to a context string, and feed that into the LLM.
-- Optionally construct `cite(...)` entries with `quote_bounding_boxes` to highlight specific text ranges.
+- Check for human message with `widgets.primary` containing PDF data
+- Early exit: yield `get_widget_data()` for UI execution
+- On subsequent tool message:
+  - Iterate through `DataContent` items
+  - Detect `PdfDataFormat` using `isinstance()` check
+  - Handle both `SingleDataContent` (base64) and `SingleFileReference` (URL)
+  - Extract text using `pdfplumber.open()` with `io.BytesIO()`
+  - Append extracted text to context string
+  - Process with LLM and stream response
+- Optionally create `cite()` with `CitationHighlightBoundingBox` for text highlighting
 
 ### OpenBB AI SDK
-- `get_widget_data`, `WidgetRequest`, `message_chunk`, `citations`, `cite`.
-- `PdfDataFormat`, `SingleDataContent`, `SingleFileReference`, `DataContent`, `DataFileReferences`, `CitationHighlightBoundingBox`.
+- `PdfDataFormat`: Identifies PDF content in widget data
+- `SingleDataContent`: Contains base64-encoded PDF data
+- `SingleFileReference`: Contains URL reference to PDF
+- `DataContent`/`DataFileReferences`: Containers for data items
+- `CitationHighlightBoundingBox`: Defines text highlighting coordinates
+- `cite(widget, input_arguments, extra_details)`: Creates citations with bounding boxes
+- `get_widget_data()`: Requests PDF data from widgets
 
 ## Core logic
 
 Detect PDF data, extract text, and accumulate as context:
 
 ```python
+import base64
+import io
+import pdfplumber
+import httpx
+from openbb_ai import get_widget_data, cite, citations
 from openbb_ai.models import (
-  SingleDataContent, SingleFileReference, PdfDataFormat, DataContent, DataFileReferences
+    QueryRequest, WidgetRequest, PdfDataFormat, 
+    SingleDataContent, SingleFileReference, 
+    DataContent, DataFileReferences,
+    CitationHighlightBoundingBox
 )
 
+async def _download_file(url: str) -> bytes:
+    async with httpx.AsyncClient() as client:
+        response = await client.get(url)
+        return response.content
+
+async def _get_pdf_text(item) -> str:
+    if isinstance(item, SingleDataContent):
+        # Handle base64 PDF
+        file_content = base64.b64decode(item.content)
+    elif isinstance(item, SingleFileReference):
+        # Handle URL PDF
+        file_content = await _download_file(str(item.url))
+    
+    with pdfplumber.open(io.BytesIO(file_content)) as pdf:
+        document_text = ""
+        for page in pdf.pages:
+            document_text += page.extract_text() + "\n\n"
+    return document_text
+
 async def handle_widget_data(data: list[DataContent | DataFileReferences]) -> str:
-    result = ""
+    result_str = "--- PDF Content ---\n"
     for result_item in data:
         for item in result_item.items:
             if isinstance(item.data_format, PdfDataFormat):
-                result += await _get_url_or_base64_pdf_text(item)
+                result_str += f"===== {item.data_format.filename} =====\n"
+                result_str += await _get_pdf_text(item)
+                result_str += "------\n"
             else:
-                result += str(item.content)
-    return result
+                result_str += str(item.content) + "\n"
+    return result_str
 ```
 
-Add citation highlights (optional):
+Add citation highlights with bounding boxes:
 
 ```python
-from openbb_ai import cite, citations
-from openbb_ai.models import CitationHighlightBoundingBox
+# Create citations with text highlighting
+citations_list = []
+for widget in request.widgets.primary:
+    citation = cite(
+        widget=widget,
+        input_arguments={p.name: p.current_value for p in widget.params},
+        extra_details={"filename": "document.pdf"}
+    )
+    
+    # Add bounding boxes for specific text regions
+    citation.quote_bounding_boxes = [
+        [
+            CitationHighlightBoundingBox(
+                text="Key financial metrics",
+                page=1,
+                x0=72.0, top=117, x1=259, bottom=135
+            ),
+            CitationHighlightBoundingBox(
+                text="Revenue increased 15%", 
+                page=1,
+                x0=110.0, top=140, x1=275, bottom=160
+            )
+        ]
+    ]
+    citations_list.append(citation)
 
-c = cite(widget=w, input_arguments=args)
-c.quote_bounding_boxes = [[
-  CitationHighlightBoundingBox(text="Some text chunk.", page=1, x0=72, top=117, x1=259, bottom=135)
-]]
-yield citations([c]).model_dump()
+if citations_list:
+    yield citations(citations_list).model_dump()
 ```
 

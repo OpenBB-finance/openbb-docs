@@ -39,13 +39,22 @@ return JSONResponse(content={
 ```
 
 ### Query flow
-- On a human message with `widgets.primary`, issue `get_widget_data` and return immediately. The UI fetches data without waiting for the LLM.
-- On the next turn, include the latest tool result (the widget data) in the prompt sent to the LLM and stream tokens with `message_chunk`.
+- Check if latest message is human with `widgets.primary` populated
+- Build `WidgetRequest` objects with current parameter values
+- Early exit: yield `get_widget_data()` SSE immediately for UI to execute
+- On subsequent request with tool results:
+  - Parse `DataContent` items from tool message
+  - Extract and format widget data into context string  
+  - Append context to user messages for LLM processing
+  - Stream LLM response with `message_chunk()`
 
 ### OpenBB AI SDK
-- `get_widget_data(widget_requests)`: requests data for one or more widgets.
-- `WidgetRequest(widget, input_arguments)`: wraps a widget with its parameter values.
-- `message_chunk(text)`: streams text chunks as SSE.
+- `get_widget_data(widget_requests)`: Creates `FunctionCallSSE` for widget data retrieval
+- `WidgetRequest(widget, input_arguments)`: Specifies widget and parameter values
+- `Widget`: Contains widget metadata (uuid, name, type, params)
+- `WidgetParam`: Individual parameter with name, type, current_value
+- `DataContent`: Container for widget response data
+- `message_chunk(text)`: Creates `MessageChunkSSE` for streaming text
 
 ## Core logic
 
@@ -73,12 +82,39 @@ async def query(request: QueryRequest) -> EventSourceResponse:
 
         return EventSourceResponse(retrieve_widget_data(), media_type="text/event-stream")
 
-    # Next request contains a tool message with widget data. Build LLM messages,
-    # append the latest tool result to context, and stream tokens back.
+    # Process tool message with widget data
+    openai_messages = [
+        ChatCompletionSystemMessageParam(
+            role="system", 
+            content="You are a helpful financial assistant."
+        )
+    ]
+    
+    context_str = ""
+    for message in request.messages:
+        if message.role == "human":
+            openai_messages.append(
+                ChatCompletionUserMessageParam(role="user", content=message.content)
+            )
+        elif message.role == "tool":
+            # Extract widget data from latest tool result
+            for data_content in message.data:
+                for item in data_content.items:
+                    context_str += str(item.content) + "\n"
+    
+    # Append context to last user message
+    if context_str and openai_messages:
+        openai_messages[-1]["content"] += "\n\nContext:\n" + context_str
+    
     async def execution_loop():
-        async for event in await client.chat.completions.create(..., stream=True):
+        async for event in await client.chat.completions.create(
+            model="gpt-4o",
+            messages=openai_messages,
+            stream=True
+        ):
             if chunk := event.choices[0].delta.content:
                 yield message_chunk(chunk).model_dump()
+    
     return EventSourceResponse(execution_loop(), media_type="text/event-stream")
 ```
 

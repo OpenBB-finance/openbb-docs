@@ -39,12 +39,21 @@ return JSONResponse(content={
 ```
 
 ### Query flow
-- Early exit to fetch widget data (same as Parse widget data).
-- On the next turn, include the data in context and create `cite(...)` entries that reference the widget and the arguments used to fetch its data. Stream them with `citations(...)`.
+- Early exit: fetch widget data when human message contains `widgets.primary`
+- On subsequent tool message:
+  - Process widget data and include in LLM context
+  - Match widget UUIDs from tool `input_arguments` to `request.widgets.primary`
+  - Build `cite()` objects for each data source used
+  - Optionally add `CitationHighlightBoundingBox` for visual highlighting
+  - Stream citations with `citations()` after LLM response
+- Citations appear in Workspace UI panel for source verification
 
 ### OpenBB AI SDK
-- `cite(widget, input_arguments, extra_details)`: constructs a single citation.
-- `citations(list_of_citation)`: emits a collection of citations as SSE.
+- `cite(widget, input_arguments, extra_details)`: Creates `Citation` objects
+- `citations(citation_list)`: Emits `CitationCollectionSSE` events
+- `Citation`: Links outputs to data sources with metadata
+- `CitationHighlightBoundingBox`: Defines visual highlighting areas
+- `SourceInfo`: Provides detailed source attribution data
 
 ## Core logic
 
@@ -52,22 +61,50 @@ Build citations by matching the tool input arguments to widgets in the request:
 
 ```python
 from openbb_ai import cite, citations
+from openbb_ai.models import Citation, CitationHighlightBoundingBox
 
-citations_list = []
-for widget_data_request in message.input_arguments["data_sources"]:
-    # match the widget by UUID, then build a citation
-    w = next((w for w in request.widgets.primary if str(w.uuid) == widget_data_request["widget_uuid"]), None)
-    if w:
-        citations_list.append(
-            cite(
-                widget=w,
-                input_arguments=widget_data_request["input_args"],
-                extra_details={"Widget Name": w.name, "Widget Input Arguments": widget_data_request["input_args"]},
-            )
-        )
-
-if citations_list:
-    yield citations(citations_list).model_dump()
-
-Workspace shows the citations next to the response so readers can verify provenance.
+async def execution_loop():
+    # ... stream LLM response ...
+    
+    # Build citations after response
+    citations_list = []
+    
+    # Process tool message to find data sources
+    for message in request.messages:
+        if message.role == "tool":
+            for widget_data_request in message.input_arguments["data_sources"]:
+                # Match widget by UUID
+                matching_widgets = [
+                    w for w in request.widgets.primary 
+                    if str(w.uuid) == widget_data_request["widget_uuid"]
+                ]
+                
+                if matching_widgets:
+                    widget = matching_widgets[0]
+                    citation = cite(
+                        widget=widget,
+                        input_arguments=widget_data_request["input_args"],
+                        extra_details={
+                            "Widget Name": widget.name,
+                            "Data Source": widget.type,
+                            "Parameters Used": widget_data_request["input_args"]
+                        }
+                    )
+                    
+                    # Optional: Add highlighting for specific content
+                    citation.quote_bounding_boxes = [
+                        [
+                            CitationHighlightBoundingBox(
+                                text="Key data point",
+                                page=1,
+                                x0=72.0, top=117, x1=259, bottom=135
+                            )
+                        ]
+                    ]
+                    
+                    citations_list.append(citation)
+    
+    # Emit citations for UI display
+    if citations_list:
+        yield citations(citations_list).model_dump()
 ```
