@@ -15,14 +15,14 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Agents Integration | OpenBB Workspace Docs" />
 
-Integrate your own stateless AI agent service with OpenBB Workspace using a simple HTTP contract. Your service streams responses back to Workspace and can access dashboard data when enabled.
+Integrate your own AI agent service with OpenBB Workspace using a simple HTTP contract. Your service accepts POST requests, streams responses back to Workspace and can access dashboard data when enabled.
 
 ## Architecture
 
-- `/agents.json` returns agent metadata and capabilities (name, description, image, `endpoints.query`, `features`).
-- `/query` receives a `QueryRequest` and streams responses via Server‑Sent Events (SSE).
+- `/agents.json`: the metadata endpoint. Returns agent metadata and capabilities (name, description, image, URL of the query endpoint, features that the agent implements).
+- `/query`: the query endpoint. Receives a `QueryRequest` and streams responses via Server‑Sent Events (SSE).
 
-Recommended stack: FastAPI with `EventSourceResponse` from `sse_starlette` and OpenBB AI SDK (`openbb-ai`).
+Recommended stack: FastAPI with `EventSourceResponse` from `sse_starlette` and OpenBB AI SDK (`openbb-ai`), although any framework that supports streaming SSEs in response to a POST request should work.
 
 See this repository to [get started](https://github.com/OpenBB-finance/agents-for-openbb).
 
@@ -32,21 +32,21 @@ See this repository to [get started](https://github.com/OpenBB-finance/agents-fo
 
 2. In Workspace, click on the copilot and on the plus or pencil icon.
 
-<img className="pro-border-gradient" width="400" alt="No tab no param primary" src="https://openbb-cms.directus.app/assets/412540b0-ef86-4285-8303-b9faf83bdc66.png" />
+    <img className="pro-border-gradient" width="400" alt="No tab no param primary" src="https://openbb-cms.directus.app/assets/412540b0-ef86-4285-8303-b9faf83bdc66.png" />
 
 3. Enter your base URL; Workspace fetches `/agents.json` and uses `/query` for conversations.
 
-<img className="pro-border-gradient" width="800" alt="No tab no param primary" src="https://openbb-cms.directus.app/assets/ce3bebd7-98cf-4598-9d6c-68a2ecc1ba1c.png" />
+    <img className="pro-border-gradient" width="800" alt="No tab no param primary" src="https://openbb-cms.directus.app/assets/ce3bebd7-98cf-4598-9d6c-68a2ecc1ba1c.png" />
 
-Ensure CORS and SSE are configured on your service.
+Ensure CORS settings are correct and SSE are configured on your service.
 
 ## Example
 
-Simplistic example that allows users to communicate with an agent that can just improve the user prompt. The code is open source [here](https://github.com/OpenBB-finance/agents-for-openbb/tree/feat/add-agent-dashboard-widgets-example/financial-prompt-optimizer).
+Simplistic example that allows users to communicate with an agent that can optimize the user prompt. The code is open source [and available here](https://github.com/OpenBB-finance/agents-for-openbb/tree/feat/add-agent-dashboard-widgets-example/financial-prompt-optimizer).
 
 <img className="pro-border-gradient" width="800" alt="No tab no param primary" src="https://openbb-cms.directus.app/assets/d2eaa645-eb6e-4411-b9d1-74b70409483a.png" />
 
-But this agent does nothing else - it doesn't parse data added to context, doesn't pass data in the dashboard, doesn't share step-by-step reasoning or citations, doesn't create artifacts, etc. We will dive on each of these features in the AI features tab.
+This agent does nothing else - it doesn't parse data added to context, doesn't pass data in the dashboard, doesn't share step-by-step reasoning or citations, doesn't create artifacts, etc. We will dive on each of these features in the AI features tab.
 
 ```python
 from typing import AsyncGenerator
