@@ -16,7 +16,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Retrieve data for user‑selected widgets and pass it to your model. Enable `widget-dashboard-select` and call `get_widget_data` when the latest user message arrives.
 
-Reference implementation [here](https://github.com/OpenBB-finance/agents-for-openbb/blob/feat/add-agent-dashboard-widgets-example/30-vanilla-agent-raw-widget-data/vanilla_agent_raw_context/main.py).
+Reference implementation [here](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/30-vanilla-agent-raw-widget-data/vanilla_agent_raw_context/main.py).
 
 <img className="pro-border-gradient" width="800" alt="Raw reply without context" src="https://openbb-cms.directus.app/assets/7bbbc4c9-7cd2-4bb0-9ad9-641588cf541e.png" />
 
@@ -117,4 +117,35 @@ async def query(request: QueryRequest) -> EventSourceResponse:
     
     return EventSourceResponse(execution_loop(), media_type="text/event-stream")
 ```
+
+## Dashboard widgets vs explicit context
+
+The example above uses `request.widgets.primary` which contains widgets explicitly selected by the user. If you want to access all widgets available on the current dashboard instead, you can use `request.widgets.secondary`:
+
+```python
+# Access dashboard widgets instead of explicit context
+if (
+    request.messages[-1].role == "human"
+    and request.widgets
+    and request.widgets.secondary  # Dashboard widgets
+):
+    widget_requests = [
+        WidgetRequest(
+            widget=w,
+            input_arguments={p.name: p.current_value for p in w.params},
+        )
+        for w in request.widgets.secondary  # Use secondary instead of primary
+    ]
+```
+
+**Important**: To access dashboard widgets, you must enable the `widget-dashboard-search` feature in your `agents.json`:
+
+```python
+"features": {
+    ...
+    "widget-dashboard-search": True,   # Dashboard widgets
+}
+```
+
+This gives your agent broader context about the user's dashboard setup and available data sources, rather than just the widgets they've explicitly selected.
 
