@@ -1,6 +1,6 @@
 ---
 title: Create charts
-sidebar_position: 8
+sidebar_position: 6
 description: Stream inline charts as part of your agent’s response
 keywords:
 - charts

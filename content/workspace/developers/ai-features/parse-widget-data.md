@@ -1,6 +1,6 @@
 ---
 title: Parse widget data
-sidebar_position: 3
+sidebar_position: 2
 description: Retrieve data from selected widgets and pass it as raw context to your LLM
 keywords:
 - widgets

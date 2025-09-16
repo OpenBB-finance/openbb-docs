@@ -1,6 +1,6 @@
 ---
 title: Interact with dashboard
-sidebar_position: 9
+sidebar_position: 7
 description: Receive full dashboard widget metadata and conditionally fetch data
 keywords:
 - dashboard widgets

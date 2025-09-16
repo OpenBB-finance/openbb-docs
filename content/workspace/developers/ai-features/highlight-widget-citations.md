@@ -1,6 +1,6 @@
 ---
 title: Highlight widget citations
-sidebar_position: 5
+sidebar_position: 4
 description: Cite widget data sources in your responses and display them in Workspace
 keywords:
 - citations

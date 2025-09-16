@@ -1,6 +1,6 @@
 ---
 title: Parse PDF context
-sidebar_position: 4
+sidebar_position: 3
 description: Parse PDF content from widget data and cite sources
 keywords:
 - PDF

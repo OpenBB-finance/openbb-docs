@@ -1,6 +1,6 @@
 ---
 title: Create tables
-sidebar_position: 7
+sidebar_position: 5
 description: Stream tabular data as an artifact in the conversation
 keywords:
 - tables
