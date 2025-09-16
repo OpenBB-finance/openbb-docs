@@ -119,3 +119,90 @@ This feature grants your agent access to explicit context widgets (primary) - th
 ```
 
 This feature provides your agent with access to all widgets available on the current dashboard, not just the selected ones. When enabled, these widgets appear in the `secondary` collection of the `QueryRequest`, giving your agent broader context about the user's dashboard setup and available data sources.
+
+
+## Complete Examples
+
+### Basic Agent Configuration
+
+```json
+{
+  "vanilla-agent": {
+    "name": "Vanilla Agent",
+    "description": "A basic agent that processes user queries",
+    "image": "https://api.example.com/static/agent-logo.png",
+    "endpoints": {
+      "query": "/query"
+    },
+    "features": {
+      "streaming": true,
+      "widget-dashboard-select": false,
+      "widget-dashboard-search": false
+    }
+  }
+}
+```
+
+### Agent with Widget Access
+
+```json
+{
+  "data-analysis-agent": {
+    "name": "Data Analysis Agent",
+    "description": "An agent that can access and analyze dashboard widget data",
+    "image": "https://api.example.com/static/data-agent-logo.png",
+    "endpoints": {
+      "query": "http://localhost:8000/v1/query"
+    },
+    "features": {
+      "streaming": true,
+      "widget-dashboard-select": true,
+      "widget-dashboard-search": true
+    }
+  }
+}
+```
+
+### Multiple Agents Configuration
+
+```json
+{
+  "general-assistant": {
+    "name": "General Assistant",
+    "description": "General-purpose financial assistant",
+    "endpoints": {
+      "query": "http://localhost:7777/general/query"
+    },
+    "features": {
+      "streaming": true,
+      "widget-dashboard-select": true,
+      "widget-dashboard-search": false
+    }
+  },
+  "market-analyst": {
+    "name": "Market Analyst",
+    "description": "Specialized in market analysis with dashboard data access",
+    "image": "https://api.example.com/analyst-logo.png",
+    "endpoints": {
+      "query": "http://localhost:7777/analyst/query"
+    },
+    "features": {
+      "streaming": true,
+      "widget-dashboard-select": true,
+      "widget-dashboard-search": true
+    }
+  },
+  "research-assistant": {
+    "name": "Research Assistant",
+    "description": "Financial research and data processing",
+    "endpoints": {
+      "query": "http://localhost:7777/research/query"
+    },
+    "features": {
+      "streaming": true,
+      "widget-dashboard-select": false,
+      "widget-dashboard-search": false
+    }
+  }
+}
+```
