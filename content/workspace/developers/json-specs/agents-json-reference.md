@@ -44,82 +44,88 @@ The `agents.json` endpoint should return a JSON object with your agent(s) config
 }
 ```
 
+## Schema
+
 The field descriptions follow.
 
-## Agent ID
-
-```python
-"financial_prompt_optimizer"
-```
+### Agent ID
 
 The agent ID serves as a unique identifier for your agent within the OpenBB Workspace. This should be a lowercase string with hyphens replacing spaces, following standard slug conventions. The agent ID becomes the object key in the JSON response.
 
-## Name
+| Argument | Type | Default | Example |
+|----------|------|---------|----------|
+| `agent_id` | string | Required | `"financial_prompt_optimizer"` |
 
-```python
-"name": "Financial Prompt Optimizer",
-```
+### Name
 
 The name field specifies the human-readable display name for your agent that appears in the OpenBB Workspace user interface. This should be a clear, descriptive title that helps users understand what your agent does.
 
-## description
+| Argument | Type | Default | Example |
+|----------|------|---------|----------|
+| `name` | string | Required | `"Financial Prompt Optimizer"` |
 
-```python
-"description": "Optimizes a user's prompt for finance: clearer, more specific, and actionable.",
-```
+### description
 
 The description provides a brief overview of your agent's capabilities and intended purpose. This text helps users understand when and how to use your agent effectively, and it's displayed as the welcome AI agent message when the chat is empty. It is important to keep it concise but informative.
 
 If multi-orchestrator mode is enabled, then this description will be utilized by the main OpenBB Copilot to understand in what situations it should trigger this agent. So highlighting the capabilities and when to use a custom agent on its description is recommended.
 
-## Image thumbnail
+| Argument | Type | Default | Example |
+|----------|------|---------|----------|
+| `description` | string | Required | `"Optimizes a user's prompt for finance: clearer, more specific, and actionable."` |
 
-```python
-"image": "https://github.com/OpenBB-finance/copilot-for-terminal-pro/assets/14093308/7da2a512-93b9-478d-90bc-b8c3dd0cabcf",
-```
+### Image thumbnail
 
 The image field accepts a URL pointing to your agent's logo or avatar image. For optimal display in the OpenBB Workspace interface, use a square image with dimensions of at least 256x256 pixels. The image should be hosted on a publicly accessible URL.
 
-## Endpoints
+| Argument | Type | Default | Example |
+|----------|------|---------|----------|
+| `image` | string | Optional | `"https://example.com/agent-logo.png"` |
 
-```python
-"endpoints": {"query": "http://localhost:7777/v1/query"},
-```
+### Endpoints
 
 The query endpoint specifies where OpenBB Workspace should send user queries and interactions. This can be either a relative path like `"/query"` (if your agent runs on the same domain) or a full URL pointing to your agent's query handler like `"http://localhost:7777/v1/query"`.
 
 This endpoint must accept POST requests and handle the QueryRequest format.
 
-## Features
+| Argument | Type | Default | Example |
+|----------|------|---------|----------|
+| `endpoints` | object | Required | `{"query": "http://localhost:7777/v1/query"}` |
+| `endpoints.query` | string | Required | `"/query"` or `"http://localhost:7777/v1/query"` |
+
+### Features
 
 Configuration object that declares your agent's capabilities:
 
-### Streaming
+| Argument | Type | Default | Example |
+|----------|------|---------|----------|
+| `features` | object | Required | `{"streaming": true, "widget-dashboard-select": false}` |
 
-```python
-"streaming": True,
-```
+#### Streaming
 
 The streaming feature enables Server-Sent Events (SSE) for your agent's responses, allowing real-time streaming of content back to users. This provides a better user experience with progressive response rendering. This feature defaults to `True` for all agents even if not explicitly set.
 
 Note: This is a legacy feature, and isn't required to be added.
 
-### Explicit context widgets
+| Argument | Type | Default | Example |
+|----------|------|---------|----------|
+| `streaming` | boolean | `true` | `true` |
 
-```python
-"widget-dashboard-select": True,
-```
+#### Explicit context widgets
 
 This feature grants your agent access to explicit context widgets (primary) - those that are currently selected or explicitly chosen by the user in the dashboard. When enabled, your agent will receive these widgets in the `primary` collection of the `QueryRequest`, allowing you to fetch and analyze their data.
 
-### Dashboard context widgets
+| Argument | Type | Default | Example |
+|----------|------|---------|----------|
+| `widget-dashboard-select` | boolean | `false` | `true` |
 
-```python
-"widget-dashboard-search": True,
-```
+#### Dashboard context widgets
 
 This feature provides your agent with access to all widgets available on the current dashboard, not just the selected ones. When enabled, these widgets appear in the `secondary` collection of the `QueryRequest`, giving your agent broader context about the user's dashboard setup and available data sources.
 
+| Argument | Type | Default | Example |
+|----------|------|---------|----------|
+| `widget-dashboard-search` | boolean | `false` | `true` |
 
 ## Complete Examples
 
