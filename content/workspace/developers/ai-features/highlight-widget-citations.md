@@ -44,7 +44,6 @@ return JSONResponse(content={
   - Process widget data and include in LLM context
   - Match widget UUIDs from tool `input_arguments` to `request.widgets.primary`
   - Build `cite()` objects for each data source used
-  - Optionally add `CitationHighlightBoundingBox` for visual highlighting
   - Stream citations with `citations()` after LLM response
 - Citations appear in Workspace UI panel for source verification
 
@@ -52,7 +51,6 @@ return JSONResponse(content={
 - `cite(widget, input_arguments, extra_details)`: Creates `Citation` objects
 - `citations(citation_list)`: Emits `CitationCollectionSSE` events
 - `Citation`: Links outputs to data sources with metadata
-- `CitationHighlightBoundingBox`: Defines visual highlighting areas
 - `SourceInfo`: Provides detailed source attribution data
 
 ## Core logic
@@ -90,17 +88,6 @@ async def execution_loop():
                             "Parameters Used": widget_data_request["input_args"]
                         }
                     )
-                    
-                    # Optional: Add highlighting for specific content
-                    citation.quote_bounding_boxes = [
-                        [
-                            CitationHighlightBoundingBox(
-                                text="Key data point",
-                                page=1,
-                                x0=72.0, top=117, x1=259, bottom=135
-                            )
-                        ]
-                    ]
                     
                     citations_list.append(citation)
     
