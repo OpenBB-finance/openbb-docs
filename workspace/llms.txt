@@ -23,12 +23,21 @@
 - [Overview](https://docs.openbb.co/workspace/analysts/widgets/overview): Understanding widgets - the building blocks of OpenBB Workspace dashboards that transform raw data into actionable insights.
 - [Sandbox Widgets](https://docs.openbb.co/workspace/analysts/widgets/sandbox-widgets): Explore OpenBB's pre-built demonstration widgets that showcase application capabilities upon login.
 - [Static Files](https://docs.openbb.co/workspace/analysts/widgets/static-files): Upload and integrate your own files into OpenBB Workspace - transform spreadsheets, PDFs, and images into interactive dashboard widgets.
-- [Overview](https://docs.openbb.co/workspace/developers/ai-agents/ai-agents): Learn how to integrate and customize AI agents in OpenBB Workspace for enhanced financial analysis and research capabilities
+- [Agents Integration](https://docs.openbb.co/workspace/developers/agents-integration): How to integrate your own AI agent service with OpenBB Workspace
+- [Citations for documents](https://docs.openbb.co/workspace/developers/ai-features/citations-for-documents): Add document-specific citations with PDF text highlighting for source attribution
+- [Create charts](https://docs.openbb.co/workspace/developers/ai-features/create-charts): Stream inline charts as part of your agent’s response
+- [Create tables](https://docs.openbb.co/workspace/developers/ai-features/create-tables): Stream tabular data as an artifact in the conversation
+- [Highlight widget citations](https://docs.openbb.co/workspace/developers/ai-features/highlight-widget-citations): Cite widget data sources in your responses and display them in Workspace
+- [Interact with dashboard](https://docs.openbb.co/workspace/developers/ai-features/interact-with-dashboard): Receive full dashboard widget metadata and conditionally fetch data
+- [Parse PDF context](https://docs.openbb.co/workspace/developers/ai-features/parse-pdf-context): Parse PDF content from widget data and cite sources
+- [Parse widget data](https://docs.openbb.co/workspace/developers/ai-features/parse-widget-data): Retrieve data from selected widgets and pass it as raw context to your LLM
+- [Share step-by-step reasoning](https://docs.openbb.co/workspace/developers/ai-features/share-step-by-step-reasoning): Stream status updates alongside model output during long operations
 - [Apps](https://docs.openbb.co/workspace/developers/apps/apps): Create and customize your own OpenBB Apps for optimized workflows
 - [Data Integration](https://docs.openbb.co/workspace/developers/data-integration): Learn how to integrate your own data sources and APIs into OpenBB Workspace with a custom backend solution.
 - [agents.json Reference](https://docs.openbb.co/workspace/developers/json-specs/agents-json-reference): Complete reference guide for configuring custom AI agents in OpenBB Workspace using the agents.json endpoint
 - [apps.json Reference](https://docs.openbb.co/workspace/developers/json-specs/apps-json-reference): Learn about the structure and configuration of apps.json for creating custom applications in OpenBB Workspace
 - [widgets.json Reference](https://docs.openbb.co/workspace/developers/json-specs/widgets-json-reference): Learn how to integrate your own backend with OpenBB Workspace using the cookie-cutter or language-agnostic API approaches, with illustrative guides and principles for handling widget.json files, APIs, interfaces, Python, FastAPI and more.
+- [OpenBB AI SDK](https://docs.openbb.co/workspace/developers/openbb-ai-sdk): Build custom agents for OpenBB Workspace using the OpenBB AI SDK helpers and models
 - [Categories and Subcategories](https://docs.openbb.co/workspace/developers/widget-configuration/category-subcategory): Learn how to organize widgets using categories and subcategories in OpenBB Workspace.
 - [Error Handling](https://docs.openbb.co/workspace/developers/widget-configuration/error-handling): Learn how to handle errors in your widgets in OpenBB Workspace.
 - [Grid Size](https://docs.openbb.co/workspace/developers/widget-configuration/grid-size): Learn about the grid-based layout system for widgets in OpenBB Workspace, including width and height specifications.

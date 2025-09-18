@@ -2205,159 +2205,1199 @@ Note that scanned images are better handled when uploaded as images (PNG or JPG)
 ---
 
 ---
-title: Overview
-sidebar_position: 36
-description: Learn how to integrate and customize AI agents in OpenBB Workspace for enhanced financial analysis and research capabilities
+title: Agents Integration
+sidebar_position: 6
+description: How to integrate your own AI agent service with OpenBB Workspace
 keywords:
 - AI
-- AI Agents
-- Custom AI
-- LLM
-- Large Language Models
+- Agents
 - Integration
-- Financial Analysis
-- Research
-- Workspace
-- OpenBB AI SDK
+- SSE
+- agents.json
+- QueryRequest
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-import ReactPlayer from 'react-player'
 
-<HeadTitle title="AI Agents | OpenBB Workspace Docs" />
+<HeadTitle title="Agents Integration | OpenBB Workspace Docs" />
 
-AI agents in OpenBB Workspace come with a lot of capabilities out-of-the-box. Particularly when it comes to interacting with data available in the workspace. The advantage is that the agent lives right where all your context is and where actual work gets done.
+Integrate your own AI agent service with OpenBB Workspace using a simple HTTP contract. Your service accepts POST requests, streams responses back to Workspace and can access dashboard data when enabled.
 
-The OpenBB Workspace comes with OpenBB Copilot, the default AI agent, which relies on OpenAI as the underlying model provider. You can bring your own OpenAI API key to use with the Copilot without a standalone deployment. For enterprise deployments, we support connecting to your Azure OpenAI model, allowing firms to leverage their existing relationship with Azure/OpenAI.
+## Architecture
 
-When the default OpenBB Copilot isn't a perfect fit for your financial institution - especially when proprietary data and tools are involved - OpenBB Workspace offers the 'Bring Your Own AI Agent' feature. This allows you to integrate your own custom AI agents, which can be powered by Large Language Models (LLMs) from any vendor.
+- `/agents.json`: the metadata endpoint. Returns agent metadata and capabilities (name, description, image, URL of the query endpoint, features that the agent implements).
+- `/query`: the query endpoint. Receives a `QueryRequest` and streams responses via Server‑Sent Events (SSE).
 
-With this integration, you can use all of OpenBB's features while leveraging your firm's custom agent and preferred LLM provider. This enhances the efficiency of analysts and researchers by aligning with your unique data and models, all while keeping research queries and data securely within your firm's infrastructure.
+Recommended stack: FastAPI with `EventSourceResponse` from `sse_starlette` and OpenBB AI SDK (`openbb-ai`), although any framework that supports streaming SSEs in response to a POST request should work.
 
-## Bring Your Own AI Agent
+See this repository to [get started](https://github.com/OpenBB-finance/agents-for-openbb).
 
-You can integrate your proprietary AI agent, powered by an LLM from any vendor, into OpenBB Workspace. Custom agents can be built using the [OpenBB AI SDK](https://github.com/OpenBB-finance/openbb-ai), which provides data schemas and helper functions for agent development.
+## Adding an Agent in Workspace
 
-### Key Features
+1. Deploy your service (locally or remote).
 
-Custom AI agents in OpenBB Workspace can leverage several powerful features:
+2. In Workspace, click on the copilot and on the plus or pencil icon.
 
-- **Streaming Conversations**: Real-time response streaming using Server-Sent Events (SSEs)
-- **Widget Data Access**: Access to dashboard widgets through two modes:
-  - **Priority Widget Access** (`widget-dashboard-select`): Access to selected/focused widgets
-  - **Dashboard Search** (`widget-dashboard-search`): Access to all widgets on the current dashboard
+    <img className="pro-border-gradient" width="400" alt="No tab no param primary" src="https://openbb-cms.directus.app/assets/412540b0-ef86-4285-8303-b9faf83bdc66.png" />
 
-### Architecture Overview
+3. Enter your base URL; Workspace fetches `/agents.json` and uses `/query` for conversations.
 
-Custom agents follow a stateless backend design with two essential endpoints:
+    <img className="pro-border-gradient" width="800" alt="No tab no param primary" src="https://openbb-cms.directus.app/assets/ce3bebd7-98cf-4598-9d6c-68a2ecc1ba1c.png" />
 
-1. **Query Endpoint** (`/query`): The main interaction point that handles user queries and returns responses via Server-Sent Events
-2. **Agents Configuration Endpoint** (`/agents.json`): Provides agent metadata and capabilities
+Ensure CORS settings are correct and SSE are configured on your service.
 
-### Getting Started
+## Example
 
-Our example agents repository contains custom agents showcasing different capabilities to help you get started with development. The code is available [in the GitHub repository](https://github.com/OpenBB-finance/agents-for-openbb).
+Simplistic example that allows users to communicate with an agent that can optimize the user prompt. The code is open source [and available here](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/20-financial-prompt-optimizer).
 
-### Development Requirements
+<img className="pro-border-gradient" width="800" alt="No tab no param primary" src="https://openbb-cms.directus.app/assets/d2eaa645-eb6e-4411-b9d1-74b70409483a.png" />
 
-To build a custom agent, you'll need:
-
-- Python with a web framework (FastAPI recommended)
-- The OpenBB AI SDK (`openbb-ai` package)
-- An LLM provider of your choice (OpenAI, Anthropic, Azure, etc.)
-- Proper endpoint configuration for SSE support
-
-### Agent Implementation Example
-
-Here's a minimal example of a custom agent structure:
+This agent does nothing else - it doesn't parse data added to context, doesn't pass data in the dashboard, doesn't share step-by-step reasoning or citations, doesn't create artifacts, etc. We will dive on each of these features in the AI features tab.
 
 ```python
+from typing import AsyncGenerator
+import openai
+
 from fastapi import FastAPI
-from fastapi.responses import StreamingResponse
-from openbb_ai import QueryRequest
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from sse_starlette.sse import EventSourceResponse
+
+from openbb_ai.models import MessageChunkSSE, QueryRequest
+from openbb_ai import message_chunk
+
+from openai.types.chat import (
+    ChatCompletionMessageParam,
+    ChatCompletionUserMessageParam,
+    ChatCompletionAssistantMessageParam,
+    ChatCompletionSystemMessageParam,
+)
+
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
 @app.get("/agents.json")
-async def agents_json():
-    return {
-        "my-custom-agent": {
-            "name": "My Custom Financial Agent",
-            "description": "Specialized agent for financial analysis",
-            "image": "https://example.com/agent-logo.png",
-            "endpoints": {
-                "query": "/query"
-            },
-            "features": {
-                "streaming": True,
-                "widget-dashboard-select": True,
-                "widget-dashboard-search": False
+def get_copilot_description():
+    """Agent descriptor for the OpenBB Workspace."""
+    return JSONResponse(
+        content={
+            "financial_prompt_optimizer": {
+                "name": "Financial Prompt Optimizer",
+                "description": "Optimizes a user's prompt for finance: clearer, more specific, and actionable.",
+                "image": "https://github.com/OpenBB-finance/copilot-for-terminal-pro/assets/14093308/7da2a512-93b9-478d-90bc-b8c3dd0cabcf",
+                "endpoints": {"query": "http://localhost:7777/v1/query"},
+                "features": {
+                    "streaming": True,
+                    "widget-dashboard-select": False,
+                    "widget-dashboard-search": False,
+                },
             }
         }
-    }
+    )
 
-@app.post("/query")
-async def query(request: QueryRequest):
-    # Your agent logic here
-    # Access widgets, process data, generate responses
-    pass
+
+@app.post("/v1/query")
+async def query(request: QueryRequest) -> EventSourceResponse:
+    """Stream a concise optimized prompt and rationale."""
+
+    openai_messages: list[ChatCompletionMessageParam] = [
+        ChatCompletionSystemMessageParam(
+            role="system",
+            content=(
+                "You are a concise Financial Prompt Optimizer.\n"
+                "Rewrite the user's prompt to be clearer, more specific, and immediately actionable for financial analysis.\n"
+                "Always return exactly the improved prompt:\n"
+                "Optimized Prompt: <detailed improved prompt with step-by-step>\n"
+            ),
+        )
+    ]
+
+    for message in request.messages:
+        if message.role == "human":
+            openai_messages.append(
+                ChatCompletionUserMessageParam(role="user", content=message.content)
+            )
+        elif message.role == "ai" and isinstance(message.content, str):
+            openai_messages.append(
+                ChatCompletionAssistantMessageParam(
+                    role="assistant", content=message.content
+                )
+            )
+
+    async def execution_loop() -> AsyncGenerator[MessageChunkSSE, None]:
+        client = openai.AsyncOpenAI()
+        async for event in await client.chat.completions.create(
+            model="gpt-4o",
+            messages=openai_messages,
+            stream=True,
+        ):
+            if chunk := event.choices[0].delta.content:
+                yield message_chunk(chunk)
+
+    return EventSourceResponse(
+        content=(
+            event.model_dump(exclude_none=True) async for event in execution_loop()
+        ),
+        media_type="text/event-stream",
+    )
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run("main:app", host="0.0.0.0", port=7777, reload=True)
 ```
 
-### Adding a Custom AI Agent to OpenBB Workspace
 
-After deploying your custom AI agent, you can add it to OpenBB Workspace.
+---
 
-To do this, navigate to the "Add AI agent" section and follow the prompts:
+---
+title: Citations for documents
+sidebar_position: 5
+description: Add document-specific citations with PDF text highlighting for source attribution
+keywords:
+- citations
+- documents
+- PDF
+- highlighting
+- pdfplumber
+---
 
-- Click on the "Add AI agent" button.
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/custom_copilot_add_button.jpg" alt="custom AI agent add button" width="80%" height="80%" />
+<HeadTitle title="AI Features — Citations for documents | OpenBB Workspace Docs" />
 
-- Enter the API endpoint of your custom AI agent.
+Extract and cite specific content from PDF documents with precise text highlighting. Use `pdfplumber` to get text positions and create visual citations in Workspace.
 
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/custom_copilot_add_endpoint.jpg" alt="custom AI agent add endpoint" width="80%" height="80%" />
+Reference implementation [in this GitHub repository](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/vanilla-agent-pdf-citations).
 
-- Confirm the addition.
-- You are now ready to use your custom AI agent.
+<img className="pro-border-gradient" width="800" alt="Document Citations" src="https://openbb-cms.directus.app/assets/c47a15c0-562c-4fc1-a221-a11cef487826.png" />
 
-### Best Practices
+## Architecture
 
-1. **Stateless Design**: Keep your agent stateless to ensure scalability
-2. **Error Handling**: Implement robust error handling for API failures
-3. **Widget Access**: Only enable widget features if your agent processes dashboard data
-4. **Security**: Implement proper authentication and authorization
-5. **Performance**: Optimize for low latency responses
+This pattern extends widget citations by adding document-level text extraction and positioning. Extract PDF content with character-level precision for accurate highlighting.
 
-### Troubleshooting Common Issues
+`agents.json` configuration:
 
-1. **Agent not appearing in workspace**
-   - Verify the `/agents.json` endpoint is accessible
-   - Check JSON syntax validity
-   - Ensure required fields are present (`name`, `description`, `endpoints.query`)
+```python
+return JSONResponse(content={
+  "vanilla_agent_pdf_citations": {
+    "name": "Vanilla Agent PDF Citations",
+    "description": "A vanilla agent that handles PDF data with citation support.",
+    "endpoints": {"query": "http://localhost:7777/v1/query"},
+    "features": {
+      "streaming": True,
+      "widget-dashboard-select": True,
+      "widget-dashboard-search": False,
+    },
+  }
+})
+```
 
-2. **Widget data not accessible**
-   - Ensure `widget-dashboard-select` and/or `widget-dashboard-search` are set to `true`
-   - Verify your query endpoint properly handles widget context data
+### Query flow
 
-3. **Streaming not working**
-   - Verify your query endpoint implements Server-Sent Events (SSE)
+- Extract PDF content when widget data contains PDF format
+- Use `pdfplumber` to get text with character positions
+- Store text positions for citation highlighting
+- Create multiple citation types:
+  - Basic widget citation for data source
+  - Highlighted citation for specific text passages
+- Stream citations with bounding boxes for visual highlighting
 
-4. **CORS errors**
-   - Add appropriate CORS headers to your response
-   - Example: use wildcard (`Access-Control-Allow-Origin: *`) for development
+### OpenBB AI SDK
 
-5. **Invalid JSON response**
-   - Use a JSON validator to check syntax
-   - Ensure proper escaping of special characters
-   - Verify Content-Type header is set to `application/json`
+- `CitationHighlightBoundingBox`: Precise text highlighting with coordinates
+- `PdfDataFormat`: Identifies PDF content in widget data
+- `quote_bounding_boxes`: Attach visual highlights to citations
+- Text position tracking: `x0`, `top`, `x1`, `bottom` for accurate placement
 
-### Resources
+## Core logic
 
-- [OpenBB AI SDK Documentation](https://github.com/OpenBB-finance/openbb-ai)
-- [Agent Examples Repository](https://github.com/OpenBB-finance/agents-for-openbb)
-- [OpenBB Workspace Documentation](/workspace)
+Extract PDF text with positions for precise highlighting:
 
-For more detailed information about agent configuration, see the [agents.json Reference](/workspace/developers/json-specs/agents-json-reference) documentation.
+```python
+import pdfplumber
+from openbb_ai import cite, citations
+from openbb_ai.models import CitationHighlightBoundingBox
+
+def extract_pdf_with_positions(pdf_bytes: bytes) -> Tuple[str, List[Dict[str, Any]]]:
+    """Extract text and positions from PDF."""
+    document_text = ""
+    text_positions = []
+
+    with pdfplumber.open(io.BytesIO(pdf_bytes)) as pdf:
+        for page_num, page in enumerate(pdf.pages, 1):
+            # Extract character-level data for positioning
+            if page.chars:
+                # Group characters into lines
+                lines = {}
+                for char in page.chars:
+                    y = round(char['top'])
+                    if y not in lines:
+                        lines[y] = {'chars': [], 'x0': char['x0'], 'x1': char['x1']}
+                    lines[y]['chars'].append(char['text'])
+                    lines[y]['x0'] = min(lines[y]['x0'], char['x0'])
+                    lines[y]['x1'] = max(lines[y]['x1'], char['x1'])
+
+                # Get first meaningful line for citation
+                sorted_lines = sorted(lines.items())
+                for y_pos, line_data in sorted_lines[:5]:
+                    line_text = ''.join(line_data['chars']).strip()
+                    if line_text and len(line_text) > 10:
+                        text_positions.append({
+                            'text': line_text,
+                            'page': page_num,
+                            'x0': line_data['x0'],
+                            'top': y_pos,
+                            'x1': line_data['x1'],
+                            'bottom': y_pos + 12
+                        })
+                        break
+
+            # Extract full text for context
+            page_text = page.extract_text()
+            if page_text:
+                document_text += page_text + "\\n\\n"
+
+    return document_text, text_positions
+```
+
+Create citations with line/word level highlighting in the PDF:
+
+```python
+async def handle_widget_data(data: list[DataContent | DataFileReferences]):
+    """Process widget data and create PDF citations."""
+
+    widget_text, pdf_text_positions = await handle_widget_data(message.data)
+    context_str += widget_text
+
+    # Create citations for widget data
+    for widget_data_request in message.input_arguments["data_sources"]:
+        widget = matching_widgets[0]
+
+        # Basic widget citation
+        basic_citation = cite(
+            widget=widget,
+            input_arguments=widget_data_request["input_args"],
+        )
+        citations_list.append(basic_citation)
+
+        # PDF citation with highlighting
+        if pdf_text_positions and len(pdf_text_positions) > 0:
+            first_line = pdf_text_positions[0]
+
+            pdf_citation = cite(
+                widget=widget,
+                input_arguments=widget_data_request["input_args"],
+                extra_details={
+                    "Page": first_line['page'],
+                    "Reference": "First sentence of document"
+                }
+            )
+
+            # Add precise text highlighting
+            pdf_citation.quote_bounding_boxes = [[
+                CitationHighlightBoundingBox(
+                    text=first_line['text'][:100],
+                    page=first_line['page'],
+                    x0=first_line['x0'],
+                    top=first_line['top'],
+                    x1=first_line['x1'],
+                    bottom=first_line['bottom']
+                )
+            ]]
+
+            citations_list.append(pdf_citation)
+```
+
+
+---
+
+---
+title: Create charts
+sidebar_position: 6
+description: Stream inline charts as part of your agent’s response
+keywords:
+- charts
+- visualization
+- artifacts
+- SSE
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="AI Features — Create charts | OpenBB Workspace Docs" />
+
+Stream visualizations (line, bar, scatter, pie, donut) with `chart(...)`. Charts appear below the message that emitted them.
+
+Reference implementation in [this GitHub repository](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/33-vanilla-agent-charts/vanilla_agent_charts/main.py).
+
+<img className="pro-border-gradient" width="800" alt="Charts" src="https://openbb-cms.directus.app/assets/e9d93282-20cb-4b3a-bf58-17032191e82a.png" />
+
+## Architecture
+
+Emit chart artifacts so visualizations render below the answer. The example shows multiple chart types in one response.
+
+`agents.json` configuration with `widget-dashboard-select` feature enabled:
+
+```python
+return JSONResponse(content={
+  "vanilla_agent_charts": {
+    "endpoints": {"query": "http://localhost:7777/v1/query"},
+    "features": {
+      "widget-dashboard-select": False,
+      "widget-dashboard-search": False,
+    },
+  }
+})
+```
+
+### Query flow
+
+- Process user request and prepare data for visualization
+- Stream explanatory text with `message_chunk()`
+- Create chart data as list of dictionaries
+- Choose appropriate chart type based on data characteristics:
+  - **Line/Bar/Scatter**: Use `x_key` and `y_keys` for XY data
+  - **Pie/Donut**: Use `angle_key` for values, `callout_label_key` for labels
+- Emit `chart()` artifacts with proper configuration
+- Charts render interactively below streamed content
+
+### OpenBB AI SDK
+
+- `chart(type, data, x_key, y_keys, name, description)`: Creates `MessageArtifactSSE` for chart display
+- Chart types: `"line"`, `"bar"`, `"scatter"`, `"pie"`, `"donut"`
+- Chart parameters handled by specific models:
+  - `LineChartParameters`, `BarChartParameters`, `ScatterChartParameters`
+  - `PieChartParameters`, `DonutChartParameters`
+- `message_chunk(text)`: Streams explanatory text around charts
+- Charts support interactive features like zoom, hover, and data export
+
+## Core logic
+
+```python
+from openbb_ai import message_chunk, chart
+from openbb_ai.models import QueryRequest
+import datetime
+
+async def query(request: QueryRequest) -> EventSourceResponse:
+    async def execution_loop():
+        # Stream introduction
+        yield message_chunk("Let me create some visualizations to illustrate the data trends.\n\n").model_dump()
+
+        # Prepare time series data
+        price_data = [
+            {"date": "2024-01-01", "price": 150.0, "volume": 1200000},
+            {"date": "2024-01-02", "price": 152.5, "volume": 1350000},
+            {"date": "2024-01-03", "price": 148.2, "volume": 1100000},
+            {"date": "2024-01-04", "price": 155.8, "volume": 1450000},
+        ]
+
+        # Create line chart for price trend
+        yield chart(
+            type="line",
+            data=price_data,
+            x_key="date",
+            y_keys=["price"],
+            name="Stock Price Trend",
+            description="Daily stock price movement over time"
+        ).model_dump()
+
+        yield message_chunk("\n\nThe line chart shows an overall upward trend. Now let's look at volume distribution:\n\n").model_dump()
+
+        # Create bar chart for volume
+        yield chart(
+            type="bar",
+            data=price_data,
+            x_key="date",
+            y_keys=["volume"],
+            name="Trading Volume",
+            description="Daily trading volume by date"
+        ).model_dump()
+
+        # Portfolio allocation pie chart
+        portfolio_data = [
+            {"asset": "Stocks", "allocation": 60},
+            {"asset": "Bonds", "allocation": 25},
+            {"asset": "Cash", "allocation": 10},
+            {"asset": "Real Estate", "allocation": 5}
+        ]
+
+        yield message_chunk("\n\nHere's the portfolio allocation breakdown:\n\n").model_dump()
+
+        yield chart(
+            type="pie",
+            data=portfolio_data,
+            angle_key="allocation",
+            callout_label_key="asset",
+            name="Portfolio Allocation",
+            description="Investment portfolio distribution by asset class"
+        ).model_dump()
+
+    return EventSourceResponse(execution_loop(), media_type="text/event-stream")
+```
+
+
+---
+
+---
+title: Create tables
+sidebar_position: 5
+description: Stream tabular data as an artifact in the conversation
+keywords:
+- tables
+- artifacts
+- SSE
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="AI Features — Create tables | OpenBB Workspace Docs" />
+
+Emit a table artifact with `table(...)`. Provide an array of objects; column names are inferred from object keys.
+
+Reference implementation in [this GitHub repository](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/34-vanilla-agent-tables/vanilla_agent_tables/main.py).
+
+<img className="pro-border-gradient" width="800" alt="Tables" src="https://openbb-cms.directus.app/assets/9024844b-2b40-4878-80d0-4be2309a8297.png" />
+
+## Architecture
+
+Emit table artifacts in-line so tabular data renders below the answer.
+
+`agents.json` configuration:
+
+```python
+return JSONResponse(content={
+  "vanilla_agent_tables": {
+    "endpoints": {"query": "http://localhost:7777/v1/query"},
+    "features": {
+      "widget-dashboard-select": False,
+      "widget-dashboard-search": False,
+    },
+  }
+})
+```
+
+### Query flow
+
+- Process user request and generate data (from widgets, analysis, or computation)
+- Stream explanatory text with `message_chunk()`
+- Create table data as list of dictionaries (column names from object keys)
+- Emit `table()` artifact with data, name, and description
+- Table renders below the streamed text in Workspace UI
+- Continue with additional content or complete response
+
+### OpenBB AI SDK
+
+- `table(data, name, description)`: Creates `MessageArtifactSSE` for table display
+  - `data`: List of dictionaries where keys become column headers
+  - `name`: Table title displayed in UI
+  - `description`: Optional table description
+- `message_chunk(text)`: Streams explanatory text before/after tables
+- Tables automatically handle data formatting and sorting in UI
+
+## Core logic
+
+```python
+from openbb_ai import message_chunk, table
+from openbb_ai.models import QueryRequest
+
+async def query(request: QueryRequest) -> EventSourceResponse:
+    async def execution_loop():
+        # Stream introduction
+        yield message_chunk("Let me analyze the financial data and create a summary table.\n\n").model_dump()
+
+        # Generate or process data (from widgets, calculations, etc.)
+        financial_data = [
+            {"symbol": "AAPL", "price": 150.25, "change": 2.5, "volume": 1200000},
+            {"symbol": "MSFT", "price": 280.75, "change": -1.2, "volume": 890000},
+            {"symbol": "GOOGL", "price": 2650.80, "change": 15.3, "volume": 560000},
+        ]
+
+        # Create table artifact
+        yield table(
+            data=financial_data,
+            name="Stock Market Summary",
+            description="Current stock prices with daily changes and trading volume"
+        ).model_dump()
+
+        # Stream additional analysis
+        yield message_chunk("\n\nThe table above shows the current market status. AAPL and GOOGL are up, while MSFT is down slightly.").model_dump()
+
+    return EventSourceResponse(execution_loop(), media_type="text/event-stream")
+```
+
+
+---
+
+---
+title: Highlight widget citations
+sidebar_position: 4
+description: Cite widget data sources in your responses and display them in Workspace
+keywords:
+- citations
+- cite
+- widgets
+- provenance
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="AI Features — Highlight widget citations | OpenBB Workspace Docs" />
+
+After retrieving widget data, attribute outputs to their sources. Build `cite(...)` entries and stream them with `citations(...)` so Workspace shows a citations panel next to the answer.
+
+Reference implementation in [this GitHub repository](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/32-vanilla-agent-raw-widget-data-citations/vanilla_agent_raw_context_citations/main.py).
+
+<img className="pro-border-gradient" width="800" alt="Citations" src="https://openbb-cms.directus.app/assets/0af85f66-b91f-476d-a231-973442a29957.png" />
+
+## Architecture
+
+This pattern extends "Parse widget data" by adding attribution. After data retrieval, emit citations to show provenance in Workspace.
+
+`agents.json` configuration with `widget-dashboard-select` feature enabled:
+
+```python
+return JSONResponse(content={
+  "vanilla_agent_raw_widget_data_citations": {
+    "endpoints": {"query": "http://localhost:7777/v1/query"},
+    "features": {
+      "streaming": True,
+      "widget-dashboard-select": True,
+      "widget-dashboard-search": False,
+    },
+  }
+})
+```
+
+### Query flow
+
+- Early exit: fetch widget data when human message contains `widgets.primary`
+- On subsequent tool message:
+  - Process widget data and include in LLM context
+  - Match widget UUIDs from tool `input_arguments` to `request.widgets.primary`
+  - Build `cite()` objects for each data source used
+  - Stream citations with `citations()` after LLM response
+- Citations appear in Workspace UI panel for source verification
+
+### OpenBB AI SDK
+
+- `cite(widget, input_arguments, extra_details)`: Creates `Citation` objects
+- `citations(citation_list)`: Emits `CitationCollectionSSE` events
+- `Citation`: Links outputs to data sources with metadata
+- `SourceInfo`: Provides detailed source attribution data
+
+## Core logic
+
+Build citations by matching the tool input arguments to widgets in the request:
+
+```python
+from openbb_ai import cite, citations
+from openbb_ai.models import Citation, CitationHighlightBoundingBox
+
+async def execution_loop():
+    # ... stream LLM response ...
+
+    # Build citations after response
+    citations_list = []
+
+    # Process tool message to find data sources
+    for message in request.messages:
+        if message.role == "tool":
+            for widget_data_request in message.input_arguments["data_sources"]:
+                # Match widget by UUID
+                matching_widgets = [
+                    w for w in request.widgets.primary
+                    if str(w.uuid) == widget_data_request["widget_uuid"]
+                ]
+
+                if matching_widgets:
+                    widget = matching_widgets[0]
+                    citation = cite(
+                        widget=widget,
+                        input_arguments=widget_data_request["input_args"],
+                        extra_details={
+                            "Widget Name": widget.name,
+                            "Data Source": widget.type,
+                            "Parameters Used": widget_data_request["input_args"]
+                        }
+                    )
+
+                    citations_list.append(citation)
+
+    # Emit citations for UI display
+    if citations_list:
+        yield citations(citations_list).model_dump()
+```
+
+
+---
+
+---
+title: Interact with dashboard
+sidebar_position: 7
+description: Receive full dashboard widget metadata and conditionally fetch data
+keywords:
+- dashboard widgets
+- widget-dashboard-search
+- WidgetRequest
+- get_widget_data
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="AI Features — Interact with dashboard | OpenBB Workspace Docs" />
+
+Receive the list of widgets on the current dashboard (`secondary`) and any explicitly selected (`primary`). Summarize what’s available and fetch data for a chosen widget.
+
+Reference implementation in [this GitHub repository](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/40-vanilla-agent-dashboard-widgets/vanilla_agent_dashboard_widgets/main.py).
+
+Example that highlights that the agent has access to data on the dashboard (secondary) and that there are no tabs.
+
+<img className="pro-border-gradient" width="800" alt="No tab no param no primary" src="https://openbb-cms.directus.app/assets/2dbcd500-a801-415f-a6d2-2052fa9abc17.png" />
+
+Example that highlights that the agent still has access to data on the dashboard (secondary) but also has explicit context (primary) as a multi-file viewer widget.
+
+<img className="pro-border-gradient" width="800" alt="No tab no param primary" src="https://openbb-cms.directus.app/assets/16b8ea4b-9dc4-487e-b9ac-14b573602684.png" />
+
+Example that highlights that the agent has access to data that lives on the dashboard (and on all the tabs!).
+
+<img className="pro-border-gradient" width="800" alt="Tab params" src="https://openbb-cms.directus.app/assets/a12edb2e-cf15-49ca-bb99-b8468fdfe65d.png" />
+
+## Architecture
+
+Receive dashboard metadata and selected widgets, summarize what's available, and fetch a sample widget's data.
+
+`agents.json` configuration with `widget-dashboard-select` enabled so it accepts explicit context and `widget-dashboard-search` so it can retrieve widgets from the dashboard.
+
+```python
+return JSONResponse(content={
+  "vanilla_agent_dashboard_widgets": {
+    "endpoints": {"query": "http://localhost:7777/v1/query"},
+    "features": {
+      "widget-dashboard-select": True,
+      "widget-dashboard-search": True,
+    },
+  }
+})
+```
+
+### Query flow
+
+- Access both `widgets.primary` (user-selected) and `widgets.secondary` (dashboard) widget collections
+- Combine widget lists for comprehensive dashboard overview
+- Check `workspace_state.current_dashboard_info` for tab information
+- Stream formatted widget inventory with `message_chunk()`:
+  - Widget names, types, and parameter configurations
+  - Tab organization if present
+  - Data availability status
+- Demonstrate data retrieval by fetching sample widget with `get_widget_data()`
+- Process returned data and show preview with metadata
+
+### OpenBB AI SDK
+
+- `WidgetCollection`: Contains `primary`, `secondary`, and `extra` widget groups
+- `Widget`: Individual widget with `uuid`, `name`, `type`, and `params`
+- `WidgetParam`: Parameter definition with `name`, `type`, `current_value`
+- `get_widget_data(widget_requests)`: Fetches data from specified widgets
+- `WorkspaceState`: Provides dashboard context and tab information
+- `message_chunk(text)`: Streams widget summaries and data previews
+
+## Core logic
+
+Unify primary and secondary widgets, render a summary, then fetch data for one widget:
+
+```python
+from openbb_ai import get_widget_data, WidgetRequest, message_chunk
+from openbb_ai.models import QueryRequest
+
+async def query(request: QueryRequest) -> EventSourceResponse:
+    async def execution_loop():
+        # Combine all available widgets
+        all_widgets = []
+        primary_count = 0
+        secondary_count = 0
+
+        if request.widgets:
+            if request.widgets.primary:
+                all_widgets.extend(request.widgets.primary)
+                primary_count = len(request.widgets.primary)
+            if request.widgets.secondary:
+                all_widgets.extend(request.widgets.secondary)
+                secondary_count = len(request.widgets.secondary)
+
+        if not all_widgets:
+            yield message_chunk("No widgets found on your dashboard.").model_dump()
+            return
+
+        # Stream dashboard overview
+        dashboard_info = ""
+        if request.workspace_state and request.workspace_state.current_dashboard_info:
+            dashboard_name = request.workspace_state.current_dashboard_info.name
+            tab_count = len(request.workspace_state.current_dashboard_info.tabs)
+            dashboard_info = f"Dashboard: **{dashboard_name}** ({tab_count} tabs)\n\n"
+
+        widget_summary = f"""# Dashboard Widget Analysis
+
+{dashboard_info}## Widget Inventory
+- **Selected widgets (primary)**: {primary_count}
+- **Dashboard widgets (secondary)**: {secondary_count}
+- **Total available**: {len(all_widgets)}
+
+## Available Widgets
+"""
+
+        for i, widget in enumerate(all_widgets[:5]):  # Show first 5
+            widget_type = "🎯 Selected" if i < primary_count else "📊 Dashboard"
+            param_count = len(widget.params) if widget.params else 0
+            widget_summary += f"- **{widget.name}** ({widget_type}) - {param_count} parameters\n"
+
+        if len(all_widgets) > 5:
+            widget_summary += f"- ... and {len(all_widgets) - 5} more widgets\n"
+
+        yield message_chunk(widget_summary + "\n").model_dump()
+
+        # Demonstrate data retrieval with last widget
+        if all_widgets:
+            sample_widget = all_widgets[-1]
+            yield message_chunk(f"Let me fetch data from **{sample_widget.name}** as an example:\n\n").model_dump()
+
+            yield get_widget_data([
+                WidgetRequest(
+                    widget=sample_widget,
+                    input_arguments={p.name: p.current_value for p in sample_widget.params} if sample_widget.params else {}
+                )
+            ]).model_dump()
+
+    return EventSourceResponse(execution_loop(), media_type="text/event-stream")
+```
+
+
+---
+
+---
+title: Parse PDF context
+sidebar_position: 3
+description: Parse PDF content from widget data and cite sources
+keywords:
+- PDF
+- DataContent
+- PdfDataFormat
+- citations
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="AI Features — Parse PDF context | OpenBB Workspace Docs" />
+
+Extract text from PDF inputs supplied via widget data and append it to the model context. Optionally add citation highlights to reference quotes within the PDF.
+
+Reference implementation [here](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/35-vanilla-agent-pdf/vanilla_agent_pdf/main.py).
+
+<img className="pro-border-gradient" width="800" alt="Parse PDF" src="https://openbb-cms.directus.app/assets/b9e323b3-9416-4452-9d32-f6d6b8b50443.png" />
+
+## Architecture
+
+Handle PDF data delivered by the UI through the widget data tool. Support both URL and base64 PDFs and add text to the LLM context.
+
+`agents.json` configuration with `widget-dashboard-select` feature enabled:
+
+```python
+return JSONResponse(content={
+  "vanilla_agent_pdf": {
+    "endpoints": {"query": "http://localhost:7777/v1/query"},
+    "features": {
+      "widget-dashboard-select": True,
+      "widget-dashboard-search": False,
+    },
+  }
+})
+```
+
+### Query flow
+- Check for human message with `widgets.primary` containing PDF data
+- Early exit: yield `get_widget_data()` for UI execution
+- On subsequent tool message:
+  - Iterate through `DataContent` items
+  - Detect `PdfDataFormat` using `isinstance()` check
+  - Handle both `SingleDataContent` (base64) and `SingleFileReference` (URL)
+  - Extract text using `pdfplumber.open()` with `io.BytesIO()`
+  - Append extracted text to context string
+  - Process with LLM and stream response
+- Optionally create `cite()` with `CitationHighlightBoundingBox` for text highlighting
+
+### OpenBB AI SDK
+- `PdfDataFormat`: Identifies PDF content in widget data
+- `SingleDataContent`: Contains base64-encoded PDF data
+- `SingleFileReference`: Contains URL reference to PDF
+- `DataContent`/`DataFileReferences`: Containers for data items
+- `CitationHighlightBoundingBox`: Defines text highlighting coordinates
+- `cite(widget, input_arguments, extra_details)`: Creates citations with bounding boxes
+- `get_widget_data()`: Requests PDF data from widgets
+
+## Core logic
+
+Detect PDF data, extract text, and accumulate as context:
+
+```python
+import base64
+import io
+import pdfplumber
+import httpx
+from openbb_ai import get_widget_data, cite, citations
+from openbb_ai.models import (
+    QueryRequest, WidgetRequest, PdfDataFormat, 
+    SingleDataContent, SingleFileReference, 
+    DataContent, DataFileReferences,
+    CitationHighlightBoundingBox
+)
+
+async def _download_file(url: str) -> bytes:
+    async with httpx.AsyncClient() as client:
+        response = await client.get(url)
+        return response.content
+
+async def _get_pdf_text(item) -> str:
+    if isinstance(item, SingleDataContent):
+        # Handle base64 PDF
+        file_content = base64.b64decode(item.content)
+    elif isinstance(item, SingleFileReference):
+        # Handle URL PDF
+        file_content = await _download_file(str(item.url))
+    
+    with pdfplumber.open(io.BytesIO(file_content)) as pdf:
+        document_text = ""
+        for page in pdf.pages:
+            document_text += page.extract_text() + "\n\n"
+    return document_text
+
+async def handle_widget_data(data: list[DataContent | DataFileReferences]) -> str:
+    result_str = "--- PDF Content ---\n"
+    for result_item in data:
+        for item in result_item.items:
+            if isinstance(item.data_format, PdfDataFormat):
+                result_str += f"===== {item.data_format.filename} =====\n"
+                result_str += await _get_pdf_text(item)
+                result_str += "------\n"
+            else:
+                result_str += str(item.content) + "\n"
+    return result_str
+```
+
+Add citation highlights with bounding boxes:
+
+```python
+# Create citations with text highlighting
+citations_list = []
+for widget in request.widgets.primary:
+    citation = cite(
+        widget=widget,
+        input_arguments={p.name: p.current_value for p in widget.params},
+        extra_details={"filename": "document.pdf"}
+    )
+    
+    # Add bounding boxes for specific text regions
+    citation.quote_bounding_boxes = [
+        [
+            CitationHighlightBoundingBox(
+                text="Key financial metrics",
+                page=1,
+                x0=72.0, top=117, x1=259, bottom=135
+            ),
+            CitationHighlightBoundingBox(
+                text="Revenue increased 15%", 
+                page=1,
+                x0=110.0, top=140, x1=275, bottom=160
+            )
+        ]
+    ]
+    citations_list.append(citation)
+
+if citations_list:
+    yield citations(citations_list).model_dump()
+```
+
+
+
+---
+
+---
+title: Parse widget data
+sidebar_position: 2
+description: Retrieve data from selected widgets and pass it as raw context to your LLM
+keywords:
+- widgets
+- get_widget_data
+- WidgetRequest
+- SSE
+- OpenAI
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="AI Features — Parse widget data | OpenBB Workspace Docs" />
+
+Retrieve data for user‑selected widgets and pass it to your model. Enable `widget-dashboard-select` and call `get_widget_data` when the latest user message arrives.
+
+Reference implementation in [this GitHub repository](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/30-vanilla-agent-raw-widget-data/vanilla_agent_raw_context/main.py).
+
+<img className="pro-border-gradient" width="800" alt="Raw reply without context" src="https://openbb-cms.directus.app/assets/7bbbc4c9-7cd2-4bb0-9ad9-641588cf541e.png" />
+
+## Architecture
+
+This pattern uses a minimal FastAPI backend with two endpoints and OpenBB AI SDK helpers to retrieve widget data and stream results.
+
+`agents.json` configuration with `widget-dashboard-select` feature enabled:
+
+```python
+return JSONResponse(content={
+  "vanilla_agent_raw_context": {
+    "endpoints": {"query": "http://localhost:7777/v1/query"},
+    "features": {
+      "widget-dashboard-select": True,
+      "widget-dashboard-search": False,
+    },
+  }
+})
+```
+
+### Query flow
+
+- Check if latest message is human with `widgets.primary` populated
+- Build `WidgetRequest` objects with current parameter values
+- Early exit: yield `get_widget_data()` SSE immediately for UI to execute
+- On subsequent request with tool results:
+  - Parse `DataContent` items from tool message
+  - Extract and format widget data into context string
+  - Append context to user messages for LLM processing
+  - Stream LLM response with `message_chunk()`
+
+### OpenBB AI SDK
+
+- `get_widget_data(widget_requests)`: Creates `FunctionCallSSE` for widget data retrieval
+- `WidgetRequest(widget, input_arguments)`: Specifies widget and parameter values
+- `Widget`: Contains widget metadata (uuid, name, type, params)
+- `WidgetParam`: Individual parameter with name, type, current_value
+- `DataContent`: Container for widget response data
+- `message_chunk(text)`: Creates `MessageChunkSSE` for streaming text
+
+## Core logic
+
+```python
+from openbb_ai import get_widget_data, WidgetRequest, message_chunk
+
+@app.post("/v1/query")
+async def query(request: QueryRequest) -> EventSourceResponse:
+    if (
+        request.messages[-1].role == "human"
+        and request.widgets
+        and request.widgets.primary
+    ):
+        widget_requests = [
+            WidgetRequest(
+                widget=w,
+                input_arguments={p.name: p.current_value for p in w.params},
+            )
+            for w in request.widgets.primary
+        ]
+
+        async def retrieve_widget_data():
+            # Function-call SSE that Workspace interprets and executes
+            yield get_widget_data(widget_requests).model_dump()
+
+        return EventSourceResponse(retrieve_widget_data(), media_type="text/event-stream")
+
+    # Process tool message with widget data
+    openai_messages = [
+        ChatCompletionSystemMessageParam(
+            role="system",
+            content="You are a helpful financial assistant."
+        )
+    ]
+
+    context_str = ""
+    for message in request.messages:
+        if message.role == "human":
+            openai_messages.append(
+                ChatCompletionUserMessageParam(role="user", content=message.content)
+            )
+        elif message.role == "tool":
+            # Extract widget data from latest tool result
+            for data_content in message.data:
+                for item in data_content.items:
+                    context_str += str(item.content) + "\n"
+
+    # Append context to last user message
+    if context_str and openai_messages:
+        openai_messages[-1]["content"] += "\n\nContext:\n" + context_str
+
+    async def execution_loop():
+        async for event in await client.chat.completions.create(
+            model="gpt-4o",
+            messages=openai_messages,
+            stream=True
+        ):
+            if chunk := event.choices[0].delta.content:
+                yield message_chunk(chunk).model_dump()
+
+    return EventSourceResponse(execution_loop(), media_type="text/event-stream")
+```
+
+## Dashboard widgets vs explicit context
+
+The example above uses `request.widgets.primary` which contains widgets explicitly selected by the user. If you want to access all widgets available on the current dashboard instead, you can use `request.widgets.secondary`:
+
+```python
+# Access dashboard widgets instead of explicit context
+if (
+    request.messages[-1].role == "human"
+    and request.widgets
+    and request.widgets.secondary  # Dashboard widgets
+):
+    widget_requests = [
+        WidgetRequest(
+            widget=w,
+            input_arguments={p.name: p.current_value for p in w.params},
+        )
+        for w in request.widgets.secondary  # Use secondary instead of primary
+    ]
+```
+
+**Important**: To access dashboard widgets, you must enable the `widget-dashboard-search` feature in your `agents.json`:
+
+```python
+"features": {
+    ...
+    "widget-dashboard-search": True,   # Dashboard widgets
+}
+```
+
+This gives your agent broader context about the user's dashboard setup and available data sources, rather than just the widgets they've explicitly selected.
+
+
+---
+
+---
+title: Share step-by-step reasoning
+sidebar_position: 1
+description: Stream status updates alongside model output during long operations
+keywords:
+- reasoning_step
+- SSE
+- status updates
+- progress
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="AI Features — Share step-by-step reasoning | OpenBB Workspace Docs" />
+
+Stream status updates with `reasoning_step` so users can track multi‑stage actions (fetching data, running tools, post‑processing) as tokens arrive.
+
+Reference implementation in [this GitHub repository](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/31-vanilla-agent-reasoning-steps/vanilla_agent_reasoning_steps/main.py).
+
+<img className="pro-border-gradient" width="800" alt="Reasoning" src="https://openbb-cms.directus.app/assets/eaf36840-a06d-4958-9e0d-cb2570e5a08e.png" />
+
+## Architecture
+
+Stream status updates alongside tokens so users see what the agent is doing.
+
+`agents.json` configuration:
+
+```python
+return JSONResponse(content={
+  "vanilla_agent_reasoning_steps": {
+    "endpoints": {"query": "http://localhost:7777/v1/query"},
+    "features": {
+      "streaming": True,
+      "widget-dashboard-select": False,
+      "widget-dashboard-search": False,
+    },
+  }
+})
+```
+
+### Query flow
+
+- Parse `QueryRequest.messages` and convert to OpenAI-compatible format
+- Add system message to define agent role and capabilities
+- Emit `reasoning_step()` at key processing stages:
+  - Before starting LLM processing
+  - During data preparation or analysis steps
+  - After completing major operations
+- Stream LLM response tokens with `message_chunk()`
+- Send final reasoning step upon completion
+
+### OpenBB AI SDK
+
+- `reasoning_step(event_type, message, details)`: Creates `StatusUpdateSSE` events
+  - `event_type`: `"INFO"`, `"SUCCESS"`, `"WARNING"`, `"ERROR"`
+  - `message`: Human-readable status description
+  - `details`: Optional dictionary with key-value pairs for additional context
+- `message_chunk(text)`: Creates `MessageChunkSSE` for streaming LLM output
+- `LlmClientMessage`: Handles message conversion between formats
+
+## Core logic
+
+```python
+from openbb_ai import reasoning_step, message_chunk
+from openbb_ai.models import QueryRequest, LlmClientMessage
+from openai.types.chat import ChatCompletionSystemMessageParam, ChatCompletionUserMessageParam
+
+async def query(request: QueryRequest) -> EventSourceResponse:
+    # Convert messages to OpenAI format
+    openai_messages = [
+        ChatCompletionSystemMessageParam(
+            role="system",
+            content="You are a helpful financial assistant."
+        )
+    ]
+
+    for message in request.messages:
+        if message.role == "human":
+            openai_messages.append(
+                ChatCompletionUserMessageParam(role="user", content=message.content)
+            )
+
+    async def execution_loop():
+        # Pre-processing reasoning
+        yield reasoning_step(
+            event_type="INFO",
+            message="Processing your request...",
+            details={"total_messages": len(request.messages)}
+        ).model_dump()
+
+        # Stream LLM response
+        yield reasoning_step(
+            event_type="INFO",
+            message="Generating response..."
+        ).model_dump()
+
+        async for event in await client.chat.completions.create(
+            model="gpt-4o",
+            messages=openai_messages,
+            stream=True
+        ):
+            if chunk := event.choices[0].delta.content:
+                yield message_chunk(chunk).model_dump()
+
+        # Completion reasoning
+        yield reasoning_step(
+            event_type="SUCCESS",
+            message="Response generated successfully!"
+        ).model_dump()
+
+    return EventSourceResponse(execution_loop(), media_type="text/event-stream")
+```
 
 
 ---
@@ -2950,11 +3990,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 The `agents.json` endpoint is an important component of custom AI agent integration in OpenBB Workspace. This endpoint provides metadata and configuration information that tells the workspace how to interact with your custom agent.
 
-## Overview
-
 When you add a custom AI agent to OpenBB Workspace, the system first queries your agent's `/agents.json` endpoint to discover its capabilities, configuration, and how to communicate with it. This configuration acts as a contract between your agent and the workspace.
-
-## Endpoint Structure
 
 The `agents.json` endpoint should return a JSON object with your agent(s) configuration. The endpoint must:
 
@@ -2963,94 +3999,168 @@ The `agents.json` endpoint should return a JSON object with your agent(s) config
 - Respond with a valid JSON structure
 - Be available at the path `/agents.json` relative to your agent's base URL
 
-## JSON Schema
-
-### Root Structure
+Example:
 
 ```json
 {
-  "<agent-id>": {
-    "name": "string",
-    "description": "string",
-    "image": "string (URL)",
-    "endpoints": {
-      "query": "string (URL)"
-    },
-    "features": {
-      "streaming": boolean,
-      "widget-dashboard-select": boolean,
-      "widget-dashboard-search": boolean
-    }
+  "financial_prompt_optimizer": {
+      "name": "Financial Prompt Optimizer",
+      "description": "Optimizes a user's prompt for finance: clearer, more specific, and actionable.",
+      "image": "https://github.com/OpenBB-finance/copilot-for-terminal-pro/assets/14093308/7da2a512-93b9-478d-90bc-b8c3dd0cabcf",
+      "endpoints": {"query": "http://localhost:7777/v1/query"},
+      "features": {
+          "streaming": true,
+          "widget-dashboard-select": false,
+          "widget-dashboard-search": false,
+      },
   }
 }
 ```
 
-### Field Descriptions
+See more examples in the [Complete Examples section](#complete-examples).
 
-#### Agent ID
+See the JSON Schema definition in the [JsonSchema section](#jsonschema).
 
-- **Type**: String (object key)
-- **Required**: Yes
-- **Description**: Unique identifier for your agent. Should be lowercase with hyphens for spaces.
-- **Example**: `"financial-analysis-agent"`
+## Field Reference
 
-#### name
+### `agent_id`: Unique ID of the agent
 
-- **Type**: String
-- **Required**: Yes
-- **Description**: Display name for your agent in the OpenBB Workspace UI
-- **Example**: `"Financial Analysis Expert"`
+The `agent_id` serves as a unique identifier for your agent within the OpenBB Workspace. This should be a lowercase string with hyphens replacing spaces, following standard slug conventions. The agent ID becomes the object key in the JSON response.
 
-#### description
+| Argument   | Type   | Required | Default | Example                        |
+| ---------- | ------ | -------- | ------- | ------------------------------ |
+| `agent_id` | string | Yes      | `null`  | `"financial_prompt_optimizer"` |
 
-- **Type**: String
-- **Required**: Yes
-- **Description**: Brief description of your agent's capabilities and purpose
-- **Example**: `"Specialized agent for equity research and financial statement analysis"`
+### `name`: Human-readable name
 
-#### image
+The `name` field specifies the human-readable display name for your agent that appears in the OpenBB Workspace user interface. This should be a clear, descriptive title that helps users understand what your agent does.
 
-- **Type**: String (URL)
-- **Required**: No
-- **Description**: URL to your agent's logo or avatar image. Should be a square image, ideally 256x256 pixels or larger.
-- **Example**: `"https://example.com/agent-logo.png"`
+| Argument | Type   | Required | Default | Example                        |
+| -------- | ------ | -------- | ------- | ------------------------------ |
+| `name`   | string | Yes      | `null`  | `"Financial Prompt Optimizer"` |
 
-#### endpoints
+### `description`: Human-readable description
 
-##### endpoints.query
+The `description` provides a brief overview of your agent's capabilities and intended purpose. This text helps users understand when and how to use your agent effectively, and it's displayed as the welcome AI agent message when the chat is empty. It is important to keep it concise but informative.
 
-- **Type**: String (URL)
-- **Required**: Yes
-- **Description**: Path or a full URL to your agent's query endpoint that handles user interactions
-- **Example**: `"/query"` or `"https://api.example.com/query"`
+If multi-orchestrator mode is enabled, then this description will be utilized by the main OpenBB Copilot to understand in what situations it should trigger this agent. So highlighting the capabilities and when to use a custom agent on its description is recommended.
 
-#### features
+| Argument      | Type   | Required | Default | Example                                                                            |
+| ------------- | ------ | -------- | ------- | ---------------------------------------------------------------------------------- |
+| `description` | string | Yes      | `null`  | `"Optimizes a user's prompt for finance: clearer, more specific, and actionable."` |
 
-Configuration object that declares your agent's capabilities:
+### `image`: Image thumbnail
 
-##### features.streaming
+The image field accepts a URL pointing to your agent's logo or avatar image. For optimal display in the OpenBB Workspace interface, use a square image with dimensions of at least 256x256 pixels. The image should be hosted on a publicly accessible URL.
 
-- **Type**: Boolean
-- **Required**: No
-- **Default**: Defaults to `true` for all agents even if not set
-- **Description**: Enables Server-Sent Events (SSE) for streaming responses.
-- **Example**: `true`
+| Argument | Type   | Required | Default | Example                                |
+| -------- | ------ | -------- | ------- | -------------------------------------- |
+| `image`  | string | No       | `null`  | `"https://example.com/agent-logo.png"` |
 
-##### features.widget-dashboard-select
+### `endpoints`: Communication endpoints
 
-- **Type**: Boolean
-- **Required**: No
-- **Default**: `false`
-- **Description**: Enables access to priority widgets (widgets that are currently selected or focused in the dashboard)
-- **Example**: `true`
+The query endpoint specifies where OpenBB Workspace should send user queries and interactions. This can be either a relative path like `"/query"` (if your agent runs on the same domain) or a full URL pointing to your agent's query handler like `"http://localhost:7777/v1/query"`.
 
-##### features.widget-dashboard-search
+This endpoint must accept POST requests and handle the QueryRequest format.
 
-- **Type**: Boolean
-- **Required**: No
-- **Default**: `false`
-- **Description**: Enables access to non-priority widgets on the current dashboard
-- **Example**: `true`
+| Argument          | Type   | Required | Default | Example                                          |
+| ----------------- | ------ | -------- | ------- | ------------------------------------------------ |
+| `endpoints`       | object | Yes      | `null`  | `{"query": "http://localhost:7777/v1/query"}`    |
+| `endpoints.query` | string | Yes      | `null`  | `"/query"` or `"http://localhost:7777/v1/query"` |
+
+### `features`: Features that your agent advertises
+
+Configuration object that declares the capabilities that your agent advertises to OpenBB Workspace. This allows the workspace to understand what features your agent supports and how to interact with it effectively.
+
+| Argument             | Type    | Required | Default | Example                                                 |
+| -------------------- | ------- | -------- | ------- | ------------------------------------------------------- |
+| `features`           | object  | Yes      | `null`  | `{"streaming": true, "widget-dashboard-select": false}` |
+
+See continuation of this section for details on each feature.
+
+#### `streaming`: Streaming responses
+
+The streaming feature enables Server-Sent Events (SSE) for your agent's responses, allowing real-time streaming of content back to users. This provides a better user experience with progressive response rendering. This feature defaults to `True` for all agents even if not explicitly set.
+
+| Argument    | Type    | Required | Default | Example |
+| ----------- | ------- | -------- | ------- | ------- |
+| `streaming` | boolean | No       | `true`  | `true`  |
+
+#### `widget-dashboard-select`: Explicit context widgets
+
+This feature grants your agent access to explicit context widgets (primary) - those that are currently selected or explicitly chosen by the user in the dashboard. When enabled, your agent will receive these widgets in the `widgets.primary` collection of the `QueryRequest`, allowing you to fetch and analyze their data.
+
+| Argument                  | Type    | Required | Default | Example |
+| ------------------------- | ------- | -------- | ------- | ------- |
+| `widget-dashboard-select` | boolean | No       | `false` | `true`  |
+
+#### `widget-dashboard-search`: Dashboard context widgets
+
+This feature provides your agent with access to all widgets available on the current dashboard, not just the selected ones. When enabled, these widgets appear in the `widgets.secondary` collection of the `QueryRequest`, giving your agent broader context about the user's dashboard setup and available data sources.
+
+| Argument                  | Type    | Required | Default | Example |
+| ------------------------- | ------- | -------- | ------- | ------- |
+| `widget-dashboard-search` | boolean | No       | `false` | `true`  |
+
+## JsonSchema
+
+```jsonschema
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "patternProperties": {
+    "^[a-z0-9-]+$": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "image": {
+          "type": ["string", "null"],
+          "format": "uri"
+        },
+        "endpoints": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": ["query"],
+          "additionalProperties": false
+        },
+        "features": {
+          "type": "object",
+          "properties": {
+            "streaming": {
+              "type": "boolean",
+              "default": true
+            },
+            "widget-dashboard-select": {
+              "type": "boolean",
+              "default": false
+            },
+            "widget-dashboard-search": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "required": ["name", "description", "endpoints", "features"],
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
+```
 
 ## Complete Examples
 
@@ -3136,60 +4246,6 @@ Configuration object that declares your agent's capabilities:
     }
   }
 }
-```
-
-## Implementation Notes
-
-### FastAPI Example
-
-```python
-from fastapi import FastAPI
-from fastapi.responses import JSONResponse
-
-app = FastAPI()
-
-@app.get("/agents.json")
-async def get_agents_config():
-    return JSONResponse(content={
-        "my-agent": {
-            "name": "My Custom Agent",
-            "description": "Description of my agent",
-            "image": "https://api.example.com/logo.png",  # Optional
-            "endpoints": {
-                "query": "/query"
-            },
-            "features": {
-                "streaming": True,
-                "widget-dashboard-select": True,
-                "widget-dashboard-search": False
-            }
-        }
-    })
-```
-
-### Express.js Example
-
-```javascript
-const express = require('express');
-const app = express();
-
-app.get('/agents.json', (req, res) => {
-  res.json({
-    "my-agent": {
-      "name": "My Custom Agent",
-      "description": "Description of my agent",
-      "image": "https://api.example.com/logo.png",  // Optional
-      "endpoints": {
-        "query": "http://localhost:3000/v1/query"
-      },
-      "features": {
-        "streaming": true,
-        "widget-dashboard-select": true,
-        "widget-dashboard-search": false
-      }
-    }
-  });
-});
 ```
 
 
@@ -6331,6 +7387,295 @@ If you don't want to set a date you can omit the value parameter or pass ```null
 - `normalized`: Multiplies the number by 100.
 - `normalizedPercent`: Multiplies the number by 100 and adds `%` (e.g., `0.5` becomes `50 %`).
 - `dateToYear`: Converts a date to just the year.
+
+
+---
+
+---
+title: OpenBB AI SDK
+sidebar_position: 7
+description: Build custom agents for OpenBB Workspace using the OpenBB AI SDK helpers and models
+keywords:
+- OpenBB AI SDK
+- custom agents
+- SSE
+- QueryRequest
+- widgets
+- citations
+- charts
+- tables
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="OpenBB AI SDK | OpenBB Workspace Docs" />
+
+The OpenBB AI SDK simplifies building custom agents for OpenBB Workspace by providing type-safe models and helper functions that handle schema validation for streaming Server-Sent Events (SSE). Instead of manually crafting SSE messages and managing event types, you can use simple Python functions prepare events that will stream text, show reasoning steps, fetch widget data, and create visualizations.
+
+The SDK handles all the SSE formatting and data serialization for you.
+
+Install the package in your agent backend:
+
+```bash
+pip install openbb-ai
+```
+
+The code is open source and is [available in this repository](https://github.com/OpenBB-finance/openbb-ai).
+
+## Request Handling
+
+The SDK provides `QueryRequest` to access everything your agent needs in a single, type-safe model:
+
+```python
+from openbb_ai.models import QueryRequest
+
+async def query(request: QueryRequest):
+    # Access chat history
+    messages = request.messages
+
+    # Access widgets (primary, secondary, extra)
+    widgets = request.widgets
+
+    # Use workspace context
+    timezone = request.timezone
+    workspace_state = request.workspace_state
+```
+
+**Key fields in QueryRequest:**
+
+- `messages` - chat conversation message history
+- `widgets` - all widgets data
+  - `primary` - widgets added as explicit context
+  - `secondary` - widgets in the current dashboard
+  - `extra` - artifacts and files in the chat
+- `urls` - URL pages shared in chat
+- `timezone` - timezone identified by the user's browser
+- `tools` - available MCP tools
+- `workspace_options` - features enabled in the Workspace
+- `workspace_state` - dashboard state and context
+  - `action_history` - user actions history
+  - `agents` - available agents
+  - `current_dashboard_uuid` - dashboard ID
+  - `current_dashboard_info` - dashboard metadata
+  - `current_page_context` - current page context
+
+We recommend making backends stateless and not cache server state between calls.
+
+## Streaming Text
+
+The SDK simplifies streaming responses by handling SSE formatting automatically. You can yield message chunks like this:
+
+```python
+from openbb_ai import message_chunk
+
+# Yield message chunks for the response stream
+for chunk in llm_response:
+    yield message_chunk(chunk).model_dump()
+```
+
+**Related models:**
+
+- `MessageChunkSSE` - For streaming text/markdown tokens.
+- `MessageArtifactSSE` - For streaming larger content blocks like tables or charts.
+
+## Reasoning Steps
+
+Show users what your agent is thinking and doing with reasoning steps. The SDK handles the SSE event formatting:
+
+```python
+from openbb_ai import reasoning_step
+
+# Show progress
+yield reasoning_step(event_type="INFO", message="Analyzing market data").model_dump()
+
+# Include details
+yield reasoning_step(
+    event_type="SUCCESS",
+    message="Data retrieved",
+    details={"records": 1000, "timeframe": "1Y"}
+).model_dump()
+```
+
+**Related models:**
+
+- `StatusUpdateSSE` - Formats reasoning steps and status updates
+  - Event types: `INFO`, `SUCCESS`, `WARNING`, `ERROR`
+  - Optional details dictionary for key-value pairs
+
+## Widget Data Access
+
+The SDK simplifies fetching data from dashboard widgets. Widget data is retrieved by yielding a special event that triggers a function call on the Workspace (client) side. Instead of manually creating these events, use the helper functions:
+
+```python
+from openbb_ai import get_widget_data
+from openbb_ai.models import WidgetRequest, Widget
+
+# Request data from multiple widgets
+widget_requests = [
+    WidgetRequest(
+        widget=widget,
+        input_arguments={p.name: p.current_value for p in widget.params}
+    )
+]
+
+# SDK handles the SSE formatting
+yield get_widget_data(widget_requests).model_dump()
+```
+
+Important: Once this event is sent, the execution loop of the agent should break and wait for the Workspace to call the `/query` endpoint again with the widget data added to context.
+
+**Related models:**
+
+- `Widget` - Dashboard widget with metadata and parameters
+  - Contains widget ID, name, type
+  - Includes parameter definitions
+- `WidgetParam` - Individual parameter configuration
+  - `name` - parameter identifier
+  - `type` - data type
+  - `current_value` - current value
+- `WidgetCollection` - Container for widget groups
+  - `primary` - user-selected widgets
+  - `secondary` - dashboard widgets
+  - `extra` - artifacts and files
+- `WidgetRequest` - Data request specification
+- `FunctionCallSSE` - The SSE that triggers widget data retrieval
+
+**Widget features to declare in `/agents.json`:**
+
+- `widget-dashboard-select` - access user-selected widgets. When true, the widgets explicitly added to context by the user appear in `request.widgets.primary`.
+- `widget-dashboard-search` - access dashboard widgets
+
+## Parsing Widget Data
+
+When widgets return data, it comes in various formats that need to be parsed appropriately. The SDK provides data format models to identify and handle each type:
+
+```python
+from openbb_ai.models import (
+    PdfDataFormat,
+    ImageDataFormat,
+    SpreadsheetDataFormat,
+    RawObjectDataFormat,
+    SingleDataContent,
+    SingleFileReference,
+    DataContent,
+    DataFileReferences
+)
+
+async def handle_widget_data(data: list[DataContent | DataFileReferences]) -> str:
+    result_str = ""
+    for result in data:
+        for item in result.items:
+            if isinstance(item.data_format, PdfDataFormat):
+                # Parse PDF content
+                if isinstance(item, SingleDataContent):
+                    # Base64 encoded PDF
+                    content = base64.b64decode(item.content)
+                    # Extract text using pdfplumber or similar
+                elif isinstance(item, SingleFileReference):
+                    # PDF from URL
+                    content = await download_file(item.url)
+                    # Process PDF content
+
+            elif isinstance(item.data_format, SpreadsheetDataFormat):
+                # Parse Excel/CSV data
+                # Convert to dataframe or table structure
+
+            elif isinstance(item.data_format, ImageDataFormat):
+                # Handle image data
+                # May contain charts, screenshots, etc.
+
+            else:
+                # RawObjectDataFormat - JSON/dict data
+                result_str += str(item.content)
+
+    return result_str
+```
+
+**Data format models:**
+
+- `PdfDataFormat` - Identifies PDF documents from widgets
+  - Contains filename and metadata
+  - Data comes as base64 or URL reference
+  - Use libraries like `pdfplumber` to extract text and tables
+
+- `SpreadsheetDataFormat` - Identifies Excel/CSV data
+  - Tabular data from financial widgets
+  - Parse with `pandas` or similar libraries
+
+- `ImageDataFormat` - Identifies image content
+  - Charts, graphs, screenshots from widgets
+  - May require OCR or image analysis
+
+- `RawObjectDataFormat` - Default JSON/dictionary format
+  - Structured data from API responses
+  - Direct access to nested fields
+
+**Data delivery models:**
+
+- `SingleDataContent` - Data embedded as base64
+- `SingleFileReference` - Data available via URL
+- `DataContent` - Container for multiple data items
+- `DataFileReferences` - References to external files
+
+## Data Attribution & Citations
+
+The SDK makes it easy to cite your sources, ensuring transparency about where data comes from:
+
+```python
+from openbb_ai import cite, citations
+
+# Create citations for widgets used
+citation = cite(
+    widget=price_widget,
+    input_arguments={"symbol": "AAPL"},
+    extra_details={"timeframe": "1D"}
+)
+
+# Send all citations at once
+yield citations([citation]).model_dump()
+```
+
+**Related models:**
+
+- `Citation` - Links outputs to data sources
+  - `widget` - source widget reference
+  - `input_arguments` - parameters used
+  - `extra_details` - additional metadata
+- `SourceInfo` - Provides detailed source attribution
+- `CitationHighlightBoundingBox` - Visual highlighting for line-level citations in PDF documents
+
+## Visualizations
+
+The SDK abstracts the complexity of creating interactive charts and tables. Simply provide your data and configuration:
+
+```python
+from openbb_ai import table, chart
+
+# Create a data table
+yield table(
+    data=[{"symbol": "AAPL", "price": 150.25, "change": 2.5}],
+    name="Stock Prices",
+    description="Current market prices"
+).model_dump()
+
+# Create interactive charts
+yield chart(
+    type="line",
+    data=price_history,
+    x_key="date",
+    y_keys=["price"],
+    name="Price History",
+    description="Stock price over time"
+).model_dump()
+```
+
+**Supported chart types and models:**
+
+- `LineChartParameters` - Time series and trends
+- `BarChartParameters` - Comparisons and distributions
+- `ScatterChartParameters` - Correlations and relationships
+- `PieChartParameters` - Proportions and percentages
+- `DonutChartParameters` - Hierarchical proportions
 
 
 ---
