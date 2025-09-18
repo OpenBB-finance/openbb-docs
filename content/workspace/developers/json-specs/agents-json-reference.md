@@ -19,11 +19,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 The `agents.json` endpoint is an important component of custom AI agent integration in OpenBB Workspace. This endpoint provides metadata and configuration information that tells the workspace how to interact with your custom agent.
 
-## Overview
-
 When you add a custom AI agent to OpenBB Workspace, the system first queries your agent's `/agents.json` endpoint to discover its capabilities, configuration, and how to communicate with it. This configuration acts as a contract between your agent and the workspace.
-
-## Endpoint Structure
 
 The `agents.json` endpoint should return a JSON object with your agent(s) configuration. The endpoint must:
 
@@ -32,94 +28,168 @@ The `agents.json` endpoint should return a JSON object with your agent(s) config
 - Respond with a valid JSON structure
 - Be available at the path `/agents.json` relative to your agent's base URL
 
-## JSON Schema
-
-### Root Structure
+Example:
 
 ```json
 {
-  "<agent-id>": {
-    "name": "string",
-    "description": "string",
-    "image": "string (URL)",
-    "endpoints": {
-      "query": "string (URL)"
-    },
-    "features": {
-      "streaming": boolean,
-      "widget-dashboard-select": boolean,
-      "widget-dashboard-search": boolean
-    }
+  "financial_prompt_optimizer": {
+      "name": "Financial Prompt Optimizer",
+      "description": "Optimizes a user's prompt for finance: clearer, more specific, and actionable.",
+      "image": "https://github.com/OpenBB-finance/copilot-for-terminal-pro/assets/14093308/7da2a512-93b9-478d-90bc-b8c3dd0cabcf",
+      "endpoints": {"query": "http://localhost:7777/v1/query"},
+      "features": {
+          "streaming": true,
+          "widget-dashboard-select": false,
+          "widget-dashboard-search": false,
+      },
   }
 }
 ```
 
-### Field Descriptions
+See more examples in the [Complete Examples section](#complete-examples).
 
-#### Agent ID
+See the JSON Schema definition in the [JsonSchema section](#jsonschema).
 
-- **Type**: String (object key)
-- **Required**: Yes
-- **Description**: Unique identifier for your agent. Should be lowercase with hyphens for spaces.
-- **Example**: `"financial-analysis-agent"`
+## Field Reference
 
-#### name
+### `agent_id`: Unique ID of the agent
 
-- **Type**: String
-- **Required**: Yes
-- **Description**: Display name for your agent in the OpenBB Workspace UI
-- **Example**: `"Financial Analysis Expert"`
+The `agent_id` serves as a unique identifier for your agent within the OpenBB Workspace. This should be a lowercase string with hyphens replacing spaces, following standard slug conventions. The agent ID becomes the object key in the JSON response.
 
-#### description
+| Argument   | Type   | Required | Default | Example                        |
+| ---------- | ------ | -------- | ------- | ------------------------------ |
+| `agent_id` | string | Yes      | `null`  | `"financial_prompt_optimizer"` |
 
-- **Type**: String
-- **Required**: Yes
-- **Description**: Brief description of your agent's capabilities and purpose
-- **Example**: `"Specialized agent for equity research and financial statement analysis"`
+### `name`: Human-readable name
 
-#### image
+The `name` field specifies the human-readable display name for your agent that appears in the OpenBB Workspace user interface. This should be a clear, descriptive title that helps users understand what your agent does.
 
-- **Type**: String (URL)
-- **Required**: No
-- **Description**: URL to your agent's logo or avatar image. Should be a square image, ideally 256x256 pixels or larger.
-- **Example**: `"https://example.com/agent-logo.png"`
+| Argument | Type   | Required | Default | Example                        |
+| -------- | ------ | -------- | ------- | ------------------------------ |
+| `name`   | string | Yes      | `null`  | `"Financial Prompt Optimizer"` |
 
-#### endpoints
+### `description`: Human-readable description
 
-##### endpoints.query
+The `description` provides a brief overview of your agent's capabilities and intended purpose. This text helps users understand when and how to use your agent effectively, and it's displayed as the welcome AI agent message when the chat is empty. It is important to keep it concise but informative.
 
-- **Type**: String (URL)
-- **Required**: Yes
-- **Description**: Path or a full URL to your agent's query endpoint that handles user interactions
-- **Example**: `"/query"` or `"https://api.example.com/query"`
+If multi-orchestrator mode is enabled, then this description will be utilized by the main OpenBB Copilot to understand in what situations it should trigger this agent. So highlighting the capabilities and when to use a custom agent on its description is recommended.
 
-#### features
+| Argument      | Type   | Required | Default | Example                                                                            |
+| ------------- | ------ | -------- | ------- | ---------------------------------------------------------------------------------- |
+| `description` | string | Yes      | `null`  | `"Optimizes a user's prompt for finance: clearer, more specific, and actionable."` |
 
-Configuration object that declares your agent's capabilities:
+### `image`: Image thumbnail
 
-##### features.streaming
+The image field accepts a URL pointing to your agent's logo or avatar image. For optimal display in the OpenBB Workspace interface, use a square image with dimensions of at least 256x256 pixels. The image should be hosted on a publicly accessible URL.
 
-- **Type**: Boolean
-- **Required**: No
-- **Default**: Defaults to `true` for all agents even if not set
-- **Description**: Enables Server-Sent Events (SSE) for streaming responses.
-- **Example**: `true`
+| Argument | Type   | Required | Default | Example                                |
+| -------- | ------ | -------- | ------- | -------------------------------------- |
+| `image`  | string | No       | `null`  | `"https://example.com/agent-logo.png"` |
 
-##### features.widget-dashboard-select
+### `endpoints`: Communication endpoints
 
-- **Type**: Boolean
-- **Required**: No
-- **Default**: `false`
-- **Description**: Enables access to priority widgets (widgets that are currently selected or focused in the dashboard)
-- **Example**: `true`
+The query endpoint specifies where OpenBB Workspace should send user queries and interactions. This can be either a relative path like `"/query"` (if your agent runs on the same domain) or a full URL pointing to your agent's query handler like `"http://localhost:7777/v1/query"`.
 
-##### features.widget-dashboard-search
+This endpoint must accept POST requests and handle the QueryRequest format.
 
-- **Type**: Boolean
-- **Required**: No
-- **Default**: `false`
-- **Description**: Enables access to non-priority widgets on the current dashboard
-- **Example**: `true`
+| Argument          | Type   | Required | Default | Example                                          |
+| ----------------- | ------ | -------- | ------- | ------------------------------------------------ |
+| `endpoints`       | object | Yes      | `null`  | `{"query": "http://localhost:7777/v1/query"}`    |
+| `endpoints.query` | string | Yes      | `null`  | `"/query"` or `"http://localhost:7777/v1/query"` |
+
+### `features`: Features that your agent advertises
+
+Configuration object that declares the capabilities that your agent advertises to OpenBB Workspace. This allows the workspace to understand what features your agent supports and how to interact with it effectively.
+
+| Argument             | Type    | Required | Default | Example                                                 |
+| -------------------- | ------- | -------- | ------- | ------------------------------------------------------- |
+| `features`           | object  | Yes      | `null`  | `{"streaming": true, "widget-dashboard-select": false}` |
+
+See continuation of this section for details on each feature.
+
+#### `streaming`: Streaming responses
+
+The streaming feature enables Server-Sent Events (SSE) for your agent's responses, allowing real-time streaming of content back to users. This provides a better user experience with progressive response rendering. This feature defaults to `True` for all agents even if not explicitly set.
+
+| Argument    | Type    | Required | Default | Example |
+| ----------- | ------- | -------- | ------- | ------- |
+| `streaming` | boolean | No       | `true`  | `true`  |
+
+#### `widget-dashboard-select`: Explicit context widgets
+
+This feature grants your agent access to explicit context widgets (primary) - those that are currently selected or explicitly chosen by the user in the dashboard. When enabled, your agent will receive these widgets in the `widgets.primary` collection of the `QueryRequest`, allowing you to fetch and analyze their data.
+
+| Argument                  | Type    | Required | Default | Example |
+| ------------------------- | ------- | -------- | ------- | ------- |
+| `widget-dashboard-select` | boolean | No       | `false` | `true`  |
+
+#### `widget-dashboard-search`: Dashboard context widgets
+
+This feature provides your agent with access to all widgets available on the current dashboard, not just the selected ones. When enabled, these widgets appear in the `widgets.secondary` collection of the `QueryRequest`, giving your agent broader context about the user's dashboard setup and available data sources.
+
+| Argument                  | Type    | Required | Default | Example |
+| ------------------------- | ------- | -------- | ------- | ------- |
+| `widget-dashboard-search` | boolean | No       | `false` | `true`  |
+
+## JsonSchema
+
+```jsonschema
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "patternProperties": {
+    "^[a-z0-9-]+$": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "image": {
+          "type": ["string", "null"],
+          "format": "uri"
+        },
+        "endpoints": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": ["query"],
+          "additionalProperties": false
+        },
+        "features": {
+          "type": "object",
+          "properties": {
+            "streaming": {
+              "type": "boolean",
+              "default": true
+            },
+            "widget-dashboard-select": {
+              "type": "boolean",
+              "default": false
+            },
+            "widget-dashboard-search": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "required": ["name", "description", "endpoints", "features"],
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
+```
 
 ## Complete Examples
 
@@ -205,58 +275,4 @@ Configuration object that declares your agent's capabilities:
     }
   }
 }
-```
-
-## Implementation Notes
-
-### FastAPI Example
-
-```python
-from fastapi import FastAPI
-from fastapi.responses import JSONResponse
-
-app = FastAPI()
-
-@app.get("/agents.json")
-async def get_agents_config():
-    return JSONResponse(content={
-        "my-agent": {
-            "name": "My Custom Agent",
-            "description": "Description of my agent",
-            "image": "https://api.example.com/logo.png",  # Optional
-            "endpoints": {
-                "query": "/query"
-            },
-            "features": {
-                "streaming": True,
-                "widget-dashboard-select": True,
-                "widget-dashboard-search": False
-            }
-        }
-    })
-```
-
-### Express.js Example
-
-```javascript
-const express = require('express');
-const app = express();
-
-app.get('/agents.json', (req, res) => {
-  res.json({
-    "my-agent": {
-      "name": "My Custom Agent",
-      "description": "Description of my agent",
-      "image": "https://api.example.com/logo.png",  // Optional
-      "endpoints": {
-        "query": "http://localhost:3000/v1/query"
-      },
-      "features": {
-        "streaming": true,
-        "widget-dashboard-select": true,
-        "widget-dashboard-search": false
-      }
-    }
-  });
-});
 ```
