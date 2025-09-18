@@ -16,7 +16,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Extract and cite specific content from PDF documents with precise text highlighting. Use `pdfplumber` to get text positions and create visual citations in Workspace.
 
-Reference implementation [here](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/vanilla-agent-pdf-citations).
+Reference implementation [in this GitHub repository](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/vanilla-agent-pdf-citations).
 
 <img className="pro-border-gradient" width="800" alt="Document Citations" src="https://openbb-cms.directus.app/assets/c47a15c0-562c-4fc1-a221-a11cef487826.png" />
 
@@ -42,6 +42,7 @@ return JSONResponse(content={
 ```
 
 ### Query flow
+
 - Extract PDF content when widget data contains PDF format
 - Use `pdfplumber` to get text with character positions
 - Store text positions for citation highlighting
@@ -51,6 +52,7 @@ return JSONResponse(content={
 - Stream citations with bounding boxes for visual highlighting
 
 ### OpenBB AI SDK
+
 - `CitationHighlightBoundingBox`: Precise text highlighting with coordinates
 - `PdfDataFormat`: Identifies PDF content in widget data
 - `quote_bounding_boxes`: Attach visual highlights to citations
@@ -107,30 +109,30 @@ def extract_pdf_with_positions(pdf_bytes: bytes) -> Tuple[str, List[Dict[str, An
     return document_text, text_positions
 ```
 
-Create citations with PDF highlighting:
+Create citations with line/word level highlighting in the PDF:
 
 ```python
 async def handle_widget_data(data: list[DataContent | DataFileReferences]):
     """Process widget data and create PDF citations."""
-    
+
     widget_text, pdf_text_positions = await handle_widget_data(message.data)
     context_str += widget_text
-    
+
     # Create citations for widget data
     for widget_data_request in message.input_arguments["data_sources"]:
         widget = matching_widgets[0]
-        
+
         # Basic widget citation
         basic_citation = cite(
             widget=widget,
             input_arguments=widget_data_request["input_args"],
         )
         citations_list.append(basic_citation)
-        
+
         # PDF citation with highlighting
         if pdf_text_positions and len(pdf_text_positions) > 0:
             first_line = pdf_text_positions[0]
-            
+
             pdf_citation = cite(
                 widget=widget,
                 input_arguments=widget_data_request["input_args"],
@@ -139,7 +141,7 @@ async def handle_widget_data(data: list[DataContent | DataFileReferences]):
                     "Reference": "First sentence of document"
                 }
             )
-            
+
             # Add precise text highlighting
             pdf_citation.quote_bounding_boxes = [[
                 CitationHighlightBoundingBox(
@@ -151,6 +153,6 @@ async def handle_widget_data(data: list[DataContent | DataFileReferences]):
                     bottom=first_line['bottom']
                 )
             ]]
-            
+
             citations_list.append(pdf_citation)
 ```

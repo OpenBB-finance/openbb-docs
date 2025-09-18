@@ -15,7 +15,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Receive the list of widgets on the current dashboard (`secondary`) and any explicitly selected (`primary`). Summarize what’s available and fetch data for a chosen widget.
 
-Reference implementation [here](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/40-vanilla-agent-dashboard-widgets/vanilla_agent_dashboard_widgets/main.py).
+Reference implementation in [this GitHub repository](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/40-vanilla-agent-dashboard-widgets/vanilla_agent_dashboard_widgets/main.py).
 
 Example that highlights that the agent has access to data on the dashboard (secondary) and that there are no tabs.
 
@@ -48,6 +48,7 @@ return JSONResponse(content={
 ```
 
 ### Query flow
+
 - Access both `widgets.primary` (user-selected) and `widgets.secondary` (dashboard) widget collections
 - Combine widget lists for comprehensive dashboard overview
 - Check `workspace_state.current_dashboard_info` for tab information
@@ -59,6 +60,7 @@ return JSONResponse(content={
 - Process returned data and show preview with metadata
 
 ### OpenBB AI SDK
+
 - `WidgetCollection`: Contains `primary`, `secondary`, and `extra` widget groups
 - `Widget`: Individual widget with `uuid`, `name`, `type`, and `params`
 - `WidgetParam`: Parameter definition with `name`, `type`, `current_value`
@@ -80,7 +82,7 @@ async def query(request: QueryRequest) -> EventSourceResponse:
         all_widgets = []
         primary_count = 0
         secondary_count = 0
-        
+
         if request.widgets:
             if request.widgets.primary:
                 all_widgets.extend(request.widgets.primary)
@@ -88,18 +90,18 @@ async def query(request: QueryRequest) -> EventSourceResponse:
             if request.widgets.secondary:
                 all_widgets.extend(request.widgets.secondary)
                 secondary_count = len(request.widgets.secondary)
-        
+
         if not all_widgets:
             yield message_chunk("No widgets found on your dashboard.").model_dump()
             return
-        
+
         # Stream dashboard overview
         dashboard_info = ""
         if request.workspace_state and request.workspace_state.current_dashboard_info:
             dashboard_name = request.workspace_state.current_dashboard_info.name
             tab_count = len(request.workspace_state.current_dashboard_info.tabs)
             dashboard_info = f"Dashboard: **{dashboard_name}** ({tab_count} tabs)\n\n"
-        
+
         widget_summary = f"""# Dashboard Widget Analysis
 
 {dashboard_info}## Widget Inventory
@@ -109,29 +111,28 @@ async def query(request: QueryRequest) -> EventSourceResponse:
 
 ## Available Widgets
 """
-        
+
         for i, widget in enumerate(all_widgets[:5]):  # Show first 5
             widget_type = "🎯 Selected" if i < primary_count else "📊 Dashboard"
             param_count = len(widget.params) if widget.params else 0
             widget_summary += f"- **{widget.name}** ({widget_type}) - {param_count} parameters\n"
-        
+
         if len(all_widgets) > 5:
             widget_summary += f"- ... and {len(all_widgets) - 5} more widgets\n"
-        
+
         yield message_chunk(widget_summary + "\n").model_dump()
-        
+
         # Demonstrate data retrieval with last widget
         if all_widgets:
             sample_widget = all_widgets[-1]
             yield message_chunk(f"Let me fetch data from **{sample_widget.name}** as an example:\n\n").model_dump()
-            
+
             yield get_widget_data([
                 WidgetRequest(
                     widget=sample_widget,
                     input_arguments={p.name: p.current_value for p in sample_widget.params} if sample_widget.params else {}
                 )
             ]).model_dump()
-    
+
     return EventSourceResponse(execution_loop(), media_type="text/event-stream")
 ```
-

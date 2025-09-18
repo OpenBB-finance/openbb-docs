@@ -16,7 +16,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Retrieve data for user‑selected widgets and pass it to your model. Enable `widget-dashboard-select` and call `get_widget_data` when the latest user message arrives.
 
-Reference implementation [here](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/30-vanilla-agent-raw-widget-data/vanilla_agent_raw_context/main.py).
+Reference implementation in [this GitHub repository](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/30-vanilla-agent-raw-widget-data/vanilla_agent_raw_context/main.py).
 
 <img className="pro-border-gradient" width="800" alt="Raw reply without context" src="https://openbb-cms.directus.app/assets/7bbbc4c9-7cd2-4bb0-9ad9-641588cf541e.png" />
 
@@ -39,16 +39,18 @@ return JSONResponse(content={
 ```
 
 ### Query flow
+
 - Check if latest message is human with `widgets.primary` populated
 - Build `WidgetRequest` objects with current parameter values
 - Early exit: yield `get_widget_data()` SSE immediately for UI to execute
 - On subsequent request with tool results:
   - Parse `DataContent` items from tool message
-  - Extract and format widget data into context string  
+  - Extract and format widget data into context string
   - Append context to user messages for LLM processing
   - Stream LLM response with `message_chunk()`
 
 ### OpenBB AI SDK
+
 - `get_widget_data(widget_requests)`: Creates `FunctionCallSSE` for widget data retrieval
 - `WidgetRequest(widget, input_arguments)`: Specifies widget and parameter values
 - `Widget`: Contains widget metadata (uuid, name, type, params)
@@ -85,11 +87,11 @@ async def query(request: QueryRequest) -> EventSourceResponse:
     # Process tool message with widget data
     openai_messages = [
         ChatCompletionSystemMessageParam(
-            role="system", 
+            role="system",
             content="You are a helpful financial assistant."
         )
     ]
-    
+
     context_str = ""
     for message in request.messages:
         if message.role == "human":
@@ -101,11 +103,11 @@ async def query(request: QueryRequest) -> EventSourceResponse:
             for data_content in message.data:
                 for item in data_content.items:
                     context_str += str(item.content) + "\n"
-    
+
     # Append context to last user message
     if context_str and openai_messages:
         openai_messages[-1]["content"] += "\n\nContext:\n" + context_str
-    
+
     async def execution_loop():
         async for event in await client.chat.completions.create(
             model="gpt-4o",
@@ -114,7 +116,7 @@ async def query(request: QueryRequest) -> EventSourceResponse:
         ):
             if chunk := event.choices[0].delta.content:
                 yield message_chunk(chunk).model_dump()
-    
+
     return EventSourceResponse(execution_loop(), media_type="text/event-stream")
 ```
 
@@ -148,4 +150,3 @@ if (
 ```
 
 This gives your agent broader context about the user's dashboard setup and available data sources, rather than just the widgets they've explicitly selected.
-

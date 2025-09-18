@@ -15,7 +15,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Stream visualizations (line, bar, scatter, pie, donut) with `chart(...)`. Charts appear below the message that emitted them.
 
-Reference implementation [here](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/33-vanilla-agent-charts/vanilla_agent_charts/main.py).
+Reference implementation in [this GitHub repository](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/33-vanilla-agent-charts/vanilla_agent_charts/main.py).
 
 <img className="pro-border-gradient" width="800" alt="Charts" src="https://openbb-cms.directus.app/assets/e9d93282-20cb-4b3a-bf58-17032191e82a.png" />
 
@@ -38,6 +38,7 @@ return JSONResponse(content={
 ```
 
 ### Query flow
+
 - Process user request and prepare data for visualization
 - Stream explanatory text with `message_chunk()`
 - Create chart data as list of dictionaries
@@ -48,6 +49,7 @@ return JSONResponse(content={
 - Charts render interactively below streamed content
 
 ### OpenBB AI SDK
+
 - `chart(type, data, x_key, y_keys, name, description)`: Creates `MessageArtifactSSE` for chart display
 - Chart types: `"line"`, `"bar"`, `"scatter"`, `"pie"`, `"donut"`
 - Chart parameters handled by specific models:
@@ -67,7 +69,7 @@ async def query(request: QueryRequest) -> EventSourceResponse:
     async def execution_loop():
         # Stream introduction
         yield message_chunk("Let me create some visualizations to illustrate the data trends.\n\n").model_dump()
-        
+
         # Prepare time series data
         price_data = [
             {"date": "2024-01-01", "price": 150.0, "volume": 1200000},
@@ -75,7 +77,7 @@ async def query(request: QueryRequest) -> EventSourceResponse:
             {"date": "2024-01-03", "price": 148.2, "volume": 1100000},
             {"date": "2024-01-04", "price": 155.8, "volume": 1450000},
         ]
-        
+
         # Create line chart for price trend
         yield chart(
             type="line",
@@ -85,9 +87,9 @@ async def query(request: QueryRequest) -> EventSourceResponse:
             name="Stock Price Trend",
             description="Daily stock price movement over time"
         ).model_dump()
-        
+
         yield message_chunk("\n\nThe line chart shows an overall upward trend. Now let's look at volume distribution:\n\n").model_dump()
-        
+
         # Create bar chart for volume
         yield chart(
             type="bar",
@@ -97,7 +99,7 @@ async def query(request: QueryRequest) -> EventSourceResponse:
             name="Trading Volume",
             description="Daily trading volume by date"
         ).model_dump()
-        
+
         # Portfolio allocation pie chart
         portfolio_data = [
             {"asset": "Stocks", "allocation": 60},
@@ -105,9 +107,9 @@ async def query(request: QueryRequest) -> EventSourceResponse:
             {"asset": "Cash", "allocation": 10},
             {"asset": "Real Estate", "allocation": 5}
         ]
-        
+
         yield message_chunk("\n\nHere's the portfolio allocation breakdown:\n\n").model_dump()
-        
+
         yield chart(
             type="pie",
             data=portfolio_data,
@@ -116,7 +118,6 @@ async def query(request: QueryRequest) -> EventSourceResponse:
             name="Portfolio Allocation",
             description="Investment portfolio distribution by asset class"
         ).model_dump()
-    
+
     return EventSourceResponse(execution_loop(), media_type="text/event-stream")
 ```
-

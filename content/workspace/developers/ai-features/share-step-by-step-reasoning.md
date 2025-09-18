@@ -15,7 +15,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Stream status updates with `reasoning_step` so users can track multi‑stage actions (fetching data, running tools, post‑processing) as tokens arrive.
 
-Reference implementation [here](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/31-vanilla-agent-reasoning-steps/vanilla_agent_reasoning_steps/main.py).
+Reference implementation in [this GitHub repository](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/31-vanilla-agent-reasoning-steps/vanilla_agent_reasoning_steps/main.py).
 
 <img className="pro-border-gradient" width="800" alt="Reasoning" src="https://openbb-cms.directus.app/assets/eaf36840-a06d-4958-9e0d-cb2570e5a08e.png" />
 
@@ -39,6 +39,7 @@ return JSONResponse(content={
 ```
 
 ### Query flow
+
 - Parse `QueryRequest.messages` and convert to OpenAI-compatible format
 - Add system message to define agent role and capabilities
 - Emit `reasoning_step()` at key processing stages:
@@ -49,6 +50,7 @@ return JSONResponse(content={
 - Send final reasoning step upon completion
 
 ### OpenBB AI SDK
+
 - `reasoning_step(event_type, message, details)`: Creates `StatusUpdateSSE` events
   - `event_type`: `"INFO"`, `"SUCCESS"`, `"WARNING"`, `"ERROR"`
   - `message`: Human-readable status description
@@ -67,31 +69,31 @@ async def query(request: QueryRequest) -> EventSourceResponse:
     # Convert messages to OpenAI format
     openai_messages = [
         ChatCompletionSystemMessageParam(
-            role="system", 
+            role="system",
             content="You are a helpful financial assistant."
         )
     ]
-    
+
     for message in request.messages:
         if message.role == "human":
             openai_messages.append(
                 ChatCompletionUserMessageParam(role="user", content=message.content)
             )
-    
+
     async def execution_loop():
         # Pre-processing reasoning
         yield reasoning_step(
-            event_type="INFO", 
+            event_type="INFO",
             message="Processing your request...",
             details={"total_messages": len(request.messages)}
         ).model_dump()
-        
+
         # Stream LLM response
         yield reasoning_step(
-            event_type="INFO", 
+            event_type="INFO",
             message="Generating response..."
         ).model_dump()
-        
+
         async for event in await client.chat.completions.create(
             model="gpt-4o",
             messages=openai_messages,
@@ -99,13 +101,12 @@ async def query(request: QueryRequest) -> EventSourceResponse:
         ):
             if chunk := event.choices[0].delta.content:
                 yield message_chunk(chunk).model_dump()
-        
+
         # Completion reasoning
         yield reasoning_step(
-            event_type="SUCCESS", 
+            event_type="SUCCESS",
             message="Response generated successfully!"
         ).model_dump()
-    
+
     return EventSourceResponse(execution_loop(), media_type="text/event-stream")
 ```
-
