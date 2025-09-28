@@ -58,30 +58,29 @@ The widget configuration in `widgets.json` should be like:
 
 We will utilize this [repository example](https://github.com/OpenBB-finance/backends-for-openbb/tree/main/widget-examples/matching-widget-mcp-tool) as a way to demonstrate the flow.
 
-### 1. OpenBB widget with matching MCP
+### 1. Connect MCP Server
 
-First we connect the backend to OpenBB.
-
-<img className="pro-border-gradient" width="800" alt="OpenBB backend connection interface showing name and URL fields" src="https://openbb-cms.directus.app/assets/77a2c0d8-3a9b-47a7-933e-85e7131ef954.png" />
-
-The name and URL of the backend can be ANYTHING.
-
-However, what is important is for the widget configuration to include `mcp_tool` as follows:
-
-<img className="pro-border-gradient" width="800" alt="Widget configuration showing mcp_tool property with server and tool ID" src="https://openbb-cms.directus.app/assets/1603ad32-6bd2-43bc-a4cc-553cb4163c34.png" />
-
-### 2. Connect MCP Server
-
-Then you want to connect the MCP Server and ensure that it has the MCP Server and the MCP tool of interest have the **EXACT** same name as the one provided in the `widgets.json`.
+First you want to connect the MCP Server to identify the server name and tool that you will need to reference in your `widgets.json` configuration.
 
 <img className="pro-border-gradient" width="800" alt="MCP Server connection dialog showing 'Financial Data' server name" src="https://openbb-cms.directus.app/assets/6d66dcf3-98c0-4150-aace-035a063df35a.png" />
 
-In the case above, note that the name of MCP Server is "Financial Data" and so is the `revenue_mockup_data.mcp_tool.mcp_server` field in `widgets.json`.
+In the case above, note that the name of MCP Server is "Financial Data" - this will be the value you need for the `mcp_server` field in your `widgets.json`.
 
 <img className="pro-border-gradient" width="800" alt="MCP tool configuration showing 'get_company_revenue_data' tool name" src="https://openbb-cms.directus.app/assets/643af141-6b8c-4828-b7dc-2242560d71f8.png" />
 
-And also the MCP tool is "get_company_revenue_data" and so is the `revenue_mockup_data.mcp_tool.mcp_tool` field in `widgets.json`.
+Similarly, the MCP tool is "get_company_revenue_data" - this will be the value you need for the `tool_id` field in your `widgets.json`.
 
+### 2. Configure OpenBB widget with matching MCP
+
+The important is for the widget configuration to include `mcp_tool` with the **EXACT** same names as the ones from your MCP Server:
+
+<img className="pro-border-gradient" width="800" alt="Widget configuration showing mcp_tool property with server and tool ID" src="https://openbb-cms.directus.app/assets/1603ad32-6bd2-43bc-a4cc-553cb4163c34.png" />
+
+Notice how the `mcp_server` value "Financial Data" and `tool_id` value "get_company_revenue_data" match exactly with the MCP server configuration from step 1.
+
+The name and URL of the backend can be ANYTHING.
+
+<img className="pro-border-gradient" width="800" alt="OpenBB backend connection interface showing name and URL fields" src="https://openbb-cms.directus.app/assets/77a2c0d8-3a9b-47a7-933e-85e7131ef954.png" />
 
 ### 3. Matching widget citation
 
