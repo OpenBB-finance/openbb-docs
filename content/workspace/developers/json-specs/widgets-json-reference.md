@@ -73,6 +73,11 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
   Provides a secondary category for refining search results.
   _Example:_ `"Options"`
 
+- **imgUrl**
+  _Type:_ `string`
+  Image URL for the widget - will show a preview when hovering in search/add widget menu.
+  _Example:_ `"https://myexample-imagelink.xyw/widget1"`
+
 - **type**
   _Type:_ `string`
   Sets the default visualization type for the widget.
@@ -215,6 +220,12 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
         Specifies the data type of the cell.
         _Example:_ `"text"`
         _Possible values:_ `"text"`, `"number"`, `"boolean"`, `"date"`, `"dateString"`, `"object"`
+
+      - **align**
+        _Type:_ `string`
+        Specifies the alignment of the text on the cell.
+        _Example:_ `"center"`
+        _Possible values:_ `"left"`, `"center"`, `"right"`
 
       - **enableCellChangeWs**
         _Type:_ `boolean`
