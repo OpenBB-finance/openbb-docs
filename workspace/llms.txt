@@ -27,6 +27,7 @@
 - [Citations for documents](https://docs.openbb.co/workspace/developers/ai-features/citations-for-documents): Add document-specific citations with PDF text highlighting for source attribution
 - [Create charts](https://docs.openbb.co/workspace/developers/ai-features/create-charts): Stream inline charts as part of your agent’s response
 - [Create tables](https://docs.openbb.co/workspace/developers/ai-features/create-tables): Stream tabular data as an artifact in the conversation
+- [Custom agent features](https://docs.openbb.co/workspace/developers/ai-features/custom-agent-features): Configure and manage custom agent features based on workspace options
 - [Highlight widget citations](https://docs.openbb.co/workspace/developers/ai-features/highlight-widget-citations): Cite widget data sources in your responses and display them in Workspace
 - [Interact with dashboard](https://docs.openbb.co/workspace/developers/ai-features/interact-with-dashboard): Receive full dashboard widget metadata and conditionally fetch data
 - [Parse PDF context](https://docs.openbb.co/workspace/developers/ai-features/parse-pdf-context): Parse PDF content from widget data and cite sources
