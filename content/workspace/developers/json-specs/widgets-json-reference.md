@@ -608,6 +608,21 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
   Specifies the data source(s) for the widget.
   _Example:_ `["API", "Database"]`
 
+- **mcp_tool**
+  _Type:_ object
+  Configuration for matching the widget to an MCP (Model Context Protocol) tool. When an MCP tool is invoked, OpenBB Workspace can automatically detect if there's a matching widget configured and provide a citation.
+  Contains the following keys:
+
+  - **mcp_server**
+    _Type:_ `string` (required)
+    The name of the MCP server that must match exactly with the connected MCP server name.
+    _Example:_ `"Financial Data"`
+
+  - **tool_id**
+    _Type:_ `string` (required)
+    The ID of the MCP tool that must match exactly with the tool name in the MCP server.
+    _Example:_ `"get_company_revenue_data"`
+
 - **refetchInterval**
   _Type:_ `number` or `false`
   Time in milliseconds before the widget's data will refresh if on the page.  Minimum value is `1000`.
@@ -730,6 +745,10 @@ Below is an example `widgets.json` with a single widget defined. This widget wil
         "source": [
             "My First API"
         ],
+        "mcp_tool": {
+            "mcp_server": "Financial Data",
+            "tool_id": "get_company_revenue_data"
+        },
         "refetchInterval" : 900000,
         "staleTime": 300000
     }
