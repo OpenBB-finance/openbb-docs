@@ -44,7 +44,7 @@ If global data is turned on, and the user asks information that the copilot beli
 
 ## Add markdown note widget
 
-The copilot can also add any type of text into a markdown widget automatically.
+The copilot can also add any type of text into a markdown widget automatically on-the-fly.
 
 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
@@ -54,3 +54,5 @@ The copilot can also add any type of text into a markdown widget automatically.
     width="100%"
   />
 </div>
+
+Support to add static artifacts (tables or charts) on-the-fly is still not supported.
