@@ -27,7 +27,7 @@ It's a convenient way to install and use the OpenBB Platform Python [packages](/
 
 Features are well-suited for building language-agnostic OpenBB Workspace [Applications](/workspace/apps) and agentic workflows.
 
-![backends-screen](backends-screen.png)
+![backends-screen](https://github.com/user-attachments/assets/d9a885bb-7776-4926-b043-f9b5d49987d9)
 
 ## Overview
 The application operates as a system tray icon, and its main window has three, navigatable, screens:
@@ -85,7 +85,7 @@ When the application is started (except first launch), no window is created. Acc
 3. Press the, `Start`, button for the `OpenBB API` backend.
     - By default, this will run: `openbb-api --host 127.0.0.1 --port 6900`
 
-![backends-running](backends-running.png)
+![backends-running](https://github.com/user-attachments/assets/2ec97b99-a19f-43ed-b735-f5757e51b4c4)
 
 4. Open Workspace in your browser and connect to http://127.0.0.1:6900.  You now have a fully local data stack.
 
