@@ -22,11 +22,56 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 
 <HeadTitle title="OpenBB Platform Docs" />
 
-The OpenBB Platform has been created and is currently maintained by the OpenBB team together with the contributions from hundreds of community members.
+The OpenBB Platform was created in collaboration with hundreds of contributors from around the world.
 
-With its ready-to-use data connectors and a wealth of extensions, it lets you concentrate on creating outstanding financial reports and applications quickly and easily.
+Its primary purpose serves as scaffolding for a unified API that is standardized, consumable, and deployable across multiple mediums simultaneously - REST API, pure Python, Jupyter Notebook, MCP, Docker, OpenBB Workspace, Excel, etc. - from a single source of truth.
+
+With cross-compatibility out-of-the-box, its ready-to-use data connectors, and a wealth of extensions, it lets you concentrate on creating outstanding research reports and applications quickly and easily.
+
+## Installation
+
+The primary method of installation is via `pip`, in a Python environment between versions 3.10 and 3.13.
+
+```sh
+pip install openbb
+```
+
+Go to the [installation](/platform/installation) page for detailed instructions, and see the [extensions](/platform/extensions) page for information on individual components.
+
+:::tip Don't know how to setup a virtual Python environment? Looking for a graphical method?
+
+OpenBB publishes an application, for macOS and Windows, designed to assist users and developers with the installation and use of the open source ecosystem. Batteries included.
+
+Go to the [Open Data Platform](/odp#installation) to get started.
+:::
+
+## User, Developer, or Contributor?
+
+The line between user and developer can be blurry, and is often the same individual.
+
+For the purpose of this documentation, a User represents a person, organization, robot,
+or other type of end-user consuming the interface(s) as-supplied.
+
+A contributor is someone submitting a pull request to the OpenBB GitHub repository.
+
+Most other use-cases fall somewhere on the development spectrum.
+
+### Example Users
+
+- Consuming data or services from published packages via a supported interface.
+  - `pip install openbb`
+- General use of `from openbb import obb`, `openbb-api`, `openbb-mcp`, etc.
+  - This could be for local development or remote deployment.
+
+### Example Developer
+
+- Creating OpenBB extensions.
+- Importing individual components or utility functions. 
+- Preparing an OpenBB environment, container, or application for non-personal use.
 
 ## Documentation Structure
+
+The documentation will be generally targeted towards the user profile - user or developer
 
 <ul className="grid grid-cols-1 gap-2 -ml-6">
   <NewReferenceCard

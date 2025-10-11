@@ -27,11 +27,7 @@ It's a convenient way to install and use the OpenBB Platform Python [packages](/
 
 Features are well-suited for building language-agnostic OpenBB Workspace [Applications](/workspace/apps) and agentic workflows.
 
-:::important
-When the application is started (except first launch), no window is created. Access it from the tray icon menu, or doubleclick on the shortcut again.
-:::
-
-<img width="852" height="571" alt="backends-screen" src="https://github.com/user-attachments/assets/515810b4-e772-4549-967a-3af3fca2461a" />
+![backends-screen](backends-screen.png)
 
 ## Overview
 The application operates as a system tray icon, and its main window has three, navigatable, screens:
@@ -76,52 +72,20 @@ The application operates as a system tray icon, and its main window has three, n
 - Generate X.509 certificates and PCKS#12 bundles.
 - Clean uninstall.
 
-## Installation
-
-For macOS, open the DMG file and then drag-and-drop the app into the Applications folder. Windows users can execute the installer and then start the application.
-
-### Application Permissions
-
-This application is scoped to the operating system user account, and the OS may ask you to grant permissions. The general needs of this application are:
-
-- Access the internet, download files, and install packages from repositories.
-- Manage files in the user and temp directories.
-- Run background tasks and shell scripts.
-- Configure the operating system for the `Start at Login` feature. 
-
-## First Run
-
-When first run, you will be asked to select an installation location.
-This is where Miniforge, environments, and other application data will be stored.
-
-The user data directory is where the OpenBB Python packages should store data, such as data/HTTP cache. It is recommeneded to use separate locations for each.
-
-Click, Begin Installation, when you're ready.
-<img width="955" height="632" alt="miniforge" src="https://github.com/user-attachments/assets/c22332f3-3d95-4033-b503-fd905b14bd16" />
-
-### OpenBB Environment
-
-After Miniforge is installed, you will be directed to pick a version of Python for the initial environment.
-
-Upon clicking the, Next Step, button, an `openbb` environment will be created with the core packages.
-<img width="852" height="632" alt="install-step2" src="https://github.com/user-attachments/assets/14303a42-1f9e-46e5-a6e2-1418bff56d43" />
-
-When complete, you can customize the environment by adding OpenBB Python modules or arbitrary libraries from PyPI. 
-<img width="1013" height="1085" alt="install-step3" src="https://github.com/user-attachments/assets/d77badb3-47bd-464b-b384-722e29ccd0d8" />
-
-Finally, clicking, Continue to Open Data Navigator, will take you to the [Environments](/odp/environments) page.
-<img width="852" height="688" alt="installation-complete" src="https://github.com/user-attachments/assets/c414e09d-b85d-4016-851b-50e65c43830f" />
-
 ## Quick Start
 
-With the steps above compelete, you are now ready to start a backend server and add it to the OpenBB [Workspace](/workspace/data-integration#5-add-to-openbb).
+When the [installation](/odp/installation) completes, you are now ready to start a backend server and add it to the OpenBB [Workspace](/workspace/developers/data-integration).
 
-1. Go to the [API Keys](/odp/api-keys) page, add or import your provider credentials. 
+:::important
+When the application is started (except first launch), no window is created. Access it from the tray icon menu, or doubleclick on the shortcut again.
+:::
+
+1. Go to the [API Keys](/odp/api-keys) page, add or import your provider credentials, if needed.
 2. Navigate to the [Backends](/odp/backends) page by clicking on it in the header, or selecting from the tray icon's menu.
 3. Press the, `Start`, button for the `OpenBB API` backend.
     - By default, this will run: `openbb-api --host 127.0.0.1 --port 6900`
 
-<img width="854" height="596" alt="backends-running" src="https://github.com/user-attachments/assets/ec7f3bc9-f3a0-4f51-9d7b-640b2360cbac" />
+![backends-running](backends-running.png)
 
 4. Open Workspace in your browser and connect to http://127.0.0.1:6900.  You now have a fully local data stack.
 

@@ -41,66 +41,22 @@ import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
 ## General System Requirements
 
-Most systems capable of running Python `3.9.21-3.12` will be compatible with the OpenBB Platform. A modern processor (five years or less), running an up-to-date operating system, with at least 4GB of RAM, is recommended. Maintaining the system with current patches ensures maximum compatibility. At a minimum, Windows and macOS should be:
+Most systems capable of running Python `3.10-3.13` will be compatible with the OpenBB Platform. A modern processor (five years or less), running an up-to-date operating system, with at least 8GB of RAM, is recommended. Maintaining the system with current patches ensures maximum compatibility. At a minimum, Windows and macOS should be:
 
 - Windows 10
 - Mac OS Big Sur
 
 Linux users should run the command line update for the package manager, prior to installation.
 
-:::warning
-As of, `openbb` version 4.4.5, Python 3.9 will trigger a deprecation warning.
+## Install via ODP Desktop App
 
-Support for versions below 3.10 will be discontinued in the fall of 2025.
-
-Support for Python 3.13 will be introduced in the summer of 2025.
-:::
-
-## Installer Package
-
-An installer package is available for Mac and Windows machines.
-
-- [Windows](https://openbb-installers.s3.amazonaws.com/OpenBB-Platform-Windows-x86_64.exe)
-- [macOS for Apple Silicon](https://openbb-installers.s3.amazonaws.com/OpenBB-Platform-MacOSX-arm64.pkg)
-- [macOS for Intel](https://openbb-installers.s3.amazonaws.com/OpenBB-Platform-MacOSX-x86_64.pkg)
-
-It will handle the installation of Python, environment setup, and OpenBB packages with the latest versions.
-
-:::danger
-Users with versions below v1.0.3 will need to follow the steps below to update, via the "Update" shortcut ,to the current version of OpenBB
-
-1. In Finder/Explorer, open the folder where it was installed - probably in a folder, named "OpenBB", at the root of user home folder.
-2. From the main installation folder, navigate into the subdirectory, "extensions/openbb_platform_installer".
-3. Open, "pyproject.toml", in any text editor, and update two lines:
-
-   - Line 18:
-     - From: `python =">3.9,<3.13"`
-     - To: `python = ">=3.9.21,<3.13"`
-   - Line 21:
-     - From: `openbb-core = "^1"`
-     - To: `openbb-core = ">=1.4.4"`
-
-4. Save the file, close it.
-
-5. Delete the file, `poetry.lock`, and then run the "Update" shortcut.
-   :::
-
-OR:
-
-Manually update the environment from the "Bash" ("CMD" in Windows) shortcut.
-
-1. Open the system shell from the shortcut.
-2. Activate the `obb` environment.
-3. Run: `pip install -U "openbb[all]" openbb-cli --force-reinstall`
-4. Rebuild the Python Interface by running: `openbb-build`
-
-Alternatively, uninstall and reinstall; however, the solutions above are more time-efficient.
+For a graphical installer, see the [ODP](/odp/installation) desktop application.
 
 ## Supported Environments
 
-The OpenBB Platform is installed within a Python virtual environment. It is compatible with versions of Python between 3.9.21 and 3.12, inclusively. The method for creating the environment will be a matter of user preference, from the command line - [Conda](https://docs.conda.io/projects/miniconda/en/latest/miniconda-install.html), [venv](https://docs.python.org/3/library/venv.html), etc. - or in a code editor and IDE - [VS Code](https://code.visualstudio.com/docs/languages/python), [PyCharm](https://www.jetbrains.com/pycharm/), [Jupyter](https://jupyter.org/).
+The method for creating the environment will be a matter of user preference, from the command line - [Conda](https://docs.conda.io/projects/miniconda/en/latest/miniconda-install.html), [venv](https://docs.python.org/3/library/venv.html), etc. - or in a code editor and IDE - [VS Code](https://code.visualstudio.com/docs/languages/python), [PyCharm](https://www.jetbrains.com/pycharm/), [Jupyter](https://jupyter.org/).
 
-If you're interested in using the [Docker](/platform/installation#docker) container, skip ahead to the specific section [below](/platform/installation#docker).
+If you're interested in building a [Docker](/platform/installation#docker) container, skip ahead to the specific section [below](/platform/installation#docker).
 
 For those new to Python, [this article](https://www.infoworld.com/article/3306656/python-virtualenv-and-venv-dos-and-donts.html) shares some tips on getting started and why environments are important.
 
