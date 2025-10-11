@@ -1,6 +1,6 @@
 ---
 title: Backends
-sidebar_position: 1
+sidebar_position: 3
 description: Run and manage background processes like the OpenBB API server, data streaming pipelines, or custom Python scripts directly within the OpenBB GUI.
 keywords:
   - Backends

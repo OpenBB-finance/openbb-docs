@@ -1,6 +1,6 @@
 ---
 title: API Keys
-sidebar_position: 3
+sidebar_position: 4
 description: Manage and store API credentials for data providers securely within the OpenBB Platform GUI.
 keywords:
   - API Keys
