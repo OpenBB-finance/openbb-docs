@@ -23,12 +23,12 @@ In the environment setup panels, data provider extensions highlight if an API ke
 :::info
 The initial installation will add entries for each selected extension requiring credentials, just add your key.
 
-For example, if `openbb-fred` was selected, `fred_api_key` will appear on the screen.
-<p align="center">
-  <img width="601" height="149" alt="api-keys-provider" src="https://github.com/user-attachments/assets/da7502a2-2a3c-44d2-8550-233004eeb882" />
-</p>
-<img width="908" height="84" alt="api-keys-empty" src="https://github.com/user-attachments/assets/5b387002-834e-4365-b00b-4e541fc1ec35" />
+For example, if `openbb-fred` was selected, `fred_api_key` will appear on the screen as, `Undefined`.
 
+<img width="1356" height="282" alt="api-keys-provider" src="https://github.com/user-attachments/assets/a844a1e4-4854-4ad0-9408-2b3ee56f5542" />
+<p align="center">
+<img width="1704" height="1080" alt="api-keys-undefined" src="https://github.com/user-attachments/assets/73491240-f51f-4ec7-8957-725eded1f491" />
+</p>
 :::
 
 ## Features
@@ -40,11 +40,17 @@ For example, if `openbb-fred` was selected, `fred_api_key` will appear on the sc
   - `system_settings.json` (see the docs [here](/platform/settings/system_settings).)
   - `.env` (see the docs [here](/platform/settings/environment_variables).)
 
-<img width="1706" height="1494" alt="api-keys-screen" src="https://github.com/user-attachments/assets/a9ae2873-4eda-4ef9-a407-beaba2132ed0" />
+## Edit, Save, & Remove
 
-## Saving Changes
+Hover the mouse over an entry to reveal the icons. The `edit` button is the first in the row of three.
 
-Any changes made, including importing from a file, need to be saved before leaving the screen. Press the `Save API Keys` button when done editing.
+<img width="1704" height="1080" alt="api-keys-edit" src="https://github.com/user-attachments/assets/722153fb-7bf7-4fe7-b465-4c85817b7a1d" />
+
+Enter the changes and press `Save` to update the file and close the modal.
+
+:::note
+Backend servers and Python interpreters will need to be restarted for the changes to be reflected.
+:::
 
 ## Configuration Files
 
@@ -56,4 +62,6 @@ The `.env` file can be added to any [Backend](/odp/backends) configuration.
 
 Clicking the button will open it with the system's default text editor.
 
-<img width="1704" height="1080" alt="api-keys-config-files" src="https://github.com/user-attachments/assets/3c483ce8-19a0-4f2b-86b8-1ec31c7fdd13" />
+<img width="1704" height="1080" alt="api-keys-config-files" src="https://github.com/user-attachments/assets/551b71b9-bed6-47f3-8150-e1987c29006d" />
+
+
