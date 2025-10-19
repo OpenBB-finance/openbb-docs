@@ -16,7 +16,7 @@ export default {
 	tagline: "OpenBB Docs",
 	url: "https://docs.openbb.co", // Your website URL
 	baseUrl: "/",
-	projectName: "OpenBBTerminal",
+	projectName: "OpenBB",
 	organizationName: "OpenBB-finance",
 	trailingSlash: false,
 	onBrokenLinks: "warn",
@@ -38,10 +38,6 @@ export default {
 			"@docusaurus/plugin-client-redirects",
 			{
 				redirects: [
-					{
-						from: "/platform/development/contributing",
-						to: "/platform/developer_guide/misc/contributing",
-					},
 					{
 						from: "/pro/",
 						to: "/workspace/developers/data-integration",
@@ -88,6 +84,10 @@ export default {
 						from: "/getting-started/faqs",
 						to: "/workspace/getting-started/faqs",
 					},
+					{
+						from: ["/platform", "/platform/:path*"],
+						to: "/python",
+					},
 				],
 				createRedirects: (existingPath) => {
 					if (existingPath.startsWith("/pro/")) {
@@ -96,7 +96,7 @@ export default {
 							return newPath.replace("/data-connector/", "/data-integration/");
 						}
 						return newPath;
-					}
+					}			
 					if (existingPath.includes("data-connector")) {
 						return existingPath.replace(
 							"/data-connector/",
@@ -126,9 +126,9 @@ export default {
 					const contentDir = path.join(siteDir, "content");
 					const sectionContent: Record<string, string[]> = {
 						workspace: [],
-						platform: [],
 						cli: [],
-						odp: [],
+						desktop: [],
+						python: [],
 					};
 
 					// recursive function to get all mdx files
@@ -202,9 +202,9 @@ export default {
 					// Group routes by section
 					const sectionRoutes: Record<string, string[]> = {
 						workspace: [],
-						platform: [],
 						cli: [],
-						odp: [],
+						desktop: [],
+						python: [],
 					};
 
 					for (const [path, record] of Object.entries(

@@ -1,0 +1,83 @@
+---
+title: openbb-econometrics
+sidebar_position: 0
+description: An overview of the `openbb-econometrics` Python package.
+keywords:
+  - ODP
+  - Python Package
+  - OpenBB Platform
+  - Extension
+  - Router
+  - Econometrics
+  - statsmodels
+  - pandas
+  - Data
+  - POST
+---
+
+{/* markdownlint-disable MD012 MD031 MD033 MD037 */}
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
+
+<HeadTitle title="OpenBB Econometrics - Python Packages & Extensions | OpenBB Docs" />
+
+The `openbb-econometrics` extension provides API access to common econometrics models.
+
+## Installation
+
+```console
+pip install openbb-econometrics
+```
+
+### Dependencies
+
+Installation includes a new router path (`obb.econometrics`), and additional Python libraries:
+
+- arch
+- linearmodels
+- pandas-ta-openbb
+    - scipy
+    - statsmodels
+
+:::info Optional
+
+The `econometrics` router has one chart, a correlation matrix, exposed when `openbb-charting` is installed.
+:::
+
+### Post Installation
+
+After installation, rebuild the Python Interface.
+
+```sh
+openbb-build
+```
+
+## Endpoints
+
+The `obb.econometrics` namespace includes:
+
+```python
+>>> from openbb import obb
+>>> obb.econometrics
+
+/econometrics
+    autocorrelation
+    causality
+    cointegration
+    correlation_matrix
+    ols_regression
+    ols_regression_summary
+    panel_between
+    panel_first_difference
+    panel_fixed
+    panel_fmac
+    panel_pooled
+    panel_random_effects
+    residual_autocorrelation
+    unit_root
+    variance_inflation_factor
+```
+
+Go to the [reference](/python/reference/econometrics) page for function, parameter, and response descriptions, as well as code examples.
+

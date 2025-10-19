@@ -42,7 +42,8 @@ def create_nested_subfolder_card(_folder: Path, url: str) -> str:
 for topfolder in [
     "cli",
     "excel",
-    "odn",
+    "desktop",
+    "python",
     "platform",
     "workspace",
 ]:

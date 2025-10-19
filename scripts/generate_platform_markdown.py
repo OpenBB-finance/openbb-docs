@@ -17,9 +17,9 @@ MAX_COMMANDS = 8
 # Output paths
 WEBSITE_PATH = Path(__file__).parent.parent.absolute()
 SEO_METADATA_PATH = Path(WEBSITE_PATH / "metadata/platform_v4_seo_metadata.json")
-PLATFORM_CONTENT_PATH = Path(WEBSITE_PATH / "content/platform")
-PLATFORM_REFERENCE_PATH = Path(WEBSITE_PATH / "content/platform/reference")
-PLATFORM_DATA_MODELS_PATH = Path(WEBSITE_PATH / "content/platform/data_models")
+PLATFORM_CONTENT_PATH = Path(WEBSITE_PATH / "content/python")
+PLATFORM_REFERENCE_PATH = Path(WEBSITE_PATH / "content/python/reference")
+PLATFORM_DATA_MODELS_PATH = Path(WEBSITE_PATH / "content/python/data_models")
 
 # Markdown imports and elements
 PLATFORM_REFERENCE_IMPORT = "import ReferenceCard from '@site/src/components/General/NewReferenceCard';"  # fmt: skip
@@ -121,7 +121,7 @@ def create_reference_markdown_intro(
     markdown = (
         "---\n\n"
         "import HeadTitle from '@site/src/components/General/HeadTitle.tsx';\n\n"
-        f'<HeadTitle title="{path} - Reference | OpenBB Platform Docs" />\n\n'
+        f'<HeadTitle title="{path} - Reference | OpenBB Docs" />\n\n'
         f"{deprecation_message}"
         "<!-- markdownlint-disable MD012 MD031 MD033 -->\n\n"
         "import Tabs from '@theme/Tabs';\n"
@@ -171,35 +171,46 @@ def create_reference_markdown_tabular_section(
         filtered = [{k: v for k, v in p.items() if k in allowed_keys} for p in params]
 
         # Build the content using a more flexible format that doesn't affect TOC
-        content = f"\n<TabItem value='{provider}' label='{provider}'>\n\n"
+        content = f"<TabItem value='{provider}' label='{provider}'>\n\n"
 
         for i, param in enumerate(filtered):
             name = param.get("name", "")
-            param_type = param.get("type", "")
+            param_type = (
+                param.get("type", "")
+                .replace("Union[date | None, str]", "date | str | None")
+                .replace("Union[date, str]", "date | str")
+                .replace("Union[str, list[str]]", "str | list[str]")
+            )
             description = param.get("description", "")
 
             # Use bold and code formatting instead of headings
-            content += f"**`{name}`**: `{param_type}`\n\n"
+            content += f"**{name}**: `{param_type}`<br/>\n"
 
-            if not description:
-                continue
-            # Format the description to preserve newlines and indentation
-            if "\n" in description:
-                # For multi-line descriptions, use a collapsible details section
-                content += "<details>\n"
-                content += '<summary mdxType="summary">Description</summary>\n\n'
+            default = param.get("default", "")
 
-                # Replace newlines with <br/> tags to preserve formatting in HTML
-                formatted_description = description.replace("\n", "<br/>\n")
-                content += f"{formatted_description}\n\n"
-                content += "</details>\n\n"
-            else:
-                # For single-line descriptions, use regular paragraph formatting
-                content += f"{description}\n\n"
+            # Only show default if it exists
+            if default not in (None, "", "None"):
+                content += f"*Default:* {default}<br/>\n"
+
+            if description:
+                # Format the description to preserve newlines and indentation
+                if "\n" in description:
+                    # For multi-line descriptions, use a collapsible details section
+                    content += "<details>\n"
+                    content += '<summary mdxType="summary">Description</summary>\n\n'
+
+                    # Replace newlines with <br/> tags to preserve formatting in HTML
+                    formatted_description = description.replace("\n", "<br/>\n")
+                    content += f"{formatted_description}<br/>\n"
+                    content += "</details>\n\n"
+                else:
+                    # For single-line descriptions, use regular paragraph formatting
+                    content += f"{description}\n\n"
 
             # Add default and optional information if needed
             if heading == "Parameters":
                 options = param.get("options", param.get("choices", None))
+
                 if (
                     options
                     and options not in (None, "", "None")
@@ -213,42 +224,29 @@ def create_reference_markdown_tabular_section(
                     if isinstance(options, list):
                         # List format
                         for option in options:
-                            content += f"- `{option}`\n"
+                            content += f"- {option}\n"
                     elif isinstance(options, str):
                         # String format - might be comma-separated or already formatted
                         if "," in options:
                             for option in options.split(","):
-                                content += f"- `{option.strip()}`\n"
+                                content += f"- {option.strip()}\n"
                         else:
-                            content += f"- `{options}`\n"
+                            content += f"- {options}\n"
 
                     content += "</details>\n\n"
 
-                default = param.get("default", "")
-                optional = param.get("optional", "")
 
-                # Only show default if it exists
-                if default not in (None, "", "None"):
-                    content += f" • *Default:* `{default}`\n\n"
 
-                    # Add optional status on the same line if both exist
-                    if optional not in (None, "", "None"):
-                        content += f" • *Optional:* `{optional}`\n\n"
-                    else:
-                        content += "\n\n"
-                # Show optional status alone if no default
-                elif optional not in (None, "", "None"):
-                    content += f" • *Optional:* `{optional}`\n\n"
-
-                if i < len(filtered) - 1:
-                    content += "---\n\n"
+            # Add separator between parameters (except for the last one)
+            if heading == "Parameters" and i == len(filtered):
+                content += "---\n"
 
         content += "</TabItem>\n"
         sections_list.append(content)
 
     # For easy debugging of the created strings
     sections = "".join(sections_list)
-    markdown = f"\n\n## {heading}\n\n<Tabs>\n{sections}</Tabs>\n\n"
+    markdown = f"## {heading}\n\n<Tabs>\n{sections}</Tabs>\n\n"
 
     return markdown
 
@@ -281,7 +279,7 @@ def create_reference_markdown_returns_section(returns: List[Dict[str, str]]) -> 
             description = params.get("description", "")
 
             # Use bold and code formatting similar to parameters
-            markdown += f"**`{name}`**: `{type_str}`\n\n"
+            markdown += f"**{name}**: `{type_str}`\n\n"
 
             # Format the description to preserve newlines and indentation
             if "\n" in description:
@@ -293,10 +291,11 @@ def create_reference_markdown_returns_section(returns: List[Dict[str, str]]) -> 
                 # For single-line descriptions, use regular paragraph formatting
                 markdown += f"{description}\n\n"
 
-            markdown += "---\n\n"
         elif isinstance(params, str):
             # For simple string returns, just add them directly
-            markdown += f"{params}\n\n"
+            markdown += f"{params}\n"
+    
+    markdown += "---\n"
 
     return markdown
 
@@ -430,6 +429,12 @@ def generate_reference_index_files(reference_content: Dict[str, str]) -> None:
                 sub_dir_description = ""
                 # Capitalize the sub-directory name to use as a title for display
                 title = sub_dir.name.capitalize()
+
+                if title == "Etf":
+                    title = "ETF"
+                elif title == "Uscongress":
+                    title = "USCongress"
+
                 # Get the relative path of the sub-directory from the platform reference path
                 # and convert it to POSIX style for consistency across OS
                 sub_dir_path = sub_dir.relative_to(PLATFORM_REFERENCE_PATH).as_posix()
@@ -448,7 +453,7 @@ def generate_reference_index_files(reference_content: Dict[str, str]) -> None:
                             f"{', '.join(sub_dir_markdown_files[:MAX_COMMANDS])},..."
                         )
 
-                url = f"/platform/reference/{sub_dir_path}"
+                url = f"/python/reference/{sub_dir_path}"
                 index_content += f'<ReferenceCard title="{title}" description="{sub_dir_description}" url="{url}" />\n'
             index_content += "</ul>\n\n"
 
@@ -469,7 +474,7 @@ def generate_reference_index_files(reference_content: Dict[str, str]) -> None:
                     # using its path,split by the first period to get the first sentence,
                     # and default to an empty string if not found
                     file_description = reference_content.get(f"/{file_path}", "").split(".")[0]  # fmt: skip
-                    url = f"/platform/reference/{file_path}"
+                    url = f"/python/reference/{file_path}"
                     index_content += f'<ReferenceCard title="{title}" description="{file_description}" url="{url}" />\n'
             index_content += "</ul>\n\n"
 
@@ -513,7 +518,7 @@ def generate_reference_top_level_index() -> None:
             f"<ReferenceCard\n"
             f'{TAB_WIDTH*" "}title="{title.capitalize()}"\n'
             f'{TAB_WIDTH*" "}description="{description_str}"\n'
-            f'{TAB_WIDTH*" "}url="/platform/reference/{title}"\n'
+            f'{TAB_WIDTH*" "}url="/python/reference/{title}"\n'
             "/>\n"
         )
 
@@ -556,7 +561,7 @@ def create_data_models_index(title: str, description: str, model: str) -> str:
         "<ReferenceCard\n"
         f'{TAB_WIDTH*" "}title="{title}"\n'
         f'{TAB_WIDTH*" "}description="{description}"\n'
-        f'{TAB_WIDTH*" "}url="/platform/data_models/{model}"\n'
+        f'{TAB_WIDTH*" "}url="/python/data_models/{model}"\n'
         "/>\n"
     )
 

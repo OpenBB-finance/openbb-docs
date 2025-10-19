@@ -1,0 +1,107 @@
+---
+title: Introduction
+sidebar_position: 0
+description: An overview of installable ODP Python packages and extensions.
+keywords:
+  - ODP
+  - Python Package
+  - OpenBB Platform
+  - Extension
+  - Router
+  - Provider
+  - Data
+  - Developer Tools
+  - API
+  - MCP
+  - Server
+---
+
+{/* markdownlint-disable MD012 MD031 MD033 MD037 */}
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
+
+<HeadTitle title="Python Packages & Extensions | OpenBB Docs" />
+
+An OpenBB environment is the combination of packages installed. The core is the underlying infrastructure, while extensions represent API routes, data sources, and the response object.
+
+When you run, `pip install openbb`, you the extensions maintained in the official OpenBB GitHub [repository](https://www.github.com/OpenBB-finance/OpenBB). You can create your own custom Python apps by extending the `openbb-core` library, or by selectively installing individual components.
+
+Anyone can build and publish [installable extensions](/python/developer/extension_types) for the OpenBB ecosystem.
+
+## Core
+
+All OpenBB packages are extensions of `openbb-core`.
+
+<ul className="grid grid-cols-1 gap-2 -ml-6">
+  <NewReferenceCard
+    title="OpenBB Core"
+    description="A light-weight package responsible for base operations, serialized ETL pipelines, and package building. It is developed with Pydantic and FastAPI."
+    url="extensions/openbb-core"
+  />
+</ul>
+
+## Infrastructure
+
+<ul className="grid grid-cols-1 gap-2 -ml-6">
+  <NewReferenceCard
+    title="OpenBB Providers"
+    description="A providers is an individual source of data implementing the standardized pipeline. They are self-contained, and feed shared router endpoints."
+    url="/python/extensions/providers/"
+  />
+  <NewReferenceCard
+    title="OpenBB Routers"
+    description="Routers direct the IO of the application. They are instances of `fastapi.APIRouter`, are self-contained, and do not depend on another."
+    url="reference/"
+  />
+  <NewReferenceCard
+    title="OpenBB Charting"
+    description="Extend routers with REST API compatible views, and with an optional Python method for dedicated window creation."
+    url="extensions/infrastructure/openbb-charting"
+  />
+</ul>
+
+## Interface
+
+These tools extend and enhance last mile delivery of OPD packages to interface with additional mediums, like the OpenBB Workspace.
+
+<ul className="grid grid-cols-1 gap-2 -ml-6">
+  <NewReferenceCard
+    title="OpenBB Platform API"
+    description="Generate OpenBB Workspace Widgets and Applications. Create dashboarding experiences with zero frontend code, from any FastAPI."
+    url="extensions/interface/openbb-api"
+  />
+  <NewReferenceCard
+    title="OpenBB MCP Server"
+    description="Convert OpenBB environments, and FastAPI instances, into ready-to-use MCP servers. Highly configurable, and easily secured. Connect AI to your data, on your terms."
+    url="extensions/interface/openbb-mcp"
+  />
+  <NewReferenceCard
+    title="OpenBB CLI"
+    description="Explore OpenBB environments from a scriptable, Command Line Interface (CLI)."
+    url="/cli"
+  />
+</ul>
+
+## Data Processing
+
+Unlike data-fetching endpoints, these routers do not have a `provider` component.
+OpenBB publishes several extensions for data analysis and feature engineering pipelines.
+
+<ul className="grid grid-cols-1 gap-2 -ml-6">
+  <NewReferenceCard
+    title="OpenBB Econometrics"
+    description="REST API compatible econometrics models, such as OLS."
+    url="/python/extensions/data-processing/econometrics"
+  />
+  <NewReferenceCard
+    title="OpenBB Quantitative"
+    description="REST API compatible quantitative analysis tools."
+    url="/python/extensions/data-processing/quantitative"
+  />
+  <NewReferenceCard
+    title="OpenBB Technical"
+    description="REST API compatible time series analysis tools."
+    url="/python/extensions/data-processing/technical"
+  />
+</ul>

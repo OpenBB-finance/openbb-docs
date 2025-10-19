@@ -1,0 +1,256 @@
+---
+title: Tests
+sidebar_position: 7
+description: This section provides an in-depth look at the Quality Assurance (QA) process in the OpenBB Platform. It covers the use of QA tools for testing extensions, creation of unit and integration tests, and the importance of maintaining a short import time for the package.
+keywords:
+  - OpenBB QA process
+  - Unit and integration tests
+  - QA tools
+  - Extension testing
+  - Import time optimization
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Tests - Contributor Guidelines - Development | OpenBB Docs" />
+
+There are a set of QA tools that you can use to test your work.
+
+## Dev Tools
+
+Install the developer toolkit packages from PyPI:
+
+```
+pip install openbb-devtools
+```
+
+This includes `pytest` and the extensions used for capturing unit test cassettes for replay.
+
+## Built-In Test
+
+Each `Fetcher` comes equipped with a `test` method that will ensure it is implemented correctly, that it is returning the expected data, that all types are correct, and that the data is valid.
+
+You can run the testing pattern by initializing your Fetcher and running the `.test` method,
+passing `paramters` and `credentials` dictionaries.
+
+A successful test will return `None`
+
+```python
+>>> from openbb_imf.models.port_volume import ImfPortVolumeFetcher
+
+>>> fetcher = ImfPortVolumeFetcher()
+
+>>>fetcher.test({}, {})
+
+# Returns nothing because default values allow no parameters to be passed, and credentials are not required.
+
+fetcher.test({"country": "bad_country"}, {})  # Fails with error.
+```
+
+<details>
+<summary mdxType="summary">Error Message</summary>
+
+```python
+---------------------------------------------------------------------------
+ValueError                                Traceback (most recent call last)
+Cell In[12], line 1
+----> 1 fetcher.test({"country": "bad_country"}, {})
+
+File ~/github/OpenBB/openbb_platform/core/openbb_core/provider/abstract/fetcher.py:141, in Fetcher.test(cls, params, credentials, **kwargs)
+    138 # pylint: disable=import-outside-toplevel
+    139 from pandas import DataFrame
+--> 141 query = cls.transform_query(params=params)
+    142 data = run_async(
+    143     cls.extract_data, query=query, credentials=credentials, **kwargs
+    144 )
+    145 result = cls.transform_data(query=query, data=data, **kwargs)
+
+File ~/github/OpenBB/openbb_platform/providers/imf/openbb_imf/models/port_volume.py:393, in ImfPortVolumeFetcher.transform_query(params)
+    383     raise OpenBBError(
+    384         ValueError(
+    385             "start_date must be after 2019-01-01 for IMF Port Volume data."
+    386         )
+    387     )
+    389 if country := params.pop("country", None):
+    390     params["port_code"] = (
+    391         params["port_code"]
+    392         if params.get("port_code")
+--> 393         else get_port_ids_by_country(country)
+    394     )
+    396 return ImfPortVolumeQueryParams(**params)
+
+File ~/github/OpenBB/openbb_platform/providers/imf/openbb_imf/utils/port_watch_helpers.py:61, in get_port_ids_by_country(country_code)
+     58     port_ids_by_country = json.load(file)
+     60 if country_code.upper() not in port_ids_by_country:
+---> 61     raise ValueError(
+     62         f"Country code '{country_code}' is not supported by IMF Port Watch."
+     63     )
+     65 return port_ids_by_country.get(country_code.upper(), "")
+
+ValueError: Country code 'bad_country' is not supported by IMF Port Watch.
+```
+
+</details>
+
+## Unit Tests
+
+Creating unit tests with mock data can be time consuming, so we use `vcrpy` in conjunction with our own set of `pytest` plugins published as, `pytest_recorder`.
+
+The plugins capture the HTTP interactions as a YML cassette and replays it while running tests.
+
+Record with:
+
+```sh
+pytest test_some_file.py::test_imf_port_volume_fetcher --record http
+```
+
+<details>
+<summary mdxType="summary">Example Code</summary>
+
+```python
+"""IMF Fetcher Tests."""
+
+from datetime import date
+
+import pytest
+from openbb_core.app.service.user_service import UserService
+from openbb_imf.models.port_volume import ImfPortVolumeFetcher
+
+test_credentials = UserService().default_user_settings.credentials.model_dump(
+    mode="json"
+)
+
+@pytest.fixture(scope="module")
+def vcr_config():
+    """VCR configuration."""
+    return {
+        "filter_headers": [("User-Agent", None)],
+    }
+
+@pytest.mark.record_http
+def test_imf_port_volume_fetcher(credentials=test_credentials):
+    """Test the ImfPortVolume fetcher."""
+    params = {
+        "port_code": "port1201",
+        "start_date": date(year=2023, month=1, day=1),
+        "end_date": date(year=2023, month=1, day=31),
+    }
+
+    fetcher = ImfPortVolumeFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+```
+
+</details>
+
+## Repository Scripts & Integration Tests
+
+Automatic unit test generation will add unit tests for all the fetchers available in a given provider.
+Run the script from the root of the repository.
+
+```bash
+python openbb_platform/providers/tests/utils/unit_tests_generator.py
+```
+
+To record the unit tests, you can run the following command:
+
+```bash
+pytest <path_to_the_unit_test_file> --record=all
+```
+
+:::note
+Sometimes manual intervention is needed. For example, adjusting out-of-top level imports or adding specific arguments for a given fetcher.
+:::
+
+## Integration tests
+
+The integration tests are a bit more complex than the unit tests, as we want to test both the Python interface and the API interface.
+For this, we have two scripts that will help you generate the integration tests.
+
+To generate the integration tests for the Python interface, you can run the following command:
+
+```bash
+python openbb_platform/extensions/tests/utils/integration_tests_generator.py
+```
+
+To generate the integration tests for the API interface, you can run the following command:
+
+```bash
+python openbb_platform/extensions/tests/utils/integration_tests_api_generator.py
+```
+
+When testing the API interface, you'll need to start a server locally before running the tests. To do so, run the following command:
+
+```bash
+uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
+```
+
+These automated tests are a great way to reduce the amount of code you need to write,
+but they are not a replacement for manual testing and might require tweaking.
+
+To run the tests we can do:
+
+- Unit tests only:
+
+```bash
+pytest openbb_platform -m "not integration"
+```
+
+- Integration tests only:
+
+```bash
+pytest openbb_platform -m integration
+```
+
+- Both integration and unit tests:
+
+```bash
+pytest openbb_platform
+```
+
+## Import time
+
+We aim to have a short import time for the package. To measure that we use `tuna`.
+
+- [https://pypi.org/project/tuna/](https://pypi.org/project/tuna/)
+
+To visualize the import time breakdown by module and find potential bottlenecks, run the
+following commands from `openbb_platform` directory:
+
+```bash
+pip install tuna
+python -X importtime openbb/__init__.py 2> import.log
+tuna import.log
+```
+
+## Known caveats
+
+When using the OpenBB QA Framework it is important to be aware of the following caveats:
+
+- The tests are semi-automated and might require manual intervention. For example, adjusting out-of-top level imports or changing specific arguments for a given payload.
+
+- The integration tests are more complex and if your newly added provider integration is already covered by the
+  integration tests from previous commands or providers, you will need to manually inject the payload for the new
+  provider.
+
+- In the integration test parametrized payload, the first item is always the set of standard parameters. Every
+  consecutive item is a set of parameters for a specific provider with the standard parameters included.
+
+- The integration tests require you to be explicit, by using all of the standard parameters and provider-specific
+  parameters in the payload. If you want to exclude a parameter, you can use `None` as its value.
+
+- The integration tests require you to be explicit by specifying the `provider` parameter in provider-specific
+  payloads.
+
+- When recording unit tests, you might run into issues with the cache that is tied to your specific provider and present
+  on your local machine. You will know that this is the case if your tests pass locally, but fail on the CI. To fix this,
+  you can delete the cache file from your local machine and re-record the tests.
+
+      > Note that the cache is likely located here:
+      > Windows: `C:\Users\user\AppData\Local\`
+      > Linux: `/home/user/.cache/`
+      > Mac: `/Users/user/Library/Caches`
+
+- Some providers (we are aware only of YFinance so far) do an additional request when used from the US region. As our CI
+  is running from the US region, this might cause the tests to fail. A workaround for this is to use a VPN to record the
+  tests from a different region.

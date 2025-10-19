@@ -1,0 +1,50 @@
+---
+title: Deprecating Endpoints
+sidebar_position: 6
+description: This guide provides detailed instructions on how to deprecate an endpoint in the ODP Python Package.
+keywords:
+- ODP
+- OpenBB Platform
+- Custom commands
+- API
+- Python Interface
+- Deprecation
+- Deprecated
+- Endpoint
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Deprecating Endpoints - How-To | OpenBB Docs" />
+
+Deprecating commands gives users advanced notice of breaking changes, and time to implement the changes.
+
+1. Add the new endpoint that will replace the deprecated one.
+
+2. Add the deprecation warning
+
+    Navigate to the **router** where the endpoint to be deprecated exists. Set the `deprecated` flag to `True` and add `deprecation=OpenBBDeprecationWarning(…)` argument to the decorator. Refer to the example below:
+
+    ```python
+    from openbb_core.app.deprecation import OpenBBDeprecationWarning
+
+        @router.command(
+            model="MarketIndices",
+            deprecated=True,
+            deprecation=OpenBBDeprecationWarning(
+                message="This endpoint is deprecated; use `/index/price/historical` instead.",
+                since=(4, 1),
+                expected_removal=(4, 5),
+            ),
+        )
+        async def market(
+            cc: CommandContext,
+            provider_choices: ProviderChoices,
+            standard_params: StandardParams,
+            extra_params: ExtraParams,
+        ) -> OBBject:
+            """Historical Market Indices."""
+        return await OBBject.from_query(Query(**locals()))
+    ```
+
+3. Set a #TO-DO marker as a reminder to remove the endpoint on the indicated version release.
