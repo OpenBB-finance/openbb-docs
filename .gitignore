@@ -22,8 +22,8 @@ yarn-error.log*
 # Generated files (python scripts)
 content/excel/reference/*
 content/excel/reference/*/*
-content/platform/data_models/*
-content/platform/reference/*
+content/python/data_models/*
+content/python/reference/*
 content/workspace/widgets-library
 
 # Download Platform code from https://github.com/OpenBB-finance/OpenBBTerminal

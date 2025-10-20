@@ -65,7 +65,7 @@ uvicorn openbb_core.api.rest_api:app
 
 ## Provider
 
-The `provider` parameter is the way to select the specific source of the data from the endpoint. If a [preference for the default provider](/platform/settings/environment_variables) has not been defined, the default will be the first, alphabetically, installed provider.
+The `provider` parameter is the way to select the specific source of the data from the endpoint. If a [preference for the default provider](/python/settings/environment_variables) has not been defined, the default will be the first, alphabetically, installed provider.
 
 Provider values are entered in lower-case, with an underscore for multiple words - for example:
 
@@ -79,7 +79,7 @@ Provider coverage can be ascertained with the command below:
 obb.coverage.providers
 ```
 
-Refer to, [Data Extensions](/platform/usage/extensions/overview), for instructions on installing data provider extensions.
+Refer to, [Data Extensions](/python/extensions), for instructions on installing data provider extensions.
 
 ## Symbol
 
@@ -213,6 +213,6 @@ data.warnings
 
 ## References
 
-All functions, parameters, and responses are detailed under the [Reference pages](/platform/reference). The data models for each provider source are described within the [Data Models](/platform/data_models) pages.
+All functions, parameters, and responses are detailed under the [Reference pages](/python/reference). The data models for each provider source are described within the [Data Models](/python/data_models) pages.
 
 These pages are a quick way to cross-reference differences between providers. The same information is provided in a function's signature and docstring.

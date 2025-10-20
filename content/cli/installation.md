@@ -14,15 +14,15 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Installation | OpenBB Platform CLI Docs" />
+<HeadTitle title="Installation | ODP CLI Docs" />
 
 ## Pre-Requisites
 
-The OpenBB Platform CLI is a wrapper around the [Platform](/platform), and should be installed along side an existing OpenBB installation.
+ODP CLI is a wrapper around the [OpenBB Python Package](/python), and should be installed along side an existing OpenBB installation.
 
 - A Python virtual environment with a version between 3.9 and 3.11, inclusive, is required.
 
-Please refer to the [OpenBB Platform install documentation](/platform/installation) for instructions and more information.
+Please refer to the [Python install documentation](/python/installation) for instructions and more information.
 
 :::info
 If the OpenBB Platform is not already installed, the `openbb-cli` package  will install all available components.
@@ -84,7 +84,7 @@ Welcome to OpenBB Platform CLI v1.0.0
 
 ## Source
 
-Follow the instructions [here](/platform/installation#source) to clone the GitHub repo and install the OpenBB Platform from the source code.
+Follow the instructions [here](/python/installation#source) to clone the GitHub repo and install the OpenBB Platform from the source code.
 
 Next, navigate into the folder: `~/OpenBB/openbb_platform`
 

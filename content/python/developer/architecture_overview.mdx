@@ -123,17 +123,17 @@ openbb-build
 The bare interface includes:
 
 - *Deprecated* /account: This module is deprecated and will be removed in a future version.
-- /user: The [`user_settings.json`](/platform/settings/environment_variables) object.
-- /system: The [`system_settings.json`](/platform/settings/system_settings) object.
+- /user: The [`user_settings.json`](/python/settings/environment_variables) object.
+- /system: The [`system_settings.json`](/python/settings/system_settings) object.
 - /coverage: Information and metadata about the data provider extensions and their definitions (providers, commands, command_model, command_schemas, reference)
 
 :::tip Python Settings
-See [`system_settings.json`](/platform/settings/system_settings) for configuring runtime parameters.
+See [`system_settings.json`](/python/settings/system_settings) for configuring runtime parameters.
 :::
 
 ### API Interface
 
-Items described immediately above will be included as routers by setting the [environment variable](/platform/settings/environment_variables), `OPENBB_DEV_MODE='1'`
+Items described immediately above will be included as routers by setting the [environment variable](/python/settings/environment_variables), `OPENBB_DEV_MODE='1'`
 
 The FastAPI instance, with all installed routers and extensions, can be imported with:
 
@@ -148,7 +148,7 @@ uvicorn openbb_core.rest_api:app
 ```
 
 :::tip API Settings
-See [`system_settings.json`](/platform/settings/system_settings) for configuring runtime parameters.
+See [`system_settings.json`](/python/settings/system_settings) for configuring runtime parameters.
 :::
 
 ## Providers

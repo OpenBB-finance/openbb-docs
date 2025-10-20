@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Structure and Navigation | OpenBB Platform CLI Docs" />
+<HeadTitle title="Structure and Navigation | ODP CLI Docs" />
 
 ## Structure
 

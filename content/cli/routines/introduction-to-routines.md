@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Introduction to Routines - Routines | OpenBB Platform CLI Docs" />
+<HeadTitle title="Introduction to Routines - Routines | ODP CLI Docs" />
 
 ## Overview
 

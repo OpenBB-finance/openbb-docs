@@ -122,6 +122,6 @@ The application operates as a system tray icon, and its main window has three, n
 ---
 ## Next Steps
 
-* Use the OpenBB Python Package as a Workspace [backend](/platform/usage/quickstart_workspace).
+* Use the OpenBB Python Package as a Workspace [backend](/python/quickstart/workspace).
 * Create your own custom [Environments](/desktop/environments), or modify the existing.
 * Define custom [Backends](/desktop/backends) to run independently, in any environment.

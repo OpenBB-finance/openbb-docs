@@ -33,12 +33,12 @@ For example, if `openbb-fred` was selected, `fred_api_key` will appear on the sc
 
 ## Features
 
-- Interface for adding and modifying `credentials` entries stored in the [`user_settings.json`](/platform/settings/user_settings/api_keys) file.
+- Interface for adding and modifying `credentials` entries stored in the [`user_settings.json`](/python/settings/user_settings/api_keys) file.
   - Import key:value pairs from file (`.json` or `.env`).
 - Easy access to key OpenBB Platform configuration files in the `~/.openbb_platform` directory, opening directly in the default text editor:
-  - `user_settings.json` (see the docs [here](/platform/settings/user_settings).)
-  - `system_settings.json` (see the docs [here](/platform/settings/system_settings).)
-  - `.env` (see the docs [here](/platform/settings/environment_variables).)
+  - `user_settings.json` (see the docs [here](/python/settings/user_settings).)
+  - `system_settings.json` (see the docs [here](/python/settings/system_settings).)
+  - `.env` (see the docs [here](/python/settings/environment_variables).)
 
 ## Edit, Save, & Remove
 
@@ -57,7 +57,7 @@ Backend servers and Python interpreters will need to be restarted for the change
 The button to the right of, `Import Keys`, is for opening OpenBB Platform configuration files (listed above with documentation links).
 
 :::tip
-The `.env` file can be added to any [Backend](/odp/backends) configuration.
+The `.env` file can be added to any [Backend](/desktop/backends) configuration.
 :::
 
 Clicking the button will open it with the system's default text editor.

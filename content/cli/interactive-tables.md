@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Interactive Tables - | OpenBB Platform CLI Docs" />
+<HeadTitle title="Interactive Tables - | ODP CLI Docs" />
 
 
 Interactive tables open in a separate window ([PyWry](https://github.com/OpenBB-finance/pywry)). These provide methods for searching, sorting, filtering, exporting and even adapting settings directly on the table.

@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Commands And Arguments | OpenBB Platform CLI Docs" />
+<HeadTitle title="Commands And Arguments | ODP CLI Docs" />
 
 Commands are displayed on-screen in a lighter colour, compared with menu items, and they will not be prefaced with, `>`.
 

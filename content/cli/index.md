@@ -18,7 +18,7 @@ keywords:
 import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="OpenBB Platform CLI Docs" />
+<HeadTitle title="ODP CLI Docs" />
 
 ## Overview
 
@@ -34,40 +34,40 @@ The CLI leverages the extendability of the OpenBB Platform architecture in an ea
 <NewReferenceCard
     title="Installation"
     description="An installation guide for the OpenBB Platform CLI."
-    url="cli/installation"
+    url="/cli/installation"
 />
 <NewReferenceCard
     title="Quick Start"
     description="A quick start guide for the OpenBB Platform CLI."
-    url="cli/quickstart"
+    url="/cli/quickstart"
 />
 <NewReferenceCard
     title="Configuration & Settings"
     description="An explanation of the settings and environment variables that customize the look and feel of the OpenBB Platform CLI."
-    url="cli/configuration"
+    url="/cli/configuration"
 />
 <NewReferenceCard
     title="Data Sources"
     description="How-to switch providers for a command, and define the default source for a function."
-    url="cli/data-sources"
+    url="/cli/data-sources"
 />
 <NewReferenceCard
     title="OpenBBUserData Folder"
     description="The OpenBBUserData folder is where exports, routines, and other related files are saved."
-    url="cli/openbbuserdata"
+    url="/cli/openbbuserdata"
 />
 <NewReferenceCard
     title="Interactive Tables"
     description="Understand how to sort, filter, hide columns, display more rows or export data on our tables."
-    url="cli/interactive-tables"
+    url="/cli/interactive-tables"
 />
 <NewReferenceCard
     title="Interactive Charts"
     description="Explore how to overlay charts, change titles, draw lines, add text and much more on our charts."
-    url="cli/interactive-charts"
+    url="/cli/interactive-charts"
 />
 </ul>
 
 ---
 
-Want to contribute? Check out our [Development section](/platform/developer_guide/architecture_overview).
+Want to contribute? Check out our [Development section](/python/developer/architecture_overview).
