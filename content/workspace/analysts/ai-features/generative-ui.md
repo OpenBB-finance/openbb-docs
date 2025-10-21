@@ -1,6 +1,6 @@
 ---
 title: Generative UI (Beta)
-sidebar_position: 10
+sidebar_position: 13
 description: Understanding the Generative UI capabilities in OpenBB Copilot
 keywords:
   - generative ui
