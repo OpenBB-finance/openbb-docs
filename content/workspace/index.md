@@ -100,7 +100,7 @@ Examples include portfolio management apps with position tracking and risk metri
 
 Explore our app gallery and use cases at [openbb.co/solutions](https://openbb.co/solutions).
 
-<img width="800" alt="OpenBB Workspace Applications Overview" src="https://openbb-cms.directus.app/assets/5778561c-5c09-4d70-bde8-952acbccaa01.png" />
+<img width="800" alt="OpenBB Workspace Applications Overview" src="https://openbb-cms.directus.app/assets/0daf9951-9600-41e9-8886-24077ae24b14.png" />
 
 #### Prompts: Context-Aware Suggestions
 
