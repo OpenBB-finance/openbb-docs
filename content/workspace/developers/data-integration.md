@@ -234,7 +234,71 @@ You can then add this backend to OpenBB Workspace by right clicking on the dashb
 
 <img width="800" alt="Apps" src="https://openbb-cms.directus.app/assets/80898c79-cb04-4361-afdd-945eb3e531be.png" />
 
-### 6. Voila
+### 6. Set up Authentication / or API keys
+
+Generally, it’s recommended to enable authentication for your backend to ensure secure access. Another common use case is when connecting to a third-party data provider that requires an API key. To handle this securely, we recommend including the key in a custom header (for example, X-API-KEY).
+
+Here are some benefits of using a custom header:
+- Security: you can keep credentials or API keys out of URLs and logs.
+- Flexibility: this method supports multiple API keys / credentials per request.
+
+Here’s an example of how you can add this to your main.py:
+
+```
+from fastapi import FastAPI, Request, HTTPException
+from dotenv import load_dotenv
+import os
+
+# Load environment variables from .env file (recommended)
+load_dotenv()
+
+app = FastAPI(title="Custom Header Example", version="0.0.1")
+
+@app.get("/secure_hello")
+def secure_hello(request: Request, name: str = ""):
+    """Returns a personalized message if the correct API key is provided."""
+
+    # -------------------------------------------------------------------------
+    # NOTE:
+    # It is recommended to set your API keys as environment variables.
+    # Example: create a `.env` file with the line below:
+    # VALID_API_KEYS=my-secret-key,another-valid-key
+    #
+    # For quick local testing, you can also define keys directly in code:
+    # valid_api_keys = ["my-secret-key", "another-valid-key"]
+    # (Make sure to comment out the environment variable line below.)
+    # -------------------------------------------------------------------------
+    
+    # Get allowed API keys from environment variables
+    valid_api_keys = os.getenv("VALID_API_KEYS", "").split(",")
+
+    # Get API key from header
+    api_key = request.headers.get("X-API-KEY")
+
+    if not api_key:
+        raise HTTPException(
+            status_code=401,
+            detail="API key required. Please include 'X-API-KEY' in the request headers."
+        )
+
+    # Validate provided API key
+    if api_key.strip() not in [k.strip() for k in valid_api_keys]:
+        raise HTTPException(status_code=403, detail="Invalid API key")
+
+    # Return a markdown-formatted greeting
+    return f"# Hello {name}, your API key is valid!"
+
+```
+
+Once configured, you can add your header values in the following way. These values will then be automatically passed along with any subsequent API calls.
+
+<img width="800" alt="Authentication" src="https://openbb-cms.directus.app/assets/70cb3454-bf1b-41eb-af52-85bdebfd75f4.png" />
+
+
+<img width="800" alt="Authentication-Key-Value-Pair" src="https://openbb-cms.directus.app/assets/026b8815-555f-42dd-b3a0-25f991f4ca5e.png" />
+
+
+### 7. Voila
 
 <img width="800" alt="Apps" src="https://openbb-cms.directus.app/assets/b34f315c-0f17-4e14-9b0d-0288d1cf7a5c.png" />
 

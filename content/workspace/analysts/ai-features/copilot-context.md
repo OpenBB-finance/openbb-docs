@@ -25,11 +25,12 @@ The agent prioritizes context in the following order:
 | Priority | Context Type | Description |
 |---|---|---|
 | 1 | Explicit | Widgets added to context specifically. |
-| 2 | Attached files | Files uploaded directly to the Copilot |
-| 3 | Dashboard | All widgets currently on your dashboard (in all tabs). |
-| 4 | Conversation | The history of your current conversation. |
-| 5 | Global | All widgets available within the OpenBB Workspace. If Global Data enabled. |
-| 6 | Web search | Retrieve infromation from the web. If Web Search enabled. |
+| 2 | MCP tool | Active MCP tools connected to the Copilot |
+| 3 | Attached files | Files uploaded directly to the Copilot |
+| 4 | Dashboard | All widgets currently on your dashboard (in all tabs). |
+| 5 | Conversation | The history of your current conversation. |
+| 6 | Global | All widgets available within the OpenBB Workspace. If Global Data enabled. |
+| 7 | Web search | Retrieve infromation from the web. If Web Search enabled. |
 
 ## Context Types
 
@@ -58,6 +59,36 @@ When you use the "@" symbol followed by a widget name and the prompt is sent, th
     width="60%"
   />
 </div>
+
+### MCP Tools
+
+The second highest priority is active MCP tools connected to OpenBB Workspace. For more details, see the MCP tools documentation [here](/workspace/analysts/ai-features/mcp-tools).
+
+Depending on your use case, MCP tools offer a powerful way to connect to third-party data providers or specialized financial tools using a standardized protocol. This would eliminate the need for custom development inside OpenBB Workspace.
+
+To use MCP tools, make sure to configure it (see how to do it [here](/workspace/analysts/ai-features/mcp-tools#configure-your-mcp-servers), and then select all the desired MCP tools.
+
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img
+    className="pro-border-gradient"
+    alt="Attached files"
+    src="https://openbb-cms.directus.app/assets/31809471-52b2-4dcb-a5f0-9276def2ae29.png"
+    width="60%"
+  />
+</div>
+
+When enabled, Copilot gains access to all active MCP tools. You can also explicitly call a specific MCP tool to guarantee it’s invoked.
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img
+    className="pro-border-gradient"
+    alt="Attached files"
+    src="https://openbb-cms.directus.app/assets/0a77e58a-6c9f-4cc8-8983-ec8668ecc1c6.png"
+    width="60%"
+  />
+</div>
+
 
 ### Attached Files
 

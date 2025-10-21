@@ -158,3 +158,18 @@ For example, accessing OpenBB documentation requires two tools from the same MCP
     width="100%"
   />
 </div>
+
+### Matching widget to MCP tools
+
+As shown above, in the reasoning step, you can see when and at which point the MCP tool was called. In addition, you can configure a widget that shares identical metadata, or what we refer to as “matching”, to the corresponding MCP tool.
+
+Once a matching widget has been set up, a citation marked with an asterisk (*) will appear at the end whenever the MCP tool is used. 
+
+<img className="pro-border-gradient" width="800" alt="Widget hover tooltip showing option to add to dashboard" src="https://openbb-cms.directus.app/assets/d2c50edb-43e2-4771-9125-b31117501a61.png" />
+
+
+Additionally, when you click “Add matching widget to dashboard,” the widget will be automatically added to your current dashboard, using the same parameters applied by Copilot.
+
+
+
+<img className="pro-border-gradient" width="800" alt="Interactive widget dashboard showing parameters, charting, and OpenBB properties" src="https://openbb-cms.directus.app/assets/a719abc4-9b2f-41c7-b1a8-dd84fc707b77.png" />

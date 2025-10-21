@@ -1,6 +1,6 @@
 ---
-title: Orchestrator Mode
-sidebar_position: 12
+title: Orchestrator Mode (Beta)
+sidebar_position: 14
 description: Understanding OpenBB Copilot's Orchestrator Mode for multi-agent workflows
 keywords:
 - Orchestrator Mode
@@ -14,7 +14,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Orchestrator Mode | OpenBB Workspace Docs" />
 
-# Orchestrator Mode
+# Orchestrator Mode (Beta)
 
 Orchestrator Mode enables OpenBB Copilot to coordinate with specialized AI agents for complex analytical workflows. When activated, OpenBB Copilot becomes a central coordinator that evaluates user requests, identifies the most appropriate agents for specific tasks, and delegates work to optimize results.
 
