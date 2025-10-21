@@ -86,6 +86,6 @@ When complete, you can customize the environment by adding OpenBB Python modules
 
 <img width="2306" height="1966" alt="install-step-3" src="https://github.com/user-attachments/assets/3a439d09-9ff1-4f08-a29d-62278bef6ada" />
 
-Finally, click the button to go to the [Environments](/odp/environments) page.
+Finally, click the button to go to the [Environments](/desktop/environments) page.
 
 <img width="2446" height="1988" alt="install-complete" src="https://github.com/user-attachments/assets/8a1b1612-1c0e-4105-aae1-4753066e68b1" />

@@ -20,9 +20,9 @@ keywords:
 - Autogenerate
 ---
 
-The, [openbb-mcp-server](https://pypi.org/project/openbb-mcp-server/), Python package is for converting FastAPI instances, or OpenBB Platform installations, into Workspace-compatible MCP servers accessible from the chat interface.
+The, [openbb-mcp-server](https://pypi.org/project/openbb-mcp-server/), Python package is for converting OPD Python installations, or other FastAPI instances, into Workspace-compatible MCP servers accessible from the chat interface.
 
-Servers can be extensively configured in a manner similar to [`openbb-api`](/workspace/developers/tools/openbb-api), the Minimum Viable Python approach.
+Servers can be extensively configured in a manner similar to [`openbb-api`](/python/extensions/interface/openbb-api), the Minimum Viable Python approach.
 
 ## Features
 
@@ -49,6 +49,9 @@ openbb-mcp
 ### Command Line Arguments
 
 Enter `openbb-mcp --help` to see the docstring from the command line.
+
+<details>
+<summary mdxType="summary">Arguments List</summary>
 
 ```sh
 --help
@@ -97,7 +100,14 @@ Enter `openbb-mcp --help` to see the docstring from the command line.
     Path to a JSON file with a list of server prompts.
 ```
 
+</details>
+
 #### All other arguments will be passed to `uvicorn.run`.
+
+## Settings Reference
+
+Go [here](/python/settings/mcp_settings) to see the complete table.
+All settings can be configured via the `mcp_settings.json` file or as environment variables.
 
 ## Configuration
 
@@ -229,39 +239,6 @@ OPENBB_MCP_UVICORN_CONFIG="host:0.0.0.0,port:9000"
 OPENBB_MCP_UVICORN_CONFIG='{"host": "0.0.0.0", "port": 9000, "env_file": "./path_to/.env"}'
 ```
 
-## Settings Reference
-
-All settings in the `MCPSettings` model can be configured via the `mcp_settings.json` file or as environment variables.
-
-| Setting | Environment Variable | Type | Default | Description |
-|---|---|---|---|---|
-| `api_prefix` | `OPENBB_MCP_API_PREFIX` | string | `None` | Overrides the API prefix from SystemService. |
-| `name` | `OPENBB_MCP_NAME` | string | `"OpenBB MCP"` | Server name. |
-| `description` | `OPENBB_MCP_DESCRIPTION` | string | | Server description. |
-| `version` | `OPENBB_MCP_VERSION` | string | `None` | Server version. |
-| `default_tool_categories` | `OPENBB_MCP_DEFAULT_TOOL_CATEGORIES` | list[string] | `["all"]` | Default active tool categories on startup. |
-| `allowed_tool_categories` | `OPENBB_MCP_ALLOWED_TOOL_CATEGORIES` | list[string] | `None` | Restricts available tool categories to this list. |
-| `enable_tool_discovery` | `OPENBB_MCP_ENABLE_TOOL_DISCOVERY` | boolean | `True` | Enable tool discovery. |
-| `describe_responses` | `OPENBB_MCP_DESCRIBE_RESPONSES` | boolean | `False` | Include response types in tool descriptions. |
-| `system_prompt_file` | `OPENBB_MCP_SYSTEM_PROMPT_FILE` | string | `None` | Path to a text file for the system prompt. |
-| `server_prompts_file` | `OPENBB_MCP_SERVER_PROMPTS_FILE` | string | `None` | Path to a JSON file with a list of server prompt definitions. |
-| `cache_expiration_seconds` | `OPENBB_MCP_CACHE_EXPIRATION_SECONDS` | float | `None` | Cache expiration time in seconds. `0` to disable. |
-| `on_duplicate_tools` | `OPENBB_MCP_ON_DUPLICATE_TOOLS` | string | `None` | Behavior for duplicate tools (`warn`, `error`, `replace`, `ignore`). |
-| `on_duplicate_resources` | `OPENBB_MCP_ON_DUPLICATE_RESOURCES` | string | `None` | Behavior for duplicate resources. |
-| `on_duplicate_prompts` | `OPENBB_MCP_ON_DUPLICATE_PROMPTS` | string | `None` | Behavior for duplicate prompts. |
-| `resource_prefix_format` | `OPENBB_MCP_RESOURCE_PREFIX_FORMAT` | string | `None` | Format for resource URI prefixes (`protocol` or `path`). |
-| `mask_error_details` | `OPENBB_MCP_MASK_ERROR_DETAILS` | boolean | `None` | Mask error details from user functions. |
-| `dependencies` | `OPENBB_MCP_DEPENDENCIES` | list[string] | `None` | List of dependencies to install. |
-| `include_tags` | `OPENBB_MCP_INCLUDE_TAGS` | set[string] | `None` | Only expose components with these tags. |
-| `exclude_tags` | `OPENBB_MCP_EXCLUDE_TAGS` | set[string] | `None` | Exclude components with these tags. |
-| `module_exclusion_map` | `OPENBB_MCP_MODULE_EXCLUSION_MAP` | dict[str, str] | `None` | Map API tags to Python module names for exclusion. |
-| `uvicorn_config` | `OPENBB_MCP_UVICORN_CONFIG` | dict | `{"host": "127.0.0.1", "port": "8001"}` | Configuration for the Uvicorn server. |
-| `httpx_client_kwargs` | `OPENBB_MCP_HTTPX_CLIENT_KWARGS` | dict | `{}` | Configuration for the async httpx client. |
-| `client_auth` | `OPENBB_MCP_CLIENT_AUTH` | tuple[string, string] | `None` | `(username, password)` for client-side basic authentication (passed-through to HTTPX). |
-| `server_auth` | `OPENBB_MCP_SERVER_AUTH` | tuple[string, string] | `None` | `(username, password)` for server-side basic authentication. |
-
-> **Note:** Runtime argument keys, in general, "-" and "_" are interchangeable. Nested uvicorn arguments should use `_`.
-
 ## Tool Categories
 
 The server organizes OpenBB tools into categories based on the included API Routers (paths).
@@ -273,13 +250,6 @@ For example:
 - **`crypto`** - Cryptocurrency data and analysis
 - **`economy`** - Economic indicators, GDP, employment data
 - **`news`** - Financial news from various sources
-- **`fixedincome`** - Bond data, rates, government securities
-- **`derivatives`** - Options and futures data
-- **`etf`** - ETF information and holdings
-- **`currency`** - Foreign exchange data
-- **`commodity`** - Commodity prices and data
-- **`index`** - Market indices data
-- **`regulators`** - SEC, CFTC regulatory data
 
 Each category contains subcategories that group related functionality (e.g., `equity_price`, `equity_fundamental`, etc.).
 
@@ -287,7 +257,10 @@ Each category contains subcategories that group related functionality (e.g., `eq
 
 An additional set of tools are tagged as "admin", or "prompt".
 
-- available_categories
+<details>
+<summary mdxType="summary">Tool List</summary>
+
+- available_categories: List all categories.
 
 - available_tools: List all tools by category.
   - `category`: Category of tool to list.
@@ -304,6 +277,8 @@ An additional set of tools are tagged as "admin", or "prompt".
 - execute_prompt: Execute a prompt with arguments, if any.
   - `prompt_name`: Name of the prompt to execute.
   - `arguments`: Dictionary of argument:value for the prompt.
+
+</details>
 
 ## Tool Discovery
 
@@ -346,6 +321,9 @@ Each entry in the JSON file is a dictionary with the following properties:
 
 Prompts here should provide the LLM a clear path for executing a workflow combining multiple tools or steps, for example:
 
+<details>
+<summary mdxType="summary">Example Server Prompt</summary>
+
 ```json
 [
     {
@@ -382,8 +360,12 @@ Prompts here should provide the LLM a clear path for executing a workflow combin
 ]
 ```
 
+</details>
+
+:::warning
 An invalid prompt definition, or prompt argument, will be logged to the console as an error.
 The item will be ignored, and will not raise an error.
+:::
 
 ## Inline Prompts
 
@@ -394,6 +376,9 @@ Adding prompts here will help the LLM use the endpoint for specific purposes, wi
 Direct it to `execute_prompt`, or to make note that helpful prompts may be included in the tool's metadata.
 
 The block below assumes `app` is an instance of `FastAPI`
+
+<details>
+<summary mdxType="summary">Example Inline Prompt</summary>
 
 ```python
 @app.get(
@@ -441,6 +426,8 @@ def get_gdp_data(country: str, period: Literal["annual", "quarterly"] = "annual"
     """Get GDP data for a specific country."""
     return {"country": country, "period": period}
 ```
+
+</details>
 
 Along with being added to `list_prompts`, prompts will be included with the tool's metadata, returned by `list_tools`.
 
@@ -500,6 +487,9 @@ You only need to enter the values that you wish to customize.
 
 Below are the properties you can define within `mcp_config`:
 
+<details>
+<summary mdxType="summary">Properties</summary>
+
 -   **`expose`** (`Optional[bool]`): Set to `False` to completely hide a route from the MCP server. This is useful for internal or deprecated endpoints that should not be available as tools.
 
 -   **`mcp_type`** (`Optional[MCPType]`): Classify the route as a specific MCP type. Valid options are `"tool"`, `"resource"`, or `"resource_template"`.
@@ -518,6 +508,8 @@ Below are the properties you can define within `mcp_config`:
     - **`default`**: Supplying a default value makes the parameter Optional.
     - **`description`**: Description of the parameter. Supply need-to-know details for the LLM.
   - **`tags`**: List of tags to apply to the argument.
+
+</details>
 
 ### MCPConfigModel Validation
 
@@ -583,6 +575,9 @@ openbb-mcp --no-tool-discovery
 
 To connect the OpenBB MCP server with Claude Desktop, you need to configure it as a custom tool server. Here are the steps:
 
+<details>
+<summary mdxType="summary">Steps</summary>
+
 1.  Locate the settings or configuration file for Claude Desktop where you can define custom MCP servers.
 2.  Add the following entry to your `mcpServers` configuration. This will configure Claude Desktop to launch the OpenBB MCP server automatically using `stdio` for communication.
 
@@ -608,9 +603,14 @@ To connect the OpenBB MCP server with Claude Desktop, you need to configure it a
 3.  Ensure that `uvx`, is installed and available in your system's PATH. If not, follow the installation instructions.
 4.  Restart Claude Desktop to apply the changes. You should now see "openbb-mcp" as an available tool source.
 
+</details>
+
 ### Cursor
 
 To use OpenBB tools within Cursor, you first need to run the MCP server and then tell Cursor how to connect to it.
+
+<details>
+<summary mdxType="summary">Steps</summary>
 
 **Step 1: Run the OpenBB MCP Server**
 
@@ -636,7 +636,12 @@ Add the following configuration to the `mcpServers` object in your `mcp.json` fi
 }
 ```
 
+</details>
+
 ### VS Code
+
+<details>
+<summary mdxType="summary">Steps</summary>
 
 **Step 1: Enable MCP in VS Code Settings**
 
@@ -681,3 +686,5 @@ The tools can now be added as context to the chat.
 <img width="601" height="442" alt="vs-code-mcp-tools" src="https://github.com/user-attachments/assets/06c39248-aedd-4f53-9560-6dfbae1efaf8" />
 
 **Note**: When adding to the Cline extension, set `--transport sse` when starting the server.
+
+</details>

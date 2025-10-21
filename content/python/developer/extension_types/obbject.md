@@ -187,7 +187,3 @@ The `hello` function now runs directly from `output.empty`.
 >>> output.results
 'Hello from the Empty Router extension!'
 ```
-
-## Next Steps
-
-Go to [charting extensions](/python/developer/extension_types/charting), and how to return serialized figures for frontend display.
