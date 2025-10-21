@@ -9,7 +9,7 @@
 - [Step-by-Step Reasoning](https://docs.openbb.co/workspace/analysts/ai-features/copilot-reasoning): Understanding the transparent reasoning process of OpenBB Copilot
 - [Generative UI (Beta)](https://docs.openbb.co/workspace/analysts/ai-features/generative-ui): Understanding the Generative UI capabilities in OpenBB Copilot
 - [MCP Tools](https://docs.openbb.co/workspace/analysts/ai-features/mcp-tools): Model Context Protocol (MCP) tools integration in OpenBB Copilot
-- [Orchestrator Mode](https://docs.openbb.co/workspace/analysts/ai-features/orchestrator-mode): Understanding OpenBB Copilot's Orchestrator Mode for multi-agent workflows
+- [Orchestrator Mode (Beta)](https://docs.openbb.co/workspace/analysts/ai-features/orchestrator-mode): Understanding OpenBB Copilot's Orchestrator Mode for multi-agent workflows
 - [Apps](https://docs.openbb.co/workspace/analysts/apps): Discover and use OpenBB Apps - pre-configured dashboard templates with integrated AI agents and custom prompts for optimized analytical workflows.
 - [Dashboards Overview](https://docs.openbb.co/workspace/analysts/dashboards/index): Learn how to create, manage, and share interactive dashboards in OpenBB Workspace
 - [Excel Add-in Installation](https://docs.openbb.co/workspace/analysts/excel-addin/excel-installation): This page presents the general requirements and the steps to install the OpenBB Add-in for Excel. The OpenBB Add-in for Excel is available on Windows, Mac, and Excel on the web. It can be installed by an administrator or by individual users.
