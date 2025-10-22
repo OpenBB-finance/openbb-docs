@@ -235,8 +235,6 @@ def create_reference_markdown_tabular_section(
 
                     content += "</details>\n\n"
 
-
-
             # Add separator between parameters (except for the last one)
             if heading == "Parameters" and i == len(filtered):
                 content += "---\n"
@@ -294,7 +292,7 @@ def create_reference_markdown_returns_section(returns: List[Dict[str, str]]) -> 
         elif isinstance(params, str):
             # For simple string returns, just add them directly
             markdown += f"{params}\n"
-    
+
     markdown += "---\n"
 
     return markdown
@@ -668,7 +666,10 @@ def generate_platform_markdown(paths: Dict) -> None:
     console.log(f"\n[INFO] Generating the markdown files for the {PLATFORM_DATA_MODELS_PATH} directory...")  # fmt: skip
 
     for path, path_data in paths.items():
-        if path_data.get("openapi_extra", {}).get("widget_config", {}).get("exclude") is True:
+        if (
+            path_data.get("openapi_extra", {}).get("widget_config", {}).get("exclude")
+            is True
+        ):
             continue
         reference_markdown_content = ""
         data_markdown_content = ""
