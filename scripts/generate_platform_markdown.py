@@ -621,6 +621,16 @@ def generate_markdown_file(path: str, markdown_content: str, directory: str) -> 
         parts = path.strip("/").split("/")
         file_name = f"{parts[-1]}.md"
         directory_path = PLATFORM_REFERENCE_PATH / "/".join(parts[:-1])
+
+        # Check if a directory with the same name exists - if so, skip creating the markdown file
+        # to avoid duplicate routes (directory-based structure takes precedence)
+        if (directory_path / parts[-1]).exists() and (
+            directory_path / parts[-1]
+        ).is_dir():
+            console.log(
+                f"[WARNING] Skipping {path} - directory with same name exists at {directory_path / parts[-1]}"
+            )
+            return
     # For data models, the file name is derived from the last
     # part of the path, and there's no additional directory structure
     elif directory == "data_models":
