@@ -76,6 +76,6 @@
 - [Support & Services](https://docs.openbb.co/workspace/getting-started/enterprise/support-services): Enterprise support, professional services, and success programs for OpenBB Workspace
 - [Team Collaboration](https://docs.openbb.co/workspace/getting-started/enterprise/team-collaboration): Collaborative features for teams in OpenBB Workspace Enterprise
 - [FAQs](https://docs.openbb.co/workspace/getting-started/faqs): Common questions and answers about OpenBB Workspace, data integration, custom backends, and troubleshooting.
-- [OpenBB Platform](https://docs.openbb.co/workspace/getting-started/platform-installer): Learn how to integrate the OpenBB Platform data to OpenBB Workspace
+- [OpenBB Python Package](https://docs.openbb.co/workspace/getting-started/platform-installer): Learn how to integrate the Open Data Platform data to OpenBB Workspace
 - [Progressive Web App (PWA)](https://docs.openbb.co/workspace/getting-started/pwa): Install OpenBB Workspace as a Progressive Web App for a native experience on desktop and mobile devices.
 - [Workspace Overview](https://docs.openbb.co/workspace/index): OpenBB Workspace is a secure enterprise UI application for AI workflows, featuring data integration, AI model deployment, flexible UI customization, and on-premises deployment capabilities.

@@ -1,7 +1,7 @@
 ---
 title: Commands And Arguments
 sidebar_position: 4
-description: This page explains how to enter commands and arguments into the OpenBB Platform CLI.
+description: This page explains how to enter commands and arguments into the ODP CLI.
 keywords:
 - help arguments
 - auto-complete
@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Commands And Arguments | OpenBB Platform CLI Docs" />
+<HeadTitle title="Commands And Arguments | ODP CLI Docs" />
 
 Commands are displayed on-screen in a lighter colour, compared with menu items, and they will not be prefaced with, `>`.
 
@@ -43,7 +43,7 @@ Use the auto-complete to prompt choices and reduce the amount of keystrokes requ
 
 ## Auto-complete
 
-The OpenBB Platform CLI is equipped with an auto completion engine that presents choices based on the current menu and command. Whenever you start typing, suggestion prompts will appear for existing commands and menus. When the command contains arguments, pressing the `space bar` after typing the command will present the list of available arguments.
+The ODP CLI is equipped with an auto completion engine that presents choices based on the current menu and command. Whenever you start typing, suggestion prompts will appear for existing commands and menus. When the command contains arguments, pressing the `space bar` after typing the command will present the list of available arguments.
 
 This functionality dramatically reduces the number of key strokes required to perform tasks and, in many cases, eliminates the need to consult the help dialogue for reminders. Choices - where they are bound by a defined list - are scrollable with the up and down arrow keys.
 
@@ -81,7 +81,7 @@ The `results` command will display the stack of `OBBjects` that have been genera
 ---
 title: Configuration & Settings
 sidebar_position: 5
-description: This documentation page details the various settings and feature flags used to customize the OpenBB Platform CLI.
+description: This documentation page details the various settings and feature flags used to customize the ODP CLI.
 keywords:
 - Settings Menu
 - Feature Flags Menu
@@ -89,6 +89,7 @@ keywords:
 - alter CLI behaviour
 - environment variables
 - Documentation
+- ODP CLI
 - OpenBB Platform CLI
 - preferences
 - user
@@ -96,16 +97,16 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Configuration & Settings - | OpenBB Platform CLI Docs" />
+<HeadTitle title="Configuration & Settings - | ODP CLI Docs" />
 
-In addition to the OpenBB Platform's `user_settings.json` file, described [here](/platform/settings/environment_variables), there are settings and environment variables affecting the CLI only.
+In addition to the ODP's `user_settings.json` file, described [on the environment variables page](/python/settings/environment_variables), there are settings and environment variables affecting the CLI only.
 
 :::important
 API credentials are defined in the `user_settings.json` file.
 
-Find all the current data providers maintained in the OpenBB repository [here](/platform/usage/extensions/overview).
+Find all the current data providers maintained in the OpenBB repository [on the extensions page](/python/extensions/).
 
-Define default data sources by following the pattern outlined [here](data-sources)
+Define default data sources by following the pattern outlined [on the data sources page](data-sources)
 :::
 
 ## Settings Menu
@@ -169,14 +170,14 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Data Sources | OpenBB Platform CLI Docs" />
+<HeadTitle title="Data Sources | ODP CLI Docs" />
 
 Many commands have multiple data sources associated with it. This page describes how to select from multiple providers.
 
 :::important
 API credentials are defined in the `user_settings.json` file.
 
-Find all the current data providers maintained in the OpenBB repository [here](/platform/usage/extensions/overview).
+Find all the current data providers maintained in the OpenBB repository [here](/python/extensions).
 :::
 
 ## Data Source In-Command
@@ -269,7 +270,7 @@ See the example below for `obb.equity.price.historical` command:
 ---
 title: Introduction
 sidebar_position: 0
-description: The OpenBB Platform CLI is a command line interface wrapping the OpenBB Platform. It offers a convenient way to interact with the Platform and its extensions, as well as automate data collection via OpenBB Routine Scripts. No experience with Python, or other programming languages, is required.
+description: The ODP CLI is a command line interface wrapping the Open Data Platform by OpenBB. It offers a convenient way to interact with the Platform and its extensions, as well as automate data collection via OpenBB Routine Scripts. No experience with Python, or other programming languages, is required.
 keywords:
 - OpenBB
 - CLI
@@ -286,13 +287,13 @@ keywords:
 import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="OpenBB Platform CLI Docs" />
+<HeadTitle title="ODP CLI Docs" />
 
 ## Overview
 
-The OpenBB Platform CLI is a command line interface wrapping the OpenBB Platform. It offers a convenient way to interact with the Platform and its extensions, as well as automate data collection via OpenBB Routine Scripts.
+The ODP CLI is a command line interface wrapping the Open Data Platform by OpenBB. It offers a convenient way to interact with the Platform and its extensions, as well as automate data collection via OpenBB Routine Scripts.
 
-The CLI leverages the extendability of the OpenBB Platform architecture in an easy-to-consume and script format.
+The CLI leverages the extendability of the ODP architecture in an easy-to-consume and script format.
 
 ![CLI Home](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/d1617c3b-c83d-4491-a7bc-986321fd7230)
 
@@ -301,44 +302,44 @@ The CLI leverages the extendability of the OpenBB Platform architecture in an ea
 <ul className="grid grid-cols-1 gap-4 -ml-6">
 <NewReferenceCard
     title="Installation"
-    description="An installation guide for the OpenBB Platform CLI."
-    url="cli/installation"
+    description="An installation guide for the ODP CLI."
+    url="/cli/installation"
 />
 <NewReferenceCard
     title="Quick Start"
-    description="A quick start guide for the OpenBB Platform CLI."
-    url="cli/quickstart"
+    description="A quick start guide for the ODP CLI."
+    url="/cli/quickstart"
 />
 <NewReferenceCard
     title="Configuration & Settings"
-    description="An explanation of the settings and environment variables that customize the look and feel of the OpenBB Platform CLI."
-    url="cli/configuration"
+    description="An explanation of the settings and environment variables that customize the look and feel of the ODP CLI."
+    url="/cli/configuration"
 />
 <NewReferenceCard
     title="Data Sources"
     description="How-to switch providers for a command, and define the default source for a function."
-    url="cli/data-sources"
+    url="/cli/data-sources"
 />
 <NewReferenceCard
     title="OpenBBUserData Folder"
     description="The OpenBBUserData folder is where exports, routines, and other related files are saved."
-    url="cli/openbbuserdata"
+    url="/cli/openbbuserdata"
 />
 <NewReferenceCard
     title="Interactive Tables"
     description="Understand how to sort, filter, hide columns, display more rows or export data on our tables."
-    url="cli/interactive-tables"
+    url="/cli/interactive-tables"
 />
 <NewReferenceCard
     title="Interactive Charts"
     description="Explore how to overlay charts, change titles, draw lines, add text and much more on our charts."
-    url="cli/interactive-charts"
+    url="/cli/interactive-charts"
 />
 </ul>
 
 ---
 
-Want to contribute? Check out our [Development section](/platform/developer_guide/architecture_overview).
+Want to contribute? Check out our [Development section](/python/developer/architecture_overview).
 
 
 ---
@@ -346,8 +347,10 @@ Want to contribute? Check out our [Development section](/platform/developer_guid
 ---
 title: Installation
 sidebar_position: 2
-description: This page provides installation instructions for the OpenBB Platform CLI.
+description: This page provides installation instructions for the ODP CLI.
 keywords:
+- Open Data Platform by OpenBB
+- ODP
 - OpenBB Platform
 - Python
 - CLI
@@ -359,18 +362,18 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Installation | OpenBB Platform CLI Docs" />
+<HeadTitle title="Installation | ODP CLI Docs" />
 
 ## Pre-Requisites
 
-The OpenBB Platform CLI is a wrapper around the [Platform](/platform), and should be installed along side an existing OpenBB installation.
+ODP CLI is a wrapper around the [OpenBB Python Package](/python), and should be installed along side an existing OpenBB installation.
 
 - A Python virtual environment with a version between 3.9 and 3.11, inclusive, is required.
 
-Please refer to the [OpenBB Platform install documentation](/platform/installation) for instructions and more information.
+Please refer to the [Python install documentation](/python/installation) for instructions and more information.
 
 :::info
-If the OpenBB Platform is not already installed, the `openbb-cli` package  will install all available components.
+If the ODP python package is not already installed, the `openbb-cli` package  will install all available components.
 :::
 
 ### Windows
@@ -410,7 +413,6 @@ Next, install webkit.
 
 - Fedora: `sudo dnf install gtk3-devel webkit2gtk3-devel`
 
-
 ## PyPI
 
 Within your existing OpenBB environment, install `openbb-cli` with:
@@ -424,12 +426,12 @@ The installation script adds `openbb` to the PATH within your Python environment
 ```console
 openbb
 
-Welcome to OpenBB Platform CLI v1.0.0
+Welcome to Open Data Platform CLI v1.0.0
 ```
 
 ## Source
 
-Follow the instructions [here](/platform/installation#source) to clone the GitHub repo and install the OpenBB Platform from the source code.
+Follow the instructions [here](/python/installation#source) to clone the GitHub repo and install the Open Data Platform from the source code.
 
 Next, navigate into the folder: `~/OpenBB/openbb_platform`
 
@@ -439,6 +441,7 @@ The Python environment should have `poetry` installed.
 ```bash
 pip install poetry
 ```
+
 :::
 
 Finally, enter:
@@ -477,7 +480,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Interactive Charts - | OpenBB Platform CLI Docs" />
+<HeadTitle title="Interactive Charts - | ODP CLI Docs" />
 
 Interactive charts open in a separate window ([PyWry](https://github.com/OpenBB-finance/pywry)). The OpenBB charting library provides interactive and highly customizable charts.
 
@@ -587,13 +590,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Interactive Tables - | OpenBB Platform CLI Docs" />
+<HeadTitle title="Interactive Tables - | ODP CLI Docs" />
 
 
 Interactive tables open in a separate window ([PyWry](https://github.com/OpenBB-finance/pywry)). These provide methods for searching, sorting, filtering, exporting and even adapting settings directly on the table.
 
 :::tip
-All OpenBB Platform CLI results are displayed in interactive tables by default, unless the interactive model is disabled from the `/settings` menu.
+All ODP CLI results are displayed in interactive tables by default, unless the interactive model is disabled from the `/settings` menu.
 :::
 
 <details>
@@ -666,7 +669,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="OpenBBUserData Folder | OpenBB Platform CLI Docs" />
+<HeadTitle title="OpenBBUserData Folder | ODP CLI Docs" />
 
 The OpenBBUserData folder is where exports, routines, and other user-related content is saved and stored.
 
@@ -712,7 +715,7 @@ The location of this folder can be set by the user by changing the user configur
 ---
 title: Quick Start
 sidebar_position: 2
-description: This page is a quick start guide for the OpenBB Platform CLI.
+description: This page is a quick start guide for the ODP CLI.
 keywords:
 - quickstart
 - quick start
@@ -723,11 +726,11 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Quick Start - Usage | OpenBB Platform CLI Docs" />
+<HeadTitle title="Quick Start - Usage | ODP CLI Docs" />
 
 ## Launch
 
-- Configure any data provider credentials in the [`user_settings.json`](/platform/settings/user_settings/api_keys) file.
+- Configure any data provider credentials in the [`user_settings.json`](/python/settings/user_settings/api_keys) file.
 - Open a Terminal and activate the environment where the `openbb-cli` package was installed.
 - On the command line, enter: `openbb`
 
@@ -940,7 +943,7 @@ To demonstrate how multiple commands are sequenced as a script, try running the 
 ---
 title: Advanced Routines
 sidebar_position: 5
-description: This page provides guidance on creating and running advanced workflows in the OpenBB Platform CLI by
+description: This page provides guidance on creating and running advanced workflows in the ODP CLI by
   introducing variables and arguments for routines. It explains input variables,
   relative time keyword variables, internal script variables and creating loops for
   batch execution.
@@ -960,7 +963,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Advanced Routines - Routines | OpenBB Platform CLI Docs" />
+<HeadTitle title="Advanced Routines - Routines | ODP CLI Docs" />
 
 ## Input Variables
 
@@ -1067,7 +1070,7 @@ title: Routines
 import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-<HeadTitle title="Routines - | OpenBB Platform CLI Docs" />
+<HeadTitle title="Routines - | ODP CLI Docs" />
 
 <ul className="grid grid-cols-1 gap-4 -ml-6">
   <NewReferenceCard
@@ -1081,13 +1084,8 @@ import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
     url="routines/routine-macro-recorder"
   />
   <NewReferenceCard
-    title="Community Routines"
-    description="Learn from other investors by diving into their OpenBB routines."
-    url="routines/community-routines"
-  />
-  <NewReferenceCard
     title="Advanced Routines"
-    description="Become an OpenBB Platform CLI power user by understanding routines inputs, setting variables, creating loops and more."
+    description="Become an ODP CLI power user by understanding routines inputs, setting variables, creating loops and more."
     url="routines/advanced-routines"
   />
 </ul>
@@ -1116,7 +1114,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Introduction to Routines - Routines | OpenBB Platform CLI Docs" />
+<HeadTitle title="Introduction to Routines - Routines | ODP CLI Docs" />
 
 ## Overview
 
@@ -1128,7 +1126,7 @@ Routines make it easy to automate a series of processes, and this includes minin
 
 ## Pipeline of Commands
 
-One of the main objectives of the OpenBB Platform CLI is to automate a user's investment research workflow - not just a single command, but the complete process.  This is where the pipeline of commands comes in,  running a sequence of commands.
+One of the main objectives of the ODP CLI is to automate a user's investment research workflow - not just a single command, but the complete process.  This is where the pipeline of commands comes in,  running a sequence of commands.
 
 An example of a pipeline of commands is:
 
@@ -1250,7 +1248,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Routine Macro Recorder - Routines - Usage | OpenBB Platform CLI Docs" />
+<HeadTitle title="Routine Macro Recorder - Routines - Usage | ODP CLI Docs" />
 
 OpenBB script routines can be captured with the macro recorder, controlled with global commands. Enter, `record`, to start saving commands, and then, `stop`, terminates the recording. This means that any command you run will be captured in the script; and on `stop`, it will be saved to the `~/OpenBBUserData/routines/` folder.
 
@@ -1280,9 +1278,10 @@ The routine can be edited to replace parameter values with input variables - e.g
 ---
 title: Structure and Navigation
 sidebar_position: 3
-description: This page describes the layout and structure of the OpenBB Platform CLI, as well as how to navigate it.
+description: This page describes the layout and structure of the ODP CLI, as well as how to navigate it.
 keywords:
 - CLI application
+- ODP CLI
 - OpenBB Platform CLI
 - structure
 - navigation
@@ -1296,11 +1295,11 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Structure and Navigation | OpenBB Platform CLI Docs" />
+<HeadTitle title="Structure and Navigation | ODP CLI Docs" />
 
 ## Structure
 
-The OpenBB Platform CLI is a Command Line Interface (CLI) application. Functions (commands) are called through the keyboard with results returned as charts, tables, or text.  Charts and tables (if enabled) are displayed in a new window, and are fully interactive, while text prints directly to the Terminal screen.
+The ODP CLI is a Command Line Interface (CLI) application. Functions (commands) are called through the keyboard with results returned as charts, tables, or text.  Charts and tables (if enabled) are displayed in a new window, and are fully interactive, while text prints directly to the Terminal screen.
 
 A menu is a collection of commands (and sub-menus). A menu can be distinguished from a command because the former has a `>` on the left. The color of a command and a menu also differ.
 
