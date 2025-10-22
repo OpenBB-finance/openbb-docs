@@ -1,7 +1,7 @@
 ---
 title: Advanced Routines
 sidebar_position: 5
-description: This page provides guidance on creating and running advanced workflows in the OpenBB Platform CLI by
+description: This page provides guidance on creating and running advanced workflows in the ODP CLI by
   introducing variables and arguments for routines. It explains input variables,
   relative time keyword variables, internal script variables and creating loops for
   batch execution.

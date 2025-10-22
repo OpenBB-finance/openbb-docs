@@ -30,7 +30,7 @@ Environments protect the system, and other external projects, by not using share
   - Build environments from `pyproject.toml`, `requirements.txt`, or Conda environment `.yaml` files. 
 - Safely update whole environments or individual packages.
 - Searchable environment package lists, with installed version.
-- Action buttons for opening system terminals and starting Python, iPython, Jupyter, or OpenBB Platform CLI sessions.
+- Action buttons for opening system terminals and starting Python, iPython, Jupyter, or ODP CLI sessions.
   - Define a current working directory.
   - Monitor console output of an environment's Jupyter server.
   - Opens Jupyter Lab in a dedicated window.
@@ -75,7 +75,7 @@ From left-to-right, the buttons are:
 - Open default system shell with the environment active.
   - On macOS, it will prefer iTerm2 over the system Terminal.app.
   - On Windows, it will open with CMD.
-- Start an OpenBB Platform CLI session, if `openbb-cli` is installed.
+- Start an ODP CLI session, if `openbb-cli` is installed.
 - Start a Python session in the default system shell.
 - Start an iPython session in the default system shell, if installed.
 - Start Jupyter Lab, serving notebooks from CWD, if installed.

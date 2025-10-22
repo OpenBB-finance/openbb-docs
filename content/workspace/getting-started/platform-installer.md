@@ -1,14 +1,15 @@
 ---
 title: OpenBB Python Package
 sidebar_position: 7
-description: Learn how to integrate the OpenBB Platform data to OpenBB Workspace
+description: Learn how to integrate the Open Data Platform data to OpenBB Workspace
 keywords:
 - widgets.json
-- OpenBB API
+- Open Data Platform API
 - Endpoint integration
 - widget configuration
 - Workspace widgets
-- OpenBB Platform Installer
+- Open Data Platform Installer
+- ODP Desktop App
 - Widget filtering
 ---
 

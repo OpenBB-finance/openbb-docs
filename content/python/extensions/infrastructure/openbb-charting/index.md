@@ -20,7 +20,7 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 
 <HeadTitle title="OpenBB Charting | OpenBB Docs" />
 
-This extension provides a charting library for OpenBB Platform.
+This extension provides a charting library for Open Data Platform by OpenBB.
 
 The library includes:
 

@@ -1,7 +1,7 @@
 ---
 title: Quick Start
 sidebar_position: 2
-description: This page is a quick start guide for the OpenBB Platform CLI.
+description: This page is a quick start guide for the ODP CLI.
 keywords:
 - quickstart
 - quick start

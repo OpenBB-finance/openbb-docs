@@ -1,7 +1,7 @@
 ---
 title: Introduction
 sidebar_position: 0
-description: The OpenBB Platform CLI is a command line interface wrapping the OpenBB Platform. It offers a convenient way to interact with the Platform and its extensions, as well as automate data collection via OpenBB Routine Scripts. No experience with Python, or other programming languages, is required.
+description: The ODP CLI is a command line interface wrapping the Open Data Platform by OpenBB. It offers a convenient way to interact with the Platform and its extensions, as well as automate data collection via OpenBB Routine Scripts. No experience with Python, or other programming languages, is required.
 keywords:
 - OpenBB
 - CLI
@@ -22,9 +22,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 ## Overview
 
-The OpenBB Platform CLI is a command line interface wrapping the OpenBB Platform. It offers a convenient way to interact with the Platform and its extensions, as well as automate data collection via OpenBB Routine Scripts.
+The ODP CLI is a command line interface wrapping the Open Data Platform by OpenBB. It offers a convenient way to interact with the Platform and its extensions, as well as automate data collection via OpenBB Routine Scripts.
 
-The CLI leverages the extendability of the OpenBB Platform architecture in an easy-to-consume and script format.
+The CLI leverages the extendability of the ODP architecture in an easy-to-consume and script format.
 
 ![CLI Home](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/d1617c3b-c83d-4491-a7bc-986321fd7230)
 
@@ -33,17 +33,17 @@ The CLI leverages the extendability of the OpenBB Platform architecture in an ea
 <ul className="grid grid-cols-1 gap-4 -ml-6">
 <NewReferenceCard
     title="Installation"
-    description="An installation guide for the OpenBB Platform CLI."
+    description="An installation guide for the ODP CLI."
     url="/cli/installation"
 />
 <NewReferenceCard
     title="Quick Start"
-    description="A quick start guide for the OpenBB Platform CLI."
+    description="A quick start guide for the ODP CLI."
     url="/cli/quickstart"
 />
 <NewReferenceCard
     title="Configuration & Settings"
-    description="An explanation of the settings and environment variables that customize the look and feel of the OpenBB Platform CLI."
+    description="An explanation of the settings and environment variables that customize the look and feel of the ODP CLI."
     url="/cli/configuration"
 />
 <NewReferenceCard

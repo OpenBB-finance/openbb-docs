@@ -4,6 +4,8 @@ sidebar_position: 2
 description: A tutorial of the technical indicators included with the openbb-charting library, including how to get started using them.
 keywords:
 - tutorial
+- ODP
+- Open Data Platform by OpenBB
 - OpenBB Platform
 - getting started
 - extensions
@@ -19,7 +21,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Technical Indicators - OpenBB Charting | OpenBB Platform Docs" />
+<HeadTitle title="Technical Indicators - OpenBB Charting | OpenBB Docs" />
 
 Select indicators (technical) can be added to a chart where the data is OHLC+V prices over time, and the data is for one symbol only.
 They are meant as quick visualizations, and a way to build more complex charts.

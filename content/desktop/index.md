@@ -3,6 +3,8 @@ title: Introduction
 sidebar_position: 0
 description: An overview of the Open Data Platform desktop application for creating and managing local environments and backend servers.
 keywords:
+  - ODP
+  - Open Data Platform by OpenBB
   - OpenBB Platform
   - GUI
   - Local Development

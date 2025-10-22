@@ -31,7 +31,7 @@ Routines make it easy to automate a series of processes, and this includes minin
 
 ## Pipeline of Commands
 
-One of the main objectives of the OpenBB Platform CLI is to automate a user's investment research workflow - not just a single command, but the complete process.  This is where the pipeline of commands comes in,  running a sequence of commands.
+One of the main objectives of the ODP CLI is to automate a user's investment research workflow - not just a single command, but the complete process.  This is where the pipeline of commands comes in,  running a sequence of commands.
 
 An example of a pipeline of commands is:
 

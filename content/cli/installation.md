@@ -1,8 +1,10 @@
 ---
 title: Installation
 sidebar_position: 2
-description: This page provides installation instructions for the OpenBB Platform CLI.
+description: This page provides installation instructions for the ODP CLI.
 keywords:
+- Open Data Platform by OpenBB
+- ODP
 - OpenBB Platform
 - Python
 - CLI
@@ -25,7 +27,7 @@ ODP CLI is a wrapper around the [OpenBB Python Package](/python), and should be 
 Please refer to the [Python install documentation](/python/installation) for instructions and more information.
 
 :::info
-If the OpenBB Platform is not already installed, the `openbb-cli` package  will install all available components.
+If the ODP python package is not already installed, the `openbb-cli` package  will install all available components.
 :::
 
 ### Windows
@@ -65,7 +67,6 @@ Next, install webkit.
 
 - Fedora: `sudo dnf install gtk3-devel webkit2gtk3-devel`
 
-
 ## PyPI
 
 Within your existing OpenBB environment, install `openbb-cli` with:
@@ -79,12 +80,12 @@ The installation script adds `openbb` to the PATH within your Python environment
 ```console
 openbb
 
-Welcome to OpenBB Platform CLI v1.0.0
+Welcome to Open Data Platform CLI v1.0.0
 ```
 
 ## Source
 
-Follow the instructions [here](/python/installation#source) to clone the GitHub repo and install the OpenBB Platform from the source code.
+Follow the instructions [here](/python/installation#source) to clone the GitHub repo and install the Open Data Platform from the source code.
 
 Next, navigate into the folder: `~/OpenBB/openbb_platform`
 
@@ -94,6 +95,7 @@ The Python environment should have `poetry` installed.
 ```bash
 pip install poetry
 ```
+
 :::
 
 Finally, enter:
