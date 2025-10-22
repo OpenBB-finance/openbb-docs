@@ -7,7 +7,9 @@
 - [Data Handling](https://docs.openbb.co/workspace/analysts/ai-features/copilot-data-handling): How OpenBB Copilot processes structured and unstructured data
 - [Output Formats](https://docs.openbb.co/workspace/analysts/ai-features/copilot-output): Understanding OpenBB Copilot's output formats and capabilities
 - [Step-by-Step Reasoning](https://docs.openbb.co/workspace/analysts/ai-features/copilot-reasoning): Understanding the transparent reasoning process of OpenBB Copilot
-- [Tools](https://docs.openbb.co/workspace/analysts/ai-features/copilot-tools): Understanding the tools available to OpenBB Copilot
+- [Generative UI (Beta)](https://docs.openbb.co/workspace/analysts/ai-features/generative-ui): Understanding the Generative UI capabilities in OpenBB Copilot
+- [MCP Tools](https://docs.openbb.co/workspace/analysts/ai-features/mcp-tools): Model Context Protocol (MCP) tools integration in OpenBB Copilot
+- [Orchestrator Mode (Beta)](https://docs.openbb.co/workspace/analysts/ai-features/orchestrator-mode): Understanding OpenBB Copilot's Orchestrator Mode for multi-agent workflows
 - [Apps](https://docs.openbb.co/workspace/analysts/apps): Discover and use OpenBB Apps - pre-configured dashboard templates with integrated AI agents and custom prompts for optimized analytical workflows.
 - [Dashboards Overview](https://docs.openbb.co/workspace/analysts/dashboards/index): Learn how to create, manage, and share interactive dashboards in OpenBB Workspace
 - [Excel Add-in Installation](https://docs.openbb.co/workspace/analysts/excel-addin/excel-installation): This page presents the general requirements and the steps to install the OpenBB Add-in for Excel. The OpenBB Add-in for Excel is available on Windows, Mac, and Excel on the web. It can be installed by an administrator or by individual users.
@@ -21,15 +23,26 @@
 - [Overview](https://docs.openbb.co/workspace/analysts/widgets/overview): Understanding widgets - the building blocks of OpenBB Workspace dashboards that transform raw data into actionable insights.
 - [Sandbox Widgets](https://docs.openbb.co/workspace/analysts/widgets/sandbox-widgets): Explore OpenBB's pre-built demonstration widgets that showcase application capabilities upon login.
 - [Static Files](https://docs.openbb.co/workspace/analysts/widgets/static-files): Upload and integrate your own files into OpenBB Workspace - transform spreadsheets, PDFs, and images into interactive dashboard widgets.
-- [Overview](https://docs.openbb.co/workspace/developers/ai-agents/ai-agents): Learn how to integrate and customize AI agents in OpenBB Workspace for enhanced financial analysis and research capabilities
+- [Agents Integration](https://docs.openbb.co/workspace/developers/agents-integration): How to integrate your own AI agent service with OpenBB Workspace
+- [Citations for documents](https://docs.openbb.co/workspace/developers/ai-features/citations-for-documents): Add document-specific citations with PDF text highlighting for source attribution
+- [Create charts](https://docs.openbb.co/workspace/developers/ai-features/create-charts): Stream inline charts as part of your agent’s response
+- [Create tables](https://docs.openbb.co/workspace/developers/ai-features/create-tables): Stream tabular data as an artifact in the conversation
+- [Custom agent features](https://docs.openbb.co/workspace/developers/ai-features/custom-agent-features): Configure and manage custom agent features based on workspace options
+- [Highlight widget citations](https://docs.openbb.co/workspace/developers/ai-features/highlight-widget-citations): Cite widget data sources in your responses and display them in Workspace
+- [Interact with dashboard](https://docs.openbb.co/workspace/developers/ai-features/interact-with-dashboard): Receive full dashboard widget metadata and conditionally fetch data
+- [Parse PDF context](https://docs.openbb.co/workspace/developers/ai-features/parse-pdf-context): Parse PDF content from widget data and cite sources
+- [Parse widget data](https://docs.openbb.co/workspace/developers/ai-features/parse-widget-data): Retrieve data from selected widgets and pass it as raw context to your LLM
+- [Share step-by-step reasoning](https://docs.openbb.co/workspace/developers/ai-features/share-step-by-step-reasoning): Stream status updates alongside model output during long operations
 - [Apps](https://docs.openbb.co/workspace/developers/apps/apps): Create and customize your own OpenBB Apps for optimized workflows
 - [Data Integration](https://docs.openbb.co/workspace/developers/data-integration): Learn how to integrate your own data sources and APIs into OpenBB Workspace with a custom backend solution.
 - [agents.json Reference](https://docs.openbb.co/workspace/developers/json-specs/agents-json-reference): Complete reference guide for configuring custom AI agents in OpenBB Workspace using the agents.json endpoint
 - [apps.json Reference](https://docs.openbb.co/workspace/developers/json-specs/apps-json-reference): Learn about the structure and configuration of apps.json for creating custom applications in OpenBB Workspace
 - [widgets.json Reference](https://docs.openbb.co/workspace/developers/json-specs/widgets-json-reference): Learn how to integrate your own backend with OpenBB Workspace using the cookie-cutter or language-agnostic API approaches, with illustrative guides and principles for handling widget.json files, APIs, interfaces, Python, FastAPI and more.
+- [OpenBB AI SDK](https://docs.openbb.co/workspace/developers/openbb-ai-sdk): Build custom agents for OpenBB Workspace using the OpenBB AI SDK helpers and models
 - [Categories and Subcategories](https://docs.openbb.co/workspace/developers/widget-configuration/category-subcategory): Learn how to organize widgets using categories and subcategories in OpenBB Workspace.
 - [Error Handling](https://docs.openbb.co/workspace/developers/widget-configuration/error-handling): Learn how to handle errors in your widgets in OpenBB Workspace.
 - [Grid Size](https://docs.openbb.co/workspace/developers/widget-configuration/grid-size): Learn about the grid-based layout system for widgets in OpenBB Workspace, including width and height specifications.
+- [Matching widget to MCP tool](https://docs.openbb.co/workspace/developers/widget-configuration/matching-widget-to-mcp-tool): Learn how you can make it so an MCP server and tool are associated with a specific widget
 - [Refetch Interval](https://docs.openbb.co/workspace/developers/widget-configuration/refetch-interval): Learn about configuring refetch intervals for widgets in OpenBB Workspace.
 - [Render Functions](https://docs.openbb.co/workspace/developers/widget-configuration/render-functions): Learn how to configure and use custom render functions in OpenBB Workspace to customize data display and interactions.
 - [Run Button](https://docs.openbb.co/workspace/developers/widget-configuration/run-button): Learn about the run button functionality in OpenBB Workspace widgets.
@@ -57,8 +70,12 @@
 - [Plotly Charts](https://docs.openbb.co/workspace/developers/widget-types/plotly-charts): Plotly Charts
 - [SSRM Mode](https://docs.openbb.co/workspace/developers/widget-types/ssrm_mode): Server-Side Rendered Mode for handling large datasets efficiently in OpenBB Workspace widgets
 - [TradingView Charts](https://docs.openbb.co/workspace/developers/widget-types/tradingview-charts): How to implement TradingView charts in OpenBB using UDF (Universal Data Feed)
-- [Enterprise](https://docs.openbb.co/workspace/getting-started/enterprise): Deploy OpenBB Workspace on-premises or in your private cloud with enterprise-grade security, compliance, and control.
+- [Administration](https://docs.openbb.co/workspace/getting-started/enterprise/administration): Administration and management features for OpenBB Workspace Enterprise
+- [Data Control & Security](https://docs.openbb.co/workspace/getting-started/enterprise/data-control): Data sovereignty, security architecture, and compliance features in OpenBB Workspace Enterprise
+- [Enterprise](https://docs.openbb.co/workspace/getting-started/enterprise/index): Deploy OpenBB Workspace on-premises or in your private cloud with enterprise-grade security, compliance, and control.
+- [Support & Services](https://docs.openbb.co/workspace/getting-started/enterprise/support-services): Enterprise support, professional services, and success programs for OpenBB Workspace
+- [Team Collaboration](https://docs.openbb.co/workspace/getting-started/enterprise/team-collaboration): Collaborative features for teams in OpenBB Workspace Enterprise
 - [FAQs](https://docs.openbb.co/workspace/getting-started/faqs): Common questions and answers about OpenBB Workspace, data integration, custom backends, and troubleshooting.
-- [OpenBB Platform](https://docs.openbb.co/workspace/getting-started/platform-installer): Learn how to integrate the OpenBB Platform data to OpenBB Workspace
+- [OpenBB Python Package](https://docs.openbb.co/workspace/getting-started/platform-installer): Learn how to integrate the OpenBB Platform data to OpenBB Workspace
 - [Progressive Web App (PWA)](https://docs.openbb.co/workspace/getting-started/pwa): Install OpenBB Workspace as a Progressive Web App for a native experience on desktop and mobile devices.
 - [Workspace Overview](https://docs.openbb.co/workspace/index): OpenBB Workspace is a secure enterprise UI application for AI workflows, featuring data integration, AI model deployment, flexible UI customization, and on-premises deployment capabilities.

@@ -1,9 +1,10 @@
 ---
 title: Structure and Navigation
 sidebar_position: 3
-description: This page describes the layout and structure of the OpenBB Platform CLI, as well as how to navigate it.
+description: This page describes the layout and structure of the ODP CLI, as well as how to navigate it.
 keywords:
 - CLI application
+- ODP CLI
 - OpenBB Platform CLI
 - structure
 - navigation
@@ -17,11 +18,11 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Structure and Navigation | OpenBB Platform CLI Docs" />
+<HeadTitle title="Structure and Navigation | ODP CLI Docs" />
 
 ## Structure
 
-The OpenBB Platform CLI is a Command Line Interface (CLI) application. Functions (commands) are called through the keyboard with results returned as charts, tables, or text.  Charts and tables (if enabled) are displayed in a new window, and are fully interactive, while text prints directly to the Terminal screen.
+The ODP CLI is a Command Line Interface (CLI) application. Functions (commands) are called through the keyboard with results returned as charts, tables, or text.  Charts and tables (if enabled) are displayed in a new window, and are fully interactive, while text prints directly to the Terminal screen.
 
 A menu is a collection of commands (and sub-menus). A menu can be distinguished from a command because the former has a `>` on the left. The color of a command and a menu also differ.
 

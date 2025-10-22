@@ -1,0 +1,55 @@
+---
+title: Standardization
+sidebar_position: 2
+description: Learn about standardization techniques for consistent inputs and outputs across the OpenBB Python Package.
+keywords:
+- ODP
+- OpenBB Platform
+- Python
+- REST API
+- Data
+- Standardization
+- ETL
+- Extension
+- openbb-core
+- Provider
+- Architecture
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Standardization - Developer | OpenBB Docs" />
+
+The Standardization Framework is a set of tools and guidelines that enable the user to query and obtain data in a consistent way across multiple providers.
+
+Provider models can inherit from an already defined [standard](/python/data_models) model.
+The standard models are also the metamodel names defined in the Router's [function definition](/python/developer/extension_types/router),
+and the Provider's [`fetcher_dict`](/python/developer/extension_types/provider)
+
+Standardizing provider query parameters and response data enhances the user experience by overcoming things like:
+
+- Transparently defined schemas for the data and query parameters.
+- Outputs from multiple sources are comparable with each other and easily interchanged.
+- Consistent query parameters across all data sources for a function, or type of function.
+  - Use `symbol` instead of `ticker`.
+- Output data that has conformed types, is validated, and will be JSON serializable.
+  - `NaN`, `NaT`, `"None"`, empty strings, should be `NoneType` (null).
+  - Percent values should be represented as decimal points.
+- Parameter and fields are always `lower_snake_case`.
+
+The standard models [here](/python/data_models) are the contents of the repository code - `/OpenBB/openbb_platform/core/openbb_core/provider/standard_models/` [directory](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_platform/core/openbb_core/provider/standard_models).
+
+Every standard model consists of two classes, with each being a Pydantic model.
+
+- [`QueryParams`](https://raw.githubusercontent.com/OpenBB-finance/OpenBB/main/openbb_platform/core/openbb_core/provider/abstract/query_params.py)
+- [`Data`](https://raw.githubusercontent.com/OpenBB-finance/OpenBB/main/openbb_platform/core/openbb_core/provider/abstract/data.py)
+
+Any parameter or field can be assigned a custom `field_validator`, or the entire model can be passed through a `model_validator` on creation.
+See the page on [validators](/python/developer/how-to/validators) for examples.
+
+:::info
+- Function signatures prioritize the standard models, provider-specific implementations become `extra_params`.
+- Field aliases should be implemented at the model level - i.e., use `__alias_dict__ = {"field": "mapped_field"}`
+- Similarly, `json_schema_extra`, should be applied at the model level, `__json_schema_extra__`.
+- CamelCase to snake_case is handled automatically.
+:::

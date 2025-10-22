@@ -1,0 +1,121 @@
+---
+title: Introduction
+sidebar_position: 0
+description:
+  Introduction to the Open Data Platform Python packages; a convenient and powerful tool that
+  provides pre-built data connectors and libraries to design and build financial reports
+  and applications. Learn more about the open source ecosystem, packages, and how to contribute.
+keywords:
+  - ODP
+  - Open Data Platform by OpenBB
+  - OpenBB Platform
+  - Python
+  - pip install openbb
+  - investment research infrastructure
+  - data connectors
+  - financial reports
+  - OpenBB team
+  - third-party data providers
+  - CONTRIBUTING GUIDELINES
+---
+
+<!-- markdownlint-disable MD012 MD031 MD033 MD037 -->
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
+
+<HeadTitle title="OpenBB Docs" />
+
+The ODP Python Package serves as scaffolding for a unified API that is standardized, consumable, and deployable across multiple mediums simultaneously - REST API, pure Python, Jupyter Notebook, MCP, Docker, OpenBB Workspace, Excel, etc. - from a single source of truth.
+
+With cross-compatibility out-of-the-box, its ready-to-use data connectors, and a wealth of extensions, it lets you concentrate on creating outstanding research reports and applications quickly and easily.
+
+## Installation
+
+:::info Packages are distributed via PyPI.
+They can be installed in any Python environment with a version between 3.10 and 3.13.
+```sh
+pip install openbb
+```
+:::
+
+Go to the [installation](/python/installation) page for detailed instructions, and see the [extensions](/python/extensions) page for information on individual components.
+
+:::tip Looking for a graphical method, or having trouble with virtual environments?
+Go to the [Open Data Platform](/desktop/installation) to get started.
+:::
+
+## Documentation Structure
+
+The documentation will be generally targeted towards the user profile - user or developer
+
+<ul className="grid grid-cols-1 gap-2 -ml-6">
+  <NewReferenceCard
+    title="Installation"
+    description="Instructions for installation."
+    url="/python/installation"
+  />
+  <NewReferenceCard
+    title="Quick Start Guides"
+    description="Get started using the ODP Python Package."
+    url="/python/quickstart"
+  />
+  <NewReferenceCard
+    title="Settings"
+    description="Configure your ODP environment."
+    url="/python/settings"
+  />
+  <NewReferenceCard
+    title="Developer Guides"
+    description="Documentation, guides, and reference material for developers."
+    url="python/developer"
+  />
+  <NewReferenceCard
+    title="Command Reference"
+    description="Provides detailed information about the command structure, parameters, outputs, examples, and more for the endpoints of ODP Python packages."
+    url="/python/reference"
+  />
+  <NewReferenceCard
+    title="Data Model Reference"
+    description="Provides detailed information about the standard data models used in the Open Data Platform by OpenBB."
+    url="/python/data_models"
+  />
+  <NewReferenceCard
+    title="FAQs"
+    description="Provides answers to frequently asked questions."
+    url="/python/faqs/errors"
+  />
+  <NewReferenceCard
+    title="Licensing"
+    description="Provides information about the licensing of the Open Data Platform by OpenBB."
+    url="/python/faqs/license"
+  />
+</ul>
+
+## User, Developer, or Contributor?
+
+The line between user and developer can be blurry, and is often the same individual.
+
+For the purpose of this documentation, a User represents a person, organization, robot,
+or other type of end-user consuming the interface(s) as-supplied.
+
+A contributor is someone submitting a pull request to the OpenBB GitHub repository.
+
+Most other use-cases fall somewhere on the development spectrum.
+
+### Example Users
+
+- Consuming data or services from published packages via a supported interface.
+  - `pip install openbb`
+- General use of `from openbb import obb`, `openbb-api`, `openbb-mcp`, etc.
+  - This could be for local development or remote deployment.
+
+### Example Developer
+
+- Creating OpenBB extensions or Workspace applications.
+- Importing individual components or utility functions.
+- Preparing an OpenBB environment, container, or application for non-personal use.
+
+## Developer Docs
+
+The [developer](/python/developer) pages provide an orientation to the codebase, as well as technical details and snippets for working with it.

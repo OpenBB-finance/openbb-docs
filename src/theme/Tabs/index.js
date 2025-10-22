@@ -46,49 +46,46 @@ function TabList({ className, block, selectedValue, selectValue, tabValues }) {
 		}
 		focusElement?.focus();
 	};
-	return (
-		<ul
-			role="tablist"
-			aria-orientation="horizontal"
-			className={clsx("_group-tab list-none -ml-7 my-6 overflow-auto")}
-		>
-			{tabValues.map(({ value, label, attributes }) => (
-				<li
-					// TODO extract TabListItem
-					role="tab"
-					tabIndex={selectedValue === value ? 0 : -1}
-					aria-selected={selectedValue === value}
-					key={value}
-					ref={(tabControl) => tabRefs.push(tabControl)}
-					onKeyDown={handleKeydown}
-					onClick={handleTabChange}
-					{...attributes}
-					className={clsx(
-						"font-bold tracking-widest w-fit px-3 inline-flex py-1 uppercase border-b text-lg cursor-pointer",
-						styles.tabItem,
-						attributes?.className,
-						{
-							"border-b-2 pointer-events-none": selectedValue === value,
-							"border-b-2 text-[#669dcb] border-[#669dcb]":
-								selectedValue === value && pathname.startsWith("/workspace"),
-							"border-b-2 text-[#FB923C] border-[#FB923C]":
-								selectedValue === value && pathname.startsWith("/sdk"),
-							"border-grey-400 text-grey-400 hover:text-[#ffd4b1] hover:border-[#ffd4b1]":
-								selectedValue !== value && pathname.startsWith("/sdk"),
-							"border-b-2 text-[#FB923C] border-[#FB923C]":
-								selectedValue === value && pathname.startsWith("/platform"),
-							"border-grey-400 text-grey-400 hover:text-[#ffd4b1] hover:border-[#ffd4b1]":
-								selectedValue !== value && pathname.startsWith("/platform"),
-							"border-grey-400 text-grey-400 hover:text-[#abd2f1] hover:border-[#abd2f1]":
-								selectedValue !== value && pathname.startsWith("/workspace"),
-						},
-					)}
-				>
-					{label ?? value}
-				</li>
-			))}
-		</ul>
-	);
+  return (
+    <div className="border-b border-grey-400 inline-block">
+      <ul
+        role="tablist"
+        aria-orientation="horizontal"
+        className={clsx("_group-tab list-none m-0 p-0 flex")}
+      >
+        {tabValues.map(({ value, label, attributes }) => (
+          <li
+            role="tab"
+            tabIndex={selectedValue === value ? 0 : -1}
+            aria-selected={selectedValue === value}
+            key={value}
+            ref={(tabControl) => tabRefs.push(tabControl)}
+            onKeyDown={handleKeydown}
+            onClick={handleTabChange}
+            {...attributes}
+            className={clsx(
+              "font-bold tracking-widest uppercase text-lg cursor-pointer mr-4 pb-2 border-b-2 -mb-px first:pl-0 pl-2",
+              styles.tabItem,
+              attributes?.className,
+              {
+                "pointer-events-none": selectedValue === value,
+                "text-[#669dcb] border-[#669dcb]":
+                  selectedValue === value && pathname.startsWith("/workspace"),
+                "text-[#FB923C] border-[#FB923C]":
+                  selectedValue === value && pathname.startsWith("/python"),
+                "border-transparent text-grey-400 hover:text-[#ffd4b1] hover:border-[#ffd4b1]":
+                  selectedValue !== value && pathname.startsWith("/python"),
+                "border-transparent text-grey-400 hover:text-[#abd2f1] hover:border-[#abd2f1]":
+                  selectedValue !== value && pathname.startsWith("/workspace"),
+              },
+            )}
+          >
+            {label ?? value}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }
 function TabContent({ lazy, children, selectedValue }) {
 	// eslint-disable-next-line no-param-reassign

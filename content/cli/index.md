@@ -1,7 +1,7 @@
 ---
 title: Introduction
 sidebar_position: 0
-description: The OpenBB Platform CLI is a command line interface wrapping the OpenBB Platform. It offers a convenient way to interact with the Platform and its extensions, as well as automate data collection via OpenBB Routine Scripts. No experience with Python, or other programming languages, is required.
+description: The ODP CLI is a command line interface wrapping the Open Data Platform by OpenBB. It offers a convenient way to interact with the Platform and its extensions, as well as automate data collection via OpenBB Routine Scripts. No experience with Python, or other programming languages, is required.
 keywords:
 - OpenBB
 - CLI
@@ -18,13 +18,13 @@ keywords:
 import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="OpenBB Platform CLI Docs" />
+<HeadTitle title="ODP CLI Docs" />
 
 ## Overview
 
-The OpenBB Platform CLI is a command line interface wrapping the OpenBB Platform. It offers a convenient way to interact with the Platform and its extensions, as well as automate data collection via OpenBB Routine Scripts.
+The ODP CLI is a command line interface wrapping the Open Data Platform by OpenBB. It offers a convenient way to interact with the Platform and its extensions, as well as automate data collection via OpenBB Routine Scripts.
 
-The CLI leverages the extendability of the OpenBB Platform architecture in an easy-to-consume and script format.
+The CLI leverages the extendability of the ODP architecture in an easy-to-consume and script format.
 
 ![CLI Home](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/d1617c3b-c83d-4491-a7bc-986321fd7230)
 
@@ -33,41 +33,41 @@ The CLI leverages the extendability of the OpenBB Platform architecture in an ea
 <ul className="grid grid-cols-1 gap-4 -ml-6">
 <NewReferenceCard
     title="Installation"
-    description="An installation guide for the OpenBB Platform CLI."
-    url="cli/installation"
+    description="An installation guide for the ODP CLI."
+    url="/cli/installation"
 />
 <NewReferenceCard
     title="Quick Start"
-    description="A quick start guide for the OpenBB Platform CLI."
-    url="cli/quickstart"
+    description="A quick start guide for the ODP CLI."
+    url="/cli/quickstart"
 />
 <NewReferenceCard
     title="Configuration & Settings"
-    description="An explanation of the settings and environment variables that customize the look and feel of the OpenBB Platform CLI."
-    url="cli/configuration"
+    description="An explanation of the settings and environment variables that customize the look and feel of the ODP CLI."
+    url="/cli/configuration"
 />
 <NewReferenceCard
     title="Data Sources"
     description="How-to switch providers for a command, and define the default source for a function."
-    url="cli/data-sources"
+    url="/cli/data-sources"
 />
 <NewReferenceCard
     title="OpenBBUserData Folder"
     description="The OpenBBUserData folder is where exports, routines, and other related files are saved."
-    url="cli/openbbuserdata"
+    url="/cli/openbbuserdata"
 />
 <NewReferenceCard
     title="Interactive Tables"
     description="Understand how to sort, filter, hide columns, display more rows or export data on our tables."
-    url="cli/interactive-tables"
+    url="/cli/interactive-tables"
 />
 <NewReferenceCard
     title="Interactive Charts"
     description="Explore how to overlay charts, change titles, draw lines, add text and much more on our charts."
-    url="cli/interactive-charts"
+    url="/cli/interactive-charts"
 />
 </ul>
 
 ---
 
-Want to contribute? Check out our [Development section](/platform/developer_guide/architecture_overview).
+Want to contribute? Check out our [Development section](/python/developer/architecture_overview).

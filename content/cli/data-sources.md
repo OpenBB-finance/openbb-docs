@@ -19,14 +19,14 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Data Sources | OpenBB Platform CLI Docs" />
+<HeadTitle title="Data Sources | ODP CLI Docs" />
 
 Many commands have multiple data sources associated with it. This page describes how to select from multiple providers.
 
 :::important
 API credentials are defined in the `user_settings.json` file.
 
-Find all the current data providers maintained in the OpenBB repository [here](/platform/usage/extensions/overview).
+Find all the current data providers maintained in the OpenBB repository [here](/python/extensions).
 :::
 
 ## Data Source In-Command

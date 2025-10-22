@@ -1,0 +1,52 @@
+---
+title: Settings
+sidebar_position: 0
+description:
+  This section details the various user and system settings and preferences for the ODP Python Package.
+keywords:
+  - OpenBB Platform
+  - ODP
+  - Python
+  - API
+  - user settings
+  - system settings
+  - settings
+  - user_settings.json
+  - system_settings.json
+  - environment variables
+  - .env
+---
+
+<!-- markdownlint-disable MD012 MD031 MD033 MD037 -->
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
+
+<HeadTitle title="Settings - ODP Python | OpenBB Docs" />
+
+ODP Python Package settings are `JSON` and `.env` files,
+all located in the `~/.openbb_platform` folder,
+at the root of the operating system's user account home.
+
+<ul className="grid grid-cols-1 gap-2 -ml-6">
+  <NewReferenceCard
+    title="User Settings"
+    description="Preferences, credentials, and defaults are located in `user_settings.json`."
+    url="/python/settings/user_settings"
+  />
+  <NewReferenceCard
+    title="System Settings"
+    description="FastAPI, Python, HTTP, Uvicorn, and logging settings are defined in `system_settings.json`."
+    url="/python/settings/system_settings"
+  />
+  <NewReferenceCard
+    title="MCP Settings"
+    description="MCP server settings and configurations are set in `mcp_settings.json`."
+    url="/python/settings/mcp_settings"
+  />
+  <NewReferenceCard
+    title="Environment Variables"
+    description="Store environment variables in a `.env` file."
+    url="/python/settings/environment_variables"
+  />
+</ul>

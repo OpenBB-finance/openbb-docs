@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-<HeadTitle title="Architecture Overview - Developer Guidelines - Development | OpenBB Platform Docs" />
+<HeadTitle title="Architecture Overview - Developer Guidelines - Development | OpenBB Docs" />
 
 This page provides a general overview of the OpenBB Platform architecture and the key Python classes most processes interact with.
 
@@ -630,7 +630,7 @@ keywords:
 
 import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-<HeadTitle title="Build New Provider Extension - How-To | OpenBB Platform Docs" />
+<HeadTitle title="Build New Provider Extension - How-To | OpenBB Docs" />
 
 This page will walk through adding a new data provider extension to the OpenBB Platform.
 
@@ -1339,7 +1339,7 @@ keywords:
 
 import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-<HeadTitle title="Extensions | OpenBB Platform Docs" />
+<HeadTitle title="Extensions | OpenBB Docs" />
 
 <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
     <img src="https://openbb-cms.directus.app/assets/a25f6c03-19a8-4775-9e52-180aff8bf186.png" alt="Extensions" width="60%" />
@@ -1935,7 +1935,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Contributing - Developer Guide | OpenBB Platform Docs" />
+<HeadTitle title="Contributing - Developer Guide | OpenBB Docs" />
 
 Thank you for taking the time to engage as a contributor. There is no contribution that is too small.
 whether it is a spelling error in the documentation, or contributing code and participating in the
@@ -1985,7 +1985,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Dependency Management - Development | OpenBB Platform Docs" />
+<HeadTitle title="Dependency Management - Development | OpenBB Docs" />
 
 - **Core**: Serves as the main infrastructure. All extensions and providers have `openbb-core` as a dependency.
 - **Extensions**: Utility packages that leverage Core's infrastructure. Each extension is its own package.
@@ -2053,7 +2053,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Deprecating Endpoints - How-To | OpenBB Platform Docs" />
+<HeadTitle title="Deprecating Endpoints - How-To | OpenBB Docs" />
 
 Deprecating commands is essential to maintaining the OpenBB Platform. This guide outlines the process for deprecating an endpoint.
 
@@ -2113,7 +2113,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Disabling Output Validation - Developer Guides | OpenBB Platform Docs" />
+<HeadTitle title="Disabling Output Validation - Developer Guides | OpenBB Docs" />
 
 In some cases, it may be desirable to disable output validation for a custom router endpoint.
 The example below demonstrates how to do it within your own custom router path.
@@ -2224,7 +2224,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Dynamic Command Execution | OpenBB Platform Docs" />
+<HeadTitle title="Dynamic Command Execution | OpenBB Docs" />
 
 
 Dynamic execution provides an alternate entry point to functions. This method requires formatting the query as demonstrated below.
@@ -2282,7 +2282,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="HTTP Requests - Contributor Guidelines - Development | OpenBB Platform Docs" />
+<HeadTitle title="HTTP Requests - Contributor Guidelines - Development | OpenBB Docs" />
 
 Any function fetching data requires making an outbound HTTP request. Utility functions within the `openbb-core` simplify the procedure for making both asynchronous and synchronous requests. These cover the majority of typical requests and should be imported for use instead of creating a new client from scratch.
 
@@ -2518,7 +2518,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Standardization - Development | OpenBB Platform Docs" />
+<HeadTitle title="Standardization - Development | OpenBB Docs" />
 
 The Standardization Framework is a set of tools and guidelines that enable the user to query and obtain data in a consistent way across multiple providers.
 
@@ -2570,7 +2570,7 @@ keywords:
 
 import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-<HeadTitle title="Tests - Contributor Guidelines - Development | OpenBB Platform Docs" />
+<HeadTitle title="Tests - Contributor Guidelines - Development | OpenBB Docs" />
 
 We are strong believers in the Quality Assurance (QA) process and we want to make sure that all the extensions that are added to the OpenBB Platform are of high quality.
 
@@ -2717,7 +2717,7 @@ keywords:
 
 import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-<HeadTitle title="Using OpenBB With FastAPI and Depends - Developer Guides | OpenBB Platform Docs" />
+<HeadTitle title="Using OpenBB With FastAPI and Depends - Developer Guides | OpenBB Docs" />
 
 This page demonstrates how to efficiently import the OpenBB Python package into a FastAPI application,
 for use in any endpoint.
@@ -2796,7 +2796,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Validators - Developer Guidelines - Development | OpenBB Platform Docs" />
+<HeadTitle title="Validators - Developer Guidelines - Development | OpenBB Docs" />
 
 Both QueryParams and Data models can benefit from the tactical use of Pydantic validators.
 This page will outline some of the key scenarios where they are deployed.
@@ -2914,7 +2914,7 @@ keywords:
 
 import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-<HeadTitle title="Add Command To An Existing Provider - How-To | OpenBB Platform Docs" />
+<HeadTitle title="Add Command To An Existing Provider - How-To | OpenBB Docs" />
 
 This page will walk through adding a new router endpoint to an existing data provider, and how to go about creating a new standard model.
 
@@ -3722,7 +3722,7 @@ keywords:
 
 import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-<HeadTitle title="Add Provider To An Existing Command - How-To | OpenBB Platform Docs" />
+<HeadTitle title="Add Provider To An Existing Command - How-To | OpenBB Docs" />
 
 This page will walk through adding a data provider to an existing endpoint, using a standard model. At a high level, the process will look something like:
 
@@ -4579,7 +4579,7 @@ keywords:
 
 import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-<HeadTitle title="Build New OBBject Extension - How-To | OpenBB Platform Docs" />
+<HeadTitle title="Build New OBBject Extension - How-To | OpenBB Docs" />
 
 OpenBB provides some basic methods for interacting with common data structures that will be seen in the results attribute of the [`OBBject`](/platform/usage/syntax/output_data).
 If you are working with custom data, or adding new endpoints, it is possible that you will want to have your own methods for interacting with the data, and the OpenBB Platform provides a way to extend the OBBject class.
@@ -4681,7 +4681,7 @@ keywords:
 
 import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-<HeadTitle title="Build New Toolkit Extension - How-To | OpenBB Platform Docs" />
+<HeadTitle title="Build New Toolkit Extension - How-To | OpenBB Docs" />
 
 Before adding a new toolkit extension and router path to the OpenBB Platform using a supplied template, it is important to understand the difference between a toolkit and a provider extension. You can find more information on this [here](/platform/usage/extensions/overview).
 
@@ -4862,7 +4862,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Data Providers FAQ - FAQs | OpenBB Platform Docs" />
+<HeadTitle title="Data Providers FAQ - FAQs | OpenBB Docs" />
 
 <details>
 <summary mdxType="summary">Does OpenBB have coverage for [insert type of data]?</summary>
@@ -4994,7 +4994,7 @@ keywords:
 
 import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-<HeadTitle title="Errors FAQ - FAQs | OpenBB Platform Docs" />
+<HeadTitle title="Errors FAQ - FAQs | OpenBB Docs" />
 
 <details>
 <summary mdxType="summary">[Arg] provider -> input: nasdaq -> Input should be 'fmp' or 'yfinance'</summary>
@@ -5137,7 +5137,7 @@ title: License
 
 import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-<HeadTitle title="Licensing FAQ | OpenBB Platform Docs" />
+<HeadTitle title="Licensing FAQ | OpenBB Docs" />
 
 As we adopt the Affero General Public License (AGPL) for our OpenBB Platform, we understand you may have questions about how this change affects your use of the platform. Below are some frequently asked questions to help clarify the implications of our new licensing model.
 
@@ -5254,7 +5254,7 @@ keywords:
 
 import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-<HeadTitle title="What's the Difference Between OpenBB Platform and SDK? - FAQs | OpenBB Platform Docs" />
+<HeadTitle title="What's the Difference Between OpenBB Platform and SDK? - FAQs | OpenBB Docs" />
 
 If you're already an OpenBB user, you may be familiar with some of the legacy pain points. As [this](https://openbb.co/blog/celebrating-the-openbb-platform-v4-beta) blog post highlights, there were many challenges with maintaining the existing codebase.
 
@@ -5400,12 +5400,12 @@ keywords:
   - CONTRIBUTING GUIDELINES
 ---
 
-{/* markdownlint-disable MD012 MD031 MD033 MD037 */}
+<!-- markdownlint-disable MD012 MD031 MD033 MD037 -->
 
 import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 
-<HeadTitle title="OpenBB Platform Docs" />
+<HeadTitle title="OpenBB Docs" />
 
 The OpenBB Platform has been created and is currently maintained by the OpenBB team together with the contributions from hundreds of community members.
 
@@ -5498,7 +5498,7 @@ keywords:
 
 import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-<HeadTitle title="Installation | OpenBB Platform Docs" />
+<HeadTitle title="Installation | OpenBB Docs" />
 
 ## General System Requirements
 
@@ -5794,7 +5794,7 @@ keywords:
 
 import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-<HeadTitle title="User Settings & Environment Variables | OpenBB Platform Docs" />
+<HeadTitle title="User Settings & Environment Variables | OpenBB Docs" />
 
 Environment variables are defined in a `.env` file. If this file does not exist, create it inside the same folder `user_settings.json` is located.
 
@@ -5851,7 +5851,7 @@ keywords:
 
 import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-<HeadTitle title="User Settings & Environment Variables | OpenBB Platform Docs" />
+<HeadTitle title="User Settings & Environment Variables | OpenBB Docs" />
 
 An additional configuration file, `system_settings.json`, is located in the same folder as `user_settings.json`, and can be created manually if it does not exist. The items below can be configured via this file, as a JSON dictionary.
 
@@ -5878,7 +5878,7 @@ logger = logging.getLogger("openbb.logging_service")
 
 ## API Settings
 
-The, `"api_settings"`, key is a nested dictionary, and is passed to the instance of FastAPI. 
+The, `"api_settings"`, key is a nested dictionary, and is passed to the instance of FastAPI.
 
 ```json
 {
@@ -6019,7 +6019,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="API Keys & Credentials | OpenBB Platform Docs" />
+<HeadTitle title="API Keys & Credentials | OpenBB Docs" />
 
 By default, authorization is not required to initialize and use the core services. Most data providers, however, require an API key to access their data. Keys are stored locally, in the `~/.openbb_platform/user_settings.json` file, under the `credentials` object.
 
@@ -6107,7 +6107,7 @@ keywords:
 
 import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-<HeadTitle title="Defaults | OpenBB Platform Docs" />
+<HeadTitle title="Defaults | OpenBB Docs" />
 
 In the defaults section you can define provider defaults, and other parameters, for Python commands, if no argument is explicitly sent when the command runs. For 'provider', there are two formatting options:
 
@@ -6201,7 +6201,7 @@ keywords:
 
 import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-<HeadTitle title="Preferences | OpenBB Platform Docs" />
+<HeadTitle title="Preferences | OpenBB Docs" />
 
 User settings are stored locally, `~/.openbb_platform/`, as a JSON file, `user_settings.json`. It is read upon initializing the Python client, or when the Fast API is authorized. If the file does not exist, it will be created on the first run.
 
@@ -6292,7 +6292,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Commitments of Traders - User Guides | OpenBB Platform Docs" />
+<HeadTitle title="Commitments of Traders - User Guides | OpenBB Docs" />
 
 Commitments of Traders (COT) reports are published on Fridays, by the [CFTC](https://www.cftc.gov/MarketReports/CommitmentsofTraders/index.htm). CFTC COT reports provide a breakdown of each Tuesday’s open interest for futures and options on futures markets in which 20 or more traders hold positions equal to or above the reporting levels established by the CFTC.
 
@@ -7005,7 +7005,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Economic Indicators - User Guides | OpenBB Platform Docs" />
+<HeadTitle title="Economic Indicators - User Guides | OpenBB Docs" />
 
 This page provides a tutorial for getting started using the `obb.economy.indicators` endpoint, with the `openbb-econdb` and `openbb-imf` provider extensions.
 
@@ -7847,7 +7847,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Financial Statements - Usage | OpenBB Platform Docs" />
+<HeadTitle title="Financial Statements - Usage | OpenBB Docs" />
 
 OpenBB Platform data extensions provide access to financial statements as quarterly or annual.
 
@@ -8211,7 +8211,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Finding Symbols - Usage | OpenBB Platform Docs" />
+<HeadTitle title="Finding Symbols - Usage | OpenBB Docs" />
 
 Finding the ticker symbol, security identifier, the sector, and other metadata is easy if you know where to look. This guide is intended to introduce some methods for searching, screening, and discovery.
 
@@ -8617,7 +8617,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Historical Prices - Usage | OpenBB Platform Docs" />
+<HeadTitle title="Historical Prices - Usage | OpenBB Docs" />
 
 Historical market prices typically come in the form of OHLC+V - open, high, low, close, volume. There may be additional fields returned by a provider, but those are the expected columns.
 
@@ -9030,7 +9030,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Market Calendars - Usage | OpenBB Platform Docs" />
+<HeadTitle title="Market Calendars - Usage | OpenBB Docs" />
 
 Market calendars are an essential part of any analyst's daily rituals. Economic events and corporate actions provide near-term trading opportunities (or reasons to get out of the way) as expectations meet reality. The OpenBB Platform has a variety of calendars.
 
@@ -9396,14 +9396,14 @@ These packages are what will be installed when `pip install openbb` is run
 | Extension Name | Description | Installation Command | Minimum Subscription Type Required | API Key Name |
 |----------------|-------------|----------------------|------------------------------------|-------------:|
 | openbb-benzinga | [Benzinga](https://www.benzinga.com/apis/en-ca/) data connector | pip install openbb-benzinga | Paid | | benzinga_api_key |
-| openbb-bls | [Bureau of Labor Statistics](https://www.bls.gov/developers/home.htm) data connector | pip install openbb-bls | Free | bls_api_key | 
+| openbb-bls | [Bureau of Labor Statistics](https://www.bls.gov/developers/home.htm) data connector | pip install openbb-bls | Free | bls_api_key |
 | openbb-cftc | [Commodity Futures Trading Commission](https://publicreporting.cftc.gov/stories/s/r4w3-av2u) data connector | pip install openbb-cftc | Free | cftc_app_token|
-| openbb-econdb | [EconDB](https://econdb.com) data connector | pip install openbb-econdb | None | econdb_api_key | 
+| openbb-econdb | [EconDB](https://econdb.com) data connector | pip install openbb-econdb | None | econdb_api_key |
 | openbb-imf | [IMF](https://data.imf.org) data connector | pip install openbb-imf | None | - |
 | openbb-fmp | [FMP](https://site.financialmodelingprep.com/developer/) data connector | pip install openbb-fmp | Free | fmp_api_key |
-| openbb-fred | [FRED](https://fred.stlouisfed.org/) data connector | pip install openbb-fred | Free | fred_api_key | 
+| openbb-fred | [FRED](https://fred.stlouisfed.org/) data connector | pip install openbb-fred | Free | fred_api_key |
 | openbb-intrinio | [Intrinio](https://intrinio.com/pricing) data connector | pip install openbb-intrinio | Paid | intrinio_api_key |
-| openbb-oecd | [OECD](https://data.oecd.org/) data connector | pip install openbb-oecd | Free | - | 
+| openbb-oecd | [OECD](https://data.oecd.org/) data connector | pip install openbb-oecd | Free | - |
 | openbb-polygon | [Polygon](https://polygon.io/) data connector | pip install openbb-polygon | Free | polygon_api_key |
 | openbb-sec | [SEC](https://www.sec.gov/edgar/sec-api-documentation) data connector | pip install openbb-sec | None | - |
 | openbb-tiingo | [Tiingo](https://www.tiingo.com/about/pricing) data connector | pip install openbb-tiingo | Free | tiingo_token |
@@ -9579,7 +9579,7 @@ OpenBB Toolkit Extensions expand the Platform with functions for manipulating da
 | openbb-charting | Rest API charting service and Plotly library. | pip install openbb-charting | Community | N/A |
 | openbb-devtools | Aggregates dependencies that facilitate a nice development experience for OpenBB. | pip install openbb-devtools | N/A |
 | openbb-econometrics | Econometrics models for the Python interface only. | pip install openbb-econometrics | Community | obb.econometrics |
-| openbb-mcp-server | Run the OpenBB API as a MCP server. | pip install openbb-mcp-server | Community | N/A | 
+| openbb-mcp-server | Run the OpenBB API as a MCP server. | pip install openbb-mcp-server | Community | N/A |
 | openbb-quantitative | Functions for performing quantitative analysis. | pip install openbb-quantitative | Community | obb.quantitative |
 | openbb-technical | Functions for performing technical analysis. | pip install openbb-technical | Community | obb.technical |
 
@@ -9765,7 +9765,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Quickstart | OpenBB Platform Docs" />
+<HeadTitle title="Quickstart | OpenBB Docs" />
 
 To get started with the OpenBB Platform, all you need to do is to import `obb` and start querying away.
 
@@ -9846,7 +9846,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Quickstart - Workspace Custom Backend | OpenBB Platform Docs" />
+<HeadTitle title="Quickstart - Workspace Custom Backend | OpenBB Docs" />
 
 The OpenBB Platform can be used as a [Workspace custom backend](/workspace/developers/data-integration), both as a fully-loaded data source, or as the bare shell and launcher of a FastAPI application.
 
@@ -10095,7 +10095,7 @@ keywords:
 
 import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-<HeadTitle title="Basic Syntax - Usage | OpenBB Platform Docs" />
+<HeadTitle title="Basic Syntax - Usage | OpenBB Docs" />
 
 The structure of command syntax is standardized across common fields. This ensures that a `date` is always a `date` and the format remains consistent throughout.
 
@@ -10303,7 +10303,7 @@ keywords:
 
 import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-<HeadTitle title="Basic Response - Usage | OpenBB Platform Docs" />
+<HeadTitle title="Basic Response - Usage | OpenBB Docs" />
 
 ## Python Interface
 

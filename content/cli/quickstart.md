@@ -1,7 +1,7 @@
 ---
 title: Quick Start
 sidebar_position: 2
-description: This page is a quick start guide for the OpenBB Platform CLI.
+description: This page is a quick start guide for the ODP CLI.
 keywords:
 - quickstart
 - quick start
@@ -12,11 +12,11 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Quick Start - Usage | OpenBB Platform CLI Docs" />
+<HeadTitle title="Quick Start - Usage | ODP CLI Docs" />
 
 ## Launch
 
-- Configure any data provider credentials in the [`user_settings.json`](/platform/settings/user_settings/api_keys) file.
+- Configure any data provider credentials in the [`user_settings.json`](/python/settings/user_settings/api_keys) file.
 - Open a Terminal and activate the environment where the `openbb-cli` package was installed.
 - On the command line, enter: `openbb`
 

@@ -1,7 +1,7 @@
 ---
 title: Configuration & Settings
 sidebar_position: 5
-description: This documentation page details the various settings and feature flags used to customize the OpenBB Platform CLI.
+description: This documentation page details the various settings and feature flags used to customize the ODP CLI.
 keywords:
 - Settings Menu
 - Feature Flags Menu
@@ -9,6 +9,7 @@ keywords:
 - alter CLI behaviour
 - environment variables
 - Documentation
+- ODP CLI
 - OpenBB Platform CLI
 - preferences
 - user
@@ -16,16 +17,16 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Configuration & Settings - | OpenBB Platform CLI Docs" />
+<HeadTitle title="Configuration & Settings - | ODP CLI Docs" />
 
-In addition to the OpenBB Platform's `user_settings.json` file, described [here](/platform/settings/environment_variables), there are settings and environment variables affecting the CLI only.
+In addition to the ODP's `user_settings.json` file, described [on the environment variables page](/python/settings/environment_variables), there are settings and environment variables affecting the CLI only.
 
 :::important
 API credentials are defined in the `user_settings.json` file.
 
-Find all the current data providers maintained in the OpenBB repository [here](/platform/usage/extensions/overview).
+Find all the current data providers maintained in the OpenBB repository [on the extensions page](/python/extensions/).
 
-Define default data sources by following the pattern outlined [here](data-sources)
+Define default data sources by following the pattern outlined [on the data sources page](data-sources)
 :::
 
 ## Settings Menu

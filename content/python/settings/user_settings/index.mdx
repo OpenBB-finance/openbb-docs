@@ -1,0 +1,43 @@
+---
+title: User Settings
+sidebar_position: 0
+description:
+  This section describes the `user_settings.json` file.
+keywords:
+  - OpenBB Platform
+  - ODP
+  - Python
+  - API
+  - user settings
+  - settings
+  - user_settings.json
+---
+
+<!-- markdownlint-disable MD012 MD031 MD033 MD037 -->
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
+
+<HeadTitle title="User Settings - ODP Python | OpenBB Docs" />
+
+User settings for the ODP Python Package are defined in a JSON file,
+located in the `/.openbb_platform` folder,
+at the root of the operating system's user account home.
+
+<ul className="grid grid-cols-1 gap-2 -ml-6">
+  <NewReferenceCard
+    title="API Keys"
+    description="Setting data provider API keys and credentials."
+    url="/python/settings/user_settings/api_keys"
+  />
+  <NewReferenceCard
+    title="Preferences"
+    description="Configurable user preferences for the ODP Python Package."
+    url="/python/settings/user_settings/preferences"
+  />
+  <NewReferenceCard
+    title="Defaults"
+    description="Define default parameters for individual endpoints."
+    url="/python/settings/user_settings/defaults"
+  />
+</ul>

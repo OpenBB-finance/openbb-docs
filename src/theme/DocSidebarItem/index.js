@@ -33,6 +33,7 @@ export default function DocSidebarItem({ item, ...props }) {
 	const isGettingStarted = pathname.startsWith("/getting-started");
 	const isPlatform = pathname.startsWith("/platform");
 	const isCLI = pathname.startsWith("/cli");
+	const isODP = pathname.startsWith("/desktop") || pathname.startsWith("/python");
 	const isRelevantSection = isPro || isExcel || isGettingStarted;
 
 	// Only show workspace items when in workspace, excel items when in excel, getting-started items always in relevant sections
@@ -61,13 +62,13 @@ export default function DocSidebarItem({ item, ...props }) {
 
 	// Show section headers only when in workspace, excel, or getting-started sections
 	// Hide them when in platform, CLI or other sections
-	if (item.className?.includes("getting-started-section") && (!isRelevantSection || isPlatform || isCLI)) {
+	if (item.className?.includes("getting-started-section") && (!isRelevantSection || isPlatform || isCLI || isODP)) {
 		return null;
 	}
-	if (item.className?.includes("developers-section") && (!isRelevantSection || isPlatform || isCLI)) {
+	if (item.className?.includes("developers-section") && (!isRelevantSection || isPlatform || isCLI || isODP)) {
 		return null;
 	}
-	if (item.className?.includes("analyst-section") && (!isRelevantSection || isPlatform || isCLI)) {
+	if (item.className?.includes("analyst-section") && (!isRelevantSection || isPlatform || isCLI || isODP)) {
 		return null;
 	}
 
@@ -80,7 +81,7 @@ export default function DocSidebarItem({ item, ...props }) {
 	}
 
 	// Hide workspace categories when in platform or CLI sections
-	if ((isPlatform || isCLI) && item.type === "category") {
+	if ((isPlatform || isCLI || isODP) && item.type === "category") {
 		// First check if the first item in the category is workspace-related (quick check)
 		const firstItem = item.items?.[0];
 		if (firstItem) {
