@@ -20,7 +20,7 @@ There are a set of QA tools that you can use to test your work.
 
 Install the developer toolkit packages from PyPI:
 
-```
+```sh
 pip install openbb-devtools
 ```
 
@@ -31,7 +31,7 @@ This includes `pytest` and the extensions used for capturing unit test cassettes
 Each `Fetcher` comes equipped with a `test` method that will ensure it is implemented correctly, that it is returning the expected data, that all types are correct, and that the data is valid.
 
 You can run the testing pattern by initializing your Fetcher and running the `.test` method,
-passing `paramters` and `credentials` dictionaries.
+passing `parameters` and `credentials` dictionaries.
 
 A successful test will return `None`
 

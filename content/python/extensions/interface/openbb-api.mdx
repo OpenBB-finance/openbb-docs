@@ -1,7 +1,7 @@
 ---
 title: openbb-api
 sidebar_position: 3
-description: Learn how to use a Python tool to generate widgets.json from an openapi.json file. 
+description: Learn how to use a Python tool to generate widgets.json from an openapi.json file.
 keywords:
 - widgets.json
 - openapi.json
@@ -41,7 +41,7 @@ It provides drop-in-like functionality for the FastAPI + Uvicorn development sta
 
 Install from PyPI in an environment with a Python version between 3.9 and 3.13:
 
-```
+```sh
 pip install openbb-platform-api
 ```
 
@@ -86,11 +86,9 @@ Also, declare the name of the factory function.
 openbb-api --app some_file.py:main --factory
 ```
 
-### App or Factory Name 
+### App or Factory Name
 
 It is assumed that the FastAPI instance within the module is named, `app`.
-
-
 
 ```sh
 openbb-api --app some_file.py --name my_app
@@ -162,6 +160,7 @@ async def some_endpoint_with_dropdown(
 ):
   pass
 ```
+
 The params array in the Widget definition will end up like:
 
 ```json
@@ -215,7 +214,7 @@ app = FastAPI()
     "widget_config": {
       "params": [
         "paramName": "my_param", # Identify the parameter to match with and update.
-        "value": "new_default_value"  # Tell Workspace to use a different default value. 
+        "value": "new_default_value"  # Tell Workspace to use a different default value.
       ]
     }
   }
@@ -334,9 +333,7 @@ This is the spec file for a basic FastAPI server with only one endpoint that ret
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "items": {
-
-                  },
+                  "items": {},
                   "title": "Response Quotestock Quote Get"
                 }
               }
@@ -419,6 +416,7 @@ from openbb_platform_api.utils.widgets import build_json
 openapi = json.loads(...)
 widgets = json.dumps(build_json(openapi), []) # The empty list can be a list of paths to ignore.
 ```
+
 <details>
 <summary mdxType="summary">widgets.json</summary>
 ```json
@@ -481,6 +479,7 @@ from fastapi import FastAPI
 
 app = FastAPI()
 ```
+
 :::
 
 ```python
@@ -546,7 +545,7 @@ async def test_metric():
       "Custom"
     ]
   }
-}  
+}
 ```
 </details>
 
@@ -562,6 +561,7 @@ async def test_metric():
         dict(label="Another Label", value=67890, delta=-2.34),
     ]
 ```
+
 :::
 
 ### PDF Widget
@@ -765,6 +765,7 @@ async def create_omni_widget(item: TestOmniWidgetQueryModel):
     return {"content": some_test_data}
 
 ```
+
 </details>
 
 ![omni widget](https://pypi-camo.freetls.fastly.net/e8796d08d0ae50bb5b653c317dd936fce33ecf1a/68747470733a2f2f6769746875622e636f6d2f757365722d6174746163686d656e74732f6173736574732f36613561613838362d393730312d343434382d623339372d656437626162393963616337)
@@ -976,6 +977,7 @@ async def general_intake_post(data: GeneralIntake) -> bool:
 async def general_intake() -> list[IntakeForm]:
     return INTAKE_FORMS
 ```
+
 </details>
 
 <img width="1552" alt="Form Input Widget" src="https://github.com/user-attachments/assets/16bb3844-ea43-44c8-ae44-67159b0b70e4" />

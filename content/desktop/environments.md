@@ -27,7 +27,7 @@ Environments protect the system, and other external projects, by not using share
 ## Features
 
 - Create, customize, and manage Conda environments directly on-screen, no command line required.
-  - Build environments from `pyproject.toml`, `requirements.txt`, or Conda environment `.yaml` files. 
+  - Build environments from `pyproject.toml`, `requirements.txt`, or Conda environment `.yaml` files.
 - Safely update whole environments or individual packages.
 - Searchable environment package lists, with installed version.
 - Action buttons for opening system terminals and starting Python, iPython, Jupyter, or ODP CLI sessions.
@@ -149,7 +149,7 @@ Conda and PyPI package caches can be cleared from the command line of any enviro
 | Can I use other package managers, such as UV? | Tools such as, UV or Poetry, can be installed in a Conda environment by adding it as a PyPI package. Using them within a global context may have unexpected results and should be configured to use the active environment explicitly.
 | Where can I find the `.condarc` file? | Open the installation location, and enter the `conda` folder. It will likely be hidden, so enable Explorer/Finder to show system files, and then open it in any text editor.
 | How do I remove a corrupt environment? | It is safe to manually remove any environment in the `InstallDirectory\conda\envs` folder by deleting it from Finder/Explorer. Press the `Refresh` button to update the screen's state.
-| Importing an environment fails. | Check the output for errors and adjust where needed. The environment's base may have been created successfully, in which case open the system shell and attempt to install manually from the command line. Please report any bugs on [GitHub](https://github.com/OpenBB-finance/OpenBB/issues). 
+| Importing an environment fails. | Check the output for errors and adjust where needed. The environment's base may have been created successfully, in which case open the system shell and attempt to install manually from the command line. Please report any bugs on [GitHub](https://github.com/OpenBB-finance/OpenBB/issues).
 | "Directory does not exist" | Ensure the path is reachable by the OS user account. Network drives may require additional permissions. |
 | "FutureWarning" during install | These are non-fatal; the GUI continues automatically. |
 | "Prefix record insertion error" | A known Conda bug – the environment is usually created successfully. The GUI handles this automatically. |
