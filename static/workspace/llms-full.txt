@@ -140,11 +140,12 @@ The agent prioritizes context in the following order:
 | Priority | Context Type | Description |
 |---|---|---|
 | 1 | Explicit | Widgets added to context specifically. |
-| 2 | Attached files | Files uploaded directly to the Copilot |
-| 3 | Dashboard | All widgets currently on your dashboard (in all tabs). |
-| 4 | Conversation | The history of your current conversation. |
-| 5 | Global | All widgets available within the OpenBB Workspace. If Global Data enabled. |
-| 6 | Web search | Retrieve infromation from the web. If Web Search enabled. |
+| 2 | MCP tool | Active MCP tools connected to the Copilot |
+| 3 | Attached files | Files uploaded directly to the Copilot |
+| 4 | Dashboard | All widgets currently on your dashboard (in all tabs). |
+| 5 | Conversation | The history of your current conversation. |
+| 6 | Global | All widgets available within the OpenBB Workspace. If Global Data enabled. |
+| 7 | Web search | Retrieve infromation from the web. If Web Search enabled. |
 
 ## Context Types
 
@@ -173,6 +174,36 @@ When you use the "@" symbol followed by a widget name and the prompt is sent, th
     width="60%"
   />
 </div>
+
+### MCP Tools
+
+The second highest priority is active MCP tools connected to OpenBB Workspace. For more details, see the MCP tools documentation [here](/workspace/analysts/ai-features/mcp-tools).
+
+Depending on your use case, MCP tools offer a powerful way to connect to third-party data providers or specialized financial tools using a standardized protocol. This would eliminate the need for custom development inside OpenBB Workspace.
+
+To use MCP tools, make sure to configure it (see how to do it [here](/workspace/analysts/ai-features/mcp-tools#configure-your-mcp-servers), and then select all the desired MCP tools.
+
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img
+    className="pro-border-gradient"
+    alt="Attached files"
+    src="https://openbb-cms.directus.app/assets/31809471-52b2-4dcb-a5f0-9276def2ae29.png"
+    width="60%"
+  />
+</div>
+
+When enabled, Copilot gains access to all active MCP tools. You can also explicitly call a specific MCP tool to guarantee it’s invoked.
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img
+    className="pro-border-gradient"
+    alt="Attached files"
+    src="https://openbb-cms.directus.app/assets/0a77e58a-6c9f-4cc8-8983-ec8668ecc1c6.png"
+    width="60%"
+  />
+</div>
+
 
 ### Attached Files
 
@@ -275,6 +306,23 @@ keywords:
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Data Handling | OpenBB Workspace Docs" />
+
+## Widget interaction
+
+Dynamic parameter modification represents one of the OpenBB's Copilot most powerful capabilities.
+
+The system understands the parameter schemas of each widget and can intelligently modify settings like date ranges, asset symbols, calculation periods, and analysis parameters to match your specific requirements.
+
+This eliminates the need for manual widget configuration and enables the Copilot to perform iterative analysis with different parameters automatically, such as comparing the same analysis across different time periods or asset classes within a single conversation.
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img
+    className="pro-border-gradient"
+    alt="Widget parameters"
+    src="https://openbb-cms.directus.app/assets/1c0c7c36-30e8-4b89-b9ad-0b97694f2699.png"
+    width="100%"
+  />
+</div>
 
 ## Structured data
 
@@ -563,59 +611,345 @@ The system preserves the relationship between artifacts and their creation proce
 ---
 
 ---
-title: Tools
-sidebar_position: 10
-description: Understanding the tools available to OpenBB Copilot
+title: Generative UI (Beta)
+sidebar_position: 13
+description: Understanding the Generative UI capabilities in OpenBB Copilot
 keywords:
-- tools
-- widgets
-- widget parameters
-- web search
+  - generative ui
+  - widgets
+  - dynamic creation
+  - widget parameters
+  - beta features
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Tools | OpenBB Workspace Docs" />
+<HeadTitle title="Generative UI (Beta) | OpenBB Workspace Docs" />
 
-## Widgets
+When this feature is turned ON, copilot can manipulate widgets on the dashboard.
 
-The Copilot treats every widget in the OpenBB Workspace as a programmable tool in its analytical toolkit.
+## Update widget parameters
 
-The system can chain widget operations, using the output from one widget as input for another, creating sophisticated analytical pipelines automatically.
+The system understands the parameter schemas of each widget and based on a user prompt it can automatically update the parameters used in widgets on the dashboard.
 
-## Widget parameters
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+    <img
+    className="pro-border-gradient"
+    alt="Widget parameters"
+    src="https://openbb-cms.directus.app/assets/82a99cb3-61ea-47cb-89f2-4eb1e888861a.png"
+    width="100%"
+  />
+</div>
 
-Dynamic parameter modification represents one of the OpenBB's Copilot most powerful capabilities.
+## Add widgets from Global Data
 
-The system understands the parameter schemas of each widget and can intelligently modify settings like date ranges, asset symbols, calculation periods, and analysis parameters to match your specific requirements.
-
-This eliminates the need for manual widget configuration and enables the Copilot to perform iterative analysis with different parameters automatically, such as comparing the same analysis across different time periods or asset classes within a single conversation.
+If global data is turned on, and the user asks information that the copilot believes exists in one of the widgets in the widget library - then that widget gets automatically added to the dashboard.
 
 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
     className="pro-border-gradient"
     alt="Widget parameters"
-    src="https://openbb-cms.directus.app/assets/1c0c7c36-30e8-4b89-b9ad-0b97694f2699.png"
+    src="https://openbb-cms.directus.app/assets/b5798412-cba3-4deb-898c-dde7ccd636c1.png"
     width="100%"
   />
 </div>
 
-## Web search
+## Add markdown note widget
 
-The integrated web search capability extends the Copilot's knowledge beyond the OpenBB Workspace ecosystem to access real-time information from across the internet.
-
-This feature automatically activates as a fallback mechanism when information is not available in your workspace, searching financial news sources, regulatory databases, company websites, and other sources.
-
-The system filters and prioritizes results based on relevance and credibility, then integrates external information with your existing workspace data to provide comprehensive answers with proper source attribution.
+The copilot can also add any type of text into a markdown widget automatically on-the-fly.
 
 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
     className="pro-border-gradient"
-    alt="Web search"
-    src="https://openbb-cms.directus.app/assets/d9aec63a-379f-4ced-9074-1597dabc55b6.png"
+    alt="Widget parameters"
+    src="https://openbb-cms.directus.app/assets/dc0391d6-283f-4a8c-8a83-ddb3b0ea7178.png"
     width="100%"
   />
 </div>
+
+Support to add static artifacts (tables or charts) on-the-fly is still not supported.
+
+
+---
+
+---
+title: MCP Tools
+sidebar_position: 11
+description: Model Context Protocol (MCP) tools integration in OpenBB Copilot
+keywords:
+- MCP
+- Model Context Protocol
+- tools
+- integration
+- external tools
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="MCP Tools | OpenBB Workspace Docs" />
+
+Model Context Protocol (MCP) integration enables seamless connection to third-party data providers, analytical services, and specialized financial tools without requiring custom development within the OpenBB Workspace.
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/9e4121a3-a422-41fb-aaac-888f66b18fb2.png"
+    width="100%"
+  />
+</div>
+
+We utilize the [use-mcp library](https://github.com/modelcontextprotocol/use-mcp) and support both MCP and SSE protocols, but not STDIO. If you are interested in STDIO support, we recommend exploring solutions like [https://github.com/supercorp-ai/supergateway](https://github.com/supercorp-ai/supergateway).
+
+### Configure your MCP Servers
+
+Clicking this button opens the MCP server enable/disable menu.
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/2d50c181-6fa0-4ec4-81b6-3faa936af17e.png"
+    width="40%"
+  />
+</div>
+
+Here you'll find the "+" icon that allows you to add or edit MCP servers.
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/861831f2-9bfc-41d2-bdd7-bc673ad39656.png"
+    width="60%"
+  />
+</div>
+
+Clicking the "+" icon opens the MCP Servers configuration dialog.
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/1d12fdc5-4424-4858-8c34-85db9c18ba2e.png"
+    width="100%"
+  />
+</div>
+
+Within this dialog, clicking "Add Server" opens the following pop-up window.
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/15e88b0c-d9d0-4697-87f0-2c82f0213d0f.png"
+    width="100%"
+  />
+</div>
+
+Clicking "Add" initiates the connection, regardless of OAuth configuration.
+
+Here's how OAuth appears when connecting to [Smithery.ai](https://smithery.ai/), a directory containing over 6,000 MCP servers.
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/0ef5c823-a1fe-4fec-9d17-9165e0d282b1.png"
+    width="100%"
+  />
+</div>
+
+After connecting, you'll return to the Workspace and see "Authenticating..." displayed.
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/2b3b1671-20c3-46de-9985-5c55ba22c2c5.png"
+    width="100%"
+  />
+</div>
+
+In the MCP Servers Configuration dialog, clicking on a successfully connected server displays the discovered tools. You can then open these tools to view their descriptions.
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/3d2e53ed-5d63-46e8-b369-d0e19c7017ef.png"
+    width="100%"
+  />
+</div>
+
+### Select MCP Server tools
+
+With the MCP Tools dialog open, you can enable or disable specific MCP tools for Copilot access.
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/861831f2-9bfc-41d2-bdd7-bc673ad39656.png"
+    width="100%"
+  />
+</div>
+
+Once an MCP Server is successfully connected, you can:
+
+1. Select all or none of the tools of a specific MCP Server.
+
+This toggles all fine-grained tool-level controls simultaneously. It's the most efficient way to exclude an MCP Server from Copilot's context.
+
+2. Turn ON/OFF a specific set of tools from an MCP Server.
+
+Note: Enabling all tools doesn't guarantee Copilot will use every tool; rather, it makes them available for selection. This granular control helps narrow OpenBB Copilot's context to what's most relevant to your needs.
+
+---
+
+If the MCP Server becomes disconnected, it will appear as disabled, as shown below:
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/d983cab2-9cf0-4d2a-85d2-0226860b890d.png"
+    width="100%"
+  />
+</div>
+
+### MCP in action
+
+When you submit a query to Copilot with MCP tools enabled, it can utilize one or more tools based on your prompt, including sequential tool usage when necessary.
+
+For example, accessing OpenBB documentation requires two tools from the same MCP Server. Copilot automatically determines and executes this sequence on your behalf.
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/5a9ef8ee-89e0-4f7c-853c-77fda234de00.png"
+    width="100%"
+  />
+</div>
+
+### Matching widget to MCP tools
+
+As shown above, in the reasoning step, you can see when and at which point the MCP tool was called. In addition, you can configure a widget that shares identical metadata, or what we refer to as “matching”, to the corresponding MCP tool.
+
+Once a matching widget has been set up, a citation marked with an asterisk (*) will appear at the end whenever the MCP tool is used. 
+
+<img className="pro-border-gradient" width="800" alt="Widget hover tooltip showing option to add to dashboard" src="https://openbb-cms.directus.app/assets/d2c50edb-43e2-4771-9125-b31117501a61.png" />
+
+
+Additionally, when you click “Add matching widget to dashboard,” the widget will be automatically added to your current dashboard, using the same parameters applied by Copilot.
+
+
+
+<img className="pro-border-gradient" width="800" alt="Interactive widget dashboard showing parameters, charting, and OpenBB properties" src="https://openbb-cms.directus.app/assets/a719abc4-9b2f-41c7-b1a8-dd84fc707b77.png" />
+
+---
+
+---
+title: Orchestrator Mode (Beta)
+sidebar_position: 14
+description: Understanding OpenBB Copilot's Orchestrator Mode for multi-agent workflows
+keywords:
+- Orchestrator Mode
+- Multi-agent
+- Workflow coordination
+- Task delegation
+- Agent routing
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Orchestrator Mode | OpenBB Workspace Docs" />
+
+# Orchestrator Mode (Beta)
+
+Orchestrator Mode enables OpenBB Copilot to coordinate with specialized AI agents for complex analytical workflows. When activated, OpenBB Copilot becomes a central coordinator that evaluates user requests, identifies the most appropriate agents for specific tasks, and delegates work to optimize results.
+
+## Activating Orchestrator Mode
+
+After adding AI agents to your workspace, you'll see agent management settings showing available agents:
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img src="https://openbb-cms.directus.app/assets/d8223d51-17a4-4b47-914b-ff5656316fd0.png" alt="OpenBB Copilot as single enabled agent" width="40%" />
+</div>
+
+Initially, OpenBB Copilot operates as the only enabled agent. To activate Orchestrator Mode, toggle the switch next to OpenBB Copilot. This enables the copilot to delegate tasks to other available agents based on request complexity and agent specialization.
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img src="https://openbb-cms.directus.app/assets/c6a46df6-d572-414c-8cb4-c74e70ae0a1a.png" alt="Orchestrator Mode activated" width="40%" />
+</div>
+
+## Agent Detection and Routing
+
+The orchestrator systematically evaluates available agents before processing user requests. It scans agent descriptions for domain-specific expertise that matches the user query and checks agent capabilities for specialized functions like data processing, mathematical calculations, or document analysis.
+
+Task categorization determines the optimal assignment approach. Preprocessing tasks include query optimization and prompt enhancement. Domain-specific tasks involve financial analysis, technical documentation, or mathematical computations. Processing tasks handle data transformation and content generation. Post-processing tasks manage output formatting and quality assurance.
+
+Agent selection follows a hierarchy of matching criteria. Primary matches occur when agent descriptions directly mention the task domain. Feature matches identify agents with relevant capabilities for the request. Specialization advantages favor agents offering superior expertise compared to general processing capabilities.
+
+## Direct Agent Interaction vs. Orchestration
+
+Users can interact with agents directly or through orchestration. Direct interaction addresses the specific agent with targeted requests:
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img src="https://openbb-cms.directus.app/assets/5ad54690-5aa4-42d6-a0d7-c7a31fe19d58.png" alt="Direct agent interaction example" width="100%" />
+</div>
+
+With Orchestrator Mode activated, users can submit general requests to OpenBB Copilot. The orchestrator analyzes the request and determines whether specialized agent assistance would improve results.
+
+For example, a minimal or unclear prompt triggers automatic routing to a prompt optimization agent:
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img src="https://openbb-cms.directus.app/assets/8a4b0c74-82b4-4e1c-ae2c-d905cf880d39.png" alt="Orchestrator routing to prompt optimizer" width="100%" />
+</div>
+
+Or routing to an agent that is better suitable to parse specific data (like FOMC document):
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img src="https://openbb-cms.directus.app/assets/6486184f-2b36-44cf-829a-aa46bf1e41d5.png" alt="Orchestrator routing to FOMC Agent" width="100%" />
+</div>
+
+## Orchestration OFF
+
+When Orchestrator Mode is disabled, OpenBB Copilot cannot utilize any available sub-agents regardless of their specializations:
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img src="https://openbb-cms.directus.app/assets/f16d219e-98f2-487e-9969-9164377c87de.png" alt="Orchestrator Mode disabled limiting agent access" width="100%" />
+</div>
+
+
+## Task Delegation Process
+
+The orchestrator follows structured delegation protocols. Single agent assignments handle complete tasks where one agent possesses all required expertise. The orchestrator sets direct response parameters, meaning the assigned agent's output appears directly to users without additional processing.
+
+Multi-agent workflows coordinate complex requests requiring multiple specializations. The orchestrator breaks requests into discrete components, determines optimal execution sequences, and manages dependencies between tasks. Some tasks must complete before others begin, while parallel execution improves response speed for independent operations.
+
+When delegating tasks, the orchestrator provides agents with specific context including relevant data, constraints, formatting requirements, and success criteria. This ensures agents have sufficient information to complete their assigned portions effectively.
+
+## Response Coordination
+
+Single agent responses appear directly when the orchestrator delegates complete responsibility to one specialized agent. This reduces latency for straightforward requests while maintaining orchestration capabilities for complex workflows.
+
+Multi-agent responses require coordination and synthesis. The orchestrator ensures consistent formatting across agent contributions, eliminates redundancy, and maintains logical narrative flow. Error recovery mechanisms attempt alternative strategies when agents cannot complete assigned tasks.
+
+## Memory and Context Management
+
+The orchestrator maintains awareness of previous interactions and conversation history. It remembers recent widget additions, data retrievals, and analytical approaches to inform current delegation decisions. This contextual awareness prevents duplicate work and enables references to "this data" or "the previous analysis."
+
+When users reference earlier work, the orchestrator identifies the specific context and ensures relevant agents have access to that information. The system builds upon previous analyses rather than starting fresh for each request.
+
+## Best Practices
+
+Provide clear context about analytical objectives when submitting requests that might benefit from specialized expertise. Specify data sources, time frames, and analytical approaches when you have preferences about task completion methods.
+
+Reference specific data, widgets, or previous analyses when building upon earlier work. The orchestrator uses these references to maintain context continuity and optimize agent selection for follow-up tasks.
+
+Break down extremely complex queries into logical components when the orchestrator's automatic decomposition might not match your intended approach. While orchestration handles multi-step workflows effectively, clearer initial requests lead to more efficient delegation.
 
 
 ---
@@ -1946,149 +2280,1377 @@ Note that scanned images are better handled when uploaded as images (PNG or JPG)
 ---
 
 ---
-title: Overview
-sidebar_position: 36
-description: Learn how to integrate and customize AI agents in OpenBB Workspace for enhanced financial analysis and research capabilities
+title: Agents Integration
+sidebar_position: 6
+description: How to integrate your own AI agent service with OpenBB Workspace
 keywords:
 - AI
-- AI Agents
-- Custom AI
-- LLM
-- Large Language Models
+- Agents
 - Integration
-- Financial Analysis
-- Research
-- Workspace
-- OpenBB AI SDK
+- SSE
+- agents.json
+- QueryRequest
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-import ReactPlayer from 'react-player'
 
-<HeadTitle title="AI Agents | OpenBB Workspace Docs" />
+<HeadTitle title="Agents Integration | OpenBB Workspace Docs" />
 
-AI agents in OpenBB Workspace come with a lot of capabilities out-of-the-box. Particularly when it comes to interacting with data available in the workspace. The advantage is that the agent lives right where all your context is and where actual work gets done.
+Integrate your own AI agent service with OpenBB Workspace using a simple HTTP contract. Your service accepts POST requests, streams responses back to Workspace and can access dashboard data when enabled.
 
-The OpenBB Workspace comes with OpenBB Copilot, the default AI agent, which relies on OpenAI as the underlying model provider. You can bring your own OpenAI API key to use with the Copilot without a standalone deployment. For enterprise deployments, we support connecting to your Azure OpenAI model, allowing firms to leverage their existing relationship with Azure/OpenAI.
+## Architecture
 
-When the default OpenBB Copilot isn't a perfect fit for your financial institution - especially when proprietary data and tools are involved - OpenBB Workspace offers the 'Bring Your Own AI Agent' feature. This allows you to integrate your own custom AI agents, which can be powered by Large Language Models (LLMs) from any vendor.
+- `/agents.json`: the metadata endpoint. Returns agent metadata and capabilities (name, description, image, URL of the query endpoint, features that the agent implements).
+- `/query`: the query endpoint. Receives a `QueryRequest` and streams responses via Server‑Sent Events (SSE).
 
-With this integration, you can use all of OpenBB's features while leveraging your firm's custom agent and preferred LLM provider. This enhances the efficiency of analysts and researchers by aligning with your unique data and models, all while keeping research queries and data securely within your firm's infrastructure.
+Recommended stack: FastAPI with `EventSourceResponse` from `sse_starlette` and OpenBB AI SDK (`openbb-ai`), although any framework that supports streaming SSEs in response to a POST request should work.
 
-## Bring Your Own AI Agent
+See this repository to [get started](https://github.com/OpenBB-finance/agents-for-openbb).
 
-You can integrate your proprietary AI agent, powered by an LLM from any vendor, into OpenBB Workspace. Custom agents can be built using the [OpenBB AI SDK](https://github.com/OpenBB-finance/openbb-ai), which provides comprehensive tools and helper functions for agent development.
+## Adding an Agent in Workspace
 
-### Key Features
+1. Deploy your service (locally or remote).
 
-Custom AI agents in OpenBB Workspace can leverage several powerful features:
+2. In Workspace, click on the copilot and on the plus or pencil icon.
 
-- **Streaming Conversations**: Real-time response streaming using Server-Sent Events (SSEs)
-- **Widget Data Access**: Direct access to primary, secondary, and extra widgets in the workspace
-- **Reasoning Steps**: Show intermediate thinking and processing steps to users
-- **Data Citations**: Provide sources and references for information
-- **Chart Generation**: Create interactive visualizations
-- **Table Production**: Generate structured data tables
-- **PDF Data Handling**: Process and extract information from PDF documents
+    <img className="pro-border-gradient" width="400" alt="No tab no param primary" src="https://openbb-cms.directus.app/assets/412540b0-ef86-4285-8303-b9faf83bdc66.png" />
 
-### Architecture Overview
+3. Enter your base URL; Workspace fetches `/agents.json` and uses `/query` for conversations.
 
-Custom agents follow a stateless backend design with two essential endpoints:
+    <img className="pro-border-gradient" width="800" alt="No tab no param primary" src="https://openbb-cms.directus.app/assets/ce3bebd7-98cf-4598-9d6c-68a2ecc1ba1c.png" />
 
-1. **Query Endpoint** (`/query`): The main interaction point that handles user queries and returns responses via Server-Sent Events
-2. **Agents Configuration Endpoint** (`/agents.json`): Provides agent metadata and capabilities
+Ensure CORS settings are correct and SSE are configured on your service.
 
-### Getting Started
+## Example
 
-To help you get started with custom agent development, we provide several open-source examples that demonstrate the communication protocol between agents and the workspace:
+Simplistic example that allows users to communicate with an agent that can optimize the user prompt. The code is open source [and available here](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/20-financial-prompt-optimizer).
 
-1. **Raw Widget Data Agent**: Shows how to retrieve and process widget data
-2. **Reasoning Steps Agent**: Demonstrates showing intermediate processing steps
-3. **Citation Agent**: Examples of providing data sources and references
-4. **Chart Agent**: Creating visualizations from financial data
-5. **Table Agent**: Generating structured data tables
-6. **PDF Agent**: Processing PDF documents
+<img className="pro-border-gradient" width="800" alt="No tab no param primary" src="https://openbb-cms.directus.app/assets/d2eaa645-eb6e-4411-b9d1-74b70409483a.png" />
 
-The example code is available [here](https://github.com/OpenBB-finance/agents-for-openbb).
-
-### Development Requirements
-
-To build a custom agent, you'll need:
-
-- Python with a web framework (FastAPI recommended)
-- The OpenBB AI SDK (`openbb-ai` package)
-- An LLM provider of your choice (OpenAI, Anthropic, Azure, etc.)
-- Proper endpoint configuration for SSE support
-
-### Agent Implementation Example
-
-Here's a minimal example of a custom agent structure:
+This agent does nothing else - it doesn't parse data added to context, doesn't pass data in the dashboard, doesn't share step-by-step reasoning or citations, doesn't create artifacts, etc. We will dive on each of these features in the AI features tab.
 
 ```python
+from typing import AsyncGenerator
+import openai
+
 from fastapi import FastAPI
-from fastapi.responses import StreamingResponse
-from openbb_ai import QueryRequest
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from sse_starlette.sse import EventSourceResponse
+
+from openbb_ai.models import MessageChunkSSE, QueryRequest
+from openbb_ai import message_chunk
+
+from openai.types.chat import (
+    ChatCompletionMessageParam,
+    ChatCompletionUserMessageParam,
+    ChatCompletionAssistantMessageParam,
+    ChatCompletionSystemMessageParam,
+)
+
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
 @app.get("/agents.json")
-async def agents_json():
-    return {
-        "my-custom-agent": {
-            "name": "My Custom Financial Agent",
-            "description": "Specialized agent for financial analysis",
-            "image": "https://example.com/agent-logo.png",
-            "endpoints": {
-                "query": "/query"
-            },
-            "features": {
-                "streaming": True,
-                "widget-dashboard-select": True,
-                "widget-filter": True
+def get_copilot_description():
+    """Agent descriptor for the OpenBB Workspace."""
+    return JSONResponse(
+        content={
+            "financial_prompt_optimizer": {
+                "name": "Financial Prompt Optimizer",
+                "description": "Optimizes a user's prompt for finance: clearer, more specific, and actionable.",
+                "image": "https://github.com/OpenBB-finance/copilot-for-terminal-pro/assets/14093308/7da2a512-93b9-478d-90bc-b8c3dd0cabcf",
+                "endpoints": {"query": "http://localhost:7777/v1/query"},
+                "features": {
+                    "streaming": True,
+                    "widget-dashboard-select": False,
+                    "widget-dashboard-search": False,
+                },
             }
         }
-    }
+    )
 
-@app.post("/query")
-async def query(request: QueryRequest):
-    # Your agent logic here
-    # Access widgets, process data, generate responses
+
+@app.post("/v1/query")
+async def query(request: QueryRequest) -> EventSourceResponse:
+    """Stream a concise optimized prompt and rationale."""
+
+    openai_messages: list[ChatCompletionMessageParam] = [
+        ChatCompletionSystemMessageParam(
+            role="system",
+            content=(
+                "You are a concise Financial Prompt Optimizer.\n"
+                "Rewrite the user's prompt to be clearer, more specific, and immediately actionable for financial analysis.\n"
+                "Always return exactly the improved prompt:\n"
+                "Optimized Prompt: <detailed improved prompt with step-by-step>\n"
+            ),
+        )
+    ]
+
+    for message in request.messages:
+        if message.role == "human":
+            openai_messages.append(
+                ChatCompletionUserMessageParam(role="user", content=message.content)
+            )
+        elif message.role == "ai" and isinstance(message.content, str):
+            openai_messages.append(
+                ChatCompletionAssistantMessageParam(
+                    role="assistant", content=message.content
+                )
+            )
+
+    async def execution_loop() -> AsyncGenerator[MessageChunkSSE, None]:
+        client = openai.AsyncOpenAI()
+        async for event in await client.chat.completions.create(
+            model="gpt-4o",
+            messages=openai_messages,
+            stream=True,
+        ):
+            if chunk := event.choices[0].delta.content:
+                yield message_chunk(chunk)
+
+    return EventSourceResponse(
+        content=(
+            event.model_dump(exclude_none=True) async for event in execution_loop()
+        ),
+        media_type="text/event-stream",
+    )
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run("main:app", host="0.0.0.0", port=7777, reload=True)
+```
+
+
+---
+
+---
+title: Citations for documents
+sidebar_position: 5
+description: Add document-specific citations with PDF text highlighting for source attribution
+keywords:
+- citations
+- documents
+- PDF
+- highlighting
+- pdfplumber
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="AI Features — Citations for documents | OpenBB Workspace Docs" />
+
+Extract and cite specific content from PDF documents with precise text highlighting. Use `pdfplumber` to get text positions and create visual citations in Workspace.
+
+Reference implementation [in this GitHub repository](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/vanilla-agent-pdf-citations).
+
+<img className="pro-border-gradient" width="800" alt="Document Citations" src="https://openbb-cms.directus.app/assets/c47a15c0-562c-4fc1-a221-a11cef487826.png" />
+
+## Architecture
+
+This pattern extends widget citations by adding document-level text extraction and positioning. Extract PDF content with character-level precision for accurate highlighting.
+
+`agents.json` configuration:
+
+```python
+return JSONResponse(content={
+  "vanilla_agent_pdf_citations": {
+    "name": "Vanilla Agent PDF Citations",
+    "description": "A vanilla agent that handles PDF data with citation support.",
+    "endpoints": {"query": "http://localhost:7777/v1/query"},
+    "features": {
+      "streaming": True,
+      "widget-dashboard-select": True,
+      "widget-dashboard-search": False,
+    },
+  }
+})
+```
+
+### Query flow
+
+- Extract PDF content when widget data contains PDF format
+- Use `pdfplumber` to get text with character positions
+- Store text positions for citation highlighting
+- Create multiple citation types:
+  - Basic widget citation for data source
+  - Highlighted citation for specific text passages
+- Stream citations with bounding boxes for visual highlighting
+
+### OpenBB AI SDK
+
+- `CitationHighlightBoundingBox`: Precise text highlighting with coordinates
+- `PdfDataFormat`: Identifies PDF content in widget data
+- `quote_bounding_boxes`: Attach visual highlights to citations
+- Text position tracking: `x0`, `top`, `x1`, `bottom` for accurate placement
+
+## Core logic
+
+Extract PDF text with positions for precise highlighting:
+
+```python
+import pdfplumber
+from openbb_ai import cite, citations
+from openbb_ai.models import CitationHighlightBoundingBox
+
+def extract_pdf_with_positions(pdf_bytes: bytes) -> Tuple[str, List[Dict[str, Any]]]:
+    """Extract text and positions from PDF."""
+    document_text = ""
+    text_positions = []
+
+    with pdfplumber.open(io.BytesIO(pdf_bytes)) as pdf:
+        for page_num, page in enumerate(pdf.pages, 1):
+            # Extract character-level data for positioning
+            if page.chars:
+                # Group characters into lines
+                lines = {}
+                for char in page.chars:
+                    y = round(char['top'])
+                    if y not in lines:
+                        lines[y] = {'chars': [], 'x0': char['x0'], 'x1': char['x1']}
+                    lines[y]['chars'].append(char['text'])
+                    lines[y]['x0'] = min(lines[y]['x0'], char['x0'])
+                    lines[y]['x1'] = max(lines[y]['x1'], char['x1'])
+
+                # Get first meaningful line for citation
+                sorted_lines = sorted(lines.items())
+                for y_pos, line_data in sorted_lines[:5]:
+                    line_text = ''.join(line_data['chars']).strip()
+                    if line_text and len(line_text) > 10:
+                        text_positions.append({
+                            'text': line_text,
+                            'page': page_num,
+                            'x0': line_data['x0'],
+                            'top': y_pos,
+                            'x1': line_data['x1'],
+                            'bottom': y_pos + 12
+                        })
+                        break
+
+            # Extract full text for context
+            page_text = page.extract_text()
+            if page_text:
+                document_text += page_text + "\\n\\n"
+
+    return document_text, text_positions
+```
+
+Create citations with line/word level highlighting in the PDF:
+
+```python
+async def handle_widget_data(data: list[DataContent | DataFileReferences]):
+    """Process widget data and create PDF citations."""
+
+    widget_text, pdf_text_positions = await handle_widget_data(message.data)
+    context_str += widget_text
+
+    # Create citations for widget data
+    for widget_data_request in message.input_arguments["data_sources"]:
+        widget = matching_widgets[0]
+
+        # Basic widget citation
+        basic_citation = cite(
+            widget=widget,
+            input_arguments=widget_data_request["input_args"],
+        )
+        citations_list.append(basic_citation)
+
+        # PDF citation with highlighting
+        if pdf_text_positions and len(pdf_text_positions) > 0:
+            first_line = pdf_text_positions[0]
+
+            pdf_citation = cite(
+                widget=widget,
+                input_arguments=widget_data_request["input_args"],
+                extra_details={
+                    "Page": first_line['page'],
+                    "Reference": "First sentence of document"
+                }
+            )
+
+            # Add precise text highlighting
+            pdf_citation.quote_bounding_boxes = [[
+                CitationHighlightBoundingBox(
+                    text=first_line['text'][:100],
+                    page=first_line['page'],
+                    x0=first_line['x0'],
+                    top=first_line['top'],
+                    x1=first_line['x1'],
+                    bottom=first_line['bottom']
+                )
+            ]]
+
+            citations_list.append(pdf_citation)
+```
+
+
+---
+
+---
+title: Create charts
+sidebar_position: 6
+description: Stream inline charts as part of your agent’s response
+keywords:
+- charts
+- visualization
+- artifacts
+- SSE
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="AI Features — Create charts | OpenBB Workspace Docs" />
+
+Stream visualizations (line, bar, scatter, pie, donut) with `chart(...)`. Charts appear below the message that emitted them.
+
+Reference implementation in [this GitHub repository](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/33-vanilla-agent-charts/vanilla_agent_charts/main.py).
+
+<img className="pro-border-gradient" width="800" alt="Charts" src="https://openbb-cms.directus.app/assets/e9d93282-20cb-4b3a-bf58-17032191e82a.png" />
+
+## Architecture
+
+Emit chart artifacts so visualizations render below the answer. The example shows multiple chart types in one response.
+
+`agents.json` configuration with `widget-dashboard-select` feature enabled:
+
+```python
+return JSONResponse(content={
+  "vanilla_agent_charts": {
+    "endpoints": {"query": "http://localhost:7777/v1/query"},
+    "features": {
+      "widget-dashboard-select": False,
+      "widget-dashboard-search": False,
+    },
+  }
+})
+```
+
+### Query flow
+
+- Process user request and prepare data for visualization
+- Stream explanatory text with `message_chunk()`
+- Create chart data as list of dictionaries
+- Choose appropriate chart type based on data characteristics:
+  - **Line/Bar/Scatter**: Use `x_key` and `y_keys` for XY data
+  - **Pie/Donut**: Use `angle_key` for values, `callout_label_key` for labels
+- Emit `chart()` artifacts with proper configuration
+- Charts render interactively below streamed content
+
+### OpenBB AI SDK
+
+- `chart(type, data, x_key, y_keys, name, description)`: Creates `MessageArtifactSSE` for chart display
+- Chart types: `"line"`, `"bar"`, `"scatter"`, `"pie"`, `"donut"`
+- Chart parameters handled by specific models:
+  - `LineChartParameters`, `BarChartParameters`, `ScatterChartParameters`
+  - `PieChartParameters`, `DonutChartParameters`
+- `message_chunk(text)`: Streams explanatory text around charts
+- Charts support interactive features like zoom, hover, and data export
+
+## Core logic
+
+```python
+from openbb_ai import message_chunk, chart
+from openbb_ai.models import QueryRequest
+import datetime
+
+async def query(request: QueryRequest) -> EventSourceResponse:
+    async def execution_loop():
+        # Stream introduction
+        yield message_chunk("Let me create some visualizations to illustrate the data trends.\n\n").model_dump()
+
+        # Prepare time series data
+        price_data = [
+            {"date": "2024-01-01", "price": 150.0, "volume": 1200000},
+            {"date": "2024-01-02", "price": 152.5, "volume": 1350000},
+            {"date": "2024-01-03", "price": 148.2, "volume": 1100000},
+            {"date": "2024-01-04", "price": 155.8, "volume": 1450000},
+        ]
+
+        # Create line chart for price trend
+        yield chart(
+            type="line",
+            data=price_data,
+            x_key="date",
+            y_keys=["price"],
+            name="Stock Price Trend",
+            description="Daily stock price movement over time"
+        ).model_dump()
+
+        yield message_chunk("\n\nThe line chart shows an overall upward trend. Now let's look at volume distribution:\n\n").model_dump()
+
+        # Create bar chart for volume
+        yield chart(
+            type="bar",
+            data=price_data,
+            x_key="date",
+            y_keys=["volume"],
+            name="Trading Volume",
+            description="Daily trading volume by date"
+        ).model_dump()
+
+        # Portfolio allocation pie chart
+        portfolio_data = [
+            {"asset": "Stocks", "allocation": 60},
+            {"asset": "Bonds", "allocation": 25},
+            {"asset": "Cash", "allocation": 10},
+            {"asset": "Real Estate", "allocation": 5}
+        ]
+
+        yield message_chunk("\n\nHere's the portfolio allocation breakdown:\n\n").model_dump()
+
+        yield chart(
+            type="pie",
+            data=portfolio_data,
+            angle_key="allocation",
+            callout_label_key="asset",
+            name="Portfolio Allocation",
+            description="Investment portfolio distribution by asset class"
+        ).model_dump()
+
+    return EventSourceResponse(execution_loop(), media_type="text/event-stream")
+```
+
+
+---
+
+---
+title: Create tables
+sidebar_position: 5
+description: Stream tabular data as an artifact in the conversation
+keywords:
+- tables
+- artifacts
+- SSE
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="AI Features — Create tables | OpenBB Workspace Docs" />
+
+Emit a table artifact with `table(...)`. Provide an array of objects; column names are inferred from object keys.
+
+Reference implementation in [this GitHub repository](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/34-vanilla-agent-tables/vanilla_agent_tables/main.py).
+
+<img className="pro-border-gradient" width="800" alt="Tables" src="https://openbb-cms.directus.app/assets/9024844b-2b40-4878-80d0-4be2309a8297.png" />
+
+## Architecture
+
+Emit table artifacts in-line so tabular data renders below the answer.
+
+`agents.json` configuration:
+
+```python
+return JSONResponse(content={
+  "vanilla_agent_tables": {
+    "endpoints": {"query": "http://localhost:7777/v1/query"},
+    "features": {
+      "widget-dashboard-select": False,
+      "widget-dashboard-search": False,
+    },
+  }
+})
+```
+
+### Query flow
+
+- Process user request and generate data (from widgets, analysis, or computation)
+- Stream explanatory text with `message_chunk()`
+- Create table data as list of dictionaries (column names from object keys)
+- Emit `table()` artifact with data, name, and description
+- Table renders below the streamed text in Workspace UI
+- Continue with additional content or complete response
+
+### OpenBB AI SDK
+
+- `table(data, name, description)`: Creates `MessageArtifactSSE` for table display
+  - `data`: List of dictionaries where keys become column headers
+  - `name`: Table title displayed in UI
+  - `description`: Optional table description
+- `message_chunk(text)`: Streams explanatory text before/after tables
+- Tables automatically handle data formatting and sorting in UI
+
+## Core logic
+
+```python
+from openbb_ai import message_chunk, table
+from openbb_ai.models import QueryRequest
+
+async def query(request: QueryRequest) -> EventSourceResponse:
+    async def execution_loop():
+        # Stream introduction
+        yield message_chunk("Let me analyze the financial data and create a summary table.\n\n").model_dump()
+
+        # Generate or process data (from widgets, calculations, etc.)
+        financial_data = [
+            {"symbol": "AAPL", "price": 150.25, "change": 2.5, "volume": 1200000},
+            {"symbol": "MSFT", "price": 280.75, "change": -1.2, "volume": 890000},
+            {"symbol": "GOOGL", "price": 2650.80, "change": 15.3, "volume": 560000},
+        ]
+
+        # Create table artifact
+        yield table(
+            data=financial_data,
+            name="Stock Market Summary",
+            description="Current stock prices with daily changes and trading volume"
+        ).model_dump()
+
+        # Stream additional analysis
+        yield message_chunk("\n\nThe table above shows the current market status. AAPL and GOOGL are up, while MSFT is down slightly.").model_dump()
+
+    return EventSourceResponse(execution_loop(), media_type="text/event-stream")
+```
+
+
+---
+
+---
+title: Custom agent features
+sidebar_position: 7
+description: Configure and manage custom agent features based on workspace options
+keywords:
+- features
+- configuration
+- workspace options
+- custom agents
+- SSE
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="AI Features — Custom agent features | OpenBB Workspace Docs" />
+
+Create agents that can dynamically enable or disable features based on workspace configuration. Agents can access user preferences through `workspace_options` and respond accordingly.
+
+Reference implementation in [this GitHub repository](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/37-vanilla-agent-custom-features).
+
+<img className="pro-border-gradient" width="500" alt="Custom agent features - on and off" src="https://openbb-cms.directus.app/assets/f304643a-654b-4156-a4c4-dea934d18012.png" />
+
+<img className="pro-border-gradient" width="500" alt="Custom agent features - on and on" src="https://openbb-cms.directus.app/assets/aa51354c-b611-4c99-829c-cf6e35eb884b.png" />
+
+## Architecture
+
+Configure custom features in your agent's descriptor and access them through the query request payload. Features can have default states, descriptions, and labels.
+
+`agents.json` configuration with custom features:
+
+```python
+return JSONResponse(content={
+    "vanilla_agent_custom_features": {
+        "name": "Vanilla Agent Custom Features",
+        "description": "A simple agent that reports its feature status.",
+        "endpoints": {"query": "/v1/query"},
+        "features": {
+            "streaming": True,
+            "widget-dashboard-select": False,
+            "widget-dashboard-search": False,
+            "deep-research": {
+                "label": "Deep Research",
+                "default": False,
+                "description": "Allows the copilot to do deep research",
+            },
+            "web-search": {
+                "label": "Web Search", 
+                "default": True,
+                "description": "Allows the copilot to search the web.",
+            },
+        },
+    }
+})
+```
+
+### Feature configuration
+
+- **Simple features**: Boolean values for basic on/off features
+- **Complex features**: Objects with `label`, `default`, and `description` properties
+- **Built-in features**: Standard features like `streaming`, `widget-dashboard-select`, `widget-dashboard-search`
+- **Custom features**: User-defined features with custom behavior
+
+### Query flow
+
+- User enables/disables features in workspace settings
+- Features are passed to agent via `workspace_options` in request payload
+- Agent checks enabled features and adjusts behavior accordingly
+- Agent can report feature status back to user
+- Response content varies based on active features
+
+### OpenBB AI SDK
+
+- `QueryRequest.workspace_options`: List of enabled feature names
+- `message_chunk(text)`: Streams response content with feature-aware messaging
+- Feature checking via simple list membership: `"feature-name" in workspace_options`
+
+## Core logic
+
+```python
+from typing import AsyncGenerator
+from openbb_ai import message_chunk
+from openbb_ai.models import MessageChunkSSE, QueryRequest
+from fastapi.responses import JSONResponse
+from sse_starlette.sse import EventSourceResponse
+
+@app.post("/v1/query")
+async def query(request: QueryRequest) -> EventSourceResponse:
+    # Access workspace options from request payload
+    workspace_options = getattr(request, "workspace_options", [])
+
+    # Check which features are enabled
+    deep_research_enabled = "deep-research" in workspace_options
+    web_search_enabled = "web-search" in workspace_options
+
+    # Build feature status message
+    features_msg = (
+        f"- Deep Research: {'✅ Enabled' if deep_research_enabled else '❌ Disabled'}\n"
+        f"- Web Search: {'✅ Enabled' if web_search_enabled else '❌ Disabled'}"
+    )
+
+    # Include feature status in system prompt
+    openai_messages = [
+        {
+            "role": "system",
+            "content": (
+                "You are a simple greeting agent.\n"
+                "Greet the user and let them know their current feature settings:\n"
+                f"{features_msg}\n"
+                "Keep your response brief and friendly."
+            ),
+        }
+    ]
+
+    # Add conversation history
+    for message in request.messages:
+        if message.role == "human":
+            openai_messages.append({"role": "user", "content": message.content})
+        elif message.role == "ai" and isinstance(message.content, str):
+            openai_messages.append({"role": "assistant", "content": message.content})
+
+    async def execution_loop() -> AsyncGenerator[MessageChunkSSE, None]:
+        client = openai.AsyncOpenAI()
+        async for event in await client.chat.completions.create(
+            model="gpt-4o",
+            messages=openai_messages,
+            stream=True,
+        ):
+            if chunk := event.choices[0].delta.content:
+                yield message_chunk(chunk)
+
+    return EventSourceResponse(
+        content=(
+            event.model_dump(exclude_none=True) async for event in execution_loop()
+        ),
+        media_type="text/event-stream",
+    )
+```
+
+## Feature types
+
+### Boolean features
+Simple on/off switches in the agent descriptor:
+```python
+"features": {
+    "streaming": True,
+    "some-feature": False
+}
+```
+
+### Complex features
+Rich feature objects with metadata:
+```python
+"features": {
+    "research-mode": {
+        "label": "Research Mode",
+        "default": True,
+        "description": "Enables comprehensive research capabilities"
+    }
+}
+```
+
+### Conditional behavior
+Adjust agent behavior based on enabled features:
+```python
+workspace_options = getattr(request, "workspace_options", [])
+
+if "research-mode" in workspace_options:
+    # Enable research capabilities
+    pass
+
+if "web-search" in workspace_options:
+    # Enable web search functionality
     pass
 ```
 
-### Adding a Custom AI Agent to OpenBB Workspace
+---
 
-After deploying your custom AI agent, you can add it to OpenBB Workspace.
+---
+title: Highlight widget citations
+sidebar_position: 4
+description: Cite widget data sources in your responses and display them in Workspace
+keywords:
+- citations
+- cite
+- widgets
+- provenance
+---
 
-To do this, navigate to the "Add AI agent" section and follow the prompts:
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-- Click on the "Add AI agent" button.
+<HeadTitle title="AI Features — Highlight widget citations | OpenBB Workspace Docs" />
 
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/custom_copilot_add_button.jpg" alt="custom AI agent add button" width="80%" height="80%" />
+After retrieving widget data, attribute outputs to their sources. Build `cite(...)` entries and stream them with `citations(...)` so Workspace shows a citations panel next to the answer.
 
-- Enter the API endpoint of your custom AI agent.
+Reference implementation in [this GitHub repository](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/32-vanilla-agent-raw-widget-data-citations/vanilla_agent_raw_context_citations/main.py).
 
-<img src="https://openbb-assets.s3.amazonaws.com/docs/copilot/custom_copilot_add_endpoint.jpg" alt="custom AI agent add endpoint" width="80%" height="80%" />
+<img className="pro-border-gradient" width="800" alt="Citations" src="https://openbb-cms.directus.app/assets/0af85f66-b91f-476d-a231-973442a29957.png" />
 
-- Confirm the addition.
-- You are now ready to use your custom AI agent.
+## Architecture
 
-### Best Practices
+This pattern extends "Parse widget data" by adding attribution. After data retrieval, emit citations to show provenance in Workspace.
 
-1. **Stateless Design**: Keep your agent stateless to ensure scalability
-2. **Error Handling**: Implement robust error handling for API failures
-3. **Response Streaming**: Use SSE for real-time response delivery
-4. **Widget Filtering**: Respect user widget selections and filters
-5. **Security**: Implement proper authentication and authorization
-6. **Performance**: Optimize for low latency responses
+`agents.json` configuration with `widget-dashboard-select` feature enabled:
 
-### Resources
+```python
+return JSONResponse(content={
+  "vanilla_agent_raw_widget_data_citations": {
+    "endpoints": {"query": "http://localhost:7777/v1/query"},
+    "features": {
+      "streaming": True,
+      "widget-dashboard-select": True,
+      "widget-dashboard-search": False,
+    },
+  }
+})
+```
 
-- [OpenBB AI SDK Documentation](https://github.com/OpenBB-finance/openbb-ai)
-- [Agent Examples Repository](https://github.com/OpenBB-finance/agents-for-openbb)
-- [OpenBB Workspace Documentation](/workspace)
+### Query flow
 
-For more detailed information about agent configuration, see the [agents.json Reference](/workspace/developers/json-specs/agents-json-reference) documentation.
+- Early exit: fetch widget data when human message contains `widgets.primary`
+- On subsequent tool message:
+  - Process widget data and include in LLM context
+  - Match widget UUIDs from tool `input_arguments` to `request.widgets.primary`
+  - Build `cite()` objects for each data source used
+  - Stream citations with `citations()` after LLM response
+- Citations appear in Workspace UI panel for source verification
+
+### OpenBB AI SDK
+
+- `cite(widget, input_arguments, extra_details)`: Creates `Citation` objects
+- `citations(citation_list)`: Emits `CitationCollectionSSE` events
+- `Citation`: Links outputs to data sources with metadata
+- `SourceInfo`: Provides detailed source attribution data
+
+## Core logic
+
+Build citations by matching the tool input arguments to widgets in the request:
+
+```python
+from openbb_ai import cite, citations
+from openbb_ai.models import Citation, CitationHighlightBoundingBox
+
+async def execution_loop():
+    # ... stream LLM response ...
+
+    # Build citations after response
+    citations_list = []
+
+    # Process tool message to find data sources
+    for message in request.messages:
+        if message.role == "tool":
+            for widget_data_request in message.input_arguments["data_sources"]:
+                # Match widget by UUID
+                matching_widgets = [
+                    w for w in request.widgets.primary
+                    if str(w.uuid) == widget_data_request["widget_uuid"]
+                ]
+
+                if matching_widgets:
+                    widget = matching_widgets[0]
+                    citation = cite(
+                        widget=widget,
+                        input_arguments=widget_data_request["input_args"],
+                        extra_details={
+                            "Widget Name": widget.name,
+                            "Data Source": widget.type,
+                            "Parameters Used": widget_data_request["input_args"]
+                        }
+                    )
+
+                    citations_list.append(citation)
+
+    # Emit citations for UI display
+    if citations_list:
+        yield citations(citations_list).model_dump()
+```
+
+
+---
+
+---
+title: Interact with dashboard
+sidebar_position: 7
+description: Receive full dashboard widget metadata and conditionally fetch data
+keywords:
+- dashboard widgets
+- widget-dashboard-search
+- WidgetRequest
+- get_widget_data
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="AI Features — Interact with dashboard | OpenBB Workspace Docs" />
+
+Receive the list of widgets on the current dashboard (`secondary`) and any explicitly selected (`primary`). Summarize what’s available and fetch data for a chosen widget.
+
+Reference implementation in [this GitHub repository](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/40-vanilla-agent-dashboard-widgets/vanilla_agent_dashboard_widgets/main.py).
+
+Example that highlights that the agent has access to data on the dashboard (secondary) and that there are no tabs.
+
+<img className="pro-border-gradient" width="800" alt="No tab no param no primary" src="https://openbb-cms.directus.app/assets/2dbcd500-a801-415f-a6d2-2052fa9abc17.png" />
+
+Example that highlights that the agent still has access to data on the dashboard (secondary) but also has explicit context (primary) as a multi-file viewer widget.
+
+<img className="pro-border-gradient" width="800" alt="No tab no param primary" src="https://openbb-cms.directus.app/assets/16b8ea4b-9dc4-487e-b9ac-14b573602684.png" />
+
+Example that highlights that the agent has access to data that lives on the dashboard (and on all the tabs!).
+
+<img className="pro-border-gradient" width="800" alt="Tab params" src="https://openbb-cms.directus.app/assets/a12edb2e-cf15-49ca-bb99-b8468fdfe65d.png" />
+
+## Architecture
+
+Receive dashboard metadata and selected widgets, summarize what's available, and fetch a sample widget's data.
+
+`agents.json` configuration with `widget-dashboard-select` enabled so it accepts explicit context and `widget-dashboard-search` so it can retrieve widgets from the dashboard.
+
+```python
+return JSONResponse(content={
+  "vanilla_agent_dashboard_widgets": {
+    "endpoints": {"query": "http://localhost:7777/v1/query"},
+    "features": {
+      "widget-dashboard-select": True,
+      "widget-dashboard-search": True,
+    },
+  }
+})
+```
+
+### Query flow
+
+- Access both `widgets.primary` (user-selected) and `widgets.secondary` (dashboard) widget collections
+- Combine widget lists for comprehensive dashboard overview
+- Check `workspace_state.current_dashboard_info` for tab information
+- Stream formatted widget inventory with `message_chunk()`:
+  - Widget names, types, and parameter configurations
+  - Tab organization if present
+  - Data availability status
+- Demonstrate data retrieval by fetching sample widget with `get_widget_data()`
+- Process returned data and show preview with metadata
+
+### OpenBB AI SDK
+
+- `WidgetCollection`: Contains `primary`, `secondary`, and `extra` widget groups
+- `Widget`: Individual widget with `uuid`, `name`, `type`, and `params`
+- `WidgetParam`: Parameter definition with `name`, `type`, `current_value`
+- `get_widget_data(widget_requests)`: Fetches data from specified widgets
+- `WorkspaceState`: Provides dashboard context and tab information
+- `message_chunk(text)`: Streams widget summaries and data previews
+
+## Core logic
+
+Unify primary and secondary widgets, render a summary, then fetch data for one widget:
+
+```python
+from openbb_ai import get_widget_data, WidgetRequest, message_chunk
+from openbb_ai.models import QueryRequest
+
+async def query(request: QueryRequest) -> EventSourceResponse:
+    async def execution_loop():
+        # Combine all available widgets
+        all_widgets = []
+        primary_count = 0
+        secondary_count = 0
+
+        if request.widgets:
+            if request.widgets.primary:
+                all_widgets.extend(request.widgets.primary)
+                primary_count = len(request.widgets.primary)
+            if request.widgets.secondary:
+                all_widgets.extend(request.widgets.secondary)
+                secondary_count = len(request.widgets.secondary)
+
+        if not all_widgets:
+            yield message_chunk("No widgets found on your dashboard.").model_dump()
+            return
+
+        # Stream dashboard overview
+        dashboard_info = ""
+        if request.workspace_state and request.workspace_state.current_dashboard_info:
+            dashboard_name = request.workspace_state.current_dashboard_info.name
+            tab_count = len(request.workspace_state.current_dashboard_info.tabs)
+            dashboard_info = f"Dashboard: **{dashboard_name}** ({tab_count} tabs)\n\n"
+
+        widget_summary = f"""# Dashboard Widget Analysis
+
+{dashboard_info}## Widget Inventory
+- **Selected widgets (primary)**: {primary_count}
+- **Dashboard widgets (secondary)**: {secondary_count}
+- **Total available**: {len(all_widgets)}
+
+## Available Widgets
+"""
+
+        for i, widget in enumerate(all_widgets[:5]):  # Show first 5
+            widget_type = "🎯 Selected" if i < primary_count else "📊 Dashboard"
+            param_count = len(widget.params) if widget.params else 0
+            widget_summary += f"- **{widget.name}** ({widget_type}) - {param_count} parameters\n"
+
+        if len(all_widgets) > 5:
+            widget_summary += f"- ... and {len(all_widgets) - 5} more widgets\n"
+
+        yield message_chunk(widget_summary + "\n").model_dump()
+
+        # Demonstrate data retrieval with last widget
+        if all_widgets:
+            sample_widget = all_widgets[-1]
+            yield message_chunk(f"Let me fetch data from **{sample_widget.name}** as an example:\n\n").model_dump()
+
+            yield get_widget_data([
+                WidgetRequest(
+                    widget=sample_widget,
+                    input_arguments={p.name: p.current_value for p in sample_widget.params} if sample_widget.params else {}
+                )
+            ]).model_dump()
+
+    return EventSourceResponse(execution_loop(), media_type="text/event-stream")
+```
+
+
+---
+
+---
+title: Parse PDF context
+sidebar_position: 3
+description: Parse PDF content from widget data and cite sources
+keywords:
+- PDF
+- DataContent
+- PdfDataFormat
+- citations
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="AI Features — Parse PDF context | OpenBB Workspace Docs" />
+
+Extract text from PDF inputs supplied via widget data and append it to the model context. Optionally add citation highlights to reference quotes within the PDF.
+
+Reference implementation [here](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/35-vanilla-agent-pdf/vanilla_agent_pdf/main.py).
+
+<img className="pro-border-gradient" width="800" alt="Parse PDF" src="https://openbb-cms.directus.app/assets/b9e323b3-9416-4452-9d32-f6d6b8b50443.png" />
+
+## Architecture
+
+Handle PDF data delivered by the UI through the widget data tool. Support both URL and base64 PDFs and add text to the LLM context.
+
+`agents.json` configuration with `widget-dashboard-select` feature enabled:
+
+```python
+return JSONResponse(content={
+  "vanilla_agent_pdf": {
+    "endpoints": {"query": "http://localhost:7777/v1/query"},
+    "features": {
+      "widget-dashboard-select": True,
+      "widget-dashboard-search": False,
+    },
+  }
+})
+```
+
+### Query flow
+- Check for human message with `widgets.primary` containing PDF data
+- Early exit: yield `get_widget_data()` for UI execution
+- On subsequent tool message:
+  - Iterate through `DataContent` items
+  - Detect `PdfDataFormat` using `isinstance()` check
+  - Handle both `SingleDataContent` (base64) and `SingleFileReference` (URL)
+  - Extract text using `pdfplumber.open()` with `io.BytesIO()`
+  - Append extracted text to context string
+  - Process with LLM and stream response
+- Optionally create `cite()` with `CitationHighlightBoundingBox` for text highlighting
+
+### OpenBB AI SDK
+- `PdfDataFormat`: Identifies PDF content in widget data
+- `SingleDataContent`: Contains base64-encoded PDF data
+- `SingleFileReference`: Contains URL reference to PDF
+- `DataContent`/`DataFileReferences`: Containers for data items
+- `CitationHighlightBoundingBox`: Defines text highlighting coordinates
+- `cite(widget, input_arguments, extra_details)`: Creates citations with bounding boxes
+- `get_widget_data()`: Requests PDF data from widgets
+
+## Core logic
+
+Detect PDF data, extract text, and accumulate as context:
+
+```python
+import base64
+import io
+import pdfplumber
+import httpx
+from openbb_ai import get_widget_data, cite, citations
+from openbb_ai.models import (
+    QueryRequest, WidgetRequest, PdfDataFormat, 
+    SingleDataContent, SingleFileReference, 
+    DataContent, DataFileReferences,
+    CitationHighlightBoundingBox
+)
+
+async def _download_file(url: str) -> bytes:
+    async with httpx.AsyncClient() as client:
+        response = await client.get(url)
+        return response.content
+
+async def _get_pdf_text(item) -> str:
+    if isinstance(item, SingleDataContent):
+        # Handle base64 PDF
+        file_content = base64.b64decode(item.content)
+    elif isinstance(item, SingleFileReference):
+        # Handle URL PDF
+        file_content = await _download_file(str(item.url))
+    
+    with pdfplumber.open(io.BytesIO(file_content)) as pdf:
+        document_text = ""
+        for page in pdf.pages:
+            document_text += page.extract_text() + "\n\n"
+    return document_text
+
+async def handle_widget_data(data: list[DataContent | DataFileReferences]) -> str:
+    result_str = "--- PDF Content ---\n"
+    for result_item in data:
+        for item in result_item.items:
+            if isinstance(item.data_format, PdfDataFormat):
+                result_str += f"===== {item.data_format.filename} =====\n"
+                result_str += await _get_pdf_text(item)
+                result_str += "------\n"
+            else:
+                result_str += str(item.content) + "\n"
+    return result_str
+```
+
+Add citation highlights with bounding boxes:
+
+```python
+# Create citations with text highlighting
+citations_list = []
+for widget in request.widgets.primary:
+    citation = cite(
+        widget=widget,
+        input_arguments={p.name: p.current_value for p in widget.params},
+        extra_details={"filename": "document.pdf"}
+    )
+    
+    # Add bounding boxes for specific text regions
+    citation.quote_bounding_boxes = [
+        [
+            CitationHighlightBoundingBox(
+                text="Key financial metrics",
+                page=1,
+                x0=72.0, top=117, x1=259, bottom=135
+            ),
+            CitationHighlightBoundingBox(
+                text="Revenue increased 15%", 
+                page=1,
+                x0=110.0, top=140, x1=275, bottom=160
+            )
+        ]
+    ]
+    citations_list.append(citation)
+
+if citations_list:
+    yield citations(citations_list).model_dump()
+```
+
+
+
+---
+
+---
+title: Parse widget data
+sidebar_position: 2
+description: Retrieve data from selected widgets and pass it as raw context to your LLM
+keywords:
+- widgets
+- get_widget_data
+- WidgetRequest
+- SSE
+- OpenAI
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="AI Features — Parse widget data | OpenBB Workspace Docs" />
+
+Retrieve data for user‑selected widgets and pass it to your model. Enable `widget-dashboard-select` and call `get_widget_data` when the latest user message arrives.
+
+Reference implementation in [this GitHub repository](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/30-vanilla-agent-raw-widget-data/vanilla_agent_raw_context/main.py).
+
+<img className="pro-border-gradient" width="800" alt="Raw reply without context" src="https://openbb-cms.directus.app/assets/7bbbc4c9-7cd2-4bb0-9ad9-641588cf541e.png" />
+
+## Architecture
+
+This pattern uses a minimal FastAPI backend with two endpoints and OpenBB AI SDK helpers to retrieve widget data and stream results.
+
+`agents.json` configuration with `widget-dashboard-select` feature enabled:
+
+```python
+return JSONResponse(content={
+  "vanilla_agent_raw_context": {
+    "endpoints": {"query": "http://localhost:7777/v1/query"},
+    "features": {
+      "widget-dashboard-select": True,
+      "widget-dashboard-search": False,
+    },
+  }
+})
+```
+
+### Query flow
+
+- Check if latest message is human with `widgets.primary` populated
+- Build `WidgetRequest` objects with current parameter values
+- Early exit: yield `get_widget_data()` SSE immediately for UI to execute
+- On subsequent request with tool results:
+  - Parse `DataContent` items from tool message
+  - Extract and format widget data into context string
+  - Append context to user messages for LLM processing
+  - Stream LLM response with `message_chunk()`
+
+### OpenBB AI SDK
+
+- `get_widget_data(widget_requests)`: Creates `FunctionCallSSE` for widget data retrieval
+- `WidgetRequest(widget, input_arguments)`: Specifies widget and parameter values
+- `Widget`: Contains widget metadata (uuid, name, type, params)
+- `WidgetParam`: Individual parameter with name, type, current_value
+- `DataContent`: Container for widget response data
+- `message_chunk(text)`: Creates `MessageChunkSSE` for streaming text
+
+## Core logic
+
+```python
+from openbb_ai import get_widget_data, WidgetRequest, message_chunk
+
+@app.post("/v1/query")
+async def query(request: QueryRequest) -> EventSourceResponse:
+    if (
+        request.messages[-1].role == "human"
+        and request.widgets
+        and request.widgets.primary
+    ):
+        widget_requests = [
+            WidgetRequest(
+                widget=w,
+                input_arguments={p.name: p.current_value for p in w.params},
+            )
+            for w in request.widgets.primary
+        ]
+
+        async def retrieve_widget_data():
+            # Function-call SSE that Workspace interprets and executes
+            yield get_widget_data(widget_requests).model_dump()
+
+        return EventSourceResponse(retrieve_widget_data(), media_type="text/event-stream")
+
+    # Process tool message with widget data
+    openai_messages = [
+        ChatCompletionSystemMessageParam(
+            role="system",
+            content="You are a helpful financial assistant."
+        )
+    ]
+
+    context_str = ""
+    for message in request.messages:
+        if message.role == "human":
+            openai_messages.append(
+                ChatCompletionUserMessageParam(role="user", content=message.content)
+            )
+        elif message.role == "tool":
+            # Extract widget data from latest tool result
+            for data_content in message.data:
+                for item in data_content.items:
+                    context_str += str(item.content) + "\n"
+
+    # Append context to last user message
+    if context_str and openai_messages:
+        openai_messages[-1]["content"] += "\n\nContext:\n" + context_str
+
+    async def execution_loop():
+        async for event in await client.chat.completions.create(
+            model="gpt-4o",
+            messages=openai_messages,
+            stream=True
+        ):
+            if chunk := event.choices[0].delta.content:
+                yield message_chunk(chunk).model_dump()
+
+    return EventSourceResponse(execution_loop(), media_type="text/event-stream")
+```
+
+## Dashboard widgets vs explicit context
+
+The example above uses `request.widgets.primary` which contains widgets explicitly selected by the user. If you want to access all widgets available on the current dashboard instead, you can use `request.widgets.secondary`:
+
+```python
+# Access dashboard widgets instead of explicit context
+if (
+    request.messages[-1].role == "human"
+    and request.widgets
+    and request.widgets.secondary  # Dashboard widgets
+):
+    widget_requests = [
+        WidgetRequest(
+            widget=w,
+            input_arguments={p.name: p.current_value for p in w.params},
+        )
+        for w in request.widgets.secondary  # Use secondary instead of primary
+    ]
+```
+
+**Important**: To access dashboard widgets, you must enable the `widget-dashboard-search` feature in your `agents.json`:
+
+```python
+"features": {
+    ...
+    "widget-dashboard-search": True,   # Dashboard widgets
+}
+```
+
+This gives your agent broader context about the user's dashboard setup and available data sources, rather than just the widgets they've explicitly selected.
+
+
+---
+
+---
+title: Share step-by-step reasoning
+sidebar_position: 1
+description: Stream status updates alongside model output during long operations
+keywords:
+- reasoning_step
+- SSE
+- status updates
+- progress
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="AI Features — Share step-by-step reasoning | OpenBB Workspace Docs" />
+
+Stream status updates with `reasoning_step` so users can track multi‑stage actions (fetching data, running tools, post‑processing) as tokens arrive.
+
+Reference implementation in [this GitHub repository](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/31-vanilla-agent-reasoning-steps/vanilla_agent_reasoning_steps/main.py).
+
+<img className="pro-border-gradient" width="800" alt="Reasoning" src="https://openbb-cms.directus.app/assets/eaf36840-a06d-4958-9e0d-cb2570e5a08e.png" />
+
+## Architecture
+
+Stream status updates alongside tokens so users see what the agent is doing.
+
+`agents.json` configuration:
+
+```python
+return JSONResponse(content={
+  "vanilla_agent_reasoning_steps": {
+    "endpoints": {"query": "http://localhost:7777/v1/query"},
+    "features": {
+      "streaming": True,
+      "widget-dashboard-select": False,
+      "widget-dashboard-search": False,
+    },
+  }
+})
+```
+
+### Query flow
+
+- Parse `QueryRequest.messages` and convert to OpenAI-compatible format
+- Add system message to define agent role and capabilities
+- Emit `reasoning_step()` at key processing stages:
+  - Before starting LLM processing
+  - During data preparation or analysis steps
+  - After completing major operations
+- Stream LLM response tokens with `message_chunk()`
+- Send final reasoning step upon completion
+
+### OpenBB AI SDK
+
+- `reasoning_step(event_type, message, details)`: Creates `StatusUpdateSSE` events
+  - `event_type`: `"INFO"`, `"SUCCESS"`, `"WARNING"`, `"ERROR"`
+  - `message`: Human-readable status description
+  - `details`: Optional dictionary with key-value pairs for additional context
+- `message_chunk(text)`: Creates `MessageChunkSSE` for streaming LLM output
+- `LlmClientMessage`: Handles message conversion between formats
+
+## Core logic
+
+```python
+from openbb_ai import reasoning_step, message_chunk
+from openbb_ai.models import QueryRequest, LlmClientMessage
+from openai.types.chat import ChatCompletionSystemMessageParam, ChatCompletionUserMessageParam
+
+async def query(request: QueryRequest) -> EventSourceResponse:
+    # Convert messages to OpenAI format
+    openai_messages = [
+        ChatCompletionSystemMessageParam(
+            role="system",
+            content="You are a helpful financial assistant."
+        )
+    ]
+
+    for message in request.messages:
+        if message.role == "human":
+            openai_messages.append(
+                ChatCompletionUserMessageParam(role="user", content=message.content)
+            )
+
+    async def execution_loop():
+        # Pre-processing reasoning
+        yield reasoning_step(
+            event_type="INFO",
+            message="Processing your request...",
+            details={"total_messages": len(request.messages)}
+        ).model_dump()
+
+        # Stream LLM response
+        yield reasoning_step(
+            event_type="INFO",
+            message="Generating response..."
+        ).model_dump()
+
+        async for event in await client.chat.completions.create(
+            model="gpt-4o",
+            messages=openai_messages,
+            stream=True
+        ):
+            if chunk := event.choices[0].delta.content:
+                yield message_chunk(chunk).model_dump()
+
+        # Completion reasoning
+        yield reasoning_step(
+            event_type="SUCCESS",
+            message="Response generated successfully!"
+        ).model_dump()
+
+    return EventSourceResponse(execution_loop(), media_type="text/event-stream")
+```
+
 
 ---
 
@@ -2637,7 +4199,71 @@ You can then add this backend to OpenBB Workspace by right clicking on the dashb
 
 <img width="800" alt="Apps" src="https://openbb-cms.directus.app/assets/80898c79-cb04-4361-afdd-945eb3e531be.png" />
 
-### 6. Voila
+### 6. Set up Authentication / or API keys
+
+Generally, it’s recommended to enable authentication for your backend to ensure secure access. Another common use case is when connecting to a third-party data provider that requires an API key. To handle this securely, we recommend including the key in a custom header (for example, X-API-KEY).
+
+Here are some benefits of using a custom header:
+- Security: you can keep credentials or API keys out of URLs and logs.
+- Flexibility: this method supports multiple API keys / credentials per request.
+
+Here’s an example of how you can add this to your main.py:
+
+```
+from fastapi import FastAPI, Request, HTTPException
+from dotenv import load_dotenv
+import os
+
+# Load environment variables from .env file (recommended)
+load_dotenv()
+
+app = FastAPI(title="Custom Header Example", version="0.0.1")
+
+@app.get("/secure_hello")
+def secure_hello(request: Request, name: str = ""):
+    """Returns a personalized message if the correct API key is provided."""
+
+    # -------------------------------------------------------------------------
+    # NOTE:
+    # It is recommended to set your API keys as environment variables.
+    # Example: create a `.env` file with the line below:
+    # VALID_API_KEYS=my-secret-key,another-valid-key
+    #
+    # For quick local testing, you can also define keys directly in code:
+    # valid_api_keys = ["my-secret-key", "another-valid-key"]
+    # (Make sure to comment out the environment variable line below.)
+    # -------------------------------------------------------------------------
+    
+    # Get allowed API keys from environment variables
+    valid_api_keys = os.getenv("VALID_API_KEYS", "").split(",")
+
+    # Get API key from header
+    api_key = request.headers.get("X-API-KEY")
+
+    if not api_key:
+        raise HTTPException(
+            status_code=401,
+            detail="API key required. Please include 'X-API-KEY' in the request headers."
+        )
+
+    # Validate provided API key
+    if api_key.strip() not in [k.strip() for k in valid_api_keys]:
+        raise HTTPException(status_code=403, detail="Invalid API key")
+
+    # Return a markdown-formatted greeting
+    return f"# Hello {name}, your API key is valid!"
+
+```
+
+Once configured, you can add your header values in the following way. These values will then be automatically passed along with any subsequent API calls.
+
+<img width="800" alt="Authentication" src="https://openbb-cms.directus.app/assets/70cb3454-bf1b-41eb-af52-85bdebfd75f4.png" />
+
+
+<img width="800" alt="Authentication-Key-Value-Pair" src="https://openbb-cms.directus.app/assets/026b8815-555f-42dd-b3a0-25f991f4ca5e.png" />
+
+
+### 7. Voila
 
 <img width="800" alt="Apps" src="https://openbb-cms.directus.app/assets/b34f315c-0f17-4e14-9b0d-0288d1cf7a5c.png" />
 
@@ -2678,13 +4304,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="agents.json Reference | OpenBB Workspace Docs" />
 
-The `agents.json` endpoint is a critical component of custom AI agent integration in OpenBB Workspace. This endpoint provides metadata and configuration information that tells the workspace how to interact with your custom agent.
+The `agents.json` endpoint is an important component of custom AI agent integration in OpenBB Workspace. This endpoint provides metadata and configuration information that tells the workspace how to interact with your custom agent.
 
-## Overview
-
-When you add a custom AI agent to OpenBB Workspace, the system first queries your agent's `/agents.json` endpoint to discover its capabilities, configuration, and how to communicate with it. This configuration file acts as a contract between your agent and the workspace.
-
-## Endpoint Structure
+When you add a custom AI agent to OpenBB Workspace, the system first queries your agent's `/agents.json` endpoint to discover its capabilities, configuration, and how to communicate with it. This configuration acts as a contract between your agent and the workspace.
 
 The `agents.json` endpoint should return a JSON object with your agent(s) configuration. The endpoint must:
 
@@ -2693,172 +4315,206 @@ The `agents.json` endpoint should return a JSON object with your agent(s) config
 - Respond with a valid JSON structure
 - Be available at the path `/agents.json` relative to your agent's base URL
 
-## JSON Schema
-
-### Root Structure
+Example:
 
 ```json
 {
-  "<agent-id>": {
-    "name": "string",
-    "description": "string",
-    "image": "string (URL)",
+  "financial_prompt_optimizer": {
+      "name": "Financial Prompt Optimizer",
+      "description": "Optimizes a user's prompt for finance: clearer, more specific, and actionable.",
+      "image": "https://github.com/OpenBB-finance/copilot-for-terminal-pro/assets/14093308/7da2a512-93b9-478d-90bc-b8c3dd0cabcf",
+      "endpoints": {"query": "http://localhost:7777/v1/query"},
+      "features": {
+          "streaming": true,
+          "widget-dashboard-select": false,
+          "widget-dashboard-search": false,
+      },
+  }
+}
+```
+
+See more examples in the [Complete Examples section](#complete-examples).
+
+See the JSON Schema definition in the [JsonSchema section](#jsonschema).
+
+## Field Reference
+
+### `agent_id`: Unique ID of the agent
+
+The `agent_id` serves as a unique identifier for your agent within the OpenBB Workspace. This should be a lowercase string with hyphens replacing spaces, following standard slug conventions. The agent ID becomes the object key in the JSON response.
+
+| Argument   | Type   | Required | Default | Example                        |
+| ---------- | ------ | -------- | ------- | ------------------------------ |
+| `agent_id` | string | Yes      | `null`  | `"financial_prompt_optimizer"` |
+
+### `name`: Human-readable name
+
+The `name` field specifies the human-readable display name for your agent that appears in the OpenBB Workspace user interface. This should be a clear, descriptive title that helps users understand what your agent does.
+
+| Argument | Type   | Required | Default | Example                        |
+| -------- | ------ | -------- | ------- | ------------------------------ |
+| `name`   | string | Yes      | `null`  | `"Financial Prompt Optimizer"` |
+
+### `description`: Human-readable description
+
+The `description` provides a brief overview of your agent's capabilities and intended purpose. This text helps users understand when and how to use your agent effectively, and it's displayed as the welcome AI agent message when the chat is empty. It is important to keep it concise but informative.
+
+If multi-orchestrator mode is enabled, then this description will be utilized by the main OpenBB Copilot to understand in what situations it should trigger this agent. So highlighting the capabilities and when to use a custom agent on its description is recommended.
+
+| Argument      | Type   | Required | Default | Example                                                                            |
+| ------------- | ------ | -------- | ------- | ---------------------------------------------------------------------------------- |
+| `description` | string | Yes      | `null`  | `"Optimizes a user's prompt for finance: clearer, more specific, and actionable."` |
+
+### `image`: Image thumbnail
+
+The image field accepts a URL pointing to your agent's logo or avatar image. For optimal display in the OpenBB Workspace interface, use a square image with dimensions of at least 256x256 pixels. The image should be hosted on a publicly accessible URL.
+
+| Argument | Type   | Required | Default | Example                                |
+| -------- | ------ | -------- | ------- | -------------------------------------- |
+| `image`  | string | No       | `null`  | `"https://example.com/agent-logo.png"` |
+
+### `endpoints`: Communication endpoints
+
+The query endpoint specifies where OpenBB Workspace should send user queries and interactions. This can be either a relative path like `"/query"` (if your agent runs on the same domain) or a full URL pointing to your agent's query handler like `"http://localhost:7777/v1/query"`.
+
+This endpoint must accept POST requests and handle the QueryRequest format.
+
+| Argument          | Type   | Required | Default | Example                                          |
+| ----------------- | ------ | -------- | ------- | ------------------------------------------------ |
+| `endpoints`       | object | Yes      | `null`  | `{"query": "http://localhost:7777/v1/query"}`    |
+| `endpoints.query` | string | Yes      | `null`  | `"/query"` or `"http://localhost:7777/v1/query"` |
+
+### `features`: Features that your agent advertises
+
+Configuration object that declares the capabilities that your agent advertises to OpenBB Workspace. This allows the workspace to understand what features your agent supports and how to interact with it effectively.
+
+| Argument             | Type    | Required | Default | Example                                                 |
+| -------------------- | ------- | -------- | ------- | ------------------------------------------------------- |
+| `features`           | object  | Yes      | `null`  | `{"streaming": true, "widget-dashboard-select": false}` |
+
+See continuation of this section for details on each feature.
+
+#### `streaming`: Streaming responses
+
+The streaming feature enables Server-Sent Events (SSE) for your agent's responses, allowing real-time streaming of content back to users. This provides a better user experience with progressive response rendering. This feature defaults to `True` for all agents even if not explicitly set.
+
+| Argument    | Type    | Required | Default | Example |
+| ----------- | ------- | -------- | ------- | ------- |
+| `streaming` | boolean | No       | `true`  | `true`  |
+
+#### `widget-dashboard-select`: Explicit context widgets
+
+This feature grants your agent access to explicit context widgets (primary) - those that are currently selected or explicitly chosen by the user in the dashboard. When enabled, your agent will receive these widgets in the `widgets.primary` collection of the `QueryRequest`, allowing you to fetch and analyze their data.
+
+| Argument                  | Type    | Required | Default | Example |
+| ------------------------- | ------- | -------- | ------- | ------- |
+| `widget-dashboard-select` | boolean | No       | `false` | `true`  |
+
+#### `widget-dashboard-search`: Dashboard context widgets
+
+This feature provides your agent with access to all widgets available on the current dashboard, not just the selected ones. When enabled, these widgets appear in the `widgets.secondary` collection of the `QueryRequest`, giving your agent broader context about the user's dashboard setup and available data sources.
+
+| Argument                  | Type    | Required | Default | Example |
+| ------------------------- | ------- | -------- | ------- | ------- |
+| `widget-dashboard-search` | boolean | No       | `false` | `true`  |
+
+## JsonSchema
+
+```jsonschema
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "patternProperties": {
+    "^[a-z0-9-]+$": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "image": {
+          "type": ["string", "null"],
+          "format": "uri"
+        },
+        "endpoints": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": ["query"],
+          "additionalProperties": false
+        },
+        "features": {
+          "type": "object",
+          "properties": {
+            "streaming": {
+              "type": "boolean",
+              "default": true
+            },
+            "widget-dashboard-select": {
+              "type": "boolean",
+              "default": false
+            },
+            "widget-dashboard-search": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "required": ["name", "description", "endpoints", "features"],
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
+```
+
+## Complete Examples
+
+### Basic Agent Configuration
+
+```json
+{
+  "vanilla-agent": {
+    "name": "Vanilla Agent",
+    "description": "A basic agent that processes user queries",
+    "image": "https://api.example.com/static/agent-logo.png",
     "endpoints": {
-      "query": "string (path)"
+      "query": "/query"
     },
     "features": {
-      "streaming": boolean,
-      "widget-dashboard-select": boolean,
-      "widget-filter": boolean,
-      "reasoning-steps": boolean,
-      "citations": boolean,
-      "charts": boolean,
-      "tables": boolean
-    },
-    "metadata": {
-      "version": "string",
-      "author": "string",
-      "contact": "string"
+      "streaming": true,
+      "widget-dashboard-select": false,
+      "widget-dashboard-search": false
     }
   }
 }
 ```
 
-### Field Descriptions
-
-#### Agent ID
-- **Type**: String (object key)
-- **Required**: Yes
-- **Description**: Unique identifier for your agent. Should be lowercase with hyphens for spaces.
-- **Example**: `"financial-analysis-agent"`
-
-#### name
-- **Type**: String
-- **Required**: Yes
-- **Description**: Display name for your agent in the OpenBB Workspace UI
-- **Example**: `"Financial Analysis Expert"`
-
-#### description
-- **Type**: String
-- **Required**: Yes
-- **Description**: Brief description of your agent's capabilities and purpose
-- **Example**: `"Specialized agent for equity research and financial statement analysis"`
-
-#### image
-- **Type**: String (URL)
-- **Required**: No
-- **Description**: URL to your agent's logo or avatar image. Should be a square image, ideally 256x256 pixels or larger.
-- **Example**: `"https://example.com/agent-logo.png"`
-
-#### endpoints
-
-##### endpoints.query
-- **Type**: String (path)
-- **Required**: Yes
-- **Description**: Relative path to your agent's query endpoint that handles user interactions
-- **Example**: `"/query"` or `"/api/v1/query"`
-
-#### features
-
-Configuration object that declares your agent's capabilities:
-
-##### features.streaming
-- **Type**: Boolean
-- **Required**: No
-- **Default**: `false`
-- **Description**: Whether your agent supports Server-Sent Events (SSE) for streaming responses
-- **Example**: `true`
-
-##### features.widget-dashboard-select
-- **Type**: Boolean
-- **Required**: No
-- **Default**: `false`
-- **Description**: Whether your agent can access and interact with widgets selected in the dashboard
-- **Example**: `true`
-
-##### features.widget-filter
-- **Type**: Boolean
-- **Required**: No
-- **Default**: `false`
-- **Description**: Whether your agent respects widget filtering preferences
-- **Example**: `true`
-
-##### features.reasoning-steps
-- **Type**: Boolean
-- **Required**: No
-- **Default**: `false`
-- **Description**: Whether your agent provides intermediate reasoning steps during processing
-- **Example**: `true`
-
-##### features.citations
-- **Type**: Boolean
-- **Required**: No
-- **Default**: `false`
-- **Description**: Whether your agent provides citations and sources for information
-- **Example**: `true`
-
-##### features.charts
-- **Type**: Boolean
-- **Required**: No
-- **Default**: `false`
-- **Description**: Whether your agent can generate interactive charts and visualizations
-- **Example**: `true`
-
-##### features.tables
-- **Type**: Boolean
-- **Required**: No
-- **Default**: `false`
-- **Description**: Whether your agent can generate structured data tables
-- **Example**: `true`
-
-#### metadata (Optional)
-
-Additional information about your agent:
-
-##### metadata.version
-- **Type**: String
-- **Required**: No
-- **Description**: Version number of your agent
-- **Example**: `"1.2.0"`
-
-##### metadata.author
-- **Type**: String
-- **Required**: No
-- **Description**: Author or organization name
-- **Example**: `"Acme Financial Services"`
-
-##### metadata.contact
-- **Type**: String
-- **Required**: No
-- **Description**: Contact information for support
-- **Example**: `"support@example.com"`
-
-## Complete Example
-
-### Single Agent Configuration
+### Agent with Widget Access
 
 ```json
 {
-  "equity-research-agent": {
-    "name": "Equity Research Assistant",
-    "description": "Advanced AI agent for equity analysis with real-time market data integration",
-    "image": "https://api.example.com/static/agent-logo.png",
+  "data-analysis-agent": {
+    "name": "Data Analysis Agent",
+    "description": "An agent that can access and analyze dashboard widget data",
+    "image": "https://api.example.com/static/data-agent-logo.png",
     "endpoints": {
-      "query": "/api/v1/query"
+      "query": "http://localhost:8000/v1/query"
     },
     "features": {
       "streaming": true,
       "widget-dashboard-select": true,
-      "widget-filter": true,
-      "reasoning-steps": true,
-      "citations": true,
-      "charts": true,
-      "tables": true
-    },
-    "metadata": {
-      "version": "2.1.0",
-      "author": "Financial AI Labs",
-      "contact": "support@finai-labs.com"
+      "widget-dashboard-search": true
     }
   }
 }
@@ -2872,135 +4528,41 @@ Additional information about your agent:
     "name": "General Assistant",
     "description": "General-purpose financial assistant",
     "endpoints": {
-      "query": "/general/query"
-    },
-    "features": {
-      "streaming": true,
-      "widget-dashboard-select": true
-    }
-  },
-  "quantitative-analyst": {
-    "name": "Quantitative Analyst",
-    "description": "Specialized in quantitative analysis and backtesting",
-    "image": "https://api.example.com/quant-logo.png",
-    "endpoints": {
-      "query": "/quant/query"
+      "query": "http://localhost:7777/general/query"
     },
     "features": {
       "streaming": true,
       "widget-dashboard-select": true,
-      "charts": true,
-      "tables": true
+      "widget-dashboard-search": false
     }
   },
-  "risk-manager": {
-    "name": "Risk Manager",
-    "description": "Portfolio risk assessment and management",
+  "market-analyst": {
+    "name": "Market Analyst",
+    "description": "Specialized in market analysis with dashboard data access",
+    "image": "https://api.example.com/analyst-logo.png",
     "endpoints": {
-      "query": "/risk/query"
+      "query": "http://localhost:7777/analyst/query"
     },
     "features": {
       "streaming": true,
-      "widget-filter": true,
-      "reasoning-steps": true,
-      "tables": true
+      "widget-dashboard-select": true,
+      "widget-dashboard-search": true
+    }
+  },
+  "research-assistant": {
+    "name": "Research Assistant",
+    "description": "Financial research and data processing",
+    "endpoints": {
+      "query": "http://localhost:7777/research/query"
+    },
+    "features": {
+      "streaming": true,
+      "widget-dashboard-select": false,
+      "widget-dashboard-search": false
     }
   }
 }
 ```
-
-## Implementation Notes
-
-### FastAPI Example
-
-```python
-from fastapi import FastAPI
-from fastapi.responses import JSONResponse
-
-app = FastAPI()
-
-@app.get("/agents.json")
-async def get_agents_config():
-    return JSONResponse(content={
-        "my-agent": {
-            "name": "My Custom Agent",
-            "description": "Description of my agent",
-            "endpoints": {
-                "query": "/query"
-            },
-            "features": {
-                "streaming": True,
-                "widget-dashboard-select": True
-            }
-        }
-    })
-```
-
-### Express.js Example
-
-```javascript
-const express = require('express');
-const app = express();
-
-app.get('/agents.json', (req, res) => {
-  res.json({
-    "my-agent": {
-      "name": "My Custom Agent",
-      "description": "Description of my agent",
-      "endpoints": {
-        "query": "/query"
-      },
-      "features": {
-        "streaming": true,
-        "widget-dashboard-select": true
-      }
-    }
-  });
-});
-```
-
-## Best Practices
-
-1. **Consistent Naming**: Use clear, descriptive names for your agents that reflect their purpose
-2. **Feature Declaration**: Only declare features that your agent actually implements
-3. **Version Management**: Include version information in metadata for tracking updates
-4. **Error Handling**: Ensure the endpoint always returns valid JSON, even in error cases
-5. **CORS Headers**: Configure appropriate CORS headers if your agent is hosted on a different domain
-6. **Response Time**: The endpoint should respond quickly (< 1 second) as it's queried during agent initialization
-7. **SSL/TLS**: Use HTTPS in production environments for security
-
-## Validation
-
-OpenBB Workspace validates the agents.json response to ensure:
-
-- Valid JSON syntax
-- Required fields are present (`name`, `endpoints.query`)
-- URLs are properly formatted
-- Boolean values are actual booleans (not strings)
-
-If validation fails, the agent will not be added to the workspace, and an error message will be displayed to the user.
-
-## Troubleshooting
-
-### Common Issues
-
-1. **Agent not appearing in workspace**
-   - Verify the `/agents.json` endpoint is accessible
-   - Check JSON syntax validity
-   - Ensure required fields are present
-
-2. **Features not working**
-   - Confirm feature flags are set to `true`
-   - Verify your query endpoint implements the declared features
-
-3. **CORS errors**
-   - Add appropriate CORS headers to your response
-   - Example: `Access-Control-Allow-Origin: *`
-
-4. **Invalid JSON response**
-   - Use a JSON validator to check syntax
-   - Ensure proper escaping of special characters
-   - Verify Content-Type header is set to `application/json`
 
 
 ---
@@ -5403,6 +6965,11 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
   Provides a secondary category for refining search results.
   _Example:_ `"Options"`
 
+- **imgUrl**
+  _Type:_ `string`
+  Image URL for the widget - will show a preview when hovering in search/add widget menu.
+  _Example:_ `"https://myexample-imagelink.xyw/widget1"`
+
 - **type**
   _Type:_ `string`
   Sets the default visualization type for the widget.
@@ -5545,6 +7112,12 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
         Specifies the data type of the cell.
         _Example:_ `"text"`
         _Possible values:_ `"text"`, `"number"`, `"boolean"`, `"date"`, `"dateString"`, `"object"`
+
+      - **align**
+        _Type:_ `string`
+        Specifies the alignment of the text on the cell.
+        _Example:_ `"center"`
+        _Possible values:_ `"left"`, `"center"`, `"right"`
 
       - **enableCellChangeWs**
         _Type:_ `boolean`
@@ -5927,6 +7500,21 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
   Specifies the data source(s) for the widget.
   _Example:_ `["API", "Database"]`
 
+- **mcp_tool**
+  _Type:_ object
+  Configuration for matching the widget to an MCP (Model Context Protocol) tool. When an MCP tool is invoked, OpenBB Workspace can automatically detect if there's a matching widget configured and provide a citation.
+  Contains the following keys:
+
+  - **mcp_server**
+    _Type:_ `string` (required)
+    The name of the MCP server that must match exactly with the connected MCP server name.
+    _Example:_ `"Financial Data"`
+
+  - **tool_id**
+    _Type:_ `string` (required)
+    The ID of the MCP tool that must match exactly with the tool name in the MCP server.
+    _Example:_ `"get_company_revenue_data"`
+
 - **refetchInterval**
   _Type:_ `number` or `false`
   Time in milliseconds before the widget's data will refresh if on the page.  Minimum value is `1000`.
@@ -6049,6 +7637,10 @@ Below is an example `widgets.json` with a single widget defined. This widget wil
         "source": [
             "My First API"
         ],
+        "mcp_tool": {
+            "mcp_server": "Financial Data",
+            "tool_id": "get_company_revenue_data"
+        },
         "refetchInterval" : 900000,
         "staleTime": 300000
     }
@@ -6130,6 +7722,295 @@ If you don't want to set a date you can omit the value parameter or pass ```null
 - `normalized`: Multiplies the number by 100.
 - `normalizedPercent`: Multiplies the number by 100 and adds `%` (e.g., `0.5` becomes `50 %`).
 - `dateToYear`: Converts a date to just the year.
+
+
+---
+
+---
+title: OpenBB AI SDK
+sidebar_position: 7
+description: Build custom agents for OpenBB Workspace using the OpenBB AI SDK helpers and models
+keywords:
+- OpenBB AI SDK
+- custom agents
+- SSE
+- QueryRequest
+- widgets
+- citations
+- charts
+- tables
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="OpenBB AI SDK | OpenBB Workspace Docs" />
+
+The OpenBB AI SDK simplifies building custom agents for OpenBB Workspace by providing type-safe models and helper functions that handle schema validation for streaming Server-Sent Events (SSE). Instead of manually crafting SSE messages and managing event types, you can use simple Python functions prepare events that will stream text, show reasoning steps, fetch widget data, and create visualizations.
+
+The SDK handles all the SSE formatting and data serialization for you.
+
+Install the package in your agent backend:
+
+```bash
+pip install openbb-ai
+```
+
+The code is open source and is [available in this repository](https://github.com/OpenBB-finance/openbb-ai).
+
+## Request Handling
+
+The SDK provides `QueryRequest` to access everything your agent needs in a single, type-safe model:
+
+```python
+from openbb_ai.models import QueryRequest
+
+async def query(request: QueryRequest):
+    # Access chat history
+    messages = request.messages
+
+    # Access widgets (primary, secondary, extra)
+    widgets = request.widgets
+
+    # Use workspace context
+    timezone = request.timezone
+    workspace_state = request.workspace_state
+```
+
+**Key fields in QueryRequest:**
+
+- `messages` - chat conversation message history
+- `widgets` - all widgets data
+  - `primary` - widgets added as explicit context
+  - `secondary` - widgets in the current dashboard
+  - `extra` - artifacts and files in the chat
+- `urls` - URL pages shared in chat
+- `timezone` - timezone identified by the user's browser
+- `tools` - available MCP tools
+- `workspace_options` - features enabled in the Workspace
+- `workspace_state` - dashboard state and context
+  - `action_history` - user actions history
+  - `agents` - available agents
+  - `current_dashboard_uuid` - dashboard ID
+  - `current_dashboard_info` - dashboard metadata
+  - `current_page_context` - current page context
+
+We recommend making backends stateless and not cache server state between calls.
+
+## Streaming Text
+
+The SDK simplifies streaming responses by handling SSE formatting automatically. You can yield message chunks like this:
+
+```python
+from openbb_ai import message_chunk
+
+# Yield message chunks for the response stream
+for chunk in llm_response:
+    yield message_chunk(chunk).model_dump()
+```
+
+**Related models:**
+
+- `MessageChunkSSE` - For streaming text/markdown tokens.
+- `MessageArtifactSSE` - For streaming larger content blocks like tables or charts.
+
+## Reasoning Steps
+
+Show users what your agent is thinking and doing with reasoning steps. The SDK handles the SSE event formatting:
+
+```python
+from openbb_ai import reasoning_step
+
+# Show progress
+yield reasoning_step(event_type="INFO", message="Analyzing market data").model_dump()
+
+# Include details
+yield reasoning_step(
+    event_type="SUCCESS",
+    message="Data retrieved",
+    details={"records": 1000, "timeframe": "1Y"}
+).model_dump()
+```
+
+**Related models:**
+
+- `StatusUpdateSSE` - Formats reasoning steps and status updates
+  - Event types: `INFO`, `SUCCESS`, `WARNING`, `ERROR`
+  - Optional details dictionary for key-value pairs
+
+## Widget Data Access
+
+The SDK simplifies fetching data from dashboard widgets. Widget data is retrieved by yielding a special event that triggers a function call on the Workspace (client) side. Instead of manually creating these events, use the helper functions:
+
+```python
+from openbb_ai import get_widget_data
+from openbb_ai.models import WidgetRequest, Widget
+
+# Request data from multiple widgets
+widget_requests = [
+    WidgetRequest(
+        widget=widget,
+        input_arguments={p.name: p.current_value for p in widget.params}
+    )
+]
+
+# SDK handles the SSE formatting
+yield get_widget_data(widget_requests).model_dump()
+```
+
+Important: Once this event is sent, the execution loop of the agent should break and wait for the Workspace to call the `/query` endpoint again with the widget data added to context.
+
+**Related models:**
+
+- `Widget` - Dashboard widget with metadata and parameters
+  - Contains widget ID, name, type
+  - Includes parameter definitions
+- `WidgetParam` - Individual parameter configuration
+  - `name` - parameter identifier
+  - `type` - data type
+  - `current_value` - current value
+- `WidgetCollection` - Container for widget groups
+  - `primary` - user-selected widgets
+  - `secondary` - dashboard widgets
+  - `extra` - artifacts and files
+- `WidgetRequest` - Data request specification
+- `FunctionCallSSE` - The SSE that triggers widget data retrieval
+
+**Widget features to declare in `/agents.json`:**
+
+- `widget-dashboard-select` - access user-selected widgets. When true, the widgets explicitly added to context by the user appear in `request.widgets.primary`.
+- `widget-dashboard-search` - access dashboard widgets
+
+## Parsing Widget Data
+
+When widgets return data, it comes in various formats that need to be parsed appropriately. The SDK provides data format models to identify and handle each type:
+
+```python
+from openbb_ai.models import (
+    PdfDataFormat,
+    ImageDataFormat,
+    SpreadsheetDataFormat,
+    RawObjectDataFormat,
+    SingleDataContent,
+    SingleFileReference,
+    DataContent,
+    DataFileReferences
+)
+
+async def handle_widget_data(data: list[DataContent | DataFileReferences]) -> str:
+    result_str = ""
+    for result in data:
+        for item in result.items:
+            if isinstance(item.data_format, PdfDataFormat):
+                # Parse PDF content
+                if isinstance(item, SingleDataContent):
+                    # Base64 encoded PDF
+                    content = base64.b64decode(item.content)
+                    # Extract text using pdfplumber or similar
+                elif isinstance(item, SingleFileReference):
+                    # PDF from URL
+                    content = await download_file(item.url)
+                    # Process PDF content
+
+            elif isinstance(item.data_format, SpreadsheetDataFormat):
+                # Parse Excel/CSV data
+                # Convert to dataframe or table structure
+
+            elif isinstance(item.data_format, ImageDataFormat):
+                # Handle image data
+                # May contain charts, screenshots, etc.
+
+            else:
+                # RawObjectDataFormat - JSON/dict data
+                result_str += str(item.content)
+
+    return result_str
+```
+
+**Data format models:**
+
+- `PdfDataFormat` - Identifies PDF documents from widgets
+  - Contains filename and metadata
+  - Data comes as base64 or URL reference
+  - Use libraries like `pdfplumber` to extract text and tables
+
+- `SpreadsheetDataFormat` - Identifies Excel/CSV data
+  - Tabular data from financial widgets
+  - Parse with `pandas` or similar libraries
+
+- `ImageDataFormat` - Identifies image content
+  - Charts, graphs, screenshots from widgets
+  - May require OCR or image analysis
+
+- `RawObjectDataFormat` - Default JSON/dictionary format
+  - Structured data from API responses
+  - Direct access to nested fields
+
+**Data delivery models:**
+
+- `SingleDataContent` - Data embedded as base64
+- `SingleFileReference` - Data available via URL
+- `DataContent` - Container for multiple data items
+- `DataFileReferences` - References to external files
+
+## Data Attribution & Citations
+
+The SDK makes it easy to cite your sources, ensuring transparency about where data comes from:
+
+```python
+from openbb_ai import cite, citations
+
+# Create citations for widgets used
+citation = cite(
+    widget=price_widget,
+    input_arguments={"symbol": "AAPL"},
+    extra_details={"timeframe": "1D"}
+)
+
+# Send all citations at once
+yield citations([citation]).model_dump()
+```
+
+**Related models:**
+
+- `Citation` - Links outputs to data sources
+  - `widget` - source widget reference
+  - `input_arguments` - parameters used
+  - `extra_details` - additional metadata
+- `SourceInfo` - Provides detailed source attribution
+- `CitationHighlightBoundingBox` - Visual highlighting for line-level citations in PDF documents
+
+## Visualizations
+
+The SDK abstracts the complexity of creating interactive charts and tables. Simply provide your data and configuration:
+
+```python
+from openbb_ai import table, chart
+
+# Create a data table
+yield table(
+    data=[{"symbol": "AAPL", "price": 150.25, "change": 2.5}],
+    name="Stock Prices",
+    description="Current market prices"
+).model_dump()
+
+# Create interactive charts
+yield chart(
+    type="line",
+    data=price_history,
+    x_key="date",
+    y_keys=["price"],
+    name="Price History",
+    description="Stock price over time"
+).model_dump()
+```
+
+**Supported chart types and models:**
+
+- `LineChartParameters` - Time series and trends
+- `BarChartParameters` - Comparisons and distributions
+- `ScatterChartParameters` - Correlations and relationships
+- `PieChartParameters` - Proportions and percentages
+- `DonutChartParameters` - Hierarchical proportions
 
 
 ---
@@ -6326,6 +8207,117 @@ def markdown_widget6():
     """Returns a markdown widget"""
     return "# Markdown Widget w-14 x h-6"
 ```
+
+---
+
+---
+title: Matching widget to MCP tool
+sidebar_position: 22
+description: Learn how you can make it so an MCP server and tool are associated with a specific widget
+keywords:
+- MCP tool
+- matching widget
+- MCP server
+- widgets.json
+- citations
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Matching widget to MCP tool | OpenBB Workspace Docs" />
+
+When an MCP (Model Context Protocol) tool is invoked, OpenBB Workspace can automatically detect if there's a matching widget configured and provide a matching citation. This is achieved through configuration in your `widgets.json` file.
+
+## How It Works
+
+OpenBB Workspace checks if a widget has been configured with matching MCP tool metadata. When a match is found:
+
+1. The system shows a notification that a matching widget was found
+2. A citation is automatically generated and attached to the MCP tool response
+3. The citation includes widget details like name, description, and input parameters
+
+## Configuration
+
+:::important
+`mcp_server` and `tool_id` provided should match 1:1 the ones that are connected to OpenBB Copilot.
+:::
+
+To enable widget matching for MCP tools, add an `mcp_tool` property, like:
+
+```json
+"mcp_tool": {
+  "mcp_server": "server_name",
+  "tool_id": "tool_name"
+}
+```
+
+The widget configuration in `widgets.json` should be like:
+
+```json
+{
+  "widgetId": "your_widget_id",
+  "name": "Your Widget Name",
+  "description": "Widget description",
+  ...
+  "mcp_tool": {
+    "mcp_server": "server_name",
+    "tool_id": "tool_name"
+  }
+}
+```
+
+## Example
+
+We will utilize this [repository example](https://github.com/OpenBB-finance/backends-for-openbb/tree/main/widget-examples/matching-widget-mcp-tool) as a way to demonstrate the flow.
+
+### 1. Connect MCP Server
+
+First you want to connect the MCP Server to identify the server name and tool that you will need to reference in your `widgets.json` configuration.
+
+<img className="pro-border-gradient" width="800" alt="MCP Server connection dialog showing 'Financial Data' server name" src="https://openbb-cms.directus.app/assets/6d66dcf3-98c0-4150-aace-035a063df35a.png" />
+
+In the case above, note that the name of MCP Server is "Financial Data" - this will be the value you need for the `mcp_server` field in your `widgets.json`.
+
+<img className="pro-border-gradient" width="800" alt="MCP tool configuration showing 'get_company_revenue_data' tool name" src="https://openbb-cms.directus.app/assets/643af141-6b8c-4828-b7dc-2242560d71f8.png" />
+
+Similarly, the MCP tool is "get_company_revenue_data" - this will be the value you need for the `tool_id` field in your `widgets.json`.
+
+### 2. Configure OpenBB widget with matching MCP
+
+The important is for the widget configuration to include `mcp_tool` with the **EXACT** same names as the ones from your MCP Server:
+
+<img className="pro-border-gradient" width="800" alt="Widget configuration showing mcp_tool property with server and tool ID" src="https://openbb-cms.directus.app/assets/1603ad32-6bd2-43bc-a4cc-553cb4163c34.png" />
+
+Notice how the `mcp_server` value "Financial Data" and `tool_id` value "get_company_revenue_data" match exactly with the MCP server configuration from step 1.
+
+The name and URL of the backend can be ANYTHING.
+
+<img className="pro-border-gradient" width="800" alt="OpenBB backend connection interface showing name and URL fields" src="https://openbb-cms.directus.app/assets/77a2c0d8-3a9b-47a7-933e-85e7131ef954.png" />
+
+### 3. Matching widget citation
+
+This is when the magic happens. If the user has that MCP tool enabled, and asks something like:
+
+> "Utilize financial data MCP tool and get company revenue data for AAPL"
+
+Then when the MCP tool is utilized, the user will see a toast like the following:
+
+<img className="pro-border-gradient" width="800" alt="Toast notification showing 'Matching widget found' message" src="https://openbb-cms.directus.app/assets/655482de-3d2b-426c-8315-dbb579c78f16.png" />
+
+This indicates that a matching widget was found.
+
+<img className="pro-border-gradient" width="800" alt="Chat response showing matching widget citation with asterisk indicator" src="https://openbb-cms.directus.app/assets/d2c50edb-43e2-4771-9125-b31117501a61.png" />
+
+The user will be able to see that this is a matching widget, by the property of having a `*` at the end.
+
+When hovering on top of that widget, the user will be able to add it to the dashboard to the same parameters as the ones that were utilized by the copilot.
+
+<img className="pro-border-gradient" width="800" alt="Widget hover tooltip showing option to add to dashboard" src="https://openbb-cms.directus.app/assets/a719abc4-9b2f-41c7-b1a8-dd84fc707b77.png" />
+
+The advantage now is that the user can interact with the parameters, charting and all other OpenBB widgets properties.
+
+<img className="pro-border-gradient" width="800" alt="Interactive widget dashboard showing parameters, charting, and OpenBB properties" src="https://openbb-cms.directus.app/assets/6f0df91c-195f-48c4-9fbe-13ed589245a9.png" />
+
 
 ---
 
@@ -12021,6 +14013,147 @@ The charting technology is provided by TradingView — a platform for traders an
 ---
 
 ---
+title: Administration
+sidebar_position: 4
+description: Administration and management features for OpenBB Workspace Enterprise
+keywords:
+- Administration
+- User Management
+- RBAC
+- Theme Settings
+- System Configuration
+- Monitoring
+- Branding
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Administration | OpenBB Workspace Docs" />
+
+# Administration
+
+Enterprise administrators manage users, configure access controls, customize branding, and monitor system usage through a web-based interface.
+
+## User Management
+
+Import users from CSV files or connect to directory services for automated provisioning. Bulk operations handle large user lists efficiently. Account creation includes role assignment during the onboarding process. User modifications update permissions as organizational responsibilities change. Offboarding revokes access immediately while preserving audit trails.
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="600" alt="Team Management Interface" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/team_management.png" />
+</div>
+
+Single sign-on integrates with Azure Active Directory through OpenID Connect protocol. Google Workspace authentication uses OAuth 2.0 flows. Any SAML 2.0-compatible identity provider connects through standard configuration. Just-in-time provisioning creates accounts automatically when users first authenticate.
+
+## Role-Based Access Control
+
+Define custom roles that match organizational structure. Permission levels operate at four distinct layers: applications control access to entire modules, widgets govern individual analytical tools, data sources restrict information access, and AI features manage Copilot capabilities.
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="800" alt="Role Management Interface" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/create-role-user-list.png" />
+</div>
+
+Standard roles provide starting points for customization. Admin accounts have full system access and configuration capabilities. Analysts create and share dashboards with complete data access. Viewers access shared content in read-only mode. Data Managers handle source connections and data governance. Custom roles combine these permissions to match specific organizational needs.
+
+## Theme and Branding Configuration
+
+Customize visual appearance to match corporate identity. Table settings control general layouts, borders, spacing, headers, cells, icons, and typography. Each element accepts custom styling for both light and dark themes. Configuration changes apply immediately across all user sessions.
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img src="https://openbb-cms.directus.app/assets/c8c0241e-981c-4456-a8f2-66aafaab350a.png" width="100%" />
+</div>
+
+Chart customization includes base themes, color palettes, core settings, input configurations, and background images. Color palettes define schemes for different data types and analytical contexts. Core settings manage axis, grid, and legend appearance. Background images add corporate watermarks or branding elements.
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img src="https://openbb-cms.directus.app/assets/364a1419-1b57-46ea-a482-98faef8c36f3.png" width="100%" />
+</div>
+
+Preview functionality shows customizations before applying them system-wide:
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img src="https://openbb-cms.directus.app/assets/345da327-228b-4029-9480-ef4b8777a357.png" width="100%" />
+</div>
+
+## Brand Identity
+
+Select primary brand colors through a color picker interface. The system automatically generates complementary shades for consistent application throughout the platform. Color choices maintain accessibility compliance by ensuring readable contrast ratios. Changes propagate to all interface elements within seconds.
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img src="https://openbb-cms.directus.app/assets/815dc29f-d8a8-4c1d-8ee6-0766f9762cde.png" width="100%" />
+</div>
+
+Logo upload supports PNG, SVG, and JPG formats with automatic sizing for different display contexts. The system generates favicons from uploaded logos for browser tab branding. Logo placement options include headers, login pages, and generated reports.
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img src="https://openbb-cms.directus.app/assets/b1055be1-ed02-400f-8876-372ae832d37c.png" width="100%" />
+</div>
+
+
+---
+
+---
+title: Data Control & Security
+sidebar_position: 2
+description: Data sovereignty, security architecture, and compliance features in OpenBB Workspace Enterprise
+keywords:
+- Data Sovereignty
+- Enterprise Security
+- Compliance
+- Audit Trails
+- Data Residency
+- SOC 2
+- MFA
+- SSO
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Data Control & Security | OpenBB Workspace Docs" />
+
+# Data Control & Security
+
+OpenBB Workspace Enterprise ensures complete data sovereignty by running entirely within your infrastructure. Your data, AI models, and prompts never leave your secure environment while maintaining full control over sensitive financial information and meeting regulatory requirements.
+
+## Data Sovereignty
+
+Deploy on-premises or in your private cloud (VPC) to maintain complete control over data location and access. All processing occurs within your infrastructure boundaries, ensuring compliance with data residency requirements and regulatory obligations.
+
+## Deployment Options
+
+On-premises installation provides maximum control by running directly on your servers. This approach works well for organizations with strict data residency requirements or air-gapped environments that require complete network isolation.
+
+Private cloud deployment in AWS, Azure, or GCP maintains cloud infrastructure flexibility while keeping data within your security perimeter. This option balances operational convenience with security requirements.
+
+Hybrid architecture combines on-premises core systems with cloud-based compute resources. This approach allows organizations to balance security requirements with scalability needs while maintaining data control.
+
+<img src="https://openbb-cms.directus.app/assets/2ad71c09-ae83-422f-975d-d4cdaefd2c74.png" alt="OpenBB Workspace Enterprise Architecture" width="100%" />
+
+## Enterprise Security Features
+
+The platform integrates with existing security infrastructure including SSO support for Azure and Google authentication systems. Granular role-based access control (RBAC) manages permissions across applications, widgets, data sources, and AI features. Multi-factor authentication enforcement adds security layers for all user accounts.
+
+Detailed audit logging captures all user activities, system access, and configuration changes. The platform operates with no external product analytics and minimal operational logging to maintain privacy and security standards.
+
+## Compliance and Audit Support
+
+Meet regulatory requirements through complete activity logging that tracks user actions, data access patterns, and system modifications. Export controls manage how data can be extracted or shared outside the platform. Retention policies automate data lifecycle management according to organizational and regulatory requirements.
+
+SOC 2 Type II compliance support provides standardized security controls and audit procedures. The platform maintains audit trails that support various regulatory frameworks and compliance requirements.
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img className="pro-border-gradient" width="600" alt="Activity Log Interface" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/activity-log.png" />
+</div>
+
+## Implementation Process
+
+Begin with a security assessment of your current environment to understand deployment requirements and integration needs. Architecture design aligns the platform with existing security controls and network configurations. Security configuration includes authentication integration, access controls, and audit logging setup.
+
+Testing and validation ensure all security controls function correctly before production deployment. Ongoing management includes regular security reviews, access audits, and maintenance of security documentation and procedures.
+
+
+---
+
+---
 title: Enterprise
 sidebar_position: 1
 description: Deploy OpenBB Workspace on-premises or in your private cloud with enterprise-grade security, compliance, and control.
@@ -12028,148 +14161,218 @@ keywords:
 - OpenBB Workspace Enterprise
 - On-Premises Deployment
 - Private Cloud
-- Role-Based Access Control
-- Enterprise Security
-- Data Sovereignty
-- Compliance
-- RBAC
-- Team Collaboration
+- Enterprise Features
+- Financial Analytics Platform
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Enterprise | OpenBB Workspace Docs" />
 
-# Enterprise Deployment
+# Enterprise Overview
 
-OpenBB Workspace Enterprise enables organizations to deploy the entire platform within their own infrastructure, ensuring complete data sovereignty, security, and compliance.
+OpenBB Workspace Enterprise deploys within your infrastructure, ensuring data never leaves your environment. The platform operates without external dependencies while providing the same analytical capabilities as the cloud version.
 
-## Why Enterprise?
+## Deployment Control
 
-### Complete Data Sovereignty
+Deploy on-premises within your data center for maximum control over hardware, network, and security configurations. Private cloud deployment in AWS, Azure, or GCP maintains infrastructure flexibility while keeping data within your security boundaries. Hybrid architectures combine on-premises data storage with cloud compute resources when required.
 
-Deploy on-premises or in your private cloud (VPC). Your data, AI models, and prompts never leave your secure environment. Maintain full control over sensitive financial information while meeting the strictest regulatory requirements.
+All deployment options include unlimited users, unlimited data sources, and unlimited computational resources. No artificial restrictions exist on platform usage within your environment.
 
-### Enterprise-Grade Security
+[Data Control & Security Details →](/workspace/getting-started/enterprise/data-control)
 
-Integrate seamlessly with your existing security infrastructure including SSO (Azure and Google). Implement granular role-based access control (RBAC) with detailed audit logging. MFA enforced for all users with no product analytics and minimal operational logging.
+## Team Operations
 
-### Unlimited Scalability
+Multiple teams work within shared environments while maintaining separate access controls and data permissions. Shared dashboards distribute insights across departments. Real-time collaboration enables simultaneous analysis and commentary on the same datasets.
 
-No restrictions on users, data sources, or computational resources. Scale horizontally across your infrastructure to meet growing analytical demands while maintaining performance.
+Knowledge management captures institutional analytical approaches through shared widget libraries and template repositories. Team analytics show usage patterns, popular content, and collaboration effectiveness metrics.
 
-### Custom Integration
+[Team Collaboration Features →](/workspace/getting-started/enterprise/team-collaboration)
 
-Connect directly to internal data systems, proprietary databases, and third-party providers through your secure network. Build custom widgets and AI agents tailored to your specific workflows. Includes Excel add-in for seamless data integration.
+## Administrative Control
 
-<img src="https://openbb-cms.directus.app/assets/2ad71c09-ae83-422f-975d-d4cdaefd2c74.png" alt="OpenBB Workspace Enterprise Architecture" width="100%" />
+Configure user access through role-based permissions at application, widget, data source, and AI feature levels. Import users from existing directory services or manage them locally. Customize platform appearance with corporate branding, colors, and logos.
 
-## Deployment Options
+Monitor system performance, user activity, and resource consumption through administrative dashboards. Configure automated backups, retention policies, and maintenance schedules.
 
-### On-Premises
-Install OpenBB Workspace directly on your servers for maximum control. Ideal for organizations with strict data residency requirements or air-gapped environments.
+[Administration Tools →](/workspace/getting-started/enterprise/administration)
 
-### Private Cloud (VPC)
-Deploy in your AWS, Azure, or GCP private cloud. Maintain cloud flexibility while keeping data within your security perimeter.
+## Implementation Support
 
-### Hybrid Architecture
-Combine on-premises core systems with cloud-based compute resources. Balance security requirements with scalability needs.
+Professional services include infrastructure assessment, deployment planning, security configuration, and data integration. The JumpStart package delivers operational capability within four weeks through custom app development and targeted training programs.
 
-## Key Features
+Dedicated support provides priority response times with direct access to technical specialists. Customer success managers coordinate long-term platform optimization and adoption strategies.
 
-### Role-Based Access Control (RBAC)
+[Support & Services Options →](/workspace/getting-started/enterprise/support-services)
 
-Create custom roles that match your organizational structure. Control access at multiple levels:
+## Core Capabilities
 
-- **Apps**: Manage entire application access
-- **Widgets**: Granular widget-level permissions
-- **Data Sources**: Control which data each role can access
-- **AI Features**: Manage access to AI agents
+OpenBB Copilot operates entirely within your environment, processing prompts and generating responses without external communication. Custom AI agents incorporate organizational knowledge and analytical methodologies. The Excel Add-in connects spreadsheet workflows to platform data through real-time synchronization.
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="800" alt="Role Management Interface" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/create-role-user-list.png" />
-</div>
+Custom integrations connect internal systems, proprietary databases, and specialized data sources through secure network connections. Widget development creates tailored visualizations for specific analytical requirements.
 
-### Team Collaboration
+## Platform Comparison
 
-Share dashboards, insights, and analyses securely within your organization. Collaborative features include:
-- Private team workspaces
-- Controlled dashboard sharing
-- Audit trails for all activities
-- Export controls for data governance
+| Capability | Cloud | Enterprise |
+|------------|-------|------------|
+| Deployment | SaaS hosted by OpenBB | On-premises or private cloud |
+| Data location | OpenBB cloud infrastructure | Customer infrastructure |
+| User limits | Plan-based restrictions | Unlimited |
+| Customization | Standard themes | Full branding control |
+| Integrations | Public APIs only | Internal systems + public APIs |
+| Support | Standard response times | Priority support with SLA |
+| AI processing | Shared cloud models | Private model deployment |
+
+## Target Organizations
+
+Investment banks use Enterprise for equity research, trading desk analysis, risk management, and M&A advisory work. Asset management firms apply it to portfolio management, quantitative research, performance analytics, and client reporting. Hedge funds leverage the platform for systematic strategies, fundamental analysis, risk monitoring, and alpha generation research.
+
+Corporate treasury teams, FP&A departments, investor relations groups, and strategic planning functions utilize Enterprise for internal financial analysis and reporting requirements.
+
+## Getting Started
+
+Contact [sales@openbb.finance](mailto:sales@openbb.finance) for requirements assessment and deployment planning. [Schedule a demonstration](https://openbb.co/schedule-demo) to see platform capabilities with your use cases. Proof-of-concept deployments enable testing with actual organizational data and workflows.
+
+The evaluation process includes technical demonstrations, proof-of-concept testing, commercial proposals, and implementation planning. Most deployments complete within 4-8 weeks depending on integration complexity and training requirements.
+
+---
+
+---
+title: Support & Services
+sidebar_position: 5
+description: Enterprise support, professional services, and success programs for OpenBB Workspace
+keywords:
+- Enterprise Support
+- Professional Services
+- JumpStart Package
+- Training
+- Customer Success
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Support & Services | OpenBB Workspace Docs" />
+
+Enterprise customers receive dedicated support and professional services to maximize platform value and ensure successful implementation.
+
+## Production Support
+
+Enterprise support provides 8 hours daily coverage, 5 days weekly, with priority access to the support queue. Direct communication channels connect customers with technical specialists, bypassing standard routing. Priority handling ensures faster resolution of technical issues and implementation questions.
+
+## Customer Success Partnership
+
+Each enterprise customer receives a dedicated customer success manager for long-term platform optimization. Quarterly business reviews assess usage patterns, identify improvement opportunities, and align platform capabilities with evolving business objectives.
+
+Success managers provide best practices consultation based on knowledge from other enterprise deployments while maintaining appropriate confidentiality. They offer strategic guidance on expanding platform adoption across teams and integrating new analytical capabilities as organizational needs grow.
+
+## JumpStart Package
+
+The JumpStart program delivers operational capability within weeks rather than months through structured implementation and training. This accelerated approach includes custom app development, comprehensive training, and organizational best practices establishment.
+
+Custom app development creates a production-ready application incorporating your specific data sources, analytical workflows, and organizational requirements. The application functions both as an immediate productivity tool and a development template for future projects. Knowledge transfer ensures internal teams can maintain and extend the custom application after deployment.
+
+Training components address different organizational roles including administrators, analysts, and specialized users. Best practices establishment covers workflow documentation, governance procedures, and platform optimization recommendations tailored to your environment.
+
+Learn more about JumpStart implementation at [openbb.link/jumpstart](https://openbb.link/jumpstart).
+
+## Professional Training Programs
+
+Structured training programs provide role-specific education for administrators, analysts, and specialized users within your organization. Administrative training covers system configuration, user management, security implementation, and operational procedures.
+
+Analyst training focuses on dashboard development, data analysis methodologies, collaboration workflows, and platform feature utilization. Custom workshops address specific industry requirements, advanced use cases, and organizational analytical approaches.
+
+Training materials include comprehensive documentation, hands-on exercises, and reference resources for ongoing use. Follow-up sessions ensure knowledge retention and address implementation questions that arise during actual platform usage.
+
+Explore training options at [openbb.link/workshops](https://openbb.link/workshops).
+
+## Implementation Services
+
+Professional implementation services include infrastructure assessment, deployment architecture design, and integration planning. The implementation team evaluates existing environments, recommends optimal configurations, and provides guidance throughout the deployment process.
+
+Security configuration assistance ensures proper integration with authentication systems, access controls, and audit frameworks. Data integration support facilitates connections to internal systems, databases, and external sources through appropriate methods and protocols.
+
+## Enterprise Pricing
+
+OpenBB Enterprise uses a seat-based subscription model adapted to organizational requirements. Pricing factors include user count, deployment configuration (cloud, VPC, or on-premises), data integration complexity, and support level requirements.
+
+Base subscriptions include software licensing, standard support, regular updates, security patches, and documentation access. Additional services including JumpStart packages, custom development, enhanced support, and specialized training require separate pricing based on project scope.
+
+For detailed pricing information, visit [openbb.co/pricing](https://openbb.co/pricing).
+
+## Getting Started
+
+Contact the enterprise team at [sales@openbb.finance](mailto:sales@openbb.finance) for requirements assessment and pricing discussion. The evaluation process includes technical demonstrations, proof-of-concept testing with your data, and implementation planning sessions.
+
+Enterprise deployments typically complete within 1-4 weeks depending on integration requirements, customization needs, and training scope. Implementation timelines account for testing phases, user onboarding activities, and platform optimization.
+
+
+---
+
+---
+title: Team Collaboration
+sidebar_position: 3
+description: Collaborative features for teams in OpenBB Workspace Enterprise
+keywords:
+- Team Collaboration
+- Dashboard Sharing
+- Workspaces
+- Audit Trails
+- Export Controls
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Team Collaboration | OpenBB Workspace Docs" />
+
+# Team Collaboration
+
+Share dashboards, insights, and analyses securely within your organization. The collaboration system provides controlled access to analytical work while maintaining audit trails and data governance.
+
+## Private Team Workspaces
+
+Create dedicated spaces for different teams and projects. Each workspace maintains its own set of dashboards, user permissions, and access controls. Teams can collaborate on analysis within their designated workspace while maintaining separation from other organizational units.
+
+## Controlled Dashboard Sharing
+
+Share analytical dashboards with specific team members or groups. The sharing system allows dashboard owners to control who can view, interact with, or modify shared content. Recipients can access shared dashboards through their workspace interface while respecting the permissions set by the owner.
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
   <img className="pro-border-gradient" width="800" alt="Dashboard Sharing Interface" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/sharing_dashboard.png" />
 </div>
 
-### User Management
+Dashboard sharing operates through permission levels that determine user capabilities. View-only access allows users to see dashboard content without making changes. Interactive access enables parameter modifications and data exploration while preserving the original dashboard structure.
 
-Comprehensive user lifecycle management with:
-- Single sign-on (SSO) integration
-- Bulk user provisioning
-- Automated de-provisioning
-- Detailed access logs and audit trails
+## Audit Trails
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="Team Management Interface" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/team_management.png" />
-</div>
+All collaborative activities generate detailed audit records. The system logs dashboard sharing events, access attempts, and modification history. User actions include timestamps, user identification, and affected resources. This information supports compliance requirements and security monitoring.
 
-### Compliance & Audit
+Activity logging tracks when dashboards are shared, accessed, or modified. Permission changes receive separate audit entries showing who granted or revoked access to specific resources. Export activities log when data leaves the system through sharing or download functions.
 
-Meet regulatory requirements with:
-- Complete activity logging
-- Export controls
-- Retention policies
-- SOC 2 Type II compliance support
+## Export Controls
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-  <img className="pro-border-gradient" width="600" alt="Activity Log Interface" src="https://openbb-web-assets.s3.amazonaws.com/docs/onprem-mar-25/activity-log.png" />
-</div>
+Manage how data and analyses can be extracted from the platform. Export controls operate through role-based permissions that determine which users can download data, generate reports, or share content outside the system. Administrators configure these controls to match organizational data governance policies.
 
-### OpenBB Copilot
+The export control system tracks all data movement activities. When users export dashboards or download data, the system records the action, identifies the user, and logs the specific content involved. This information supports compliance monitoring and data loss prevention initiatives.
 
-Transform your analytical workflows with our AI-powered assistant that understands your data context and automates complex tasks. OpenBB Copilot leverages widget metadata to intelligently query the right datasets, generate insights, and create visualizations. Whether you're conducting earnings analysis, monitoring market conditions, or building investment reports, Copilot accelerates your workflow while maintaining accuracy and consistency.
+## AI Features Integration
 
-Learn more about [AI Features and Copilot capabilities](/workspace/analysts/ai-features/copilot-basics).
+OpenBB Copilot operates within the collaborative environment while maintaining appropriate access controls. Team members can use AI features to analyze shared data and generate insights within their permission boundaries. AI interactions respect the same access controls that govern manual data analysis.
 
-### Excel Add-in
+Learn more about AI capabilities in the [Copilot documentation](/workspace/analysts/ai-features/copilot-basics).
 
-Bridge the gap between advanced analytics and familiar spreadsheet workflows with our native Excel integration. The OpenBB Add-in enables your team to pull real-time financial data, run complex queries, and refresh datasets directly within Excel - no coding required. Perfect for teams transitioning from traditional spreadsheet analysis to modern data platforms while maintaining productivity.
+## Excel Integration
 
-Explore the full [Excel Add-in documentation and installation guide](/workspace/analysts/excel-addin/excel-overview).
+The Excel Add-in supports collaborative workflows by enabling team members to access shared data sources through familiar spreadsheet interfaces. Excel integration maintains the same permission structure as the web platform, ensuring data access consistency across tools.
 
-## Enterprise Support
+Team members can use Excel to analyze data from shared workspaces while respecting access controls established in the main platform. Changes to data permissions automatically affect Excel access without requiring separate configuration.
 
-### Production Support
+Explore Excel integration details in the [Add-in documentation](/workspace/analysts/excel-addin/excel-overview).
 
-- 8 hours/day, 5 days/week dedicated support
-- Priority support queue
-- Direct access to technical team
-- Custom training workshops available
+## Implementation Considerations
 
-### Success Partnership
+Set up team workspaces according to organizational structure and project requirements. Define sharing policies that align with data governance requirements and compliance obligations. Establish audit review procedures to monitor collaborative activities and ensure appropriate access levels.
 
-- Dedicated customer success manager
-- Quarterly business reviews
-- Best practices consultation
-- Ongoing optimization guidance
-
-### JumpStart Package
-
-Get your team operational in just days, not months. Our JumpStart package includes building a custom app tailored to your specific use case, providing hands-on training, and establishing best practices for your organization. This accelerated onboarding ensures immediate value while creating a template for future app development. Your custom app serves as both a production tool and a learning resource for your team.
-
-Learn more about the JumpStart package from [our pricing page](https://openbb.co/pricing#jumpstart).
-
-## Pricing
-
-OpenBB Enterprise uses a seat-based subscription model tailored to your organization's needs. Pricing depends on:
-
-- Number of users
-- Deployment configuration (Cloud, VPC, or on-premises)
-- Data integration requirements
-- Support level
-
-Contact our sales team for a customized quote at [sales@openbb.finance](mailto:sales@openbb.finance)
+Train team members on sharing capabilities, permission levels, and audit requirements. Regular reviews of shared content and access permissions help maintain security and compliance standards over time.
 
 
 ---
@@ -12373,7 +14576,7 @@ For detailed debugging steps, see the [Troubleshooting Guide](/workspace/develop
 ---
 
 ---
-title: OpenBB Platform
+title: OpenBB Python Package
 sidebar_position: 7
 description: Learn how to integrate the OpenBB Platform data to OpenBB Workspace
 keywords:
@@ -12390,101 +14593,28 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Open source platform integration | OpenBB Workspace Docs" />
 
-This section will highlight how you can run the [OpenBB Platform](https://github.com/OpenBB-finance/OpenBB) locally and integrate 350+ different datasets into the OpenBB Workspace in under 5 minutes.
+This section will highlight how you can run the open-source [ODP Python Package](https://github.com/OpenBB-finance/OpenBB) locally and integrate 350+ different datasets into the OpenBB Workspace in under 5 minutes.
 
-If you want to learn more about the open source platform, check [our documentation](https://docs.openbb.co/platform).
-
-Here's a video that you can use to follow step-by-step instructions.
-
-:::warning
-
-We've removed the "Data Connectors" tab. So instead of Data Connectors > Add Data > Custom Backend, go to Apps > Connect Backend.
-
-:::
-
-<div style={{position: 'relative', paddingBottom: '56.25%', height: '0', overflow: 'hidden', maxWidth: '100%'}}>
-    <iframe
-    style={{position: 'absolute', top: '0', left: '0', width: '100%', height: '100%', display: 'block', margin: '0 auto'}}
-    src="https://www.youtube.com/embed/DFz1WQJbT6c?si=_K3amHb8p4fkTKaj"
-    title="YouTube video player"
-    frameBorder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-    referrerPolicy="strict-origin-when-cross-origin"
-    allowFullScreen></iframe>
-</div>
+If you want to learn more about the open source ecosystem, check [our documentation](https://docs.openbb.co/python).
 
 ## Step by step
 
-The steps are also described below:
+Follow the quick start steps [here](/desktop#quick-start).
 
-1. Select the right installer based on your OS and architecture.
-   - [Windows](https://openbb-installers.s3.amazonaws.com/OpenBB-Platform-Windows-x86_64.exe)
-   - [macOS for Apple Silicon](https://openbb-installers.s3.amazonaws.com/OpenBB-Platform-MacOSX-arm64.pkg)
-   - [macOS for Intel](https://openbb-installers.s3.amazonaws.com/OpenBB-Platform-MacOSX-x86_64.pkg)
+:::note
+If you are using Brave/Safari you will need an HTTPS connection - see the Self-Signed Certificate section of the ODP Desktop [documentation](/desktop/backends) for steps to run your server over HTTPS.
+:::
 
-   Then install it.
+These are some apps available out of the box:
 
-2. Once installation is complete, find the `OpenBB` folder that has been created in the installation directory selected. Double click on `OpenBB/openbb-api`.
-
-   :::note
-   Configure any data provider credentials in the [`user_settings.json`](/platform/settings/user_settings/api_keys) file before running.
-   :::
-
-3. The OpenBB Platform API should now be up and running.
-
-   <div style={{display: 'flex', justifyContent: 'center'}}>
-      <img
-        className="pro-border-gradient"
-        alt="OpenBB Platform API"
-        src="https://github.com/user-attachments/assets/5015a675-7953-4807-98d2-94cdc041fd64"
-        width="1000"
-      />
-   </div>
-
-4. Finally, you simply need to set up the custom backend on OpenBB Workspace.
-
-   :::note
-   If you are using Brave/Safari you will need an HTTPS connection - see how [on the excel faq page](https://docs.openbb.co/excel/faqs)
-   :::
-
-   <!-- TODO - We cant do this yet - issue with localhost in name - You can do so by clicking on this [link](http://pro.openbb.co/app/data-connectors?tab=my-data&modal=data-connectors&dcTab=backend&name=OpenBB%20Platform&url=http://localhost:6900). -->
-
-   Right click on a dashboard, then click "Add data".
-
-   <div style={{display: 'flex', justifyContent: 'center'}}>
-     <img
-       className="pro-border-gradient"
-       alt="Table Widget Example"
-       src="https://openbb-cms.directus.app/assets/0c2c8866-54a8-4137-90b6-bf0db365ca6e.png"
-       width="200"
-     />
-   </div>
-
-   Then fill in the information as shown below:
-
-   <div style={{display: 'flex', justifyContent: 'center'}}>
-     <img
-       className="pro-border-gradient"
-       alt="Table Widget Example"
-       src="https://openbb-cms.directus.app/assets/563aca68-1ec3-48c7-86d8-9129e0e5fd8c.png"
-       width="800"
-     />
-   </div>
-
-   Or you could also click this link to have it all filed in: [`https://pro.openbb.co/app?modal=connect-backend&name=OpenBB%20Platform&url=http://127.0.0.1:6900`](https://pro.openbb.co/app?modal=connect-backend&name=OpenBB%20Platform&url=http://127.0.0.1:6900)
-
-5. Voila. You are now ready to access 300+ data widgets from OpenBB. For free.
-
-   These are some apps available out of the box:
-
-   <div style={{display: 'flex', justifyContent: 'center'}}>
-     <img
-       className="pro-border-gradient"
-       alt="Table Widget Example"
-       src="https://openbb-cms.directus.app/assets/9d5f9dba-1603-489c-ad47-ae0f9b7bd0da.png"
-       width="800"
-     />
-   </div>
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="Table Widget Example"
+    src="https://openbb-cms.directus.app/assets/9d5f9dba-1603-489c-ad47-ae0f9b7bd0da.png"
+    width="800"
+  />
+</div>
 
 ## Advanced - Access this data on mobile
 
@@ -12583,7 +14713,7 @@ This section will explore how you can filter the platform integration datasets t
 ---
 title: Progressive Web App (PWA)
 description: Install OpenBB Workspace as a Progressive Web App for a native experience on desktop and mobile devices.
-sidebar_position: 6
+sidebar_position: 0
 keywords:
 - OpenBB Workspace
 - Progressive Web App
@@ -12600,7 +14730,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 OpenBB Workspace is now available as a Progressive Web App (PWA), providing a seamless, native-like experience across all your devices.
 
-<img width="800" alt="PWA" src="https://openbb-cms.directus.app/assets/b1d5b799-3abe-4d45-b04c-601e2b652b18.png" />
+<img width="800" alt="PWA" src="https://openbb-cms.directus.app/assets/dcd283e9-cc7f-42af-9d48-655565a5f6df.png" />
 
 Installing as a PWA offers several advantages:
 
@@ -12787,7 +14917,7 @@ Examples include portfolio management apps with position tracking and risk metri
 
 Explore our app gallery and use cases at [openbb.co/solutions](https://openbb.co/solutions).
 
-<img width="800" alt="OpenBB Workspace Applications Overview" src="https://openbb-cms.directus.app/assets/5778561c-5c09-4d70-bde8-952acbccaa01.png" />
+<img width="800" alt="OpenBB Workspace Applications Overview" src="https://openbb-cms.directus.app/assets/0daf9951-9600-41e9-8886-24077ae24b14.png" />
 
 #### Prompts: Context-Aware Suggestions
 

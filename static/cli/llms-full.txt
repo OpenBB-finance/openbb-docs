@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Commands And Arguments | OpenBB Platform CLI Docs" />
+<HeadTitle title="Commands And Arguments | ODP CLI Docs" />
 
 Commands are displayed on-screen in a lighter colour, compared with menu items, and they will not be prefaced with, `>`.
 
@@ -96,14 +96,14 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Configuration & Settings - | OpenBB Platform CLI Docs" />
+<HeadTitle title="Configuration & Settings - | ODP CLI Docs" />
 
-In addition to the OpenBB Platform's `user_settings.json` file, described [here](/platform/settings/environment_variables), there are settings and environment variables affecting the CLI only.
+In addition to the OpenBB Platform's `user_settings.json` file, described [here](/python/settings/environment_variables), there are settings and environment variables affecting the CLI only.
 
 :::important
 API credentials are defined in the `user_settings.json` file.
 
-Find all the current data providers maintained in the OpenBB repository [here](/platform/usage/extensions/overview).
+Find all the current data providers maintained in the OpenBB repository [here](/python/extensions/).
 
 Define default data sources by following the pattern outlined [here](data-sources)
 :::
@@ -169,14 +169,14 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Data Sources | OpenBB Platform CLI Docs" />
+<HeadTitle title="Data Sources | ODP CLI Docs" />
 
 Many commands have multiple data sources associated with it. This page describes how to select from multiple providers.
 
 :::important
 API credentials are defined in the `user_settings.json` file.
 
-Find all the current data providers maintained in the OpenBB repository [here](/platform/usage/extensions/overview).
+Find all the current data providers maintained in the OpenBB repository [here](/python/extensions).
 :::
 
 ## Data Source In-Command
@@ -286,7 +286,7 @@ keywords:
 import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="OpenBB Platform CLI Docs" />
+<HeadTitle title="ODP CLI Docs" />
 
 ## Overview
 
@@ -302,43 +302,43 @@ The CLI leverages the extendability of the OpenBB Platform architecture in an ea
 <NewReferenceCard
     title="Installation"
     description="An installation guide for the OpenBB Platform CLI."
-    url="cli/installation"
+    url="/cli/installation"
 />
 <NewReferenceCard
     title="Quick Start"
     description="A quick start guide for the OpenBB Platform CLI."
-    url="cli/quickstart"
+    url="/cli/quickstart"
 />
 <NewReferenceCard
     title="Configuration & Settings"
     description="An explanation of the settings and environment variables that customize the look and feel of the OpenBB Platform CLI."
-    url="cli/configuration"
+    url="/cli/configuration"
 />
 <NewReferenceCard
     title="Data Sources"
     description="How-to switch providers for a command, and define the default source for a function."
-    url="cli/data-sources"
+    url="/cli/data-sources"
 />
 <NewReferenceCard
     title="OpenBBUserData Folder"
     description="The OpenBBUserData folder is where exports, routines, and other related files are saved."
-    url="cli/openbbuserdata"
+    url="/cli/openbbuserdata"
 />
 <NewReferenceCard
     title="Interactive Tables"
     description="Understand how to sort, filter, hide columns, display more rows or export data on our tables."
-    url="cli/interactive-tables"
+    url="/cli/interactive-tables"
 />
 <NewReferenceCard
     title="Interactive Charts"
     description="Explore how to overlay charts, change titles, draw lines, add text and much more on our charts."
-    url="cli/interactive-charts"
+    url="/cli/interactive-charts"
 />
 </ul>
 
 ---
 
-Want to contribute? Check out our [Development section](/platform/developer_guide/architecture_overview).
+Want to contribute? Check out our [Development section](/python/developer/architecture_overview).
 
 
 ---
@@ -359,15 +359,15 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Installation | OpenBB Platform CLI Docs" />
+<HeadTitle title="Installation | ODP CLI Docs" />
 
 ## Pre-Requisites
 
-The OpenBB Platform CLI is a wrapper around the [Platform](/platform), and should be installed along side an existing OpenBB installation.
+ODP CLI is a wrapper around the [OpenBB Python Package](/python), and should be installed along side an existing OpenBB installation.
 
 - A Python virtual environment with a version between 3.9 and 3.11, inclusive, is required.
 
-Please refer to the [OpenBB Platform install documentation](/platform/installation) for instructions and more information.
+Please refer to the [Python install documentation](/python/installation) for instructions and more information.
 
 :::info
 If the OpenBB Platform is not already installed, the `openbb-cli` package  will install all available components.
@@ -429,7 +429,7 @@ Welcome to OpenBB Platform CLI v1.0.0
 
 ## Source
 
-Follow the instructions [here](/platform/installation#source) to clone the GitHub repo and install the OpenBB Platform from the source code.
+Follow the instructions [here](/python/installation#source) to clone the GitHub repo and install the OpenBB Platform from the source code.
 
 Next, navigate into the folder: `~/OpenBB/openbb_platform`
 
@@ -477,7 +477,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Interactive Charts - | OpenBB Platform CLI Docs" />
+<HeadTitle title="Interactive Charts - | ODP CLI Docs" />
 
 Interactive charts open in a separate window ([PyWry](https://github.com/OpenBB-finance/pywry)). The OpenBB charting library provides interactive and highly customizable charts.
 
@@ -587,7 +587,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Interactive Tables - | OpenBB Platform CLI Docs" />
+<HeadTitle title="Interactive Tables - | ODP CLI Docs" />
 
 
 Interactive tables open in a separate window ([PyWry](https://github.com/OpenBB-finance/pywry)). These provide methods for searching, sorting, filtering, exporting and even adapting settings directly on the table.
@@ -666,7 +666,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="OpenBBUserData Folder | OpenBB Platform CLI Docs" />
+<HeadTitle title="OpenBBUserData Folder | ODP CLI Docs" />
 
 The OpenBBUserData folder is where exports, routines, and other user-related content is saved and stored.
 
@@ -723,11 +723,11 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Quick Start - Usage | OpenBB Platform CLI Docs" />
+<HeadTitle title="Quick Start - Usage | ODP CLI Docs" />
 
 ## Launch
 
-- Configure any data provider credentials in the [`user_settings.json`](/platform/settings/user_settings/api_keys) file.
+- Configure any data provider credentials in the [`user_settings.json`](/python/settings/user_settings/api_keys) file.
 - Open a Terminal and activate the environment where the `openbb-cli` package was installed.
 - On the command line, enter: `openbb`
 
@@ -960,7 +960,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Advanced Routines - Routines | OpenBB Platform CLI Docs" />
+<HeadTitle title="Advanced Routines - Routines | ODP CLI Docs" />
 
 ## Input Variables
 
@@ -1067,7 +1067,7 @@ title: Routines
 import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-<HeadTitle title="Routines - | OpenBB Platform CLI Docs" />
+<HeadTitle title="Routines - | ODP CLI Docs" />
 
 <ul className="grid grid-cols-1 gap-4 -ml-6">
   <NewReferenceCard
@@ -1079,11 +1079,6 @@ import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
     title="Routine Macro Recorder"
     description="Leverage the macro recorder to quickly build your favourite workflow routines."
     url="routines/routine-macro-recorder"
-  />
-  <NewReferenceCard
-    title="Community Routines"
-    description="Learn from other investors by diving into their OpenBB routines."
-    url="routines/community-routines"
   />
   <NewReferenceCard
     title="Advanced Routines"
@@ -1116,7 +1111,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Introduction to Routines - Routines | OpenBB Platform CLI Docs" />
+<HeadTitle title="Introduction to Routines - Routines | ODP CLI Docs" />
 
 ## Overview
 
@@ -1250,7 +1245,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Routine Macro Recorder - Routines - Usage | OpenBB Platform CLI Docs" />
+<HeadTitle title="Routine Macro Recorder - Routines - Usage | ODP CLI Docs" />
 
 OpenBB script routines can be captured with the macro recorder, controlled with global commands. Enter, `record`, to start saving commands, and then, `stop`, terminates the recording. This means that any command you run will be captured in the script; and on `stop`, it will be saved to the `~/OpenBBUserData/routines/` folder.
 
@@ -1296,7 +1291,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Structure and Navigation | OpenBB Platform CLI Docs" />
+<HeadTitle title="Structure and Navigation | ODP CLI Docs" />
 
 ## Structure
 
