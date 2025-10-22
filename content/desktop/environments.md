@@ -58,7 +58,7 @@ Each environment will have its own panel with dedicated action buttons for updat
 :::info
 Environments are updated with Conda's `libmamba` solver, where the packages to solve for were explicitly added to the environment or defined in the originally imported environment file. Conda itself will be updated before the environment is solved.
 
-Updating an individual package from the panel's update button will not engage the environment solver and may have unintended outcomes, such as incompatibility.
+Updating an individual package from the `Extensions` modal will not engage the environment solver and may have unintended outcomes, such as incompatibility.
 :::
 
 All environments use the same Current Working Directory (CWD), which by default is, the installation folder selected during the initial setup.
