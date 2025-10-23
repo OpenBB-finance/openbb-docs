@@ -22,7 +22,7 @@ The Environments screen is for creating and managing **isolated Conda environmen
 
 Environments protect the system, and other external projects, by not using shared components. They make it easy to jump between projects, programming languages, and package versions without fear of contamination.
 
-<img width="1704" height="1192" alt="environments-panel" src="https://github.com/user-attachments/assets/dc461455-39af-4fb3-887f-42b4a7e15f4e" />
+<img width="852" height="540" alt="environments-screen-initial" src="https://github.com/user-attachments/assets/863235c4-b307-4e68-a218-446b3c53e30e" />
 
 ## Features
 
@@ -53,38 +53,24 @@ The extra tools included in this environment are:
 
 ## Environment Panel
 
-Each environment will have its own panel with dedicated action buttons (add `ipython` as a `pip` package to show button). Click on its name to expand the panel and view or manage the installed packages.
-
-<img width="1704" height="1630" alt="environments-panel-expanded" src="https://github.com/user-attachments/assets/a364d082-fb3e-4c51-8291-1850a692e6ac" />
+Each environment will have its own panel with dedicated action buttons for updating, removing, managing packages, and starting system shells.
 
 :::info
 Environments are updated with Conda's `libmamba` solver, where the packages to solve for were explicitly added to the environment or defined in the originally imported environment file. Conda itself will be updated before the environment is solved.
 
-Updating an individual package from the panel's update button will not engage the environment solver and may have unintended outcomes, such as incompatibility.
+Updating an individual package from the `Extensions` modal will not engage the environment solver and may have unintended outcomes, such as incompatibility.
 :::
-
-### Action Buttons
-
-The number of large icon buttons will depend on the environment's packages. At miniumum, there will be one for opening a system shell with the environment active, and another for opening a system shell with a Python session started.
-
-<img width="604" height="108" alt="environments-action-buttons" src="https://github.com/user-attachments/assets/aab1006e-2e77-4f5e-b993-830114c3d9de" />
 
 All environments use the same Current Working Directory (CWD), which by default is, the installation folder selected during the initial setup.
 
-From left-to-right, the buttons are:
-- Open default system shell with the environment active.
-  - On macOS, it will prefer iTerm2 over the system Terminal.app.
-  - On Windows, it will open with CMD.
-- Start an ODP CLI session, if `openbb-cli` is installed.
-- Start a Python session in the default system shell.
-- Start an iPython session in the default system shell, if installed.
-- Start Jupyter Lab, serving notebooks from CWD, if installed.
-  - Opens Jupyter Lab in a dedicated window.
-    - If the window is asking for a login, get the token from the Logs or close the window and press the button again.
-  - Jupyter folder, with runtime, will be in the installation folder selected during the initial setup.
-  - Server terminates on application quit, or by pressing `Stop Jupyter`.
-- Update environment and engage the Conda solver.
-- Delete the environment.
+### Applications
+
+This button will open a modal listing the available applications for that environment.
+At miniumum, there will be one for opening a system shell with the environment active, and another for opening a system shell with a Python session started.
+
+The screenshot below displays all of the currently supported applications, and each will start in the current working directory.
+
+<img width="852" height="688" alt="Screenshot 2025-10-22 at 2 02 40 PM" src="https://github.com/user-attachments/assets/e40c2387-b669-43ea-ad4c-8c46a168d8ee" />
 
 ## Creating New Environments
 
@@ -109,21 +95,19 @@ There are two ways to create a new environment from the screen:
 When you import an environment from a file, it will be read and converted to a Conda YAML environment file. Changes to the original file will not be reflected in your environment.
 
 Find the Conda YAML environment files for each installed environment in: `~/.openbb_platform/environments/`
-
-Manual edits can be reflected in the environment by clicking the icon to the right of the large icon buttons.
 :::
 
 When complete, press `Done` to return to the Environments screen.
 
-<img width="2116" height="1910" alt="environments-create-done" src="https://github.com/user-attachments/assets/95415178-78a5-47da-a16a-f8685d68a0a5" />
+<img width="880" height="616" alt="environments-create-done" src="https://github.com/user-attachments/assets/8d05694a-a253-4bab-8bed-0fa714415dd5" />
 
 ## Adding/Modifying Packages
 
-Expand the panel of the desired environment and press the `Add Extensions` button.
+Press the `Extensions` button to open the modal for the desired environment and then click, `Add Extensions`.
 
-Define the package without a version to use the latest available. The modal supports installation of packages from Conda channels, and from `pip`.
+Define the package without a version to use the latest available. The modal supports installation of packages from Conda channels, and from PyPI.
 
-<img width="1938" height="1344" alt="environments-add-extensions" src="https://github.com/user-attachments/assets/804cdb38-e5fe-40e4-8f45-f7addfa23491" />
+<img width="870" height="568" alt="environments-add-extensions" src="https://github.com/user-attachments/assets/10d713fd-44e8-4303-86b7-a143ed0e0708" />
 
 ### Version Pinning
 
@@ -131,13 +115,15 @@ If an extension was already added to the environment, it can be pinned by using 
 
 ## Refresh Button
 
-The button in the top-right of the screen will refresh the UI completely and request new contents for each detected environment. Use this button if the UI is out-of-sync with the current state.
+The top refresh button will update the UI completely and request new contents for each detected environment.
+Use this button if the UI is out-of-sync with the current state.
+It will not update any packages or make a network request.
 
 ## Clearing Caches
 
 Conda and PyPI package caches can be cleared from the command line of any environment.
 
-1. Press the button (very left of the large icon buttons) to open a system shell.
+1. Press the `Applications` button and then `Open System Shell`
 2. Enter: `conda clean -a -y`
 3. Enter: `pip cache purge`
 4. Enter: `exit`
