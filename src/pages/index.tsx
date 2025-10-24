@@ -1,8 +1,55 @@
 import Link from "@docusaurus/Link";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 import Layout from "@theme/Layout";
+import { useState, useRef, useEffect } from "react";
+import { searchablePages } from "@site/src/data/searchablePages";
 
 export default function Home() {
+	const [searchQuery, setSearchQuery] = useState("");
+	const [showResults, setShowResults] = useState(false);
+	const searchRef = useRef(null);
+
+	// Filter pages based on search query
+	const allFilteredPages = searchQuery.trim()
+		? searchablePages
+				.filter((page) => {
+					const query = searchQuery.toLowerCase();
+					return (
+						page.title.toLowerCase().includes(query) ||
+						page.category.toLowerCase().includes(query) ||
+						(page.description && page.description.toLowerCase().includes(query)) ||
+						(page.keywords && page.keywords.some(keyword => keyword.toLowerCase().includes(query)))
+					);
+				})
+				.sort((a, b) => {
+					// Prioritize Workspace results over ODP (Desktop, Python, CLI)
+					const aIsWorkspace = a.category.toLowerCase().includes('workspace');
+					const bIsWorkspace = b.category.toLowerCase().includes('workspace');
+
+					if (aIsWorkspace && !bIsWorkspace) return -1;
+					if (!aIsWorkspace && bIsWorkspace) return 1;
+
+					// Otherwise maintain original order
+					return 0;
+				})
+		: [];
+
+	// Limit results to top 10 for display
+	const filteredPages = allFilteredPages.slice(0, 10);
+	const hasMoreResults = allFilteredPages.length > 10;
+
+	// Close dropdown when clicking outside
+	useEffect(() => {
+		const handleClickOutside = (event) => {
+			if (searchRef.current && !searchRef.current.contains(event.target)) {
+				setShowResults(false);
+			}
+		};
+
+		document.addEventListener("mousedown", handleClickOutside);
+		return () => document.removeEventListener("mousedown", handleClickOutside);
+	}, []);
+
 	return (
 		<Layout description="Documentation for free and open-source OpenBB products.">
 			<main className="min-h-screen bg-white dark:bg-[#1a1a1a]">
@@ -20,7 +67,7 @@ export default function Home() {
 				</section>
 
 				{/* Product Screenshot Section */}
-				<section className="px-6 pb-8">
+				<section className="px-6 pb-2">
 					<div className="max-w-4xl mx-auto">
 						<div className="relative pb-10">
 							<img
@@ -35,11 +82,17 @@ export default function Home() {
 				{/* Search Bar */}
 				<section className="px-6 pb-10">
 					<div className="max-w-2xl mx-auto">
-						<div className="relative">
+						<div className="relative" ref={searchRef}>
 							<input
 								type="text"
-								placeholder="Search input field"
-								className="w-full px-4 py-3 pl-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-[#2a2a2a] text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+								placeholder="Search documentation..."
+								value={searchQuery}
+								onChange={(e) => {
+									setSearchQuery(e.target.value);
+									setShowResults(true);
+								}}
+								onFocus={() => setShowResults(true)}
+								className="w-full px-4 py-3 pl-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-[#2a2a2a] text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-[#0088CC]"
 							/>
 							<svg
 								className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
@@ -54,6 +107,61 @@ export default function Home() {
 									d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
 								/>
 							</svg>
+
+							{/* Search Results Dropdown */}
+							{showResults && filteredPages.length > 0 && (
+								<div className="absolute z-50 w-full mt-2 bg-white dark:bg-[#2a2a2a] border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg max-h-96 overflow-y-auto">
+									{filteredPages.map((page, index) => (
+										<Link
+											key={index}
+											to={page.path}
+											className="block px-4 py-3 hover:bg-gray-100 dark:hover:bg-[#3a3a3a] !no-underline border-b border-gray-200 dark:border-gray-700"
+											onClick={() => {
+												setShowResults(false);
+												setSearchQuery("");
+											}}
+										>
+											<div className="flex items-center justify-between">
+												<div>
+													<div className="text-sm font-medium text-[#303038] dark:text-white">
+														{page.title}
+													</div>
+													<div className="text-xs text-[#46464F] dark:text-[#EBEBED] mt-1">
+														{page.category}
+													</div>
+												</div>
+												<svg
+													className="w-4 h-4 text-gray-400"
+													fill="none"
+													stroke="currentColor"
+													viewBox="0 0 24 24"
+												>
+													<path
+														strokeLinecap="round"
+														strokeLinejoin="round"
+														strokeWidth={2}
+														d="M9 5l7 7-7 7"
+													/>
+												</svg>
+											</div>
+										</Link>
+									))}
+									{hasMoreResults && (
+										<div className="px-4 py-3 text-center text-xs text-[#46464F] dark:text-[#EBEBED] bg-gray-50 dark:bg-[#1f1f1f] border-t border-gray-200 dark:border-gray-700">
+											Showing {filteredPages.length} of {allFilteredPages.length} results. Keep typing to narrow down...
+										</div>
+									)}
+								</div>
+							)}
+
+							{/* No Results Message */}
+							{showResults && searchQuery.trim() && filteredPages.length === 0 && (
+								<div className="absolute z-50 w-full mt-2 bg-white dark:bg-[#2a2a2a] border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg p-4">
+									<p className="text-sm text-[#46464F] dark:text-[#EBEBED] text-center">
+										No results found for "{searchQuery}"
+									</p>
+								</div>
+							)}
 						</div>
 					</div>
 				</section>
