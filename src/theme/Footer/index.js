@@ -46,7 +46,7 @@ function Footer() {
 	}
 
 	return (
-		<footer className="px-4 border-t dark:border-grey-600/50 lg:px-12 py-4 bg-white dark:bg-grey-850 z-10 overflow-hidden flex flex-col gap-10 items-center justify-center">
+		<footer className="px-4 border-t dark:border-grey-600/50 lg:px-12 py-4 bg-white dark:bg-[#151518] z-10 overflow-hidden flex flex-col gap-10 items-center justify-center">
 			<div className="flex w-full justify-between md:flex-row mt-5">
 				<div className="md:items-start mt-2">
 					<Link

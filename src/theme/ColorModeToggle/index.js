@@ -116,7 +116,6 @@ function ColorModeToggle({ className, value, onChange }) {
             type="button"
             onClick={() => {
               onChange("light");
-              window.location.reload();
             }}
             disabled={!isBrowser}
             title={title}
@@ -133,7 +132,6 @@ function ColorModeToggle({ className, value, onChange }) {
             type="button"
             onClick={() => {
               onChange("dark");
-              window.location.reload();
             }}
             disabled={!isBrowser}
             title={title}

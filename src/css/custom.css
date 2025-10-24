@@ -20,7 +20,7 @@
   }
 
   #__docusaurus {
-    @apply dark:bg-grey-900;
+    @apply bg-white dark:bg-[#151518];
   }
 
   article h1 {
@@ -161,6 +161,7 @@
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
   */
+  --ifm-navbar-background-color: #151518;
   --ifm-table-border-color: var(--docs-color-border);
   --aa-primary-color-rgb: rgba(
     var(--aa-text-color-rgb),
@@ -453,7 +454,7 @@ details summary {
 }
 
 [data-theme="dark"] #__docusaurus {
-  background-color: #070707 !important;
+  background-color: #151518 !important;
 }
 
 .main-wrapper main {
