@@ -59,6 +59,7 @@ A complete `pyproject.toml` looks something like:
 
 <details>
 <summary mdxType="summary">`pyproject.toml` </summary>
+
 ```toml
 [tool.poetry]
 name = "openbb-empty-obbject"

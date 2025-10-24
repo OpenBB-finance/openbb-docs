@@ -89,3 +89,107 @@ empty = "openbb_empty_router.empty_router:router"
 
 Router commands will be available under the namepsace, `obb.empty`
 :::
+
+### Provider Interface Imports
+
+Routing an endpoint to the [Provider Interface](/python/developer/extension_types/provider) requires other imports, and a distinct function signature.
+
+```python
+from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import APIEx, PythonEx
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.provider_interface import (
+    ExtraParams,
+    ProviderChoices,
+    StandardParams,
+)
+from openbb_core.app.query import Query
+```
+
+## Endpoints
+
+The `Router` instance is applied as a decorator, using `@router.command`.
+There are two varities of endpoint, and endpoint's path will be the name of the function.
+
+### Provider Interface
+
+To implement a Provider metamodel, define the function as:
+
+```python
+# This uses the Provider Interface to call the empty provider fetcher.
+@router.command(
+    model="Empty", # This is the metamodel defined in the Provider's `fetcher_dict`.
+    examples=[
+        APIEx(parameters={"provider": "empty"}),
+        PythonEx(
+            description="Say Hello.",
+            code=[
+                "result = obb.empty.hello()",
+            ],
+        ),
+    ],
+)
+async def empty_function(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """An empty function using the Provider Interface."""
+    return await OBBject.from_query(Query(**locals()))
+```
+
+### Basic - GET
+
+A basic endpoint, where all business logic occurs within, will look like:
+
+```python
+# This is a standard router "get" command.
+@router.command(methods=["GET"])
+async def hello() -> (
+    OBBject[str]
+):
+    """OpenBB Hello World."""
+    return OBBject(results="Hello from the Empty Router extension!")
+```
+
+### Basic - POST
+
+```python
+from openbb_core.provider.abstract.data import Data
+
+# This is a standard router "post" command.
+@router.command(methods=["POST"])
+async def hello(
+  data: Data,  # Body parameter
+  some_param: str  # Query parameter
+) -> OBBject:
+    """OpenBB Hello World."""
+    work = [d.model_dump() for d in data if d.get("name") == some_param]
+    return OBBject(results=work)
+```
+
+### Decorator Parameters
+
+The `@router.command` decorator will accept:
+
+- **`methods`**: List of HTTP methods - typically `GET` or `POST`.
+- **`model`**: A metamodel associated with a [`Provider`](/python/developer/extension_types/provider) extension endpoint.
+- **`deprecated`**: Instance of [`Deprecated`](/python/developer/how-to/deprecating_endpoints).
+- **`examples`**: List of API or Python [Examples](/python/developer/how-to/examples).
+- **`exclude_from_api`**: Include endpoint only in Python Interface.
+- **`no_validate`**: Set as `True` to [ignore response validation](/python/developer/how-to/disabling_output_validation) and treat as `Any`.
+- **`openapi_extra`**: Dictionary of additional metadata to include in `openapi.json`.
+  - Use this as an entrypoint for inline configurations of [`widget_config`](/python/extensions/interface/openbb-api) or [`mcp_config`](/python/extensions/interface/openbb-mcp)
+
+
+### Using `fastapi.APIRouter`
+
+The instance of `fastapi.APIRouter` can be accessed from the `router._api_router` attribute, and can be used directly as a normal, FastAPI, decorator.
+
+```python
+@router._api_router.get("/also_empty")
+async def also_empty(param: str) -> str:
+    """Also Emmpty"""
+    return "Hello world!"
+```

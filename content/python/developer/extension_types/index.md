@@ -46,3 +46,11 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
     url="/python/developer/extension_types/obbject"
   />
 </ul>
+
+<ul className="grid grid-cols-1 gap-2 -ml-6">
+  <NewReferenceCard
+    title="Charting"
+    description="Add custom charts and views to OpenBB Router endpoints."
+    url="/python/developer/extension_types/charting"
+  />
+</ul>
