@@ -165,8 +165,7 @@ async def hello(
   some_param: str  # Query parameter
 ) -> OBBject:
     """OpenBB Hello World."""
-    work = [d.model_dump() for d in data if d.get("name") == some_param]
-    return OBBject(results=work)
+    return OBBject(results=data.model_dump())
 ```
 
 ### Decorator Parameters
