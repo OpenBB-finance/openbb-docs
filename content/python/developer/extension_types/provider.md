@@ -359,9 +359,17 @@ async def empty_function(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[Data]:
+) -> OBBject:
     """An empty function using the Provider Interface."""
     return await OBBject.from_query(Query(**locals()))
 ```
 
 </details>
+
+### Rebuild Static Assets
+
+After modifying the router mappings, rebuild the Python static assets.
+
+```sh
+openbb-build
+```
