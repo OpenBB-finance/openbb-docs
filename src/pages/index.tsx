@@ -197,7 +197,7 @@ export default function Home() {
 							{/* Get Started Card */}
 							<Link
 								to="https://docs.openbb.co/workspace"
-								className="bg-white dark:bg-[#151518] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer !no-underline block"
+								className="bg-white dark:bg-[#151518] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg dark:hover:shadow-[0_20px_60px_rgba(0,0,0,0.8)] transition-shadow cursor-pointer !no-underline block"
 							>
 								<div className="flex items-start justify-start w-12 h-12">
 									<svg
@@ -243,7 +243,7 @@ export default function Home() {
 							{/* Enterprise Card */}
 							<Link
 								to="https://docs.openbb.co/workspace/getting-started/enterprise"
-								className="bg-white dark:bg-[#151518] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer !no-underline block"
+								className="bg-white dark:bg-[#151518] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg dark:hover:shadow-[0_20px_60px_rgba(0,0,0,0.8)] transition-shadow cursor-pointer !no-underline block"
 							>
 								<div className="flex items-start justify-start w-12 h-12">
 									<svg
@@ -289,7 +289,7 @@ export default function Home() {
 							{/* Analysts Card */}
 							<Link
 								to="https://docs.openbb.co/workspace/analysts/widgets/overview"
-								className="bg-white dark:bg-[#151518] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer !no-underline block"
+								className="bg-white dark:bg-[#151518] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg dark:hover:shadow-[0_20px_60px_rgba(0,0,0,0.8)] transition-shadow cursor-pointer !no-underline block"
 							>
 								<div className="flex items-start justify-start w-12 h-12">
 									<svg
@@ -335,7 +335,7 @@ export default function Home() {
 							{/* Developers Card */}
 							<Link
 								to="https://docs.openbb.co/workspace/developers/data-integration"
-								className="bg-white dark:bg-[#151518] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer !no-underline block"
+								className="bg-white dark:bg-[#151518] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg dark:hover:shadow-[0_20px_60px_rgba(0,0,0,0.8)] transition-shadow cursor-pointer !no-underline block"
 							>
 								<div className="flex items-start justify-start w-12 h-12">
 									<svg
@@ -399,7 +399,7 @@ export default function Home() {
 							{/* ODP Desktop Card */}
 							<Link
 								to="https://docs.openbb.co/desktop"
-								className="bg-white dark:bg-[#151518] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer !no-underline block"
+								className="bg-white dark:bg-[#151518] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg dark:hover:shadow-[0_20px_60px_rgba(0,0,0,0.8)] transition-shadow cursor-pointer !no-underline block"
 							>
 								<div className="flex items-start justify-start w-12 h-12">
 									<svg
@@ -445,7 +445,7 @@ export default function Home() {
 							{/* ODP Python Card */}
 							<Link
 								to="https://docs.openbb.co/python"
-								className="bg-white dark:bg-[#151518] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer !no-underline block"
+								className="bg-white dark:bg-[#151518] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg dark:hover:shadow-[0_20px_60px_rgba(0,0,0,0.8)] transition-shadow cursor-pointer !no-underline block"
 							>
 								<div className="flex items-start justify-start w-12 h-12">
 									<svg
@@ -498,7 +498,7 @@ export default function Home() {
 							{/* ODP CLI Card */}
 							<Link
 								to="https://docs.openbb.co/cli"
-								className="bg-white dark:bg-[#151518] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer !no-underline block"
+								className="bg-white dark:bg-[#151518] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg dark:hover:shadow-[0_20px_60px_rgba(0,0,0,0.8)] transition-shadow cursor-pointer !no-underline block"
 							>
 								<div className="flex items-start justify-start w-12 h-12">
 									<svg
