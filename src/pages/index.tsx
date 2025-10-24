@@ -1,8 +1,7 @@
 import Link from "@docusaurus/Link";
-import useBaseUrl from "@docusaurus/useBaseUrl";
-import Layout from "@theme/Layout";
-import { useState, useRef, useEffect } from "react";
 import { searchablePages } from "@site/src/data/searchablePages";
+import Layout from "@theme/Layout";
+import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
 	const [searchQuery, setSearchQuery] = useState("");
@@ -17,14 +16,16 @@ export default function Home() {
 					return (
 						page.title.toLowerCase().includes(query) ||
 						page.category.toLowerCase().includes(query) ||
-						(page.description && page.description.toLowerCase().includes(query)) ||
-						(page.keywords && page.keywords.some(keyword => keyword.toLowerCase().includes(query)))
+						page.description?.toLowerCase().includes(query) ||
+						page.keywords?.some((keyword) =>
+							keyword.toLowerCase().includes(query),
+						)
 					);
 				})
 				.sort((a, b) => {
 					// Prioritize Workspace results over ODP (Desktop, Python, CLI)
-					const aIsWorkspace = a.category.toLowerCase().includes('workspace');
-					const bIsWorkspace = b.category.toLowerCase().includes('workspace');
+					const aIsWorkspace = a.category.toLowerCase().includes("workspace");
+					const bIsWorkspace = b.category.toLowerCase().includes("workspace");
 
 					if (aIsWorkspace && !bIsWorkspace) return -1;
 					if (!aIsWorkspace && bIsWorkspace) return 1;
@@ -52,11 +53,19 @@ export default function Home() {
 
 	return (
 		<Layout description="Documentation for free and open-source OpenBB products.">
-			<main className="min-h-screen bg-white dark:bg-[#1a1a1a]">
+			<main className="min-h-screen bg-white dark:bg-[#151518]">
 				{/* Hero Section */}
 				<section className="pt-16 pb-4 px-6">
 					<div className="max-w-4xl mx-auto text-center">
-						<h1 className="font-bold mb-6 text-black dark:text-white" style={{ fontFamily: 'Manrope, sans-serif', fontSize: '48px', lineHeight: '120%', letterSpacing: '2%' }}>
+						<h1
+							className="font-bold mb-6 text-black dark:text-white"
+							style={{
+								fontFamily: "Manrope, sans-serif",
+								fontSize: "48px",
+								lineHeight: "120%",
+								letterSpacing: "2%",
+							}}
+						>
 							Build with OpenBB
 						</h1>
 						<p className="body-lg text-gray-600 dark:text-gray-300 mb-12">
@@ -148,20 +157,24 @@ export default function Home() {
 									))}
 									{hasMoreResults && (
 										<div className="px-4 py-3 text-center text-xs text-[#46464F] dark:text-[#EBEBED] bg-gray-50 dark:bg-[#1f1f1f] border-t border-gray-200 dark:border-gray-700">
-											Showing {filteredPages.length} of {allFilteredPages.length} results. Keep typing to narrow down...
+											Showing {filteredPages.length} of{" "}
+											{allFilteredPages.length} results. Keep typing to narrow
+											down...
 										</div>
 									)}
 								</div>
 							)}
 
 							{/* No Results Message */}
-							{showResults && searchQuery.trim() && filteredPages.length === 0 && (
-								<div className="absolute z-50 w-full mt-2 bg-white dark:bg-[#2a2a2a] border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg p-4">
-									<p className="text-sm text-[#46464F] dark:text-[#EBEBED] text-center">
-										No results found for "{searchQuery}"
-									</p>
-								</div>
-							)}
+							{showResults &&
+								searchQuery.trim() &&
+								filteredPages.length === 0 && (
+									<div className="absolute z-50 w-full mt-2 bg-white dark:bg-[#2a2a2a] border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg p-4">
+										<p className="text-sm text-[#46464F] dark:text-[#EBEBED] text-center">
+											No results found for "{searchQuery}"
+										</p>
+									</div>
+								)}
 						</div>
 					</div>
 				</section>
@@ -169,14 +182,22 @@ export default function Home() {
 				{/* OpenBB Workspace Section */}
 				<section className="px-6 py-16">
 					<div className="max-w-6xl mx-auto">
-						<h2 className="font-medium text-center mb-12 text-black dark:text-white" style={{ fontFamily: 'Inter, sans-serif', fontSize: '32px', lineHeight: '150%', letterSpacing: '0%' }}>
+						<h2
+							className="font-medium text-center mb-12 text-black dark:text-white"
+							style={{
+								fontFamily: "Inter, sans-serif",
+								fontSize: "32px",
+								lineHeight: "150%",
+								letterSpacing: "0%",
+							}}
+						>
 							OpenBB Workspace
 						</h2>
 						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 							{/* Get Started Card */}
 							<Link
 								to="https://docs.openbb.co/workspace"
-								className="bg-white dark:bg-[#1f1f1f] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer !no-underline block"
+								className="bg-white dark:bg-[#151518] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer !no-underline block"
 							>
 								<div className="flex items-start justify-start w-12 h-12">
 									<svg
@@ -194,19 +215,35 @@ export default function Home() {
 										/>
 									</svg>
 								</div>
-								<h3 className="font-medium pb-6 text-[#303038] dark:text-white" style={{ fontFamily: 'Inter, sans-serif', fontSize: '20px', lineHeight: '30%', letterSpacing: '0%' }}>
+								<h3
+									className="font-medium pb-6 text-[#303038] dark:text-white"
+									style={{
+										fontFamily: "Inter, sans-serif",
+										fontSize: "20px",
+										lineHeight: "30%",
+										letterSpacing: "0%",
+									}}
+								>
 									Get Started
 								</h3>
-								<p className="text-[#46464F] dark:text-[#EBEBED]" style={{ fontFamily: 'Inter, sans-serif', fontSize: '16px', lineHeight: '24px', letterSpacing: '0%' }}>
-									Build secure AI workflows with integrated data and customizable
-									components.
+								<p
+									className="text-[#46464F] dark:text-[#EBEBED]"
+									style={{
+										fontFamily: "Inter, sans-serif",
+										fontSize: "16px",
+										lineHeight: "24px",
+										letterSpacing: "0%",
+									}}
+								>
+									Build secure AI workflows with integrated data and
+									customizable components.
 								</p>
 							</Link>
 
 							{/* Enterprise Card */}
 							<Link
 								to="https://docs.openbb.co/workspace/getting-started/enterprise"
-								className="bg-white dark:bg-[#1f1f1f] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer !no-underline block"
+								className="bg-white dark:bg-[#151518] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer !no-underline block"
 							>
 								<div className="flex items-start justify-start w-12 h-12">
 									<svg
@@ -224,18 +261,35 @@ export default function Home() {
 										/>
 									</svg>
 								</div>
-								<h3 className="font-medium pb-6 text-[#303038] dark:text-white" style={{ fontFamily: 'Inter, sans-serif', fontSize: '20px', lineHeight: '30%', letterSpacing: '0%' }}>
+								<h3
+									className="font-medium pb-6 text-[#303038] dark:text-white"
+									style={{
+										fontFamily: "Inter, sans-serif",
+										fontSize: "20px",
+										lineHeight: "30%",
+										letterSpacing: "0%",
+									}}
+								>
 									Enterprise
 								</h3>
-								<p className="text-[#46464F] dark:text-[#EBEBED]" style={{ fontFamily: 'Inter, sans-serif', fontSize: '16px', lineHeight: '24px', letterSpacing: '0%' }}>
-									Deploy within your infrastructure with complete data sovereignty
+								<p
+									className="text-[#46464F] dark:text-[#EBEBED]"
+									style={{
+										fontFamily: "Inter, sans-serif",
+										fontSize: "16px",
+										lineHeight: "24px",
+										letterSpacing: "0%",
+									}}
+								>
+									Deploy within your infrastructure with complete data
+									sovereignty
 								</p>
 							</Link>
 
 							{/* Analysts Card */}
 							<Link
 								to="https://docs.openbb.co/workspace/analysts/widgets/overview"
-								className="bg-white dark:bg-[#1f1f1f] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer !no-underline block"
+								className="bg-white dark:bg-[#151518] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer !no-underline block"
 							>
 								<div className="flex items-start justify-start w-12 h-12">
 									<svg
@@ -253,10 +307,26 @@ export default function Home() {
 										/>
 									</svg>
 								</div>
-								<h3 className="font-medium pb-6 text-[#303038] dark:text-white" style={{ fontFamily: 'Inter, sans-serif', fontSize: '20px', lineHeight: '30%', letterSpacing: '0%' }}>
+								<h3
+									className="font-medium pb-6 text-[#303038] dark:text-white"
+									style={{
+										fontFamily: "Inter, sans-serif",
+										fontSize: "20px",
+										lineHeight: "30%",
+										letterSpacing: "0%",
+									}}
+								>
 									Analysts
 								</h3>
-								<p className="text-[#46464F] dark:text-[#EBEBED]" style={{ fontFamily: 'Inter, sans-serif', fontSize: '16px', lineHeight: '24px', letterSpacing: '0%' }}>
+								<p
+									className="text-[#46464F] dark:text-[#EBEBED]"
+									style={{
+										fontFamily: "Inter, sans-serif",
+										fontSize: "16px",
+										lineHeight: "24px",
+										letterSpacing: "0%",
+									}}
+								>
 									Build interactive analysis tools with customizable widgets and
 									components.
 								</p>
@@ -265,7 +335,7 @@ export default function Home() {
 							{/* Developers Card */}
 							<Link
 								to="https://docs.openbb.co/workspace/developers/data-integration"
-								className="bg-white dark:bg-[#1f1f1f] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer !no-underline block"
+								className="bg-white dark:bg-[#151518] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer !no-underline block"
 							>
 								<div className="flex items-start justify-start w-12 h-12">
 									<svg
@@ -283,10 +353,26 @@ export default function Home() {
 										/>
 									</svg>
 								</div>
-								<h3 className="font-medium pb-6 text-[#303038] dark:text-white" style={{ fontFamily: 'Inter, sans-serif', fontSize: '20px', lineHeight: '30%', letterSpacing: '0%' }}>
+								<h3
+									className="font-medium pb-6 text-[#303038] dark:text-white"
+									style={{
+										fontFamily: "Inter, sans-serif",
+										fontSize: "20px",
+										lineHeight: "30%",
+										letterSpacing: "0%",
+									}}
+								>
 									Developers
 								</h3>
-								<p className="text-[#46464F] dark:text-[#EBEBED]" style={{ fontFamily: 'Inter, sans-serif', fontSize: '16px', lineHeight: '24px', letterSpacing: '0%' }}>
+								<p
+									className="text-[#46464F] dark:text-[#EBEBED]"
+									style={{
+										fontFamily: "Inter, sans-serif",
+										fontSize: "16px",
+										lineHeight: "24px",
+										letterSpacing: "0%",
+									}}
+								>
 									Integrate custom data sources and APIs directly into your
 									workspace.
 								</p>
@@ -298,14 +384,22 @@ export default function Home() {
 				{/* Open Data Platform Section */}
 				<section className="px-6 pt-16 pb-20">
 					<div className="max-w-6xl mx-auto">
-						<h2 className="font-medium text-center mb-12 text-black dark:text-white" style={{ fontFamily: 'Inter, sans-serif', fontSize: '32px', lineHeight: '150%', letterSpacing: '0%' }}>
+						<h2
+							className="font-medium text-center mb-12 text-black dark:text-white"
+							style={{
+								fontFamily: "Inter, sans-serif",
+								fontSize: "32px",
+								lineHeight: "150%",
+								letterSpacing: "0%",
+							}}
+						>
 							Open Data Platform
 						</h2>
 						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 							{/* ODP Desktop Card */}
 							<Link
 								to="https://docs.openbb.co/desktop"
-								className="bg-white dark:bg-[#1f1f1f] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer !no-underline block"
+								className="bg-white dark:bg-[#151518] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer !no-underline block"
 							>
 								<div className="flex items-start justify-start w-12 h-12">
 									<svg
@@ -323,10 +417,26 @@ export default function Home() {
 										/>
 									</svg>
 								</div>
-								<h3 className="font-medium pb-6 text-[#303038] dark:text-white" style={{ fontFamily: 'Inter, sans-serif', fontSize: '20px', lineHeight: '30%', letterSpacing: '0%' }}>
+								<h3
+									className="font-medium pb-6 text-[#303038] dark:text-white"
+									style={{
+										fontFamily: "Inter, sans-serif",
+										fontSize: "20px",
+										lineHeight: "30%",
+										letterSpacing: "0%",
+									}}
+								>
 									ODP Desktop
 								</h3>
-								<p className="text-[#46464F] dark:text-[#EBEBED]" style={{ fontFamily: 'Inter, sans-serif', fontSize: '16px', lineHeight: '24px', letterSpacing: '0%' }}>
+								<p
+									className="text-[#46464F] dark:text-[#EBEBED]"
+									style={{
+										fontFamily: "Inter, sans-serif",
+										fontSize: "16px",
+										lineHeight: "24px",
+										letterSpacing: "0%",
+									}}
+								>
 									Integrate any data source into AI applications and research
 									dashboards.
 								</p>
@@ -335,7 +445,7 @@ export default function Home() {
 							{/* ODP Python Card */}
 							<Link
 								to="https://docs.openbb.co/python"
-								className="bg-white dark:bg-[#1f1f1f] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer !no-underline block"
+								className="bg-white dark:bg-[#151518] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer !no-underline block"
 							>
 								<div className="flex items-start justify-start w-12 h-12">
 									<svg
@@ -360,10 +470,26 @@ export default function Home() {
 										/>
 									</svg>
 								</div>
-								<h3 className="font-medium pb-6 text-[#303038] dark:text-white" style={{ fontFamily: 'Inter, sans-serif', fontSize: '20px', lineHeight: '30%', letterSpacing: '0%' }}>
+								<h3
+									className="font-medium pb-6 text-[#303038] dark:text-white"
+									style={{
+										fontFamily: "Inter, sans-serif",
+										fontSize: "20px",
+										lineHeight: "30%",
+										letterSpacing: "0%",
+									}}
+								>
 									ODP Python
 								</h3>
-								<p className="text-[#46464F] dark:text-[#EBEBED]" style={{ fontFamily: 'Inter, sans-serif', fontSize: '16px', lineHeight: '24px', letterSpacing: '0%' }}>
+								<p
+									className="text-[#46464F] dark:text-[#EBEBED]"
+									style={{
+										fontFamily: "Inter, sans-serif",
+										fontSize: "16px",
+										lineHeight: "24px",
+										letterSpacing: "0%",
+									}}
+								>
 									Build a unified API deployable across REST, Python, Jupyter,
 									Excel, and more.
 								</p>
@@ -372,7 +498,7 @@ export default function Home() {
 							{/* ODP CLI Card */}
 							<Link
 								to="https://docs.openbb.co/cli"
-								className="bg-white dark:bg-[#1f1f1f] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer !no-underline block"
+								className="bg-white dark:bg-[#151518] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer !no-underline block"
 							>
 								<div className="flex items-start justify-start w-12 h-12">
 									<svg
@@ -390,10 +516,26 @@ export default function Home() {
 										/>
 									</svg>
 								</div>
-								<h3 className="font-medium pb-6 text-[#303038] dark:text-white" style={{ fontFamily: 'Inter, sans-serif', fontSize: '20px', lineHeight: '30%', letterSpacing: '0%' }}>
+								<h3
+									className="font-medium pb-6 text-[#303038] dark:text-white"
+									style={{
+										fontFamily: "Inter, sans-serif",
+										fontSize: "20px",
+										lineHeight: "30%",
+										letterSpacing: "0%",
+									}}
+								>
 									ODP CLI
 								</h3>
-								<p className="text-[#46464F] dark:text-[#EBEBED]" style={{ fontFamily: 'Inter, sans-serif', fontSize: '16px', lineHeight: '24px', letterSpacing: '0%' }}>
+								<p
+									className="text-[#46464F] dark:text-[#EBEBED]"
+									style={{
+										fontFamily: "Inter, sans-serif",
+										fontSize: "16px",
+										lineHeight: "24px",
+										letterSpacing: "0%",
+									}}
+								>
 									Automate data collection and interact with the platform from
 									your terminal.
 								</p>
