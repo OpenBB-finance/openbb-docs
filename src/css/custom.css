@@ -674,6 +674,43 @@ div[role="dialog"][data-state="open"] button:hover {
   color: #fff !important;     /* white for dark mode */
 }
 
+/* Navbar Tabs */
+.navbar-tabs {
+  display: flex;
+  gap: 32px;
+  margin-left: 48px;
+  align-items: center;
+}
+
+.navbar-tab {
+  color: white !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  text-decoration: none !important;
+  padding-bottom: 4px;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.navbar-tab:hover {
+  color: #DCDDE0 !important;
+}
+
+.navbar-tab--active {
+  color: #33BBFF !important;
+  border-bottom-color: #33BBFF !important;
+}
+
+.navbar-tab--active:hover {
+  color: #33BBFF !important;
+}
+
+@media (max-width: 996px) {
+  .navbar-tabs {
+    display: none;
+  }
+}
+
 /* Sidebar Section Headers */
 .sidebar-section-header {
   font-size: 0.85rem;

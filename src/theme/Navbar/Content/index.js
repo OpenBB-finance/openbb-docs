@@ -9,6 +9,8 @@ import NavbarMobileSidebarToggle from "@theme/Navbar/MobileSidebar/Toggle";
 import NavbarSearch from "@theme/Navbar/Search";
 import NavbarItem from "@theme/NavbarItem";
 import SearchBar from "@theme/SearchBar";
+import { useLocation } from "@docusaurus/router";
+import Link from "@docusaurus/Link";
 
 function useNavbarItems() {
   // TODO temporary casting until ThemeConfig type is improved
@@ -22,6 +24,36 @@ function NavbarItems({ items }) {
         <NavbarItem {...item} key={i} />
       ))}
     </>
+  );
+}
+
+function NavbarTabs() {
+  const location = useLocation();
+  const isWelcome = location.pathname === "/";
+  const isWorkspace = location.pathname.startsWith("/workspace");
+  const isODP = location.pathname.startsWith("/desktop") || location.pathname.startsWith("/python") || location.pathname.startsWith("/cli");
+
+  return (
+    <div className="navbar-tabs">
+      <Link
+        to="/"
+        className={`navbar-tab ${isWelcome ? "navbar-tab--active" : ""}`}
+      >
+        Welcome
+      </Link>
+      <Link
+        to="/workspace"
+        className={`navbar-tab ${isWorkspace ? "navbar-tab--active" : ""}`}
+      >
+        Workspace
+      </Link>
+      <Link
+        to="/desktop"
+        className={`navbar-tab ${isODP ? "navbar-tab--active" : ""}`}
+      >
+        ODP
+      </Link>
+    </div>
   );
 }
 
@@ -48,6 +80,7 @@ export default function NavbarContent() {
         <>
           {!mobileSidebar.disabled && <NavbarMobileSidebarToggle />}
           <NavbarLogo />
+          <NavbarTabs />
           <NavbarItems items={leftItems} />
         </>
       }
