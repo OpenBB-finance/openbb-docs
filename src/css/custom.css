@@ -705,10 +705,235 @@ div[role="dialog"][data-state="open"] button:hover {
   color: #33BBFF !important;
 }
 
+/* Desktop vs Mobile navbar items */
+.navbar-mobile-only {
+  display: none !important;
+}
+
+.navbar-desktop-only {
+  display: flex !important;
+}
+
 @media (max-width: 996px) {
   .navbar-tabs {
     display: none;
   }
+
+  /* Show mobile menu, hide desktop items */
+  .navbar-mobile-only {
+    display: flex !important;
+  }
+
+  .navbar-desktop-only {
+    display: none !important;
+  }
+
+  /* Logo positioning on mobile */
+  .navbar__brand {
+    flex: 1;
+  }
+
+  .navbar__items {
+    gap: 16px;
+  }
+}
+
+/* Mobile Menu Redesign - Full screen from right */
+.navbar-sidebar {
+  background-color: #151518 !important;
+  left: auto !important;
+  right: 0 !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  transform: translate3d(100%, 0, 0) !important;
+}
+
+.navbar-sidebar--show .navbar-sidebar {
+  left: auto !important;
+  right: 0 !important;
+  transform: translate3d(0, 0, 0) !important;
+}
+
+.navbar-sidebar__backdrop {
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.navbar-sidebar--show .navbar-sidebar__backdrop {
+  opacity: 1;
+}
+
+/* Mobile Menu Header - Logo and Close Button */
+.mobile-menu-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background-color: #151518;
+}
+
+/* Mobile Menu Search Row - Theme Toggle and Search */
+.mobile-menu-search-row {
+  display: flex;
+  gap: 4px !important;
+  align-items: center;
+  padding: 20px 24px 24px 24px;
+  background-color: #151518;
+}
+
+.mobile-menu-search-row > * {
+  margin: 0 !important;
+}
+
+.mobile-menu-search-wrapper {
+  flex: 1;
+}
+
+.mobile-menu-search-wrapper .DocSearch-Button {
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+}
+
+/* Hide login button in mobile menu top area - only keep at bottom */
+.navbar-sidebar .navbar__items ._login-button {
+  display: none !important;
+}
+
+.mobile-menu-search-row ._login-button,
+.mobile-menu-search-wrapper ._login-button {
+  display: none !important;
+}
+
+.navbar-sidebar ._login-button:not(.mobile-login-button) {
+  display: none !important;
+}
+
+/* Hide default navbar brand in sidebar */
+.navbar-sidebar .navbar-sidebar__brand {
+  display: none !important;
+}
+
+.mobile-menu-content {
+  display: flex;
+  flex-direction: column;
+  padding: 32px 24px;
+  background-color: #151518;
+  min-height: calc(100vh - 180px);
+  position: relative;
+}
+
+.mobile-menu-link {
+  color: white !important;
+  font-weight: 500 !important;
+  font-size: 18px !important;
+  text-decoration: none !important;
+  padding-top: 0;
+  padding-bottom: 4px;
+  padding-left: 0;
+  padding-right: 0;
+  margin-bottom: 32px;
+  border-bottom: 2px solid transparent;
+  display: inline-block;
+  width: fit-content;
+  transition: color 0.2s ease;
+}
+
+.mobile-menu-link:hover {
+  color: #DCDDE0 !important;
+}
+
+.mobile-menu-link--active {
+  color: #33BBFF !important;
+  border-bottom-color: #33BBFF !important;
+}
+
+.mobile-menu-link--active:hover {
+  color: #33BBFF !important;
+}
+
+.mobile-menu-login {
+  margin-top: auto;
+  padding-top: 32px;
+  padding-bottom: 24px;
+}
+
+.mobile-login-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 40px;
+  padding: 0 24px;
+  background-color: #0088CC;
+  color: white !important;
+  text-align: center;
+  text-decoration: none !important;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 16px;
+  transition: background-color 0.2s ease;
+}
+
+.mobile-login-button:hover {
+  background-color: #006699;
+  color: white !important;
+}
+
+/* Hamburger Menu Icon Styling */
+.navbar__toggle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid white;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.navbar__toggle:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.navbar__toggle svg {
+  width: 18px;
+  height: 18px;
+  color: white !important;
+  stroke: white !important;
+}
+
+.navbar__toggle svg path {
+  stroke: white !important;
+}
+
+/* Close button in mobile menu */
+.navbar-sidebar__close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid white;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.navbar-sidebar__close:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.navbar-sidebar__close svg {
+  width: 14px;
+  height: 14px;
+  color: white !important;
+  stroke: white !important;
+}
+
+.navbar-sidebar__close svg path {
+  stroke: white !important;
 }
 
 /* Sidebar Section Headers */

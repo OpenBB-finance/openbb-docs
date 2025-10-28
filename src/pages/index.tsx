@@ -55,20 +55,19 @@ export default function Home() {
 		<Layout description="Documentation for free and open-source OpenBB products.">
 			<main className="min-h-screen bg-white dark:bg-[#151518]">
 				{/* Hero Section */}
-				<section className="pt-16 pb-4 px-6">
+				<section className="pt-8 md:pt-16 pb-4 px-4 md:px-6">
 					<div className="max-w-4xl mx-auto text-center">
 						<h1
-							className="font-bold mb-6 text-black dark:text-white"
+							className="font-bold mb-4 md:mb-6 text-black dark:text-white text-3xl md:text-5xl"
 							style={{
 								fontFamily: "Manrope, sans-serif",
-								fontSize: "48px",
 								lineHeight: "120%",
 								letterSpacing: "2%",
 							}}
 						>
 							Build with OpenBB
 						</h1>
-						<p className="body-lg text-gray-600 dark:text-gray-300 mb-12">
+						<p className="text-base md:text-lg text-gray-600 dark:text-gray-300 mb-8 md:mb-12">
 							Create powerful financial analysis applications with Workspace and
 							the Open Data Platform.
 						</p>
@@ -76,9 +75,9 @@ export default function Home() {
 				</section>
 
 				{/* Product Screenshot Section */}
-				<section className="px-6 pb-2">
+				<section className="px-4 md:px-6 pb-2">
 					<div className="max-w-4xl mx-auto">
-						<div className="relative pb-10">
+						<div className="relative pb-6 md:pb-10">
 							<img
 								src="https://openbb-cms.directus.app/assets/0b402575-4034-4834-8a9d-b4f42fea9e0b.png"
 								alt="OpenBB Products"
@@ -89,7 +88,7 @@ export default function Home() {
 				</section>
 
 				{/* Search Bar */}
-				<section className="px-6 pb-10">
+				<section className="px-4 md:px-6 pb-10">
 					<div className="max-w-2xl mx-auto">
 						<div className="relative" ref={searchRef}>
 							<input
@@ -180,13 +179,12 @@ export default function Home() {
 				</section>
 
 				{/* OpenBB Workspace Section */}
-				<section className="px-6 py-16">
+				<section className="px-4 md:px-6 py-8 md:py-16">
 					<div className="max-w-6xl mx-auto">
 						<h2
-							className="font-medium text-center mb-12 text-black dark:text-white"
+							className="font-medium text-center mb-8 md:mb-12 text-black dark:text-white text-2xl md:text-3xl"
 							style={{
 								fontFamily: "Inter, sans-serif",
-								fontSize: "32px",
 								lineHeight: "150%",
 								letterSpacing: "0%",
 							}}
@@ -196,7 +194,7 @@ export default function Home() {
 						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 							{/* Get Started Card */}
 							<Link
-								to="https://docs.openbb.co/workspace"
+								to="/workspace"
 								className="bg-white dark:bg-[#151518] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg dark:hover:shadow-[0_20px_60px_rgba(0,0,0,0.8)] transition-shadow cursor-pointer !no-underline block"
 							>
 								<div className="flex items-start justify-start w-12 h-12">
@@ -242,7 +240,7 @@ export default function Home() {
 
 							{/* Enterprise Card */}
 							<Link
-								to="https://docs.openbb.co/workspace/getting-started/enterprise"
+								to="/workspace/getting-started/enterprise"
 								className="bg-white dark:bg-[#151518] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg dark:hover:shadow-[0_20px_60px_rgba(0,0,0,0.8)] transition-shadow cursor-pointer !no-underline block"
 							>
 								<div className="flex items-start justify-start w-12 h-12">
@@ -288,7 +286,7 @@ export default function Home() {
 
 							{/* Analysts Card */}
 							<Link
-								to="https://docs.openbb.co/workspace/analysts/widgets/overview"
+								to="/workspace/analysts/widgets/overview"
 								className="bg-white dark:bg-[#151518] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg dark:hover:shadow-[0_20px_60px_rgba(0,0,0,0.8)] transition-shadow cursor-pointer !no-underline block"
 							>
 								<div className="flex items-start justify-start w-12 h-12">
@@ -334,7 +332,7 @@ export default function Home() {
 
 							{/* Developers Card */}
 							<Link
-								to="https://docs.openbb.co/workspace/developers/data-integration"
+								to="/workspace/developers/data-integration"
 								className="bg-white dark:bg-[#151518] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg dark:hover:shadow-[0_20px_60px_rgba(0,0,0,0.8)] transition-shadow cursor-pointer !no-underline block"
 							>
 								<div className="flex items-start justify-start w-12 h-12">
@@ -382,13 +380,12 @@ export default function Home() {
 				</section>
 
 				{/* Open Data Platform Section */}
-				<section className="px-6 pt-16 pb-20">
+				<section className="px-4 md:px-6 pt-8 md:pt-16 pb-12 md:pb-20">
 					<div className="max-w-6xl mx-auto">
 						<h2
-							className="font-medium text-center mb-12 text-black dark:text-white"
+							className="font-medium text-center mb-8 md:mb-12 text-black dark:text-white text-2xl md:text-3xl"
 							style={{
 								fontFamily: "Inter, sans-serif",
-								fontSize: "32px",
 								lineHeight: "150%",
 								letterSpacing: "0%",
 							}}
@@ -398,7 +395,7 @@ export default function Home() {
 						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 							{/* ODP Desktop Card */}
 							<Link
-								to="https://docs.openbb.co/desktop"
+								to="/desktop"
 								className="bg-white dark:bg-[#151518] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg dark:hover:shadow-[0_20px_60px_rgba(0,0,0,0.8)] transition-shadow cursor-pointer !no-underline block"
 							>
 								<div className="flex items-start justify-start w-12 h-12">
@@ -444,7 +441,7 @@ export default function Home() {
 
 							{/* ODP Python Card */}
 							<Link
-								to="https://docs.openbb.co/python"
+								to="/python"
 								className="bg-white dark:bg-[#151518] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg dark:hover:shadow-[0_20px_60px_rgba(0,0,0,0.8)] transition-shadow cursor-pointer !no-underline block"
 							>
 								<div className="flex items-start justify-start w-12 h-12">
@@ -497,7 +494,7 @@ export default function Home() {
 
 							{/* ODP CLI Card */}
 							<Link
-								to="https://docs.openbb.co/cli"
+								to="/cli"
 								className="bg-white dark:bg-[#151518] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg dark:hover:shadow-[0_20px_60px_rgba(0,0,0,0.8)] transition-shadow cursor-pointer !no-underline block"
 							>
 								<div className="flex items-start justify-start w-12 h-12">

@@ -57,12 +57,15 @@ function NavbarTabs() {
   );
 }
 
-function NavbarContentLayout({ left, right }) {
+function NavbarContentLayout({ left, right, mobileRight }) {
   return (
     <div className="navbar__inner items-center">
       <div className="navbar__items">{left}</div>
-      <div className="navbar__items navbar__items--right max-sm:hidden">
+      <div className="navbar__items navbar__items--right navbar-desktop-only">
         {right}
+      </div>
+      <div className="navbar__items navbar__items--right navbar-mobile-only">
+        {mobileRight}
       </div>
     </div>
   );
@@ -78,7 +81,6 @@ export default function NavbarContent() {
       left={
         // TODO stop hardcoding items?
         <>
-          {!mobileSidebar.disabled && <NavbarMobileSidebarToggle />}
           <NavbarLogo />
           <NavbarTabs />
           <NavbarItems items={leftItems} />
@@ -98,6 +100,9 @@ export default function NavbarContent() {
             )}
           </div>
         </>
+      }
+      mobileRight={
+        <NavbarMobileSidebarToggle />
       }
     />
   );
