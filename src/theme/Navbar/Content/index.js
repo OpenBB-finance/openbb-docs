@@ -37,7 +37,7 @@ function NavbarTabs() {
     <div className="navbar-tabs">
       <Link
         to="/"
-        className={`navbar-tab ${isWelcome ? "navbar-tab--active" : ""}`}
+        className={`navbar-tab navbar-tab-welcome ${isWelcome ? "navbar-tab--active" : ""}`}
       >
         Welcome
       </Link>

@@ -144,12 +144,43 @@
   }
 }
 
+/* Custom thinner chevron - default pointing down */
 .menu__link--sublist-caret::after {
-  background: var(--ifm-menu-link-sublist-icon) 50% / 2rem 1.5rem !important;
+  background: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 6L8 10L12 6' stroke='%23303038' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 50% / 1.5rem 1.5rem !important;
+  transform: rotate(-90deg);
+  transition: transform 0.2s;
+}
+
+[data-theme="dark"] .menu__link--sublist-caret::after {
+  background: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 6L8 10L12 6' stroke='%23B8B9BC' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 50% / 1.5rem 1.5rem !important;
+  transform: rotate(-90deg);
+  transition: transform 0.2s;
 }
 
 .menu__caret::before {
-  background: var(--ifm-menu-link-sublist-icon) 50% / 2rem 1.5rem !important;
+  background: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 6L8 10L12 6' stroke='%23303038' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 50% / 1.5rem 1.5rem !important;
+  transform: rotate(-90deg);
+  transition: transform 0.2s;
+}
+
+[data-theme="dark"] .menu__caret::before {
+  background: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 6L8 10L12 6' stroke='%23B8B9BC' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 50% / 1.5rem 1.5rem !important;
+  transform: rotate(-90deg);
+  transition: transform 0.2s;
+}
+
+/* Remove background on chevron hover */
+.menu__caret:hover {
+  background-color: transparent !important;
+}
+
+/* Rotate chevron to point down when expanded */
+.menu__list-item-collapsible:not(.menu__list-item--collapsed) .menu__link--sublist-caret::after {
+  transform: rotate(0);
+}
+
+.menu__list-item-collapsible:not(.menu__list-item--collapsed) .menu__caret::before {
+  transform: rotate(0);
 }
 
 :root {
@@ -621,41 +652,50 @@ div[role="dialog"][data-state="open"] button:hover {
 .theme-doc-sidebar-item-link .menu__link,
 .theme-doc-sidebar-item-category .menu__link,
 .menu__list-item-collapsible {
-  @apply text-[#717177] dark:text-[#B8B9BC] hover:text-black dark:hover:text-white hover:bg-[#EBEBED] dark:hover:bg-[#212126] rounded-md transition-colors;
+  @apply text-[#303038] dark:text-[#B8B9BC] hover:text-[#8A8A90] dark:hover:text-white hover:bg-transparent rounded-md transition-colors;
 }
 
 
 .menu__list-item-collapsible {
-  @apply hover:bg-[#EBEBED] dark:hover:bg-[#212126];
+  @apply hover:bg-transparent;
 }
 
 .menu__link--active,
 .menu__link.menu__link--active[aria-current="page"],
 .menu__list-item-collapsible--active {
-  @apply bg-[#EBEBED] dark:bg-[#212126] text-black dark:text-white;
+  @apply text-[#0088CC] dark:text-[#33BBFF] bg-transparent;
 }
 
 .menu__link.menu__link--active[aria-current="page"] {
-  @apply bg-[#EBEBED] dark:bg-[#212126] text-black dark:text-white;
+  @apply text-[#0088CC] dark:text-[#33BBFF] bg-transparent;
 }
 
 .menu__list-item-collapsible--active .menu__link--sublist.menu__link--active {
-  @apply bg-[#EBEBED] dark:bg-[#212126] text-black dark:text-white;
+  @apply text-[#0088CC] dark:text-[#33BBFF] bg-transparent;
 }
 
 .menu__link:hover,
 .menu__list-item-collapsible:hover .menu__link--sublist {
-  @apply bg-[#EBEBED] dark:bg-[#212126] text-black dark:text-white;
+  @apply bg-transparent text-[#8A8A90] dark:text-white;
 }
 
 .menu__list-item-collapsible .menu__link--sublist {
-  @apply text-[#717177] dark:text-[#B8B9BC] hover:text-black dark:hover:text-white hover:bg-[#EBEBED] dark:hover:bg-[#212126] rounded-md transition-colors;
+  @apply text-[#303038] dark:text-[#B8B9BC] hover:text-[#8A8A90] dark:hover:text-white hover:bg-transparent rounded-md transition-colors;
 }
 
 /* Sidebar background color */
 .sidebar_node_modules-\@docusaurus-theme-classic-lib-theme-DocSidebar-Desktop-styles-module
   nav.menu {
-  @apply !px-10 text-sm !pb-10 mt-[40px] bg-[#F5F5F6] dark:bg-[#151518] border-r border-[#E5E5E5] dark:border-[#474747];
+  @apply !px-10 text-sm !pb-10 mt-[40px] bg-[#F5F5F6] dark:bg-[#1C1B20] border-r border-[#E5E5E5] dark:border-[#474747];
+}
+
+/* Sidebar container background */
+aside[class*="docSidebarContainer"] {
+  background-color: #F5F5F6 !important;
+}
+
+[data-theme="dark"] aside[class*="docSidebarContainer"] {
+  background-color: #1C1B20 !important;
 }
 
 .menu.thin-scrollbar {
@@ -680,6 +720,7 @@ div[role="dialog"][data-state="open"] button:hover {
   gap: 32px;
   margin-left: 48px;
   align-items: center;
+  margin-top: 4px;
 }
 
 .navbar-tab {
@@ -714,6 +755,11 @@ div[role="dialog"][data-state="open"] button:hover {
   display: flex !important;
 }
 
+/* Hide Welcome tab on desktop */
+.navbar-tab-welcome {
+  display: none;
+}
+
 @media (max-width: 996px) {
   .navbar-tabs {
     display: none;
@@ -726,6 +772,11 @@ div[role="dialog"][data-state="open"] button:hover {
 
   .navbar-desktop-only {
     display: none !important;
+  }
+  
+  /* Show Welcome tab on mobile */
+  .navbar-tab-welcome {
+    display: inline-block;
   }
 
   /* Logo positioning on mobile */
@@ -938,20 +989,20 @@ div[role="dialog"][data-state="open"] button:hover {
 
 /* Sidebar Section Headers */
 .sidebar-section-header {
-  font-size: 0.85rem;
-  letter-spacing: 0.08rem;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: var(--ifm-color-gray-700);
+  font-size: 14px;
+  letter-spacing: normal;
+  text-transform: none;
+  font-weight: 400;
+  color: #8A8A90;
   padding: 0.75rem 1rem 0.5rem 1rem;
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;
-  border-bottom: 1px solid var(--ifm-color-gray-300);
+  border-bottom: 1px solid #CDCED0;
 }
 
 html[data-theme="dark"] .sidebar-section-header {
-  color: var(--ifm-color-gray-300);
-  border-bottom: 1px solid var(--ifm-color-gray-700);
+  color: #FFFFFF;
+  border-bottom: 1px solid #8A8A90;
 }
 
 .sidebar-section:first-child .sidebar-section-header {
