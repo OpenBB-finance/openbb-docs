@@ -110,13 +110,14 @@ export default function DocSidebarItemCategory({
 	const hrefWithSSRFallback = useCategoryHrefWithSSRFallback(item, newHref);
 	const isCurrentPage = isSamePath(newHref, activePath);
 	const { collapsed, setCollapsed } = useCollapsible({
-		// Active categories are always initialized as expanded. The default
-		// (`item.collapsed`) is only used for non-active categories.
+		// All categories start collapsed by default
+		// useAutoExpandActiveCategory will auto-expand if needed
 		initialState: () => {
 			if (!collapsible) {
 				return false;
 			}
-			return isActive ? false : item.collapsed;
+			// Always start collapsed
+			return true;
 		},
 	});
 

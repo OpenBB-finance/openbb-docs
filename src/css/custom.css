@@ -144,29 +144,42 @@
   }
 }
 
-/* Custom thinner chevron - default pointing down */
+/* Custom chevron - using right-pointing chevron */
+/* Override Infima's default down-pointing arrow with right-pointing chevron */
 .menu__link--sublist-caret::after {
-  background: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 6L8 10L12 6' stroke='%23303038' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 50% / 1.5rem 1.5rem !important;
-  transform: rotate(-90deg);
+  background: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 12L10 8L6 4' stroke='%23303038' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 50% / 1.25rem 1.25rem !important;
+  transform: rotate(0deg) !important;
   transition: transform 0.2s;
 }
 
 [data-theme="dark"] .menu__link--sublist-caret::after {
-  background: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 6L8 10L12 6' stroke='%23B8B9BC' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 50% / 1.5rem 1.5rem !important;
-  transform: rotate(-90deg);
+  background: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 12L10 8L6 4' stroke='%23B8B9BC' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 50% / 1.25rem 1.25rem !important;
+  filter: none !important;
+  transform: rotate(0deg) !important;
   transition: transform 0.2s;
 }
 
+/* Default state - pointing right */
 .menu__caret::before {
-  background: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 6L8 10L12 6' stroke='%23303038' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 50% / 1.5rem 1.5rem !important;
-  transform: rotate(-90deg);
+  background: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 12L10 8L6 4' stroke='%23303038' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 50% / 1.25rem 1.25rem !important;
+  transform: rotate(0deg) !important;
   transition: transform 0.2s;
 }
 
 [data-theme="dark"] .menu__caret::before {
-  background: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 6L8 10L12 6' stroke='%23B8B9BC' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 50% / 1.5rem 1.5rem !important;
-  transform: rotate(-90deg);
+  background: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 12L10 8L6 4' stroke='%23B8B9BC' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 50% / 1.25rem 1.25rem !important;
+  filter: none !important;
+  transform: rotate(0deg) !important;
   transition: transform 0.2s;
+}
+
+/* When collapsed (closed), keep pointing right - override Infima's rotate(90deg) */
+.menu__list-item--collapsed .menu__link--sublist-caret::after {
+  transform: rotate(0deg) !important;
+}
+
+.menu__list-item--collapsed .menu__caret::before {
+  transform: rotate(0deg) !important;
 }
 
 /* Remove background on chevron hover */
@@ -174,13 +187,13 @@
   background-color: transparent !important;
 }
 
-/* Rotate chevron to point down when expanded */
-.menu__list-item-collapsible:not(.menu__list-item--collapsed) .menu__link--sublist-caret::after {
-  transform: rotate(0);
+/* Rotate chevron to point down when expanded (when NOT collapsed) */
+.menu__list-item:not(.menu__list-item--collapsed) .menu__link--sublist-caret::after {
+  transform: rotate(90deg) !important;
 }
 
-.menu__list-item-collapsible:not(.menu__list-item--collapsed) .menu__caret::before {
-  transform: rotate(0);
+.menu__list-item:not(.menu__list-item--collapsed) .menu__caret::before {
+  transform: rotate(90deg) !important;
 }
 
 :root {
@@ -1002,7 +1015,7 @@ aside[class*="docSidebarContainer"] {
 
 html[data-theme="dark"] .sidebar-section-header {
   color: #FFFFFF;
-  border-bottom: 1px solid #8A8A90;
+  border-bottom: 1px solid #B8B9BC;
 }
 
 .sidebar-section:first-child .sidebar-section-header {
