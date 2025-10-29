@@ -6,18 +6,20 @@ import {
 import NavbarMobileSidebarLayout from '@theme/Navbar/MobileSidebar/Layout';
 import NavbarMobileSidebarHeader from '@theme/Navbar/MobileSidebar/Header';
 import NavbarMobileSidebarPrimaryMenu from '@theme/Navbar/MobileSidebar/PrimaryMenu';
-import NavbarMobileSidebarSecondaryMenu from '@theme/Navbar/MobileSidebar/SecondaryMenu';
+import { MobileMenuProvider } from './MobileMenuContext';
 
 export default function NavbarMobileSidebar() {
   const mobileSidebar = useNavbarMobileSidebar();
   useLockBodyScroll(mobileSidebar.shown);
 
-  // Always render the mobile sidebar, even on pages without docs
+  // Disable secondary menu completely - don't pass it to Layout
   return (
-    <NavbarMobileSidebarLayout
-      header={<NavbarMobileSidebarHeader />}
-      primaryMenu={<NavbarMobileSidebarPrimaryMenu />}
-      secondaryMenu={<NavbarMobileSidebarSecondaryMenu />}
-    />
+    <MobileMenuProvider>
+      <NavbarMobileSidebarLayout
+        header={<NavbarMobileSidebarHeader />}
+        primaryMenu={<NavbarMobileSidebarPrimaryMenu />}
+        secondaryMenu={null}
+      />
+    </MobileMenuProvider>
   );
 }

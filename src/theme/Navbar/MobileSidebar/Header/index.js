@@ -3,10 +3,8 @@ import { useNavbarMobileSidebar } from "@docusaurus/theme-common/internal";
 import { translate } from "@docusaurus/Translate";
 import NavbarColorModeToggle from "@theme/Navbar/ColorModeToggle";
 import IconClose from "@theme/Icon/Close";
-import SearchBar from "@site/src/theme/SearchBar";
-import Link from "@docusaurus/Link";
-import { useLocation } from "@docusaurus/router";
 import NavbarLogo from "@theme/Navbar/Logo";
+import { useMobileMenu } from "../MobileMenuContext";
 
 function CloseButton() {
   const mobileSidebar = useNavbarMobileSidebar();
@@ -27,45 +25,31 @@ function CloseButton() {
 }
 
 function MobileNavTabs() {
-  const location = useLocation();
-  const mobileSidebar = useNavbarMobileSidebar();
-  const isWelcome = location.pathname === "/";
-  const isWorkspace = location.pathname.startsWith("/workspace");
-  const isODP = location.pathname.startsWith("/desktop") || location.pathname.startsWith("/python") || location.pathname.startsWith("/cli");
+  const { activeTab, setActiveTab } = useMobileMenu();
 
   return (
-    <div className="mobile-menu-content">
-      <Link
-        to="/"
-        className={`mobile-menu-link ${isWelcome ? "mobile-menu-link--active" : ""}`}
-        onClick={() => mobileSidebar.toggle()}
-      >
-        Welcome
-      </Link>
-      <Link
-        to="/workspace"
-        className={`mobile-menu-link ${isWorkspace ? "mobile-menu-link--active" : ""}`}
-        onClick={() => mobileSidebar.toggle()}
-      >
-        Workspace
-      </Link>
-      <Link
-        to="/desktop"
-        className={`mobile-menu-link ${isODP ? "mobile-menu-link--active" : ""}`}
-        onClick={() => mobileSidebar.toggle()}
-      >
-        ODP
-      </Link>
-      <div className="mobile-menu-login">
-        <a
-          href="https://pro.openbb.co/"
-          target="_blank"
-          rel="noreferrer noopener"
-          className="mobile-login-button"
+    <div className="mobile-menu-tabs-row">
+      <div className="mobile-menu-tabs">
+        <button
+          className={`mobile-menu-tab ${activeTab === "home" ? "mobile-menu-tab--active" : ""}`}
+          onClick={() => setActiveTab("home")}
         >
-          Login
-        </a>
+          Home
+        </button>
+        <button
+          className={`mobile-menu-tab ${activeTab === "workspace" ? "mobile-menu-tab--active" : ""}`}
+          onClick={() => setActiveTab("workspace")}
+        >
+          Workspace
+        </button>
+        <button
+          className={`mobile-menu-tab ${activeTab === "odp" ? "mobile-menu-tab--active" : ""}`}
+          onClick={() => setActiveTab("odp")}
+        >
+          ODP
+        </button>
       </div>
+      <NavbarColorModeToggle />
     </div>
   );
 }
@@ -76,12 +60,6 @@ export default function NavbarMobileSidebarHeader() {
       <div className="mobile-menu-header-top">
         <NavbarLogo />
         <CloseButton />
-      </div>
-      <div className="mobile-menu-search-row">
-        <NavbarColorModeToggle />
-        <div className="mobile-menu-search-wrapper">
-          <SearchBar />
-        </div>
       </div>
       <MobileNavTabs />
     </>
