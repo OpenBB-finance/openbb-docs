@@ -103,7 +103,7 @@ function ColorModeToggle({ className, value, onChange }) {
         </PopoverPrimitive.Trigger>
         <PopoverPrimitive.Content
           sideOffset={5}
-          align="start"
+          align="end"
           className={clsx(
             "z-50 bg-grey-900 border text-white border-grey-200 rounded flex flex-col divide-y divide-grey-600 p-4"
           )}

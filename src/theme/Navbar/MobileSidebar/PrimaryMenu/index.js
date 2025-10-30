@@ -3,66 +3,25 @@ import Link from '@docusaurus/Link';
 import { useMobileMenu } from '../MobileMenuContext';
 import { useNavbarMobileSidebar } from '@docusaurus/theme-common/internal';
 import { useLocation } from '@docusaurus/router';
+import NavbarColorModeToggle from '@theme/Navbar/ColorModeToggle';
 
-// Import sidebar configuration directly
-import sidebarsConfig from '@site/sidebars';
-
-function HomeTabContent() {
-  const mobileSidebar = useNavbarMobileSidebar();
-
+// Chevron icon component
+function ChevronIcon({ isExpanded }) {
   return (
-    <div className="mobile-menu-content">
-      <div className="mobile-menu-section">
-        <Link
-          to="/"
-          className="mobile-menu-item"
-          onClick={() => mobileSidebar.toggle()}
-        >
-          Home
-        </Link>
-        <Link
-          to="/workspace"
-          className="mobile-menu-item"
-          onClick={() => mobileSidebar.toggle()}
-        >
-          Workspace
-        </Link>
-        <Link
-          to="/desktop"
-          className="mobile-menu-item"
-          onClick={() => mobileSidebar.toggle()}
-        >
-          ODP Desktop
-        </Link>
-        <Link
-          to="/python"
-          className="mobile-menu-item"
-          onClick={() => mobileSidebar.toggle()}
-        >
-          ODP Python
-        </Link>
-        <Link
-          to="/cli"
-          className="mobile-menu-item"
-          onClick={() => mobileSidebar.toggle()}
-        >
-          ODP CLI
-        </Link>
-      </div>
-      <div className="mobile-menu-login">
-        <a
-          href="https://pro.openbb.co/"
-          target="_blank"
-          rel="noreferrer noopener"
-          className="mobile-login-button"
-        >
-          Login
-        </a>
-      </div>
-    </div>
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={`mobile-menu-chevron ${isExpanded ? 'mobile-menu-chevron--expanded' : ''}`}
+    >
+      <path d="M6 12L10 8L6 4" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
   );
 }
 
+// Expandable menu item for nested items within sections
 function ExpandableMenuItem({ item, mobileSidebar, location, isExpanded, onToggle }) {
   return (
     <div className="mobile-menu-expandable-item">
@@ -71,16 +30,7 @@ function ExpandableMenuItem({ item, mobileSidebar, location, isExpanded, onToggl
         onClick={onToggle}
       >
         {item.label}
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className={`mobile-menu-chevron ${isExpanded ? 'mobile-menu-chevron--expanded' : ''}`}
-        >
-          <path d="M6 12L10 8L6 4" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
+        <ChevronIcon isExpanded={isExpanded} />
       </div>
       {isExpanded && (
         <div className="mobile-menu-sub-items">
@@ -100,12 +50,30 @@ function ExpandableMenuItem({ item, mobileSidebar, location, isExpanded, onToggl
   );
 }
 
-function WorkspaceTabContent() {
-  const mobileSidebar = useNavbarMobileSidebar();
-  const location = useLocation();
+// Main section component (for Workspace and ODP)
+function MainSection({ title, isExpanded, onToggle, children, isActive }) {
+  return (
+    <div className={`mobile-menu-main-section ${isActive ? 'mobile-menu-main-section--active' : ''}`}>
+      <div
+        className="mobile-menu-main-section-header"
+        onClick={onToggle}
+      >
+        <span className="mobile-menu-main-section-title">{title}</span>
+        <ChevronIcon isExpanded={isExpanded} />
+      </div>
+      {isExpanded && (
+        <div className="mobile-menu-main-section-content">
+          {children}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Workspace section content
+function WorkspaceContent({ mobileSidebar, location }) {
   const [expandedItems, setExpandedItems] = useState({});
 
-  // Reset expanded states when location changes (when user navigates)
   useEffect(() => {
     setExpandedItems({});
   }, [location.pathname]);
@@ -195,7 +163,7 @@ function WorkspaceTabContent() {
   ];
 
   return (
-    <div className="mobile-menu-content">
+    <>
       {workspaceLinks.map((section, idx) => (
         <div key={idx} className="mobile-menu-section">
           <div className="mobile-menu-section-title">{section.section}</div>
@@ -222,79 +190,98 @@ function WorkspaceTabContent() {
           ))}
         </div>
       ))}
-      <div className="mobile-menu-login">
-        <a
-          href="https://pro.openbb.co/"
-          target="_blank"
-          rel="noreferrer noopener"
-          className="mobile-login-button"
-        >
-          Login
-        </a>
-      </div>
-    </div>
+    </>
   );
 }
 
-function ODPTabContent() {
-  const mobileSidebar = useNavbarMobileSidebar();
-
+// ODP section content
+function ODPContent({ mobileSidebar }) {
   return (
-    <div className="mobile-menu-content">
-      <div className="mobile-menu-section">
-        <Link
-          to="/desktop"
-          className="mobile-menu-item"
-          onClick={() => mobileSidebar.toggle()}
-        >
-          ODP Desktop
-        </Link>
-        <Link
-          to="/python"
-          className="mobile-menu-item"
-          onClick={() => mobileSidebar.toggle()}
-        >
-          ODP Python
-        </Link>
-        <Link
-          to="/cli"
-          className="mobile-menu-item"
-          onClick={() => mobileSidebar.toggle()}
-        >
-          ODP CLI
-        </Link>
-      </div>
-      <div className="mobile-menu-login">
-        <a
-          href="https://pro.openbb.co/"
-          target="_blank"
-          rel="noreferrer noopener"
-          className="mobile-login-button"
-        >
-          Login
-        </a>
-      </div>
+    <div className="mobile-menu-section">
+      <Link
+        to="/desktop"
+        className="mobile-menu-item"
+        onClick={() => mobileSidebar.toggle()}
+      >
+        Desktop
+      </Link>
+      <Link
+        to="/python"
+        className="mobile-menu-item"
+        onClick={() => mobileSidebar.toggle()}
+      >
+        Python
+      </Link>
+      <Link
+        to="/cli"
+        className="mobile-menu-item"
+        onClick={() => mobileSidebar.toggle()}
+      >
+        CLI
+      </Link>
     </div>
   );
 }
 
 export default function PrimaryMenu() {
-  const { activeTab } = useMobileMenu();
+  const { expandedSections, toggleSection } = useMobileMenu();
+  const mobileSidebar = useNavbarMobileSidebar();
+  const location = useLocation();
 
-  let content;
-  if (activeTab === 'home') {
-    content = <HomeTabContent />;
-  } else if (activeTab === 'workspace') {
-    content = <WorkspaceTabContent />;
-  } else if (activeTab === 'odp') {
-    content = <ODPTabContent />;
-  } else {
-    content = <HomeTabContent />;
-  }
+  // Determine which section is active based on current path
+  const isHome = location.pathname === '/';
+  const isWorkspace = location.pathname.startsWith('/workspace');
+  const isODP = location.pathname.startsWith('/desktop') ||
+                location.pathname.startsWith('/python') ||
+                location.pathname.startsWith('/cli');
 
   return (
     <div className="mobile-menu-primary-wrapper">
-      {content}
+      <div className="mobile-menu-content">
+        {/* Home - Link with theme toggle */}
+        <div className={`mobile-menu-home-row ${isHome ? 'mobile-menu-home-row--active' : ''}`}>
+          <Link
+            to="/"
+            className="mobile-menu-main-section-header mobile-menu-main-section-header--link"
+            onClick={() => mobileSidebar.toggle()}
+          >
+            <span className="mobile-menu-main-section-title">Home</span>
+          </Link>
+          <NavbarColorModeToggle />
+        </div>
+
+        {/* Workspace - Expandable section */}
+        <MainSection
+          title="Workspace"
+          isExpanded={expandedSections.workspace}
+          onToggle={() => toggleSection('workspace')}
+          isActive={isWorkspace}
+        >
+          <WorkspaceContent mobileSidebar={mobileSidebar} location={location} />
+        </MainSection>
+
+        {/* ODP - Expandable section */}
+        <MainSection
+          title="ODP"
+          isExpanded={expandedSections.odp}
+          onToggle={() => toggleSection('odp')}
+          isActive={isODP}
+        >
+          <ODPContent mobileSidebar={mobileSidebar} />
+        </MainSection>
+
+        {/* Login button at the bottom */}
+        <div className="mobile-menu-login">
+          <a
+            href="https://pro.openbb.co/"
+            target="_blank"
+            rel="noreferrer noopener"
+            className="mobile-login-button"
+          >
+            Login
+          </a>
+        </div>
+      </div>
     </div>
   );
 }

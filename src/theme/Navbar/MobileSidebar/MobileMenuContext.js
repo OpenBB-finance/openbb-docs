@@ -14,19 +14,26 @@ export function useMobileMenu() {
 export function MobileMenuProvider({ children }) {
   const location = useLocation();
 
-  // Determine initial active tab based on current location
-  const getInitialTab = () => {
-    if (location.pathname.startsWith("/workspace")) return "workspace";
+  // Determine which sections should be initially expanded based on current location
+  const getInitialExpandedSections = () => {
+    if (location.pathname.startsWith("/workspace")) return { workspace: true, odp: false };
     if (location.pathname.startsWith("/desktop") ||
         location.pathname.startsWith("/python") ||
-        location.pathname.startsWith("/cli")) return "odp";
-    return "home";
+        location.pathname.startsWith("/cli")) return { workspace: false, odp: true };
+    return { workspace: false, odp: false };
   };
 
-  const [activeTab, setActiveTab] = useState(getInitialTab());
+  const [expandedSections, setExpandedSections] = useState(getInitialExpandedSections());
+
+  const toggleSection = (section) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }));
+  };
 
   return (
-    <MobileMenuContext.Provider value={{ activeTab, setActiveTab }}>
+    <MobileMenuContext.Provider value={{ expandedSections, toggleSection }}>
       {children}
     </MobileMenuContext.Provider>
   );
