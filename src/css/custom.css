@@ -1241,20 +1241,19 @@ aside[class*="docSidebarContainer"] {
 
 /* Sidebar Section Headers */
 .sidebar-section-header {
-  font-size: 14px;
-  letter-spacing: normal;
+  font-size: 13px;
+  letter-spacing: 0.2px;
   text-transform: none;
-  font-weight: 400;
+  font-weight: 500;
   color: #8A8A90;
-  padding: 0.75rem 1rem 0.5rem 1rem;
-  margin-top: 1.5rem;
-  margin-bottom: 0.5rem;
-  border-bottom: 1px solid #CDCED0;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  margin-top: 1.25rem;
+  margin-bottom: 0.25rem;
+  position: relative;
 }
 
 html[data-theme="dark"] .sidebar-section-header {
-  color: #FFFFFF;
-  border-bottom: 1px solid #B8B9BC;
+  color: #E5E5E8;
 }
 
 .sidebar-section:first-child .sidebar-section-header {
@@ -1264,6 +1263,62 @@ html[data-theme="dark"] .sidebar-section-header {
 /* Hide sidebar sections when not in the appropriate route */
 .menu__list .sidebar-section {
   display: block;
+}
+
+/* Full-width underline for section headers */
+.sidebar-section-header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: #D8D9DC;
+}
+
+html[data-theme="dark"] .sidebar-section-header::after {
+  background: #3C3C41;
+}
+
+/* Ensure header spans the full row inside flex container */
+.menu__list-item-collapsible .sidebar-section-header {
+  width: 100%;
+  flex: 1 1 auto;
+}
+
+/* Workspace-style spacing for section lists */
+.sidebar-section .menu__list {
+  margin-top: 0.25rem;
+  padding-left: 0;
+}
+
+.sidebar-section .menu__list-item .menu__link {
+  padding-left: 1rem;
+  padding-right: 0.75rem;
+}
+
+.sidebar-section + .sidebar-section {
+  margin-top: 1rem;
+}
+
+/* Rotate chevrons smoothly: right when collapsed, down when expanded */
+.menu__caret {
+  transition: transform 150ms ease;
+}
+.menu__list-item--collapsed > .menu__list-item-collapsible .menu__caret {
+  transform: rotate(-90deg);
+}
+.menu__list-item-collapsible .menu__caret {
+  transform: rotate(0deg);
+}
+
+/* Also handle caret rendered on the link when category has no href */
+.theme-doc-sidebar-item-category .menu__link--sublist-caret::after {
+  transition: transform 150ms ease;
+  transform: rotate(0deg);
+}
+.menu__list-item--collapsed > .menu__list-item-collapsible .menu__link--sublist-caret::after {
+  transform: rotate(-90deg);
 }
 
 /* Improve spacing between sidebar items within sections */
