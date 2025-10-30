@@ -133,8 +133,35 @@
   background: black;
 }
 
+/* Hide home icon in breadcrumbs */
 .breadcrumbs__link > svg {
-  margin-bottom: -7px;
+  display: none;
+}
+
+/* Hide breadcrumb separator/chevron */
+.breadcrumbs__item:not(:last-child):after {
+  display: none;
+}
+
+/* Remove padding/margin and align breadcrumbs left */
+.breadcrumbs {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+
+nav.breadcrumbs {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+
+.breadcrumbs__item {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+
+.theme-doc-breadcrumbs {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
 }
 
 @media (min-width: 1000px) {
@@ -542,6 +569,14 @@ pre[class*="language-"] {
 
 .breadcrumbs__link {
   border-radius: 4px !important;
+  background-color: transparent !important;
+  font-size: 14px !important;
+  color: #8A8A90 !important;
+  padding: 0 !important;
+}
+
+.breadcrumbs__link:hover {
+  background-color: transparent !important;
 }
 
 .grid-child > p {

@@ -1,0 +1,24 @@
+.breadcrumbsContainer {
+  margin-bottom: 1rem;
+  padding-left: 0;
+  margin-left: 0;
+}
+
+.breadcrumbsItemLink {
+  font-size: 14px !important;
+  color: #8A8A90 !important;
+  background-color: transparent !important;
+  padding: 0 !important;
+  font-weight: 400 !important;
+}
+
+/* Apply same color in both light and dark mode */
+[data-theme='light'] .breadcrumbsItemLink,
+[data-theme='dark'] .breadcrumbsItemLink {
+  color: #8A8A90 !important;
+}
+
+.breadcrumbsItemLink:hover {
+  background-color: transparent !important;
+  text-decoration: none !important;
+}
