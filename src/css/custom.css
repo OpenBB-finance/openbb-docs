@@ -8,7 +8,7 @@
   }
 
   article {
-    @apply prose lg:prose-lg dark:prose-invert !max-w-none lg:pl-[38px] xl:!mr-[20px];
+    @apply prose dark:prose-invert !max-w-none lg:pl-[38px] xl:!mr-[20px];
   }
 
   /*.pagination {
@@ -24,11 +24,23 @@
   }
 
   article h1 {
-    @apply !text-[32px] uppercase font-bold tracking-widest;
+    @apply !text-[32px] font-semibold text-black dark:text-white;
   }
 
   article h2 {
-    @apply !text-[28px];
+    @apply !text-[26px] font-bold text-[#151518] dark:text-white;
+  }
+
+  article h3 {
+    @apply !text-[20px] font-medium text-[#303038] dark:text-white !mb-2;
+  }
+
+  article p {
+    @apply text-[#46464F] dark:text-[#EBEBED];
+  }
+
+  article a {
+    @apply text-[#0088CC] dark:text-[#33BBFF] dark:hover:text-[#0088CC];
   }
 
   thead tr {
@@ -120,17 +132,65 @@
 }
 
 .pagination-nav__link {
-  border-radius: 4px !important;
-  --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color),
-    0 1px 2px -1px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
-    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  border-radius: 6px !important;
+  background-color: #0088CC !important;
+  color: white !important;
+  border: none !important;
+  box-shadow: none !important;
   white-space: nowrap;
+  padding: 12px 20px !important;
+  transition: background-color 0.2s ease;
+  width: fit-content !important;
+  max-width: none !important;
+}
+
+.pagination-nav__link--next {
+  margin-left: auto !important;
+}
+
+.pagination-nav__link:hover {
+  background-color: #006699 !important;
+  color: white !important;
+  text-decoration: none !important;
 }
 
 [data-theme="dark"] .pagination-nav__link {
-  background: black;
+  background-color: #0088CC !important;
+  color: white !important;
+}
+
+[data-theme="dark"] .pagination-nav__link:hover {
+  background-color: #006699 !important;
+}
+
+/* Hide the "Next" and "Previous" sublabels */
+.pagination-nav__sublabel {
+  display: none !important;
+}
+
+/* Style the page title label */
+.pagination-nav__label {
+  color: white !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+/* Remove the >> text from the label by hiding overflow or trimming */
+.pagination-nav__link--next .pagination-nav__label {
+  /* This will hide the >> by not showing it */
+  text-indent: 0 !important;
+}
+
+/* Use a more specific approach to hide >> characters */
+.pagination-nav__link {
+  font-size: 0 !important;
+}
+
+.pagination-nav__label {
+  font-size: 16px !important;
 }
 
 /* Hide home icon in breadcrumbs */
@@ -645,6 +705,40 @@ html[data-theme="dark"] .sidebar-divider {
   display: flex;
   justify-content: left;
   align-items: center;
+  color: #6D6E74 !important;
+}
+
+[data-theme="dark"] .theme-edit-this-page {
+  color: #8A8A90 !important;
+}
+
+.theme-edit-this-page a {
+  color: #6D6E74 !important;
+}
+
+[data-theme="dark"] .theme-edit-this-page a {
+  color: #8A8A90 !important;
+}
+
+.theme-edit-this-page svg {
+  color: #6D6E74 !important;
+  fill: #6D6E74 !important;
+}
+
+[data-theme="dark"] .theme-edit-this-page svg {
+  color: #8A8A90 !important;
+  fill: #8A8A90 !important;
+}
+
+.theme-last-updated {
+  font-weight: normal !important;
+}
+
+.theme-last-updated b,
+.theme-last-updated strong,
+.theme-last-updated time,
+.theme-last-updated .theme-last-updated__author {
+  font-weight: normal !important;
 }
 
 .pro-border-gradient {
