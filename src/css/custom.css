@@ -236,37 +236,39 @@ nav.breadcrumbs {
 .menu__link--sublist-caret::after {
   background: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 12L10 8L6 4' stroke='%23303038' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 50% / 1.25rem 1.25rem !important;
   transform: rotate(0deg) !important;
-  transition: transform 0.2s;
+  transition: transform 0.2s ease;
 }
 
 [data-theme="dark"] .menu__link--sublist-caret::after {
   background: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 12L10 8L6 4' stroke='%23B8B9BC' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 50% / 1.25rem 1.25rem !important;
   filter: none !important;
   transform: rotate(0deg) !important;
-  transition: transform 0.2s;
+  transition: transform 0.2s ease;
 }
 
 /* Default state - pointing right */
 .menu__caret::before {
   background: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 12L10 8L6 4' stroke='%23303038' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 50% / 1.25rem 1.25rem !important;
   transform: rotate(0deg) !important;
-  transition: transform 0.2s;
+  transition: transform 0.2s ease;
 }
 
 [data-theme="dark"] .menu__caret::before {
   background: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 12L10 8L6 4' stroke='%23B8B9BC' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 50% / 1.25rem 1.25rem !important;
   filter: none !important;
   transform: rotate(0deg) !important;
-  transition: transform 0.2s;
+  transition: transform 0.2s ease;
 }
 
 /* When collapsed (closed), keep pointing right - override Infima's rotate(90deg) */
 .menu__list-item--collapsed .menu__link--sublist-caret::after {
   transform: rotate(0deg) !important;
+  transition: transform 0.2s ease;
 }
 
 .menu__list-item--collapsed .menu__caret::before {
   transform: rotate(0deg) !important;
+  transition: transform 0.2s ease;
 }
 
 /* Remove background on chevron hover */
@@ -277,10 +279,12 @@ nav.breadcrumbs {
 /* Rotate chevron to point down when expanded (when NOT collapsed) */
 .menu__list-item:not(.menu__list-item--collapsed) .menu__link--sublist-caret::after {
   transform: rotate(90deg) !important;
+  transition: transform 0.2s ease;
 }
 
 .menu__list-item:not(.menu__list-item--collapsed) .menu__caret::before {
   transform: rotate(90deg) !important;
+  transition: transform 0.2s ease;
 }
 
 :root {
@@ -1497,22 +1501,22 @@ html[data-theme="dark"] .sidebar-section-header::after {
 
 /* Rotate chevrons smoothly: right when collapsed, down when expanded */
 .menu__caret {
-  transition: transform 150ms ease;
+  transition: transform 0.2s ease;
 }
 .menu__list-item--collapsed > .menu__list-item-collapsible .menu__caret {
-  transform: rotate(-90deg);
+  transform: rotate(0deg) !important;
 }
 .menu__list-item-collapsible .menu__caret {
-  transform: rotate(0deg);
+  transform: rotate(90deg) !important;
 }
 
 /* Also handle caret rendered on the link when category has no href */
 .theme-doc-sidebar-item-category .menu__link--sublist-caret::after {
-  transition: transform 150ms ease;
-  transform: rotate(0deg);
+  transition: transform 0.2s ease;
+  transform: rotate(90deg) !important;
 }
 .menu__list-item--collapsed > .menu__list-item-collapsible .menu__link--sublist-caret::after {
-  transform: rotate(-90deg);
+  transform: rotate(0deg) !important;
 }
 
 /* Improve spacing between sidebar items within sections */
