@@ -877,9 +877,7 @@ aside[class*="docSidebarContainer"] {
 /* Style the "On this page" heading */
 .table-of-contents__left-border,
 .theme-doc-toc-desktop > div > h3,
-.table-of-contents > h2,
-aside[class*="tocCollapsible"] > button,
-.theme-doc-toc-mobile button {
+.table-of-contents > h2 {
   font-size: 14px !important;
   font-weight: normal !important;
   text-transform: none !important;
@@ -890,9 +888,26 @@ aside[class*="tocCollapsible"] > button,
   margin-bottom: 12px !important;
 }
 
+/* Mobile TOC button - "On this page" */
+aside[class*="tocCollapsible"] > button,
+.theme-doc-toc-mobile button {
+  font-size: 14px !important;
+  font-weight: normal !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  color: #8A8A90 !important;
+  border-bottom: 1px solid #CDCED0 !important;
+  padding-bottom: 8px !important;
+  margin-bottom: 0 !important;
+}
+
 [data-theme="dark"] .table-of-contents__left-border,
 [data-theme="dark"] .theme-doc-toc-desktop > div > h3,
-[data-theme="dark"] .table-of-contents > h2,
+[data-theme="dark"] .table-of-contents > h2 {
+  color: white !important;
+  border-bottom: 1px solid #8A8A90 !important;
+}
+
 [data-theme="dark"] aside[class*="tocCollapsible"] > button,
 [data-theme="dark"] .theme-doc-toc-mobile button {
   color: white !important;
@@ -946,6 +961,129 @@ aside[class*="tocCollapsible"] > button,
 [data-theme="dark"] .table-of-contents li a:hover,
 [data-theme="dark"] .theme-doc-toc-desktop a:hover {
   color: #33BBFF !important;
+}
+
+/* Mobile TOC Dropdown Styling */
+.theme-doc-toc-mobile,
+aside[class*="tocCollapsible"] {
+  background-color: #F5F5F6 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+[data-theme="dark"] .theme-doc-toc-mobile,
+[data-theme="dark"] aside[class*="tocCollapsible"] {
+  background-color: #1C1B20 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove any borders from the collapsible container */
+aside[class*="tocCollapsible"] .tocCollapsibleContent,
+aside[class*="tocCollapsible"] > div,
+aside[class*="tocCollapsible"] .tocCollapsibleContent > ul,
+.theme-doc-toc-mobile .tocCollapsibleContent > ul,
+aside[class*="tocCollapsible"] ul,
+.theme-doc-toc-mobile ul {
+  border-top: none !important;
+  border-bottom: none !important;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Mobile TOC dropdown content */
+.theme-doc-toc-mobile .table-of-contents,
+aside[class*="tocCollapsible"] .table-of-contents {
+  background-color: #F5F5F6 !important;
+  padding: 12px 16px 12px 16px !important;
+  margin: 0 !important;
+  border: none !important;
+  border-top: none !important;
+  border-bottom: none !important;
+  padding-top: 12px !important;
+}
+
+[data-theme="dark"] .theme-doc-toc-mobile .table-of-contents,
+[data-theme="dark"] aside[class*="tocCollapsible"] .table-of-contents {
+  background-color: #1C1B20 !important;
+  border: none !important;
+  border-top: none !important;
+  border-bottom: none !important;
+}
+
+/* Mobile TOC links - match desktop styling */
+.theme-doc-toc-mobile .table-of-contents li a,
+aside[class*="tocCollapsible"] .table-of-contents li a {
+  font-size: 14px !important;
+  color: #6D6E74 !important;
+  font-weight: normal !important;
+  line-height: 1.5 !important;
+  padding-left: 0 !important;
+  text-decoration: none !important;
+}
+
+[data-theme="dark"] .theme-doc-toc-mobile .table-of-contents li a,
+[data-theme="dark"] aside[class*="tocCollapsible"] .table-of-contents li a {
+  color: #B8B9BC !important;
+}
+
+/* Mobile TOC links hover state */
+.theme-doc-toc-mobile .table-of-contents li a:hover,
+aside[class*="tocCollapsible"] .table-of-contents li a:hover {
+  color: #0088CC !important;
+  text-decoration: none !important;
+}
+
+[data-theme="dark"] .theme-doc-toc-mobile .table-of-contents li a:hover,
+[data-theme="dark"] aside[class*="tocCollapsible"] .table-of-contents li a:hover {
+  color: #33BBFF !important;
+}
+
+/* Mobile TOC active links */
+.theme-doc-toc-mobile .table-of-contents li a[class*="active"],
+aside[class*="tocCollapsible"] .table-of-contents li a[class*="active"] {
+  color: #0088CC !important;
+  font-weight: normal !important;
+}
+
+[data-theme="dark"] .theme-doc-toc-mobile .table-of-contents li a[class*="active"],
+[data-theme="dark"] aside[class*="tocCollapsible"] .table-of-contents li a[class*="active"] {
+  color: #33BBFF !important;
+}
+
+/* Remove left border from mobile TOC */
+.theme-doc-toc-mobile .table-of-contents__left-border,
+aside[class*="tocCollapsible"] .table-of-contents__left-border {
+  border-left: none !important;
+}
+
+.theme-doc-toc-mobile .table-of-contents ul,
+aside[class*="tocCollapsible"] .table-of-contents ul,
+.theme-doc-toc-mobile .table-of-contents ul ul,
+aside[class*="tocCollapsible"] .table-of-contents ul ul,
+.theme-doc-toc-mobile .table-of-contents ul ul ul,
+aside[class*="tocCollapsible"] .table-of-contents ul ul ul {
+  border-left: none !important;
+}
+
+/* Mobile TOC list items */
+.theme-doc-toc-mobile .table-of-contents li,
+aside[class*="tocCollapsible"] .table-of-contents li {
+  padding-left: 0 !important;
+  margin-top: 6px !important;
+}
+
+.theme-doc-toc-mobile .table-of-contents ul ul,
+aside[class*="tocCollapsible"] .table-of-contents ul ul {
+  padding-left: 16px !important;
+}
+
+/* Ensure all nested levels have no left border */
+.theme-doc-toc-mobile ul,
+.theme-doc-toc-mobile li,
+aside[class*="tocCollapsible"] ul,
+aside[class*="tocCollapsible"] li {
+  border-left: none !important;
 }
 
 /* Active state for TOC links */
