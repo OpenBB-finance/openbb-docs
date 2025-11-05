@@ -849,11 +849,111 @@ aside[class*="docSidebarContainer"] {
 }
 
 .toc-link-active {
-  color: #2a2a2a !important; /* grey-900 for light mode */
-  font-weight: bold !important;
+  color: #0088CC !important; /* Active link color for light mode */
+  font-weight: normal !important;
 }
 [data-theme="dark"] .toc-link-active {
-  color: #fff !important;     /* white for dark mode */
+  color: #33BBFF !important; /* Active link color for dark mode */
+  font-weight: normal !important;
+}
+
+/* TOC "On this page" heading styling */
+.table-of-contents__link--active,
+.table-of-contents li a[class*="active"] {
+  color: #0088CC !important;
+  font-weight: normal !important;
+}
+
+[data-theme="dark"] .table-of-contents__link--active,
+[data-theme="dark"] .table-of-contents li a[class*="active"] {
+  color: #33BBFF !important;
+  font-weight: normal !important;
+}
+
+/* Style the "On this page" heading */
+.table-of-contents__left-border,
+.theme-doc-toc-desktop > div > h3,
+.table-of-contents > h2,
+aside[class*="tocCollapsible"] > button,
+.theme-doc-toc-mobile button {
+  font-size: 14px !important;
+  font-weight: normal !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  color: #8A8A90 !important;
+  border-bottom: 1px solid #CDCED0 !important;
+  padding-bottom: 8px !important;
+  margin-bottom: 12px !important;
+}
+
+[data-theme="dark"] .table-of-contents__left-border,
+[data-theme="dark"] .theme-doc-toc-desktop > div > h3,
+[data-theme="dark"] .table-of-contents > h2,
+[data-theme="dark"] aside[class*="tocCollapsible"] > button,
+[data-theme="dark"] .theme-doc-toc-mobile button {
+  color: white !important;
+  border-bottom: 1px solid #8A8A90 !important;
+}
+
+/* Remove the left border/line from TOC items */
+.table-of-contents__left-border {
+  border-left: none !important;
+}
+
+.theme-doc-toc-desktop ul,
+.table-of-contents ul {
+  border-left: none !important;
+  padding-left: 0 !important;
+}
+
+/* Style TOC links */
+.table-of-contents li a,
+.theme-doc-toc-desktop a {
+  font-size: 14px !important;
+  color: #6D6E74 !important;
+  font-weight: normal !important;
+  line-height: 1.5 !important;
+  padding-left: 0 !important;
+}
+
+[data-theme="dark"] .table-of-contents li a,
+[data-theme="dark"] .theme-doc-toc-desktop a {
+  color: #B8B9BC !important;
+}
+
+/* Maintain indentation without borders */
+.table-of-contents li {
+  padding-left: 0 !important;
+  margin-top: 6px !important;
+}
+
+.table-of-contents ul ul {
+  padding-left: 16px !important;
+  border-left: none !important;
+}
+
+/* Hover state for TOC links */
+.table-of-contents li a:hover,
+.theme-doc-toc-desktop a:hover {
+  color: #0088CC !important;
+  text-decoration: none !important;
+}
+
+[data-theme="dark"] .table-of-contents li a:hover,
+[data-theme="dark"] .theme-doc-toc-desktop a:hover {
+  color: #33BBFF !important;
+}
+
+/* Active state for TOC links */
+.table-of-contents li a[class*="active"],
+.theme-doc-toc-desktop a[class*="active"] {
+  color: #0088CC !important;
+  font-weight: normal !important;
+}
+
+[data-theme="dark"] .table-of-contents li a[class*="active"],
+[data-theme="dark"] .theme-doc-toc-desktop a[class*="active"] {
+  color: #33BBFF !important;
 }
 
 /* Navbar Tabs */
