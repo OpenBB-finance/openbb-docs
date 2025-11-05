@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useLocation } from '@docusaurus/router';
 
 const MobileMenuContext = createContext();
@@ -24,6 +24,11 @@ export function MobileMenuProvider({ children }) {
   };
 
   const [expandedSections, setExpandedSections] = useState(getInitialExpandedSections());
+
+  // Update expanded sections when location changes
+  useEffect(() => {
+    setExpandedSections(getInitialExpandedSections());
+  }, [location.pathname]);
 
   const toggleSection = (section) => {
     setExpandedSections(prev => ({

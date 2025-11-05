@@ -1075,30 +1075,37 @@ aside[class*="tocCollapsible"] > button,
   opacity: 1;
 }
 
-/* Home Row with Theme Toggle */
-.mobile-menu-home-row {
+/* Theme toggle at the top */
+.mobile-menu-theme-toggle {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.mobile-menu-theme-toggle > div {
+  margin-left: 0 !important;
+  margin-right: 4px !important;
+}
+
+/* Home Row */
+.mobile-menu-home-wrapper {
+  margin-bottom: 8px;
+}
+
+.mobile-menu-home-link {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 8px;
   padding: 12px 16px;
   border-radius: 8px;
+  background-color: transparent;
+  transition: all 0.2s ease;
+  text-decoration: none !important;
 }
 
-.mobile-menu-home-row--active {
+.mobile-menu-home-link--active {
   background-color: #24242A;
-}
-
-.mobile-menu-home-row .mobile-menu-main-section-header--link {
-  flex: 0 0 auto;
-  padding: 0;
-}
-
-/* Remove the default margins from ColorModeToggle wrapper div */
-.mobile-menu-home-row > div:last-child {
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-  gap: 0 !important;
 }
 
 /* Main Section Styles (Home, Workspace, ODP) */
@@ -1257,7 +1264,7 @@ aside[class*="tocCollapsible"] > button,
   text-transform: none;
   font-weight: 400;
   color: #FFFFFF;
-  padding: 0.75rem 0 0.5rem 0;
+  padding: 0.75rem 0 0.5rem 4px;
   margin-bottom: 0.5rem;
   border-bottom: 1px solid #B8B9BC;
 }
@@ -1267,7 +1274,7 @@ aside[class*="tocCollapsible"] > button,
   font-weight: 400 !important;
   font-size: 16px !important;
   text-decoration: none !important;
-  padding: 12px 0;
+  padding: 12px 0 12px 4px !important;
   display: block;
   transition: color 0.2s ease;
 }
