@@ -23,7 +23,7 @@ OpenBB provides some basic methods for interacting with common data structures t
 If you are working with custom data, you may also want specific methods for interacting with the data, post-request.
 
 The `openbb-core` package makes the `OBBject` class extendable, similar to extensions and accessors for Pandas.
-It relies on plugins through the Poetry dependency management package.
+It relies on an 
 
 This page will go through the steps for developing a simple response object extension.
 

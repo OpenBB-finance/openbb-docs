@@ -21,8 +21,6 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 
 <HeadTitle title="Extension Types | OpenBB Docs" />
 
-
-
 <ul className="grid grid-cols-1 gap-2 -ml-6">
   <NewReferenceCard
     title="Provider Extensions"
@@ -54,3 +52,68 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
     url="/python/developer/extension_types/charting"
   />
 </ul>
+
+<ul className="grid grid-cols-1 gap-2 -ml-6">
+  <NewReferenceCard
+    title="Plugins"
+    description="Plugin to the command execution loop and customize the output behavior with endpoint callbacks."
+    url="/python/developer/extension_types/plugins"
+  />
+</ul>
+
+## OpenBB CookieCutter
+
+`openbb-cookiecutter` is a PyPI package with a simple CL utility that creates a new Python project folder to develop OpenBB Python extensions.
+
+### Template Structure
+
+The Cookiecutter template prompts the user for information to use in the `pyproject.toml` file, and then generates a project based on that information.
+All fields are optional.
+
+- Your Name
+- Your Email
+- Project Name
+- Project Tag (some-distributable-package)
+- Package Name ("include" code folder name - "some_package")
+- Provider Name - name of the provider for the entry point - i.e, 'fmp'
+- Router Name - name of the router path - i.e. `obb.{some_package}`
+- OBBject Name - name of the OBBject accessor namespace.
+
+The template will generate all extension types as a single, installable Python project.
+You likely won't always use all in tandem, just delete the unwanted folders and entrypoints.
+
+### Usage
+
+1. Install in a Python environment from PyPI with:
+
+```
+pip install openbb-cookiecutter
+```
+
+Alternatively, with `uvx`:
+
+```
+uvx openbb-cookiecutter
+```
+
+2. Navigate the current working directory to the desired output location and run:
+
+```
+openbb-cookiecutter
+```
+
+Enter values or press `enter` to continue with the default.
+
+3. Create a new Python environment for the project.
+
+4. Navigate into the generated folder and install with:
+
+```
+pip install -e .
+```
+
+5. Python static files will be generated on first import, or trigger with `openbb-build`.
+
+6. Import the Python package or start the API and use like any other OpenBB application.
+
+7. Modify the business logic and get started building!
