@@ -121,7 +121,9 @@ If you want to use multiple render functions, you can pass an array of render fu
             ],
             "renderFnParams": {
               "actionType": "groupBy",
-              "groupByParamName": "symbol",
+              "groupBy": {
+                "paramName": "symbol"
+              },
               "colorValueKey": "Analyst",
               "colorRules": [
                 {
@@ -135,6 +137,56 @@ If you want to use multiple render functions, you can pass an array of render fu
         },
       ] 
 }
+```
+
+### Using valueField for Custom Value Mapping
+
+The `valueField` option allows you to use a different field value than what's displayed in the cell. This is useful when your table displays human-readable values (like company names) but your API expects different values (like IDs).
+
+**Example:** A table displays company names, but clicking should pass the company ID to the parameter:
+
+```json
+{
+    ...
+    "columnsDefs": [
+        {
+            "field": "companyName",
+            "headerName": "Company",
+            "cellDataType": "text",
+            "renderFn": "cellOnClick",
+            "renderFnParams": {
+                "actionType": "groupBy",
+                "groupBy": {
+                    "paramName": "companyId",
+                    "valueField": "companyId"
+                }
+            }
+        }
+    ]
+}
+```
+
+In this example:
+
+- The cell displays the value from `companyName` field (e.g., "Apple Inc.")
+- When clicked, it passes the value from `companyId` field (e.g., "AAPL") to the `companyId` parameter
+- This allows you to show friendly names while using IDs for API calls
+
+**Data structure example:**
+
+```json
+[
+    {
+        "companyName": "Apple Inc.",
+        "companyId": "AAPL",
+        "price": 150.25
+    },
+    {
+        "companyName": "Microsoft Corporation",
+        "companyId": "MSFT",
+        "price": 350.50
+    }
+]
 ```
 
 ### Hover Card

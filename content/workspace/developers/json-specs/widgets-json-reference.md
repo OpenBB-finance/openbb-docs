@@ -256,10 +256,22 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
           _Example:_ `"sendToAgent"`
           _Possible values:_ `"groupBy"`, `"sendToAgent"`
 
-        - **groupByParamName**
-          _Type:_ `string`
-          Group by parameter for the render function.
-          _Example:_ `"symbol"`
+        - **groupBy**
+          _Type:_ `object`
+          Configuration for cell click grouping. Required when `actionType` is `"groupBy"`.
+          Contains the following keys:
+
+          - **paramName**
+            _Type:_ `string` (required)
+            The parameter name to update when a cell is clicked.
+            _Example:_ `"symbol"`
+
+          - **valueField**
+            _Type:_ `string` (optional)
+            Alternative field name to use for the parameter value (if different from the cell field).
+            Use this when the cell displays one value (e.g., a company name) but you need to pass a different value (e.g., an ID) to the parameter.
+            _Example:_ `"id"`
+            _Example use case:_ If your table displays company names in the cell but your API expects company IDs, set `valueField: "companyId"` to use the ID field from the row data instead of the displayed name.
 
         - **colorValueKey**
           _Type:_ `string`
@@ -675,10 +687,24 @@ Below is an example `widgets.json` with a single widget defined. This widget wil
                         "headerName": "Column 2",
                         "chartDataType": "series",
                         "cellDataType": "number",
-                                            "formatterFn": "int",
-                    "renderFn": "greenRed",
-                    "width": 150
-                },
+                        "formatterFn": "int",
+                        "renderFn": "greenRed",
+                        "width": 150
+                    },
+                    {
+                        "field": "companyName",
+                        "headerName": "Company",
+                        "cellDataType": "text",
+                        "renderFn": "cellOnClick",
+                        "renderFnParams": {
+                            "actionType": "groupBy",
+                            "groupBy": {
+                                "paramName": "companyId",
+                                "valueField": "companyId"
+                            }
+                        },
+                        "width": 200
+                    },
                 {
                     "field": "price_trend",
                     "headerName": "Price Trend",
