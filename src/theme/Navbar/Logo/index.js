@@ -11,21 +11,9 @@ function getLogo(type) {
 export default function NavbarLogo() {
   const { pathname } = useLocation();
   const type = pathname.length > 1 ? pathname.split("/")[1] : "home";
-  const [innerWidth, setInnerWidth] = React.useState(380);
-
-  React.useEffect(() => {
-    if (typeof window !== 'undefined') {
-      window.addEventListener("resize", () => {
-        setInnerWidth(window.innerWidth);
-
-      });
-    }
-  }
-  , []);
-
 
   return (
-    <div className={clsx("items-center ml-2", innerWidth < 380 ? "hidden" : "flex")}>
+    <div className="flex items-center ml-2">
       <Link to={`/`}>
         {getLogo(type)}
       </Link>

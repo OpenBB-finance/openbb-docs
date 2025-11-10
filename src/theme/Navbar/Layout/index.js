@@ -93,36 +93,12 @@ export default function NavbarLayout({ children }) {
 		}
 	}, [pathname]);
 
-	const cleanedPathForClassName = pathname.replace(/\/v\d+/, "");
-
 	return (
 		<nav
 			ref={navbarRef}
 			className={clsx(
 				"border-b border-grey-700 lg:px-12",
-				{
-					header_docs_terminal:
-						cleanedPathForClassName.startsWith("/workspace"),
-					header_docs_pro: cleanedPathForClassName.startsWith("/pro"),
-					header_docs_excel: cleanedPathForClassName.startsWith("/excel"),
-					header_docs_sdk:
-						cleanedPathForClassName.startsWith("/sdk") ||
-						cleanedPathForClassName.startsWith("/cli") ||
-						cleanedPathForClassName.startsWith("/desktop") ||
-						cleanedPathForClassName.startsWith("/python") ||
-						cleanedPathForClassName.startsWith("/platform"),
-					header_docs_bot: cleanedPathForClassName.startsWith("/bot"),
-					header_docs:
-						!cleanedPathForClassName.startsWith("/workspace") &&
-						!cleanedPathForClassName.startsWith("/sdk") &&
-						!cleanedPathForClassName.startsWith("/platform") &&
-						!cleanedPathForClassName.startsWith("/bot") &&
-						!cleanedPathForClassName.startsWith("/pro") &&
-						!cleanedPathForClassName.startsWith("/excel") &&
-						!cleanedPathForClassName.startsWith("/desktop") &&
-						!cleanedPathForClassName.startsWith("/python") &&
-						!cleanedPathForClassName.startsWith("/cli"),
-				},
+				"header_docs",
 				"navbar",
 				"navbar--fixed-top",
 				hideOnScroll && [

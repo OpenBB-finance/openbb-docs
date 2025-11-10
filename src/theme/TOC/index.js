@@ -20,7 +20,7 @@ export default function TOC({ className, ...props }) {
     >
       {props?.toc?.some( item => item.level === 1 || item.level === 2 ||item.level === 3) && (
         <>
-          <p className="uppercase text-sm font-bold text-grey-600 dark:text-grey-200 tracking-widest mb-2">
+          <p className={styles.tocHeading}>
             On this page
           </p>
           <TOCItems

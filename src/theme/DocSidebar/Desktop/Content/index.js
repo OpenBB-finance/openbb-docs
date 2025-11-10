@@ -29,10 +29,7 @@ export default function DocSidebarDesktopContent({ path, sidebar, className }) {
   return (
     <nav
       className={clsx(
-        "menu thin-scrollbar !px-10 text-sm !pb-10",
-        {
-          "mt-[40px]": !isIFrame,
-        },
+        "menu thin-scrollbar !px-10 text-sm",
         styles.menu,
         showAnnouncementBar && styles.menuWithAnnouncementBar,
         className

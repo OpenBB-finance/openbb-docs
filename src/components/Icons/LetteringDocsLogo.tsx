@@ -11,8 +11,8 @@ const LetteringDocsLogo = ({
 }: SVGProps<SVGSVGElement> & SVGRProps) => (
 	<svg
 		viewBox="0 0 271 19"
-		width={271}
-		height={19}
+		width={190}
+		height={13}
 		fill="none"
 		xmlns="http://www.w3.org/2000/svg"
 		aria-labelledby={titleId}

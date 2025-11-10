@@ -5,6 +5,92 @@
   top: calc(var(--ifm-navbar-height) + 1rem);
 }
 
+/* "On this page" heading */
+.tocHeading {
+  font-size: 14px !important;
+  font-weight: normal !important;
+  letter-spacing: normal !important;
+  color: #8A8A90 !important;
+  padding-bottom: 8px !important;
+  margin-bottom: 12px !important;
+  border-bottom: 1px solid #CDCED0 !important;
+}
+
+[data-theme="dark"] .tocHeading {
+  color: white !important;
+  border-bottom: 1px solid #8A8A90 !important;
+}
+
+/* TOC heading */
+.tableOfContents :global(h2),
+.tableOfContents :global(h3) {
+  font-size: 14px !important;
+  font-weight: normal !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  color: #8A8A90 !important;
+  border-bottom: 1px solid #CDCED0 !important;
+  padding-bottom: 8px !important;
+  margin-bottom: 12px !important;
+}
+
+[data-theme="dark"] .tableOfContents :global(h2),
+[data-theme="dark"] .tableOfContents :global(h3) {
+  color: white !important;
+  border-bottom: 1px solid #8A8A90 !important;
+}
+
+/* Remove left borders from TOC lists */
+.tableOfContents :global(ul) {
+  border-left: none !important;
+  padding-left: 0 !important;
+}
+
+/* Nested list indentation */
+.tableOfContents :global(ul ul) {
+  padding-left: 16px !important;
+  border-left: none !important;
+}
+
+/* TOC list items */
+.tableOfContents :global(li) {
+  padding-left: 0 !important;
+  margin-top: 6px !important;
+}
+
+/* TOC links */
+.tableOfContents :global(a) {
+  font-size: 14px !important;
+  color: #6D6E74 !important;
+  font-weight: normal !important;
+  line-height: 1.5 !important;
+  padding-left: 0 !important;
+}
+
+[data-theme="dark"] .tableOfContents :global(a) {
+  color: #B8B9BC !important;
+}
+
+/* TOC link hover */
+.tableOfContents :global(a:hover) {
+  color: #0088CC !important;
+  text-decoration: none !important;
+}
+
+[data-theme="dark"] .tableOfContents :global(a:hover) {
+  color: #33BBFF !important;
+}
+
+/* TOC active link */
+.tableOfContents :global(.table-of-contents__link--active) {
+  color: #0088CC !important;
+  font-weight: normal !important;
+}
+
+[data-theme="dark"] .tableOfContents :global(.table-of-contents__link--active) {
+  color: #33BBFF !important;
+}
+
 @media (max-width: 996px) {
   .tableOfContents {
     display: none;

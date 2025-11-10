@@ -1,5 +1,5 @@
 :root {
-  --docsearch-primary-color: var(--ifm-color-primary);
+  --docsearch-primary-color: #0088CC !important;
   --docsearch-text-color: var(--ifm-font-color-base);
 }
 
@@ -11,4 +11,42 @@
 
 .DocSearch-Container {
   z-index: calc(var(--ifm-z-index-fixed) + 1);
+  --docsearch-primary-color: #0088CC !important;
+}
+
+/* Force Algolia search to use #0088CC */
+.DocSearch-Input:focus {
+  border-color: #0088CC !important;
+}
+
+.DocSearch-Form {
+  border-color: #0088CC !important;
+}
+
+.DocSearch-Hit[aria-selected="true"] a {
+  background-color: #0088CC !important;
+}
+
+.DocSearch-Hit-title mark,
+.DocSearch-Hit-content mark {
+  color: #0088CC !important;
+}
+
+.DocSearch-Hit-action-button:focus,
+.DocSearch-Hit-action-button:hover {
+  background-color: #0088CC !important;
+}
+
+.DocSearch-Hits mark {
+  color: #0088CC !important;
+}
+
+/* Section headers (JSON Specs, Routines, etc) */
+.DocSearch-Dropdown-Container section header {
+  color: #0088CC !important;
+}
+
+/* Search icon color */
+.DocSearch-Search-Icon {
+  color: #0088CC !important;
 }
