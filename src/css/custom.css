@@ -1173,12 +1173,6 @@ aside[class*="tocCollapsible"] li {
   }
 }
 
-/* Ensure navbar stays above mobile menu */
-.navbar {
-  position: relative !important;
-  z-index: 100 !important;
-}
-
 /* Mobile Menu Redesign - Dropdown below navbar, sliding from behind */
 .navbar-sidebar {
   background-color: #151518 !important;
