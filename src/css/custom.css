@@ -1644,26 +1644,6 @@ html[data-theme="dark"] .sidebar-section-header::after {
   margin-top: 1rem;
 }
 
-/* Rotate chevrons smoothly: right when collapsed, down when expanded */
-.menu__caret {
-  transition: transform 0.2s ease;
-}
-.menu__list-item--collapsed > .menu__list-item-collapsible .menu__caret {
-  transform: rotate(0deg) !important;
-}
-.menu__list-item-collapsible .menu__caret {
-  transform: rotate(90deg) !important;
-}
-
-/* Also handle caret rendered on the link when category has no href */
-.theme-doc-sidebar-item-category .menu__link--sublist-caret::after {
-  transition: transform 0.2s ease;
-  transform: rotate(90deg) !important;
-}
-.menu__list-item--collapsed > .menu__list-item-collapsible .menu__link--sublist-caret::after {
-  transform: rotate(0deg) !important;
-}
-
 /* Improve spacing between sidebar items within sections */
 .theme-doc-sidebar-menu .menu__list-item {
   margin-bottom: 0.125rem;
