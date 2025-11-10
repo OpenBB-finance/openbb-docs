@@ -225,11 +225,11 @@ function WorkspaceContent({ mobileSidebar, location }) {
 		return expanded;
 	};
 
-	const [expandedItems, setExpandedItems] = useState(getInitialExpandedItems());
+	const [expandedItems, setExpandedItems] = useState(() => getInitialExpandedItems());
 
 	useEffect(() => {
 		setExpandedItems(getInitialExpandedItems());
-	}, [undefined, getInitialExpandedItems]);
+	}, [location.pathname]);
 
 	const toggleExpanded = (itemLabel) => {
 		setExpandedItems((prev) => ({
@@ -376,11 +376,11 @@ function ODPContent({ mobileSidebar, location }) {
 		return expanded;
 	};
 
-	const [expandedItems, setExpandedItems] = useState(getInitialExpandedItems());
+	const [expandedItems, setExpandedItems] = useState(() => getInitialExpandedItems());
 
 	useEffect(() => {
 		setExpandedItems(getInitialExpandedItems());
-	}, [undefined, getInitialExpandedItems]);
+	}, [location.pathname]);
 
 	const toggleExpanded = (itemLabel) => {
 		setExpandedItems((prev) => ({
