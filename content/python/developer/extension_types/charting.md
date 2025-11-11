@@ -19,10 +19,8 @@ import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
 <HeadTitle title="Charting Extensions - Developer | OpenBB Docs" />
 
-Charts, or other custom view objects, can be added to any endpoint without needing to touch any source code.
-
-Charting extensions rely on the `openbb-charting` package for route handling and registration.
-Views for any installed endpoint can be created within the same extension.
+This page is a guide for adding custom views to any router endpoint,
+included with the response object when the user sets `chart=True`.
 
 The infrastructure is generally compatible with any JSON serializable object,
 but some handling and helpers are optimized for Plotly Figure objects.
@@ -38,7 +36,7 @@ obbject_example
 └── pyproject.toml
 ```
 
-Extension code will go directly in the `__init__.py` file.
+Extension code can go directly in the `__init__.py` file.
 
 ### TOML File
 
@@ -49,7 +47,7 @@ The entry point for the extension is specified as a Poetry plugin, near the bott
 empty = "openbb_empty_charting:EmptyViews"
 ```
 
-Where `EmptyViews` is a class, defined in `__init__.py`, with static methods for each endpoint view.
+Where `EmptyViews` is a class with static methods for each endpoint being implemented.
 
 A complete `pyproject.toml` looks something like:
 
@@ -94,10 +92,8 @@ This has the effect of making the extension optional, because endpoint views wil
 
 In this example the extension code all lives inside `__init__.py`.
 
-In reality, you'll probably want to structure the code folder as importable modules for each view.
-
 :::info
-The example below assumes the example, [`openbb-empty-router`](/python/developer/extension_types/router) extension is installed locally.
+The example below uses the example, [`openbb-empty-router`](/python/developer/extension_types/router), as the router extension.
 
 ```python
 >>> from openbb import obb
@@ -114,10 +110,14 @@ chart: None
 extra: {'metadata': {'arguments': {'provider_choices': {}, 'standard_params': {}, '...
 ```
 
-:::
+- `**kwargs` should be the only argument for the function.
+- Functions should be static methods of the target entry point.
+- Response types can be:
+  - `openbb_core.app.model.charts.chart.Chart`
+  - `openbb_charting.core.openbb_figure.OpenBBFigure | plotly.graph_objects.Figure | Any`
+  - dict-like represention of the chart
+  - `tuple[<figure-object>, <JSON-serializable-content>]`
 
-:::warning
-`**kwargs` should be the only argument for the function.
 :::
 
 <details>
@@ -143,12 +143,15 @@ class EmptyViews:
         # pylint: disable=import-outside-toplevel
 
         # Import modules here instead of at the top of the file.
+        # This prevents circular imports and decouples from application initialization.
+
 
         # This is an object that can be used to return the results.
         # It accepts "fig", "content", and "format" as inputs.
         # Content is the JSON serialized representation returned to the API,
         # "fig" is the Python object holding the chart. 
         from openbb_core.app.model.charts.chart import Chart
+
 
         # This is the general purpose Figure object,
         # it is a subclass of plotly.graph_objects.Figure
@@ -184,12 +187,12 @@ class EmptyViews:
 ```python
 >>> res = obb.empty.hello(chart=True, some_param= 2)
 {
-    'extra_params': {'some_param': 2},
-    'obbject_item': 'Hello from the Empty Router extension!',
-    'charting_settings': <openbb_core.app.model.charts.charting_settings.ChartingSettings object at 0x10c73f610>,
-    'standard_params': {},
+    'extra_params': {'some_param': 2}, # Additional keyword arguments.
+    'obbject_item': 'Hello from the Empty Router extension!',  # This is the function's results object.
+    'charting_settings': {"chart_style": "dark", "table_style": "dark", ... }  # Portion of the user_settings.json
+    'standard_params': {},  # Main keyword arguments.
     'provider': None,
-    'extra': {}
+    'extra': {}  # The 
 }
 
 >>> res
@@ -229,9 +232,15 @@ dict_keys(
 
 ## Conveying Parameters
 
-If chart generation is being parameterized, the best thing to do is include them in the main function. Alternatively, the docstring is available in the Python Interface with the `openbb-charting` method, `get_params`. This calls Python `help` on the function.
+If chart generation is being parameterized, the best thing to do is include them in the main function definition.
+However, it may not be possible - or desired - to add more definitions to the endpoint code.
+
+The docstring is available in the Python Interface with the `openbb-charting` method, `get_params`. This calls Python `help` on the function.
 
 ```python
+>>> res = obb.empty.hello(chart=True, some_param= 2)
+>>> res.charting.get_params()
+
 Help on function empty_hello in module openbb_empty_charting:
 
 empty_hello(**kwargs)
@@ -245,4 +254,4 @@ empty_hello(**kwargs)
 
 ## Usage
 
-See the documentation [here](/python/extensions/infrastructure/openbb-charting) for usasge instructions and examples.
+See the documentation [here](/python/extensions/infrastructure/openbb-charting) for usage instructions and examples.
