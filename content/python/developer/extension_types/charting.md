@@ -93,7 +93,7 @@ This has the effect of making the extension optional, because endpoint views wil
 In this example the extension code all lives inside `__init__.py`.
 
 :::info
-The example below uses the example, [`openbb-empty-router`](/python/developer/extension_types/router), as the router extension.
+The example below uses [`openbb-empty-router`](/python/developer/extension_types/router) as the router extension.
 
 ```python
 >>> from openbb import obb
