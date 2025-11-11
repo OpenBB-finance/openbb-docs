@@ -62,7 +62,7 @@ empty = "openbb_empty_provider:empty_provider"
 ```
 
 <details>
-<summary mdxType="summary">`pyproject.toml` </summary>
+<summary mdxType="summary">`pyproject.toml`</summary>
 ```toml
 [tool.poetry]
 name = "openbb-empty-provider"
@@ -198,7 +198,7 @@ class EmptySomeTimeSeriesData(SomeTimeSeriesData):
 ```
 
 :::info
-The resulting function signature will display these parameters as `**kwargs`, but their definitions will display in the docstring and `reference` metadata. Required provider parameters may appear as `Optional` in docstrings, but their inputs will be validated using the model at execution.
+The resulting function signature will register these parameters as `extra_params`, but their definitions will display in the docstring and `reference` metadata. Required provider parameters may appear as `Optional` in docstrings, but their inputs will be validated using the model at execution.
 :::
 
 ### Fetcher

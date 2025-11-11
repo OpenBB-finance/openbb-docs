@@ -36,8 +36,6 @@ router_example
 └── pyproject.toml
 ```
 
-The `README.md` file can be completely empty, it just needs to exist.
-
 Extension code will go in the `empty_router.py` file, and `__init__.py` contains no code.
 
 ### TOML File

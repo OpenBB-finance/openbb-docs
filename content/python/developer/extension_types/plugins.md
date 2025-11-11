@@ -61,8 +61,6 @@ obbject_plugin_example
 └── pyproject.toml
 ```
 
-The `README.md` file can be completely empty, it just needs to exist.
-
 Extension code can go directly in the `__init__.py` file.
 
 ### TOML File

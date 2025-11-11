@@ -90,7 +90,7 @@ You likely won't always use all in tandem, just delete the unwanted folders and 
 pip install openbb-cookiecutter
 ```
 
-Alternatively, with `uvx`:
+Alternatively, install and launch with `uvx`:
 
 ```
 uvx openbb-cookiecutter
