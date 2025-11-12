@@ -25,19 +25,26 @@ import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
 <HeadTitle title="Build OBBject Plugin Extensions - Developer | OpenBB Docs" />
 
-Plugin extensions are a type of OBBject [extension](/python/developer/extension_types/obbject)
-allowing developers to perform additional operations before the output is returned to the user.
+This page provides information about how to write plugin extensions
+that intercept the application output immediately before returning to the user.
+They provide a way to conditionally alter the output of any command, including those you do not control.
 
-They make it possible to conditionally format the output of all, or selected, application endpoints.
+While OBBject [extensions](/python/developer/extension_types/obbject) are post-return methods for the Python Interface,
+OBBject plugins are compatible with both interfaces, REST API and Python, and execute before returning.
+They give the developer complete control of the application's last-mile delivery.
+Because of this, they are considered potentially dangerous, and may allow arbitrary code execution in the installed environment.
+
+:::danger
+- **OpenBB does not publish any package using these features.**
+- The user must explicitly allow this type of functionality in the environment or `system_settings.json`.
+- The application will not start if a plugin extension is installed and the environment is not configured.
+- Changes will not be reflected in the function's signature and docstring.
+:::
 
 Workflows can be orchestrated by registering multiple callbacks, executed in the order of insertion.
 Tasks are performed in series or parallel, where series operations are blocking events.
 
-:::warning
-- These types of extensions are potentially dangerous, as they allow arbitrary code execution.
-- The application will not start if a plugin extension is installed and the environment is not configured.
-- Changes will not be reflected in the function's signature and docstring.
-:::
+
 
 In [system_settings.json](/python/settings/system_settings), add:
 
@@ -138,7 +145,7 @@ Registered `on_command_output` callables should:
 - Modify the OBBject item directly, where required, even if it is not returned in the end.
 - Have no `return`.
 
-Plugins are compatible only with endpoints returning an `OBBject`, and are only callable within the command execution.
+Plugins are compatible only with endpoints returning an `OBBject`, and are not executable after returning.
 :::
 
 Each entrypoint is an instance of the `Extension` class, and is applied as a decorator.
