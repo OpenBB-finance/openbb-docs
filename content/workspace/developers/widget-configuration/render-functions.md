@@ -48,8 +48,8 @@ In the `widgets.json` configuration, you can specify render functions to customi
 
 | Parameter | Type | Description | Options |
 |-----------|------|-------------|---------|
-| **condition** | `string` | The condition for applying the color | `"eq"`, `"ne"`, `"gt"`, `"lt"`, `"gte"`, `"lte"`, `"between"` |
-| **value** | `number` | The value for the condition | - |
+| **condition** | `string` | The condition for applying the color | `"eq"`, `"ne"`, `"gt"`, `"lt"`, `"gte"`, `"lte"`, `"between"`, `"contains"`, `"notContains"` |
+| **value** | `number` or `string` | The value for the condition. For `contains` and `notContains`, use a string value | - |
 | **range** | `object` | An object specifying `min` and `max` values for the between condition | `{min: number, max: number}` |
 | **color** | `string` | The color to apply | Hex code or `"green"`, `"red"`, `"blue"` |
 | **fill** | `boolean` | Indicates if the color should fill the cell | `true`/`false` |
@@ -103,6 +103,52 @@ The below example would apply a green color to the cell if the value is between 
     ]
 }
 ```
+
+**Example using `contains` and `notContains` conditions:**
+
+```json
+{
+    ...
+    "columnsDefs": [
+        {
+            "field": "status",
+            "headerName": "Status",
+            "cellDataType": "text",
+            "renderFn": "columnColor",
+            "renderFnParams": {
+                "colorRules": [
+                    {
+                        "condition": "contains",
+                        "value": "Active",
+                        "color": "green",
+                        "fill": true
+                    },
+                    {
+                        "condition": "contains",
+                        "value": "Pending",
+                        "color": "yellow",
+                        "fill": true
+                    },
+                    {
+                        "condition": "notContains",
+                        "value": "Active",
+                        "color": "red",
+                        "fill": true
+                    }
+                ]
+            }
+        }
+    ]
+}
+```
+
+This example:
+
+- Colors cells green if the status contains "Active"
+- Colors cells yellow if the status contains "Pending"
+- Colors cells red if the status does not contain "Active"
+
+**Note:** The `contains` and `notContains` conditions work with string values only.
 
 ### Multiple Render Functions and Color Rules
 
