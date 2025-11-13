@@ -17,7 +17,9 @@ import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
 <HeadTitle title="System Settings - ODP Python | OpenBB Docs" />
 
-An additional configuration file, `system_settings.json`, is located in the same folder as `user_settings.json`, and can be created manually if it does not exist. The items below can be configured via this file, as a JSON dictionary.
+An additional configuration file, `system_settings.json`, is located in the same folder as `user_settings.json`, and can be created manually if it does not exist.
+
+Items below are defined as a JSON dictionary.
 
 ## Logging Service
 
@@ -39,6 +41,33 @@ With the configuration set, the logger can be retrieved by name in the code.
 ```python
 logger = logging.getLogger("openbb.logging_service")
 ```
+
+## Allow OBBject Extensions
+
+[OBBject extensions](/python/developer/extension_types/obbject) can allow developers to perform additional operations before function output.
+
+:::danger
+These types of extensions are potentially dangerous, and the user must explicitly allow them.
+
+The application will not start if a callback extension is installed without configuring.
+
+They are blocking operations, and the response object may also be mutated.
+
+Changes will not be reflected in the function's signature and docstring.
+
+Ensure that extensions are installed from a trusted source.
+:::
+
+Enable by setting the following keys in `system_settings.json`:
+
+```json
+{
+  "allow_on_command_output": true,
+  "allow_mutable_extensions": true,
+}
+```
+
+They can also be set as environment variables, prefixed with `OPENBB_`
 
 ## API Settings
 
@@ -103,34 +132,8 @@ This configuration allows the user to include specific elements of the docstring
 This section refers to settings available beginning OpenBB v4.4.0
 :::
 
-Configurations within, `python_settings["http"]`, apply to both, the requests, and aiohttp, libraries.
-
-The settings are passed into the `requests.Session` object and the `aiohttp.ClientSession` object by:
-
-- `openbb_core.provider.utils.helpers.make_request` - Sync
-- `openbb_core.provider.utils.helpers.amake_request` - Async
-- `openbb_core.provider.utils.helpers.amake_requests` - Async (multiple requests)
-- Inserted to use with YFinance & Finviz library implementations.
-
-Return a session object with the settings applied by:
-
-- `openbb_core.provider.utils.helpers.get_requests_session`
-- `openbb_core.provider.utils.helpers.get_async_requests_session`
-
-:::tip
-Pass the session object, returned by `get_requests_session`, to use this configuration directly with the yFinance library.
-
-```python
-import yfinance as yf
-from openbb_core.provider.utils.helpers import get_requests_session
-
-session = get_requests_session()
-ticker = yf.Ticker("AAPL", session=session)
-```
-
-:::
-
-#### Available settings:
+<details>
+<summary mdxType="summary">Available Settings</summary>
 
 | Key | Type | Description |
 |:----|:----:|------------:|
@@ -148,11 +151,26 @@ ticker = yf.Ticker("AAPL", session=session)
 |headers| dict | Request headers.|
 |cookies| dict | Dictionary of session cookies.|
 
+</details>
+
 Any additional keys supplied will be ignored unless explicitly implemented via custom code.
+
+:::tip Settings are passed to both Requests and AIOHTTP with helper functions.
+:::
+
+- `openbb_core.provider.utils.helpers.make_request` - Sync
+- `openbb_core.provider.utils.helpers.amake_request` - Async
+- `openbb_core.provider.utils.helpers.amake_requests` - Async (multiple requests)
+
+Return a session object with the settings applied by:
+
+- `openbb_core.provider.utils.helpers.get_requests_session`
+- `openbb_core.provider.utils.helpers.get_async_requests_session`
+:::
 
 ### Uvicorn
 
-The, `python_settings["uvicorn"]`, key covers the launch of FastAPI when using the following entry points:
+The, `python_settings["uvicorn"]`, dictionary covers the launch of FastAPI when using the following entry points:
 
 - Running the FastAPI as a Python module script.
   - python -m openbb_core.api.rest_api
