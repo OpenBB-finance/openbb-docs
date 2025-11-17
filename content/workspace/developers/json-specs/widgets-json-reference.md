@@ -256,10 +256,22 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
           _Example:_ `"sendToAgent"`
           _Possible values:_ `"groupBy"`, `"sendToAgent"`
 
-        - **groupByParamName**
-          _Type:_ `string`
-          Group by parameter for the render function.
-          _Example:_ `"symbol"`
+        - **groupBy**
+          _Type:_ `object`
+          Configuration for cell click grouping. Required when `actionType` is `"groupBy"`.
+          Contains the following keys:
+
+          - **paramName**
+            _Type:_ `string` (required)
+            The parameter name to update when a cell is clicked.
+            _Example:_ `"symbol"`
+
+          - **valueField**
+            _Type:_ `string` (optional)
+            Alternative field name to use for the parameter value (if different from the cell field).
+            Use this when the cell displays one value (e.g., a company name) but you need to pass a different value (e.g., an ID) to the parameter.
+            _Example:_ `"id"`
+            _Example use case:_ If your table displays company names in the cell but your API expects company IDs, set `valueField: "companyId"` to use the ID field from the row data instead of the displayed name.
 
         - **colorValueKey**
           _Type:_ `string`
@@ -274,7 +286,45 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
         - **colorRules**
           _Type:_ `array of objects`
           An array of rules for conditional coloring.
+          Each object contains the following keys:
+
+          - **condition**
+            _Type:_ `string` (required)
+            The condition for applying the color.
+            _Possible values:_ `"eq"`, `"ne"`, `"gt"`, `"lt"`, `"gte"`, `"lte"`, `"between"`, `"contains"`, `"notContains"`
+            _Description:_
+            - `"eq"` - Equal to
+            - `"ne"` - Not equal to
+            - `"gt"` - Greater than
+            - `"lt"` - Less than
+            - `"gte"` - Greater than or equal to
+            - `"lte"` - Less than or equal to
+            - `"between"` - Between two values (requires `range` object)
+            - `"contains"` - String contains the value (case-sensitive)
+            - `"notContains"` - String does not contain the value (case-sensitive)
+
+          - **value**
+            _Type:_ `number` or `string`
+            The value for the condition. For `contains` and `notContains`, use a string value.
+            _Example:_ `50` or `"Active"`
+
+          - **range**
+            _Type:_ `object` (required for `"between"` condition)
+            An object specifying `min` and `max` values for the between condition.
+            _Example:_ `{"min": 50, "max": 90}`
+
+          - **color**
+            _Type:_ `string` (required)
+            The color to apply.
+            _Example:_ `"green"`, `"red"`, `"blue"`, or hex code like `"#22c55e"`
+
+          - **fill**
+            _Type:_ `boolean`
+            Indicates if the color should fill the cell.
+            _Example:_ `true`
+
           _Example:_ `[{"condition": "gt", "value": 50, "color": "green", "fill": true}]`
+          _Example with contains:_ `[{"condition": "contains", "value": "Active", "color": "green", "fill": true}]`
 
         - **hoverCard**
           _Type:_ `object`
@@ -675,10 +725,53 @@ Below is an example `widgets.json` with a single widget defined. This widget wil
                         "headerName": "Column 2",
                         "chartDataType": "series",
                         "cellDataType": "number",
-                                            "formatterFn": "int",
-                    "renderFn": "greenRed",
-                    "width": 150
-                },
+                        "formatterFn": "int",
+                        "renderFn": "greenRed",
+                        "width": 150
+                    },
+                    {
+                        "field": "status",
+                        "headerName": "Status",
+                        "cellDataType": "text",
+                        "renderFn": "columnColor",
+                        "renderFnParams": {
+                            "colorRules": [
+                                {
+                                    "condition": "contains",
+                                    "value": "Active",
+                                    "color": "green",
+                                    "fill": true
+                                },
+                                {
+                                    "condition": "contains",
+                                    "value": "Pending",
+                                    "color": "yellow",
+                                    "fill": true
+                                },
+                                {
+                                    "condition": "notContains",
+                                    "value": "Active",
+                                    "color": "red",
+                                    "fill": true
+                                }
+                            ]
+                        },
+                        "width": 150
+                    },
+                    {
+                        "field": "companyName",
+                        "headerName": "Company",
+                        "cellDataType": "text",
+                        "renderFn": "cellOnClick",
+                        "renderFnParams": {
+                            "actionType": "groupBy",
+                            "groupBy": {
+                                "paramName": "companyId",
+                                "valueField": "companyId"
+                            }
+                        },
+                        "width": 200
+                    },
                 {
                     "field": "price_trend",
                     "headerName": "Price Trend",
