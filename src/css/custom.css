@@ -1629,6 +1629,21 @@ html[data-theme="dark"] .sidebar-section-header::after {
   padding-left: 0;
 }
 
+/* Restore indentation for nested menu items */
+.menu__list .menu__list {
+  padding-left: var(--ifm-menu-link-padding-horizontal) !important;
+}
+
+/* Ensure proper indentation for deeply nested items */
+.menu__list .menu__list .menu__list {
+  padding-left: var(--ifm-menu-link-padding-horizontal) !important;
+}
+
+/* Fix specific sidebar section indentation */
+.sidebar-section .menu__list .menu__list {
+  padding-left: var(--ifm-menu-link-padding-horizontal) !important;
+}
+
 .sidebar-section .menu__list-item .menu__link {
   padding-left: 1rem;
   padding-right: 0.75rem;
