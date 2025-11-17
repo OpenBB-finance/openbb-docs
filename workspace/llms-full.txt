@@ -15101,20 +15101,20 @@ title: Workspace Overview
 sidebar_position: 0
 description: OpenBB Workspace is a secure enterprise UI application for AI workflows, featuring data integration, AI model deployment, flexible UI customization, and on-premises deployment capabilities.
 keywords:
-- enterprise AI application
-- data integration
-- AI model deployment
-- flexible UI
-- on-premises deployment
-- secure application
-- team collaboration
-- OpenBB Apps
-- proprietary data
-- licensed data
-- AI workflows
-- enterprise security
-- private cloud
-- data privacy
+  - enterprise AI application
+  - data integration
+  - AI model deployment
+  - flexible UI
+  - on-premises deployment
+  - secure application
+  - team collaboration
+  - OpenBB Apps
+  - proprietary data
+  - licensed data
+  - AI workflows
+  - enterprise security
+  - private cloud
+  - data privacy
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
@@ -15125,7 +15125,7 @@ OpenBB Workspace is a secure application for enterprise AI workflows. It combine
 
 Explore OpenBB Workspace at [pro.openbb.co](https://pro.openbb.co).
 
-<img src="https://openbb-cms.directus.app/assets/8aa1a314-0e2c-41f0-a3cf-ef621e5f2a13.png" alt="OpenBB Workspace Application Interface" width="100%" />
+<img src="https://openbb-cms.directus.app/assets/098ebeac-413e-4225-badf-1282c268e071.png" alt="OpenBB Workspace Application Interface" width="100%" />
 
 Product demo [in this video](https://www.youtube.com/watch?v=Gll8bRSoyGM).
 
@@ -15158,7 +15158,7 @@ Widgets are the fundamental data units in OpenBB Workspace. Each widget represen
 - **Visual Layer**: Presentation through tables, charts, PDFs or images and other feed formats
 - **Parameters**: Configurable input parameters for data display and interaction
 
-<img width="800" alt="Widget Metadata Structure and Components" src="https://openbb-cms.directus.app/assets/132e5cda-b062-4094-8036-8c2d41db1527.png" />
+<img width="800" alt="Widget Metadata Structure and Components" src="https://openbb-cms.directus.app/assets/cffb6e08-31a2-4a4d-85cf-3cf0ae1d09eb.png" />
 
 ### Dashboards
 
@@ -15166,7 +15166,7 @@ Dashboards are your personal spaces in OpenBB Workspace, designed to adapt to yo
 
 The power of dashboards lies in their flexibility. You can add widgets and group them by linking their parameters - when you update a date range or a ticker symbol in one widget, related widgets will update automatically. This parameter grouping ensures your analysis remains synchronized across multiple data views.
 
-<img width="800" alt="OpenBB Workspace Dashboard Interface" src="https://openbb-cms.directus.app/assets/fbf80af0-8bc3-4ac6-b349-f8e1ec388cee.png" />
+<img width="800" alt="OpenBB Workspace Dashboard Interface" src="https://openbb-cms.directus.app/assets/9ef2b326-da32-49d0-b122-110bbc556ee7.png" />
 
 Beyond dynamic data widgets, dashboards support a rich variety of content types. You can enhance your analysis by adding static files like PDFs, images, text documents, and spreadsheets, incorporating AI-generated artifacts directly from your chats, or writing notes to document your thought process and findings. This combination of dynamic data, static resources, and personal annotations creates a wide-ranging analytical workspace that captures both the quantitative and qualitative aspects of your research.
 
@@ -15178,13 +15178,13 @@ AI Agents make OpenBB Workspace an intelligent system that understands your data
 
 What makes AI Agents particularly powerful is their contextual awareness. They can access your entire dashboard ecosystem, understand relationships between different data sources and maintain context across multiple queries. This enables sophisticated multi-step analysis where agents can gather data from various widgets, perform calculations, generate insights, and even create new visualizations based on their findings.
 
-<img width="800" alt="OpenBB Workspace AI Agents Interface" src="https://openbb-cms.directus.app/assets/ac287dfe-e279-42bb-8f84-a616ff9df8a8.png" />
+<img width="800" alt="OpenBB Workspace AI Agents Interface" src="https://openbb-cms.directus.app/assets/cbc29ba3-e55b-4ea4-89be-55db92bd017a.png" />
 
 AI Agents excel at both reactive and proactive analysis. They can respond to your specific queries about market conditions, company performance, or economic indicators while also monitoring your dashboards for anomalies, trends, or opportunities that require attention. You can configure agents with custom instructions and prompts, creating specialized assistants for different analytical tasks – from earnings analysis to risk assessment to market surveillance.
 
 The integration between AI Agents and your widget library creates a multiplier effect. Agents can dynamically combine data from multiple sources to apply advanced analytical techniques, and present results in formats that best suit your needs.
 
-<img width="800" alt="OpenBB Workspace AI Agent Widget Integration" src="https://openbb-cms.directus.app/assets/2b463b3b-e1cf-4079-8c11-b49cdcda60ac" />
+<img width="800" alt="OpenBB Workspace AI Agent Widget Integration" src="https://openbb-cms.directus.app/assets/4b79d88c-05c1-4dcb-b8de-31ca934e4066.png" />
 
 Finally, AI agents can produce artifacts (text, tables, charts) that are added back to the dashboard, closing the feedback loop.
 
@@ -15192,13 +15192,13 @@ Finally, AI agents can produce artifacts (text, tables, charts) that are added b
 
 Apps are pre-built dashboard templates designed for specific workflows. Each app includes a curated set of widgets with parameters already linked, a pre-selection of an AI agent for the task at hand, and custom prompts relevant to that use case. When you change a ticker or date range, all connected widgets update together.
 
-<img width="800" alt="OpenBB Workspace Multiple Applications View" src="https://openbb-cms.directus.app/assets/2fc9097e-0941-49df-8d83-7d6b5a87bb45.png" />
+<img width="800" alt="OpenBB Workspace Multiple Applications View" src="https://openbb-cms.directus.app/assets/0410ebc4-13cb-4ec2-aa8a-9ee370d1b56a.png" />
 
 Examples include portfolio management apps with position tracking and risk metrics, market surveillance apps with data monitoring and anomaly detection, and research apps with fundamental analysis and news sentiment tools. The workspace supports unlimited apps that can be shared across teams and customized to fit your exact needs.
 
 Explore our app gallery and use cases at [openbb.co/solutions](https://openbb.co/solutions).
 
-<img width="800" alt="OpenBB Workspace Applications Overview" src="https://openbb-cms.directus.app/assets/0daf9951-9600-41e9-8886-24077ae24b14.png" />
+<img width="800" alt="OpenBB Workspace Applications Overview" src="https://openbb-cms.directus.app/assets/2dabe15f-a422-441e-b888-04eda6db3e1b.png" />
 
 #### Prompts: Context-Aware Suggestions
 
