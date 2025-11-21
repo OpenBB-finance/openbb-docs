@@ -118,6 +118,54 @@ export default {
 				},
 			};
 		},
+		async function sidebarExportPlugin(context) {
+			return {
+				name: "sidebar-export-plugin",
+				async contentLoaded({ content, actions }) {
+					// This runs after docs plugin processes content
+				},
+				async allContentLoaded({ allContent, actions }) {
+					const { setGlobalData, createData } = actions;
+					const docsContent = allContent["docusaurus-plugin-content-docs"]?.default;
+					const loadedVersion = docsContent?.loadedVersions?.[0];
+
+					if (loadedVersion?.sidebars?.tutorialSidebar) {
+						// Get the docs metadata to resolve labels
+						const docsMetadata = loadedVersion.docs;
+
+						// Recursively resolve labels for sidebar items
+						const resolveLabels = (items: any[]): any[] => {
+							return items.map(item => {
+								if (item.type === "doc") {
+									const doc = docsMetadata.find((d: any) => d.id === item.id);
+									return {
+										...item,
+										label: item.label || doc?.title || doc?.id?.split("/").pop(),
+										href: doc?.permalink,
+									};
+								}
+								if (item.type === "category") {
+									let categoryHref = null;
+									if (item.link?.type === "doc" && item.link?.id) {
+										const linkDoc = docsMetadata.find((d: any) => d.id === item.link.id);
+										categoryHref = linkDoc?.permalink;
+									}
+									return {
+										...item,
+										href: categoryHref,
+										items: item.items ? resolveLabels(item.items) : [],
+									};
+								}
+								return item;
+							});
+						};
+
+						const resolvedSidebar = resolveLabels(loadedVersion.sidebars.tutorialSidebar);
+						setGlobalData({ sidebar: resolvedSidebar });
+					}
+				},
+			};
+		},
 		async function pluginLlmsTxt(context) {
 			return {
 				name: "llms-txt-plugin",
