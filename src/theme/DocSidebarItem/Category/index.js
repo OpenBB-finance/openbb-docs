@@ -129,13 +129,15 @@ export default function DocSidebarItemCategory({
 		function handleOpenEvent(e) {
 			if (!autoCollapseCategories) return;
 			const openedId = e.detail?.openedId;
-			if (openedId && openedId !== instanceIdRef.current) {
+			const openedLevel = e.detail?.level;
+			// Only close if the opened category is at the same level as this one
+			if (openedId && openedId !== instanceIdRef.current && openedLevel === level) {
 				setCollapsed(true);
 			}
 		}
 		window.addEventListener("sidebar-category-open", handleOpenEvent);
 		return () => window.removeEventListener("sidebar-category-open", handleOpenEvent);
-	}, [autoCollapseCategories, setCollapsed]);
+	}, [autoCollapseCategories, setCollapsed, level]);
 
 	// Use this instead of `setCollapsed`, because it is also reactive
 	const updateCollapsed = (toCollapsed = !collapsed) => {
@@ -200,13 +202,20 @@ export default function DocSidebarItemCategory({
                                             if (autoCollapseCategories) {
                                                 window.dispatchEvent(
                                                     new CustomEvent("sidebar-category-open", {
-                                                        detail: { openedId: instanceIdRef.current },
+                                                        detail: { openedId: instanceIdRef.current, level },
                                                     }),
                                                 );
                                             }
 										} else {
 											e.preventDefault();
 											updateCollapsed();
+											if (autoCollapseCategories) {
+												window.dispatchEvent(
+													new CustomEvent("sidebar-category-open", {
+														detail: { openedId: instanceIdRef.current, level },
+													}),
+												);
+											}
 										}
 								}
                             : () => {
@@ -229,7 +238,15 @@ export default function DocSidebarItemCategory({
 						categoryLabel={label}
 						onClick={(e) => {
 							e.preventDefault();
+							const willBeExpanded = collapsed;
 							updateCollapsed();
+							if (willBeExpanded && autoCollapseCategories) {
+								window.dispatchEvent(
+									new CustomEvent("sidebar-category-open", {
+										detail: { openedId: instanceIdRef.current, level },
+									}),
+								);
+							}
 						}}
 					/>
 				)}
