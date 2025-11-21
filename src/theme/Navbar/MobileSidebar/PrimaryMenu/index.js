@@ -27,35 +27,61 @@ function ChevronIcon({ isExpanded }) {
 	);
 }
 
-// Expandable menu item for nested items within sections
+// Expandable menu item for nested items within sections (supports recursive nesting)
 function ExpandableMenuItem({
 	item,
 	mobileSidebar,
 	location,
 	isExpanded,
 	onToggle,
+	expandedItems,
+	toggleExpanded,
 }) {
+	const isActive = item.href && location.pathname === item.href;
+
 	return (
 		<div className="mobile-menu-expandable-item">
-			<div
-				className="mobile-menu-item mobile-menu-item--expandable"
-				onClick={onToggle}
-			>
-				{item.label}
-				<ChevronIcon isExpanded={isExpanded} />
+			<div className="mobile-menu-item mobile-menu-item--expandable">
+				{item.href ? (
+					<Link
+						to={item.href}
+						className={`mobile-menu-item-label ${isActive ? "mobile-menu-item--active" : ""}`}
+						onClick={() => mobileSidebar.toggle()}
+					>
+						{item.label}
+					</Link>
+				) : (
+					<span className="mobile-menu-item-label">{item.label}</span>
+				)}
+				<div onClick={onToggle} className="mobile-menu-chevron-wrapper">
+					<ChevronIcon isExpanded={isExpanded} />
+				</div>
 			</div>
 			{isExpanded && (
 				<div className="mobile-menu-sub-items">
-					{item.subItems.map((subItem, idx) => (
-						<Link
-							key={idx}
-							to={subItem.href}
-							className={`mobile-menu-sub-item ${location.pathname === subItem.href ? "mobile-menu-item--active" : ""}`}
-							onClick={() => mobileSidebar.toggle()}
-						>
-							{subItem.label}
-						</Link>
-					))}
+					{item.subItems.map((subItem, idx) =>
+						subItem.expandable ? (
+							<ExpandableMenuItem
+								key={idx}
+								item={subItem}
+								mobileSidebar={mobileSidebar}
+								location={location}
+								isExpanded={expandedItems[subItem.label] || false}
+								onToggle={() => toggleExpanded(subItem.label)}
+								expandedItems={expandedItems}
+								toggleExpanded={toggleExpanded}
+							/>
+						) : (
+							<Link
+								key={idx}
+								to={subItem.href}
+								className={`mobile-menu-sub-item ${location.pathname === subItem.href ? "mobile-menu-item--active" : ""}`}
+								onClick={() => mobileSidebar.toggle()}
+							>
+								{subItem.label}
+							</Link>
+						)
+					)}
 				</div>
 			)}
 		</div>
@@ -92,6 +118,7 @@ function WorkspaceContent({ mobileSidebar, location }) {
 				},
 				{
 					label: "Enterprise",
+					href: "/workspace/getting-started/enterprise",
 					expandable: true,
 					subItems: [
 						{
@@ -124,9 +151,9 @@ function WorkspaceContent({ mobileSidebar, location }) {
 			items: [
 				{
 					label: "Widgets",
+					href: "/workspace/analysts/widgets/overview",
 					expandable: true,
 					subItems: [
-						{ label: "Overview", href: "/workspace/analysts/widgets/overview" },
 						{ label: "Core Widgets", href: "/workspace/analysts/widgets/core-widgets" },
 						{ label: "Interacting With Data", href: "/workspace/analysts/widgets/interacting-with-data" },
 						{ label: "Static Files", href: "/workspace/analysts/widgets/static-files" },
@@ -138,12 +165,9 @@ function WorkspaceContent({ mobileSidebar, location }) {
 				{ label: "Apps", href: "/workspace/analysts/apps" },
 				{
 					label: "AI Features",
+					href: "/workspace/analysts/ai-features/copilot-basics",
 					expandable: true,
 					subItems: [
-						{
-							label: "Copilot Basics",
-							href: "/workspace/analysts/ai-features/copilot-basics",
-						},
 						{
 							label: "Context Management",
 							href: "/workspace/analysts/ai-features/copilot-context",
@@ -176,12 +200,9 @@ function WorkspaceContent({ mobileSidebar, location }) {
 				},
 				{
 					label: "Excel Add-in",
+					href: "/workspace/analysts/excel-addin/excel-overview",
 					expandable: true,
 					subItems: [
-						{
-							label: "Overview",
-							href: "/workspace/analysts/excel-addin/excel-overview",
-						},
 						{
 							label: "Installation",
 							href: "/workspace/analysts/excel-addin/excel-installation",
@@ -467,6 +488,8 @@ function WorkspaceContent({ mobileSidebar, location }) {
 								location={location}
 								isExpanded={expandedItems[item.label] || false}
 								onToggle={() => toggleExpanded(item.label)}
+								expandedItems={expandedItems}
+								toggleExpanded={toggleExpanded}
 							/>
 						) : (
 							<Link
@@ -506,9 +529,19 @@ function ODPContent({ mobileSidebar, location }) {
 				{ label: "Installation", href: "/python/installation" },
 				{
 					label: "Settings",
+					href: "/python/settings",
 					expandable: true,
 					subItems: [
-						{ label: "Settings", href: "/python/settings" },
+						{
+							label: "User Settings",
+							href: "/python/settings/user_settings",
+							expandable: true,
+							subItems: [
+								{ label: "API Keys", href: "/python/settings/user_settings/api_keys" },
+								{ label: "Preferences", href: "/python/settings/user_settings/preferences" },
+								{ label: "Defaults", href: "/python/settings/user_settings/defaults" },
+							],
+						},
 						{ label: "System Settings", href: "/python/settings/system_settings" },
 						{ label: "MCP Settings", href: "/python/settings/mcp_settings" },
 						{ label: "Environment Variables", href: "/python/settings/environment_variables" },
@@ -516,9 +549,9 @@ function ODPContent({ mobileSidebar, location }) {
 				},
 				{
 					label: "Quick Start",
+					href: "/python/quickstart",
 					expandable: true,
 					subItems: [
-						{ label: "Quick Start", href: "/python/quickstart" },
 						{ label: "REST API", href: "/python/quickstart/rest_api" },
 						{ label: "MCP Server", href: "/python/quickstart/mcp" },
 						{ label: "Workspace Integration", href: "/python/quickstart/workspace" },
@@ -526,9 +559,9 @@ function ODPContent({ mobileSidebar, location }) {
 				},
 				{
 					label: "Basic Usage",
+					href: "/python/basic_usage",
 					expandable: true,
 					subItems: [
-						{ label: "Basic Usage", href: "/python/basic_usage" },
 						{ label: "Input Query Parameters", href: "/python/basic_usage/query_parameters" },
 						{ label: "Response Model Output", href: "/python/basic_usage/response_model" },
 					],
@@ -536,31 +569,55 @@ function ODPContent({ mobileSidebar, location }) {
 				{ label: "Reference", href: "/python/reference" },
 				{
 					label: "Extensions",
+					href: "/python/extensions",
 					expandable: true,
 					subItems: [
-						{ label: "Introduction", href: "/python/extensions" },
 						{ label: "openbb-core", href: "/python/extensions/openbb-core" },
+						{
+							label: "Infrastructure",
+							href: "/python/extensions/infrastructure/openbb-charting",
+							expandable: true,
+							subItems: [
+								{ label: "Technical Indicators", href: "/python/extensions/infrastructure/openbb-charting/indicators" },
+							],
+						},
+						{
+							label: "Interface",
+							href: "/python/extensions/interface/openbb-api",
+							expandable: true,
+							subItems: [
+								{ label: "openbb-mcp", href: "/python/extensions/interface/openbb-mcp" },
+							],
+						},
 						{ label: "Providers", href: "/python/extensions/providers" },
-						{ label: "openbb-api", href: "/python/extensions/interface/openbb-api" },
-						{ label: "openbb-mcp", href: "/python/extensions/interface/openbb-mcp" },
-						{ label: "openbb-charting", href: "/python/extensions/infrastructure/openbb-charting" },
-						{ label: "Technical Indicators", href: "/python/extensions/infrastructure/openbb-charting/indicators" },
-						{ label: "openbb-econometrics", href: "/python/extensions/data-processing/econometrics" },
-						{ label: "openbb-technical", href: "/python/extensions/data-processing/technical" },
-						{ label: "openbb-quantitative", href: "/python/extensions/data-processing/quantitative" },
+						{
+							label: "Data Processing",
+							href: "/python/extensions/data-processing/econometrics",
+							expandable: true,
+							subItems: [
+								{ label: "openbb-technical", href: "/python/extensions/data-processing/technical" },
+								{ label: "openbb-quantitative", href: "/python/extensions/data-processing/quantitative" },
+							],
+						},
 					],
 				},
 				{
 					label: "Developer",
+					href: "/python/developer",
 					expandable: true,
 					subItems: [
-						{ label: "Developer", href: "/python/developer" },
 						{ label: "Architecture Overview", href: "/python/developer/architecture_overview" },
 						{ label: "Standardization", href: "/python/developer/standardization" },
-						{ label: "Introduction", href: "/python/developer/extension_types" },
-						{ label: "Provider Extensions", href: "/python/developer/extension_types/provider" },
-						{ label: "Router Extensions", href: "/python/developer/extension_types/router" },
-						{ label: "OBBject Extensions", href: "/python/developer/extension_types/obbject" },
+						{
+							label: "Extension Types",
+							href: "/python/developer/extension_types",
+							expandable: true,
+							subItems: [
+								{ label: "Provider Extensions", href: "/python/developer/extension_types/provider" },
+								{ label: "Router Extensions", href: "/python/developer/extension_types/router" },
+								{ label: "OBBject Extensions", href: "/python/developer/extension_types/obbject" },
+							],
+						},
 						{ label: "How-To", href: "/python/developer/how-to" },
 					],
 				},
@@ -590,9 +647,9 @@ function ODPContent({ mobileSidebar, location }) {
 				{ label: "Interactive Tables", href: "/cli/interactive-tables" },
 				{
 					label: "Routines",
+					href: "/cli/routines/introduction-to-routines",
 					expandable: true,
 					subItems: [
-						{ label: "Introduction to Routines", href: "/cli/routines/introduction-to-routines" },
 						{ label: "Routine Macro Recorder", href: "/cli/routines/routine-macro-recorder" },
 						{ label: "Advanced Routines", href: "/cli/routines/advanced-routines" },
 					],
@@ -647,6 +704,8 @@ function ODPContent({ mobileSidebar, location }) {
 								location={location}
 								isExpanded={expandedItems[item.label] || false}
 								onToggle={() => toggleExpanded(item.label)}
+								expandedItems={expandedItems}
+								toggleExpanded={toggleExpanded}
 							/>
 						) : (
 							<Link
