@@ -1463,6 +1463,17 @@ aside[class*="tocCollapsible"] li {
   color: #33BBFF !important;
 }
 
+/* Nested expandable items within dropdowns should match sub-item styling */
+.mobile-menu-sub-items .mobile-menu-item--expandable {
+  font-size: 15px !important;
+  padding: 10px 0 !important;
+}
+
+.mobile-menu-sub-items .mobile-menu-item-label {
+  font-size: 15px !important;
+  font-weight: 400 !important;
+}
+
 .mobile-menu-link {
   color: white !important;
   font-weight: 500 !important;
