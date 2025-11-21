@@ -309,6 +309,11 @@ export default {
 	],
 	themeConfig: {
 		image: "img/banner.png",
+		docs: {
+			sidebar: {
+				autoCollapseCategories: true,
+			},
+		},
 		prism: {
 			theme: themes.vsLight,
 			darkTheme: themes.vsDark,

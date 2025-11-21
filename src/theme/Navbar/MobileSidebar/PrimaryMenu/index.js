@@ -445,19 +445,40 @@ function WorkspaceContent({ mobileSidebar, location }) {
 	// Function to determine which items should be initially expanded based on current path
 	const getInitialExpandedItems = () => {
 		const expanded = {};
-		workspaceLinks.forEach((section) => {
-			section.items.forEach((item) => {
-				if (item.expandable && item.subItems) {
-					// Check if any subItem matches the current pathname
-					const hasActiveSubItem = item.subItems.some(
-						(subItem) => subItem.href === location.pathname,
-					);
-					if (hasActiveSubItem) {
-						expanded[item.label] = true;
-					}
+
+		// Recursive function to check if item or its children contain active path
+		const checkAndExpandItem = (item) => {
+			if (!item.expandable || !item.subItems) return false;
+
+			// Check if this item's href matches
+			if (item.href === location.pathname) {
+				expanded[item.label] = true;
+				return true;
+			}
+
+			// Check all subItems recursively
+			let hasActiveChild = false;
+			item.subItems.forEach((subItem) => {
+				if (subItem.href === location.pathname) {
+					expanded[item.label] = true;
+					hasActiveChild = true;
+				}
+				// Recursively check nested expandable items
+				if (subItem.expandable && checkAndExpandItem(subItem)) {
+					expanded[item.label] = true;
+					hasActiveChild = true;
 				}
 			});
+
+			return hasActiveChild;
+		};
+
+		workspaceLinks.forEach((section) => {
+			section.items.forEach((item) => {
+				checkAndExpandItem(item);
+			});
 		});
+
 		return expanded;
 	};
 
@@ -468,10 +489,36 @@ function WorkspaceContent({ mobileSidebar, location }) {
 	}, [location.pathname]);
 
 	const toggleExpanded = (itemLabel) => {
-		setExpandedItems((prev) => ({
-			...prev,
-			[itemLabel]: !prev[itemLabel],
-		}));
+		setExpandedItems((prev) => {
+			// If the item is currently expanded, just close it
+			if (prev[itemLabel]) {
+				return {
+					...prev,
+					[itemLabel]: false,
+				};
+			}
+
+			// Otherwise, close all items at the same level and open this one
+			// Get all top-level item labels from workspaceLinks
+			const topLevelLabels = workspaceLinks.flatMap(section =>
+				section.items.map(item => item.label)
+			);
+
+			const newExpanded = { ...prev };
+
+			// If this is a top-level item, close all other top-level items
+			if (topLevelLabels.includes(itemLabel)) {
+				topLevelLabels.forEach(label => {
+					if (label !== itemLabel) {
+						newExpanded[label] = false;
+					}
+				});
+			}
+
+			// Open the clicked item
+			newExpanded[itemLabel] = true;
+			return newExpanded;
+		});
 	};
 
 	return (
@@ -661,19 +708,40 @@ function ODPContent({ mobileSidebar, location }) {
 	// Function to determine which items should be initially expanded based on current path
 	const getInitialExpandedItems = () => {
 		const expanded = {};
-		odpLinks.forEach((section) => {
-			section.items.forEach((item) => {
-				if (item.expandable && item.subItems) {
-					// Check if any subItem matches the current pathname
-					const hasActiveSubItem = item.subItems.some(
-						(subItem) => subItem.href === location.pathname,
-					);
-					if (hasActiveSubItem) {
-						expanded[item.label] = true;
-					}
+
+		// Recursive function to check if item or its children contain active path
+		const checkAndExpandItem = (item) => {
+			if (!item.expandable || !item.subItems) return false;
+
+			// Check if this item's href matches
+			if (item.href === location.pathname) {
+				expanded[item.label] = true;
+				return true;
+			}
+
+			// Check all subItems recursively
+			let hasActiveChild = false;
+			item.subItems.forEach((subItem) => {
+				if (subItem.href === location.pathname) {
+					expanded[item.label] = true;
+					hasActiveChild = true;
+				}
+				// Recursively check nested expandable items
+				if (subItem.expandable && checkAndExpandItem(subItem)) {
+					expanded[item.label] = true;
+					hasActiveChild = true;
 				}
 			});
+
+			return hasActiveChild;
+		};
+
+		odpLinks.forEach((section) => {
+			section.items.forEach((item) => {
+				checkAndExpandItem(item);
+			});
 		});
+
 		return expanded;
 	};
 
@@ -684,10 +752,36 @@ function ODPContent({ mobileSidebar, location }) {
 	}, [location.pathname]);
 
 	const toggleExpanded = (itemLabel) => {
-		setExpandedItems((prev) => ({
-			...prev,
-			[itemLabel]: !prev[itemLabel],
-		}));
+		setExpandedItems((prev) => {
+			// If the item is currently expanded, just close it
+			if (prev[itemLabel]) {
+				return {
+					...prev,
+					[itemLabel]: false,
+				};
+			}
+
+			// Otherwise, close all items at the same level and open this one
+			// Get all top-level item labels from odpLinks
+			const topLevelLabels = odpLinks.flatMap(section =>
+				section.items.map(item => item.label)
+			);
+
+			const newExpanded = { ...prev };
+
+			// If this is a top-level item, close all other top-level items
+			if (topLevelLabels.includes(itemLabel)) {
+				topLevelLabels.forEach(label => {
+					if (label !== itemLabel) {
+						newExpanded[label] = false;
+					}
+				});
+			}
+
+			// Open the clicked item
+			newExpanded[itemLabel] = true;
+			return newExpanded;
+		});
 	};
 
 	return (
