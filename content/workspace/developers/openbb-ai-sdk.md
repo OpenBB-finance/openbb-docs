@@ -37,18 +37,18 @@ from openbb_ai import message_chunk, reasoning_step
 
 async def query(request: QueryRequest):
     """Main entry point for your agent."""
-    
+
     # Show the user what you're doing
     yield reasoning_step(
         event_type="INFO",
         message="Processing your request..."
     ).model_dump()
-    
+
     # Access the user's latest message
     last_message = request.messages[-1]
     if last_message.role == "human":
         user_query = last_message.content
-        
+
     # Stream a response from LLM
     client = openai.AsyncOpenAI()
     async for event in await client.chat.completions.create(
@@ -66,7 +66,8 @@ The `QueryRequest` object contains all context your agent needs:
 
 #### Core Fields
 
-**`messages`** - Chat conversation history  
+**`messages`** - Chat conversation history
+
 ```python
 for message in request.messages:
     if message.role == "human":
@@ -75,7 +76,8 @@ for message in request.messages:
         previous_response = message.content
 ```
 
-**`widgets`** - Widgets available to your agent  
+**`widgets`** - Widgets available to your agent
+
 ```python
 # User-selected widgets (requires widget-dashboard-select feature)
 if request.widgets and request.widgets.primary:
@@ -113,18 +115,18 @@ The most critical pattern in OpenBB agents is the widget data flow. This is a **
 async def query(request: QueryRequest):
     # Only fetch data on new human messages or orchestration requests
     last_message = request.messages[-1]
-    
+
     # Check for orchestration requests from openbb-copilot
     orchestration_requested = (
         last_message.role == "ai" and last_message.agent_id == "openbb-copilot"
     )
-    
+
     should_fetch_data = (
         (last_message.role == "human" or orchestration_requested)
-        and request.widgets 
+        and request.widgets
         and request.widgets.primary
     )
-    
+
     if should_fetch_data:
         # Proceed to fetch data...
 ```
@@ -134,7 +136,7 @@ async def query(request: QueryRequest):
 ```python
 if should_fetch_data:
     widget_requests = []
-    
+
     for widget in request.widgets.primary:
         widget_requests.append(
             WidgetRequest(
@@ -144,7 +146,7 @@ if should_fetch_data:
                 }
             )
         )
-    
+
         async def retrieve_widget_data() -> AsyncGenerator[FunctionCallSSE, None]:
             yield get_widget_data(widget_requests)
 
@@ -170,21 +172,21 @@ async def query(request: QueryRequest):
         and hasattr(last_message, "data")
         and last_message.data
     )
-    
+
     if is_tool_response:
         # Process the widget data
         yield reasoning_step(
             event_type="INFO",
             message="Processing widget data..."
         ).model_dump()
-        
+
         # Build context from widget data
         context_str = "Widget Data:\n"
         for result in last_message.data:
             for item in result.items:
                 # Most widget data comes as simple content
                 context_str += f"{item.content}\n"
-        
+
         # Use the data in your LLM context or analysis
         # Process with your LLM...
 ```
@@ -197,7 +199,7 @@ from openbb_ai.models import QueryRequest, ClientFunctionCallError, DataContent
 
 async def query(request: QueryRequest):
     last_message = request.messages[-1]
-    
+
     # Check if this is a tool response first
     is_tool_response = (
         last_message
@@ -206,24 +208,24 @@ async def query(request: QueryRequest):
         and hasattr(last_message, "data")
         and last_message.data
     )
-    
+
     if is_tool_response:
         # Process widget data (Step 3)
         yield reasoning_step(event_type="INFO", message="Processing data...").model_dump()
-        
+
         for item in last_message.data:
             if isinstance(item, DataContent):
                 # Process the data and respond
                 yield message_chunk("Here's what I found in the data...").model_dump()
         return
-    
+
     # Check for orchestration requests
     orchestration_requested = (
         last_message.role == "ai" and last_message.agent_id == "openbb-copilot"
     )
-    
+
     # Phase 1: Check if we need to fetch data
-    if ((last_message.role == "human" or orchestration_requested) 
+    if ((last_message.role == "human" or orchestration_requested)
         and request.widgets and request.widgets.primary):
         widget_requests = [
             WidgetRequest(
@@ -234,15 +236,15 @@ async def query(request: QueryRequest):
             )
             for widget in request.widgets.primary
         ]
-        
+
         yield reasoning_step(event_type="INFO", message="Fetching widget data...").model_dump()
         yield get_widget_data(widget_requests).model_dump()
         return  # EXIT AND WAIT
-    
+
     # Phase 2: Process fetched data
     if hasattr(last_message, 'data'):
         yield reasoning_step(event_type="INFO", message="Processing data...").model_dump()
-        
+
         for item in last_message.data:
             if isinstance(item, DataContent):
                 # Process the data and respond
@@ -360,7 +362,7 @@ for widget in request.widgets.primary:
         cite(
             widget=widget,
             input_arguments={
-                param.name: param.current_value 
+                param.name: param.current_value
                 for param in widget.params
             },
             extra_details={"timeframe": "1D"}
@@ -394,15 +396,15 @@ async def handle_widget_data(data: list[DataContent | DataFileReferences]):
                     pdf_bytes = base64.b64decode(item.content)
                 elif isinstance(item, SingleFileReference):
                     pdf_url = item.url
-                    
+
             elif isinstance(item.data_format, SpreadsheetDataFormat):
                 # Handle Excel/CSV - use pandas
                 df = pd.read_json(item.content)
-                
+
             elif isinstance(item.data_format, ImageDataFormat):
                 # Handle images - may need OCR
                 image_data = base64.b64decode(item.content)
-                
+
             else:  # RawObjectDataFormat
                 # Handle JSON/dict data
                 data = json.loads(item.content)
@@ -419,14 +421,14 @@ import json
 
 async def query(request: QueryRequest):
     """Complete agent implementation with widget data flow."""
-    
+
     last_message = request.messages[-1]
-    
+
     # Check for orchestration requests
     orchestration_requested = (
         last_message.role == "ai" and last_message.agent_id == "openbb-copilot"
     )
-    
+
     # Phase 1: Fetch widget data if needed
     if ((last_message.role == "human" or orchestration_requested)
         and request.widgets and request.widgets.primary):
@@ -439,22 +441,22 @@ async def query(request: QueryRequest):
             )
             for widget in request.widgets.primary
         ]
-        
+
         yield reasoning_step(
-            event_type="INFO", 
+            event_type="INFO",
             message="Fetching market data..."
         ).model_dump()
-        
+
         yield get_widget_data(widget_requests).model_dump()
         return  # Exit and wait for callback
-    
+
     # Phase 2: Process widget data
     if hasattr(last_message, 'data'):
         yield reasoning_step(
             event_type="INFO",
             message="Analyzing data..."
         ).model_dump()
-        
+
         # Process the data
         results = []
         for item in last_message.data:
@@ -464,15 +466,15 @@ async def query(request: QueryRequest):
                     message=f"Failed: {item.content}"
                 ).model_dump()
                 continue
-                
+
             if isinstance(item, DataContent):
                 for data_item in item.items:
                     data = json.loads(data_item.content)
                     results.append(data)
-        
+
         # Stream response from LLM
         yield message_chunk("Based on the market data analysis:\n").model_dump()
-        
+
         # Continue with LLM streaming
         client = openai.AsyncOpenAI()
         async for event in await client.chat.completions.create(
@@ -482,7 +484,7 @@ async def query(request: QueryRequest):
         ):
             if chunk := event.choices[0].delta.content:
                 yield message_chunk(chunk).model_dump()
-        
+
         # Show data table
         if results:
             yield table(
@@ -490,7 +492,7 @@ async def query(request: QueryRequest):
                 name="Market Summary",
                 description="Key metrics"
             ).model_dump()
-        
+
         # Add citations
         citation_list = [
             cite(widget=widget, input_arguments={
@@ -499,12 +501,12 @@ async def query(request: QueryRequest):
             for widget in request.widgets.primary
         ]
         yield citations(citation_list).model_dump()
-        
+
         yield reasoning_step(
             event_type="SUCCESS",
             message="Analysis complete"
         ).model_dump()
-    
+
     # Phase 3: Handle regular chat without widgets
     else:
         yield message_chunk("Please add some widgets to analyze market data.").model_dump()
@@ -523,7 +525,7 @@ To see the available models check [https://github.com/OpenBB-finance/openbb-ai/b
 - `messages` - Chat conversation history between user and agents. List of `LlmMessage` objects with roles ("human", "ai", "tool")
 - `widgets` - Widget collections organized by priority:
   - `primary` - Widgets explicitly selected by user (requires `"widget-dashboard-select": true` feature)
-  - `secondary` - All widgets on current dashboard (requires `"widget-dashboard-search": true` feature)  
+  - `secondary` - All widgets on current dashboard (requires `"widget-dashboard-search": true` feature)
   - `extra` - Files, artifacts, and custom data sources uploaded to chat
 - `workspace_state` - Current workspace context including:
   - Dashboard info, current tab, available agents, user action history
@@ -604,7 +606,7 @@ To see the available models check [https://github.com/OpenBB-finance/openbb-ai/b
 - `data.eventType` - Status level indicating importance:
   - `"INFO"` - General progress updates (e.g., "Analyzing data...")
   - `"SUCCESS"` - Successful completion (e.g., "Data retrieved successfully")
-  - `"WARNING"` - Non-critical issues (e.g., "Some data may be delayed")  
+  - `"WARNING"` - Non-critical issues (e.g., "Some data may be delayed")
   - `"ERROR"` - Failures that users should know about (e.g., "Failed to fetch data")
 - `data.message` - Human-readable status message shown to user
 - `data.details` - Optional array of key-value pairs for additional context
@@ -680,7 +682,7 @@ To see the available models check [https://github.com/OpenBB-finance/openbb-ai/b
 - `extra_citations` - Additional `Citation` objects for this data collection
 - Most widget responses return this format with multiple data items
 
-**`DataFileReferences`** - Container for multiple external file references  
+**`DataFileReferences`** - Container for multiple external file references
 - `items` - List of `SingleFileReference` objects pointing to external files
 - `extra_citations` - Additional `Citation` objects for this file collection
 - Less common than `DataContent`, used when data is stored externally
