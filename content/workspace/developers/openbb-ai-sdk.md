@@ -90,7 +90,10 @@ if request.widgets and request.widgets.secondary:
         print(f"On dashboard: {widget.name}")
 ```
 
-**`workspace_state`** - Current workspace context  
+See the [agents.json reference](https://docs.openbb.co/workspace/developers/json-specs/agents-json-reference) for details how to enable the `widget-dashboard-select` and `widget-dashboard-search` features.
+
+**`workspace_state`** - Current workspace context
+
 ```python
 if request.workspace_state and request.workspace_state.current_dashboard_info:
     dashboard = request.workspace_state.current_dashboard_info
