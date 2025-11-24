@@ -8,7 +8,7 @@
   }
 
   article {
-    @apply prose lg:prose-lg dark:prose-invert !max-w-none lg:pl-[38px] xl:!mr-[20px];
+    @apply prose dark:prose-invert !max-w-none lg:pl-[38px] xl:!mr-[20px];
   }
 
   /*.pagination {
@@ -20,15 +20,27 @@
   }
 
   #__docusaurus {
-    @apply dark:bg-grey-900;
+    @apply bg-white dark:bg-[#151518];
   }
 
   article h1 {
-    @apply !text-[32px] uppercase font-bold tracking-widest;
+    @apply !text-[32px] font-semibold text-black dark:text-white;
   }
 
   article h2 {
-    @apply !text-[28px];
+    @apply !text-[26px] font-bold text-[#151518] dark:text-white;
+  }
+
+  article h3 {
+    @apply !text-[20px] font-medium text-[#303038] dark:text-white !mb-2;
+  }
+
+  article p {
+    @apply text-[#46464F] dark:text-[#EBEBED];
+  }
+
+  article a {
+    @apply text-[#0088CC] dark:text-[#33BBFF] dark:hover:text-[#0088CC];
   }
 
   thead tr {
@@ -71,6 +83,9 @@
   }
   ._login-button {
     @apply _btn-common bg-[#0088CC] text-white hover:bg-[#006699];
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    min-width: 56px !important;
   }
   ._btn-common {
     @apply inline-flex w-full items-center justify-center gap-2 rounded py-2 px-6 text-center !no-underline transition duration-150 ease-out md:w-fit;
@@ -117,21 +132,96 @@
 }
 
 .pagination-nav__link {
-  border-radius: 4px !important;
-  --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color),
-    0 1px 2px -1px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
-    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  border-radius: 6px !important;
+  background-color: #0088CC !important;
+  color: white !important;
+  border: none !important;
+  box-shadow: none !important;
   white-space: nowrap;
+  padding: 12px 20px !important;
+  transition: background-color 0.2s ease;
+  width: fit-content !important;
+  max-width: none !important;
+}
+
+.pagination-nav__link--next {
+  margin-left: auto !important;
+}
+
+.pagination-nav__link:hover {
+  background-color: #006699 !important;
+  color: white !important;
+  text-decoration: none !important;
 }
 
 [data-theme="dark"] .pagination-nav__link {
-  background: black;
+  background-color: #0088CC !important;
+  color: white !important;
 }
 
+[data-theme="dark"] .pagination-nav__link:hover {
+  background-color: #006699 !important;
+}
+
+/* Hide the "Next" and "Previous" sublabels */
+.pagination-nav__sublabel {
+  display: none !important;
+}
+
+/* Style the page title label */
+.pagination-nav__label {
+  color: white !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+/* Remove the >> text from the label by hiding overflow or trimming */
+.pagination-nav__link--next .pagination-nav__label {
+  /* This will hide the >> by not showing it */
+  text-indent: 0 !important;
+}
+
+/* Use a more specific approach to hide >> characters */
+.pagination-nav__link {
+  font-size: 0 !important;
+}
+
+.pagination-nav__label {
+  font-size: 16px !important;
+}
+
+/* Hide home icon in breadcrumbs */
 .breadcrumbs__link > svg {
-  margin-bottom: -7px;
+  display: none;
+}
+
+/* Hide breadcrumb separator/chevron */
+.breadcrumbs__item:not(:last-child):after {
+  display: none;
+}
+
+/* Remove padding/margin and align breadcrumbs left */
+.breadcrumbs {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+
+nav.breadcrumbs {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+
+.breadcrumbs__item {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+
+.theme-doc-breadcrumbs {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
 }
 
 @media (min-width: 1000px) {
@@ -141,12 +231,60 @@
   }
 }
 
+/* Custom chevron - using right-pointing chevron */
+/* Override Infima's default down-pointing arrow with right-pointing chevron */
 .menu__link--sublist-caret::after {
-  background: var(--ifm-menu-link-sublist-icon) 50% / 2rem 1.5rem !important;
+  background: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 12L10 8L6 4' stroke='%23303038' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 50% / 1.25rem 1.25rem !important;
+  transform: rotate(0deg) !important;
+  transition: transform 0.2s ease;
 }
 
+[data-theme="dark"] .menu__link--sublist-caret::after {
+  background: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 12L10 8L6 4' stroke='%23B8B9BC' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 50% / 1.25rem 1.25rem !important;
+  filter: none !important;
+  transform: rotate(0deg) !important;
+  transition: transform 0.2s ease;
+}
+
+/* Default state - pointing right */
 .menu__caret::before {
-  background: var(--ifm-menu-link-sublist-icon) 50% / 2rem 1.5rem !important;
+  background: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 12L10 8L6 4' stroke='%23303038' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 50% / 1.25rem 1.25rem !important;
+  transform: rotate(0deg) !important;
+  transition: transform 0.2s ease;
+}
+
+[data-theme="dark"] .menu__caret::before {
+  background: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 12L10 8L6 4' stroke='%23B8B9BC' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 50% / 1.25rem 1.25rem !important;
+  filter: none !important;
+  transform: rotate(0deg) !important;
+  transition: transform 0.2s ease;
+}
+
+/* When collapsed (closed), keep pointing right - override Infima's rotate(90deg) */
+.menu__list-item--collapsed .menu__link--sublist-caret::after {
+  transform: rotate(0deg) !important;
+  transition: transform 0.2s ease;
+}
+
+.menu__list-item--collapsed .menu__caret::before {
+  transform: rotate(0deg) !important;
+  transition: transform 0.2s ease;
+}
+
+/* Remove background on chevron hover */
+.menu__caret:hover {
+  background-color: transparent !important;
+}
+
+/* Rotate chevron to point down when expanded (when NOT collapsed) */
+.menu__list-item:not(.menu__list-item--collapsed) .menu__link--sublist-caret::after {
+  transform: rotate(90deg) !important;
+  transition: transform 0.2s ease;
+}
+
+.menu__list-item:not(.menu__list-item--collapsed) .menu__caret::before {
+  transform: rotate(90deg) !important;
+  transition: transform 0.2s ease;
 }
 
 :root {
@@ -161,6 +299,7 @@
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
   */
+  --ifm-navbar-background-color: #151518;
   --ifm-table-border-color: var(--docs-color-border);
   --aa-primary-color-rgb: rgba(
     var(--aa-text-color-rgb),
@@ -182,9 +321,73 @@
 
 .DocSearch-Button {
   border-radius: 6px !important;
-  border-radius: 6px !important;
   border: 1px solid #303038 !important;
   background-color: #212126 !important;
+  color: #a2a2a2 !important;
+  min-width: 240px !important;
+}
+
+.DocSearch-Button:hover,
+.DocSearch-Button:focus,
+.DocSearch-Button:active {
+  border-color: #8A8A90 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.DocSearch-Button .DocSearch-Search-Icon {
+  width: 16px !important;
+  height: 16px !important;
+  color: #a2a2a2 !important;
+}
+
+.DocSearch-Button .DocSearch-Search-Icon svg {
+  color: #a2a2a2 !important;
+  fill: #a2a2a2 !important;
+  stroke: #a2a2a2 !important;
+}
+
+[data-theme="dark"] .DocSearch-Button .DocSearch-Search-Icon {
+  color: #a2a2a2 !important;
+}
+
+[data-theme="dark"] .DocSearch-Button .DocSearch-Search-Icon svg {
+  color: #a2a2a2 !important;
+  fill: #a2a2a2 !important;
+  stroke: #a2a2a2 !important;
+}
+
+.DocSearch-Button .DocSearch-Button-Placeholder {
+  font-size: 13px !important;
+}
+
+/* Force dark mode search button appearance in both light and dark modes */
+[data-theme="light"] .DocSearch-Button {
+  background-color: #212126 !important;
+  border: 1px solid #303038 !important;
+  color: #a2a2a2 !important;
+}
+
+[data-theme="light"] .DocSearch-Button .DocSearch-Search-Icon {
+  color: #a2a2a2 !important;
+}
+
+[data-theme="light"] .DocSearch-Button .DocSearch-Search-Icon svg {
+  color: #a2a2a2 !important;
+  fill: #a2a2a2 !important;
+  stroke: #a2a2a2 !important;
+}
+
+[data-theme="light"] .DocSearch-Button .DocSearch-Button-Keys {
+  background: #303038 !important;
+  color: #a2a2a2 !important;
+  border: none !important;
+}
+
+[data-theme="light"] .DocSearch-Button .DocSearch-Button-Key {
+  background: #303038 !important;
+  color: #a2a2a2 !important;
+  box-shadow: none !important;
 }
 
 @media (max-width: 440px) {
@@ -225,7 +428,7 @@
 }
 
 [data-theme="light"] .DocSearch {
-  /* --docsearch-primary-color: var(--ifm-color-primary); */
+  --docsearch-primary-color: #0088CC;
   /* --docsearch-text-color: var(--ifm-font-color-base); */
   --docsearch-muted-color: var(--ifm-color-secondary-darkest);
   --docsearch-container-background: rgba(94, 100, 112, 0.7);
@@ -243,6 +446,7 @@
 }
 
 [data-theme="dark"] .DocSearch {
+  --docsearch-primary-color: #0088CC;
   --docsearch-text-color: var(--ifm-font-color-base);
   --docsearch-muted-color: var(--ifm-color-secondary-darkest);
   --docsearch-container-background: rgba(47, 55, 69, 0.7);
@@ -429,6 +633,14 @@ pre[class*="language-"] {
 
 .breadcrumbs__link {
   border-radius: 4px !important;
+  background-color: transparent !important;
+  font-size: 14px !important;
+  color: #8A8A90 !important;
+  padding: 0 !important;
+}
+
+.breadcrumbs__link:hover {
+  background-color: transparent !important;
 }
 
 .grid-child > p {
@@ -453,7 +665,7 @@ details summary {
 }
 
 [data-theme="dark"] #__docusaurus {
-  background-color: #070707 !important;
+  background-color: #151518 !important;
 }
 
 .main-wrapper main {
@@ -497,6 +709,40 @@ html[data-theme="dark"] .sidebar-divider {
   display: flex;
   justify-content: left;
   align-items: center;
+  color: #6D6E74 !important;
+}
+
+[data-theme="dark"] .theme-edit-this-page {
+  color: #8A8A90 !important;
+}
+
+.theme-edit-this-page a {
+  color: #6D6E74 !important;
+}
+
+[data-theme="dark"] .theme-edit-this-page a {
+  color: #8A8A90 !important;
+}
+
+.theme-edit-this-page svg {
+  color: #6D6E74 !important;
+  fill: #6D6E74 !important;
+}
+
+[data-theme="dark"] .theme-edit-this-page svg {
+  color: #8A8A90 !important;
+  fill: #8A8A90 !important;
+}
+
+.theme-last-updated {
+  font-weight: normal !important;
+}
+
+.theme-last-updated b,
+.theme-last-updated strong,
+.theme-last-updated time,
+.theme-last-updated .theme-last-updated__author {
+  font-weight: normal !important;
 }
 
 .pro-border-gradient {
@@ -552,41 +798,50 @@ div[role="dialog"][data-state="open"] button:hover {
 .theme-doc-sidebar-item-link .menu__link,
 .theme-doc-sidebar-item-category .menu__link,
 .menu__list-item-collapsible {
-  @apply text-[#717177] dark:text-[#B8B9BC] hover:text-black dark:hover:text-white hover:bg-[#EBEBED] dark:hover:bg-[#212126] rounded-md transition-colors;
+  @apply text-[#303038] dark:text-[#B8B9BC] hover:text-[#8A8A90] dark:hover:text-white hover:bg-transparent rounded-md transition-colors;
 }
 
 
 .menu__list-item-collapsible {
-  @apply hover:bg-[#EBEBED] dark:hover:bg-[#212126];
+  @apply hover:bg-transparent;
 }
 
 .menu__link--active,
 .menu__link.menu__link--active[aria-current="page"],
 .menu__list-item-collapsible--active {
-  @apply bg-[#EBEBED] dark:bg-[#212126] text-black dark:text-white;
+  @apply text-[#0088CC] dark:text-[#33BBFF] bg-transparent;
 }
 
 .menu__link.menu__link--active[aria-current="page"] {
-  @apply bg-[#EBEBED] dark:bg-[#212126] text-black dark:text-white;
+  @apply text-[#0088CC] dark:text-[#33BBFF] bg-transparent;
 }
 
 .menu__list-item-collapsible--active .menu__link--sublist.menu__link--active {
-  @apply bg-[#EBEBED] dark:bg-[#212126] text-black dark:text-white;
+  @apply text-[#0088CC] dark:text-[#33BBFF] bg-transparent;
 }
 
 .menu__link:hover,
 .menu__list-item-collapsible:hover .menu__link--sublist {
-  @apply bg-[#EBEBED] dark:bg-[#212126] text-black dark:text-white;
+  @apply bg-transparent text-[#8A8A90] dark:text-white;
 }
 
 .menu__list-item-collapsible .menu__link--sublist {
-  @apply text-[#717177] dark:text-[#B8B9BC] hover:text-black dark:hover:text-white hover:bg-[#EBEBED] dark:hover:bg-[#212126] rounded-md transition-colors;
+  @apply text-[#303038] dark:text-[#B8B9BC] hover:text-[#8A8A90] dark:hover:text-white hover:bg-transparent rounded-md transition-colors;
 }
 
 /* Sidebar background color */
 .sidebar_node_modules-\@docusaurus-theme-classic-lib-theme-DocSidebar-Desktop-styles-module
   nav.menu {
-  @apply !px-10 text-sm !pb-10 mt-[40px] bg-[#F5F5F6] dark:bg-[#151518] border-r border-[#E5E5E5] dark:border-[#474747];
+  @apply !px-10 text-sm !pb-10 mt-[40px] bg-[#F5F5F6] dark:bg-[#1C1B20] border-r border-[#E5E5E5] dark:border-[#474747];
+}
+
+/* Sidebar container background */
+aside[class*="docSidebarContainer"] {
+  background-color: #F5F5F6 !important;
+}
+
+[data-theme="dark"] aside[class*="docSidebarContainer"] {
+  background-color: #1C1B20 !important;
 }
 
 .menu.thin-scrollbar {
@@ -598,29 +853,755 @@ div[role="dialog"][data-state="open"] button:hover {
 }
 
 .toc-link-active {
-  color: #2a2a2a !important; /* grey-900 for light mode */
-  font-weight: bold !important;
+  color: #0088CC !important; /* Active link color for light mode */
+  font-weight: normal !important;
 }
 [data-theme="dark"] .toc-link-active {
-  color: #fff !important;     /* white for dark mode */
+  color: #33BBFF !important; /* Active link color for dark mode */
+  font-weight: normal !important;
+}
+
+/* TOC "On this page" heading styling */
+.table-of-contents__link--active,
+.table-of-contents li a[class*="active"] {
+  color: #0088CC !important;
+  font-weight: normal !important;
+}
+
+[data-theme="dark"] .table-of-contents__link--active,
+[data-theme="dark"] .table-of-contents li a[class*="active"] {
+  color: #33BBFF !important;
+  font-weight: normal !important;
+}
+
+/* Style the "On this page" heading */
+.table-of-contents__left-border,
+.theme-doc-toc-desktop > div > h3,
+.table-of-contents > h2 {
+  font-size: 14px !important;
+  font-weight: normal !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  color: #8A8A90 !important;
+  border-bottom: 1px solid #CDCED0 !important;
+  padding-bottom: 8px !important;
+  margin-bottom: 12px !important;
+}
+
+/* Mobile TOC button - "On this page" */
+aside[class*="tocCollapsible"] > button,
+.theme-doc-toc-mobile button {
+  font-size: 14px !important;
+  font-weight: normal !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  color: #8A8A90 !important;
+  border-bottom: 1px solid #CDCED0 !important;
+  padding-bottom: 8px !important;
+  margin-bottom: 0 !important;
+}
+
+[data-theme="dark"] .table-of-contents__left-border,
+[data-theme="dark"] .theme-doc-toc-desktop > div > h3,
+[data-theme="dark"] .table-of-contents > h2 {
+  color: white !important;
+  border-bottom: 1px solid #8A8A90 !important;
+}
+
+[data-theme="dark"] aside[class*="tocCollapsible"] > button,
+[data-theme="dark"] .theme-doc-toc-mobile button {
+  color: white !important;
+  border-bottom: 1px solid #8A8A90 !important;
+}
+
+/* Remove the left border/line from TOC items */
+.table-of-contents__left-border {
+  border-left: none !important;
+}
+
+.theme-doc-toc-desktop ul,
+.table-of-contents ul {
+  border-left: none !important;
+  padding-left: 0 !important;
+}
+
+/* Style TOC links */
+.table-of-contents li a,
+.theme-doc-toc-desktop a {
+  font-size: 14px !important;
+  color: #6D6E74 !important;
+  font-weight: normal !important;
+  line-height: 1.5 !important;
+  padding-left: 0 !important;
+}
+
+[data-theme="dark"] .table-of-contents li a,
+[data-theme="dark"] .theme-doc-toc-desktop a {
+  color: #B8B9BC !important;
+}
+
+/* Maintain indentation without borders */
+.table-of-contents li {
+  padding-left: 0 !important;
+  margin-top: 6px !important;
+}
+
+.table-of-contents ul ul {
+  padding-left: 16px !important;
+  border-left: none !important;
+}
+
+/* Hover state for TOC links */
+.table-of-contents li a:hover,
+.theme-doc-toc-desktop a:hover {
+  color: #0088CC !important;
+  text-decoration: none !important;
+}
+
+[data-theme="dark"] .table-of-contents li a:hover,
+[data-theme="dark"] .theme-doc-toc-desktop a:hover {
+  color: #33BBFF !important;
+}
+
+/* Mobile TOC Dropdown Styling */
+.theme-doc-toc-mobile,
+aside[class*="tocCollapsible"] {
+  background-color: #F5F5F6 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+[data-theme="dark"] .theme-doc-toc-mobile,
+[data-theme="dark"] aside[class*="tocCollapsible"] {
+  background-color: #1C1B20 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove any borders from the collapsible container */
+aside[class*="tocCollapsible"] .tocCollapsibleContent,
+aside[class*="tocCollapsible"] > div,
+aside[class*="tocCollapsible"] .tocCollapsibleContent > ul,
+.theme-doc-toc-mobile .tocCollapsibleContent > ul,
+aside[class*="tocCollapsible"] ul,
+.theme-doc-toc-mobile ul {
+  border-top: none !important;
+  border-bottom: none !important;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Mobile TOC dropdown content */
+.theme-doc-toc-mobile .table-of-contents,
+aside[class*="tocCollapsible"] .table-of-contents {
+  background-color: #F5F5F6 !important;
+  padding: 12px 16px 12px 16px !important;
+  margin: 0 !important;
+  border: none !important;
+  border-top: none !important;
+  border-bottom: none !important;
+  padding-top: 12px !important;
+}
+
+[data-theme="dark"] .theme-doc-toc-mobile .table-of-contents,
+[data-theme="dark"] aside[class*="tocCollapsible"] .table-of-contents {
+  background-color: #1C1B20 !important;
+  border: none !important;
+  border-top: none !important;
+  border-bottom: none !important;
+}
+
+/* Mobile TOC links - match desktop styling */
+.theme-doc-toc-mobile .table-of-contents li a,
+aside[class*="tocCollapsible"] .table-of-contents li a {
+  font-size: 14px !important;
+  color: #6D6E74 !important;
+  font-weight: normal !important;
+  line-height: 1.5 !important;
+  padding-left: 0 !important;
+  text-decoration: none !important;
+}
+
+[data-theme="dark"] .theme-doc-toc-mobile .table-of-contents li a,
+[data-theme="dark"] aside[class*="tocCollapsible"] .table-of-contents li a {
+  color: #B8B9BC !important;
+}
+
+/* Mobile TOC links hover state */
+.theme-doc-toc-mobile .table-of-contents li a:hover,
+aside[class*="tocCollapsible"] .table-of-contents li a:hover {
+  color: #0088CC !important;
+  text-decoration: none !important;
+}
+
+[data-theme="dark"] .theme-doc-toc-mobile .table-of-contents li a:hover,
+[data-theme="dark"] aside[class*="tocCollapsible"] .table-of-contents li a:hover {
+  color: #33BBFF !important;
+}
+
+/* Mobile TOC active links */
+.theme-doc-toc-mobile .table-of-contents li a[class*="active"],
+aside[class*="tocCollapsible"] .table-of-contents li a[class*="active"] {
+  color: #0088CC !important;
+  font-weight: normal !important;
+}
+
+[data-theme="dark"] .theme-doc-toc-mobile .table-of-contents li a[class*="active"],
+[data-theme="dark"] aside[class*="tocCollapsible"] .table-of-contents li a[class*="active"] {
+  color: #33BBFF !important;
+}
+
+/* Remove left border from mobile TOC */
+.theme-doc-toc-mobile .table-of-contents__left-border,
+aside[class*="tocCollapsible"] .table-of-contents__left-border {
+  border-left: none !important;
+}
+
+.theme-doc-toc-mobile .table-of-contents ul,
+aside[class*="tocCollapsible"] .table-of-contents ul,
+.theme-doc-toc-mobile .table-of-contents ul ul,
+aside[class*="tocCollapsible"] .table-of-contents ul ul,
+.theme-doc-toc-mobile .table-of-contents ul ul ul,
+aside[class*="tocCollapsible"] .table-of-contents ul ul ul {
+  border-left: none !important;
+}
+
+/* Mobile TOC list items */
+.theme-doc-toc-mobile .table-of-contents li,
+aside[class*="tocCollapsible"] .table-of-contents li {
+  padding-left: 0 !important;
+  margin-top: 6px !important;
+}
+
+.theme-doc-toc-mobile .table-of-contents ul ul,
+aside[class*="tocCollapsible"] .table-of-contents ul ul {
+  padding-left: 16px !important;
+}
+
+/* Ensure all nested levels have no left border */
+.theme-doc-toc-mobile ul,
+.theme-doc-toc-mobile li,
+aside[class*="tocCollapsible"] ul,
+aside[class*="tocCollapsible"] li {
+  border-left: none !important;
+}
+
+/* Active state for TOC links */
+.table-of-contents li a[class*="active"],
+.theme-doc-toc-desktop a[class*="active"] {
+  color: #0088CC !important;
+  font-weight: normal !important;
+}
+
+[data-theme="dark"] .table-of-contents li a[class*="active"],
+[data-theme="dark"] .theme-doc-toc-desktop a[class*="active"] {
+  color: #33BBFF !important;
+}
+
+/* Navbar Tabs */
+.navbar-tabs {
+  display: flex;
+  gap: 32px;
+  margin-left: 48px;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.navbar-tab {
+  color: white !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  text-decoration: none !important;
+  padding-bottom: 4px;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.navbar-tab:hover {
+  color: #DCDDE0 !important;
+}
+
+.navbar-tab--active {
+  color: #33BBFF !important;
+  border-bottom-color: #33BBFF !important;
+}
+
+.navbar-tab--active:hover {
+  color: #33BBFF !important;
+}
+
+/* Desktop vs Mobile navbar items */
+.navbar-mobile-only {
+  display: none !important;
+}
+
+.navbar-desktop-only {
+  display: flex !important;
+}
+
+/* Hide Welcome tab on desktop */
+.navbar-tab-welcome {
+  display: none;
+}
+
+@media (max-width: 996px) {
+  .navbar-tabs {
+    display: none;
+  }
+
+  /* Show mobile menu, hide desktop items */
+  .navbar-mobile-only {
+    display: flex !important;
+  }
+
+  .navbar-desktop-only {
+    display: none !important;
+  }
+
+  /* Show Welcome tab on mobile */
+  .navbar-tab-welcome {
+    display: inline-block;
+  }
+
+  /* Logo positioning on mobile */
+  .navbar__brand {
+    flex: 1;
+  }
+
+  .navbar__items {
+    gap: 16px;
+  }
+}
+
+/* Mobile Menu Redesign - Dropdown below navbar, sliding from behind */
+.navbar-sidebar {
+  background-color: #151518 !important;
+  position: fixed !important;
+  top: var(--ifm-navbar-height) !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  height: calc(100vh - var(--ifm-navbar-height)) !important;
+  transform: translate3d(0, -100%, 0) !important;
+  display: flex !important;
+  flex-direction: column;
+  overflow-y: auto !important;
+  transition: transform 0.3s ease-in-out !important;
+  z-index: 50 !important;
+}
+
+.navbar-sidebar--show .navbar-sidebar {
+  transform: translate3d(0, 0, 0) !important;
+}
+
+.navbar-sidebar__backdrop {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  top: var(--ifm-navbar-height) !important;
+  height: calc(100vh - var(--ifm-navbar-height)) !important;
+  z-index: 49 !important;
+}
+
+.navbar-sidebar--show .navbar-sidebar__backdrop {
+  opacity: 1;
+}
+
+/* Theme toggle at the top */
+.mobile-menu-theme-toggle {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.mobile-menu-theme-toggle > div {
+  margin-left: 0 !important;
+  margin-right: 4px !important;
+}
+
+/* Home Row */
+.mobile-menu-home-wrapper {
+  margin-bottom: 8px;
+}
+
+.mobile-menu-home-link {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background-color: transparent;
+  transition: all 0.2s ease;
+  text-decoration: none !important;
+}
+
+.mobile-menu-home-link--active {
+  background-color: #24242A;
+}
+
+/* Main Section Styles (Home, Workspace, ODP) */
+.mobile-menu-main-section {
+  margin-bottom: 8px;
+}
+
+.mobile-menu-main-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 8px;
+}
+
+.mobile-menu-main-section--active .mobile-menu-main-section-header {
+  background-color: #24242A;
+}
+
+.mobile-menu-main-section-header--link {
+  color: #B8B9BC !important;
+  text-decoration: none !important;
+  cursor: pointer;
+  padding: 16px 0;
+}
+
+.mobile-menu-main-section-header--link:hover {
+  color: white !important;
+}
+
+.mobile-menu-main-section-title {
+  font-size: 18px;
+  font-weight: 400;
+  color: #B8B9BC;
+}
+
+.mobile-menu-main-section-header:hover .mobile-menu-main-section-title {
+  color: white;
+}
+
+.mobile-menu-main-section-header--link:hover .mobile-menu-main-section-title {
+  color: white;
+}
+
+.mobile-menu-main-section-content {
+  padding-left: 0;
+  margin-top: 4px;
+}
+
+/* Hide login button in mobile menu top area - only keep at bottom */
+.navbar-sidebar .navbar__items ._login-button {
+  display: none !important;
+}
+
+.navbar-sidebar ._login-button:not(.mobile-login-button) {
+  display: none !important;
+}
+
+/* Hide default navbar brand in sidebar */
+.navbar-sidebar .navbar-sidebar__brand {
+  display: none !important;
+}
+
+/* Ensure navbar sidebar items are visible */
+.navbar-sidebar .navbar-sidebar__items {
+  display: flex !important;
+  flex-direction: column;
+  height: auto !important;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden !important;
+  transform: none !important;
+  transition: none !important;
+  width: 100% !important;
+  position: relative !important;
+  left: 0 !important;
+  right: 0 !important;
+}
+
+.navbar-sidebar__item {
+  width: 100% !important;
+  flex-shrink: 0 !important;
+  transform: none !important;
+  transition: none !important;
+  position: relative !important;
+  left: 0 !important;
+}
+
+.mobile-menu-primary-wrapper {
+  display: flex !important;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  transform: none !important;
+}
+
+/* Disable secondary menu transform and force proper positioning */
+.navbar-sidebar__items--show-secondary {
+  transform: none !important;
+  left: 0 !important;
+  position: relative !important;
+}
+
+.navbar-sidebar .navbar-sidebar__items.navbar-sidebar__items--show-secondary {
+  transform: none !important;
+  left: 0 !important;
+  position: relative !important;
+}
+
+/* Force all navbar sidebar items to stay in place */
+.navbar-sidebar .navbar-sidebar__item,
+.navbar-sidebar .navbar-sidebar__item--show-secondary {
+  transform: translate3d(0, 0, 0) !important;
+  left: 0 !important;
+  right: 0 !important;
+  position: relative !important;
+}
+
+.mobile-menu-content {
+  display: flex !important;
+  flex-direction: column;
+  padding: 32px 24px 24px 24px;
+  background-color: #151518;
+  min-height: 100%;
+  position: relative;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.mobile-menu-content--sidebar {
+  padding: 0;
+}
+
+.mobile-menu-content--sidebar .menu__list {
+  padding: 24px;
+  flex: 1;
+}
+
+.mobile-menu-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 32px;
+}
+
+.mobile-menu-section:last-of-type {
+  margin-bottom: 24px;
+}
+
+.mobile-menu-section-title {
+  font-size: 14px;
+  letter-spacing: normal;
+  text-transform: none;
+  font-weight: 400;
+  color: #FFFFFF;
+  padding: 0.75rem 0 0.5rem 4px;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid #B8B9BC;
+}
+
+.mobile-menu-item {
+  color: #B8B9BC !important;
+  font-weight: 400 !important;
+  font-size: 16px !important;
+  text-decoration: none !important;
+  padding: 12px 0 12px 4px !important;
+  display: block;
+  transition: color 0.2s ease;
+}
+
+.mobile-menu-item:hover {
+  color: white !important;
+}
+
+.mobile-menu-item--active {
+  color: #33BBFF !important;
+}
+
+.mobile-menu-item--expandable {
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  border-bottom: none !important;
+}
+
+.mobile-menu-chevron {
+  color: #B8B9BC;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.mobile-menu-chevron--expanded {
+  transform: rotate(90deg);
+}
+
+.mobile-menu-sub-items {
+  display: flex;
+  flex-direction: column;
+  padding-left: 16px;
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
+.mobile-menu-sub-item {
+  color: #B8B9BC !important;
+  font-weight: 400 !important;
+  font-size: 15px !important;
+  text-decoration: none !important;
+  padding: 10px 0;
+  display: block;
+  transition: color 0.2s ease;
+}
+
+.mobile-menu-sub-item:hover {
+  color: white !important;
+}
+
+.mobile-menu-sub-item.mobile-menu-item--active {
+  color: #33BBFF !important;
+}
+
+/* Nested expandable items within dropdowns should match sub-item styling */
+.mobile-menu-sub-items .mobile-menu-item--expandable {
+  font-size: 15px !important;
+  padding: 10px 0 !important;
+}
+
+.mobile-menu-sub-items .mobile-menu-item-label {
+  font-size: 15px !important;
+  font-weight: 400 !important;
+}
+
+.mobile-menu-link {
+  color: white !important;
+  font-weight: 500 !important;
+  font-size: 18px !important;
+  text-decoration: none !important;
+  padding-top: 0;
+  padding-bottom: 4px;
+  padding-left: 0;
+  padding-right: 0;
+  margin-bottom: 32px;
+  border-bottom: 2px solid transparent;
+  display: inline-block;
+  width: fit-content;
+  transition: color 0.2s ease;
+}
+
+.mobile-menu-link:hover {
+  color: #DCDDE0 !important;
+}
+
+.mobile-menu-link--active {
+  color: #33BBFF !important;
+  border-bottom-color: #33BBFF !important;
+}
+
+.mobile-menu-link--active:hover {
+  color: #33BBFF !important;
+}
+
+.mobile-menu-login {
+  margin-top: auto;
+  padding-top: 32px;
+  padding-bottom: 24px;
+}
+
+.mobile-login-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 40px;
+  padding: 0 24px;
+  background-color: #0088CC;
+  color: white !important;
+  text-align: center;
+  text-decoration: none !important;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 16px;
+  transition: background-color 0.2s ease;
+}
+
+.mobile-login-button:hover {
+  background-color: #006699;
+  color: white !important;
+}
+
+/* Hamburger Menu Icon Styling */
+.navbar__toggle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid white;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.navbar__toggle:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.navbar__toggle svg {
+  width: 18px;
+  height: 18px;
+  color: white !important;
+  stroke: white !important;
+}
+
+.navbar__toggle svg path {
+  stroke: white !important;
+}
+
+/* Close button in mobile menu */
+.navbar-sidebar__close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid white;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.navbar-sidebar__close:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.navbar-sidebar__close svg {
+  width: 14px;
+  height: 14px;
+  color: white !important;
+  stroke: white !important;
+}
+
+.navbar-sidebar__close svg path {
+  stroke: white !important;
 }
 
 /* Sidebar Section Headers */
 .sidebar-section-header {
-  font-size: 0.85rem;
-  letter-spacing: 0.08rem;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: var(--ifm-color-gray-700);
-  padding: 0.75rem 1rem 0.5rem 1rem;
-  margin-top: 1.5rem;
-  margin-bottom: 0.5rem;
-  border-bottom: 1px solid var(--ifm-color-gray-300);
+  font-size: 13px;
+  letter-spacing: 0.2px;
+  text-transform: none;
+  font-weight: 500;
+  color: #8A8A90;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  margin-top: 1.25rem;
+  margin-bottom: 0.25rem;
+  position: relative;
 }
 
 html[data-theme="dark"] .sidebar-section-header {
-  color: var(--ifm-color-gray-300);
-  border-bottom: 1px solid var(--ifm-color-gray-700);
+  color: #E5E5E8;
 }
 
 .sidebar-section:first-child .sidebar-section-header {
@@ -630,6 +1611,57 @@ html[data-theme="dark"] .sidebar-section-header {
 /* Hide sidebar sections when not in the appropriate route */
 .menu__list .sidebar-section {
   display: block;
+}
+
+/* Full-width underline for section headers */
+.sidebar-section-header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: #D8D9DC;
+}
+
+html[data-theme="dark"] .sidebar-section-header::after {
+  background: #3C3C41;
+}
+
+/* Ensure header spans the full row inside flex container */
+.menu__list-item-collapsible .sidebar-section-header {
+  width: 100%;
+  flex: 1 1 auto;
+}
+
+/* Workspace-style spacing for section lists */
+.sidebar-section .menu__list {
+  margin-top: 0.25rem;
+  padding-left: 0;
+}
+
+/* Restore indentation for nested menu items */
+.menu__list .menu__list {
+  padding-left: var(--ifm-menu-link-padding-horizontal) !important;
+}
+
+/* Ensure proper indentation for deeply nested items */
+.menu__list .menu__list .menu__list {
+  padding-left: var(--ifm-menu-link-padding-horizontal) !important;
+}
+
+/* Fix specific sidebar section indentation */
+.sidebar-section .menu__list .menu__list {
+  padding-left: var(--ifm-menu-link-padding-horizontal) !important;
+}
+
+.sidebar-section .menu__list-item .menu__link {
+  padding-left: 1rem;
+  padding-right: 0.75rem;
+}
+
+.sidebar-section + .sidebar-section {
+  margin-top: 1rem;
 }
 
 /* Improve spacing between sidebar items within sections */
