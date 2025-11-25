@@ -13,7 +13,7 @@ import { useActiveDocContext } from '@docusaurus/plugin-content-docs/client';
 import useIsBrowser from "@docusaurus/useIsBrowser";
 import DocSidebarItems from "@theme/DocSidebarItems";
 import clsx from "clsx";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { useIFrameContext } from "../../Root.tsx";
 // If we navigate to a category and it becomes active, it should automatically
 // expand itself
@@ -89,6 +89,7 @@ export default function DocSidebarItemCategory({
 	...props
 }) {
 	const { items, label, collapsible, className, href } = item;
+	const isSectionHeader = className?.includes('sidebar-section');
 	const { activeDoc } = useActiveDocContext();
 	const isActive = activeDoc?.path === activePath;
 	const labelToHrefMap = {
@@ -107,18 +108,36 @@ export default function DocSidebarItemCategory({
 			sidebar: { autoCollapseCategories },
 		},
 	} = useThemeConfig();
-	const hrefWithSSRFallback = useCategoryHrefWithSSRFallback(item, newHref);
+	const effectiveCollapsible = isSectionHeader ? false : collapsible;
+	const hrefWithSSRFallback = useCategoryHrefWithSSRFallback(item, isSectionHeader ? undefined : newHref);
 	const isCurrentPage = isSamePath(newHref, activePath);
 	const { collapsed, setCollapsed } = useCollapsible({
-		// Active categories are always initialized as expanded. The default
-		// (`item.collapsed`) is only used for non-active categories.
+		// All categories start collapsed by default
+		// useAutoExpandActiveCategory will auto-expand if needed
 		initialState: () => {
-			if (!collapsible) {
+			if (!effectiveCollapsible) {
 				return false;
 			}
-			return isActive ? false : item.collapsed;
+			// Always start collapsed
+			return true;
 		},
 	});
+
+	// Accordion behavior: collapse other categories when one opens
+	const instanceIdRef = useRef(Math.random().toString(36).slice(2));
+	useEffect(() => {
+		function handleOpenEvent(e) {
+			if (!autoCollapseCategories) return;
+			const openedId = e.detail?.openedId;
+			const openedLevel = e.detail?.level;
+			// Only close if the opened category is at the same level as this one
+			if (openedId && openedId !== instanceIdRef.current && openedLevel === level) {
+				setCollapsed(true);
+			}
+		}
+		window.addEventListener("sidebar-category-open", handleOpenEvent);
+		return () => window.removeEventListener("sidebar-category-open", handleOpenEvent);
+	}, [autoCollapseCategories, setCollapsed, level]);
 
 	// Use this instead of `setCollapsed`, because it is also reactive
 	const updateCollapsed = (toCollapsed = !collapsed) => {
@@ -162,52 +181,78 @@ export default function DocSidebarItemCategory({
 					"menu__list-item-collapsible--active": isCurrentPage,
 				})}
 			>
-				<Link
-					className={clsx("menu__link", {
-						"menu__link--sublist": collapsible,
-						"menu__link--sublist-caret": !newHref && collapsible,
-						"menu__link--active": isActive,
-					})}
-					onClick={
-						collapsible
-							? (e) => {
-									if (dontShowLink) {
-										e.preventDefault();
-									}
-									onItemClick?.(item);
-									if (newHref) {
-										updateCollapsed(false);
-									} else {
-										e.preventDefault();
-										updateCollapsed();
-									}
+				{isSectionHeader ? (
+					<div className="sidebar-section-header">{label}</div>
+				) : (
+					<Link
+						className={clsx("menu__link", {
+							"menu__link--sublist": effectiveCollapsible,
+							"menu__link--sublist-caret": !newHref && effectiveCollapsible,
+							"menu__link--active": isActive,
+						})}
+						onClick={
+							effectiveCollapsible
+								? (e) => {
+										if (dontShowLink) {
+											e.preventDefault();
+										}
+										onItemClick?.(item);
+                                        if (newHref) {
+                                            updateCollapsed(false);
+                                            if (autoCollapseCategories) {
+                                                window.dispatchEvent(
+                                                    new CustomEvent("sidebar-category-open", {
+                                                        detail: { openedId: instanceIdRef.current, level },
+                                                    }),
+                                                );
+                                            }
+										} else {
+											e.preventDefault();
+											updateCollapsed();
+											if (autoCollapseCategories) {
+												window.dispatchEvent(
+													new CustomEvent("sidebar-category-open", {
+														detail: { openedId: instanceIdRef.current, level },
+													}),
+												);
+											}
+										}
 								}
-							: () => {
-									if (dontShowLink) {
-										e.preventDefault();
-									}
-									onItemClick?.(item);
-								}
-					}
-					aria-current={isCurrentPage ? "page" : undefined}
-					aria-expanded={collapsible ? !collapsed : undefined}
-					href={collapsible ? hrefWithSSRFallback ?? "#" : hrefWithSSRFallback}
-					{...props}
-				>
-					{label}
-				</Link>
-				{newHref && collapsible && (
+                            : () => {
+                                if (dontShowLink) {
+                                    return;
+                                }
+                                onItemClick?.(item);
+                            }
+						}
+						aria-current={isCurrentPage ? "page" : undefined}
+						aria-expanded={effectiveCollapsible ? !collapsed : undefined}
+						href={effectiveCollapsible ? hrefWithSSRFallback ?? "#" : hrefWithSSRFallback}
+						{...props}
+					>
+						{label}
+					</Link>
+				)}
+				{newHref && effectiveCollapsible && (
 					<CollapseButton
 						categoryLabel={label}
 						onClick={(e) => {
 							e.preventDefault();
+							const willBeExpanded = collapsed;
 							updateCollapsed();
+							if (willBeExpanded && autoCollapseCategories) {
+								window.dispatchEvent(
+									new CustomEvent("sidebar-category-open", {
+										detail: { openedId: instanceIdRef.current, level },
+									}),
+								);
+							}
 						}}
 					/>
 				)}
 			</div>
 
-			<Collapsible lazy as="ul" className="menu__list" collapsed={collapsed}>
+			<Collapsible lazy as="ul" className="menu__list" collapsed={isSectionHeader ? false : collapsed}>
 				<DocSidebarItems
 					items={items}
 					tabIndex={collapsed ? -1 : 0}

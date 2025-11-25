@@ -9,6 +9,8 @@ import NavbarMobileSidebarToggle from "@theme/Navbar/MobileSidebar/Toggle";
 import NavbarSearch from "@theme/Navbar/Search";
 import NavbarItem from "@theme/NavbarItem";
 import SearchBar from "@theme/SearchBar";
+import { useLocation } from "@docusaurus/router";
+import Link from "@docusaurus/Link";
 
 function useNavbarItems() {
   // TODO temporary casting until ThemeConfig type is improved
@@ -25,12 +27,45 @@ function NavbarItems({ items }) {
   );
 }
 
-function NavbarContentLayout({ left, right }) {
+function NavbarTabs() {
+  const location = useLocation();
+  const isWelcome = location.pathname === "/";
+  const isWorkspace = location.pathname.startsWith("/workspace");
+  const isODP = location.pathname.startsWith("/desktop") || location.pathname.startsWith("/python") || location.pathname.startsWith("/cli");
+
+  return (
+    <div className="navbar-tabs">
+      <Link
+        to="/"
+        className={`navbar-tab navbar-tab-welcome ${isWelcome ? "navbar-tab--active" : ""}`}
+      >
+        Welcome
+      </Link>
+      <Link
+        to="/workspace"
+        className={`navbar-tab ${isWorkspace ? "navbar-tab--active" : ""}`}
+      >
+        Workspace
+      </Link>
+      <Link
+        to="/desktop"
+        className={`navbar-tab ${isODP ? "navbar-tab--active" : ""}`}
+      >
+        ODP
+      </Link>
+    </div>
+  );
+}
+
+function NavbarContentLayout({ left, right, mobileRight }) {
   return (
     <div className="navbar__inner items-center">
       <div className="navbar__items">{left}</div>
-      <div className="navbar__items navbar__items--right max-sm:hidden">
+      <div className="navbar__items navbar__items--right navbar-desktop-only">
         {right}
+      </div>
+      <div className="navbar__items navbar__items--right navbar-mobile-only">
+        {mobileRight}
       </div>
     </div>
   );
@@ -46,8 +81,8 @@ export default function NavbarContent() {
       left={
         // TODO stop hardcoding items?
         <>
-          {!mobileSidebar.disabled && <NavbarMobileSidebarToggle />}
           <NavbarLogo />
+          <NavbarTabs />
           <NavbarItems items={leftItems} />
         </>
       }
@@ -65,6 +100,9 @@ export default function NavbarContent() {
             )}
           </div>
         </>
+      }
+      mobileRight={
+        <NavbarMobileSidebarToggle />
       }
     />
   );
