@@ -39,6 +39,14 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 
 <ul className="grid grid-cols-1 gap-2 -ml-6">
   <NewReferenceCard
+    title="Convert FastAPI to ODP Python Package"
+    description="Instantly convert FastAPI applications to OpenBB Router Extensions."
+    url="/python/developer/extension_types/from_fastapi"
+  />
+</ul>
+
+<ul className="grid grid-cols-1 gap-2 -ml-6">
+  <NewReferenceCard
     title="OBBject"
     description="Add functionality to the OBBject response object."
     url="/python/developer/extension_types/obbject"

@@ -1,6 +1,6 @@
 ---
 title: Provider Extensions
-sidebar_position: 1
+sidebar_position: 3
 description: This page provides information about how to write provider extensions for the OpenBB Python Package using the ETL pattern, and how to add them to Routers as endpoints.
 keywords:
   - ODP
