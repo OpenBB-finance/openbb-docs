@@ -108,93 +108,11 @@ if request.workspace_state and request.workspace_state.current_dashboard_info:
 - **`api_keys`** - Custom API keys from user
 - **`workspace_options`** - Enabled feature flags (including custom ones)
 
-## The Widget Data Flow
+## Requesting Widget Data
 
-The most critical pattern in OpenBB agents is the widget data flow. This is a **pause-and-resume pattern** where your agent requests data and then waits for the Workspace to call back with results.
+`get_widget_data` is a client-side tool call. When you yield it, Workspace pauses your agent, fetches the widget data in the browser, and calls your agent again with a `tool` message that contains the results.
 
-### Step 1: Check if You Need Widget Data
-
-```python
-async def query(request: QueryRequest):
-    # Only fetch data on new human messages or orchestration requests
-    last_message = request.messages[-1]
-
-    # Check for orchestration requests from openbb-copilot
-    orchestration_requested = (
-        last_message.role == "ai" and last_message.agent_id == "openbb-copilot"
-    )
-
-    should_fetch_data = (
-        (last_message.role == "human" or orchestration_requested)
-        and request.widgets
-        and request.widgets.primary
-    )
-
-    if should_fetch_data:
-        # Proceed to fetch data...
-```
-
-### Step 2: Request Widget Data (This Pauses Execution!)
-
-```python
-if should_fetch_data:
-    widget_requests = []
-
-    for widget in request.widgets.primary:
-        widget_requests.append(
-            WidgetRequest(
-                widget=widget,
-                input_arguments={
-                    param.name: param.current_value for param in widget.params
-                }
-            )
-        )
-
-        async def retrieve_widget_data() -> AsyncGenerator[FunctionCallSSE, None]:
-            yield get_widget_data(widget_requests)
-
-        # Early exit to retrieve widget data
-        return EventSourceResponse(
-            content=(event.model_dump() async for event in retrieve_widget_data()),
-            media_type="text/event-stream",
-        )
-```
-
-### Step 3: Process Widget Data on Callback
-
-When Workspace calls your agent again, the data will be in the messages:
-
-```python
-async def query(request: QueryRequest):
-    # Check if this is a tool response (widget data callback)
-    last_message = request.messages[-1] if request.messages else None
-    is_tool_response = (
-        last_message
-        and hasattr(last_message, "role")
-        and last_message.role == "tool"
-        and hasattr(last_message, "data")
-        and last_message.data
-    )
-
-    if is_tool_response:
-        # Process the widget data
-        yield reasoning_step(
-            event_type="INFO",
-            message="Processing widget data..."
-        ).model_dump()
-
-        # Build context from widget data
-        context_str = "Widget Data:\n"
-        for result in last_message.data:
-            for item in result.items:
-                # Most widget data comes as simple content
-                context_str += f"{item.content}\n"
-
-        # Use the data in your LLM context or analysis
-        # Process with your LLM...
-```
-
-### Complete Widget Flow Example
+Example:
 
 ```python
 from openbb_ai import WidgetRequest, message_chunk, reasoning_step, get_widget_data
@@ -202,7 +120,7 @@ from openbb_ai.models import QueryRequest, ClientFunctionCallError, DataContent
 
 async def query(request: QueryRequest):
     last_message = request.messages[-1]
-
+    
     # Check if this is a tool response first
     is_tool_response = (
         last_message
@@ -211,24 +129,24 @@ async def query(request: QueryRequest):
         and hasattr(last_message, "data")
         and last_message.data
     )
-
+    
     if is_tool_response:
         # Process widget data (Step 3)
         yield reasoning_step(event_type="INFO", message="Processing data...").model_dump()
-
+        
         for item in last_message.data:
             if isinstance(item, DataContent):
                 # Process the data and respond
                 yield message_chunk("Here's what I found in the data...").model_dump()
         return
-
+    
     # Check for orchestration requests
     orchestration_requested = (
         last_message.role == "ai" and last_message.agent_id == "openbb-copilot"
     )
-
-    # Phase 1: Check if we need to fetch data
-    if ((last_message.role == "human" or orchestration_requested)
+    
+    # Phase 1: Check if we need to fetch primary data (added to context)
+    if ((last_message.role == "human" or orchestration_requested) 
         and request.widgets and request.widgets.primary):
         widget_requests = [
             WidgetRequest(
@@ -239,20 +157,22 @@ async def query(request: QueryRequest):
             )
             for widget in request.widgets.primary
         ]
-
+        
         yield reasoning_step(event_type="INFO", message="Fetching widget data...").model_dump()
         yield get_widget_data(widget_requests).model_dump()
         return  # EXIT AND WAIT
-
+    
     # Phase 2: Process fetched data
     if hasattr(last_message, 'data'):
         yield reasoning_step(event_type="INFO", message="Processing data...").model_dump()
-
+        
         for item in last_message.data:
             if isinstance(item, DataContent):
                 # Process the data and respond
                 yield message_chunk("Here's what I found in the data...").model_dump()
 ```
+
+Use `request.widgets.primary` for widgets the user selected in chat and `request.widgets.secondary` for widgets already on the dashboard (when the dashboard features are enabled). The SDK formats the tool call for you—your only responsibility is to pause after yielding `get_widget_data` and handle the callback that arrives as a `tool` message.
 
 ## Streaming Responses
 
