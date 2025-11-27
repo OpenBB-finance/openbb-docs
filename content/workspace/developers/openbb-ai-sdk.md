@@ -110,7 +110,15 @@ if request.workspace_state and request.workspace_state.current_dashboard_info:
 
 ## Requesting Widget Data
 
-`get_widget_data` is a client-side tool call. When you yield it, Workspace pauses your agent, fetches the widget data in the browser, and calls your agent again with a `tool` message that contains the results.
+Both `get_widget_data` and MCP tool calls are executed client-side. When you yield these function calls, the following sequence occurs:
+
+1. **Agent sends tool call** - Your agent yields the function call (widget request or MCP tool)
+2. **Connection closes** - The SSE stream is terminated, breaking the connection
+3. **Frontend executes** - Workspace executes the requested tool call/widget request in the browser
+4. **New request initiated** - Frontend sends a new POST `/query` request with the tool results
+5. **Agent resumes** - Your agent receives a new `QueryRequest` with the execution results as a `tool` message
+
+This isn't a simple "pause" - it's a complete request/response cycle. Your agent must be stateless and handle being called multiple times. For a detailed sequence diagram of this flow, see the [OpenBB AI SDK repository](https://github.com/OpenBB-finance/openbb-ai#readme).
 
 Example:
 
