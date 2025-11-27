@@ -172,7 +172,7 @@ async def query(request: QueryRequest):
                 yield message_chunk("Here's what I found in the data...").model_dump()
 ```
 
-Use `request.widgets.primary` for widgets the user selected in chat and `request.widgets.secondary` for widgets already on the dashboard (when the dashboard features are enabled). The SDK formats the tool call for you—your only responsibility is to pause after yielding `get_widget_data` and handle the callback that arrives as a `tool` message.
+Use `request.widgets.primary` for widgets the user selected in chat and `request.widgets.secondary` for widgets already on the dashboard (when the dashboard features are enabled). The SDK formats the tool call for you. Your only responsibility is to pause after yielding `get_widget_data` and handle the callback that arrives as a `tool` message.
 
 ## Streaming Responses
 
