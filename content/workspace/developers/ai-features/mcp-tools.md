@@ -1,6 +1,6 @@
 ---
 title: MCP tools integration
-sidebar_position: 8
+sidebar_position: 7
 description: Integrate Model Context Protocol (MCP) tools with OpenBB agents for enhanced capabilities
 keywords:
 - MCP
@@ -16,6 +16,10 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 <HeadTitle title="AI Features — MCP Tools Integration | OpenBB Workspace Docs" />
 
 Enable agents to access and execute Model Context Protocol (MCP) tools, extending their capabilities with external tools and services. MCP tools allow agents to interact with databases, APIs, file systems, and other external resources.
+
+Reference implementation in [this GitHub repository](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/38-vanilla-agent-mcp-tools/vanilla_agent_mcp_tools/main.py).
+
+<img className="pro-border-gradient" width="800" alt="Charts" src="https://openbb-cms.directus.app/assets/bec55103-71cd-412d-bc05-fd4776a0838c.png" />
 
 ## Architecture
 
