@@ -29,7 +29,12 @@ Explore OpenBB Workspace at [pro.openbb.co](https://pro.openbb.co).
 
 <img src="https://openbb-cms.directus.app/assets/098ebeac-413e-4225-badf-1282c268e071.png" alt="OpenBB Workspace Application Interface" width="100%" />
 
-Product demo [in this video](https://www.youtube.com/watch?v=Gll8bRSoyGM).
+<details>
+<summary mdxType="summary">Watch Product Demo</summary>
+
+<iframe width="100%" height="415" src="https://www.youtube.com/embed/uYyhswnZkSw" title="OpenBB Workspace Product Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+</details>
 
 ## Core capabilities
 
