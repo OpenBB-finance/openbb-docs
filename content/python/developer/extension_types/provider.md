@@ -1,6 +1,6 @@
 ---
 title: Provider Extensions
-sidebar_position: 1
+sidebar_position: 3
 description: This page provides information about how to write provider extensions for the OpenBB Python Package using the ETL pattern, and how to add them to Routers as endpoints.
 keywords:
   - ODP
@@ -62,7 +62,7 @@ empty = "openbb_empty_provider:empty_provider"
 ```
 
 <details>
-<summary mdxType="summary">`pyproject.toml` </summary>
+<summary mdxType="summary">`pyproject.toml`</summary>
 ```toml
 [tool.poetry]
 name = "openbb-empty-provider"
@@ -198,7 +198,7 @@ class EmptySomeTimeSeriesData(SomeTimeSeriesData):
 ```
 
 :::info
-The resulting function signature will display these parameters as `**kwargs`, but their definitions will display in the docstring and `reference` metadata. Required provider parameters may appear as `Optional` in docstrings, but their inputs will be validated using the model at execution.
+The resulting function signature will register these parameters as `extra_params`, but their definitions will display in the docstring and `reference` metadata. Required provider parameters may appear as `Optional` in docstrings, but their inputs will be validated using the model at execution.
 :::
 
 ### Fetcher
@@ -318,4 +318,58 @@ class EmptySomeTimeSeriesFetcher(
 </details>
 
 
-## Add Endpoint
+## Add to Endpoint
+
+Mapping the model to a router endpoint requires installing or building a [router extension](/python/developer/extension_types/router).
+
+The function definition itself is copy/pastable and repeatable, where the only thing that changes is the metamodel referenced in the `@router.command` decorator.
+
+<details>
+<summary mdxType="summary">Example Router Function</summary>
+
+```python
+from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import APIEx, PythonEx
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.provider_interface import (
+    ExtraParams,
+    ProviderChoices,
+    StandardParams,
+)
+from openbb_core.app.query import Query
+from openbb_core.app.router import Router
+
+router = Router(prefix="", description="An Empty OpenBB Router Extension.")
+
+# This uses the Provider Interface to call the empty provider fetcher.
+@router.command(
+    model="EmptyModel",  # <-- metamodel name goes here
+    examples=[
+        APIEx(parameters={"provider": "empty"}),
+        PythonEx(
+            description="Say Hello.",
+            code=[
+                "result = obb.empty.hello()",
+            ],
+        ),
+    ],
+)
+async def empty_function(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """An empty function using the Provider Interface."""
+    return await OBBject.from_query(Query(**locals()))
+```
+
+</details>
+
+### Rebuild Static Assets
+
+After modifying the router mappings, rebuild the Python static assets.
+
+```sh
+openbb-build
+```
