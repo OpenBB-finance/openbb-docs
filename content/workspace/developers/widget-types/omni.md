@@ -1,6 +1,6 @@
 ---
 title: Omni
-sidebar_position: 14
+sidebar_position: 12
 description: Learn how to create versatile Omni widgets for OpenBB Workspace that can dynamically return different content types based on input parameters.
 keywords:
 - omni widget
