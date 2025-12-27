@@ -30,6 +30,7 @@
 - [Custom agent features](https://docs.openbb.co/workspace/developers/ai-features/custom-agent-features): Configure and manage custom agent features based on workspace options
 - [Highlight widget citations](https://docs.openbb.co/workspace/developers/ai-features/highlight-widget-citations): Cite widget data sources in your responses and display them in Workspace
 - [Interact with dashboard](https://docs.openbb.co/workspace/developers/ai-features/interact-with-dashboard): Receive full dashboard widget metadata and conditionally fetch data
+- [MCP tools integration](https://docs.openbb.co/workspace/developers/ai-features/mcp-tools): Integrate Model Context Protocol (MCP) tools with OpenBB agents for enhanced capabilities
 - [Parse PDF context](https://docs.openbb.co/workspace/developers/ai-features/parse-pdf-context): Parse PDF content from widget data and cite sources
 - [Parse widget data](https://docs.openbb.co/workspace/developers/ai-features/parse-widget-data): Retrieve data from selected widgets and pass it as raw context to your LLM
 - [Share step-by-step reasoning](https://docs.openbb.co/workspace/developers/ai-features/share-step-by-step-reasoning): Stream status updates alongside model output during long operations
