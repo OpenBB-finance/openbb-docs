@@ -1,6 +1,6 @@
 ---
 title: Custom agent features
-sidebar_position: 7
+sidebar_position: 8
 description: Configure and manage custom agent features based on workspace options
 keywords:
 - features
