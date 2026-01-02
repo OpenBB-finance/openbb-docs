@@ -2102,6 +2102,26 @@ Beyond this data flow, widgets exhibit two powerful features that transform them
 
 **AI-readable metadata** exposes the widget metadata to AI agents so that they can interpret and act upon it. Unlike screen scraping, AI agents understand the underlying data source, parameter structure, and query methods for each widget. This understanding allows agents to dynamically request data with different parameters to answer your specific questions, accessing source datasets behind each widget rather than only the information that is currently displayed.
 
+### Controlling AI Visibility
+
+Widgets support an optional `ai` configuration flag that controls whether a widget is exposed to AI agents.
+
+- When `ai` is set to `true`, the widget’s metadata and parameters can be accessed by AI agents to dynamically request and analyze data.
+- When `ai` is set to `false`, the widget will not be made available to AI workflows. This is useful for restricting access to sensitive, experimental, or internal-only widgets.
+
+Example configuration:
+
+```json
+{
+  "paramName": "symbol",
+  "type": "endpoint",
+  "label": "Select Symbol",
+  "optionsEndpoint": "/stock_search_options",
+  "ai": false
+}
+```
+This flag allows developers and analysts to explicitly control which widgets participate in AI-driven workflows within OpenBB Workspace.
+
 ## Your Widget Library
 
 OpenBB Workspace enables you to build a scalable library of widgets, instantly searchable and logically categorized to match your analytical workflow. This library centralizes your financial data visualizations, making them easily discoverable through search and category navigation.
