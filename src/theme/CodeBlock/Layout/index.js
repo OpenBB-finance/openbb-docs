@@ -1,6 +1,1 @@
-import React from 'react';
-import Layout from '@theme-original/CodeBlock/Layout';
-
-export default function LayoutWrapper(props) {
-  return <Layout {...props} />;
-}
+export { default } from '@docusaurus/theme-classic/lib/theme/CodeBlock/Layout';
