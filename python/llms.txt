@@ -27,6 +27,8 @@
 - [Central Bank Holdings](https://docs.openbb.co/python/data_models/CentralBankHoldings): Get the balance sheet holdings of a central bank
 - [Cik Map](https://docs.openbb.co/python/data_models/CikMap): Map a ticker symbol to a CIK number
 - [Commercial Paper](https://docs.openbb.co/python/data_models/CommercialPaper): Commercial Paper
+- [Commodity Psd Data](https://docs.openbb.co/python/data_models/CommodityPsdData): Get data tables and historical time series from the USDA FAS Production, Supply, and Distribution (PSD) Reports
+- [Commodity Psd Report](https://docs.openbb.co/python/data_models/CommodityPsdReport): Agriculture commodity production, supply, and distribution PDF reports (World Agricultural Outlook)
 - [Commodity Spot Prices](https://docs.openbb.co/python/data_models/CommoditySpotPrices): Commodity Spot Prices
 - [Company Filings](https://docs.openbb.co/python/data_models/CompanyFilings): Get public company filings
 - [Company News](https://docs.openbb.co/python/data_models/CompanyNews): Company News
@@ -35,7 +37,7 @@
 - [Composite Leading Indicator](https://docs.openbb.co/python/data_models/CompositeLeadingIndicator): Get the composite leading indicator (CLI)
 - [Congress Bill Info](https://docs.openbb.co/python/data_models/CongressBillInfo): Get summary, status, and other metadata for a specific bill
 - [Congress Bills](https://docs.openbb.co/python/data_models/CongressBills): Get and filter lists of Congressional Bills
-- [Consumer Price Index](https://docs.openbb.co/python/data_models/ConsumerPriceIndex): Get Consumer Price Index (CPI)
+- [Consumer Price Index](https://docs.openbb.co/python/data_models/ConsumerPriceIndex): Get Consumer Price Index (CPI) data by country
 - [COT](https://docs.openbb.co/python/data_models/COT): Get Commitment of Traders Reports
 - [COT Search](https://docs.openbb.co/python/data_models/COTSearch): Get the current Commitment of Traders Reports
 - [Country Interest Rates](https://docs.openbb.co/python/data_models/CountryInterestRates): Get interest rates by country(s) and duration
@@ -193,17 +195,22 @@
 - [Treasury Rates](https://docs.openbb.co/python/data_models/TreasuryRates): Government Treasury Rates
 - [Unemployment](https://docs.openbb.co/python/data_models/Unemployment): Get global unemployment data
 - [University Of Michigan](https://docs.openbb.co/python/data_models/UniversityOfMichigan): Get University of Michigan Consumer Sentiment and Inflation Expectations Surveys
+- [Weather Bulletin Download](https://docs.openbb.co/python/data_models/WeatherBulletinDownload): Download one, or more, weather bulletin documents
 - [World News](https://docs.openbb.co/python/data_models/WorldNews): World News
 - [Yield Curve](https://docs.openbb.co/python/data_models/YieldCurve): Get yield curve data by country and date
 - [Architecture Overview](https://docs.openbb.co/python/developer/architecture_overview): This guide provides insights into the architecture and components of the ODP Python Package. It covers the key classes, import statements, and the TET pattern used in building the Fetcher classes.
+- [Charting Extensions](https://docs.openbb.co/python/developer/extension_types/charting): This page is a guide for adding custom views to any router endpoint that are included with the response object when the user sets `chart=True`.
+- [From FastAPI](https://docs.openbb.co/python/developer/extension_types/from_fastapi): This page explains how to convert an existing FastAPI application to an ODP Python Package, without changing any code.
 - [Introduction](https://docs.openbb.co/python/developer/extension_types/index): An overview of the three types of OpenBB extensions.
 - [OBBject Extensions](https://docs.openbb.co/python/developer/extension_types/obbject): This page provides information about how to write extensions for the OBBject class and Python interface response object.
+- [OBBject Plugins](https://docs.openbb.co/python/developer/extension_types/plugins): This page provides information about how to write plugin extensions that intercept the application output immediately before returning to the user. They provide a way to conditionally alter the output of any command, including those you do not control.
 - [Provider Extensions](https://docs.openbb.co/python/developer/extension_types/provider): This page provides information about how to write provider extensions for the OpenBB Python Package using the ETL pattern, and how to add them to Routers as endpoints.
 - [Router Extensions](https://docs.openbb.co/python/developer/extension_types/router): This page provides information about how to write router extensions for the OpenBB Python Package.
 - [Annotated Results](https://docs.openbb.co/python/developer/how-to/annotated_results): This guide provides instructions for returning extra response metadata from Provider extension models. Use this class to include important citations, credits, or other dictionary-like items that should not be included in table or chart data.
 - [Deprecating Endpoints](https://docs.openbb.co/python/developer/how-to/deprecating_endpoints): This guide provides detailed instructions on how to deprecate an endpoint in the ODP Python Package.
 - [Disabling Output Validation](https://docs.openbb.co/python/developer/how-to/disabling_output_validation): This page provides instructions for disabling output validation, when defining a new router function.
 - [Dynamic Command Execution](https://docs.openbb.co/python/developer/how-to/dynamic_command_execution): This guide provides detailed instructions on how to execute commands dynamically in the OpenBB Python Package.
+- [Function Examples](https://docs.openbb.co/python/developer/how-to/examples): This page explains how to add examples and code snippets to API and Python endpoints.
 - [HTTP Requests](https://docs.openbb.co/python/developer/how-to/http_requests): This guide outlines OpenBB processes for making HTTP requests synchronously and asynchronously. Using the helpers will keep the codebase leaner and easier to maintain by eliminating duplicate processes. Anyone can build effective and efficient data fetchers, this guide outlines how to import and implement either type of request into any fetcher.
 - [How-To](https://docs.openbb.co/python/developer/how-to/index): Quick how-to guides for developers that cover key concepts.
 - [Tests](https://docs.openbb.co/python/developer/how-to/tests): This section provides an in-depth look at the Quality Assurance (QA) process in the Open Data Platform. It covers the use of QA tools for testing extensions, creation of unit and integration tests, and the importance of maintaining a short import time for the package.
@@ -233,7 +240,10 @@
 - [petroleum_status_report](https://docs.openbb.co/python/reference/commodity/petroleum_status_report): EIA Weekly Petroleum Status Report
 - [Price](https://docs.openbb.co/python/reference/commodity/price/index): Commands
 - [spot](https://docs.openbb.co/python/reference/commodity/price/spot): Commodity Spot Prices
+- [psd_data](https://docs.openbb.co/python/reference/commodity/psd_data): Get data tables and historical time series from the USDA FAS Production, Supply, and Distribution (PSD) Reports
+- [psd_report](https://docs.openbb.co/python/reference/commodity/psd_report): Agriculture commodity production, supply, and distribution PDF reports (World Agricultural Outlook)
 - [short_term_energy_outlook](https://docs.openbb.co/python/reference/commodity/short_term_energy_outlook): Monthly short term (18 month) projections using EIA's STEO model
+- [weather_bulletins_download](https://docs.openbb.co/python/reference/commodity/weather_bulletins_download): Download one, or more, weather bulletin documents
 - [Crypto](https://docs.openbb.co/python/reference/crypto/index): Menus
 - [historical](https://docs.openbb.co/python/reference/crypto/price/historical): Learn how to use the `obb.equity.price.historical` function to load historical  price data for a specific stock ticker. Find out about the available parameters  and providers, as well as the structure of the returned data and the columns it  contains.
 - [Price](https://docs.openbb.co/python/reference/crypto/price/index): Commands
@@ -260,7 +270,6 @@
 - [cointegration](https://docs.openbb.co/python/reference/econometrics/cointegration): Learn how to use the two-step Engle-Granger test to show co-integration  between two time series in Python. Explore the parameters, input dataset, data columns,  and the OBBject returned with the test results.
 - [correlation_matrix](https://docs.openbb.co/python/reference/econometrics/correlation_matrix): Learn how to get the correlation matrix of an input dataset using Python.  Find information on the parameters and return value of the function.
 - [Econometrics](https://docs.openbb.co/python/reference/econometrics/index): Commands
-- [ols_regression](https://docs.openbb.co/python/reference/econometrics/ols_regression): Learn how to perform OLS regression using statsmodels in Python. This  documentation explains the parameters required and the object returned.
 - [ols_regression_summary](https://docs.openbb.co/python/reference/econometrics/ols_regression_summary): Learn how to perform OLS regression using statsmodels in Python. Explore  the parameters and returns of the function, including the data, target column, exogenous  variables, and summary object.
 - [panel_between](https://docs.openbb.co/python/reference/econometrics/panel_between): Perform a Between estimator regression on panel data. This page provides  details on the parameters required and the returned OBBject with the fit model.
 - [panel_first_difference](https://docs.openbb.co/python/reference/econometrics/panel_first_difference): Learn how to perform a first-difference estimate for panel data using  this Python function. Understand the parameters and the object returned by the function.
@@ -270,7 +279,6 @@
 - [panel_random_effects](https://docs.openbb.co/python/reference/econometrics/panel_random_effects): Learn how to perform One-way Random Effects model for panel data using  a Python function. This function takes an input dataset, target column, and exogenous  variables as parameters and returns the fit model.
 - [residual_autocorrelation](https://docs.openbb.co/python/reference/econometrics/residual_autocorrelation): Perform Breusch-Godfrey Lagrange Multiplier tests for residual autocorrelation  in a Python function. Learn about the parameters used and the returned object.
 - [unit_root](https://docs.openbb.co/python/reference/econometrics/unit_root): Learn how to use the Augmented Dickey-Fuller unit root test to check  for stationarity in time series data. This function takes in an input dataset and  performs the test on specified data columns. The regression type can be customized,  and the function returns the results.
-- [variance_inflation_factor](https://docs.openbb.co/python/reference/econometrics/variance_inflation_factor): Calculate VIF (variance inflation factor), which tests for collinearity
 - [available_indicators](https://docs.openbb.co/python/reference/economy/available_indicators): Get the available economic indicators for a provider
 - [balance_of_payments](https://docs.openbb.co/python/reference/economy/balance_of_payments): Balance of Payments Reports
 - [calendar](https://docs.openbb.co/python/reference/economy/calendar): The Economic Calendar provides information on economic events and data.  Use the OBB Python function `obb.economy.calendar()` to retrieve economic calendar  data. The function accepts parameters such as start date, end date, provider, country,  importance, and group. It returns a list of economic calendar data, including the  date, event, reference, source, actual value, previous value, consensus value, and  forecast value. The data can be filtered by provider such as FMP, Nasdaq, or Trading  Economics.
@@ -281,8 +289,6 @@
 - [direction_of_trade](https://docs.openbb.co/python/reference/economy/direction_of_trade): Get Direction Of Trade Statistics from the IMF database
 - [export_destinations](https://docs.openbb.co/python/reference/economy/export_destinations): Get top export destinations by country from the UN Comtrade International Trade Statistics Database
 - [fomc_documents](https://docs.openbb.co/python/reference/economy/fomc_documents): Get FOMC documents by year and document type
-- [download](https://docs.openbb.co/python/reference/economy/fomc_documents/download): Download FOMC documents from the Federal Reserve's website
-- [Fomc_documents](https://docs.openbb.co/python/reference/economy/fomc_documents/index): Commands
 - [fred_regional](https://docs.openbb.co/python/reference/economy/fred_regional): Query the Geo Fred API for regional economic data by series group
 - [fred_release_table](https://docs.openbb.co/python/reference/economy/fred_release_table): Get economic release data by ID and/or element from FRED
 - [fred_search](https://docs.openbb.co/python/reference/economy/fred_search): Search for FRED series or economic releases by ID or string
@@ -447,6 +453,11 @@
 - [tcm](https://docs.openbb.co/python/reference/fixedincome/spreads/tcm): Treasury Constant Maturity
 - [tcm_effr](https://docs.openbb.co/python/reference/fixedincome/spreads/tcm_effr): Select Treasury Constant Maturity
 - [treasury_effr](https://docs.openbb.co/python/reference/fixedincome/spreads/treasury_effr): This documentation page provides information about Treasury Bill data,  including the selected Treasury Bill rate minus Federal Funds Rate. It explains  the concept of constant maturity and the Treasury yield curve. The page also covers  the parameters, returns, and data associated with the `obb.fixedincome.spreads.treasury_effr`  function.
+- [get_dataflow_dimensions](https://docs.openbb.co/python/reference/imf_utils/get_dataflow_dimensions): Dataflow parameters and possible values
+- [Imf_utils](https://docs.openbb.co/python/reference/imf_utils/index): Commands
+- [list_dataflows](https://docs.openbb.co/python/reference/imf_utils/list_dataflows): list all available IMF dataflows
+- [list_tables](https://docs.openbb.co/python/reference/imf_utils/list_tables): Get the list of presentation tables available from the IMF
+- [presentation_table](https://docs.openbb.co/python/reference/imf_utils/presentation_table): Get a formatted presentation table from the IMF database
 - [Reference](https://docs.openbb.co/python/reference/index): <ReferenceCard
 - [available](https://docs.openbb.co/python/reference/index/available): Available Indices
 - [constituents](https://docs.openbb.co/python/reference/index/constituents): Learn how to fetch constituents of an index using the OBB library in  Python. Get detailed information such as symbol, name, sector, sub-sector, headquarters,  date of first addition, CIK, and founding year of the constituent companies in the  index.
