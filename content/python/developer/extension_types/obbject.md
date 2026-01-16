@@ -23,7 +23,6 @@ OpenBB provides some basic methods for interacting with common data structures t
 If you are working with custom data, you may also want specific methods for interacting with the data, post-request.
 
 The `openbb-core` package makes the `OBBject` class extendable, similar to extensions and accessors for Pandas.
-It relies on plugins through the Poetry dependency management package.
 
 This page will go through the steps for developing a simple response object extension.
 
@@ -42,8 +41,6 @@ obbject_example
 └── pyproject.toml
 ```
 
-The `README.md` file can be completely empty, it just needs to exist.
-
 Extension code will go directly in the `__init__.py` file.
 
 ### TOML File
@@ -59,6 +56,7 @@ A complete `pyproject.toml` looks something like:
 
 <details>
 <summary mdxType="summary">`pyproject.toml` </summary>
+
 ```toml
 [tool.poetry]
 name = "openbb-empty-obbject"
