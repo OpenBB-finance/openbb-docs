@@ -1,20 +1,12 @@
-import { usePrismTheme, useThemeConfig } from "@docusaurus/theme-common";
+import { useThemeConfig } from "@docusaurus/theme-common";
 import {
-  containsLineNumbers,
-  parseCodeBlockTitle,
-  parseLanguage,
-  parseLines,
+  CodeBlockContextProvider,
+  createCodeBlockMetadata,
   useCodeWordWrap,
 } from "@docusaurus/theme-common/internal";
-import Container from "@theme/CodeBlock/Container";
-import CopyButton from "@theme/CodeBlock/CopyButton";
-import Line from "@theme/CodeBlock/Line";
-import WordWrapButton from "@theme/CodeBlock/WordWrapButton";
-import clsx from "clsx";
-import { Highlight } from "prism-react-renderer";
-import { useEffect, useRef, useState } from "react";
+import CodeBlockLayout from "@theme/CodeBlock/Layout";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import styles from "./styles.module.css";
 
 function getImageUrl(pathname, text) {
   if (!pathname.startsWith("/bot/")) {
@@ -50,140 +42,6 @@ function getImageUrl(pathname, text) {
   return finalImage;
 }
 
-export default function CodeBlockString({
-  children,
-  className: blockClassName = "",
-  metastring,
-  title: titleProp,
-  showLineNumbers: showLineNumbersProp,
-  language: languageProp,
-}) {
-  const [imageUrl, setImageUrl] = useState(null);
-  const {
-    prism: { defaultLanguage, magicComments },
-  } = useThemeConfig();
-  const language =
-    languageProp ?? parseLanguage(blockClassName) ?? defaultLanguage;
-  const prismTheme = usePrismTheme();
-  const wordWrap = useCodeWordWrap();
-
-  // We still parse the metastring in case we want to support more syntax in the
-  // future. Note that MDX doesn't strip quotes when parsing metastring:
-  // "title=\"xyz\"" => title: "\"xyz\""
-  const title = parseCodeBlockTitle(metastring) || titleProp;
-  const { lineClassNames, code } = parseLines(children, {
-    metastring,
-    language,
-    magicComments,
-  });
-  const showLineNumbers =
-    showLineNumbersProp ?? containsLineNumbers(metastring);
-
-  const shouldWordwrapByDefault = metastring?.includes("wordwrap");
-
-  const newDate = getThirdFriday();
-
-  const newCode = code.replace("2022-07-29", newDate);
-  const { pathname } = useLocation();
-
-  // get Container sibling
-
-  useEffect(() => {
-    if (ref.current && pathname.startsWith("/bot/")) {
-      // get ref.current sibling above
-      const container = ref.current.parentElement;
-      const containerSibling = container.previousElementSibling;
-      if (containerSibling) {
-        if (containerSibling.id.includes("examples")) {
-          const finalImage = getImageUrl(pathname, newCode);
-          setImageUrl(finalImage);
-        }
-      }
-    }
-  }, []);
-
-  const ref = useRef(null);
-
-  return (
-    <>
-      <Container
-        as="div"
-        className={clsx(
-          blockClassName,
-          language &&
-            !blockClassName.includes(`language-${language}`) &&
-            `language-${language}`
-        )}
-      >
-        {title && <div className={styles.codeBlockTitle}>{title}</div>}
-        <div className={styles.codeBlockContent} ref={ref}>
-          <Highlight
-            theme={prismTheme}
-            code={newCode}
-            language={language ?? "text"}
-          >
-            {({ className, tokens, getLineProps, getTokenProps }) => (
-              <pre
-                /* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */
-                tabIndex={0}
-                ref={wordWrap.codeBlockRef}
-                className={clsx(className, styles.codeBlock, "thin-scrollbar")}
-              >
-                <code
-                  style={
-                    shouldWordwrapByDefault
-                      ? {
-                          whiteSpace: "pre-wrap",
-                          overflowWrap: "anywhere",
-                        }
-                      : {}
-                  }
-                  className={clsx(
-                    styles.codeBlockLines,
-                    showLineNumbers && styles.codeBlockLinesWithNumbering
-                  )}
-                >
-                  {tokens.map((line, i) => (
-                    <Line
-                      key={i}
-                      line={line}
-                      getLineProps={getLineProps}
-                      getTokenProps={getTokenProps}
-                      classNames={lineClassNames[i]}
-                      showLineNumbers={showLineNumbers}
-                    />
-                  ))}
-                </code>
-              </pre>
-            )}
-          </Highlight>
-          <div className={styles.buttonGroup}>
-            {(wordWrap.isEnabled || wordWrap.isCodeScrollable) && (
-              <WordWrapButton
-                className={styles.codeButton}
-                onClick={() => wordWrap.toggle()}
-                isEnabled={wordWrap.isEnabled}
-              />
-            )}
-            <CopyButton className={styles.codeButton} code={newCode} />
-          </div>
-        </div>
-      </Container>
-      {imageUrl && (
-        <img
-          width="70%"
-          height="70%"
-          onError={() => {
-            setImageUrl(null);
-          }}
-          src={imageUrl}
-          alt="example"
-        />
-      )}
-    </>
-  );
-}
-
 function getThirdFriday() {
   const thirdFriday = new Date();
   thirdFriday.setMonth(thirdFriday.getMonth() + 1);
@@ -198,4 +56,64 @@ function getThirdFriday() {
   const dayString = thirdFriday.getDate().toString().padStart(2, "0");
   const dateString = `${yearString}-${monthString}-${dayString}`;
   return dateString;
+}
+
+function useCodeBlockMetadata(props) {
+  const { prism } = useThemeConfig();
+  const newDate = getThirdFriday();
+  const processedCode = props.children.replace("2022-07-29", newDate);
+
+  return createCodeBlockMetadata({
+    code: processedCode,
+    className: props.className,
+    metastring: props.metastring,
+    magicComments: prism.magicComments,
+    defaultLanguage: prism.defaultLanguage,
+    language: props.language,
+    title: props.title,
+    showLineNumbers: props.showLineNumbers,
+  });
+}
+
+export default function CodeBlockString(props) {
+  const [imageUrl, setImageUrl] = useState(null);
+  const metadata = useCodeBlockMetadata(props);
+  const wordWrap = useCodeWordWrap();
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    if (pathname.startsWith("/bot/")) {
+      // Check if parent has "examples" in id
+      const codeBlocks = document.querySelectorAll('[class*="codeBlockContainer"]');
+      codeBlocks.forEach((block) => {
+        const container = block.parentElement;
+        const containerSibling = container?.previousElementSibling;
+        if (containerSibling?.id?.includes("examples")) {
+          const finalImage = getImageUrl(pathname, metadata.code);
+          if (finalImage) {
+            setImageUrl(finalImage);
+          }
+        }
+      });
+    }
+  }, [pathname, metadata.code]);
+
+  return (
+    <>
+      <CodeBlockContextProvider metadata={metadata} wordWrap={wordWrap}>
+        <CodeBlockLayout />
+      </CodeBlockContextProvider>
+      {imageUrl && (
+        <img
+          width="70%"
+          height="70%"
+          onError={() => {
+            setImageUrl(null);
+          }}
+          src={imageUrl}
+          alt="example"
+        />
+      )}
+    </>
+  );
 }
