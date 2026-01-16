@@ -86,7 +86,14 @@ The RSS Feeds widget serves as your personal news aggregator within OpenBB, keep
 - Integrated news analysis within your research workflow
 - Support for both RSS (e.g. https://feeds.bloomberg.com/markets/news.rss) and Atom feed formats (e.g. https://karpathy.bearblog.dev/feed/)
 
-<img className="pro-border-gradient" width="49%" alt="RSS Feeds widget showing news headlines" src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/rss.png" />
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="RSS Feeds widget showing news headlines"
+    src="https://openbb-web-assets.s3.amazonaws.com/docs/launch_oct_24/rss.png"
+    width="600"
+  />
+</div>
 
 ## Clock Widget
 
