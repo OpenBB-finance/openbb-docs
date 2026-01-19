@@ -1767,14 +1767,15 @@ The Website widget brings external data sources directly into your dashboard, cr
 
 > **Note:** Some websites may restrict embedding. OpenBB automatically checks and only displays websites that permit embedding.
 
-## RSS Feeds Widget
+## RSS and Atom Feeds Widget
 
-The RSS Feeds widget serves as your personal news aggregator within OpenBB, keeping you informed with market-moving information. This essential tool provides:
+The RSS Feeds widget serves as your personal news aggregator within OpenBB, keeping you informed with market-moving information. This widget supports both RSS and Atom feed formats. This essential tool provides:
 
 - Curated financial news from top sources
 - Customizable news feed preferences
 - Real-time market updates
 - Integrated news analysis within your research workflow
+- Support for both RSS (e.g. https://feeds.bloomberg.com/markets/news.rss) and Atom feed formats (e.g. https://karpathy.bearblog.dev/feed/)
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
   <img
@@ -2740,6 +2741,213 @@ async def query(request: QueryRequest) -> EventSourceResponse:
 
     return EventSourceResponse(execution_loop(), media_type="text/event-stream")
 ```
+
+
+---
+
+---
+title: Create HTML artifacts
+sidebar_position: 7
+description: Stream inline HTML artifacts as part of your agent's response
+keywords:
+- html
+- artifacts
+- visualization
+- custom rendering
+- SSE
+- widgets
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="AI Features — Create HTML artifacts | OpenBB Workspace Docs" />
+
+Stream custom HTML content with `html_artifact(...)`. HTML artifacts are rendered inline in the chat and can be converted to dashboard widgets by users.
+
+Reference implementation in [this GitHub repository](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/39-vanilla-agent-html-artifacts).
+
+<img className="pro-border-gradient" width="800" alt="Charts" src="https://openbb-cms.directus.app/assets/e74e0b8e-3858-47e8-bcd6-d59dfe1cbfe7.png" />
+
+## Architecture
+
+Emit HTML artifacts so custom visualizations render below the answer. HTML content is sanitized with DOMPurify before rendering for security.
+
+`agents.json` configuration:
+
+```python
+return JSONResponse(content={
+    "vanilla_agent_html": {
+        "name": "HTML Artifacts Agent",
+        "description": "An example agent that produces HTML artifacts rendered inline in the chat.",
+        "endpoints": {"query": "/v1/query"},
+        "features": {
+            "streaming": True,
+            "widget-dashboard-select": False,
+            "widget-dashboard-search": False,
+        },
+    }
+})
+```
+
+### Query flow
+
+- Process user request and prepare HTML content
+- Stream explanatory text with `message_chunk()`
+- Create HTML content as a string (inline styles supported)
+- Emit `html_artifact()` events with proper configuration
+- HTML renders inline below streamed content
+- Users can click widget icon to add artifacts to dashboard
+
+### SSE event format
+
+HTML artifacts are sent as SSE events with the following structure:
+
+```python
+{
+    "event": "copilotMessageArtifact",
+    "data": {
+        "type": "html",
+        "uuid": "unique-id",
+        "name": "artifact_name",
+        "description": "A description of the artifact",
+        "content": "<div>Your HTML content here</div>"
+    }
+}
+```
+
+## Core logic
+
+```python
+import json
+import uuid
+from typing import AsyncGenerator
+from openbb_ai import message_chunk
+from openbb_ai.models import QueryRequest
+from sse_starlette.sse import EventSourceResponse
+
+def html_artifact(content: str, name: str, description: str) -> dict:
+    """
+    Create an HTML artifact SSE event.
+
+    Args:
+        content: The HTML content to render
+        name: A unique name for the artifact
+        description: A description of the artifact
+
+    Returns:
+        SSE event dict with type="html" artifact
+    """
+    return {
+        "event": "copilotMessageArtifact",
+        "data": json.dumps({
+            "type": "html",
+            "uuid": str(uuid.uuid4()),
+            "name": name,
+            "description": description,
+            "content": content,
+        }),
+    }
+
+# Example HTML template
+DASHBOARD_CARD_HTML = """
+<div style="font-family: system-ui, -apple-system, sans-serif; padding: 24px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 16px; color: white; max-width: 400px;">
+  <h2 style="margin: 0 0 16px 0; font-size: 20px; font-weight: 600;">Portfolio Summary</h2>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+    <div style="background: rgba(255,255,255,0.15); padding: 16px; border-radius: 12px;">
+      <div style="font-size: 28px; font-weight: bold;">$124.5K</div>
+      <div style="font-size: 13px; opacity: 0.8; margin-top: 4px;">Total Value</div>
+    </div>
+    <div style="background: rgba(255,255,255,0.15); padding: 16px; border-radius: 12px;">
+      <div style="font-size: 28px; font-weight: bold; color: #4ade80;">+12.3%</div>
+      <div style="font-size: 13px; opacity: 0.8; margin-top: 4px;">Today's Change</div>
+    </div>
+  </div>
+</div>
+"""
+
+@app.post("/v1/query")
+async def query(request: QueryRequest) -> EventSourceResponse:
+    async def execution_loop() -> AsyncGenerator[dict, None]:
+        client = openai.AsyncOpenAI()
+
+        # Stream the LLM response
+        async for event in await client.chat.completions.create(
+            model="gpt-4o",
+            messages=openai_messages,
+            stream=True,
+        ):
+            if chunk := event.choices[0].delta.content:
+                yield message_chunk(chunk).model_dump()
+
+        # Emit HTML artifact
+        yield message_chunk("\n\nHere's a portfolio dashboard card:\n\n").model_dump()
+        yield html_artifact(
+            content=DASHBOARD_CARD_HTML,
+            name="portfolio_dashboard",
+            description="A portfolio summary dashboard card",
+        )
+
+        yield message_chunk(
+            "\n\nYou can click the widget icon to add this to your dashboard!"
+        ).model_dump()
+
+    return EventSourceResponse(
+        content=execution_loop(),
+        media_type="text/event-stream",
+    )
+```
+
+## Example templates
+
+### Metric cards
+
+```html
+<div style="font-family: system-ui, -apple-system, sans-serif; display: flex; gap: 16px; flex-wrap: wrap;">
+  <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; border-radius: 12px; min-width: 140px;">
+    <div style="color: #64748b; font-size: 13px; margin-bottom: 8px;">Revenue</div>
+    <div style="font-size: 24px; font-weight: 600; color: #0f172a;">$2.4M</div>
+    <div style="color: #22c55e; font-size: 13px; margin-top: 4px;">↑ 14.2%</div>
+  </div>
+  <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; border-radius: 12px; min-width: 140px;">
+    <div style="color: #64748b; font-size: 13px; margin-bottom: 8px;">Users</div>
+    <div style="font-size: 24px; font-weight: 600; color: #0f172a;">48.2K</div>
+    <div style="color: #22c55e; font-size: 13px; margin-top: 4px;">↑ 8.1%</div>
+  </div>
+</div>
+```
+
+### Alert box
+
+```html
+<div style="font-family: system-ui, -apple-system, sans-serif; background: #fef3c7; border: 1px solid #f59e0b; border-radius: 12px; padding: 16px; display: flex; gap: 12px; align-items: flex-start; max-width: 500px;">
+  <div style="background: #f59e0b; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: bold;">!</div>
+  <div>
+    <div style="font-weight: 600; color: #92400e; margin-bottom: 4px;">Market Alert</div>
+    <div style="color: #a16207; font-size: 14px; line-height: 1.5;">Unusual trading volume detected in AAPL. Volume is 3.2x higher than the 20-day average.</div>
+  </div>
+</div>
+```
+
+## Security considerations
+
+The frontend sanitizes all HTML with DOMPurify before rendering. Keep the following in mind:
+
+| Element/Attribute | Status |
+|-------------------|--------|
+| `<script>` tags | Stripped |
+| `<style>` tags | Stripped |
+| `<iframe>`, `<form>`, `<object>`, `<embed>` | Stripped |
+| `on*` event handlers (onclick, onload, etc.) | Stripped |
+| Inline styles | Supported |
+| Standard HTML elements (div, span, img, etc.) | Supported |
+
+## Best practices
+
+- Use inline styles for all styling (external stylesheets not supported)
+- Keep HTML self-contained with no external dependencies
+- Use system fonts for consistent cross-platform rendering
+- Test artifacts at different viewport sizes for responsiveness
+- Provide meaningful `name` and `description` for widget creation
 
 
 ---
@@ -7233,7 +7441,7 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
 - **type**
   _Type:_ `string`
   Sets the default visualization type for the widget.
-  _Possible values:_ `"chart"`, `"table"`, `"table_ssrm"`, `"markdown"`, `"metric"`, `"note"`,  `"multi_file_viewer"`, `"live_grid"`, `"newsfeed"`, `"advanced-chart"`, `"chart-highcharts"`
+  _Possible values:_ `"chart"`, `"table"`, `"table_ssrm"`, `"markdown"`, `"metric"`, `"note"`,  `"multi_file_viewer"`, `"live_grid"`, `"newsfeed"`, `"advanced-chart"`, `"chart-highcharts"`, `"youtube"`
   _Default:_ `"table"`
 
 - **raw**
@@ -7718,7 +7926,7 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
     _Type:_ `string`
     The type of the parameter.
     _Example:_ `"date"`
-    _Possible values:_ `"date"`, `"text"`, `"ticker"`, `"number"`, `"boolean"`, `"endpoint"`, `"form"`
+    _Possible values:_ `"date"`, `"text"`, `"ticker"`, `"number"`, `"boolean"`, `"endpoint"`, `"form"`, `"tabs"`
 
   - **paramName**
     _Type:_ `string`
@@ -11027,6 +11235,361 @@ Within each row, parameters are displayed in the order they appear in the array.
 ```
 
 In the above example, the parameters are displayed in the order: Date, Text, Boolean, Dropdown. Then, the parameters are reordered to: Boolean, Dropdown, Date, Text based on the order of the parameters in the array.
+
+
+---
+
+---
+title: Tabs
+sidebar_position: 28
+description: Learn how to implement tabs parameters in OpenBB Workspace widgets to create tabbed interfaces for switching between different data views
+keywords:
+- tabs
+- tab parameter
+- tabbed interface
+- widget parameters
+- data views
+- dynamic columns
+- OpenBB Workspace
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Tabs | OpenBB Workspace Docs" />
+
+A parameter type that renders as clickable tabs, allowing users to switch between different data views within a single widget. Tabs are ideal for organizing related data categories that share a similar structure or context.
+
+## Basic Tabs Parameter
+
+The tabs parameter uses `"type": "tabs"` and requires an `options` array defining the available tabs.
+
+```json
+{
+  "paramName": "category",
+  "type": "tabs",
+  "value": "liquidity",
+  "label": "Category",
+  "description": "Select the category to display",
+  "options": [
+    {
+      "label": "Liquidity",
+      "value": "liquidity"
+    },
+    {
+      "label": "Efficiency",
+      "value": "efficiency"
+    },
+    {
+      "label": "Profitability",
+      "value": "profitability"
+    }
+  ]
+}
+```
+
+## Tabs with Dynamic Columns
+
+In this example, each tab returns data with **different columns**. The table columns automatically regenerate based on the data returned by each tab selection.
+
+<img className="pro-border-gradient" width="800" alt="Basic YouTube Widget" src="https://openbb-cms.directus.app/assets/f5b76ac4-e78b-4456-b25c-6d58e93c6f16.png" />
+
+**Widget Configuration (widgets.json):**
+
+```json
+{
+  "tabs_dynamic_columns": {
+    "name": "Financial Ratios - Dynamic Columns",
+    "description": "Each tab shows different metrics with different columns",
+    "category": "Financial Analysis",
+    "endpoint": "financial_ratios_dynamic",
+    "gridData": {
+      "w": 45,
+      "h": 12
+    },
+    "params": [
+      {
+        "paramName": "category",
+        "type": "tabs",
+        "value": "liquidity",
+        "label": "Ratio Category",
+        "description": "Select the financial ratio category",
+        "options": [
+          {
+            "label": "Liquidity",
+            "value": "liquidity"
+          },
+          {
+            "label": "Efficiency",
+            "value": "efficiency"
+          },
+          {
+            "label": "Profitability",
+            "value": "profitability"
+          },
+          {
+            "label": "Leverage",
+            "value": "leverage"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+**Backend Implementation:**
+
+```python
+@app.get("/financial_ratios_dynamic")
+def get_financial_ratios_dynamic(category: str = "liquidity"):
+    """
+    Returns different columns based on the selected category tab.
+    The table columns will change when switching tabs.
+    """
+    data = []
+
+    for company in COMPANIES:
+        row = {
+            "symbol": company["symbol"],
+            "company": company["company"],
+        }
+
+        if category == "liquidity":
+            row["current_ratio"] = round(random.uniform(0.5, 4.0), 2)
+            row["quick_ratio"] = round(random.uniform(0.3, 3.5), 2)
+            row["cash_ratio"] = round(random.uniform(0.1, 2.0), 2)
+            row["working_capital_m"] = round(random.uniform(-5000, 50000), 0)
+
+        elif category == "efficiency":
+            row["asset_turnover"] = round(random.uniform(0.3, 2.0), 2)
+            row["inventory_turnover"] = round(random.uniform(2.0, 50.0), 1)
+            row["receivables_turnover"] = round(random.uniform(3.0, 20.0), 1)
+            row["days_sales_outstanding"] = round(random.uniform(20, 90), 0)
+
+        elif category == "profitability":
+            row["gross_margin_pct"] = round(random.uniform(20, 80), 1)
+            row["operating_margin_pct"] = round(random.uniform(5, 50), 1)
+            row["net_margin_pct"] = round(random.uniform(2, 40), 1)
+            row["roe_pct"] = round(random.uniform(5, 150), 1)
+
+        elif category == "leverage":
+            row["debt_to_equity"] = round(random.uniform(0.1, 3.0), 2)
+            row["debt_to_assets"] = round(random.uniform(0.05, 0.6), 2)
+            row["interest_coverage"] = round(random.uniform(2.0, 200.0), 1)
+
+        data.append(row)
+
+    return data
+```
+
+## Tabs with Static Columns
+
+When you want the same columns across all tabs (only data values change), define `columnsDefs` in the widget configuration. This ensures consistent column structure regardless of which tab is selected.
+
+<img className="pro-border-gradient" width="800" alt="Basic YouTube Widget" src="https://openbb-cms.directus.app/assets/a3109091-fe49-4a6a-97c9-c3f48e1dc037.png" />
+
+**Widget Configuration (widgets.json):**
+
+```json
+{
+  "tabs_static_columns": {
+    "name": "Financial Ratios - Static Columns",
+    "description": "Same columns for all tabs - only data values change",
+    "category": "Financial Analysis",
+    "endpoint": "financial_ratios_static",
+    "gridData": {
+      "w": 40,
+      "h": 12
+    },
+    "params": [
+      {
+        "paramName": "category",
+        "type": "tabs",
+        "value": "liquidity",
+        "label": "Category",
+        "description": "Select category - columns stay the same",
+        "options": [
+          {
+            "label": "Liquidity",
+            "value": "liquidity"
+          },
+          {
+            "label": "Efficiency",
+            "value": "efficiency"
+          },
+          {
+            "label": "Profitability",
+            "value": "profitability"
+          },
+          {
+            "label": "Leverage",
+            "value": "leverage"
+          }
+        ]
+      }
+    ],
+    "data": {
+      "table": {
+        "columnsDefs": [
+          {
+            "field": "symbol",
+            "headerName": "Symbol",
+            "pinned": "left"
+          },
+          {
+            "field": "company",
+            "headerName": "Company"
+          },
+          {
+            "field": "category",
+            "headerName": "Selected Category"
+          },
+          {
+            "field": "metric_1",
+            "headerName": "Metric 1"
+          },
+          {
+            "field": "metric_2",
+            "headerName": "Metric 2"
+          },
+          {
+            "field": "metric_3",
+            "headerName": "Metric 3"
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+**Backend Implementation:**
+
+```python
+@app.get("/financial_ratios_static")
+def get_financial_ratios_static(category: str = "liquidity"):
+    """
+    Same columns for all tabs - only data values change.
+    """
+    data = []
+    for company in COMPANIES:
+        row = {
+            "symbol": company["symbol"],
+            "company": company["company"],
+            "category": category,
+            "metric_1": round(random.uniform(0.5, 100), 2),
+            "metric_2": round(random.uniform(0.5, 100), 2),
+            "metric_3": round(random.uniform(0.5, 100), 2),
+        }
+        data.append(row)
+    return data
+```
+
+## Tabs Combined with Other Parameters
+
+Tabs can be used alongside other parameter types like dropdowns. In this example, tabs control the data category (which changes columns) while a dropdown controls the reporting period.
+
+<img className="pro-border-gradient" width="800" alt="Basic YouTube Widget" src="https://openbb-cms.directus.app/assets/1297128e-3bbc-43a1-86fc-37938002c2b0.png" />
+
+**Widget Configuration (widgets.json):**
+
+```json
+{
+  "tabs_with_dropdown": {
+    "name": "Financial Analysis with Period",
+    "description": "Tabs control category, dropdown controls period",
+    "category": "Financial Analysis",
+    "endpoint": "comparison_with_period",
+    "gridData": {
+      "w": 50,
+      "h": 14
+    },
+    "params": [
+      {
+        "paramName": "period",
+        "type": "text",
+        "value": "annual",
+        "label": "Period",
+        "description": "Select the reporting period",
+        "options": [
+          {
+            "label": "Annual",
+            "value": "annual"
+          },
+          {
+            "label": "Quarterly",
+            "value": "quarterly"
+          }
+        ]
+      },
+      {
+        "paramName": "category",
+        "type": "tabs",
+        "value": "liquidity",
+        "label": "Category",
+        "description": "Select the financial ratio category",
+        "options": [
+          {
+            "label": "Liquidity",
+            "value": "liquidity"
+          },
+          {
+            "label": "Efficiency",
+            "value": "efficiency"
+          },
+          {
+            "label": "Profitability",
+            "value": "profitability"
+          },
+          {
+            "label": "Leverage",
+            "value": "leverage"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+**Backend Implementation:**
+
+```python
+@app.get("/comparison_with_period")
+def get_comparison_with_period(category: str = "liquidity", period: str = "annual"):
+    """
+    Tabs control the category (changes columns), dropdown controls the period.
+    """
+    data = generate_random_data(category)
+
+    # Add period info to each row
+    for row in data:
+        row["period"] = period
+        row["fiscal_year"] = 2024 if period == "annual" else "Q4 2024"
+
+    return data
+```
+
+## Parameter Properties
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `paramName` | `string` | Yes | The parameter name passed to the endpoint |
+| `type` | `string` | Yes | Must be `"tabs"` |
+| `value` | `string` | Yes | Default selected tab value |
+| `label` | `string` | No | Display label for the parameter |
+| `description` | `string` | No | Tooltip description |
+| `options` | `array` | Yes | Array of tab options with `label` and `value` |
+
+## When to Use Tabs vs Dropdown
+
+| Use Case | Recommended |
+|----------|-------------|
+| 2-5 mutually exclusive categories | **Tabs** - Better visibility, quick switching |
+| Many options (6+) | **Dropdown** - Saves space |
+| Frequent switching between views | **Tabs** - One-click access |
+| Options need search/filter | **Dropdown** - Built-in search |
+| Different data schemas per option | **Tabs** - Visual indication of view change |
 
 
 ---
@@ -15061,6 +15624,202 @@ The charting technology is provided by TradingView — a platform for traders an
 ---
 
 ---
+title: YouTube
+sidebar_position: 12
+description: Learn how to create YouTube video widgets in OpenBB Workspace, including basic video embedding and transcript support for AI assistants.
+keywords:
+- youtube widget
+- video widget
+- youtube embed
+- video player
+- transcript
+- AI context
+- OpenBB Workspace
+- widget development
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="YouTube | OpenBB Workspace Docs" />
+
+A widget that embeds and displays YouTube videos. The YouTube widget supports two modes: basic video playback and video with transcript support for AI context.
+
+## Basic YouTube Widget
+
+A simple widget that displays a YouTube video player. The endpoint returns the YouTube video URL as plain text.
+
+<img className="pro-border-gradient" width="800" alt="Basic YouTube Widget" src="https://openbb-cms.directus.app/assets/f30f91a8-340e-46f5-a690-18e01a9d7447.png" />
+
+```python
+from fastapi import Query
+from fastapi.responses import PlainTextResponse
+from typing import List
+from pydantic import BaseModel
+
+class FileOption(BaseModel):
+    label: str
+    value: str
+
+# Sample YouTube videos data
+SAMPLE_VIDEOS = [
+    {
+        "name": "OpenBB Workspace Demo",
+        "url": "https://www.youtube.com/watch?v=uYyhswnZkSw",
+    },
+    {
+        "name": "Open Data Platform Demo",
+        "url": "https://www.youtube.com/watch?v=MSlhOFxEdxg",
+    }
+]
+
+# Options endpoint for video selection dropdown
+@app.get("/get_video_options")
+async def get_video_options() -> List[FileOption]:
+    """Get list of available videos"""
+    return [
+        FileOption(label=video["name"], value=video["name"])
+        for video in SAMPLE_VIDEOS
+    ]
+
+# YouTube widget - video player only
+@register_widget({
+    "name": "Video Library",
+    "description": "View YouTube videos",
+    "type": "youtube",
+    "endpoint": "/get_video",
+    "gridData": {"w": 20, "h": 12},
+    "params": [
+        {
+            "paramName": "video_name",
+            "description": "Video to display",
+            "type": "endpoint",
+            "label": "Video",
+            "optionsEndpoint": "/get_video_options",
+            "value": "OpenBB Workspace Demo",
+        }
+    ]
+})
+@app.get("/get_video")
+async def get_video(
+    video_name: str = Query("", description="Selected video"),
+):
+    """Get YouTube video URL"""
+    video = next((v for v in SAMPLE_VIDEOS if v["name"] == video_name), None)
+
+    if not video:
+        return PlainTextResponse(content="")
+
+    return PlainTextResponse(content=video["url"])
+```
+
+The widget configuration specifies `"type": "youtube"` which tells OpenBB Workspace to render the returned URL in an embedded YouTube player.
+
+## YouTube Widget with Transcript Support
+
+This variant adds transcript support for AI assistants. When the `raw` configuration is set to `True`, the frontend will request the endpoint with `?raw=true` to get the transcript content instead of the video URL.
+
+<div style={{display: 'flex', gap: '10px'}}>
+<img className="pro-border-gradient" width="49%" alt="YouTube Widget with Transcript Support" src="https://openbb-cms.directus.app/assets/da80b714-c121-49de-ac73-c4b9b587ed83.png" />
+<img className="pro-border-gradient" width="49%" alt="YouTube Widget AI Context" src="https://openbb-cms.directus.app/assets/ef5c1a64-c009-4b19-b2e3-d0742ded8de4.png" />
+</div>
+
+```python
+from fastapi import Query
+from fastapi.responses import PlainTextResponse
+from typing import List
+from pydantic import BaseModel
+
+class FileOption(BaseModel):
+    label: str
+    value: str
+
+# Sample YouTube videos data with transcripts
+SAMPLE_VIDEOS = [
+    {
+        "name": "OpenBB Workspace Demo",
+        "url": "https://www.youtube.com/watch?v=uYyhswnZkSw",
+        "transcript": "# OpenBB Workspace Demo\n\nThis video demonstrates the OpenBB Workspace features..."
+    },
+    {
+        "name": "Open Data Platform Demo",
+        "url": "https://www.youtube.com/watch?v=MSlhOFxEdxg",
+        "transcript": "# Open Data Platform Demo\n\nIn this video we explore the Open Data Platform..."
+    }
+]
+
+# Options endpoint for video selection dropdown
+@app.get("/get_video_options")
+async def get_video_options() -> List[FileOption]:
+    """Get list of available videos"""
+    return [
+        FileOption(label=video["name"], value=video["name"])
+        for video in SAMPLE_VIDEOS
+    ]
+
+# YouTube widget with transcript support for AI
+@register_widget({
+    "name": "Video Library with Transcript",
+    "description": "View YouTube videos with transcript support for AI",
+    "type": "youtube",
+    "endpoint": "/get_video_with_transcript",
+    "raw": True,
+    "gridData": {"w": 20, "h": 12},
+    "params": [
+        {
+            "paramName": "video_name",
+            "description": "Video to display",
+            "type": "endpoint",
+            "label": "Video",
+            "optionsEndpoint": "/get_video_options",
+            "value": "OpenBB Workspace Demo",
+        }
+    ]
+})
+@app.get("/get_video_with_transcript")
+async def get_video_with_transcript(
+    video_name: str = Query("", description="Selected video"),
+    raw: bool = Query(False, description="Return transcript instead of URL"),
+):
+    """Get YouTube video URL or transcript"""
+    video = next((v for v in SAMPLE_VIDEOS if v["name"] == video_name), None)
+
+    if not video:
+        return PlainTextResponse(content="*No video selected*" if raw else "")
+
+    if raw:
+        return PlainTextResponse(content=video["transcript"], media_type="text/markdown")
+
+    return PlainTextResponse(content=video["url"])
+```
+
+### How AI Context Works
+
+When `"raw": True` is set in the widget configuration:
+
+1. **Normal viewing**: The frontend requests the endpoint without the `raw` parameter (or `raw=false`), and the endpoint returns the YouTube URL for the video player.
+
+2. **AI context**: When an AI assistant needs to understand the widget content, the frontend requests the endpoint with `?raw=true`, and the endpoint returns the transcript in markdown format.
+
+This allows AI assistants to read and understand the video content without having to watch the video, enabling them to answer questions about the video or provide summaries.
+
+## Key Configuration Options
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `type` | `string` | Must be `"youtube"` for YouTube widgets |
+| `raw` | `boolean` | Set to `True` to enable transcript requests for AI context |
+| `endpoint` | `string` | The endpoint that returns the video URL (or transcript when `raw=true`) |
+| `gridData` | `object` | Widget dimensions (`w` for width, `h` for height) |
+
+## Response Format
+
+- **Video URL**: Return as `PlainTextResponse` with the full YouTube URL (e.g., `https://www.youtube.com/watch?v=VIDEO_ID`)
+- **Transcript**: Return as `PlainTextResponse` with `media_type="text/markdown"` for formatted content
+
+
+---
+
+---
 title: Administration
 sidebar_position: 4
 description: Administration and management features for OpenBB Workspace Enterprise
@@ -15398,9 +16157,10 @@ Activity logging tracks when dashboards are shared, accessed, or modified. Permi
 
 ## Export Controls
 
-Manage how data and analyses can be extracted from the platform. Export controls operate through role-based permissions that determine which users can download data, generate reports, or share content outside the system. Administrators configure these controls to match organizational data governance policies.
-
-The export control system tracks all data movement activities. When users export dashboards or download data, the system records the action, identifies the user, and logs the specific content involved. This information supports compliance monitoring and data loss prevention initiatives.
+Manage how data and analyses can be extracted from the platform. Users are allowed to export:
+- Individual datasets in formats such as CSV, Excel, PNG and JSON.
+- Export dashboards (with multiple tabs) as PDF or PNG.
+- Export a folder (i.e. multiple dashboards) as a ZIP file.
 
 ## AI Features Integration
 
