@@ -32,6 +32,7 @@ function NavbarTabs() {
   const isWelcome = location.pathname === "/";
   const isWorkspace = location.pathname.startsWith("/workspace");
   const isODP = location.pathname.startsWith("/desktop") || location.pathname.startsWith("/python") || location.pathname.startsWith("/cli");
+  const isSnowflake = location.pathname.startsWith("/snowflake");
 
   return (
     <div className="navbar-tabs">
@@ -52,6 +53,12 @@ function NavbarTabs() {
         className={`navbar-tab ${isODP ? "navbar-tab--active" : ""}`}
       >
         ODP
+      </Link>
+      <Link
+        to="/snowflake"
+        className={`navbar-tab ${isSnowflake ? "navbar-tab--active" : ""}`}
+      >
+        Snowflake
       </Link>
     </div>
   );

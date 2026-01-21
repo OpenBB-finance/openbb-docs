@@ -34,6 +34,7 @@ export default function DocSidebarItem({ item, ...props }) {
 	const isPlatform = pathname.startsWith("/platform");
 	const isCLI = pathname.startsWith("/cli");
 	const isODP = pathname.startsWith("/desktop") || pathname.startsWith("/python");
+	const isSnowflake = pathname.startsWith("/snowflake");
 	const isRelevantSection = isPro || isExcel || isGettingStarted;
 
 	// Only show workspace items when in workspace, excel items when in excel, getting-started items always in relevant sections
@@ -46,6 +47,25 @@ export default function DocSidebarItem({ item, ...props }) {
 			return null;
 		}
 		if (item.dirName === "getting-started" && !isRelevantSection) {
+			return null;
+		}
+		// Hide snowflake items when not in snowflake section
+		if (item.dirName?.startsWith("snowflake") && !isSnowflake) {
+			return null;
+		}
+	}
+
+	// Hide snowflake section when not in snowflake
+	if (item.className?.includes("snowflake-section") && !isSnowflake) {
+		return null;
+	}
+
+	// When in snowflake, hide other sections
+	if (isSnowflake) {
+		if (item.className?.includes("getting-started-section") ||
+			item.className?.includes("developers-section") ||
+			item.className?.includes("analyst-section") ||
+			item.className?.includes("odp-section")) {
 			return null;
 		}
 	}
@@ -61,14 +81,14 @@ export default function DocSidebarItem({ item, ...props }) {
 	}
 
 	// Show section headers only when in workspace, excel, or getting-started sections
-	// Hide them when in platform, CLI or other sections
-	if (item.className?.includes("getting-started-section") && (!isRelevantSection || isPlatform || isCLI || isODP)) {
+	// Hide them when in platform, CLI, ODP, or Snowflake sections
+	if (item.className?.includes("getting-started-section") && (!isRelevantSection || isPlatform || isCLI || isODP || isSnowflake)) {
 		return null;
 	}
-	if (item.className?.includes("developers-section") && (!isRelevantSection || isPlatform || isCLI || isODP)) {
+	if (item.className?.includes("developers-section") && (!isRelevantSection || isPlatform || isCLI || isODP || isSnowflake)) {
 		return null;
 	}
-	if (item.className?.includes("analyst-section") && (!isRelevantSection || isPlatform || isCLI || isODP)) {
+	if (item.className?.includes("analyst-section") && (!isRelevantSection || isPlatform || isCLI || isODP || isSnowflake)) {
 		return null;
 	}
 
@@ -80,8 +100,8 @@ export default function DocSidebarItem({ item, ...props }) {
 		}
 	}
 
-	// Hide workspace categories when in platform or CLI sections
-	if ((isPlatform || isCLI || isODP) && item.type === "category") {
+	// Hide workspace categories when in platform, CLI, ODP, or Snowflake sections
+	if ((isPlatform || isCLI || isODP || isSnowflake) && item.type === "category") {
 		// First check if the first item in the category is workspace-related (quick check)
 		const firstItem = item.items?.[0];
 		if (firstItem) {

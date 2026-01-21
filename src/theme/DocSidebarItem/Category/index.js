@@ -101,6 +101,7 @@ export default function DocSidebarItemCategory({
 		"OpenBB Platform CLI": "/cli",
 		"ODP Desktop": "/desktop",
 		"ODP Python": "/python",
+		"Snowflake": "/snowflake",
 	};
 	const newHref = labelToHrefMap[label] || href;
 	const {
@@ -153,6 +154,7 @@ export default function DocSidebarItemCategory({
 	const location = useLocation();
 	const isProPage = location.pathname.startsWith("/workspace");
 	const isExcelPage = location.pathname.startsWith("/excel");
+	const isSnowflakePage = location.pathname.startsWith("/snowflake");
 
 	// Hide the OpenBB Terminal Pro section if we're not on a /pro or /excel page
 	if (item.customProps?.hiddenByDefault && !(isProPage || isExcelPage)) {
