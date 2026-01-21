@@ -1335,6 +1335,430 @@ async def some_function(
 ---
 
 ---
+title: Charting Extensions
+sidebar_position: 5
+description: This page is a guide for adding custom views to any router endpoint that are included with the response object when the user sets `chart=True`.
+keywords:
+  - OBBject
+  - Python
+  - Development
+  - OpenBB Platform
+  - extensions
+  - obbject extension
+  - how-to
+  - charting
+  - Plotly
+  - openbb-charting
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Charting Extensions - Developer | OpenBB Docs" />
+
+This page is a guide for adding custom views to any router endpoint,
+included with the response object when the user sets `chart=True`.
+
+The infrastructure is generally compatible with any JSON serializable object,
+but some handling and helpers are optimized for Plotly Figure objects.
+
+## Folder structure
+
+```shell
+obbject_example
+├── README.md
+├── openbb_empty_charting
+│   └── __init__.py
+├── poetry.lock
+└── pyproject.toml
+```
+
+Extension code can go directly in the `__init__.py` file.
+
+### TOML File
+
+The entry point for the extension is specified as a Poetry plugin, near the bottom of the file.
+
+```toml
+[tool.poetry.plugins."openbb_charting_extension"]
+empty = "openbb_empty_charting:EmptyViews"
+```
+
+Where `EmptyViews` is a class with static methods for each endpoint being implemented.
+
+A complete `pyproject.toml` looks something like:
+
+<details>
+<summary mdxType="summary">`pyproject.toml`</summary>
+
+```toml
+[tool.poetry]
+name = "openbb-empty-charting"
+version = "0.0.1"
+description = "An empty OBBject extension"
+authors = ["Hello <hello@world.co>"]
+readme = "README.md"
+packages = [{ include = "openbb_empty_charting" }]
+
+[tool.poetry.dependencies]
+python = "^3.10,<3.14"
+openbb-core = "*"
+openbb-charting = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_charting_extension"]
+empty = "openbb_empty_charting:EmptyViews"
+```
+
+</details>
+
+:::important
+Extension logic will map routers, and while not necessary to define as a dependency,
+it is assumed that routers for specific endpoints are installed in the environment.
+
+For example, `openbb-equity` should be installed if mapping to, `obb.equity.price.quote`.
+
+To not rely on `openbb-charting`, add the plugin definition to a [Router extension](/python/developer/extension_types/router).
+This has the effect of making the extension optional, because endpoint views will only be accessible when `openbb-charting` is installed.
+:::
+
+### Writing the Extension
+
+In this example the extension code all lives inside `__init__.py`.
+
+:::info
+The example below uses [`openbb-empty-router`](/python/developer/extension_types/router) as the router extension.
+
+```python
+>>> from openbb import obb
+
+>>> obb.empty.hello()
+
+OBBject[T]
+
+id: 068fa8b2-968c-7059-8000-e6a8e3501eba
+results: Hello from the Empty Router extension!
+provider: None
+warnings: None
+chart: None
+extra: {'metadata': {'arguments': {'provider_choices': {}, 'standard_params': {}, '...
+```
+
+- `**kwargs` should be the only argument for the function.
+- Functions should be static methods of the target entry point.
+- Response types can be:
+  - `openbb_core.app.model.charts.chart.Chart`
+  - `openbb_charting.core.openbb_figure.OpenBBFigure | plotly.graph_objects.Figure | Any`
+  - dict-like represention of the chart
+  - `tuple[<figure-object>, <JSON-serializable-content>]`
+
+:::
+
+<details>
+<summary mdxType="summary">Example Extension</summary>
+
+```python
+"""Empty Router Views."""
+
+class EmptyViews:
+    """Empty Views."""
+
+    @staticmethod
+    def empty_hello( # Map to any full router path like this, i.e, `etf_countries`
+        **kwargs,
+    ):
+        """Empty Hello World Chart.
+
+        Parameters
+        ----------
+        some_param: int
+            This parameter is now under kwargs["extra_params"]["some_param"]
+        """
+        # pylint: disable=import-outside-toplevel
+
+        # Import modules here instead of at the top of the file.
+        # This prevents circular imports and decouples from application initialization.
+
+
+        # This is an object that can be used to return the results.
+        # It accepts "fig", "content", and "format" as inputs.
+        # Content is the JSON serialized representation returned to the API,
+        # "fig" is the Python object holding the chart. 
+        from openbb_core.app.model.charts.chart import Chart
+
+
+        # This is the general purpose Figure object,
+        # it is a subclass of plotly.graph_objects.Figure
+        # It can be used to display content in a dedicated window
+        # when `pywry` is installed from PyPI.
+        from openbb_charting.core.openbb_figure import OpenBBFigure
+        
+        # Code will execute when router endpoint is called, and `chart=True`.
+
+        print(kwargs)
+
+        fig = OpenBBFigure()
+        fig.add_bar(
+            x=["A", "B", "C"], y=[1, 2, 3]
+        )
+        fig.update_layout(
+            title="Hello Chart!",
+            template="plotly_dark"
+        )
+        return Chart(
+            fig=fig,  # Binary figure object
+            content=fig.to_plotly_json(),  # JSON-econdable version.
+            format="plotly"  # For user reference.
+        )
+```
+
+</details>
+
+<details>
+<summary mdxType="summary">This results in:</summary>
+
+
+```python
+>>> res = obb.empty.hello(chart=True, some_param= 2)
+{
+    'extra_params': {'some_param': 2}, # Additional keyword arguments.
+    'obbject_item': 'Hello from the Empty Router extension!',  # This is the function's results object.
+    'charting_settings': {"chart_style": "dark", "table_style": "dark", ... }  # Portion of the user_settings.json
+    'standard_params': {},  # Main keyword arguments.
+    'provider': None,
+    'extra': {}  # The 
+}
+
+>>> res
+
+OBBject[T]
+
+id: 068fac1e-e9fe-7037-8000-b993cc3e848f
+results: Hello from the Empty Router extension!
+provider: None
+warnings: None
+chart: {'content': {'data': [{'x': ['A', 'B', 'C'], 'y': [1, 2, 3], 'type': 'bar'}]...
+extra: {'metadata': {'arguments': {'provider_choices': {}, 'standard_params': {}, '...
+```
+
+</details>
+
+## **Kwargs
+
+Kwargs is a dictionary with the function's results, user settings, and execution metadata.
+
+Implemented methods intercept the execution before completion, and returning sets the `chart` attribute in the `OBBject` response object.
+
+```
+dict_keys(
+    [
+        'obbject_item', 'charting_settings', 'standard_params', 'extra_params', 'provider', 'extra'
+    ]
+)
+```
+
+- **`kwargs["obbject_item"]`**: The validated 'results' object in the final output.
+- **`kwargs["charting_settings"]`**: [User settings](/python/settings/user_settings/preferences) are passed in for handling, if required.
+- **`kwargs["standard_params"]`**: Parameters handled by the standard model, if any.
+- **`kwargs["extra_params"]`**: All other parameters passed to the main function.
+- **`kwargs["extra"]`**: [Metadata](/python/developer/how-to/annotated_results) returned by a [provider extension](/python/developer/extension_types/provider).
+
+
+## Conveying Parameters
+
+If chart generation is being parameterized, the best thing to do is include them in the main function definition.
+However, it may not be possible - or desired - to add more definitions to the endpoint code.
+
+The docstring is available in the Python Interface with the `openbb-charting` method, `get_params`. This calls Python `help` on the function.
+
+```python
+>>> res = obb.empty.hello(chart=True, some_param= 2)
+>>> res.charting.get_params()
+
+Help on function empty_hello in module openbb_empty_charting:
+
+empty_hello(**kwargs)
+    Empty Hello World Chart.
+
+    Parameters
+    ----------
+    some_param: int
+        This parameter is now under kwargs["extra_params"]["some_param"]
+```
+
+## Usage
+
+See the documentation [here](/python/extensions/infrastructure/openbb-charting) for usage instructions and examples.
+
+
+---
+
+---
+title: From FastAPI
+sidebar_position: 2
+description: This page explains how to convert an existing FastAPI application to an ODP Python Package, without changing any code.
+keywords:
+  - ODP
+  - Router
+  - FastAPI
+  - APIRouter
+  - API
+  - Python
+  - Development
+  - OpenBB Platform
+  - extensions
+  - how-to
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Converting FastAPI Apps - Developer | OpenBB Docs" />
+
+This page explains how to convert an existing FastAPI application to an ODP Python Package, without changing any code.
+
+All that's required is defining the entry point in `pyproject.toml`, directed to an instance of either, `fastapi.FastAPI` or `fastapi.APIRouter`.
+
+:::tip
+If you are already familiar with FastAPI, this is an excellent way to get started making OpenBB Python Package extensions. 
+:::
+
+Each API route (GET or POST) will be added to the `obb` Python package under the assigned name - `i.e, obb.my_app.some_function` - and will be an equivalent to
+the REST API endpoint.
+The resulting app will be an independent module that does not require a server.
+They will combine and operate like any other ODP [router](/python/developer/extension_types/router).
+
+## Add Dependency
+
+Add `openbb-core` (version pinning is not recommended, use the latest or `>=1.5.5`) to the project's dependencies.
+
+:::info
+If not already in your environment, this will introduce Numpy, Pandas, and Uvicorn.
+:::
+
+## Entry Point
+
+In, `pyproject.toml`, add a section where the object to the right of the colon is the configured instance of `FastAPI` or `APIRouter`.
+
+ODP Python uses Poetry as the build tool, but you can use any PEP 517-compliant build backend.
+
+### Poetry
+
+```toml
+[tool.poetry.plugins."openbb_core_extension"]
+my_app = "my_package.app:app"
+```
+
+### Standard
+
+```toml
+[project.entry-points."openbb_core_extension"]
+my_app = "my_package.app.some_router:router"
+```
+
+:::note
+Factory functions are not supported. A configured instance must exist on package initialization.
+:::
+
+## Install
+
+The extension must be installed for it to be recognized, use your preferred method of installation. Installing as editable is recommended for development and testing.
+
+```sh
+pip install -e .
+```
+
+## Build
+
+The API can be started [immediately](/python/quickstart/rest_api); but, to use as a Python package, the static assets must be built.
+
+From the command line, enter:
+
+```sh
+openbb-build
+```
+
+### Import
+
+Upon completion, it is ready to use. Import the package with:
+
+```sh
+from openbb import obb
+
+print(obb.my_app)
+```
+
+## Known Limitations
+
+The Python interface will be nearly identical to its REST equivalent,
+with some notable differences and technical limitations.
+
+Primarily, the client/server relationship does not exist within the Python interface.
+
+### Auth Hooks
+
+- Authorization hooks will not be injected into the Python static assets,
+functions are expected to operate without authorization.
+
+### Dependency Injections
+
+- Request-bound dependnecies, or those returning `None`, will not be injected.
+
+- Command execution may fail where endpoints require access to the `Request` or `Headers`.
+  - Additional handling may be required if endpoint code explicitly accesses these objects as locals.
+
+- All other dependencies are injected into the static assets as locals.
+
+### Streaming Endpoints
+
+- Websockets are not currently supported. They will still be part of the REST API, but no Swagger docs will be generated, and they will be excluded from the Python interface.
+
+- Streaming responses (one-way communication) will work, but are not officially supported and may have unexpected outcomes.
+
+### Multi-Method API Routes
+
+- API routes with multiple methods (e.g., `/my_app/some_function` has both `GET` and `POST` operations) may not generate correctly.
+  - Consider implementing the methods as API path parameters.
+
+## Tips & Workarounds
+
+If you are having trouble building the static assets for a full application, consider targeting individual routers or wrapping functions in an instance of `fastapi.APIRouter`. This will help isolate and identify any problematic endpoints. 
+
+Rich metadata for each function will be generated and stored under `obb.reference`.
+Parameters and Returns sections of docstrings will be automatically generated from model definitions and annotations.
+For best results, use descriptive Pydantic models.
+
+## Troubleshooting
+
+Some issues may be resolved by installing the latest version of `openbb-core`. 
+
+If `openbb-build` results in an error and does not complete, check the error message for clues. For a verbose output, set the environment variable, `OPENBB_DEBUG_MODE='1'` and run it again.
+
+Encountered errors may be related to module imports, function signatures, docstrings, or type annotations.
+
+If `openbb-build` succeeds, and you encounter an import error, after `from openbb import obb`, the static assets may have been corrupted.
+Enable debug mode, run `openbb-build` again and inspect the final result.
+
+If build and import were successful but an error occurs on accessing the application property, there may have been a linting error.
+Try, `pip install -U ruff black`, and then run `openbb-build` again.
+If it persists, make note of the complete error and inspect the static assets. Adjust function annotations and types to further diagnose.
+
+### Static Assets Location
+
+You can inspect the resulting files, which are found in the `site-packages` folder of the environment. The relative path is:
+
+```sh
+/site-packages/openbb/package/
+```
+
+If the issue cannot be resolved with changes to your code, please open an issue on [GitHub](https://github.com/OpenBB-finance/OpenBB/issues)
+with the full error messages, original vs. generated snippets, along with any other environment and platform context.
+
+
+---
+
+---
 title: Introduction
 sidebar_position: 0
 description: An overview of the three types of OpenBB extensions.
@@ -1357,8 +1781,6 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 
 <HeadTitle title="Extension Types | OpenBB Docs" />
 
-
-
 <ul className="grid grid-cols-1 gap-2 -ml-6">
   <NewReferenceCard
     title="Provider Extensions"
@@ -1377,11 +1799,92 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 
 <ul className="grid grid-cols-1 gap-2 -ml-6">
   <NewReferenceCard
+    title="Convert FastAPI to ODP Python Package"
+    description="Instantly convert FastAPI applications to OpenBB Router Extensions."
+    url="/python/developer/extension_types/from_fastapi"
+  />
+</ul>
+
+<ul className="grid grid-cols-1 gap-2 -ml-6">
+  <NewReferenceCard
     title="OBBject"
     description="Add functionality to the OBBject response object."
     url="/python/developer/extension_types/obbject"
   />
 </ul>
+
+<ul className="grid grid-cols-1 gap-2 -ml-6">
+  <NewReferenceCard
+    title="Charting"
+    description="Add custom charts and views to OpenBB Router endpoints."
+    url="/python/developer/extension_types/charting"
+  />
+</ul>
+
+<ul className="grid grid-cols-1 gap-2 -ml-6">
+  <NewReferenceCard
+    title="Plugins"
+    description="Plugin to the command execution loop and customize the output behavior with endpoint callbacks."
+    url="/python/developer/extension_types/plugins"
+  />
+</ul>
+
+## OpenBB CookieCutter
+
+`openbb-cookiecutter` is a PyPI package with a simple CL utility that creates a new Python project folder to develop OpenBB Python extensions.
+
+### Template Structure
+
+The Cookiecutter template prompts the user for information to use in the `pyproject.toml` file, and then generates a project based on that information.
+All fields are optional.
+
+- Your Name
+- Your Email
+- Project Name
+- Project Tag (some-distributable-package)
+- Package Name ("include" code folder name - "some_package")
+- Provider Name - name of the provider for the entry point - i.e, 'fmp'
+- Router Name - name of the router path - i.e. `obb.{some_package}`
+- OBBject Name - name of the OBBject accessor namespace.
+
+The template will generate all extension types as a single, installable Python project.
+You likely won't always use all in tandem, just delete the unwanted folders and entrypoints.
+
+### Usage
+
+1. Install in a Python environment from PyPI with:
+
+```
+pip install openbb-cookiecutter
+```
+
+Alternatively, install and launch with `uvx`:
+
+```
+uvx openbb-cookiecutter
+```
+
+2. Navigate the current working directory to the desired output location and run:
+
+```
+openbb-cookiecutter
+```
+
+Enter values or press `enter` to continue with the default.
+
+3. Create a new Python environment for the project.
+
+4. Navigate into the generated folder and install with:
+
+```
+pip install -e .
+```
+
+5. Python static files will be generated on first import, or trigger with `openbb-build`.
+
+6. Import the Python package or start the API and use like any other OpenBB application.
+
+7. Modify the business logic and get started building!
 
 
 ---
@@ -1411,7 +1914,6 @@ OpenBB provides some basic methods for interacting with common data structures t
 If you are working with custom data, you may also want specific methods for interacting with the data, post-request.
 
 The `openbb-core` package makes the `OBBject` class extendable, similar to extensions and accessors for Pandas.
-It relies on plugins through the Poetry dependency management package.
 
 This page will go through the steps for developing a simple response object extension.
 
@@ -1430,8 +1932,6 @@ obbject_example
 └── pyproject.toml
 ```
 
-The `README.md` file can be completely empty, it just needs to exist.
-
 Extension code will go directly in the `__init__.py` file.
 
 ### TOML File
@@ -1447,6 +1947,7 @@ A complete `pyproject.toml` looks something like:
 
 <details>
 <summary mdxType="summary">`pyproject.toml` </summary>
+
 ```toml
 [tool.poetry]
 name = "openbb-empty-obbject"
@@ -1580,8 +2081,277 @@ The `hello` function now runs directly from `output.empty`.
 ---
 
 ---
+title: OBBject Plugins
+sidebar_position: 4
+description: This page provides information about how to write plugin extensions
+    that intercept the application output immediately before returning to the user.
+    They provide a way to conditionally alter the output of any command, including those you do not control.
+keywords:
+  - develop
+  - OBBject
+  - Python
+  - API
+  - plugin
+  - callback
+  - on_command_output
+  - allow_mutable_extensions
+  - ODP
+  - extensions
+  - obbject extension
+  - accessor
+  - decorator
+  - how-to
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Build OBBject Plugin Extensions - Developer | OpenBB Docs" />
+
+This page provides information about how to write plugin extensions
+that intercept the application output immediately before returning to the user.
+They provide a way to conditionally alter the output of any command, including those you do not control.
+
+While OBBject [extensions](/python/developer/extension_types/obbject) are post-return methods for the Python Interface,
+OBBject plugins are compatible with both interfaces, REST API and Python, and execute before returning.
+They give the developer complete control of the application's last-mile delivery.
+Because of this, they are considered potentially dangerous, and may allow arbitrary code execution in the installed environment.
+
+:::danger
+- **OpenBB does not publish any package using these features.**
+- The user must explicitly allow this type of functionality in the environment or `system_settings.json`.
+- The application will not start if a plugin extension is installed and the environment is not configured.
+- Changes will not be reflected in the function's signature and docstring.
+:::
+
+Workflows can be orchestrated by registering multiple callbacks, executed in the order of insertion.
+Tasks are performed in series or parallel, where series operations are blocking events.
+
+
+
+In [system_settings.json](/python/settings/system_settings), add:
+
+```json
+{
+  "allow_on_command_output": true,
+  "allow_mutable_extensions": true,
+}
+```
+
+They can also be set as environment variables, prefixed with `OPENBB_`
+
+## Folder structure
+
+```shell
+obbject_plugin_example
+├── README.md
+├── openbb_empty_plugin
+│   └── __init__.py
+├── poetry.lock
+└── pyproject.toml
+```
+
+Extension code can go directly in the `__init__.py` file.
+
+### TOML File
+
+The entry point for the extension is specified as a Poetry plugin, near the bottom of the file.
+
+```toml
+[tool.poetry.plugins."openbb_obbject_extension"]
+empty_plugin = "openbb_empty_plugin:plugin"
+```
+
+A complete `pyproject.toml` looks something like:
+
+<details>
+<summary mdxType="summary">`pyproject.toml` </summary>
+
+```toml
+[tool.poetry]
+name = "openbb-empty-plugin"
+version = "0.0.0"
+description = "An empty OBBject plugin extension"
+authors = ["Hello <hello@world.com>"]
+readme = "README.md"
+packages = [{ include = "openbb_empty_plugin" }]
+
+[tool.poetry.dependencies]
+python = "^3.10,<3.14"
+openbb-core = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_obbject_extension"]
+empty_plugin = "openbb_empty_plugin:plugin"
+```
+</details>
+
+Command execution triggers the callable accessor defined as the entrypoint.
+
+## Configuring Extension
+
+By default, it applies to all application endpoints.
+Individual endpoints can be targeted by setting initialization parameters.
+
+```
+Parameters
+----------
+name : str
+    Name of the extension.
+credentials : list[str], optional
+    List of required credentials, by default None
+description: Optional[str]
+    Extension description.
+on_command_output : bool, optional
+    Whether the extension acts on command output, by default False
+command_output_paths : list[str], optional
+    List of endpoint paths the extension acts on, where None means all, by default None.
+immutable : bool, optional
+    Whether the function output is immutable, by default True.
+results_only : bool, optional
+    Whether the extension returns only the results instead of the OBBject, by default False.
+```
+
+:::important
+- `on_command_output` **must** be set as True.
+- `immutable` **must** be set as False to alter the response object.
+:::
+
+## Extension Code
+
+:::important
+Registered `on_command_output` callables should:
+- Accept "obbject" as the only positional argument.
+- Modify the OBBject item directly, where required, even if it is not returned in the end.
+- Have no `return`.
+
+Plugins are compatible only with endpoints returning an `OBBject`, and are not executable after returning.
+:::
+
+Each entrypoint is an instance of the `Extension` class, and is applied as a decorator.
+
+<details>
+<summary mdxType="summary">Basic Example</summary>
+
+```python
+"""OBBject Plugin Extension Example."""
+
+from openbb_core.app.model.extension import Extension
+from openbb_core.app.model.obbject import OBBject
+
+
+empty_plugin = Extension(
+    name="empty_plugin",
+    credentials=None,
+    description="An on-command output extension that does nothing.",
+    on_command_output=True,  # Must be set as True
+    command_output_paths=None,  # Add a list of paths - i.e, ["/equity/price/historical"]
+    immutable=False,  # Must be set as False if you intend to alter the output.
+    results_only=False,  # Use this as a flag to automatically return only the "results" portion of the OBBject.
+)
+
+@empty_plugin.obbject_accessor
+class EmptyPlugin:
+    """Empty plugin accessor."""
+
+    def __init__(self, obbject: OBBject):
+        """Initialize EmptyOBBject."""
+        self._obbject = obbject
+
+    def __call__(self):
+        """Do nothing and return None."""
+        # Get access to the execution context from the OBBject itself.
+        print(self._obbject._extra_params)
+        print(
+            "This is my OBBject extension that is triggered on command output.\n"
+            "You can mutate the results or pass them to another process, like adding to a database.\n"
+            "You can also choose which commands to trigger this extension on.\n"
+            f"Command executed: {self._obbject.extra['metadata']}"
+        )
+        self._obbject.results = None
+```
+
+</details>
+
+<details>
+<summary mdxType="summary">Advanced Example</summary>
+
+```python
+"""Non-Blocking OBBject Plugin Extension Example."""
+
+import threading
+import time
+
+from openbb_core.app.model.extension import Extension
+from openbb_core.app.model.obbject import OBBject
+
+nonblocking_plugin = Extension(
+    name="nonblocking_plugin",
+    description="An on-command-output plugin simulating an expensive task performed in a separate thread.",
+    on_command_output=True,  # Must be set as True
+    command_output_paths=None, # Add a list of paths - i.e, ["/equity/price/historical"]
+    immutable=True,  # Set to `True`, or omit, for parallel processing.
+    results_only=False,  # Use this as a flag to return only the "results" portion of the OBBject.
+)
+
+
+def _expensive_operation_worker(serialized_obbject: dict):
+    """Simulate a long-running task without blocking the caller."""
+    working_copy = OBBject(**serialized_obbject)
+    print("\nThis is the deserialized OBBject in the non-blocking thread.")
+    print(working_copy.__repr__())
+    for i in range(10):
+        print(str(i) + " seconds remaining...")
+        time.sleep(1)
+    print("Expensive operation is now complete.")
+
+
+@nonblocking_plugin.obbject_accessor
+def nonblocking_plugin_function(obbject):  # This could also be an async function.
+    """Simulated on_commnd_output function that executes an expensive task
+    in a non-blocking thread."""
+    obbject.results = None
+    print(
+        "Serializing the obbject and passing to a new thread.\n"
+        f"Command executed: {obbject.extra['metadata']}\n"
+    )
+    print(
+        "Simulating an expensive task that is non-blocking and allows the function to return."
+    )
+    threading.Thread(
+        target=_expensive_operation_worker,
+        args=(obbject.model_dump(),),
+        name="nonblocking-plugin-expensive-operation",
+        daemon=False,
+    ).start()
+```
+
+</details>
+
+
+## Install Extension
+
+With the code structure in place, install the extension into the an environment where OpenBB is already installed.
+
+Navigate into the folder where the `pyproject.toml` file is, open a terminal, and enter:
+
+```sh
+pip install -e .
+openbb-build
+```
+
+## Use Extension
+
+Start the API server or Python Interface and run the affected commands, adjust the code as required.
+
+
+---
+
+---
 title: Provider Extensions
-sidebar_position: 1
+sidebar_position: 3
 description: This page provides information about how to write provider extensions for the OpenBB Python Package using the ETL pattern, and how to add them to Routers as endpoints.
 keywords:
   - ODP
@@ -1643,7 +2413,7 @@ empty = "openbb_empty_provider:empty_provider"
 ```
 
 <details>
-<summary mdxType="summary">`pyproject.toml` </summary>
+<summary mdxType="summary">`pyproject.toml`</summary>
 ```toml
 [tool.poetry]
 name = "openbb-empty-provider"
@@ -1779,7 +2549,7 @@ class EmptySomeTimeSeriesData(SomeTimeSeriesData):
 ```
 
 :::info
-The resulting function signature will display these parameters as `**kwargs`, but their definitions will display in the docstring and `reference` metadata. Required provider parameters may appear as `Optional` in docstrings, but their inputs will be validated using the model at execution.
+The resulting function signature will register these parameters as `extra_params`, but their definitions will display in the docstring and `reference` metadata. Required provider parameters may appear as `Optional` in docstrings, but their inputs will be validated using the model at execution.
 :::
 
 ### Fetcher
@@ -1899,7 +2669,62 @@ class EmptySomeTimeSeriesFetcher(
 </details>
 
 
-## Add Endpoint
+## Add to Endpoint
+
+Mapping the model to a router endpoint requires installing or building a [router extension](/python/developer/extension_types/router).
+
+The function definition itself is copy/pastable and repeatable, where the only thing that changes is the metamodel referenced in the `@router.command` decorator.
+
+<details>
+<summary mdxType="summary">Example Router Function</summary>
+
+```python
+from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import APIEx, PythonEx
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.provider_interface import (
+    ExtraParams,
+    ProviderChoices,
+    StandardParams,
+)
+from openbb_core.app.query import Query
+from openbb_core.app.router import Router
+
+router = Router(prefix="", description="An Empty OpenBB Router Extension.")
+
+# This uses the Provider Interface to call the empty provider fetcher.
+@router.command(
+    model="EmptyModel",  # <-- metamodel name goes here
+    examples=[
+        APIEx(parameters={"provider": "empty"}),
+        PythonEx(
+            description="Say Hello.",
+            code=[
+                "result = obb.empty.hello()",
+            ],
+        ),
+    ],
+)
+async def empty_function(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """An empty function using the Provider Interface."""
+    return await OBBject.from_query(Query(**locals()))
+```
+
+</details>
+
+### Rebuild Static Assets
+
+After modifying the router mappings, rebuild the Python static assets.
+
+```sh
+openbb-build
+```
+
 
 ---
 
@@ -1940,8 +2765,6 @@ router_example
 ├── poetry.lock
 └── pyproject.toml
 ```
-
-The `README.md` file can be completely empty, it just needs to exist.
 
 Extension code will go in the `empty_router.py` file, and `__init__.py` contains no code.
 
@@ -1994,6 +2817,109 @@ empty = "openbb_empty_router.empty_router:router"
 
 Router commands will be available under the namepsace, `obb.empty`
 :::
+
+### Provider Interface Imports
+
+Routing an endpoint to the [Provider Interface](/python/developer/extension_types/provider) requires other imports, and a distinct function signature.
+
+```python
+from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import APIEx, PythonEx
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.provider_interface import (
+    ExtraParams,
+    ProviderChoices,
+    StandardParams,
+)
+from openbb_core.app.query import Query
+```
+
+## Endpoints
+
+The `Router` instance is applied as a decorator, using `@router.command`.
+There are two varities of endpoint, and endpoint's path will be the name of the function.
+
+### Provider Interface
+
+To implement a Provider metamodel, define the function as:
+
+```python
+# This uses the Provider Interface to call the empty provider fetcher.
+@router.command(
+    model="Empty", # This is the metamodel defined in the Provider's `fetcher_dict`.
+    examples=[
+        APIEx(parameters={"provider": "empty"}),
+        PythonEx(
+            description="Say Hello.",
+            code=[
+                "result = obb.empty.hello()",
+            ],
+        ),
+    ],
+)
+async def empty_function(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """An empty function using the Provider Interface."""
+    return await OBBject.from_query(Query(**locals()))
+```
+
+### Basic - GET
+
+A basic endpoint, where all business logic occurs within, will look like:
+
+```python
+# This is a standard router "get" command.
+@router.command(methods=["GET"])
+async def hello() -> (
+    OBBject[str]
+):
+    """OpenBB Hello World."""
+    return OBBject(results="Hello from the Empty Router extension!")
+```
+
+### Basic - POST
+
+```python
+from openbb_core.provider.abstract.data import Data
+
+# This is a standard router "post" command.
+@router.command(methods=["POST"])
+async def hello(
+  data: Data,  # Body parameter
+  some_param: str  # Query parameter
+) -> OBBject:
+    """OpenBB Hello World."""
+    return OBBject(results=data.model_dump())
+```
+
+### Decorator Parameters
+
+The `@router.command` decorator will accept:
+
+- **`methods`**: List of HTTP methods - typically `GET` or `POST`.
+- **`model`**: A metamodel associated with a [`Provider`](/python/developer/extension_types/provider) extension endpoint.
+- **`deprecated`**: Instance of [`Deprecated`](/python/developer/how-to/deprecating_endpoints).
+- **`examples`**: List of API or Python [Examples](/python/developer/how-to/examples).
+- **`exclude_from_api`**: Include endpoint only in Python Interface.
+- **`no_validate`**: Set as `True` to [ignore response validation](/python/developer/how-to/disabling_output_validation) and treat as `Any`.
+- **`openapi_extra`**: Dictionary of additional metadata to include in `openapi.json`.
+  - Use this as an entrypoint for inline configurations of [`widget_config`](/python/extensions/interface/openbb-api) or [`mcp_config`](/python/extensions/interface/openbb-mcp)
+
+
+### Using `fastapi.APIRouter`
+
+The instance of `fastapi.APIRouter` can be accessed from the `router._api_router` attribute, and can be used directly as a normal, FastAPI, decorator.
+
+```python
+@router._api_router.get("/also_empty")
+async def also_empty(param: str) -> str:
+    """Also Emmpty"""
+    return "Hello world!"
+```
 
 
 ---
@@ -2296,6 +3222,100 @@ provider: fmp
 warnings: None
 chart: None
 extra: {'metadata': {'arguments': {'provider_choices': {'provider': 'fmp'}, 'standa...
+```
+
+
+---
+
+---
+title: Function Examples
+sidebar_position: 2
+description: This page explains how to add examples and code snippets to API and Python endpoints.
+keywords:
+- ODP
+- How-To
+- Python
+- OpenBB Platform
+- Custom commands
+- Examples
+- Docstring
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Docstring Examples - Developer | OpenBB Docs" />
+
+This page explains how to add examples and code snippets to API and Python endpoints.
+Usage examples are defined in the [router](/python/developer/extension_types/router)
+and are expected to provide working syntax, with descriptions for complex functions requiring many parameters.
+It is encouraged to include examples for every endpoint.
+
+There are two models for defining examples, `APIEx` and `PythonEx`.
+
+```python
+from openbb_core.app.model.example import APIEx, PythonEx
+```
+
+:::info
+When a provider is not installed, its example - if any - will be excluded from `openapi.json` and Python docstrings.
+:::
+
+### APIEx
+
+`APIEx` is more structured (and has less freedom) aiming to be language agnostic.
+
+Each example can have a description and as many parameters as desired.
+
+```python
+@router.command(
+    model="WorldNews",
+    examples=[
+        APIEx(parameters={}),
+        APIEx(parameters={"limit": 100}),
+        APIEx(
+            description="Get news on the specified dates.",
+            parameters={"start_date": "2024-02-01", "end_date": "2024-02-07"},
+        ),
+        APIEx(
+            description="Display the headlines of the news.",
+            parameters={"display": "headline", "provider": "benzinga"},
+        ),
+        APIEx(
+            description="Get news by topics.",
+            parameters={"topics": "finance", "provider": "benzinga"},
+        ),
+        APIEx(
+            description="Get news by source using 'tingo' as provider.",
+            parameters={"provider": "tiingo", "source": "bloomberg"},
+        ),
+        APIEx(
+            description="Filter aticles by term using 'biztoc' as provider.",
+            parameters={"provider": "biztoc", "term": "apple"},
+        ),
+    ],
+)
+```
+
+### PythonEx
+
+`PythonEx` gives more freedom to create complex examples.
+
+A description is required, and each item in the `code` list represents one line of code.
+
+```python
+@router.command(
+    methods=["POST"],
+    include_in_schema=False,
+    examples=[
+        PythonEx(
+            description="Perform Ordinary Least Squares (OLS) regression.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+                'obb.econometrics.ols_regression(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
+            ],
+        )
+    ],
+)
 ```
 
 
@@ -3423,7 +4443,7 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 
 An OpenBB environment is the combination of packages installed. The core is the underlying infrastructure, while extensions represent API routes, data sources, and the response object.
 
-When you run, `pip install openbb`, you the extensions maintained in the official OpenBB GitHub [repository](https://www.github.com/OpenBB-finance/OpenBB). You can create your own custom Python apps by extending the `openbb-core` library, or by selectively installing individual components.
+When you run, `pip install openbb`, you get most of the extensions maintained in the official OpenBB GitHub [repository](https://www.github.com/OpenBB-finance/OpenBB). You can create your own custom Python apps by extending the `openbb-core` library, or by selectively installing individual components.
 
 Anyone can build and publish [installable extensions](/python/developer/extension_types) for the OpenBB ecosystem.
 
@@ -4081,7 +5101,7 @@ It provides drop-in-like functionality for the FastAPI + Uvicorn development sta
 
 ## Installation
 
-Install from PyPI in an environment with a Python version between 3.9 and 3.13:
+Install from PyPI in an environment with a Python version between 3.10 and 3.13:
 
 ```sh
 pip install openbb-platform-api
@@ -6524,7 +7544,7 @@ pip install openbb
 Go to the [installation](/python/installation) page for detailed instructions, and see the [extensions](/python/extensions) page for information on individual components.
 
 :::tip Looking for a graphical method, or having trouble with virtual environments?
-Go to the [Open Data Platform](/desktop/installation) to get started.
+Go to the [Open Data Platform](/odp/installation) to get started.
 :::
 
 ## Documentation Structure
@@ -6655,12 +7675,12 @@ Linux users should run the command line update for the package manager, prior to
 
 ### Install via ODP Desktop
 
-For a graphical installer, see the [ODP](/desktop/installation) desktop application.
+For a graphical installer, see the [ODP](/odp/installation) desktop application.
 
 ### Setup Environment
 
 :::tip
-If you are having trouble with virtual environments or package installation, use the ODP [Desktop Application](/desktop/installation) instead.
+If you are having trouble with virtual environments or package installation, use the ODP [Desktop Application](/odp/installation) instead.
 :::
 
 The method for creating the environment will be a matter of user preference, from the command line - [Conda](https://docs.conda.io/projects/miniconda/en/latest/miniconda-install.html), [venv](https://docs.python.org/3/library/venv.html), etc. - or in a code editor and IDE - [VS Code](https://code.visualstudio.com/docs/languages/python), [PyCharm](https://www.jetbrains.com/pycharm/), [Jupyter](https://jupyter.org/).
@@ -7191,7 +8211,7 @@ Always run deployed servers over HTTPS.
 ## HTTPS
 
 Running localhost over HTTPS can appear to be trickier than it needs to be.
-The simplest method is to generate a self-signed certificate using the [OPD Desktop](/desktop/backends#self-signed-certificate) feature.
+The simplest method is to generate a self-signed certificate using the [OPD Desktop](/odp/backends#self-signed-certificate) feature.
 
 Then use Uvicorn runtime arguments, or environment variables, pointing to the file locations.
 
@@ -7279,7 +8299,7 @@ If a connection error displays after pressing the "Test" button, your browser mi
 
 Try using Chrome, specifically, or start the server over HTTPS.
 
-See the [Desktop App](/desktop/backends#self-signed-certificate) to get started.
+See the [Desktop App](/odp/backends#self-signed-certificate) to get started.
 :::
 
 - Finally, click the "Add" button.
@@ -7572,6 +8592,8 @@ Environment variables are defined in a `.env` file. If this file does not exist,
 - `OPENBB_API_AUTH`: enables API authentication for command endpoints
 - `OPENBB_API_USERNAME`: sets API username
 - `OPENBB_API_PASSWORD`: sets API password
+- `OPENBB_ALLOW_ON_COMMAND_OUTPUT`: enables OBBject extensions to perform additional operations before returning.
+- `OPENBB_ALLOW_MUTABLE_EXTENSIONS`: enables OBBject extensions to alter function output.
 
 Variables can be defined for current session only.
 
@@ -7736,7 +8758,9 @@ import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
 <HeadTitle title="System Settings - ODP Python | OpenBB Docs" />
 
-An additional configuration file, `system_settings.json`, is located in the same folder as `user_settings.json`, and can be created manually if it does not exist. The items below can be configured via this file, as a JSON dictionary.
+An additional configuration file, `system_settings.json`, is located in the same folder as `user_settings.json`, and can be created manually if it does not exist.
+
+Items below are defined as a JSON dictionary.
 
 ## Logging Service
 
@@ -7758,6 +8782,33 @@ With the configuration set, the logger can be retrieved by name in the code.
 ```python
 logger = logging.getLogger("openbb.logging_service")
 ```
+
+## Allow OBBject Extensions
+
+[OBBject extensions](/python/developer/extension_types/obbject) can allow developers to perform additional operations before function output.
+
+:::danger
+These types of extensions are potentially dangerous, and the user must explicitly allow them.
+
+The application will not start if a callback extension is installed without configuring.
+
+They are blocking operations, and the response object may also be mutated.
+
+Changes will not be reflected in the function's signature and docstring.
+
+Ensure that extensions are installed from a trusted source.
+:::
+
+Enable by setting the following keys in `system_settings.json`:
+
+```json
+{
+  "allow_on_command_output": true,
+  "allow_mutable_extensions": true,
+}
+```
+
+They can also be set as environment variables, prefixed with `OPENBB_`
 
 ## API Settings
 
@@ -7822,34 +8873,8 @@ This configuration allows the user to include specific elements of the docstring
 This section refers to settings available beginning OpenBB v4.4.0
 :::
 
-Configurations within, `python_settings["http"]`, apply to both, the requests, and aiohttp, libraries.
-
-The settings are passed into the `requests.Session` object and the `aiohttp.ClientSession` object by:
-
-- `openbb_core.provider.utils.helpers.make_request` - Sync
-- `openbb_core.provider.utils.helpers.amake_request` - Async
-- `openbb_core.provider.utils.helpers.amake_requests` - Async (multiple requests)
-- Inserted to use with YFinance & Finviz library implementations.
-
-Return a session object with the settings applied by:
-
-- `openbb_core.provider.utils.helpers.get_requests_session`
-- `openbb_core.provider.utils.helpers.get_async_requests_session`
-
-:::tip
-Pass the session object, returned by `get_requests_session`, to use this configuration directly with the yFinance library.
-
-```python
-import yfinance as yf
-from openbb_core.provider.utils.helpers import get_requests_session
-
-session = get_requests_session()
-ticker = yf.Ticker("AAPL", session=session)
-```
-
-:::
-
-#### Available settings:
+<details>
+<summary mdxType="summary">Available Settings</summary>
 
 | Key | Type | Description |
 |:----|:----:|------------:|
@@ -7867,11 +8892,26 @@ ticker = yf.Ticker("AAPL", session=session)
 |headers| dict | Request headers.|
 |cookies| dict | Dictionary of session cookies.|
 
+</details>
+
 Any additional keys supplied will be ignored unless explicitly implemented via custom code.
+
+:::tip Settings are passed to both Requests and AIOHTTP with helper functions.
+:::
+
+- `openbb_core.provider.utils.helpers.make_request` - Sync
+- `openbb_core.provider.utils.helpers.amake_request` - Async
+- `openbb_core.provider.utils.helpers.amake_requests` - Async (multiple requests)
+
+Return a session object with the settings applied by:
+
+- `openbb_core.provider.utils.helpers.get_requests_session`
+- `openbb_core.provider.utils.helpers.get_async_requests_session`
+:::
 
 ### Uvicorn
 
-The, `python_settings["uvicorn"]`, key covers the launch of FastAPI when using the following entry points:
+The, `python_settings["uvicorn"]`, dictionary covers the launch of FastAPI when using the following entry points:
 
 - Running the FastAPI as a Python module script.
   - python -m openbb_core.api.rest_api

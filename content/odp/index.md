@@ -46,7 +46,7 @@ ODP Desktop is a light-weight application (macOS & Windows) for installing and u
 Download and install the latest release from: https://github.com/OpenBB-finance/OpenBB/releases/tag/ODP
 
 <details>
-<summary mdxType="summary">Installation Summary - See the [installation](/desktop/installation) page for more details.</summary>
+<summary mdxType="summary">Installation Summary - See the [installation](/odp/installation) page for more details.</summary>
 
 The initial environment (`openbb`) is setup when you first run the application, and comes with:
 - OpenBB Core Python packages
@@ -64,11 +64,11 @@ When the application is started (except first launch), no window is created. Acc
 
 ### **Step 1**
 
-Go to the [API Keys](/desktop/api-keys) page, add or import your provider credentials, if needed.
+Go to the [API Keys](/odp/api-keys) page, add or import your provider credentials, if needed.
 
 ### **Step 2**
 
-Navigate to the [Backends](/desktop/backends) page by clicking on it in the header, or selecting from the tray icon's menu.
+Navigate to the [Backends](/odp/backends) page by clicking on it in the header, or selecting from the tray icon's menu.
 
 ### **Step 3**
 
@@ -125,5 +125,5 @@ The application operates as a system tray icon, and its main window has three, n
 ## Next Steps
 
 * Use the OpenBB Python Package as a Workspace [backend](/python/quickstart/workspace).
-* Create your own custom [Environments](/desktop/environments), or modify the existing.
-* Define custom [Backends](/desktop/backends) to run independently, in any environment.
+* Create your own custom [Environments](/odp/environments), or modify the existing.
+* Define custom [Backends](/odp/backends) to run independently, in any environment.

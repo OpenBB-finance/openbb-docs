@@ -50,7 +50,7 @@ export default function NavbarLayout({ children }) {
 		} else if (
 			cleanedPath.startsWith("/sdk") ||
 			cleanedPath.startsWith("/cli") ||
-			cleanedPath.startsWith("/desktop") ||
+			cleanedPath.startsWith("/odp") ||
 			cleanedPath.startsWith("/python") ||
 			cleanedPath.startsWith("/platform")
 		) {

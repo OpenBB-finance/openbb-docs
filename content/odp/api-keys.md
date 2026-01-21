@@ -57,7 +57,7 @@ Backend servers and Python interpreters will need to be restarted for the change
 The button to the right of, `Import Keys`, is for opening ODP configuration files (listed above with documentation links).
 
 :::tip
-The `.env` file can be added to any [Backend](/desktop/backends) configuration.
+The `.env` file can be added to any [Backend](/odp/backends) configuration.
 :::
 
 Clicking the button will open it with the system's default text editor.

@@ -26,10 +26,12 @@
 - [Agents Integration](https://docs.openbb.co/workspace/developers/agents-integration): How to integrate your own AI agent service with OpenBB Workspace
 - [Citations for documents](https://docs.openbb.co/workspace/developers/ai-features/citations-for-documents): Add document-specific citations with PDF text highlighting for source attribution
 - [Create charts](https://docs.openbb.co/workspace/developers/ai-features/create-charts): Stream inline charts as part of your agent’s response
+- [Create HTML artifacts](https://docs.openbb.co/workspace/developers/ai-features/create-html-artifacts): Stream inline HTML artifacts as part of your agent's response
 - [Create tables](https://docs.openbb.co/workspace/developers/ai-features/create-tables): Stream tabular data as an artifact in the conversation
 - [Custom agent features](https://docs.openbb.co/workspace/developers/ai-features/custom-agent-features): Configure and manage custom agent features based on workspace options
 - [Highlight widget citations](https://docs.openbb.co/workspace/developers/ai-features/highlight-widget-citations): Cite widget data sources in your responses and display them in Workspace
 - [Interact with dashboard](https://docs.openbb.co/workspace/developers/ai-features/interact-with-dashboard): Receive full dashboard widget metadata and conditionally fetch data
+- [MCP tools integration](https://docs.openbb.co/workspace/developers/ai-features/mcp-tools): Integrate Model Context Protocol (MCP) tools with OpenBB agents for enhanced capabilities
 - [Parse PDF context](https://docs.openbb.co/workspace/developers/ai-features/parse-pdf-context): Parse PDF content from widget data and cite sources
 - [Parse widget data](https://docs.openbb.co/workspace/developers/ai-features/parse-widget-data): Retrieve data from selected widgets and pass it as raw context to your LLM
 - [Share step-by-step reasoning](https://docs.openbb.co/workspace/developers/ai-features/share-step-by-step-reasoning): Stream status updates alongside model output during long operations
@@ -57,6 +59,7 @@
 - [Number Input](https://docs.openbb.co/workspace/developers/widget-parameters/number-input): Learn how to implement and use number input parameters in OpenBB Workspace widgets, including configuration options and example usage
 - [Parameter Grouping](https://docs.openbb.co/workspace/developers/widget-parameters/parameter-grouping): Learn how to implement parameter grouping in OpenBB Workspace widgets, allowing multiple widgets to share and respond to the same parameter input
 - [Parameter Positioning](https://docs.openbb.co/workspace/developers/widget-parameters/parameter-positioning): Learn how to control the layout and positioning of widget parameters in OpenBB Workspace, including row positioning and parameter ordering
+- [Tabs](https://docs.openbb.co/workspace/developers/widget-parameters/tabs): Learn how to implement tabs parameters in OpenBB Workspace widgets to create tabbed interfaces for switching between different data views
 - [Text Input](https://docs.openbb.co/workspace/developers/widget-parameters/text-input): Learn how to implement and use text input parameters in OpenBB Workspace widgets, including configuration options and example usage
 - [AgGrid Table Charts](https://docs.openbb.co/workspace/developers/widget-types/aggrid-table-charts): AgGrid Table Charts
 - [File Viewer](https://docs.openbb.co/workspace/developers/widget-types/file-viewer): Guide to using PDF and multi-PDF viewer widgets in OpenBB Workspace
@@ -70,6 +73,7 @@
 - [Plotly Charts](https://docs.openbb.co/workspace/developers/widget-types/plotly-charts): Plotly Charts
 - [SSRM Mode](https://docs.openbb.co/workspace/developers/widget-types/ssrm_mode): Server-Side Rendered Mode for handling large datasets efficiently in OpenBB Workspace widgets
 - [TradingView Charts](https://docs.openbb.co/workspace/developers/widget-types/tradingview-charts): How to implement TradingView charts in OpenBB using UDF (Universal Data Feed)
+- [YouTube](https://docs.openbb.co/workspace/developers/widget-types/youtube): Learn how to create YouTube video widgets in OpenBB Workspace, including basic video embedding and transcript support for AI assistants.
 - [Administration](https://docs.openbb.co/workspace/getting-started/enterprise/administration): Administration and management features for OpenBB Workspace Enterprise
 - [Data Control & Security](https://docs.openbb.co/workspace/getting-started/enterprise/data-control): Data sovereignty, security architecture, and compliance features in OpenBB Workspace Enterprise
 - [Enterprise](https://docs.openbb.co/workspace/getting-started/enterprise/index): Deploy OpenBB Workspace on-premises or in your private cloud with enterprise-grade security, compliance, and control.

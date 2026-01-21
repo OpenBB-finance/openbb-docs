@@ -23,10 +23,10 @@ If you want to learn more about the open source ecosystem, check [our documentat
 
 ## Step by step
 
-Follow the quick start steps [here](/desktop#quick-start).
+Follow the quick start steps [here](/odp#quick-start).
 
 :::note
-If you are using Brave/Safari you will need an HTTPS connection - see the Self-Signed Certificate section of the ODP Desktop [documentation](/desktop/backends) for steps to run your server over HTTPS.
+If you are using Brave/Safari you will need an HTTPS connection - see the Self-Signed Certificate section of the ODP Desktop [documentation](/odp/backends) for steps to run your server over HTTPS.
 :::
 
 These are some apps available out of the box:

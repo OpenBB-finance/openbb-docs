@@ -257,7 +257,7 @@ export const searchablePages: SearchablePage[] = [
   },
   {
     "title": "Introduction",
-    "path": "/desktop/",
+    "path": "/odp/",
     "category": "Desktop",
     "description": "An overview of the Open Data Platform desktop application for creating and managing local environments and backend servers.",
     "keywords": [
@@ -274,7 +274,7 @@ export const searchablePages: SearchablePage[] = [
   },
   {
     "title": "API Keys",
-    "path": "/desktop/api-keys",
+    "path": "/odp/api-keys",
     "category": "Desktop - Api Keys",
     "description": "Manage and store API credentials for data providers securely within the ODP Desktop App.",
     "keywords": [
@@ -289,7 +289,7 @@ export const searchablePages: SearchablePage[] = [
   },
   {
     "title": "Backends",
-    "path": "/desktop/backends",
+    "path": "/odp/backends",
     "category": "Desktop - Backends",
     "description": "Run and manage background processes like the OpenBB API server, data streaming pipelines, or custom Python scripts directly within the OpenBB GUI.",
     "keywords": [
@@ -309,7 +309,7 @@ export const searchablePages: SearchablePage[] = [
   },
   {
     "title": "Environments",
-    "path": "/desktop/environments",
+    "path": "/odp/environments",
     "category": "Desktop - Environments",
     "description": "Create and manage isolated Conda environments for your Python projects. Install packages, manage dependencies, and launch development tools like JupyterLab, all from the OpenBB GUI.",
     "keywords": [
@@ -324,7 +324,7 @@ export const searchablePages: SearchablePage[] = [
   },
   {
     "title": "Installation",
-    "path": "/desktop/installation",
+    "path": "/odp/installation",
     "category": "Desktop - Installation",
     "description": "This page presents the general system requirements and installation instructions for the Open Data Platform (ODP) desktop application.",
     "keywords": [
@@ -347,7 +347,7 @@ export const searchablePages: SearchablePage[] = [
   },
   {
     "title": "Uninstall",
-    "path": "/desktop/uninstall",
+    "path": "/odp/uninstall",
     "category": "Desktop - Uninstall",
     "description": "Uninstall the Open Data Platform application.",
     "keywords": [

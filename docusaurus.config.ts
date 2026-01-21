@@ -88,15 +88,23 @@ export default {
 						from: ["/platform", "/platform/:path*"],
 						to: "/python",
 					},
+					{
+						from: "/desktop",
+						to: "/odp",
+					},
 				],
 				createRedirects: (existingPath) => {
+					// Redirect /desktop/* to /odp/*
+					if (existingPath.startsWith("/odp/")) {
+						return existingPath.replace("/odp/", "/desktop/");
+					}
 					if (existingPath.startsWith("/pro/")) {
 						const newPath = existingPath.replace("/pro/", "/workspace/developers/");
 						if (newPath.includes("data-connector")) {
 							return newPath.replace("/data-connector/", "/data-integration/");
 						}
 						return newPath;
-					}			
+					}
 					if (existingPath.includes("data-connector")) {
 						return existingPath.replace(
 							"/data-connector/",
@@ -175,8 +183,9 @@ export default {
 					const sectionContent: Record<string, string[]> = {
 						workspace: [],
 						cli: [],
-						desktop: [],
+						odp: [],
 						python: [],
+						snowflake: [],
 					};
 
 					// recursive function to get all mdx files
@@ -251,8 +260,9 @@ export default {
 					const sectionRoutes: Record<string, string[]> = {
 						workspace: [],
 						cli: [],
-						desktop: [],
+						odp: [],
 						python: [],
+						snowflake: [],
 					};
 
 					for (const [path, record] of Object.entries(
