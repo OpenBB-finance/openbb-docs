@@ -31,12 +31,7 @@ function NavbarTabs() {
   const location = useLocation();
   const isWelcome = location.pathname === "/";
   const isWorkspace = location.pathname.startsWith("/workspace");
-<<<<<<< Updated upstream
-  const isODP = location.pathname.startsWith("/desktop") || location.pathname.startsWith("/python") || location.pathname.startsWith("/cli");
-=======
-  const isODP = location.pathname.startsWith("/odp") || location.pathname.startsWith("/python") || location.pathname.startsWith("/cli");
-  const isSnowflake = location.pathname.startsWith("/snowflake");
->>>>>>> Stashed changes
+  const isODP = location.pathname.startsWith("/odp");
 
   return (
     <div className="navbar-tabs">

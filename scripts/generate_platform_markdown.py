@@ -17,9 +17,9 @@ MAX_COMMANDS = 8
 # Output paths
 WEBSITE_PATH = Path(__file__).parent.parent.absolute()
 SEO_METADATA_PATH = Path(WEBSITE_PATH / "metadata/platform_v4_seo_metadata.json")
-PLATFORM_CONTENT_PATH = Path(WEBSITE_PATH / "content/python")
-PLATFORM_REFERENCE_PATH = Path(WEBSITE_PATH / "content/python/reference")
-PLATFORM_DATA_MODELS_PATH = Path(WEBSITE_PATH / "content/python/data_models")
+PLATFORM_CONTENT_PATH = Path(WEBSITE_PATH / "content/odp/python")
+PLATFORM_REFERENCE_PATH = Path(WEBSITE_PATH / "content/odp/python/reference")
+PLATFORM_DATA_MODELS_PATH = Path(WEBSITE_PATH / "content/odp/python/data_models")
 
 # Markdown imports and elements
 PLATFORM_REFERENCE_IMPORT = "import ReferenceCard from '@site/src/components/General/NewReferenceCard';"  # fmt: skip
@@ -451,7 +451,7 @@ def generate_reference_index_files(reference_content: Dict[str, str]) -> None:
                             f"{', '.join(sub_dir_markdown_files[:MAX_COMMANDS])},..."
                         )
 
-                url = f"/python/reference/{sub_dir_path}"
+                url = f"/odp/python/reference/{sub_dir_path}"
                 index_content += f'<ReferenceCard title="{title}" description="{sub_dir_description}" url="{url}" />\n'
             index_content += "</ul>\n\n"
 
@@ -472,7 +472,7 @@ def generate_reference_index_files(reference_content: Dict[str, str]) -> None:
                     # using its path,split by the first period to get the first sentence,
                     # and default to an empty string if not found
                     file_description = reference_content.get(f"/{file_path}", "").split(".")[0]  # fmt: skip
-                    url = f"/python/reference/{file_path}"
+                    url = f"/odp/python/reference/{file_path}"
                     index_content += f'<ReferenceCard title="{title}" description="{file_description}" url="{url}" />\n'
             index_content += "</ul>\n\n"
 
@@ -516,7 +516,7 @@ def generate_reference_top_level_index() -> None:
             f"<ReferenceCard\n"
             f'{TAB_WIDTH*" "}title="{title.capitalize()}"\n'
             f'{TAB_WIDTH*" "}description="{description_str}"\n'
-            f'{TAB_WIDTH*" "}url="/python/reference/{title}"\n'
+            f'{TAB_WIDTH*" "}url="/odp/python/reference/{title}"\n'
             "/>\n"
         )
 
@@ -559,7 +559,7 @@ def create_data_models_index(title: str, description: str, model: str) -> str:
         "<ReferenceCard\n"
         f'{TAB_WIDTH*" "}title="{title}"\n'
         f'{TAB_WIDTH*" "}description="{description}"\n'
-        f'{TAB_WIDTH*" "}url="/python/data_models/{model}"\n'
+        f'{TAB_WIDTH*" "}url="/odp/python/data_models/{model}"\n'
         "/>\n"
     )
 

@@ -1,0 +1,754 @@
+---
+title: API Keys
+sidebar_position: 4
+description: Manage and store API credentials for data providers securely within the ODP Desktop App.
+keywords:
+  - API Keys
+  - Credentials
+  - Configuration
+  - .env
+  - Environment
+  - user_settings.json
+  - system_settings.json
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="API Keys | ODP Desktop App Docs" />
+
+The API Keys screen is for managing data provider credentials accessible to the Open Data Platform Python packages and API interface. Environment variables and credentials can be configured centrally across any environment using the `openbb-core` and its extension framework.
+
+In the environment setup panels, data provider extensions highlight if an API key is required. Values there represent the name of the key(s) needing to be set.
+
+:::info
+The initial installation creates entries for each selected extension requiring credentials, just add your key.
+
+For example, if `openbb-fred` was selected, `fred_api_key` will appear on the screen as, `Undefined`.
+
+<img width="1356" height="282" alt="api-keys-provider" src="https://github.com/user-attachments/assets/a844a1e4-4854-4ad0-9408-2b3ee56f5542" />
+<p align="center">
+<img width="852" height="540" alt="api-keys-undefined" src="https://github.com/user-attachments/assets/27bc5265-b6ef-4d0e-9eb1-a256e37fa0e6" />
+</p>
+:::
+
+## Features
+
+- Interface for adding and modifying `credentials` entries stored in the [`user_settings.json`](/odp/python/settings/user_settings/api_keys) file.
+  - Import key:value pairs from file (`.json` or `.env`).
+- Easy access to key ODP configuration files in the `~/.openbb_platform` directory, opening directly in the default text editor:
+  - `user_settings.json` (see the docs [here](/odp/python/settings/user_settings).)
+  - `system_settings.json` (see the docs [here](/odp/python/settings/system_settings).)
+  - `.env` (see the docs [here](/odp/python/settings/environment_variables).)
+
+## Edit, Save, & Remove
+
+Hover the mouse over an entry to reveal the icons. The `edit` button is the first in the row of three.
+
+<img width="852" height="540" alt="api-keys-edit" src="https://github.com/user-attachments/assets/d431cdee-03a7-43c8-9246-109f92f1ced5" />
+
+Enter the changes and press `Save` to update the file and close the modal.
+
+:::note
+Backend servers and Python interpreters will need to be restarted for the changes to be reflected.
+:::
+
+## Configuration Files
+
+The button to the right of, `Import Keys`, is for opening ODP configuration files (listed above with documentation links).
+
+:::tip
+The `.env` file can be added to any [Backend](/odp/desktop/backends) configuration.
+:::
+
+Clicking the button will open it with the system's default text editor.
+
+<img width="852" height="540" alt="api-keys-config-files" src="https://github.com/user-attachments/assets/b1c0675d-9131-48e3-a659-1df11153f2d8" />
+
+
+---
+
+---
+title: Backends
+sidebar_position: 3
+description: Run and manage background processes like the OpenBB API server, data streaming pipelines, or custom Python scripts directly within the OpenBB GUI.
+keywords:
+  - Backends
+  - API Server
+  - Background Processes
+  - Micro-services
+  - Data Pipelines
+  - Local Development
+  - Certificate
+  - SSL
+  - CA
+  - HTTPS
+  - Encryption
+  - X.509
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Backends | ODP Desktop App Docs" />
+
+# Backends
+
+The **Backends** screen is a central location for development server entry points and launch script configurations.
+
+:::info
+Presets for OpenBB API & OpenBB MCP are created with default settings during the initial environment installation.
+:::
+
+## Features
+
+- Configure, control, and monitor multiple application servers from a simple interface.
+- Use any executable available to the selected environment from the command line.
+- User-friendly environment variable management.
+- Start services on operating system login.
+- Generate X.509 certificates and PKCS#12 bundles to easily run over HTTPS.
+- All backends terminate on application exit.
+
+<img width="852" height="585" alt="backenbds-page" src="https://github.com/user-attachments/assets/4c7b3984-e955-407c-9241-59cf75a868f0" />
+
+:::tip
+A JavaScript server can be started from the `openbb` environment by using the `npm` executable.
+
+Node can be added to any envrionment as a Conda package, `nodejs`, independent of any global installations.
+:::
+
+## Configuration
+
+Each backend created will appear on the screen as a new box, with details about its status and configuration.
+
+When the backend is running, the display will update to the server's URL after startup is complete.
+
+Edit the settings for an existing backend by clicking the gear icon, on the right-side of the panel.
+
+The configuration panels for creating or editing a service allows setting runtime arguments, environment variables, and the working directory.
+
+<img width="1980" height="1896" alt="backends-configuration-panel" src="https://github.com/user-attachments/assets/cdd508ea-0c02-48b3-bda5-d0511f8fab78" />
+
+### Create New
+
+1. Click **New Backend**.
+2. Fill the **Backend Name** (required).
+3. Select the **Environment** that contains the required packages.
+4. **Executable** – anything you would type in a shell, e.g. `openbb-api`, `uvicorn myapp:app --reload`, `python feed.py --ws`.
+5. *(Optional)* **Working Directory** – folder from which the command is executed.
+6. *(Optional)* **Environment File** – path to a `.env` file whose variables are exported before launch.
+7. *(Optional)* **Environment Variables** - multi-line text input where each line should be a KEY=VALUE pair.
+    - Exported *after* the `.env` file.
+8. Enable **Start Automatically**, if desired.
+    - Enable `Start at Login`, in the tray icon menu, to start on operating system login.
+9. Press **Create**.
+
+The new backend appears in the list. Use the **Start** button to launch it.
+
+## Logs
+
+Pressing the `Logs` button opens a window with the console output (colors removed) from the running backend.
+
+Each backend will buffer up to 10K of the most recent lines, in memory, and are discarded on application quit.
+<img width="1085" height="727" alt="backends-logs" src="https://github.com/user-attachments/assets/9af2b65f-655c-4d22-a24e-933697a82782" />
+
+:::tip
+Experiencing problems with a backend? Press the `Logs` button to see errors.
+:::
+
+## Self-Signed Certificate
+
+Self-signed certificates can enable backends to run securely over HTTPS. This feature is the simplest way for anyone to generate the required files. No additional software, or technical knowledge, is required.
+
+:::important
+X.509 certificates and files are generated by standard OpenSSL binaries, compiled from the most recent version. No other encryption tools, or parameters beyond what is available in the screen, are available.
+:::
+
+<img width="858" height="631" alt="backends-generate-certificate" src="https://github.com/user-attachments/assets/9deae828-63b1-4f67-95bd-054c650870ca" />
+
+### How To Generate
+
+1. Click **Generate Certificate**
+2. Enter the required fields:
+    - Common Name (e.g., 127.0.0.1)
+      - Address for which the certificate is valid.
+    - Organization Name (e.g., My Organization)
+    - Output Directory
+      - Where the files will be created.
+3. Enter any optional fields:
+    - Alternative Names (e.g., localhost,0.0.0.0)
+      - Aliases for the `Common Name`
+    - Password (set for PKCS#12 bundle)
+    - Days Valid (default 1 year)
+4. Check the box to also add the certificate to the user's trust store.
+    - An operating system dialog will open to confirm adding the certificate.
+    - This allows making HTTPS requests to the server, from the machine, without any additional configuration.
+5. Press **Generate**
+    - Open the folder to inspect the results and move the `private.key` file to a secure destination.
+6. Return to the `Backends` screen by clicking **X**, in the top-right.
+
+### How To Use
+
+:::danger
+Do not store the `private.key` file in the same location as the public certificate.
+:::
+
+Use environment variables, or a `.env` file, to configure the backend for HTTPS. For backends using `uvicorn` or `openbb-api` as the executable, set the items below.
+
+```env
+UVICORN_SSL_CERTFILE = "/pathto/public_folder/certificate.pem"
+UVICORN_SSL_KEYFILE = "/pathto/private_folder/private.key"
+```
+
+When opening a server URL (i.e. `/docs`) in a browser, you will need to manually allow the certificate through the warning dialog.
+
+## Example: MCP Server
+
+The REST API generated by the ODP python packages can be run as a MCP server, which can be added to the Agent Chat Interface in OpenBB Workspace.
+
+Before creating the backend, install the `openbb-mcp-server` extension to the target [environment](/odp/desktop/environments) (`openbb`).
+
+1. Press the **New Backend** button.
+2. Select `openbb` as the environment.
+3. Give it a name like, `OpenBB MCP`.
+4. Enter executable as, `openbb-mcp --port 6950`.
+    - See the [documentation](/odp/python/extensions/interface/openbb-mcp) for additional configuration options.
+5. Click **Create**.
+6. **Start** the backend.
+7. Open Workspace from the tray icon menu and add the MCP server address - i.e, `http://127.0.0.1:6950/mcp/` - from the chat window.
+    - The server URL showing after startup will be missing the transport path, `/mcp/`. Be sure to include it as part of the URL.
+
+<img width="2514" height="1870" alt="add-workspace-mcp" src="https://github.com/user-attachments/assets/60709625-c0ee-459d-a527-82b33c27407e" />
+
+## Troubleshooting & FAQ
+
+:::note
+Backend server management is intended for single-user, desktop operating systems. The operating system may close network connections when the machine sleeps, backend services may not reflect their status.
+:::
+
+Go to the [troubleshooting](/odp/desktop/troubleshooting) page for guidance and potential solutions.
+
+
+---
+
+---
+title: Environments
+sidebar_position: 2
+description: Create and manage isolated Conda environments for your Python projects. Install packages, manage dependencies, and launch development tools like JupyterLab, all from the OpenBB GUI.
+keywords:
+  - Environments
+  - Conda
+  - Python
+  - Package Management
+  - Jupyter
+  - Isolated Development
+  - Virtual Environments
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Environments | ODP Desktop App Docs" />
+
+# Environments
+
+The Environments screen is for creating and managing **isolated Conda environments**. Each environment (package extensions and binaries) lives inside the OpenBB installation folder, contains its own Python interpreter, and can be modified or deleted at any time.
+
+Environments protect the system, and other external projects, by not using shared components. They make it easy to jump between projects, programming languages, and package versions without fear of contamination.
+
+<img width="852" height="540" alt="environments-screen-initial" src="https://github.com/user-attachments/assets/863235c4-b307-4e68-a218-446b3c53e30e" />
+
+## Features
+
+- Create, customize, and manage Conda environments directly on-screen, no command line required.
+  - Build environments from `pyproject.toml`, `requirements.txt`, or Conda environment `.yaml` files.
+- Safely update whole environments or individual packages.
+- Searchable environment package lists, with installed version.
+- Action buttons for opening system terminals and starting Python, iPython, Jupyter, or ODP CLI sessions.
+  - Define a current working directory.
+  - Monitor console output of an environment's Jupyter server.
+  - Opens Jupyter Lab in a dedicated window.
+
+Every environment created from the screen will include a version of Python and `pip`, along with any Conda or PyPI installable package added by the user.
+
+The initial, `openbb`, environment will have a few extras that are included.
+
+## Initial Environment
+
+During the setup process, an environment is created, `openbb`, with the selected version of Python and extension choices.
+
+The extra tools included in this environment are:
+- iPython
+- Juptyer Lab and Notebook
+  - ipywidget
+  - anywidget
+  - Python language server
+- NodeJS
+
+## Environment Panel
+
+Each environment will have its own panel with dedicated action buttons for updating, removing, managing packages, and starting system shells.
+
+:::info
+Environments are updated with Conda's `libmamba` solver, where the packages to solve for were explicitly added to the environment or defined in the originally imported environment file. Conda itself will be updated before the environment is solved.
+
+Updating an individual package from the `Extensions` modal will not engage the environment solver and may have unintended outcomes, such as incompatibility.
+:::
+
+All environments use the same Current Working Directory (CWD), which by default is, the installation folder selected during the initial setup.
+
+### Applications
+
+This button will open a modal listing the available applications for that environment.
+At miniumum, there will be one for opening a system shell with the environment active, and another for opening a system shell with a Python session started.
+
+The screenshot below displays all of the currently supported applications, and each will start in the current working directory.
+
+<img width="852" height="688" alt="Screenshot 2025-10-22 at 2 02 40 PM" src="https://github.com/user-attachments/assets/e40c2387-b669-43ea-ad4c-8c46a168d8ee" />
+
+## Creating New Environments
+
+There are two ways to create a new environment from the screen:
+
+### **New Environment**
+- Press the button and follow the steps to define and create the environment.
+  - The basic OpenBB tooling will be installed in this environment, which includes:
+    - openbb-core
+      - Pydantic, FastAPI, Uvicorn, Pandas, Numpy, Requests, AIOHTTP, Ruff, PyJWT, UUID7, Python-Dotenv.
+    - openbb-platform-api
+
+### **From Environment File**
+- Press **Import Environment**
+  - Select a supported environment file:
+    - `requirements.txt`
+    - `pyproject.toml`
+      - If this is a local Python package, it will be installed in "develop" mode instead of `site-packages`.
+    - A Conda `YAML` environment definition.
+
+:::note
+When you import an environment from a file, it will be read and converted to a Conda YAML environment file. Changes to the original file will not be reflected in your environment.
+
+Find the Conda YAML environment files for each installed environment in: `~/.openbb_platform/environments/`
+:::
+
+When complete, press `Done` to return to the Environments screen.
+
+<img width="880" height="616" alt="environments-create-done" src="https://github.com/user-attachments/assets/8d05694a-a253-4bab-8bed-0fa714415dd5" />
+
+## Adding/Modifying Packages
+
+Press the `Extensions` button to open the modal for the desired environment and then click, `Add Extensions`.
+
+Define the package without a version to use the latest available. The modal supports installation of packages from Conda channels, and from PyPI.
+
+<img width="870" height="568" alt="environments-add-extensions" src="https://github.com/user-attachments/assets/10d713fd-44e8-4303-86b7-a143ed0e0708" />
+
+### Version Pinning
+
+If an extension was already added to the environment, it can be pinned by using standard version markers - i.e, `numpy==2.2.0` - for the package name.
+
+## Refresh Button
+
+The top refresh button will update the UI completely and request new contents for each detected environment.
+Use this button if the UI is out-of-sync with the current state.
+It will not update any packages or make a network request.
+
+## Clearing Caches
+
+Conda and PyPI package caches can be cleared from the command line of any environment.
+
+1. Press the `Applications` button and then `Open System Shell`
+2. Enter: `conda clean -a -y`
+3. Enter: `pip cache purge`
+4. Enter: `exit`
+
+## Troubleshooting & FAQ
+
+| Question | Answer |
+| --- | --- |
+| Can I use other package managers, such as UV? | Tools such as, UV or Poetry, can be installed in a Conda environment by adding it as a PyPI package. Using them within a global context may have unexpected results and should be configured to use the active environment explicitly.
+| Where can I find the `.condarc` file? | Open the installation location, and enter the `conda` folder. It will likely be hidden, so enable Explorer/Finder to show system files, and then open it in any text editor.
+| How do I remove a corrupt environment? | It is safe to manually remove any environment in the `InstallDirectory\conda\envs` folder by deleting it from Finder/Explorer. Press the `Refresh` button to update the screen's state.
+| Importing an environment fails. | Check the output for errors and adjust where needed. The environment's base may have been created successfully, in which case open the system shell and attempt to install manually from the command line. Please report any bugs on [GitHub](https://github.com/OpenBB-finance/OpenBB/issues).
+| "Directory does not exist" | Ensure the path is reachable by the OS user account. Network drives may require additional permissions. |
+| "FutureWarning" during install | These are non-fatal; the GUI continues automatically. |
+| "Prefix record insertion error" | A known Conda bug – the environment is usually created successfully. The GUI handles this automatically. |
+| How do I find the token for the Jupyter server when the window opens to the login page? | Press `Logs` on the environment's panel to open the console's output stream. It will be displayed with the final startup events. Alternatively, close the window and press the Jupyter button again to open a new one.
+| How do I keep a Jupyter server running while I browse other pages? | The server will remain running in the background until shut down or quit the ODP application. |
+| Can I change how Jupyter is configured? | Yes - the Jupyter folder is located in the installation directory. See the official [documentation](https://jupyter-server.readthedocs.io/en/latest/users/configuration.html) for more details.
+| Can I edit `pyproject.toml` after import? | Yes – open the Extensions tab and manage packages as usual. See the note in the New Environments section for details. |
+
+
+---
+
+---
+title: Introduction
+sidebar_position: 0
+description: An overview of the Open Data Platform desktop application for creating and managing local environments and backend servers.
+keywords:
+  - ODP
+  - Open Data Platform by OpenBB
+  - OpenBB Platform
+  - GUI
+  - Local Development
+  - Backends
+  - Environments
+  - API Keys
+  - Desktop Application
+---
+
+<!-- markdownlint-disable MD012 MD031 MD033 MD037 -->
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
+
+<HeadTitle title="Introduction | ODP Desktop App Docs" />
+
+ODP Desktop is a light-weight application (macOS & Windows) for installing and using the open-source tools, along with your favourite developer tools and resources. Its features are well-suited for building language-agnostic OpenBB Workspace [Applications](/workspace/analysts/apps) and agentic workflows.
+
+<details>
+<summary mdxType="summary">Application Screenshot</summary>
+
+![backends-screen](https://github.com/user-attachments/assets/d9a885bb-7776-4926-b043-f9b5d49987d9)
+
+</details>
+
+## Quick Start
+
+Download and install the latest release from: https://github.com/OpenBB-finance/OpenBB/releases/tag/ODP
+
+<details>
+<summary mdxType="summary">Installation Summary - See the [installation](/odp/desktop/installation) page for more details.</summary>
+
+The initial environment (`openbb`) is setup when you first run the application, and comes with:
+- OpenBB Core Python packages
+  - `openbb-api` and `openbb-mcp` executables
+- Optional packages selected during installation
+- Jupyter Lab & Notebook in a dedicated window
+  - Python langugage server
+- Isolated `npm` executable
+
+</details>
+
+:::important
+When the application is started (except first launch), no window is created. Access it from the tray icon menu, or doubleclick on the shortcut again.
+:::
+
+### **Step 1**
+
+Go to the [API Keys](/odp/desktop/api-keys) page, add or import your provider credentials, if needed.
+
+### **Step 2**
+
+Navigate to the [Backends](/odp/desktop/backends) page by clicking on it in the header, or selecting from the tray icon's menu.
+
+### **Step 3**
+
+Press the, `Start`, button for the `OpenBB API` backend.
+
+:::info
+By default, this will run: `openbb-api --host 127.0.0.1 --port 6900`
+:::
+
+
+<details>
+<summary mdxType="summary">Application Screenshot</summary>
+
+![backends-running](https://github.com/user-attachments/assets/2ec97b99-a19f-43ed-b735-f5757e51b4c4)
+
+</details>
+
+4. Open Workspace in your browser and connect to http://127.0.0.1:6900.  You now have a fully local data stack.
+
+<details>
+<summary mdxType="summary">Workspace Screenshot</summary>
+
+![Add To Workspace](https://openbb-cms.directus.app/assets/563aca68-1ec3-48c7-86d8-9129e0e5fd8c.png)
+
+:::note
+Number of widgets and applications will depend on packages and versions installed in the environment.
+:::
+
+</details>
+
+## Overview
+
+The application operates as a system tray icon, and its main window has three, navigatable, screens:
+
+<ul className="grid grid-cols-1 gap-2 -ml-6">
+  <NewReferenceCard
+    title="Backends"
+    description="Define and control background servers such as `openbb-api` or any custom script."
+    url="desktop/backends"
+  />
+  <NewReferenceCard
+    title="Environments"
+    description="Create and manage isolated Conda Python environments."
+    url="desktop/environments"
+  />
+  <NewReferenceCard
+    title="API Keys"
+    description="Manage API Keys for use with the OpenBB Python packages and API."
+    url="desktop/api-keys"
+  />
+</ul>
+
+---
+## Next Steps
+
+* Use the OpenBB Python Package as a Workspace [backend](/odp/python/quickstart/workspace).
+* Create your own custom [Environments](/odp/desktop/environments), or modify the existing.
+* Define custom [Backends](/odp/desktop/backends) to run independently, in any environment.
+
+
+---
+
+---
+title: Installation
+sidebar_position: 1
+description:
+  This page presents the general system requirements and installation instructions for the Open Data Platform (ODP) desktop application.
+keywords:
+  - ODP
+  - OpenBB Platform
+  - Python
+  - Requirements
+  - Installation
+  - Virtual Environment
+  - Windows
+  - macOS
+  - Jupyter
+  - Conda
+  - API
+  - PyPI
+  - MCP
+  - Node.js
+  - npm
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Installation | ODP Desktop App Docs" />
+
+## Requirements
+
+A modern laptop or desktop machine is recommended. It is not intended to be run in virtual machines or as a CI application.
+
+### System
+
+- Windows 11 or macOS (10.15+)
+- 2+ GB of usable storage space
+- 8 GB of RAM
+- Internet connection
+
+### Permissions
+
+This application is scoped to the operating system user account, and the OS may ask you to grant permissions. The general needs of this application are:
+
+- Access the internet, download files, and install packages from repositories.
+  - Packages can be installed from `conda` or `pip`.
+- Manage files in the user and temp directories.
+- Run background tasks and shell scripts.
+- Configure the operating system for the `Start at Login` feature. 
+
+## Installation
+
+Download the appropriate file for your machine from the link [here](https://github.com/OpenBB-finance/OpenBB/releases/ODP)
+
+### macOS
+
+Open the DMG file and then drag-and-drop the app into the Applications folder.
+
+### Windows
+
+Execute the installer file, and then start the application.
+
+
+## First Run
+
+When first run, you will be asked to select an installation location.
+This is where Miniforge, environments, and other application data will be stored.
+
+The user data directory is where the OpenBB Python packages should store data, such as data/HTTP cache. It is recommeneded to use separate locations for each.
+
+<img width="898" height="852" alt="install-step-1" src="https://github.com/user-attachments/assets/e0785ef1-3702-4f16-a9e7-5acd4a4368c9" />
+
+Click, Begin Installation, when you're ready.
+
+<img width="852" height="577" alt="install-miniforge" src="https://github.com/user-attachments/assets/6529f996-42d9-4560-a62a-0b541d233a53" />
+
+### OpenBB Environment
+
+After Miniforge is installed, you will be directed to pick a version of Python for the initial environment.
+
+<img width="852" height="613" alt="install-step-2" src="https://github.com/user-attachments/assets/10ffb597-98d5-446f-bc8e-677b68287f43" />
+
+Upon clicking the, Next Step, button, an `openbb` environment will be created with the core packages.
+
+<img width="852" height="579" alt="install-initial-env" src="https://github.com/user-attachments/assets/26d193e0-7a6d-459c-9364-6086bec8cc1c" />
+
+When complete, you can customize the environment by adding OpenBB Python modules or arbitrary libraries from PyPI.
+
+<img width="852" height="787" alt="install-step-3" src="https://github.com/user-attachments/assets/9a39bf11-a41e-4067-b92b-a34ac9d36381" />
+
+Finally, click the button to go to the [Environments](/odp/desktop/environments) page.
+
+<img width="852" height="627" alt="install-complete" src="https://github.com/user-attachments/assets/8f115fe5-6128-4f38-8b79-17c892b8857b" />
+
+
+---
+
+---
+title: Troubleshooting
+sidebar_position: 5
+description: This page covers potential problems that might be encountered while using the ODP Desktop application.
+keywords:
+  - Troubleshooting
+  - Error
+  - Warning
+  - Bug
+  - Exception
+  - FAQ
+  - not working
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Troubleshooting | ODP Desktop App Docs" />
+
+This page covers potential problems that might be encountered while using the ODP Desktop application.
+
+## Console Logs
+
+The window has a console available by right-clicking anywhere and selecting "Inspect Element". Use this to find frontend components, user interactions, and JavaScript errors.
+
+For backend logs, quit the application and open it by running the `.exe`/`.bin` file in the operating system's default terminal shell.
+
+## Installation
+
+Having trouble with the initial installation and setup?
+
+:::warning
+If the initial `openbb` environment failed during creation, you will be presented with the error, and a choice to try again or continue anyways. If you try again, select a new path or overwrite the existing. If you continue anyways, the environment will be in a partially-installed state and some user interactions may not worked as-expected. In most cases, you will want to address the error before use or reinstallation.
+:::
+
+If you need to remove the application entirely, uninstall via the standard operating system procedures, then remove the initial installation folder where Conda is installed.
+
+### Timeout
+
+If you experienced a timeout error, this is most likely a network connection issue. Potentially transitory, trying again may resolve itself. The console logs may reveal additional context.
+
+### Permission Error
+
+This typically happens when the operating system user does not have adequate permissions for the selected installation path. The safest place is usually the User home directory, and avoid installing where administrator privileges are required.
+
+In Windows Powershell, this command grants the current user full control to their user profile folder and all subfolders and files. 
+
+```sh
+icacls "$env:USERPROFILE" /grant "$env:USERNAME":(OI)(CI)F /T
+```
+
+This command is an equivalent on macOS:
+
+```sh
+chmod -R +a "user:$(whoami) allow list,add_file,search,add_subdirectory,delete_child,readattr,writeattr,readextattr,writeextattr,readsecurity,file_inherit,directory_inherit" "/Users/user_name"
+```
+
+### Failed Building Wheel
+
+This error will end with, "Failed to build installable wheels for some pyproject.toml based projects.", along with the failed package. These are typically CPython packages where precompiled binaries are not published to PyPI for your operating system and/or CPU architecture.
+
+It likely means that a system-level component could not be found on the machine, and needs to be installed or directed to the installation with environment variables.
+
+:::warning
+If you are running an Intel-based macOS machine, EOL for macOS is scheduled for the end of 2026, and major packages have already begun phasing out support of precompiled binaries.
+
+This may also be applicable to Apple Silicon machines where x86-based (Rosetta2) packages are being installed.
+
+<details>
+<summary mdxType="summary">Instructions Detail</summary>
+
+You will need to install additional system components (compilers).
+
+Start with X-Code:
+
+```sh
+xcode-select --install
+```
+
+Then install Homebrew:
+
+```sh
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+Then install CMake:
+
+```sh
+brew install cmake
+```
+
+Finally, install LLVM:
+
+```sh
+brew install llvm@20
+```
+
+</details>
+
+:::
+
+If you are on a Windows machine, this error might reference MSVC Microsoft Visual C++, and if so, download and install from the Microsoft [site](https://visualstudio.microsoft.com/downloads) by expanding the "Other Tools, Frameworks, and Redistributables" section.
+
+## Backends
+
+If you experienced an installation error and elected to continue anyways, it is likely that the existing backends will not start because the packages were not installed.
+
+Removing or updating backends will have no impact on the environment.
+
+| Question | Answer |
+| --- | --- |
+| Backend stuck at *starting*. | After 30s, if an error is not detected the status will update as running. |
+| Backend URL displayed is incorrect. | The UI looks for a host:port pattern from the application startup. Check the logs for errors and report unexpected outcomes on [Github](https://github.com/OpenBB-finance/OpenBB/issues/). |
+| Startup traceback. | The GUI captures the full traceback and stops the service; open logs for details, fix code, then **Start** again. |
+| Port already in use. | Edit the backend and set the `--port` runtime argument, or stop the conflicting process. |
+| Port different than expected. | Launchers such as, `openbb-api`, will find the next available port. Is a service already running? |
+| How do I expose the API to my LAN? | Set the `--host` runtime argument as, `0.0.0.0`, and ensure the firewall allows the chosen port. |
+| Can I run non-Python services? | Yes – any executable/script is allowed as long as it runs inside the selected Conda environment. |
+| Status shows as running, but backend failed to start. | Refresh the window by right-clicking and selecting reload. Does the status change? Press **Stop**. Is the process terminated? Consult the logs and report unexpected outcomes on [Github](https://github.com/OpenBB-finance/OpenBB/issues/). |
+| Backend fails to terminate on ODP exit. | This is likely a bug, please report on [Github](https://github.com/OpenBB-finance/OpenBB/issues/), with context. |
+
+## Environments
+
+If an environment gets corrupted, the best thing to do is remove it and recreate.
+
+If the environment can't be removed from the ODP `Environments` screen, open the installation folder and delete the folder manually.
+
+All environments are under the Conda folder, `{installation_path}/conda/envs/{env_name}`, and can be deleted safely at any time.
+
+## GitHub Issues
+
+If you are unable to resolve the error after troubleshooting, look at the open issues on [GitHub](https://github.com/OpenBB-finance/OpenBB/issues) and add to, or create, one. Please provide all relative context with conditions, the operating system version, CPU architecture type, along with error messages and screenshots.
+
+---
+
+---
+title: Uninstall
+sidebar_position: 4
+description: Uninstall the Open Data Platform application.
+keywords:
+  - Uninstall
+  - Remove
+  - Delete
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Uninstall | ODP Desktop App Docs" />
+
+Uninstall the Open Data Platform application by selecting `Uninstall` from the tray icon menu.
+
+When confirmed, the process will remove Miniforge, environments, all application data, and optionally, the `OpenBBUserData` and `~./openbb_platform` folders.
+
+:::note
+On Windows, using `uninstall.exe` or removing via Control Panel will only remove the GUI. Environments and other files will not be removed.
+:::
+
+<img width="897" height="865" alt="uninstall" src="https://github.com/user-attachments/assets/28419487-17db-4480-a306-8073753e53d2" />

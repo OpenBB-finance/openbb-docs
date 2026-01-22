@@ -35,7 +35,7 @@
 - [Parse PDF context](https://docs.openbb.co/workspace/developers/ai-features/parse-pdf-context): Parse PDF content from widget data and cite sources
 - [Parse widget data](https://docs.openbb.co/workspace/developers/ai-features/parse-widget-data): Retrieve data from selected widgets and pass it as raw context to your LLM
 - [Share step-by-step reasoning](https://docs.openbb.co/workspace/developers/ai-features/share-step-by-step-reasoning): Stream status updates alongside model output during long operations
-- [Apps](https://docs.openbb.co/workspace/developers/apps/apps): Create and customize your own OpenBB Apps for optimized workflows
+- [Apps](https://docs.openbb.co/workspace/developers/apps/index): Create and customize your own OpenBB Apps for optimized workflows
 - [Data Integration](https://docs.openbb.co/workspace/developers/data-integration): Learn how to integrate your own data sources and APIs into OpenBB Workspace with a custom backend solution.
 - [agents.json Reference](https://docs.openbb.co/workspace/developers/json-specs/agents-json-reference): Complete reference guide for configuring custom AI agents in OpenBB Workspace using the agents.json endpoint
 - [apps.json Reference](https://docs.openbb.co/workspace/developers/json-specs/apps-json-reference): Learn about the structure and configuration of apps.json for creating custom applications in OpenBB Workspace

@@ -1,0 +1,82 @@
+---
+title: openbb-quantitative
+sidebar_position: 0
+description: An overview of the `openbb-quantitative` Python package.
+keywords:
+  - ODP
+  - Python Package
+  - OpenBB Platform
+  - Extension
+  - Router
+  - Quantitative
+  - statsmodels
+  - pandas
+  - Data
+  - POST
+---
+
+<!-- markdownlint-disable MD012 MD031 MD033 MD037 -->
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
+
+<HeadTitle title="OpenBB Quantitative - Python Packages & Extensions | OpenBB Docs" />
+
+The `openbb-quantitative` extension provides API access to common quantitative models and statistical analysis, with a focus on time series.
+
+## Installation
+
+```console
+pip install openbb-quantitative
+```
+
+### Dependencies
+
+Installation includes a new router path (`obb.quantitative`), and additional Python libraries:
+
+- pandas-ta-openbb
+    - scipy
+    - statsmodels
+
+### Post Installation
+
+After installation, rebuild the Python Interface.
+
+```sh
+openbb-build
+```
+
+## Endpoints
+
+The `obb.quantitative` namespace includes:
+
+```python
+>>> from openbb import obb
+>>> obb.quantitative
+
+/quantitative
+    capm
+    normality
+    /performance
+        omega_ratio
+        sharpe_ratio
+        sortino_ratio
+    /rolling
+        kurtosis
+        mean
+        quantile
+        skew
+        stdev
+        variance
+    /stats
+        kurtosis
+        mean
+        quantile
+        skew
+        stdev
+        variance
+    summary
+    unitroot_test
+```
+
+Go to the [reference](/odp/python/reference/quantitative) page for function, parameter, and response descriptions, as well as code examples.

@@ -84,19 +84,37 @@ export default {
 						from: "/getting-started/faqs",
 						to: "/workspace/getting-started/faqs",
 					},
+					// Redirects for old ODP paths
 					{
-						from: ["/platform", "/platform/:path*"],
-						to: "/python",
+						from: "/platform",
+						to: "/odp/python",
 					},
 					{
 						from: "/desktop",
-						to: "/odp",
+						to: "/odp/desktop",
+					},
+					{
+						from: "/python",
+						to: "/odp/python",
+					},
+					{
+						from: "/cli",
+						to: "/odp/cli",
 					},
 				],
 				createRedirects: (existingPath) => {
-					// Redirect /desktop/* to /odp/*
-					if (existingPath.startsWith("/odp/")) {
-						return existingPath.replace("/odp/", "/desktop/");
+					// Redirect old paths to new /odp/* structure
+					if (existingPath.startsWith("/odp/desktop/")) {
+						return existingPath.replace("/odp/desktop/", "/desktop/");
+					}
+					if (existingPath.startsWith("/odp/python/")) {
+						return [
+							existingPath.replace("/odp/python/", "/python/"),
+							existingPath.replace("/odp/python/", "/platform/"),
+						];
+					}
+					if (existingPath.startsWith("/odp/cli/")) {
+						return existingPath.replace("/odp/cli/", "/cli/");
 					}
 					if (existingPath.startsWith("/pro/")) {
 						const newPath = existingPath.replace("/pro/", "/workspace/developers/");
@@ -180,11 +198,12 @@ export default {
 				loadContent: async () => {
 					const { siteDir } = context;
 					const contentDir = path.join(siteDir, "content");
+					// ODP has sub-sections that each get their own llms.txt
 					const sectionContent: Record<string, string[]> = {
 						workspace: [],
-						cli: [],
-						odp: [],
-						python: [],
+						"odp/desktop": [],
+						"odp/python": [],
+						"odp/cli": [],
 						snowflake: [],
 					};
 
@@ -206,9 +225,16 @@ export default {
 									const content = await fs.promises.readFile(fullPath, "utf8");
 									// Determine which section this file belongs to
 									const relativePath = path.relative(contentDir, fullPath);
-									const section = relativePath.split(path.sep)[0];
-									if (section in sectionContent) {
-										sectionContent[section].push(content);
+									const pathParts = relativePath.split(path.sep);
+									
+									// Check for ODP sub-sections first (odp/desktop, odp/python, odp/cli)
+									if (pathParts[0] === "odp" && pathParts.length > 1) {
+										const subSection = `odp/${pathParts[1]}`;
+										if (subSection in sectionContent) {
+											sectionContent[subSection].push(content);
+										}
+									} else if (pathParts[0] in sectionContent) {
+										sectionContent[pathParts[0]].push(content);
 									}
 								} catch (err) {
 									console.error(`Error processing file ${fullPath}:`, err);
@@ -257,21 +283,32 @@ export default {
 					).docs as Record<string, Record<string, unknown>>;
 
 					// Group routes by section
+					// ODP has sub-sections that each get their own llms.txt
 					const sectionRoutes: Record<string, string[]> = {
 						workspace: [],
-						cli: [],
-						odp: [],
-						python: [],
+						"odp/desktop": [],
+						"odp/python": [],
+						"odp/cli": [],
 						snowflake: [],
 					};
 
-					for (const [path, record] of Object.entries(
+					for (const [docPath, record] of Object.entries(
 						currentVersionDocsRoutes,
 					)) {
-						const section = path.split("/")[0];
-						if (section in sectionRoutes) {
-							const fullUrl = `${context.siteConfig.url}/${path}`;
-							sectionRoutes[section].push(
+						const pathParts = docPath.split("/");
+						
+						// Check for ODP sub-sections first (odp/desktop, odp/python, odp/cli)
+						if (pathParts[0] === "odp" && pathParts.length > 1) {
+							const subSection = `odp/${pathParts[1]}`;
+							if (subSection in sectionRoutes) {
+								const fullUrl = `${context.siteConfig.url}/${docPath}`;
+								sectionRoutes[subSection].push(
+									`- [${record.title}](${fullUrl}): ${record.description}`,
+								);
+							}
+						} else if (pathParts[0] in sectionRoutes) {
+							const fullUrl = `${context.siteConfig.url}/${docPath}`;
+							sectionRoutes[pathParts[0]].push(
 								`- [${record.title}](${fullUrl}): ${record.description}`,
 							);
 						}

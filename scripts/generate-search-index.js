@@ -33,21 +33,25 @@ docs.forEach(doc => {
 
       if (pathParts[0] === 'workspace') {
         category = 'Workspace';
-      } else if (pathParts[0] === 'python') {
-        category = 'Python';
-      } else if (pathParts[0] === 'cli') {
-        category = 'CLI';
-      } else if (pathParts[0] === 'desktop') {
-        category = 'Desktop';
-      }
-
-      // Add subcategory if available
-      if (pathParts.length > 1 && pathParts[1] !== 'index') {
-        const subcategory = pathParts[1]
-          .split('-')
-          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-          .join(' ');
-        category = `${category} - ${subcategory}`;
+      } else if (pathParts[0] === 'odp') {
+        // Handle ODP subcategories
+        if (pathParts[1] === 'python') {
+          category = 'ODP Python';
+        } else if (pathParts[1] === 'cli') {
+          category = 'ODP CLI';
+        } else if (pathParts[1] === 'desktop') {
+          category = 'ODP Desktop';
+        } else {
+          category = 'ODP';
+        }
+        // Add further subcategory if available
+        if (pathParts.length > 2 && pathParts[2] !== 'index') {
+          const subcategory = pathParts[2]
+            .split('-')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
+          category = `${category} - ${subcategory}`;
+        }
       }
 
       searchablePages.push({
