@@ -20,7 +20,12 @@ export default {
 	organizationName: "OpenBB-finance",
 	trailingSlash: false,
 	onBrokenLinks: "warn",
-	onBrokenMarkdownLinks: "warn",
+	onBrokenAnchors: "warn",
+	"markdown": {
+		"hooks": {
+			onBrokenMarkdownLinks: "warn",
+		}
+	},
 	favicon: "img/favicon.ico",
 
 	// GitHub pages deployment config.

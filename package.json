@@ -33,12 +33,17 @@
     "cross-spawn": "^7.0.5",
     "express": "^4.20.0",
     "fuse.js": "^6.6.2",
+    "glob": ">=10.5.0",
     "hast-util-is-element": "^3.0.0",
     "http-proxy-middleware": ">=2.0.7",
+    "mdast-util-to-hast": ">=13.2.1",
     "micromatch": "^4.0.8",
+    "node-forge": ">=1.3.2",
     "path-to-regexp": ">=3.3.0",
     "posthog-js": "^1.131.3",
+    "preact": ">=10.26.10",
     "prism-react-renderer": "^2.3.1",
+    "qs": ">=6.14.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-player": "^2.16.0",
@@ -61,14 +66,15 @@
     "brace-expansion": ">=2.0.2",
     "gray-matter": "^4.0.3",
     "markdownlint": "^0.31.1",
-    "markdownlint-cli": "^0.36.0",
+    "markdownlint-cli": "^0.47.0",
     "postcss": "^8.4.38",
     "remark-gfm": "^4.0.0",
     "tailwindcss": "^3.4.3",
     "typescript": "^5.4.5"
   },
   "overrides": {
-    "webpack-dev-server": ">=5.2.0"
+    "webpack-dev-server": ">=5.2.0",
+    "glob": ">=10.5.0"
   },
   "browserslist": {
     "production": [
