@@ -9,6 +9,7 @@ keywords:
   - Python
   - CLI
   - Desktop
+displayed_sidebar: tutorialSidebar
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 MD037 -->
