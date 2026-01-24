@@ -33,7 +33,7 @@ export default function DocSidebarItem({ item, ...props }) {
 	const isGettingStarted = pathname.startsWith("/getting-started");
 	const isPlatform = pathname.startsWith("/platform");
 	const isCLI = pathname.startsWith("/cli");
-	const isODP = pathname.startsWith("/desktop") || pathname.startsWith("/python");
+	const isODP = pathname.startsWith("/odp");
 	const isRelevantSection = isPro || isExcel || isGettingStarted;
 
 	// Only show workspace items when in workspace, excel items when in excel, getting-started items always in relevant sections

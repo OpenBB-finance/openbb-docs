@@ -223,7 +223,7 @@ export default function PrimaryMenu() {
 	const isHome = location.pathname === "/";
 	const isWorkspace = location.pathname.startsWith("/workspace");
 	const isODP =
-		location.pathname.startsWith("/desktop") ||
+		location.pathname.startsWith("/odp") ||
 		location.pathname.startsWith("/python") ||
 		location.pathname.startsWith("/cli");
 

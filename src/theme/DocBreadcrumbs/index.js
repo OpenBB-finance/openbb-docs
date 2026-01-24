@@ -86,7 +86,7 @@ export default function DocBreadcrumbs() {
     { startsWith: '/platform', label: 'OpenBB Platform' },
     { startsWith: '/excel', label: 'OpenBB Add-in for Excel' },
     { startsWith: '/cli', label: 'OpenBB Platform CLI' },
-    { startsWith: '/desktop', label: 'ODP Desktop' },
+    { startsWith: '/odp', label: 'ODP Desktop' },
     { startsWith: '/python', label: 'ODP Python' },
     { startsWith: '/bot', label: 'OpenBB Bot' },
   ];

@@ -395,7 +395,7 @@ export default function Home() {
 						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 							{/* ODP Desktop Card */}
 							<Link
-								to="/desktop"
+								to="/odp/desktop"
 								className="bg-white dark:bg-[#151518] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg dark:hover:shadow-[0_20px_60px_rgba(0,0,0,0.8)] transition-shadow cursor-pointer !no-underline block"
 							>
 								<div className="flex items-start justify-start w-12 h-12">
@@ -441,7 +441,7 @@ export default function Home() {
 
 							{/* ODP Python Card */}
 							<Link
-								to="/python"
+								to="/odp/python"
 								className="bg-white dark:bg-[#151518] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg dark:hover:shadow-[0_20px_60px_rgba(0,0,0,0.8)] transition-shadow cursor-pointer !no-underline block"
 							>
 								<div className="flex items-start justify-start w-12 h-12">
@@ -494,7 +494,7 @@ export default function Home() {
 
 							{/* ODP CLI Card */}
 							<Link
-								to="/cli"
+								to="/odp/cli"
 								className="bg-white dark:bg-[#151518] border border-[#8A8A90] dark:border-[#505059] rounded-lg p-6 hover:shadow-lg dark:hover:shadow-[0_20px_60px_rgba(0,0,0,0.8)] transition-shadow cursor-pointer !no-underline block"
 							>
 								<div className="flex items-start justify-start w-12 h-12">
