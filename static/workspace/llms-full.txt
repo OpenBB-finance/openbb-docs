@@ -1767,14 +1767,15 @@ The Website widget brings external data sources directly into your dashboard, cr
 
 > **Note:** Some websites may restrict embedding. OpenBB automatically checks and only displays websites that permit embedding.
 
-## RSS Feeds Widget
+## RSS and Atom Feeds Widget
 
-The RSS Feeds widget serves as your personal news aggregator within OpenBB, keeping you informed with market-moving information. This essential tool provides:
+The RSS Feeds widget serves as your personal news aggregator within OpenBB, keeping you informed with market-moving information. This widget supports both RSS and Atom feed formats. This essential tool provides:
 
 - Curated financial news from top sources
 - Customizable news feed preferences
 - Real-time market updates
 - Integrated news analysis within your research workflow
+- Support for both RSS (e.g. https://feeds.bloomberg.com/markets/news.rss) and Atom feed formats (e.g. https://karpathy.bearblog.dev/feed/)
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
   <img
@@ -2101,6 +2102,26 @@ Beyond this data flow, widgets exhibit two powerful features that transform them
 **Parameter linking** creates synchronization across your dashboard. When widgets share parameter names, changing a ticker symbol or date range in one widget automatically updates all linked widgets.
 
 **AI-readable metadata** exposes the widget metadata to AI agents so that they can interpret and act upon it. Unlike screen scraping, AI agents understand the underlying data source, parameter structure, and query methods for each widget. This understanding allows agents to dynamically request data with different parameters to answer your specific questions, accessing source datasets behind each widget rather than only the information that is currently displayed.
+
+### Controlling AI Visibility
+
+Widgets support an optional `ai` configuration flag that controls whether a widget is exposed to AI agents.
+
+- When `ai` is set to `true`, the widget’s metadata and parameters can be accessed by AI agents to dynamically request and analyze data.
+- When `ai` is set to `false`, the widget will not be made available to AI workflows. This is useful for restricting access to sensitive, experimental, or internal-only widgets.
+
+Example configuration:
+
+```json
+{
+  "paramName": "symbol",
+  "type": "endpoint",
+  "label": "Select Symbol",
+  "optionsEndpoint": "/stock_search_options",
+  "ai": false
+}
+```
+This flag allows developers and analysts to explicitly control which widgets participate in AI-driven workflows within OpenBB Workspace.
 
 ## Your Widget Library
 
@@ -2725,6 +2746,213 @@ async def query(request: QueryRequest) -> EventSourceResponse:
 ---
 
 ---
+title: Create HTML artifacts
+sidebar_position: 7
+description: Stream inline HTML artifacts as part of your agent's response
+keywords:
+- html
+- artifacts
+- visualization
+- custom rendering
+- SSE
+- widgets
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="AI Features — Create HTML artifacts | OpenBB Workspace Docs" />
+
+Stream custom HTML content with `html_artifact(...)`. HTML artifacts are rendered inline in the chat and can be converted to dashboard widgets by users.
+
+Reference implementation in [this GitHub repository](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/39-vanilla-agent-html-artifacts).
+
+<img className="pro-border-gradient" width="800" alt="Charts" src="https://openbb-cms.directus.app/assets/e74e0b8e-3858-47e8-bcd6-d59dfe1cbfe7.png" />
+
+## Architecture
+
+Emit HTML artifacts so custom visualizations render below the answer. HTML content is sanitized with DOMPurify before rendering for security.
+
+`agents.json` configuration:
+
+```python
+return JSONResponse(content={
+    "vanilla_agent_html": {
+        "name": "HTML Artifacts Agent",
+        "description": "An example agent that produces HTML artifacts rendered inline in the chat.",
+        "endpoints": {"query": "/v1/query"},
+        "features": {
+            "streaming": True,
+            "widget-dashboard-select": False,
+            "widget-dashboard-search": False,
+        },
+    }
+})
+```
+
+### Query flow
+
+- Process user request and prepare HTML content
+- Stream explanatory text with `message_chunk()`
+- Create HTML content as a string (inline styles supported)
+- Emit `html_artifact()` events with proper configuration
+- HTML renders inline below streamed content
+- Users can click widget icon to add artifacts to dashboard
+
+### SSE event format
+
+HTML artifacts are sent as SSE events with the following structure:
+
+```python
+{
+    "event": "copilotMessageArtifact",
+    "data": {
+        "type": "html",
+        "uuid": "unique-id",
+        "name": "artifact_name",
+        "description": "A description of the artifact",
+        "content": "<div>Your HTML content here</div>"
+    }
+}
+```
+
+## Core logic
+
+```python
+import json
+import uuid
+from typing import AsyncGenerator
+from openbb_ai import message_chunk
+from openbb_ai.models import QueryRequest
+from sse_starlette.sse import EventSourceResponse
+
+def html_artifact(content: str, name: str, description: str) -> dict:
+    """
+    Create an HTML artifact SSE event.
+
+    Args:
+        content: The HTML content to render
+        name: A unique name for the artifact
+        description: A description of the artifact
+
+    Returns:
+        SSE event dict with type="html" artifact
+    """
+    return {
+        "event": "copilotMessageArtifact",
+        "data": json.dumps({
+            "type": "html",
+            "uuid": str(uuid.uuid4()),
+            "name": name,
+            "description": description,
+            "content": content,
+        }),
+    }
+
+# Example HTML template
+DASHBOARD_CARD_HTML = """
+<div style="font-family: system-ui, -apple-system, sans-serif; padding: 24px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 16px; color: white; max-width: 400px;">
+  <h2 style="margin: 0 0 16px 0; font-size: 20px; font-weight: 600;">Portfolio Summary</h2>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+    <div style="background: rgba(255,255,255,0.15); padding: 16px; border-radius: 12px;">
+      <div style="font-size: 28px; font-weight: bold;">$124.5K</div>
+      <div style="font-size: 13px; opacity: 0.8; margin-top: 4px;">Total Value</div>
+    </div>
+    <div style="background: rgba(255,255,255,0.15); padding: 16px; border-radius: 12px;">
+      <div style="font-size: 28px; font-weight: bold; color: #4ade80;">+12.3%</div>
+      <div style="font-size: 13px; opacity: 0.8; margin-top: 4px;">Today's Change</div>
+    </div>
+  </div>
+</div>
+"""
+
+@app.post("/v1/query")
+async def query(request: QueryRequest) -> EventSourceResponse:
+    async def execution_loop() -> AsyncGenerator[dict, None]:
+        client = openai.AsyncOpenAI()
+
+        # Stream the LLM response
+        async for event in await client.chat.completions.create(
+            model="gpt-4o",
+            messages=openai_messages,
+            stream=True,
+        ):
+            if chunk := event.choices[0].delta.content:
+                yield message_chunk(chunk).model_dump()
+
+        # Emit HTML artifact
+        yield message_chunk("\n\nHere's a portfolio dashboard card:\n\n").model_dump()
+        yield html_artifact(
+            content=DASHBOARD_CARD_HTML,
+            name="portfolio_dashboard",
+            description="A portfolio summary dashboard card",
+        )
+
+        yield message_chunk(
+            "\n\nYou can click the widget icon to add this to your dashboard!"
+        ).model_dump()
+
+    return EventSourceResponse(
+        content=execution_loop(),
+        media_type="text/event-stream",
+    )
+```
+
+## Example templates
+
+### Metric cards
+
+```html
+<div style="font-family: system-ui, -apple-system, sans-serif; display: flex; gap: 16px; flex-wrap: wrap;">
+  <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; border-radius: 12px; min-width: 140px;">
+    <div style="color: #64748b; font-size: 13px; margin-bottom: 8px;">Revenue</div>
+    <div style="font-size: 24px; font-weight: 600; color: #0f172a;">$2.4M</div>
+    <div style="color: #22c55e; font-size: 13px; margin-top: 4px;">↑ 14.2%</div>
+  </div>
+  <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; border-radius: 12px; min-width: 140px;">
+    <div style="color: #64748b; font-size: 13px; margin-bottom: 8px;">Users</div>
+    <div style="font-size: 24px; font-weight: 600; color: #0f172a;">48.2K</div>
+    <div style="color: #22c55e; font-size: 13px; margin-top: 4px;">↑ 8.1%</div>
+  </div>
+</div>
+```
+
+### Alert box
+
+```html
+<div style="font-family: system-ui, -apple-system, sans-serif; background: #fef3c7; border: 1px solid #f59e0b; border-radius: 12px; padding: 16px; display: flex; gap: 12px; align-items: flex-start; max-width: 500px;">
+  <div style="background: #f59e0b; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: bold;">!</div>
+  <div>
+    <div style="font-weight: 600; color: #92400e; margin-bottom: 4px;">Market Alert</div>
+    <div style="color: #a16207; font-size: 14px; line-height: 1.5;">Unusual trading volume detected in AAPL. Volume is 3.2x higher than the 20-day average.</div>
+  </div>
+</div>
+```
+
+## Security considerations
+
+The frontend sanitizes all HTML with DOMPurify before rendering. Keep the following in mind:
+
+| Element/Attribute | Status |
+|-------------------|--------|
+| `<script>` tags | Stripped |
+| `<style>` tags | Stripped |
+| `<iframe>`, `<form>`, `<object>`, `<embed>` | Stripped |
+| `on*` event handlers (onclick, onload, etc.) | Stripped |
+| Inline styles | Supported |
+| Standard HTML elements (div, span, img, etc.) | Supported |
+
+## Best practices
+
+- Use inline styles for all styling (external stylesheets not supported)
+- Keep HTML self-contained with no external dependencies
+- Use system fonts for consistent cross-platform rendering
+- Test artifacts at different viewport sizes for responsiveness
+- Provide meaningful `name` and `description` for widget creation
+
+
+---
+
+---
 title: Create tables
 sidebar_position: 5
 description: Stream tabular data as an artifact in the conversation
@@ -2816,7 +3044,7 @@ async def query(request: QueryRequest) -> EventSourceResponse:
 
 ---
 title: Custom agent features
-sidebar_position: 7
+sidebar_position: 8
 description: Configure and manage custom agent features based on workspace options
 keywords:
 - features
@@ -3096,7 +3324,7 @@ async def execution_loop():
 
 ---
 title: Interact with dashboard
-sidebar_position: 7
+sidebar_position: 8
 description: Receive full dashboard widget metadata and conditionally fetch data
 keywords:
 - dashboard widgets
@@ -3231,6 +3459,245 @@ async def query(request: QueryRequest) -> EventSourceResponse:
             ]).model_dump()
 
     return EventSourceResponse(execution_loop(), media_type="text/event-stream")
+```
+
+
+---
+
+---
+title: MCP tools integration
+sidebar_position: 7
+description: Integrate Model Context Protocol (MCP) tools with OpenBB agents for enhanced capabilities
+keywords:
+- MCP
+- Model Context Protocol
+- tools
+- function calling
+- OpenAI
+- agents
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="AI Features — MCP Tools Integration | OpenBB Workspace Docs" />
+
+Enable agents to access and execute Model Context Protocol (MCP) tools, extending their capabilities with external tools and services. MCP tools allow agents to interact with databases, APIs, file systems, and other external resources.
+
+Reference implementation in [this GitHub repository](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/38-vanilla-agent-mcp-tools/vanilla_agent_mcp_tools/main.py).
+
+<img className="pro-border-gradient" width="800" alt="Charts" src="https://openbb-cms.directus.app/assets/bec55103-71cd-412d-bc05-fd4776a0838c.png" />
+
+## Architecture
+
+MCP tools integration enables agents to discover, execute, and process results from external tools. The agent acts as an orchestrator between the OpenBB workspace and MCP servers, translating tool calls into executable functions.
+
+`agents.json` configuration with MCP support:
+
+```python
+return JSONResponse(content={
+    "vanilla_agent_mcp": {
+        "name": "Vanilla Agent with MCP",
+        "description": "A vanilla agent that supports MCP tools and automatically retrieves widget data.",
+        "endpoints": {"query": "/v1/query"},
+        "features": {
+            "streaming": True,
+            "widget-dashboard-select": True,
+            "widget-dashboard-search": False,
+            "mcp-tools": True,  # Enable MCP tools support
+        },
+    }
+})
+```
+
+### Query flow
+
+- User sends query to agent with available MCP tools in request payload
+- Agent receives tool metadata including server ID, name, description, and input schema
+- Agent analyzes query and determines if MCP tools are needed
+- Agent generates OpenAI function call with appropriate parameters
+- Frontend executes MCP tool and returns results
+- Agent processes tool results and generates final response
+
+### OpenBB AI SDK
+
+- `QueryRequest.tools`: List of available MCP tools with metadata
+- `FunctionCallSSE`: Server-sent event for function calls to frontend
+- `FunctionCallSSEData`: Function call data with server ID, tool name, and parameters
+- `message_chunk(text)`: Streams response content back to user
+- Tool results received as `message.role == "tool"` in conversation
+
+## Core logic
+
+```python
+from typing import AsyncGenerator
+import json
+import openai
+from openbb_ai import message_chunk
+from openbb_ai.models import (
+    MessageChunkSSE,
+    QueryRequest,
+    FunctionCallSSE,
+    FunctionCallSSEData,
+)
+from sse_starlette.sse import EventSourceResponse
+
+@app.post("/v1/query")
+async def query(request: QueryRequest) -> EventSourceResponse:
+    """Query the Copilot with MCP tools support."""
+    
+    # Build system prompt with MCP tools information
+    system_content = "You are a helpful financial assistant. Your name is 'Vanilla Agent'."
+    
+    # Add MCP tools to system prompt if available
+    if request.tools:
+        system_content += "\n\nYou have access to the following MCP tools:\n"
+        for tool in request.tools:
+            server_id = getattr(tool, "server_id", "unknown")
+            system_content += f"\n- Tool: {tool.name} (Server ID: {server_id})\n"
+            system_content += f"  Description: {tool.description}\n"
+            if hasattr(tool, "input_schema") and tool.input_schema:
+                # Parse the schema to identify required parameters
+                if isinstance(tool.input_schema, dict):
+                    properties = tool.input_schema.get("properties", {})
+                    required = tool.input_schema.get("required", [])
+
+                    if properties:
+                        system_content += "  Parameters:\n"
+                        for param_name, param_info in properties.items():
+                            param_type = param_info.get("type", "unknown")
+                            param_desc = param_info.get("description", "")
+                            is_required = param_name in required
+                            req_str = " (REQUIRED)" if is_required else " (optional)"
+                            system_content += f"    - {param_name}{req_str}: {param_type}"
+                            if param_desc:
+                                system_content += f" - {param_desc}"
+                            system_content += "\n"
+    
+    # Create OpenAI function definition for MCP tools
+    functions = []
+    if request.tools:
+        functions.append({
+            "name": "execute_agent_tool",
+            "description": "Execute an MCP tool to retrieve data",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "server_id": {
+                        "type": "string",
+                        "description": "The ID of the MCP server",
+                        "enum": list(set(
+                            getattr(tool, "server_id", "unknown")
+                            for tool in request.tools
+                        )),
+                    },
+                    "tool_name": {
+                        "type": "string",
+                        "description": "The name of the tool to execute",
+                        "enum": [tool.name for tool in request.tools],
+                    },
+                    "parameters": {
+                        "type": "object",
+                        "description": "The arguments to pass to the tool",
+                        "additionalProperties": True,
+                    },
+                },
+                "required": ["server_id", "tool_name", "parameters"],
+            },
+        })
+    
+    # Handle conversation and tool results
+    openai_messages = [{"role": "system", "content": system_content}]
+    
+    context_str = ""
+    for index, message in enumerate(request.messages):
+        if message.role == "human":
+            openai_messages.append({"role": "user", "content": message.content})
+        elif message.role == "ai":
+            if isinstance(message.content, str):
+                openai_messages.append({"role": "assistant", "content": message.content})
+        # Handle tool results in the conversation context
+        elif message.role == "tool" and index == len(request.messages) - 1:
+            context_str += "## MCP OUTPUT\n"
+            for result in message.data:
+                for item in result.items:
+                    context_str += f"{item.content}\n\n"
+            context_str += "## AI OUTPUT\n"
+            context_str += "Now provide your analysis based on the MCP output above.\n\n"
+    
+    if context_str:
+        openai_messages[-1]["content"] += "\n\n" + context_str
+    
+    async def execution_loop() -> AsyncGenerator[MessageChunkSSE | FunctionCallSSE, None]:
+        client = openai.AsyncOpenAI()
+        
+        # Check if we have tool results from previous execution
+        last_message = request.messages[-1] if request.messages else None
+        if last_message and last_message.role == "tool":
+            # Continue conversation with tool results
+            async for event in await client.chat.completions.create(
+                model="gpt-4o",
+                messages=openai_messages,
+                stream=True,
+                # Don't pass functions to prevent another tool call
+            ):
+                if chunk := event.choices[0].delta.content:
+                    yield message_chunk(chunk).model_dump()
+            return
+        
+        # Make function call if tools are available
+        if functions:
+            response = await client.chat.completions.create(
+                model="gpt-4o",
+                messages=openai_messages,
+                functions=functions,
+                stream=False,
+            )
+            
+            message = response.choices[0].message
+            
+            # Handle function calls
+            if message.function_call and message.function_call.name == "execute_agent_tool":
+                args = json.loads(message.function_call.arguments)
+                
+                # Send function call back to frontend for MCP execution
+                function_call_data = FunctionCallSSEData(
+                    function="execute_agent_tool",
+                    input_arguments={
+                        "server_id": args.get("server_id", ""),
+                        "tool_name": args.get("tool_name", ""),
+                        "parameters": args.get("parameters", {}),
+                    },
+                    extra_state={
+                        "copilot_function_call_arguments": {
+                            "server_id": args.get("server_id", ""),
+                            "tool_name": args.get("tool_name", ""),
+                            "tool_args": args.get("parameters", {}),
+                            "summary": f"Execute {args.get('tool_name', '')} MCP tool",
+                        }
+                    }
+                )
+                
+                yield FunctionCallSSE(data=function_call_data).model_dump()
+                return  # Return control to frontend
+            
+            # If no function call, stream the response
+            if message.content:
+                for char in message.content:
+                    yield message_chunk(char).model_dump()
+        else:
+            # Regular streaming without function calls
+            async for event in await client.chat.completions.create(
+                model="gpt-4o",
+                messages=openai_messages,
+                stream=True,
+            ):
+                if chunk := event.choices[0].delta.content:
+                    yield message_chunk(chunk).model_dump()
+    
+    return EventSourceResponse(
+        content=execution_loop(),
+        media_type="text/event-stream",
+    )
 ```
 
 
@@ -4590,9 +5057,9 @@ While it is expected for users to create their apps.json from the UI directly, a
 |----------|------|-------------|
 | `name` | string | The name of your app |
 | `description` | string | A detailed description of what your app does |
-| `img` | string | URL to the app's thumbnail image |
-| `img_dark` | string | Optional URL to the app's thumbnail for dark mode |
-| `img_light` | string | Optional URL to the app's thumbnail for light mode |
+| `img` | string | URL to the app's thumbnail image or base64 string |
+| `img_dark` | string | Optional URL to the app's thumbnail for dark mode or base64 string |
+| `img_light` | string | Optional URL to the app's thumbnail for light mode or base64 string|
 | `allowCustomization` | boolean | Whether users can customize the app |
 | `selected_agent` | string | Optional ID of the default AI agent for this app |
 | `authentication` | string | Optional authentication requirements |
@@ -6888,6 +7355,7 @@ Remember, the best part is that you can build your own apps tailored to your spe
 
 </details>
 
+
 ---
 
 ---
@@ -6973,7 +7441,7 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
 - **type**
   _Type:_ `string`
   Sets the default visualization type for the widget.
-  _Possible values:_ `"chart"`, `"table"`, `"table_ssrm"`, `"markdown"`, `"metric"`, `"note"`,  `"multi_file_viewer"`, `"live_grid"`, `"newsfeed"`, `"advanced-chart"`, `"chart-highcharts"`
+  _Possible values:_ `"chart"`, `"table"`, `"table_ssrm"`, `"markdown"`, `"metric"`, `"note"`,  `"multi_file_viewer"`, `"live_grid"`, `"newsfeed"`, `"advanced-chart"`, `"chart-highcharts"`, `"youtube"`
   _Default:_ `"table"`
 
 - **raw**
@@ -7148,10 +7616,22 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
           _Example:_ `"sendToAgent"`
           _Possible values:_ `"groupBy"`, `"sendToAgent"`
 
-        - **groupByParamName**
-          _Type:_ `string`
-          Group by parameter for the render function.
-          _Example:_ `"symbol"`
+        - **groupBy**
+          _Type:_ `object`
+          Configuration for cell click grouping. Required when `actionType` is `"groupBy"`.
+          Contains the following keys:
+
+          - **paramName**
+            _Type:_ `string` (required)
+            The parameter name to update when a cell is clicked.
+            _Example:_ `"symbol"`
+
+          - **valueField**
+            _Type:_ `string` (optional)
+            Alternative field name to use for the parameter value (if different from the cell field).
+            Use this when the cell displays one value (e.g., a company name) but you need to pass a different value (e.g., an ID) to the parameter.
+            _Example:_ `"id"`
+            _Example use case:_ If your table displays company names in the cell but your API expects company IDs, set `valueField: "companyId"` to use the ID field from the row data instead of the displayed name.
 
         - **colorValueKey**
           _Type:_ `string`
@@ -7166,7 +7646,45 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
         - **colorRules**
           _Type:_ `array of objects`
           An array of rules for conditional coloring.
+          Each object contains the following keys:
+
+          - **condition**
+            _Type:_ `string` (required)
+            The condition for applying the color.
+            _Possible values:_ `"eq"`, `"ne"`, `"gt"`, `"lt"`, `"gte"`, `"lte"`, `"between"`, `"contains"`, `"notContains"`
+            _Description:_
+            - `"eq"` - Equal to
+            - `"ne"` - Not equal to
+            - `"gt"` - Greater than
+            - `"lt"` - Less than
+            - `"gte"` - Greater than or equal to
+            - `"lte"` - Less than or equal to
+            - `"between"` - Between two values (requires `range` object)
+            - `"contains"` - String contains the value (case-sensitive)
+            - `"notContains"` - String does not contain the value (case-sensitive)
+
+          - **value**
+            _Type:_ `number` or `string`
+            The value for the condition. For `contains` and `notContains`, use a string value.
+            _Example:_ `50` or `"Active"`
+
+          - **range**
+            _Type:_ `object` (required for `"between"` condition)
+            An object specifying `min` and `max` values for the between condition.
+            _Example:_ `{"min": 50, "max": 90}`
+
+          - **color**
+            _Type:_ `string` (required)
+            The color to apply.
+            _Example:_ `"green"`, `"red"`, `"blue"`, or hex code like `"#22c55e"`
+
+          - **fill**
+            _Type:_ `boolean`
+            Indicates if the color should fill the cell.
+            _Example:_ `true`
+
           _Example:_ `[{"condition": "gt", "value": 50, "color": "green", "fill": true}]`
+          _Example with contains:_ `[{"condition": "contains", "value": "Active", "color": "green", "fill": true}]`
 
         - **hoverCard**
           _Type:_ `object`
@@ -7408,7 +7926,7 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
     _Type:_ `string`
     The type of the parameter.
     _Example:_ `"date"`
-    _Possible values:_ `"date"`, `"text"`, `"ticker"`, `"number"`, `"boolean"`, `"endpoint"`, `"form"`
+    _Possible values:_ `"date"`, `"text"`, `"ticker"`, `"number"`, `"boolean"`, `"endpoint"`, `"form"`, `"tabs"`
 
   - **paramName**
     _Type:_ `string`
@@ -7567,10 +8085,53 @@ Below is an example `widgets.json` with a single widget defined. This widget wil
                         "headerName": "Column 2",
                         "chartDataType": "series",
                         "cellDataType": "number",
-                                            "formatterFn": "int",
-                    "renderFn": "greenRed",
-                    "width": 150
-                },
+                        "formatterFn": "int",
+                        "renderFn": "greenRed",
+                        "width": 150
+                    },
+                    {
+                        "field": "status",
+                        "headerName": "Status",
+                        "cellDataType": "text",
+                        "renderFn": "columnColor",
+                        "renderFnParams": {
+                            "colorRules": [
+                                {
+                                    "condition": "contains",
+                                    "value": "Active",
+                                    "color": "green",
+                                    "fill": true
+                                },
+                                {
+                                    "condition": "contains",
+                                    "value": "Pending",
+                                    "color": "yellow",
+                                    "fill": true
+                                },
+                                {
+                                    "condition": "notContains",
+                                    "value": "Active",
+                                    "color": "red",
+                                    "fill": true
+                                }
+                            ]
+                        },
+                        "width": 150
+                    },
+                    {
+                        "field": "companyName",
+                        "headerName": "Company",
+                        "cellDataType": "text",
+                        "renderFn": "cellOnClick",
+                        "renderFnParams": {
+                            "actionType": "groupBy",
+                            "groupBy": {
+                                "paramName": "companyId",
+                                "valueField": "companyId"
+                            }
+                        },
+                        "width": 200
+                    },
                 {
                     "field": "price_trend",
                     "headerName": "Price Trend",
@@ -7745,9 +8306,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="OpenBB AI SDK | OpenBB Workspace Docs" />
 
-The OpenBB AI SDK simplifies building custom agents for OpenBB Workspace by providing type-safe models and helper functions that handle schema validation for streaming Server-Sent Events (SSE). Instead of manually crafting SSE messages and managing event types, you can use simple Python functions prepare events that will stream text, show reasoning steps, fetch widget data, and create visualizations.
-
-The SDK handles all the SSE formatting and data serialization for you.
+The OpenBB AI SDK simplifies building custom agents for OpenBB Workspace by providing type-safe models and helper functions that handle schema validation for streaming Server-Sent Events (SSE). Instead of manually crafting SSE messages and managing event types, you can use simple Python functions to stream text, show reasoning steps, fetch widget data, and create visualizations.
 
 Install the package in your agent backend:
 
@@ -7757,73 +8316,194 @@ pip install openbb-ai
 
 The code is open source and is [available in this repository](https://github.com/OpenBB-finance/openbb-ai).
 
-## Request Handling
+## Building Your First Agent
 
-The SDK provides `QueryRequest` to access everything your agent needs in a single, type-safe model:
+Every agent starts with a query handler that receives a `QueryRequest` object containing everything your agent needs:
 
 ```python
 from openbb_ai.models import QueryRequest
+from openbb_ai import message_chunk, reasoning_step
 
 async def query(request: QueryRequest):
-    # Access chat history
-    messages = request.messages
+    """Main entry point for your agent."""
 
-    # Access widgets (primary, secondary, extra)
-    widgets = request.widgets
+    # Show the user what you're doing
+    yield reasoning_step(
+        event_type="INFO",
+        message="Processing your request..."
+    ).model_dump()
 
-    # Use workspace context
-    timezone = request.timezone
-    workspace_state = request.workspace_state
+    # Access the user's latest message
+    last_message = request.messages[-1]
+    if last_message.role == "human":
+        user_query = last_message.content
+
+    # Stream a response from LLM
+    client = openai.AsyncOpenAI()
+    async for event in await client.chat.completions.create(
+        model="gpt-4o",
+        messages=[{"role": "user", "content": user_query}],
+        stream=True,
+    ):
+        if chunk := event.choices[0].delta.content:
+            yield message_chunk(chunk).model_dump()
 ```
 
-**Key fields in QueryRequest:**
+### Understanding the QueryRequest
 
-- `messages` - chat conversation message history
-- `widgets` - all widgets data
-  - `primary` - widgets added as explicit context
-  - `secondary` - widgets in the current dashboard
-  - `extra` - artifacts and files in the chat
-- `urls` - URL pages shared in chat
-- `timezone` - timezone identified by the user's browser
-- `tools` - available MCP tools
-- `workspace_options` - features enabled in the Workspace
-- `workspace_state` - dashboard state and context
-  - `action_history` - user actions history
-  - `agents` - available agents
-  - `current_dashboard_uuid` - dashboard ID
-  - `current_dashboard_info` - dashboard metadata
-  - `current_page_context` - current page context
+The `QueryRequest` object contains all context your agent needs:
 
-We recommend making backends stateless and not cache server state between calls.
+#### Core Fields
 
-## Streaming Text
+**`messages`** - Chat conversation history
 
-The SDK simplifies streaming responses by handling SSE formatting automatically. You can yield message chunks like this:
+```python
+for message in request.messages:
+    if message.role == "human":
+        user_query = message.content
+    elif message.role == "ai":
+        previous_response = message.content
+```
+
+**`widgets`** - Widgets available to your agent
+
+```python
+# User-selected widgets (requires widget-dashboard-select feature)
+if request.widgets and request.widgets.primary:
+    for widget in request.widgets.primary:
+        print(f"User added: {widget.name}")
+
+# Dashboard widgets (requires widget-dashboard-search feature)
+if request.widgets and request.widgets.secondary:
+    for widget in request.widgets.secondary:
+        print(f"On dashboard: {widget.name}")
+```
+
+See the [agents.json reference](https://docs.openbb.co/workspace/developers/json-specs/agents-json-reference) for details how to enable the `widget-dashboard-select` and `widget-dashboard-search` features.
+
+**`workspace_state`** - Current workspace context
+
+```python
+if request.workspace_state and request.workspace_state.current_dashboard_info:
+    dashboard = request.workspace_state.current_dashboard_info
+    print(f"Active tab: {dashboard.current_tab_id}")
+```
+
+#### Additional Fields
+
+- **`tools`** - MCP tools available for execution
+- **`urls`** - URLs shared in chat (max 4)
+- **`timezone`** - User's browser timezone (e.g., "America/New_York")
+- **`api_keys`** - Custom API keys from user
+- **`workspace_options`** - Enabled feature flags (including custom ones)
+
+## Requesting Widget Data
+
+Both `get_widget_data` and MCP tool calls are executed client-side. When you yield these function calls, the following sequence occurs:
+
+1. **Agent sends tool call** - Your agent yields the function call (widget request or MCP tool)
+2. **Connection closes** - The SSE stream is terminated, breaking the connection
+3. **Frontend executes** - Workspace executes the requested tool call/widget request in the browser
+4. **New request initiated** - Frontend sends a new POST `/query` request with the tool results
+5. **Agent resumes** - Your agent receives a new `QueryRequest` with the execution results as a `tool` message
+
+This isn't a simple "pause" - it's a complete request/response cycle. Your agent must be stateless and handle being called multiple times. For a detailed sequence diagram of this flow, see the [OpenBB AI SDK repository](https://github.com/OpenBB-finance/openbb-ai#readme).
+
+Example:
+
+```python
+from openbb_ai import WidgetRequest, message_chunk, reasoning_step, get_widget_data
+from openbb_ai.models import QueryRequest, ClientFunctionCallError, DataContent
+
+async def query(request: QueryRequest):
+    last_message = request.messages[-1]
+    
+    # Check if this is a tool response first
+    is_tool_response = (
+        last_message
+        and hasattr(last_message, "role")
+        and last_message.role == "tool"
+        and hasattr(last_message, "data")
+        and last_message.data
+    )
+    
+    if is_tool_response:
+        # Process widget data (Step 3)
+        yield reasoning_step(event_type="INFO", message="Processing data...").model_dump()
+        
+        for item in last_message.data:
+            if isinstance(item, DataContent):
+                # Process the data and respond
+                yield message_chunk("Here's what I found in the data...").model_dump()
+        return
+    
+    # Check for orchestration requests
+    orchestration_requested = (
+        last_message.role == "ai" and last_message.agent_id == "openbb-copilot"
+    )
+    
+    # Phase 1: Check if we need to fetch primary data (added to context)
+    if ((last_message.role == "human" or orchestration_requested) 
+        and request.widgets and request.widgets.primary):
+        widget_requests = [
+            WidgetRequest(
+                widget=widget,
+                input_arguments={
+                    param.name: param.current_value for param in widget.params
+                }
+            )
+            for widget in request.widgets.primary
+        ]
+        
+        yield reasoning_step(event_type="INFO", message="Fetching widget data...").model_dump()
+        yield get_widget_data(widget_requests).model_dump()
+        return  # EXIT AND WAIT
+    
+    # Phase 2: Process fetched data
+    if hasattr(last_message, 'data'):
+        yield reasoning_step(event_type="INFO", message="Processing data...").model_dump()
+        
+        for item in last_message.data:
+            if isinstance(item, DataContent):
+                # Process the data and respond
+                yield message_chunk("Here's what I found in the data...").model_dump()
+```
+
+Use `request.widgets.primary` for widgets the user selected in chat and `request.widgets.secondary` for widgets already on the dashboard (when the dashboard features are enabled). The SDK formats the tool call for you. Your only responsibility is to pause after yielding `get_widget_data` and handle the callback that arrives as a `tool` message.
+
+## Streaming Responses
+
+The SDK provides several ways to stream content back to users:
+
+### Text Streaming
 
 ```python
 from openbb_ai import message_chunk
 
-# Yield message chunks for the response stream
-for chunk in llm_response:
-    yield message_chunk(chunk).model_dump()
+# Stream from LLM response
+async for event in await client.chat.completions.create(
+    model="gpt-4o",
+    messages=messages,
+    stream=True,
+):
+    if chunk := event.choices[0].delta.content:
+        yield message_chunk(chunk).model_dump()
 ```
 
-**Related models:**
+### Reasoning Steps
 
-- `MessageChunkSSE` - For streaming text/markdown tokens.
-- `MessageArtifactSSE` - For streaming larger content blocks like tables or charts.
-
-## Reasoning Steps
-
-Show users what your agent is thinking and doing with reasoning steps. The SDK handles the SSE event formatting:
+Show users what your agent is thinking:
 
 ```python
 from openbb_ai import reasoning_step
 
-# Show progress
+# Different event types for different states
 yield reasoning_step(event_type="INFO", message="Analyzing market data").model_dump()
+yield reasoning_step(event_type="SUCCESS", message="Found 50 matching results").model_dump()
+yield reasoning_step(event_type="WARNING", message="Some data may be delayed").model_dump()
+yield reasoning_step(event_type="ERROR", message="Failed to fetch real-time data").model_dump()
 
-# Include details
+# Include additional details
 yield reasoning_step(
     event_type="SUCCESS",
     message="Data retrieved",
@@ -7831,58 +8511,91 @@ yield reasoning_step(
 ).model_dump()
 ```
 
-**Related models:**
+### Tables
 
-- `StatusUpdateSSE` - Formats reasoning steps and status updates
-  - Event types: `INFO`, `SUCCESS`, `WARNING`, `ERROR`
-  - Optional details dictionary for key-value pairs
-
-## Widget Data Access
-
-The SDK simplifies fetching data from dashboard widgets. Widget data is retrieved by yielding a special event that triggers a function call on the Workspace (client) side. Instead of manually creating these events, use the helper functions:
+Create interactive data tables:
 
 ```python
-from openbb_ai import get_widget_data
-from openbb_ai.models import WidgetRequest, Widget
+from openbb_ai import table
 
-# Request data from multiple widgets
-widget_requests = [
-    WidgetRequest(
-        widget=widget,
-        input_arguments={p.name: p.current_value for p in widget.params}
-    )
-]
-
-# SDK handles the SSE formatting
-yield get_widget_data(widget_requests).model_dump()
+yield table(
+    data=[
+        {"Symbol": "AAPL", "Price": 150.25, "Change": "+2.5%"},
+        {"Symbol": "GOOGL", "Price": 2800.00, "Change": "-0.3%"},
+        {"Symbol": "MSFT", "Price": 380.50, "Change": "+1.2%"}
+    ],
+    name="Stock Prices",
+    description="Current market prices"
+).model_dump()
 ```
 
-Important: Once this event is sent, the execution loop of the agent should break and wait for the Workspace to call the `/query` endpoint again with the widget data added to context.
+### Charts
 
-**Related models:**
+Create visualizations with different chart types:
 
-- `Widget` - Dashboard widget with metadata and parameters
-  - Contains widget ID, name, type
-  - Includes parameter definitions
-- `WidgetParam` - Individual parameter configuration
-  - `name` - parameter identifier
-  - `type` - data type
-  - `current_value` - current value
-- `WidgetCollection` - Container for widget groups
-  - `primary` - user-selected widgets
-  - `secondary` - dashboard widgets
-  - `extra` - artifacts and files
-- `WidgetRequest` - Data request specification
-- `FunctionCallSSE` - The SSE that triggers widget data retrieval
+```python
+from openbb_ai import chart
 
-**Widget features to declare in `/agents.json`:**
+# Line chart for time series
+yield chart(
+    type="line",
+    data=[
+        {"date": "2024-01-01", "price": 150.25},
+        {"date": "2024-01-02", "price": 151.30},
+        {"date": "2024-01-03", "price": 148.90}
+    ],
+    x_key="date",
+    y_keys=["price"],
+    name="Price History",
+    description="Stock price over time"
+).model_dump()
 
-- `widget-dashboard-select` - access user-selected widgets. When true, the widgets explicitly added to context by the user appear in `request.widgets.primary`.
-- `widget-dashboard-search` - access dashboard widgets
+# Bar chart for comparisons
+yield chart(
+    type="bar",
+    data=[
+        {"symbol": "AAPL", "volume": 50000000},
+        {"symbol": "GOOGL", "volume": 25000000},
+        {"symbol": "MSFT", "volume": 40000000}
+    ],
+    x_key="symbol",
+    y_keys=["volume"],
+    name="Trading Volume",
+    description="Volume by symbol"
+).model_dump()
+```
 
-## Parsing Widget Data
+Supported chart types: `line`, `bar`, `scatter`, `pie`, `donut`
 
-When widgets return data, it comes in various formats that need to be parsed appropriately. The SDK provides data format models to identify and handle each type:
+## Citations & Attribution
+
+Always cite your data sources to maintain transparency:
+
+```python
+from openbb_ai import cite, citations
+
+# Create citations for widgets you used
+citation_list = []
+
+for widget in request.widgets.primary:
+    citation_list.append(
+        cite(
+            widget=widget,
+            input_arguments={
+                param.name: param.current_value
+                for param in widget.params
+            },
+            extra_details={"timeframe": "1D"}
+        )
+    )
+
+# Send all citations at once
+yield citations(citation_list).model_dump()
+```
+
+## Data Format Reference
+
+Widget data can come in various formats:
 
 ```python
 from openbb_ai.models import (
@@ -7891,126 +8604,355 @@ from openbb_ai.models import (
     SpreadsheetDataFormat,
     RawObjectDataFormat,
     SingleDataContent,
-    SingleFileReference,
-    DataContent,
-    DataFileReferences
+    SingleFileReference
 )
 
-async def handle_widget_data(data: list[DataContent | DataFileReferences]) -> str:
-    result_str = ""
+async def handle_widget_data(data: list[DataContent | DataFileReferences]):
     for result in data:
         for item in result.items:
             if isinstance(item.data_format, PdfDataFormat):
-                # Parse PDF content
+                # Handle PDF - use pdfplumber or similar
                 if isinstance(item, SingleDataContent):
-                    # Base64 encoded PDF
-                    content = base64.b64decode(item.content)
-                    # Extract text using pdfplumber or similar
+                    pdf_bytes = base64.b64decode(item.content)
                 elif isinstance(item, SingleFileReference):
-                    # PDF from URL
-                    content = await download_file(item.url)
-                    # Process PDF content
+                    pdf_url = item.url
 
             elif isinstance(item.data_format, SpreadsheetDataFormat):
-                # Parse Excel/CSV data
-                # Convert to dataframe or table structure
+                # Handle Excel/CSV - use pandas
+                df = pd.read_json(item.content)
 
             elif isinstance(item.data_format, ImageDataFormat):
-                # Handle image data
-                # May contain charts, screenshots, etc.
+                # Handle images - may need OCR
+                image_data = base64.b64decode(item.content)
 
-            else:
-                # RawObjectDataFormat - JSON/dict data
-                result_str += str(item.content)
-
-    return result_str
+            else:  # RawObjectDataFormat
+                # Handle JSON/dict data
+                data = json.loads(item.content)
 ```
 
-**Data format models:**
+## Complete Agent Example
 
-- `PdfDataFormat` - Identifies PDF documents from widgets
-  - Contains filename and metadata
-  - Data comes as base64 or URL reference
-  - Use libraries like `pdfplumber` to extract text and tables
-
-- `SpreadsheetDataFormat` - Identifies Excel/CSV data
-  - Tabular data from financial widgets
-  - Parse with `pandas` or similar libraries
-
-- `ImageDataFormat` - Identifies image content
-  - Charts, graphs, screenshots from widgets
-  - May require OCR or image analysis
-
-- `RawObjectDataFormat` - Default JSON/dictionary format
-  - Structured data from API responses
-  - Direct access to nested fields
-
-**Data delivery models:**
-
-- `SingleDataContent` - Data embedded as base64
-- `SingleFileReference` - Data available via URL
-- `DataContent` - Container for multiple data items
-- `DataFileReferences` - References to external files
-
-## Data Attribution & Citations
-
-The SDK makes it easy to cite your sources, ensuring transparency about where data comes from:
+Here's a minimal but complete agent that demonstrates the key concepts:
 
 ```python
-from openbb_ai import cite, citations
+from openbb_ai import WidgetRequest, message_chunk, reasoning_step, cite, citations, table, get_widget_data
+from openbb_ai.models import QueryRequest, DataContent, ClientFunctionCallError
+import json
 
-# Create citations for widgets used
-citation = cite(
-    widget=price_widget,
-    input_arguments={"symbol": "AAPL"},
-    extra_details={"timeframe": "1D"}
-)
+async def query(request: QueryRequest):
+    """Complete agent implementation with widget data flow."""
 
-# Send all citations at once
-yield citations([citation]).model_dump()
+    last_message = request.messages[-1]
+
+    # Check for orchestration requests
+    orchestration_requested = (
+        last_message.role == "ai" and last_message.agent_id == "openbb-copilot"
+    )
+
+    # Phase 1: Fetch widget data if needed
+    if ((last_message.role == "human" or orchestration_requested)
+        and request.widgets and request.widgets.primary):
+        widget_requests = [
+            WidgetRequest(
+                widget=widget,
+                input_arguments={
+                    param.name: param.current_value for param in widget.params
+                }
+            )
+            for widget in request.widgets.primary
+        ]
+
+        yield reasoning_step(
+            event_type="INFO",
+            message="Fetching market data..."
+        ).model_dump()
+
+        yield get_widget_data(widget_requests).model_dump()
+        return  # Exit and wait for callback
+
+    # Phase 2: Process widget data
+    if hasattr(last_message, 'data'):
+        yield reasoning_step(
+            event_type="INFO",
+            message="Analyzing data..."
+        ).model_dump()
+
+        # Process the data
+        results = []
+        for item in last_message.data:
+            if isinstance(item, ClientFunctionCallError):
+                yield reasoning_step(
+                    event_type="ERROR",
+                    message=f"Failed: {item.content}"
+                ).model_dump()
+                continue
+
+            if isinstance(item, DataContent):
+                for data_item in item.items:
+                    data = json.loads(data_item.content)
+                    results.append(data)
+
+        # Stream response from LLM
+        yield message_chunk("Based on the market data analysis:\n").model_dump()
+
+        # Continue with LLM streaming
+        client = openai.AsyncOpenAI()
+        async for event in await client.chat.completions.create(
+            model="gpt-4o",
+            messages=openai_messages,
+            stream=True,
+        ):
+            if chunk := event.choices[0].delta.content:
+                yield message_chunk(chunk).model_dump()
+
+        # Show data table
+        if results:
+            yield table(
+                data=results[:5],  # Show top 5
+                name="Market Summary",
+                description="Key metrics"
+            ).model_dump()
+
+        # Add citations
+        citation_list = [
+            cite(widget=widget, input_arguments={
+                param.name: param.current_value for param in widget.params
+            })
+            for widget in request.widgets.primary
+        ]
+        yield citations(citation_list).model_dump()
+
+        yield reasoning_step(
+            event_type="SUCCESS",
+            message="Analysis complete"
+        ).model_dump()
+
+    # Phase 3: Handle regular chat without widgets
+    else:
+        yield message_chunk("Please add some widgets to analyze market data.").model_dump()
 ```
 
-**Related models:**
+## Model Reference
 
-- `Citation` - Links outputs to data sources
-  - `widget` - source widget reference
-  - `input_arguments` - parameters used
-  - `extra_details` - additional metadata
-- `SourceInfo` - Provides detailed source attribution
-- `CitationHighlightBoundingBox` - Visual highlighting for line-level citations in PDF documents
+To see the available models check [https://github.com/OpenBB-finance/openbb-ai/blob/main/openbb_ai/models.py](https://github.com/OpenBB-finance/openbb-ai/blob/main/openbb_ai/models.py).
 
-## Visualizations
+<!--
 
-The SDK abstracts the complexity of creating interactive charts and tables. Simply provide your data and configuration:
 
-```python
-from openbb_ai import table, chart
+### Core Models
 
-# Create a data table
-yield table(
-    data=[{"symbol": "AAPL", "price": 150.25, "change": 2.5}],
-    name="Stock Prices",
-    description="Current market prices"
-).model_dump()
+**`QueryRequest`** - Main request object containing all context
+- `messages` - Chat conversation history between user and agents. List of `LlmMessage` objects with roles ("human", "ai", "tool")
+- `widgets` - Widget collections organized by priority:
+  - `primary` - Widgets explicitly selected by user (requires `"widget-dashboard-select": true` feature)
+  - `secondary` - All widgets on current dashboard (requires `"widget-dashboard-search": true` feature)
+  - `extra` - Files, artifacts, and custom data sources uploaded to chat
+- `workspace_state` - Current workspace context including:
+  - Dashboard info, current tab, available agents, user action history
+- `tools` - Available MCP (Model Context Protocol) tools that agents can execute
+- `urls` - URL pages shared in chat for context (maximum 4 URLs allowed)
+- `timezone` - User's browser-detected timezone (e.g., "America/New_York", "Europe/London", "UTC")
+- `api_keys` - Custom API keys provided by user
+- `workspace_options` - Feature flags and custom options. Standard flags include:
+  - `"widget-dashboard-select"` - Access to user-selected widgets
+  - `"widget-dashboard-search"` - Access to all dashboard widgets
+  - Custom features defined in agent's `agents.json` by the user
 
-# Create interactive charts
-yield chart(
-    type="line",
-    data=price_history,
-    x_key="date",
-    y_keys=["price"],
-    name="Price History",
-    description="Stock price over time"
-).model_dump()
-```
+**`Widget`** - Widget definition representing a data source endpoint
+- `uuid` - Unique identifier for this widget instance (UUID format: `550e8400-e29b-41d4-a716-446655440000`)
+- `origin` - Data source provider (e.g., "openbb" for OpenBB widgets, "custom" for user-defined sources)
+- `widget_id` - Endpoint identifier for the data source (e.g., "equity.price", "crypto.price", "economy.gdp")
+- `name` - Human-readable display name (e.g., "Equity Price", "Economic Calendar")
+- `description` - Detailed description of what data this widget provides
+- `params` - List of `WidgetParam` objects defining the widget's input parameters
+- `metadata` - Additional widget-specific data (configuration, caching info, etc.)
 
-**Supported chart types and models:**
+**`WidgetParam`** - Individual parameter for configuring widget data requests
+- `name` - Parameter identifier used in API calls (e.g., "symbol", "start_date", "interval")
+- `type` - Data type and input validation:
+  - `"string"` - Text input (company names, descriptions)
+  - `"number"` - Numeric values (prices, quantities)
+  - `"integer"` - Whole numbers (years, counts)
+  - `"boolean"` - True/false flags
+  - `"date"` - Date picker inputs
+  - `"ticker"` - Stock/crypto symbol with validation
+  - `"endpoint"` - Sub-endpoint selection
+- `description` - Human-readable explanation of the parameter
+- `default_value` - Default value if none provided (can be `null` for required params)
+- `current_value` - Currently active value (set by user or inherited from defaults)
+- `multi_select` - Boolean flag allowing multiple values (e.g., multiple stock symbols)
+- `options` - Static list of allowed values for dropdown/select inputs
+- `get_options` - Boolean flag to fetch parameter options dynamically from an endpoint
 
-- `LineChartParameters` - Time series and trends
-- `BarChartParameters` - Comparisons and distributions
-- `ScatterChartParameters` - Correlations and relationships
-- `PieChartParameters` - Proportions and percentages
-- `DonutChartParameters` - Hierarchical proportions
+**`WidgetRequest`** - Request to fetch widget data from a specific widget
+- `widget` - The `Widget` object to fetch data from
+- `input_arguments` - Dictionary mapping parameter names to values:
+  ```python
+  {
+      "symbol": "AAPL",
+      "start_date": "2024-01-01",
+      "interval": "1d"
+  }
+  ```
+
+**`WidgetCollection`** - Container organizing widgets by access level and priority
+- `primary` - User-explicitly selected widgets (highest priority)
+  - Added via "Add to Context" button or explicit selection
+  - Only available when agent has `"widget-dashboard-select": true` feature
+- `secondary` - All widgets currently on the dashboard (secondary priority)
+  - Includes all widgets visible on current dashboard tab
+  - Only available when agent has `"widget-dashboard-search": true` feature
+- `extra` - Files, artifacts, and custom data sources (lowest priority)
+  - User-uploaded PDFs, CSVs, images
+  - Chat artifacts and file attachments
+  - Custom data sources not tied to dashboard widgets
+
+### SSE Event Models
+
+**`MessageChunkSSE`** - For streaming text/markdown responses token by token
+- `event` - Always `"copilotMessageChunk"`
+- `data.delta` - Individual text chunk/token to stream to the user interface
+  - Used for real-time text streaming from LLM responses
+  - Chunks are concatenated by the client to form complete message
+
+**`MessageArtifactSSE`** - For streaming large structured content blocks
+- `event` - Always `"copilotMessageArtifact"`
+- `data` - `ClientArtifact` object containing:
+  - Large tables, code blocks, or formatted content
+  - Content that should be displayed as a separate UI component
+
+**`StatusUpdateSSE`** - For showing reasoning steps and agent progress
+- `event` - Always `"copilotStatusUpdate"`
+- `data.eventType` - Status level indicating importance:
+  - `"INFO"` - General progress updates (e.g., "Analyzing data...")
+  - `"SUCCESS"` - Successful completion (e.g., "Data retrieved successfully")
+  - `"WARNING"` - Non-critical issues (e.g., "Some data may be delayed")
+  - `"ERROR"` - Failures that users should know about (e.g., "Failed to fetch data")
+- `data.message` - Human-readable status message shown to user
+- `data.details` - Optional array of key-value pairs for additional context
+- `data.group` - Always `"reasoning"` for reasoning step updates
+- `data.hidden` - Optional boolean to hide from UI (for internal logging)
+
+**`FunctionCallSSE`** - For triggering Workspace functions (pauses agent execution)
+- `event` - Always `"copilotFunctionCall"`
+- `data.function` - Function name to execute. Available functions:
+  - `"get_widget_data"` - Fetch data from widgets (most common)
+  - `"get_extra_widget_data"` - Fetch additional widget data
+  - `"get_params_options"` - Get dynamic parameter options
+  - `"add_widget_to_dashboard"` - Add widget to current dashboard
+  - `"update_widget_in_dashboard"` - Update existing widget parameters
+  - `"assign_tasks_to_agents"` - Delegate tasks to other agents
+  - `"execute_agent_tool"` - Execute MCP tools
+- `data.input_arguments` - Arguments specific to the function being called
+- `data.extra_state` - Optional state data to maintain between function call and response
+
+**`CitationCollectionSSE`** - For sending source attribution all at once
+- `event` - Always `"copilotCitationCollection"`
+- `data.citations` - Array of `Citation` objects linking outputs to their data sources
+  - Sent after analysis is complete to show where information came from
+  - Ensures transparency and allows users to verify sources
+
+### Data Format Models
+
+**`RawObjectDataFormat`** - Most common data format for JSON/dictionary data from APIs
+- `data_type` - Always `"object"`
+- `parse_as` - How to interpret the data:
+  - `"text"` - Plain text representation
+  - `"table"` - Tabular data for display (default, most common)
+  - `"chart"` - Data ready for visualization
+- `chart_params` - Chart configuration required when `parse_as="chart"`
+  - Specifies chart type, axes, and display parameters
+
+**`PdfDataFormat`** - PDF document files (earnings reports, research papers, etc.)
+- `data_type` - Always `"pdf"`
+- `filename` - Original filename with `.pdf` extension
+- Requires external libraries like `pdfplumber` for text extraction
+- Common for financial documents, research reports, regulatory filings
+
+**`SpreadsheetDataFormat`** - Excel and CSV files with structured tabular data
+- `data_type` - File format: `"xlsx"`, `"xls"`, or `"csv"`
+- `parse_as` - Processing approach:
+  - `"text"` - Convert to plain text representation
+  - `"table"` - Maintain tabular structure (default, recommended)
+- `filename` - Original filename with appropriate extension
+- Best handled with `pandas` for data manipulation
+
+**`ImageDataFormat`** - Image files (charts, screenshots, diagrams)
+- `data_type` - Image format: `"jpg"`, `"jpeg"`, or `"png"`
+- `filename` - Original filename with image extension
+- May contain charts, graphs, or screenshots from widgets
+- Requires OCR libraries if text extraction is needed
+
+**`SingleDataContent`** - Data embedded directly in the response
+- `content` - The actual data content:
+  - JSON string for structured data (most common)
+  - Base64 encoded string for binary data (PDFs, images)
+  - Plain text for simple content
+- `data_format` - Format specification determining how to parse `content`
+- `citable` - Boolean indicating if this data source should be cited (default: `true`)
+
+**`SingleFileReference`** - Data available via external URL
+- `url` - HTTP/HTTPS URL pointing to the data file
+- `data_format` - Format specification for the file at the URL
+- `citable` - Boolean indicating if this data source should be cited (default: `true`)
+- Requires fetching the URL to access actual data content
+
+**`DataContent`** - Container for multiple embedded data items
+- `items` - List of `SingleDataContent` objects from the same source
+- `extra_citations` - Additional `Citation` objects for this data collection
+- Most widget responses return this format with multiple data items
+
+**`DataFileReferences`** - Container for multiple external file references
+- `items` - List of `SingleFileReference` objects pointing to external files
+- `extra_citations` - Additional `Citation` objects for this file collection
+- Less common than `DataContent`, used when data is stored externally
+
+### Citation Models
+
+**`Citation`** - Links outputs to data sources
+- `id` - Unique citation identifier
+- `source_info` - Source information
+- `details` - Extra detail (e.g., page numbers)
+- `quote_bounding_boxes` - PDF highlight coordinates
+
+**`SourceInfo`** - Source attribution details
+- `type` - "widget", "direct retrieval", "web", "artifact"
+- `uuid` - Source UUID
+- `origin` - Data origin
+- `widget_id` - Widget identifier
+- `name` - Source name
+- `description` - Source description
+- `metadata` - Additional metadata
+- `citable` - Whether source is citable
+
+### Chart Parameter Models
+
+**`LineChartParameters`** - Time series and trends
+- `chartType` - "line"
+- `xKey` - X-axis variable key
+- `yKey` - Y-axis variable keys (array)
+
+**`BarChartParameters`** - Comparisons and distributions
+- `chartType` - "bar"
+- `xKey` - X-axis variable key
+- `yKey` - Y-axis variable keys (array)
+
+**`ScatterChartParameters`** - Correlations and relationships
+- `chartType` - "scatter"
+- `xKey` - X-axis variable key (numerical only)
+- `yKey` - Y-axis variable keys (numerical only)
+
+**`PieChartParameters`** - Proportions and percentages
+- `chartType` - "pie"
+- `angleKey` - Angle/size variable key
+- `calloutLabelKey` - Label variable key
+
+**`DonutChartParameters`** - Hierarchical proportions
+- `chartType` - "donut"
+- `angleKey` - Angle/size variable key
+- `calloutLabelKey` - Label variable key
+
+-->
 
 
 ---
@@ -8464,8 +9406,8 @@ In the `widgets.json` configuration, you can specify render functions to customi
 
 | Parameter | Type | Description | Options |
 |-----------|------|-------------|---------|
-| **condition** | `string` | The condition for applying the color | `"eq"`, `"ne"`, `"gt"`, `"lt"`, `"gte"`, `"lte"`, `"between"` |
-| **value** | `number` | The value for the condition | - |
+| **condition** | `string` | The condition for applying the color | `"eq"`, `"ne"`, `"gt"`, `"lt"`, `"gte"`, `"lte"`, `"between"`, `"contains"`, `"notContains"` |
+| **value** | `number` or `string` | The value for the condition. For `contains` and `notContains`, use a string value | - |
 | **range** | `object` | An object specifying `min` and `max` values for the between condition | `{min: number, max: number}` |
 | **color** | `string` | The color to apply | Hex code or `"green"`, `"red"`, `"blue"` |
 | **fill** | `boolean` | Indicates if the color should fill the cell | `true`/`false` |
@@ -8520,6 +9462,52 @@ The below example would apply a green color to the cell if the value is between 
 }
 ```
 
+**Example using `contains` and `notContains` conditions:**
+
+```json
+{
+    ...
+    "columnsDefs": [
+        {
+            "field": "status",
+            "headerName": "Status",
+            "cellDataType": "text",
+            "renderFn": "columnColor",
+            "renderFnParams": {
+                "colorRules": [
+                    {
+                        "condition": "contains",
+                        "value": "Active",
+                        "color": "green",
+                        "fill": true
+                    },
+                    {
+                        "condition": "contains",
+                        "value": "Pending",
+                        "color": "yellow",
+                        "fill": true
+                    },
+                    {
+                        "condition": "notContains",
+                        "value": "Active",
+                        "color": "red",
+                        "fill": true
+                    }
+                ]
+            }
+        }
+    ]
+}
+```
+
+This example:
+
+- Colors cells green if the status contains "Active"
+- Colors cells yellow if the status contains "Pending"
+- Colors cells red if the status does not contain "Active"
+
+**Note:** The `contains` and `notContains` conditions work with string values only.
+
 ### Multiple Render Functions and Color Rules
 
 If you want to use multiple render functions, you can pass an array of render functions to the `renderFn` parameter. Below is an example of a column that uses both the `cellOnClick` and `columnColor` render functions. We also specify the `colorValueKey` so that the `columnColor` render function knows which field to use for determining the color. In this case we want to color the symbol cell based on the `Analyst` field.
@@ -8537,7 +9525,9 @@ If you want to use multiple render functions, you can pass an array of render fu
             ],
             "renderFnParams": {
               "actionType": "groupBy",
-              "groupByParamName": "symbol",
+              "groupBy": {
+                "paramName": "symbol"
+              },
               "colorValueKey": "Analyst",
               "colorRules": [
                 {
@@ -8551,6 +9541,56 @@ If you want to use multiple render functions, you can pass an array of render fu
         },
       ] 
 }
+```
+
+### Using valueField for Custom Value Mapping
+
+The `valueField` option allows you to use a different field value than what's displayed in the cell. This is useful when your table displays human-readable values (like company names) but your API expects different values (like IDs).
+
+**Example:** A table displays company names, but clicking should pass the company ID to the parameter:
+
+```json
+{
+    ...
+    "columnsDefs": [
+        {
+            "field": "companyName",
+            "headerName": "Company",
+            "cellDataType": "text",
+            "renderFn": "cellOnClick",
+            "renderFnParams": {
+                "actionType": "groupBy",
+                "groupBy": {
+                    "paramName": "companyId",
+                    "valueField": "companyId"
+                }
+            }
+        }
+    ]
+}
+```
+
+In this example:
+
+- The cell displays the value from `companyName` field (e.g., "Apple Inc.")
+- When clicked, it passes the value from `companyId` field (e.g., "AAPL") to the `companyId` parameter
+- This allows you to show friendly names while using IDs for API calls
+
+**Data structure example:**
+
+```json
+[
+    {
+        "companyName": "Apple Inc.",
+        "companyId": "AAPL",
+        "price": 150.25
+    },
+    {
+        "companyName": "Microsoft Corporation",
+        "companyId": "MSFT",
+        "price": 350.50
+    }
+]
 ```
 
 ### Hover Card
@@ -8963,7 +10003,9 @@ def get_tickers_list():
                     "renderFn": "cellOnClick",
                     "renderFnParams": {
                         "actionType": "groupBy",
-                        "groupByParamName": "symbol"
+                        "groupBy": {
+                            "paramName": "symbol"
+                        }
                     }
                 },
                 {
@@ -9008,7 +10050,7 @@ def get_tickers_list():
     "endpoint": "widget_managed_by_parameter_from_cell_click_on_table_widget",
     "params": [
         {
-            "paramName": "symbol",  # Must match the groupByParamName in the table widget
+            "paramName": "symbol",  # Must match the groupBy.paramName in the table widget
             "description": "The symbol to get details for",
             "value": "AAPL",
             "label": "Symbol",
@@ -9027,7 +10069,7 @@ def get_tickers_list():
 This functionality is achieved through three key components:
 
 1. Both widgets must share the same `paramName` (in this case "symbol") to enable parameter synchronization
-2. The table widget's `cellOnClick` renderFn must be configured with `actionType: "groupBy"` and specify the `groupByParamName` as "symbol"
+2. The table widget's `cellOnClick` renderFn must be configured with `actionType: "groupBy"` and specify the `groupBy.paramName` as "symbol"
 3. Both widgets must reference the same endpoint (`/get_tickers_list`) for their options data
 
 The interaction flow works as follows:
@@ -9036,7 +10078,93 @@ The interaction flow works as follows:
 2. The `groupBy` action then updates the shared `symbol` parameter value
 3. Any widget that uses the `symbol` parameter will automatically refresh to display data for the newly selected symbol
 
-This implementation creates an intuitive user experience where selecting a symbol in the table instantly updates all connected widgets with the corresponding stock information. 
+This implementation creates an intuitive user experience where selecting a symbol in the table instantly updates all connected widgets with the corresponding stock information.
+
+## Using valueField for Custom Value Mapping
+
+The `valueField` option allows you to pass a different value than what's displayed in the cell. This is useful when your table shows human-readable values (like company names) but your API expects different values (like IDs or codes).
+
+**Example:** Display company names but pass company IDs when clicked:
+
+```python
+@register_widget({
+    "name": "Company List with ID Mapping",
+    "description": "Table showing company names but passing IDs on click",
+    "type": "table",
+    "endpoint": "company_list",
+    "params": [
+        {
+            "paramName": "companyId",  # Parameter expects ID, not name
+            "description": "Company identifier",
+            "value": "AAPL",
+            "label": "Company ID",
+            "type": "endpoint",
+            "optionsEndpoint": "/company_options",
+            "show": True
+        }
+    ],
+    "data": {
+        "table": {
+            "showAll": True,
+            "columnsDefs": [
+                {
+                    "field": "companyName",  # Display name in cell
+                    "headerName": "Company",
+                    "cellDataType": "text",
+                    "width": 200,
+                    "renderFn": "cellOnClick",
+                    "renderFnParams": {
+                        "actionType": "groupBy",
+                        "groupBy": {
+                            "paramName": "companyId",
+                            "valueField": "companyId"  # Use ID field instead of companyName
+                        }
+                    }
+                },
+                {
+                    "field": "price",
+                    "headerName": "Price",
+                    "cellDataType": "number",
+                    "formatterFn": "none",
+                    "width": 120
+                }
+            ]
+        }
+    }
+})
+```
+
+**Data structure:**
+
+```python
+@app.get("/company_list")
+def get_company_list():
+    return [
+        {
+            "companyName": "Apple Inc.",      # Displayed in cell
+            "companyId": "AAPL",              # Passed to parameter
+            "price": 150.25
+        },
+        {
+            "companyName": "Microsoft Corporation",
+            "companyId": "MSFT",
+            "price": 350.50
+        }
+    ]
+```
+
+In this example:
+
+- The table cell displays "Apple Inc." (from `companyName` field)
+- When clicked, it passes "AAPL" (from `companyId` field) to the `companyId` parameter
+- This allows you to show user-friendly names while using IDs for API calls
+
+**When to use valueField:**
+
+- When displaying human-readable text but needing to pass IDs or codes
+- When the displayed value differs from the parameter value format
+- When you want to decouple the display value from the API parameter value
+
 
 ---
 
@@ -10112,6 +11240,361 @@ In the above example, the parameters are displayed in the order: Date, Text, Boo
 ---
 
 ---
+title: Tabs
+sidebar_position: 28
+description: Learn how to implement tabs parameters in OpenBB Workspace widgets to create tabbed interfaces for switching between different data views
+keywords:
+- tabs
+- tab parameter
+- tabbed interface
+- widget parameters
+- data views
+- dynamic columns
+- OpenBB Workspace
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Tabs | OpenBB Workspace Docs" />
+
+A parameter type that renders as clickable tabs, allowing users to switch between different data views within a single widget. Tabs are ideal for organizing related data categories that share a similar structure or context.
+
+## Basic Tabs Parameter
+
+The tabs parameter uses `"type": "tabs"` and requires an `options` array defining the available tabs.
+
+```json
+{
+  "paramName": "category",
+  "type": "tabs",
+  "value": "liquidity",
+  "label": "Category",
+  "description": "Select the category to display",
+  "options": [
+    {
+      "label": "Liquidity",
+      "value": "liquidity"
+    },
+    {
+      "label": "Efficiency",
+      "value": "efficiency"
+    },
+    {
+      "label": "Profitability",
+      "value": "profitability"
+    }
+  ]
+}
+```
+
+## Tabs with Dynamic Columns
+
+In this example, each tab returns data with **different columns**. The table columns automatically regenerate based on the data returned by each tab selection.
+
+<img className="pro-border-gradient" width="800" alt="Basic YouTube Widget" src="https://openbb-cms.directus.app/assets/f5b76ac4-e78b-4456-b25c-6d58e93c6f16.png" />
+
+**Widget Configuration (widgets.json):**
+
+```json
+{
+  "tabs_dynamic_columns": {
+    "name": "Financial Ratios - Dynamic Columns",
+    "description": "Each tab shows different metrics with different columns",
+    "category": "Financial Analysis",
+    "endpoint": "financial_ratios_dynamic",
+    "gridData": {
+      "w": 45,
+      "h": 12
+    },
+    "params": [
+      {
+        "paramName": "category",
+        "type": "tabs",
+        "value": "liquidity",
+        "label": "Ratio Category",
+        "description": "Select the financial ratio category",
+        "options": [
+          {
+            "label": "Liquidity",
+            "value": "liquidity"
+          },
+          {
+            "label": "Efficiency",
+            "value": "efficiency"
+          },
+          {
+            "label": "Profitability",
+            "value": "profitability"
+          },
+          {
+            "label": "Leverage",
+            "value": "leverage"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+**Backend Implementation:**
+
+```python
+@app.get("/financial_ratios_dynamic")
+def get_financial_ratios_dynamic(category: str = "liquidity"):
+    """
+    Returns different columns based on the selected category tab.
+    The table columns will change when switching tabs.
+    """
+    data = []
+
+    for company in COMPANIES:
+        row = {
+            "symbol": company["symbol"],
+            "company": company["company"],
+        }
+
+        if category == "liquidity":
+            row["current_ratio"] = round(random.uniform(0.5, 4.0), 2)
+            row["quick_ratio"] = round(random.uniform(0.3, 3.5), 2)
+            row["cash_ratio"] = round(random.uniform(0.1, 2.0), 2)
+            row["working_capital_m"] = round(random.uniform(-5000, 50000), 0)
+
+        elif category == "efficiency":
+            row["asset_turnover"] = round(random.uniform(0.3, 2.0), 2)
+            row["inventory_turnover"] = round(random.uniform(2.0, 50.0), 1)
+            row["receivables_turnover"] = round(random.uniform(3.0, 20.0), 1)
+            row["days_sales_outstanding"] = round(random.uniform(20, 90), 0)
+
+        elif category == "profitability":
+            row["gross_margin_pct"] = round(random.uniform(20, 80), 1)
+            row["operating_margin_pct"] = round(random.uniform(5, 50), 1)
+            row["net_margin_pct"] = round(random.uniform(2, 40), 1)
+            row["roe_pct"] = round(random.uniform(5, 150), 1)
+
+        elif category == "leverage":
+            row["debt_to_equity"] = round(random.uniform(0.1, 3.0), 2)
+            row["debt_to_assets"] = round(random.uniform(0.05, 0.6), 2)
+            row["interest_coverage"] = round(random.uniform(2.0, 200.0), 1)
+
+        data.append(row)
+
+    return data
+```
+
+## Tabs with Static Columns
+
+When you want the same columns across all tabs (only data values change), define `columnsDefs` in the widget configuration. This ensures consistent column structure regardless of which tab is selected.
+
+<img className="pro-border-gradient" width="800" alt="Basic YouTube Widget" src="https://openbb-cms.directus.app/assets/a3109091-fe49-4a6a-97c9-c3f48e1dc037.png" />
+
+**Widget Configuration (widgets.json):**
+
+```json
+{
+  "tabs_static_columns": {
+    "name": "Financial Ratios - Static Columns",
+    "description": "Same columns for all tabs - only data values change",
+    "category": "Financial Analysis",
+    "endpoint": "financial_ratios_static",
+    "gridData": {
+      "w": 40,
+      "h": 12
+    },
+    "params": [
+      {
+        "paramName": "category",
+        "type": "tabs",
+        "value": "liquidity",
+        "label": "Category",
+        "description": "Select category - columns stay the same",
+        "options": [
+          {
+            "label": "Liquidity",
+            "value": "liquidity"
+          },
+          {
+            "label": "Efficiency",
+            "value": "efficiency"
+          },
+          {
+            "label": "Profitability",
+            "value": "profitability"
+          },
+          {
+            "label": "Leverage",
+            "value": "leverage"
+          }
+        ]
+      }
+    ],
+    "data": {
+      "table": {
+        "columnsDefs": [
+          {
+            "field": "symbol",
+            "headerName": "Symbol",
+            "pinned": "left"
+          },
+          {
+            "field": "company",
+            "headerName": "Company"
+          },
+          {
+            "field": "category",
+            "headerName": "Selected Category"
+          },
+          {
+            "field": "metric_1",
+            "headerName": "Metric 1"
+          },
+          {
+            "field": "metric_2",
+            "headerName": "Metric 2"
+          },
+          {
+            "field": "metric_3",
+            "headerName": "Metric 3"
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+**Backend Implementation:**
+
+```python
+@app.get("/financial_ratios_static")
+def get_financial_ratios_static(category: str = "liquidity"):
+    """
+    Same columns for all tabs - only data values change.
+    """
+    data = []
+    for company in COMPANIES:
+        row = {
+            "symbol": company["symbol"],
+            "company": company["company"],
+            "category": category,
+            "metric_1": round(random.uniform(0.5, 100), 2),
+            "metric_2": round(random.uniform(0.5, 100), 2),
+            "metric_3": round(random.uniform(0.5, 100), 2),
+        }
+        data.append(row)
+    return data
+```
+
+## Tabs Combined with Other Parameters
+
+Tabs can be used alongside other parameter types like dropdowns. In this example, tabs control the data category (which changes columns) while a dropdown controls the reporting period.
+
+<img className="pro-border-gradient" width="800" alt="Basic YouTube Widget" src="https://openbb-cms.directus.app/assets/1297128e-3bbc-43a1-86fc-37938002c2b0.png" />
+
+**Widget Configuration (widgets.json):**
+
+```json
+{
+  "tabs_with_dropdown": {
+    "name": "Financial Analysis with Period",
+    "description": "Tabs control category, dropdown controls period",
+    "category": "Financial Analysis",
+    "endpoint": "comparison_with_period",
+    "gridData": {
+      "w": 50,
+      "h": 14
+    },
+    "params": [
+      {
+        "paramName": "period",
+        "type": "text",
+        "value": "annual",
+        "label": "Period",
+        "description": "Select the reporting period",
+        "options": [
+          {
+            "label": "Annual",
+            "value": "annual"
+          },
+          {
+            "label": "Quarterly",
+            "value": "quarterly"
+          }
+        ]
+      },
+      {
+        "paramName": "category",
+        "type": "tabs",
+        "value": "liquidity",
+        "label": "Category",
+        "description": "Select the financial ratio category",
+        "options": [
+          {
+            "label": "Liquidity",
+            "value": "liquidity"
+          },
+          {
+            "label": "Efficiency",
+            "value": "efficiency"
+          },
+          {
+            "label": "Profitability",
+            "value": "profitability"
+          },
+          {
+            "label": "Leverage",
+            "value": "leverage"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+**Backend Implementation:**
+
+```python
+@app.get("/comparison_with_period")
+def get_comparison_with_period(category: str = "liquidity", period: str = "annual"):
+    """
+    Tabs control the category (changes columns), dropdown controls the period.
+    """
+    data = generate_random_data(category)
+
+    # Add period info to each row
+    for row in data:
+        row["period"] = period
+        row["fiscal_year"] = 2024 if period == "annual" else "Q4 2024"
+
+    return data
+```
+
+## Parameter Properties
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `paramName` | `string` | Yes | The parameter name passed to the endpoint |
+| `type` | `string` | Yes | Must be `"tabs"` |
+| `value` | `string` | Yes | Default selected tab value |
+| `label` | `string` | No | Display label for the parameter |
+| `description` | `string` | No | Tooltip description |
+| `options` | `array` | Yes | Array of tab options with `label` and `value` |
+
+## When to Use Tabs vs Dropdown
+
+| Use Case | Recommended |
+|----------|-------------|
+| 2-5 mutually exclusive categories | **Tabs** - Better visibility, quick switching |
+| Many options (6+) | **Dropdown** - Saves space |
+| Frequent switching between views | **Tabs** - One-click access |
+| Options need search/filter | **Dropdown** - Built-in search |
+| Different data schemas per option | **Tabs** - Visual indication of view change |
+
+
+---
+
+---
 title: Text Input
 sidebar_position: 24
 description: Learn how to implement and use text input parameters in OpenBB Workspace widgets, including configuration options and example usage
@@ -10198,7 +11681,7 @@ Entered text: {text_box}
 
 ---
 title: AgGrid Table Charts
-sidebar_position: 8
+sidebar_position: 7
 description: AgGrid Table Charts
 keywords:
 - asd
@@ -11106,414 +12589,431 @@ def get_pdf_widget_url():
     )
 ```
 
-## Multi File
+## Multi File Viewer
+
+### Multi File Viewer with Base64
+
+A widget that displays multiple PDF files using base64 encoding. This method is useful for smaller files that you want to serve directly (vs URL).
 
 <img className="pro-border-gradient" width="800" alt="Multi PDF Viewer with Base64 Example" src="https://openbb-cms.directus.app/assets/610ec2bc-2768-4d48-9f0b-0ad08a69b41e.png" />
-
-:::warning Deprecation Notice
-The GET-based approach for multi-file viewers is deprecated. Please use the new POST-based approach shown in the example below.
-The major change is the GET request to fetch the files is not a POST request that can take in and return a list of files.
-:::
-
-### Implementation
-
-The new implementation uses POST requests to handle multiple files efficiently in a single request. This approach provides better performance and error handling.
-
-#### Required Models
-
-First, define the necessary Pydantic models:
 
 ```python
 from pydantic import BaseModel
 from typing import List, Union
+from fastapi import Body
 
 class FileOption(BaseModel):
     label: str
     value: str
 
-class FileRequest(BaseModel):
-    filenames: List[str]
-
-class DataFormat(BaseModel):
+class FileDataFormat(BaseModel):
     data_type: str
     filename: str
 
 class DataContent(BaseModel):
     content: str
-    data_format: DataFormat
+    data_format: FileDataFormat
 
 class DataUrl(BaseModel):
     url: str
-    data_format: DataFormat
+    data_format: FileDataFormat
 
 class DataError(BaseModel):
     error_type: str
     content: str
-```
 
-#### Sample Data
-
-```python
-# Sample whitepaper data
-WHITEPAPERS = {
-    "bitcoin.pdf": {
-        "label": "Bitcoin",
-        "filename": "bitcoin.pdf",
+# Sample PDF files data
+SAMPLE_PDFS = [
+    {
+        "name": "Sample",
+        "location": "sample.pdf",
+        "url": "https://openbb-assets.s3.us-east-1.amazonaws.com/testing/sample.pdf",
+    },
+    {
+        "name": "Bitcoin Whitepaper", 
+        "location": "bitcoin.pdf",
         "url": "https://openbb-assets.s3.us-east-1.amazonaws.com/testing/bitcoin.pdf",
-        "category": "l1",
-    },
-    "ethereum.pdf": {
-        "label": "Ethereum",
-        "filename": "ethereum.pdf",
-        "url": "https://openbb-assets.s3.us-east-1.amazonaws.com/testing/ethereum.pdf",
-        "category": "l1",
-    },
-    "chainlink.pdf": {
-        "label": "Chainlink",
-        "filename": "chainlink.pdf",
-        "url": "https://openbb-assets.s3.us-east-1.amazonaws.com/testing/chainlink.pdf",
-        "category": "oracles",
-    },
-    "solana.pdf": {
-        "label": "Solana",
-        "filename": "solana.pdf",
-        "url": "https://openbb-assets.s3.us-east-1.amazonaws.com/testing/solana.pdf",
-        "category": "l1",
-    },
-}
-```
+    }
+]
 
-#### Options Endpoint
-
-```python
-@app.get("/options")
-async def get_options(category: str = "all") -> List[FileOption]:
-    """Get list of available files filtered by category"""
-    if category == "all":
-        return [
-            FileOption(label=whitepaper["label"], value=whitepaper["filename"])
-            for whitepaper in WHITEPAPERS.values()
-        ]
+# Options endpoint for file selection
+@app.get("/get_pdf_options")
+async def get_pdf_options() -> List[FileOption]:
+    """Get list of available PDFs"""
     return [
-        FileOption(label=whitepaper["label"], value=whitepaper["filename"])
-        for whitepaper in WHITEPAPERS.values()
-        if whitepaper["category"] == category
+        FileOption(label=pdf["name"], value=pdf["name"]) 
+        for pdf in SAMPLE_PDFS
     ]
-```
 
-#### Multi File Viewer with Base64 (POST)
-
-```python
-@app.post("/whitepapers/base64")
-async def get_whitepapers_base64(
-    request: FileRequest,
-) -> List[Union[DataContent, DataUrl, DataError]]:
-    """Get multiple PDF files in base64 format"""
-    files = []
-    for name in request.filenames:
-        if whitepaper := WHITEPAPERS.get(name):
-            file_name_with_extension = whitepaper["filename"]
-            file_path = Path.cwd() / "whitepapers" / file_name_with_extension
-            if file_path.exists():
-                with open(file_path, "rb") as file:
-                    base64_content = base64.b64encode(file.read()).decode("utf-8")
-                    files.append(
-                        DataContent(
-                            content=base64_content,
-                            data_format=DataFormat(
-                                data_type="pdf",
-                                filename=file_name_with_extension,
-                            ),
-                        ).model_dump()
-                    )
-            else:
-                files.append(
-                    DataError(
-                        error_type="not_found", content="File not found"
-                    ).model_dump()
-                )
-        else:
-            files.append(
-                DataError(
-                    error_type="not_found", content=f"Whitepaper '{name}' not found"
-                ).model_dump()
-            )
-    return JSONResponse(headers={"Content-Type": "application/json"}, content=files)
-```
-
-#### Multi File Viewer with URL (POST)
-
-```python
-@app.post("/whitepapers/url")
-async def get_whitepapers_url(
-    request: FileRequest,
-) -> List[Union[DataContent, DataUrl, DataError]]:
-    """Get multiple PDF files via URLs"""
-    files = []
-    for name in request.filenames:
-        if whitepaper := WHITEPAPERS.get(name):
-            file_name_with_extension = whitepaper["filename"]
-            if url := whitepaper.get("url"):
-                files.append(
-                    DataUrl(
-                        url=url,
-                        data_format=DataFormat(
-                            data_type="pdf", filename=file_name_with_extension
-                        ),
-                    ).model_dump()
-                )
-            else:
-                files.append(
-                    DataError(
-                        error_type="not_found", content="URL not found"
-                    ).model_dump()
-                )
-        else:
-            files.append(
-                DataError(
-                    error_type="not_found", content=f"Whitepaper '{name}' not found"
-                ).model_dump()
-            )
-    return JSONResponse(headers={"Content-Type": "application/json"}, content=files)
-```
-
-
-The corresponding `widgets.json` would have the following format (for url just change the ```endpoint```):
-
-```json
-{
-  "whitepapers": {
+@register_widget({
+    "name": "Multi PDF Viewer - Base64",
+    "description": "View multiple PDF files using base64 encoding",
     "type": "multi_file_viewer",
-    "name": "Whitepapers",
-    "description": "A collection of crypto whitepapers.",
-    "endpoint": "/whitepapers/base64",
+    "endpoint": "/multi_pdf_base64",
     "gridData": {
-      "w": 40,
-      "h": 10
+        "w": 20,
+        "h": 10
     },
     "params": [
-      {
-        "type": "endpoint",
-        "paramName": "whitepaper",
-        "value": ["bitcoin.pdf"],
-        "label": "Whitepaper",
-        "description": "Whitepaper to display.",
-        "optionsEndpoint": "/whitepapers/options",
-        "show": false,
-        "multiSelect": true,
-        "roles": ["fileSelector"]
-      }
+        {
+            "paramName": "pdf_name",
+            "description": "PDF file to display",
+            "type": "endpoint",
+            "label": "PDF File",
+            "optionsEndpoint": "/get_pdf_options",
+            "show": False,
+            "value": ["Bitcoin Whitepaper"],
+            "multiSelect": True,
+            "roles": ["fileSelector"]
+        }
     ]
-  }
-}
+})
+@app.post("/multi_pdf_base64")
+async def get_multi_pdf_base64(
+    pdf_name: List[str] = Body(..., embed=True)
+) -> List[Union[DataContent, DataError]]:
+    """Get multiple PDF files in base64 format"""
+    files = []
+    for name in pdf_name:
+        pdf = next((p for p in SAMPLE_PDFS if p["name"] == name), None)
+        if not pdf:
+            files.append(
+                DataError(
+                    error_type="not_found", 
+                    content=f"PDF '{name}' not found"
+                ).model_dump()
+            )
+            continue
+
+        file_path = ROOT_PATH / pdf["location"]
+        if not file_path.exists():
+            files.append(
+                DataError(
+                    error_type="not_found",
+                    content=f"PDF file '{pdf['location']}' not found on disk"
+                ).model_dump()
+            )
+            continue
+
+        with open(file_path, "rb") as file:
+            base64_content = base64.b64encode(file.read()).decode("utf-8")
+            files.append(
+                DataContent(
+                    content=base64_content,
+                    data_format=FileDataFormat(
+                        data_type="pdf",
+                        filename=f"{pdf['name']}.pdf"
+                    )
+                ).model_dump()
+            )
+
+    return JSONResponse(
+        headers={"Content-Type": "application/json"},
+        content=files
+    )
 ```
 
+### Multi File Viewer with URL
 
-### More complex example
+A widget that displays multiple PDF files using URLs. This method is more efficient for larger files as they're loaded directly from the URL.
 
-<img className="pro-border-gradient" width="600" alt="multi-file-viewer" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/multi-file-viewer.png" />
+<img className="pro-border-gradient" width="800" alt="Multi PDF Viewer with URL Example" src="https://openbb-cms.directus.app/assets/7d4fc0e6-f458-49a1-9be9-161d2bec1886.png" />
+
+```python
+from pydantic import BaseModel
+from typing import List, Union
+from fastapi import Body
+
+class FileOption(BaseModel):
+    label: str
+    value: str
+
+class FileDataFormat(BaseModel):
+    data_type: str
+    filename: str
+
+class DataContent(BaseModel):
+    content: str
+    data_format: FileDataFormat
+
+class DataUrl(BaseModel):
+    url: str
+    data_format: FileDataFormat
+
+class DataError(BaseModel):
+    error_type: str
+    content: str
+
+@register_widget({
+    "name": "Multi PDF Viewer - URL",
+    "description": "View multiple PDF files using URLs",
+    "type": "multi_file_viewer", 
+    "endpoint": "/multi_pdf_url",
+    "gridData": {
+        "w": 20,
+        "h": 10
+    },
+    "params": [
+        {
+            "paramName": "pdf_name",
+            "description": "PDF file to display",
+            "type": "endpoint",
+            "label": "PDF File",
+            "optionsEndpoint": "/get_pdf_options",
+            "value": ["Sample"],
+            "show": False,
+            "multiSelect": True,
+            "roles": ["fileSelector"]
+        }
+    ]
+})
+@app.post("/multi_pdf_url")
+async def get_multi_pdf_url(
+    pdf_name: List[str] = Body(..., embed=True)
+) -> List[Union[DataUrl, DataError]]:
+    """Get multiple PDF files via URLs"""
+    files = []
+    for name in pdf_name:
+        pdf = next((p for p in SAMPLE_PDFS if p["name"] == name), None)
+        if not pdf:
+            files.append(
+                DataError(
+                    error_type="not_found",
+                    content=f"PDF '{name}' not found"
+                ).model_dump()
+            )
+            continue
+
+        if url := pdf.get("url"):
+            files.append(
+                DataUrl(
+                    url=url,
+                    data_format=FileDataFormat(
+                        data_type="pdf",
+                        filename=f"{pdf['name']}.pdf"
+                    )
+                ).model_dump()
+            )
+        else:
+            files.append(
+                DataError(
+                    error_type="not_found",
+                    content=f"URL not found for '{name}'"
+                ).model_dump()
+            )
+
+    return JSONResponse(
+        headers={"Content-Type": "application/json"},
+        content=files
+    )
+```
+
+## Multi File Viewer with Category Filtering
 
 This multi-file-viewer widget introduces a parameter called `optionsParams` which allows you to pass the options to an endpoint from a different parameter. More information [here](../widget-parameters/dependent-dropdown.md).
 
 In our case we want to pass the options in the `type` parameter to the `/whitepapers/options` endpoint to filter the list of whitepapers.
 
+<img className="pro-border-gradient" width="600" alt="multi-file-viewer" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/multi-file-viewer.png" />
+
+
 ```python
-# You can find these files in the OpenBB GitHub repository in the backend-examples-for-openbb-workspace folder.
-# https://github.com/OpenBB-finance/backend-examples-for-openbb-workspace
-# Sample whitepaper data for the multi-file viewer widget
-# This is a dictionary where keys are filenames and values contain metadata
-# Each whitepaper has the following properties:
-# - label: The display name of the whitepaper
-# - filename: The filename of the whitepaper
-# - url: The URL to the whitepaper
-# - category: The category/type of whitepaper
-WHITEPAPERS = {
-    "bitcoin.pdf": {
-        "label": "Bitcoin",
-        "filename": "bitcoin.pdf",
+from pydantic import BaseModel
+from typing import List, Union
+from fastapi import Body
+
+class FileOption(BaseModel):
+    label: str
+    value: str
+
+class FileDataFormat(BaseModel):
+    data_type: str
+    filename: str
+
+class DataContent(BaseModel):
+    content: str
+    data_format: FileDataFormat
+
+class DataUrl(BaseModel):
+    url: str
+    data_format: FileDataFormat
+
+class DataError(BaseModel):
+    error_type: str
+    content: str
+
+# Sample whitepaper data with categories
+WHITEPAPERS = [
+    {
+        "name": "Bitcoin",
+        "location": "bitcoin.pdf",
         "url": "https://openbb-assets.s3.us-east-1.amazonaws.com/testing/bitcoin.pdf",
         "category": "l1",
     },
-    "ethereum.pdf": {
-        "label": "Ethereum",
-        "filename": "ethereum.pdf",
-    "ethereum.pdf": {
-        "label": "Ethereum",
-        "filename": "ethereum.pdf",
+    {
+        "name": "Ethereum",
+        "location": "ethereum.pdf",
         "url": "https://openbb-assets.s3.us-east-1.amazonaws.com/testing/ethereum.pdf",
         "category": "l1",
     },
-    "chainlink.pdf": {
-        "label": "ChainLink",
-        "filename": "chainlink.pdf",
-    "chainlink.pdf": {
-        "label": "ChainLink",
-        "filename": "chainlink.pdf",
+    {
+        "name": "Chainlink",
+        "location": "chainlink.pdf",
         "url": "https://openbb-assets.s3.us-east-1.amazonaws.com/testing/chainlink.pdf",
         "category": "oracles",
     },
-    "solana.pdf": {
-        "label": "Solana",
-        "filename": "solana.pdf",
-    "solana.pdf": {
-        "label": "Solana",
-        "filename": "solana.pdf",
+    {
+        "name": "Solana",
+        "location": "solana.pdf",
         "url": "https://openbb-assets.s3.us-east-1.amazonaws.com/testing/solana.pdf",
         "category": "l1",
     },
-}
-}
-
+]
 
 @app.get("/whitepapers/options")
 async def get_whitepaper_options(category: str = Query("all")) -> List[FileOption]:
     """Get list of available whitepapers filtered by category"""
     if category == "all":
         return [
-            FileOption(label=whitepaper["label"], value=whitepaper["filename"])
-            for whitepaper in WHITEPAPERS.values()
-        ]
-        return [
-            FileOption(label=whitepaper["label"], value=whitepaper["filename"])
-            for whitepaper in WHITEPAPERS.values()
+            FileOption(label=wp["name"], value=wp["name"])
+            for wp in WHITEPAPERS
         ]
     return [
-        FileOption(label=whitepaper["label"], value=whitepaper["filename"])
-        for whitepaper in WHITEPAPERS.values()
-        if whitepaper["category"] == category
-        FileOption(label=whitepaper["label"], value=whitepaper["filename"])
-        for whitepaper in WHITEPAPERS.values()
-        if whitepaper["category"] == category
+        FileOption(label=wp["name"], value=wp["name"])
+        for wp in WHITEPAPERS
+        if wp["category"] == category
     ]
 
-# This is an example of how to return a list of base64 encoded files using POST.
+@register_widget({
+    "name": "Whitepapers",
+    "description": "A collection of crypto whitepapers.",
+    "type": "multi_file_viewer",
+    "endpoint": "/whitepapers/view-base64",
+    "gridData": {
+        "w": 40,
+        "h": 10
+    },
+    "params": [
+        {
+            "type": "endpoint",
+            "paramName": "whitepaper",
+            "value": ["Bitcoin"],
+            "label": "Whitepaper",
+            "description": "Whitepaper to display.",
+            "optionsEndpoint": "/whitepapers/options",
+            "show": False,
+            "optionsParams": {
+                "category": "$category"
+            },
+            "multiSelect": True,
+            "roles": ["fileSelector"]
+        },
+        {
+            "type": "text",
+            "paramName": "category",
+            "value": "all",
+            "label": "Category",
+            "description": "Category of whitepaper to fetch.",
+            "options": [
+                {
+                    "label": "All",
+                    "value": "all"
+                },
+                {
+                    "label": "L1",
+                    "value": "l1"
+                },
+                {
+                    "label": "L2",
+                    "value": "l2"
+                },
+                {
+                    "label": "Oracles",
+                    "value": "oracles"
+                },
+                {
+                    "label": "Defi",
+                    "value": "defi"
+                }
+            ]
+        }
+    ]
+})
 @app.post("/whitepapers/view-base64")
 async def view_whitepapers_base64(
-    request: FileRequest,
-) -> List[Union[DataContent, DataUrl, DataError]]:
+    whitepaper: List[str] = Body(..., embed=True),
+) -> List[Union[DataContent, DataError]]:
     """Get multiple whitepapers in base64 format"""
     files = []
-    for filename in request.filenames:
-        if whitepaper := WHITEPAPERS.get(filename):
-            file_path = Path.cwd() / whitepaper["filename"]
-            if file_path.exists():
-                with open(file_path, "rb") as file:
-                    base64_content = base64.b64encode(file.read()).decode("utf-8")
-                    files.append(
-                        DataContent(
-                            content=base64_content,
-                            data_format=DataFormat(
-                                data_type="pdf", filename=whitepaper["filename"]
-                            ),
-                        ).model_dump()
-                    )
-            else:
+    for name in whitepaper:
+        wp = next((w for w in WHITEPAPERS if w["name"] == name), None)
+        if not wp:
+            files.append(
+                DataError(
+                    error_type="not_found",
+                    content=f"Whitepaper '{name}' not found"
+                ).model_dump()
+            )
+            continue
+
+        file_path = ROOT_PATH / wp["location"]
+        if file_path.exists():
+            with open(file_path, "rb") as file:
+                base64_content = base64.b64encode(file.read()).decode("utf-8")
                 files.append(
-                    DataError(
-                        error_type="not_found", content="Whitepaper file not found"
+                    DataContent(
+                        content=base64_content,
+                        data_format=FileDataFormat(
+                            data_type="pdf", 
+                            filename=f"{wp['name']}.pdf"
+                        ),
                     ).model_dump()
                 )
         else:
             files.append(
                 DataError(
-                    error_type="not_found", content=f"Whitepaper '{filename}' not found"
+                    error_type="not_found", 
+                    content="Whitepaper file not found"
                 ).model_dump()
             )
     return JSONResponse(headers={"Content-Type": "application/json"}, content=files)
 
-
-# This is an example of how to return a list of URLs using POST.
-# You would want to return your own presigned URLs here for the files to load correctly 
-# or else the files will not load due to CORS policy.
+# Alternative URL version
 @app.post("/whitepapers/view-url")
 async def view_whitepapers_url(
-    request: FileRequest,
-) -> List[Union[DataContent, DataUrl, DataError]]:
+    whitepaper: List[str] = Body(..., embed=True),
+) -> List[Union[DataUrl, DataError]]:
     """Get multiple whitepapers via URLs"""
     files = []
-    for filename in request.filenames:
-        if whitepaper := WHITEPAPERS.get(filename):
-            # Fetch the presigned url and return it for the `url`.
-            # In the code below, we are simulating the presigned url by returning the url directly.
-            presigned_url = whitepaper["url"]
+    for name in whitepaper:
+        wp = next((w for w in WHITEPAPERS if w["name"] == name), None)
+        if not wp:
+            files.append(
+                DataError(
+                    error_type="not_found",
+                    content=f"Whitepaper '{name}' not found"
+                ).model_dump()
+            )
+            continue
             
+        if url := wp.get("url"):
             files.append(
                 DataUrl(
-                    url=presigned_url,
-                    data_format=DataFormat(
-                        data_type="pdf", filename=whitepaper["filename"]
+                    url=url,
+                    data_format=FileDataFormat(
+                        data_type="pdf",
+                        filename=f"{wp['name']}.pdf"
                     ),
                 ).model_dump()
             )
         else:
             files.append(
                 DataError(
-                    error_type="not_found", content=f"Whitepaper '{filename}' not found"
+                    error_type="not_found",
+                    content=f"URL not found for '{name}'"
                 ).model_dump()
             )
     return JSONResponse(headers={"Content-Type": "application/json"}, content=files)
-```
-
-The corresponding `widgets.json` would have the following format:
-
-```json
-{
-  "whitepapers": {
-    "type": "multi_file_viewer",
-    "name": "Whitepapers",
-    "description": "A collection of crypto whitepapers.",
-    "endpoint": "/whitepapers/base64",
-    "gridData": {
-      "w": 40,
-      "h": 10
-    },
-    "params": [
-      {
-        "type": "endpoint",
-        "paramName": "whitepaper",
-        "value": ["bitcoin.pdf"],
-        "label": "Whitepaper",
-        "description": "Whitepaper to display.",
-        "optionsEndpoint": "/whitepapers/options",
-        "show": false,
-        "optionsParams": {
-          "category": "$category"
-        },
-        "multiSelect": true,
-        "roles": ["fileSelector"]
-      },
-      {
-        "type": "text",
-        "paramName": "category",
-        "value": "all",
-        "label": "Category",
-        "description": "Category of whitepaper to fetch.",
-        "options": [
-          {
-            "label": "All",
-            "value": "all"
-          },
-          {
-            "label": "L1",
-            "value": "l1"
-          },
-          {
-            "label": "L2",
-            "value": "l2"
-          },
-          {
-            "label": "Oracles",
-            "value": "oracles"
-          },
-          {
-            "label": "Defi",
-            "value": "defi"
-          }
-        ]
-      }
-    ]
-  }
-}
 ```
 
 More examples can be found on the github repository at https://github.com/OpenBB-finance/backends-for-openbb
@@ -11522,7 +13022,7 @@ More examples can be found on the github repository at https://github.com/OpenBB
 
 ---
 title: Highcharts Chart
-sidebar_position: 13
+sidebar_position: 14
 description: Learn how to create Highcharts widgets for OpenBB Workspace, with step-by-step instructions for backend integration, configuration, and theme support.
 keywords:
 - widgets.json
@@ -12498,7 +13998,7 @@ def metric_widget():
 
 ---
 title: Newsfeed
-sidebar_position: 12
+sidebar_position: 10
 description: Learn how to create a newsfeed widget for OpenBB Workspace that displays articles in a clean, organized format.
 keywords:
 - widgets.json
@@ -12514,22 +14014,13 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Newsfeed | OpenBB Workspace Docs" />
 
-This guide will walk you through creating a newsfeed widget for OpenBB Workspace. We'll use CoinDesk's API as an example, but you can adapt this to any news source.
+A widget that displays articles in a clean, organized newsfeed format. Each article can include title, date, author, excerpt, and full body content with markdown support.
 
-## Step 1: Set Up Your Project
+<img className="pro-border-gradient" width="600" alt="newsfeed" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/newsfeed.png" />
 
-To get started, create the main application file and the widget configuration file. You will only need these two files:
+## Data Structure
 
-- `main.py`: This file will contain your FastAPI application code.
-- `widgets.json`: This file will define the configuration for your widget.
-
-The backend will use the same FastAPI setup and structure as described in the [Overview](/workspace/developers/data-integration#1-create-the-api-server) page.
-
-## Step 2: Create the Newsfeed Endpoint
-
-Edit the `main.py` file and add the following code.
-
-The newsfeed widget expects articles in a specific format. Each article must include:
+The newsfeed widget expects articles in a specific format:
 
 ```python
 {
@@ -12541,25 +14032,173 @@ The newsfeed widget expects articles in a specific format. Each article must inc
 }
 ```
 
-Here's an example implementation using CoinDesk's API:
+## Basic Example
+
+Here's a simple example that returns sample news articles:
 
 ```python
-...
+@register_widget({
+    "name": "Sample News Feed",
+    "description": "A simple newsfeed widget with example articles",
+    "type": "newsfeed",
+    "endpoint": "sample_newsfeed",
+    "gridData": {
+        "w": 40,
+        "h": 20
+    },
+    "source": "example",
+    "params": [
+        {
+            "paramName": "category",
+            "label": "Category",
+            "description": "Filter news by category",
+            "type": "text",
+            "value": "all",
+            "options": [
+                {"label": "All", "value": "all"},
+                {"label": "Technology", "value": "tech"},
+                {"label": "Business", "value": "business"},
+                {"label": "Science", "value": "science"}
+            ]
+        },
+        {
+            "paramName": "limit",
+            "label": "Number of Articles",
+            "description": "Maximum number of articles to display",
+            "type": "number",
+            "value": "5"
+        }
+    ]
+})
+@app.get("/sample_newsfeed")
+def get_sample_newsfeed(category: str = "all", limit: int = 5):
+    """Returns sample news articles in the required newsfeed format"""
+    
+    # Sample news data organized by category
+    sample_articles = {
+        "tech": [
+            {
+                "title": "AI Breakthrough: New Model Achieves Human-Level Reasoning",
+                "date": (datetime.now() - timedelta(hours=2)).isoformat(),
+                "author": "Sarah Johnson",
+                "excerpt": "Researchers at TechLab have unveiled a groundbreaking AI model that demonstrates unprecedented reasoning capabilities...",
+                "body": """# AI Breakthrough: New Model Achieves Human-Level Reasoning
 
-class CoindeskArticle(TypedDict):
-    TYPE: str
-    ID: int
-    TITLE: str
-    SUBTITLE: Optional[str]
-    AUTHORS: str
-    URL: str
-    BODY: str
-    PUBLISHED_ON: int
-    IMAGE_URL: str
-    KEYWORDS: str
-    LANG: str
-    SENTIMENT: str
+Researchers at TechLab have unveiled a groundbreaking AI model that demonstrates unprecedented reasoning capabilities, marking a significant milestone in artificial intelligence development.
 
+## Key Features
+- **Advanced reasoning**: The model can solve complex logical problems
+- **Multimodal understanding**: Processes text, images, and audio simultaneously
+- **Energy efficient**: Uses 40% less computational resources than previous models
+
+The implications of this breakthrough extend across multiple industries, from healthcare to education, promising to revolutionize how we interact with AI systems."""
+            },
+            {
+                "title": "Quantum Computing Startup Raises $500M in Series C Funding",
+                "date": (datetime.now() - timedelta(hours=5)).isoformat(),
+                "author": "Michael Chen",
+                "excerpt": "QuantumLeap Technologies secures major funding round to accelerate development of commercial quantum processors...",
+                "body": """# Quantum Computing Startup Raises $500M in Series C Funding
+
+QuantumLeap Technologies announced today that it has secured $500 million in Series C funding, led by prominent venture capital firms.
+
+The company plans to use the funding to:
+1. Scale manufacturing capabilities
+2. Expand research team by 200 engineers
+3. Develop partnerships with major cloud providers
+
+CEO Jane Smith stated, "This investment validates our approach to making quantum computing accessible to enterprises worldwide." """
+            }
+        ],
+        "business": [
+            {
+                "title": "Global Markets Rally on Positive Economic Data",
+                "date": (datetime.now() - timedelta(hours=1)).isoformat(),
+                "author": "Robert Williams",
+                "excerpt": "Stock markets across the globe surged today following the release of better-than-expected employment figures...",
+                "body": """# Global Markets Rally on Positive Economic Data
+
+Stock markets worldwide experienced significant gains today as investors responded positively to robust employment data and inflation reports.
+
+## Market Performance
+- S&P 500: +2.3%
+- NASDAQ: +2.8%
+- FTSE 100: +1.9%
+- Nikkei 225: +2.1%
+
+Analysts attribute the rally to renewed confidence in economic recovery and expectations of stable monetary policy."""
+            }
+        ],
+        "science": [
+            {
+                "title": "Scientists Discover New Earth-like Exoplanet in Habitable Zone",
+                "date": (datetime.now() - timedelta(hours=3)).isoformat(),
+                "author": "Dr. Emily Rogers",
+                "excerpt": "Astronomers using the James Webb Space Telescope have identified a potentially habitable exoplanet just 40 light-years away...",
+                "body": """# Scientists Discover New Earth-like Exoplanet in Habitable Zone
+
+A team of international astronomers has announced the discovery of an Earth-like exoplanet orbiting within the habitable zone of its star system.
+
+## Planet Characteristics
+- **Size**: 1.2 times Earth's radius
+- **Orbital period**: 385 days
+- **Surface temperature**: Estimated 15°C average
+- **Atmosphere**: Preliminary data suggests presence of water vapor
+
+The discovery opens new possibilities for studying potentially habitable worlds beyond our solar system."""
+            }
+        ]
+    }
+    
+    # Collect articles based on category
+    if category == "all":
+        # Combine all categories
+        all_articles = []
+        for cat_articles in sample_articles.values():
+            all_articles.extend(cat_articles)
+        articles = all_articles
+    else:
+        # Get specific category or empty list if category doesn't exist
+        articles = sample_articles.get(category, [])
+    
+    # Sort by date (newest first) and limit results
+    articles.sort(key=lambda x: x["date"], reverse=True)
+    articles = articles[:limit]
+    
+    # Add some variety with random additional recent articles if needed
+    if len(articles) < limit and category == "all":
+        # Generate some generic filler articles
+        for i in range(limit - len(articles)):
+            articles.append({
+                "title": f"Breaking News: Important Update #{i+1}",
+                "date": (datetime.now() - timedelta(hours=8+i)).isoformat(),
+                "author": "News Team",
+                "excerpt": f"This is a sample news article demonstrating the newsfeed widget functionality...",
+                "body": f"""# Breaking News: Important Update #{i+1}
+
+This is a sample article created to demonstrate the newsfeed widget's ability to display multiple articles.
+
+## Summary
+The newsfeed widget can display articles with:
+- Rich markdown formatting
+- Timestamps and author information
+- Excerpts for quick preview
+- Full article body with detailed content
+
+Stay tuned for more updates!"""
+            })
+    
+    return articles
+```
+
+## Live API Example with CoinDesk
+
+Here's an example that fetches real news from CoinDesk's API:
+
+```python
+from typing import Optional, List, TypedDict
+from datetime import datetime
+import requests
 
 class TransformedArticle(TypedDict):
     title: str
@@ -12568,123 +14207,95 @@ class TransformedArticle(TypedDict):
     excerpt: str
     body: str
 
-
-def transform_article(article: CoindeskArticle) -> TransformedArticle:
-    """Transform a CoinDesk article to a standardized format."""
-    # Convert UNIX timestamp to ISO format
-    date = datetime.fromtimestamp(article["PUBLISHED_ON"]).isoformat()
-
-    # Create excerpt from body (first 150 characters)
-    body = article["BODY"]
-    excerpt = f"{body[:150]}..." if len(body) > 150 else body
-
-    return {
-        "title": article["TITLE"],
-        "date": date,
-        "author": article["AUTHORS"],
-        "excerpt": excerpt,
-        "body": body,
-    }
-
-
-def fetch_news(limit: str, lang: str, categories: Optional[str] = None) -> List[TransformedArticle]:
-    """Fetch news from the CoinDesk API."""
-    url = f"https://data-api.coindesk.com/news/v1/article/list?lang={lang}&limit={limit}"
-
-    if categories:
-        url += f"&categories={categories}"
-
-    response = requests.get(url)
-
-    if response.status_code != 200:
-        raise HTTPException(status_code=response.status_code, detail=f"Failed to fetch news: {response.reason}")
-
-    data = response.json()
-    return [transform_article(article) for article in data.get("Data", [])]
-
-
-@app.get("/news")
-def get_coindesk_news(limit: str = "10", lang: str = "EN", categories: Optional[str] = None):
-    """Get news from CoinDesk."""
-    try:
-        news = fetch_news(limit, lang, categories)
-        return news
-    except Exception as e:
-        return JSONResponse(content={"error": f"Failed to fetch news: {str(e)}"}, status_code=500)
-```
-
-## Step 3: Configure widgets.json
-
-Add the widget configuration to your `widgets.json` file:
-
-```json
-{
-  "coindesk_news": {
-    "type": "newsfeed",
+@register_widget({
     "name": "CoinDesk News",
     "description": "Get the latest crypto news from CoinDesk",
-    "endpoint": "/news",
+    "type": "newsfeed",
+    "endpoint": "coindesk_news",
     "gridData": {
-      "w": 40,
-      "h": 20
+        "w": 40,
+        "h": 20
     },
     "source": "coindesk",
     "params": [
-      {
-        "paramName": "limit",
-        "label": "Limit",
-        "description": "The number of news articles to fetch",
-        "type": "number",
-        "value": "10"
-      },
-      {
-        "paramName": "lang",
-        "label": "Language",
-        "description": "The language of the news articles",
-        "type": "text",
-        "value": "EN",
-        "options": [
-          {
-            "label": "English",
-            "value": "EN"
-          },
-          {
-            "label": "Spanish",
-            "value": "ES"
-          }
-        ]
-      }
+        {
+            "paramName": "limit",
+            "label": "Number of Articles",
+            "description": "The number of news articles to fetch",
+            "type": "number",
+            "value": "10"
+        },
+        {
+            "paramName": "lang",
+            "label": "Language",
+            "description": "The language of the news articles",
+            "type": "text",
+            "value": "EN",
+            "options": [
+                {"label": "English", "value": "EN"},
+                {"label": "Spanish", "value": "ES"}
+            ]
+        },
+        {
+            "paramName": "categories",
+            "label": "Categories",
+            "description": "Filter by news categories",
+            "type": "text",
+            "value": ""
+        }
     ]
-  }
-}
+})
+@app.get("/coindesk_news")
+def get_coindesk_news(limit: str = "10", lang: str = "EN", categories: Optional[str] = None):
+    """Get news from CoinDesk API"""
+    try:
+        url = f"https://data-api.coindesk.com/news/v1/article/list?lang={lang}&limit={limit}"
+        
+        if categories:
+            url += f"&categories={categories}"
+        
+        response = requests.get(url)
+        
+        if response.status_code != 200:
+            raise HTTPException(
+                status_code=response.status_code,
+                detail=f"Failed to fetch news: {response.reason}"
+            )
+        
+        data = response.json()
+        articles = []
+        
+        for article in data.get("Data", []):
+            # Convert UNIX timestamp to ISO format
+            date = datetime.fromtimestamp(article["PUBLISHED_ON"]).isoformat()
+            
+            # Create excerpt from body (first 150 characters)
+            body = article["BODY"]
+            excerpt = f"{body[:150]}..." if len(body) > 150 else body
+            
+            articles.append({
+                "title": article["TITLE"],
+                "date": date,
+                "author": article["AUTHORS"],
+                "excerpt": excerpt,
+                "body": body
+            })
+        
+        return articles
+        
+    except Exception as e:
+        return JSONResponse(
+            content={"error": f"Failed to fetch news: {str(e)}"},
+            status_code=500
+        )
 ```
-
-## Step 4: Run the Application
-
-Start your FastAPI server:
-
-```bash
-uvicorn main:app --host localhost --port 5050
-```
-
-## Step 5: Add to OpenBB Pro
-
-Navigate to [OpenBB Pro Apps](https://pro.openbb.co/app) and add your backend by clicking on the `Manage Backends` button in the top right corner. Select `Add Backend` and fill in the details. Your URL will be `http://localhost:5050`.
-
-Once you have added your backend, you can find the widget in the `Test` category with the name `Test Metric`.
-
-<img className="pro-border-gradient" width="600" alt="newsfeed" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/newsfeed.png" />
-
-## Additional Resources
-
-You can find more examples of how to set up your own backend in the [Backend for OpenBB Workspace GitHub](https://github.com/OpenBB-finance/backend-examples-for-openbb-workspace).
 
 
 ---
 
 ---
 title: Omni
-sidebar_position: 14
+sidebar_position: 12
 description: Learn how to create versatile Omni widgets for OpenBB Workspace that can dynamically return different content types based on input parameters.
 keywords:
 - omni widget
@@ -13660,7 +15271,7 @@ For more information on setting up and configuring Plotly charts within the Open
 
 ---
 title: SSRM Mode
-sidebar_position: 7
+sidebar_position: 8
 description: Server-Side Rendered Mode for handling large datasets efficiently in OpenBB Workspace widgets
 keywords:
 - SSRM
@@ -13766,7 +15377,7 @@ This is the current approach for AI data access in SSRM mode. Future implementat
 
 ---
 title: TradingView Charts
-sidebar_position: 10
+sidebar_position: 13
 description: How to implement TradingView charts in OpenBB using UDF (Universal Data Feed)
 keywords:
 - tradingview
@@ -14009,6 +15620,202 @@ def generate_mock_price_data(symbol: str, from_time: int, to_time: int, resoluti
 - [UDF Protocol Documentation](https://www.tradingview.com/charting-library-docs/latest/connecting_data/UDF)
 
 The charting technology is provided by TradingView — a platform for traders and investors offering real-time market data, crypto heatmaps, screeners, and other professional tools, making it easy to follow Bitcoin, [Ethereum price](https://www.tradingview.com/symbols/ETHUSD/), and charts for any other asset.
+
+---
+
+---
+title: YouTube
+sidebar_position: 12
+description: Learn how to create YouTube video widgets in OpenBB Workspace, including basic video embedding and transcript support for AI assistants.
+keywords:
+- youtube widget
+- video widget
+- youtube embed
+- video player
+- transcript
+- AI context
+- OpenBB Workspace
+- widget development
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="YouTube | OpenBB Workspace Docs" />
+
+A widget that embeds and displays YouTube videos. The YouTube widget supports two modes: basic video playback and video with transcript support for AI context.
+
+## Basic YouTube Widget
+
+A simple widget that displays a YouTube video player. The endpoint returns the YouTube video URL as plain text.
+
+<img className="pro-border-gradient" width="800" alt="Basic YouTube Widget" src="https://openbb-cms.directus.app/assets/f30f91a8-340e-46f5-a690-18e01a9d7447.png" />
+
+```python
+from fastapi import Query
+from fastapi.responses import PlainTextResponse
+from typing import List
+from pydantic import BaseModel
+
+class FileOption(BaseModel):
+    label: str
+    value: str
+
+# Sample YouTube videos data
+SAMPLE_VIDEOS = [
+    {
+        "name": "OpenBB Workspace Demo",
+        "url": "https://www.youtube.com/watch?v=uYyhswnZkSw",
+    },
+    {
+        "name": "Open Data Platform Demo",
+        "url": "https://www.youtube.com/watch?v=MSlhOFxEdxg",
+    }
+]
+
+# Options endpoint for video selection dropdown
+@app.get("/get_video_options")
+async def get_video_options() -> List[FileOption]:
+    """Get list of available videos"""
+    return [
+        FileOption(label=video["name"], value=video["name"])
+        for video in SAMPLE_VIDEOS
+    ]
+
+# YouTube widget - video player only
+@register_widget({
+    "name": "Video Library",
+    "description": "View YouTube videos",
+    "type": "youtube",
+    "endpoint": "/get_video",
+    "gridData": {"w": 20, "h": 12},
+    "params": [
+        {
+            "paramName": "video_name",
+            "description": "Video to display",
+            "type": "endpoint",
+            "label": "Video",
+            "optionsEndpoint": "/get_video_options",
+            "value": "OpenBB Workspace Demo",
+        }
+    ]
+})
+@app.get("/get_video")
+async def get_video(
+    video_name: str = Query("", description="Selected video"),
+):
+    """Get YouTube video URL"""
+    video = next((v for v in SAMPLE_VIDEOS if v["name"] == video_name), None)
+
+    if not video:
+        return PlainTextResponse(content="")
+
+    return PlainTextResponse(content=video["url"])
+```
+
+The widget configuration specifies `"type": "youtube"` which tells OpenBB Workspace to render the returned URL in an embedded YouTube player.
+
+## YouTube Widget with Transcript Support
+
+This variant adds transcript support for AI assistants. When the `raw` configuration is set to `True`, the frontend will request the endpoint with `?raw=true` to get the transcript content instead of the video URL.
+
+<div style={{display: 'flex', gap: '10px'}}>
+<img className="pro-border-gradient" width="49%" alt="YouTube Widget with Transcript Support" src="https://openbb-cms.directus.app/assets/da80b714-c121-49de-ac73-c4b9b587ed83.png" />
+<img className="pro-border-gradient" width="49%" alt="YouTube Widget AI Context" src="https://openbb-cms.directus.app/assets/ef5c1a64-c009-4b19-b2e3-d0742ded8de4.png" />
+</div>
+
+```python
+from fastapi import Query
+from fastapi.responses import PlainTextResponse
+from typing import List
+from pydantic import BaseModel
+
+class FileOption(BaseModel):
+    label: str
+    value: str
+
+# Sample YouTube videos data with transcripts
+SAMPLE_VIDEOS = [
+    {
+        "name": "OpenBB Workspace Demo",
+        "url": "https://www.youtube.com/watch?v=uYyhswnZkSw",
+        "transcript": "# OpenBB Workspace Demo\n\nThis video demonstrates the OpenBB Workspace features..."
+    },
+    {
+        "name": "Open Data Platform Demo",
+        "url": "https://www.youtube.com/watch?v=MSlhOFxEdxg",
+        "transcript": "# Open Data Platform Demo\n\nIn this video we explore the Open Data Platform..."
+    }
+]
+
+# Options endpoint for video selection dropdown
+@app.get("/get_video_options")
+async def get_video_options() -> List[FileOption]:
+    """Get list of available videos"""
+    return [
+        FileOption(label=video["name"], value=video["name"])
+        for video in SAMPLE_VIDEOS
+    ]
+
+# YouTube widget with transcript support for AI
+@register_widget({
+    "name": "Video Library with Transcript",
+    "description": "View YouTube videos with transcript support for AI",
+    "type": "youtube",
+    "endpoint": "/get_video_with_transcript",
+    "raw": True,
+    "gridData": {"w": 20, "h": 12},
+    "params": [
+        {
+            "paramName": "video_name",
+            "description": "Video to display",
+            "type": "endpoint",
+            "label": "Video",
+            "optionsEndpoint": "/get_video_options",
+            "value": "OpenBB Workspace Demo",
+        }
+    ]
+})
+@app.get("/get_video_with_transcript")
+async def get_video_with_transcript(
+    video_name: str = Query("", description="Selected video"),
+    raw: bool = Query(False, description="Return transcript instead of URL"),
+):
+    """Get YouTube video URL or transcript"""
+    video = next((v for v in SAMPLE_VIDEOS if v["name"] == video_name), None)
+
+    if not video:
+        return PlainTextResponse(content="*No video selected*" if raw else "")
+
+    if raw:
+        return PlainTextResponse(content=video["transcript"], media_type="text/markdown")
+
+    return PlainTextResponse(content=video["url"])
+```
+
+### How AI Context Works
+
+When `"raw": True` is set in the widget configuration:
+
+1. **Normal viewing**: The frontend requests the endpoint without the `raw` parameter (or `raw=false`), and the endpoint returns the YouTube URL for the video player.
+
+2. **AI context**: When an AI assistant needs to understand the widget content, the frontend requests the endpoint with `?raw=true`, and the endpoint returns the transcript in markdown format.
+
+This allows AI assistants to read and understand the video content without having to watch the video, enabling them to answer questions about the video or provide summaries.
+
+## Key Configuration Options
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `type` | `string` | Must be `"youtube"` for YouTube widgets |
+| `raw` | `boolean` | Set to `True` to enable transcript requests for AI context |
+| `endpoint` | `string` | The endpoint that returns the video URL (or transcript when `raw=true`) |
+| `gridData` | `object` | Widget dimensions (`w` for width, `h` for height) |
+
+## Response Format
+
+- **Video URL**: Return as `PlainTextResponse` with the full YouTube URL (e.g., `https://www.youtube.com/watch?v=VIDEO_ID`)
+- **Transcript**: Return as `PlainTextResponse` with `media_type="text/markdown"` for formatted content
+
 
 ---
 
@@ -14350,9 +16157,10 @@ Activity logging tracks when dashboards are shared, accessed, or modified. Permi
 
 ## Export Controls
 
-Manage how data and analyses can be extracted from the platform. Export controls operate through role-based permissions that determine which users can download data, generate reports, or share content outside the system. Administrators configure these controls to match organizational data governance policies.
-
-The export control system tracks all data movement activities. When users export dashboards or download data, the system records the action, identifies the user, and logs the specific content involved. This information supports compliance monitoring and data loss prevention initiatives.
+Manage how data and analyses can be extracted from the platform. Users are allowed to export:
+- Individual datasets in formats such as CSV, Excel, PNG and JSON.
+- Export dashboards (with multiple tabs) as PDF or PNG.
+- Export a folder (i.e. multiple dashboards) as a ZIP file.
 
 ## AI Features Integration
 
@@ -14596,14 +16404,14 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 This section will highlight how you can run the open-source [ODP Python Package](https://github.com/OpenBB-finance/OpenBB) locally and integrate 350+ different datasets into the OpenBB Workspace in under 5 minutes.
 
-If you want to learn more about the open source ecosystem, check [our documentation](https://docs.openbb.co/python).
+If you want to learn more about the open source ecosystem, check [our documentation](https://docs.openbb.co/odp/python).
 
 ## Step by step
 
-Follow the quick start steps [here](/desktop#quick-start).
+Follow the quick start steps [here](/odp/python/quickstart).
 
 :::note
-If you are using Brave/Safari you will need an HTTPS connection - see the Self-Signed Certificate section of the ODP Desktop [documentation](/desktop/backends) for steps to run your server over HTTPS.
+If you are using Brave/Safari you will need an HTTPS connection - see the Self-Signed Certificate section of the ODP Desktop [documentation](/odp/desktop/backends) for steps to run your server over HTTPS.
 :::
 
 These are some apps available out of the box:
@@ -14821,20 +16629,20 @@ title: Workspace Overview
 sidebar_position: 0
 description: OpenBB Workspace is a secure enterprise UI application for AI workflows, featuring data integration, AI model deployment, flexible UI customization, and on-premises deployment capabilities.
 keywords:
-- enterprise AI application
-- data integration
-- AI model deployment
-- flexible UI
-- on-premises deployment
-- secure application
-- team collaboration
-- OpenBB Apps
-- proprietary data
-- licensed data
-- AI workflows
-- enterprise security
-- private cloud
-- data privacy
+  - enterprise AI application
+  - data integration
+  - AI model deployment
+  - flexible UI
+  - on-premises deployment
+  - secure application
+  - team collaboration
+  - OpenBB Apps
+  - proprietary data
+  - licensed data
+  - AI workflows
+  - enterprise security
+  - private cloud
+  - data privacy
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
@@ -14845,9 +16653,14 @@ OpenBB Workspace is a secure application for enterprise AI workflows. It combine
 
 Explore OpenBB Workspace at [pro.openbb.co](https://pro.openbb.co).
 
-<img src="https://openbb-cms.directus.app/assets/8aa1a314-0e2c-41f0-a3cf-ef621e5f2a13.png" alt="OpenBB Workspace Application Interface" width="100%" />
+<img src="https://openbb-cms.directus.app/assets/098ebeac-413e-4225-badf-1282c268e071.png" alt="OpenBB Workspace Application Interface" width="100%" />
 
-Product demo [in this video](https://www.youtube.com/watch?v=Gll8bRSoyGM).
+<details>
+<summary mdxType="summary">Watch Product Demo</summary>
+
+<iframe width="100%" height="415" src="https://www.youtube.com/embed/uYyhswnZkSw" title="OpenBB Workspace Product Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+</details>
 
 ## Core capabilities
 
@@ -14878,7 +16691,7 @@ Widgets are the fundamental data units in OpenBB Workspace. Each widget represen
 - **Visual Layer**: Presentation through tables, charts, PDFs or images and other feed formats
 - **Parameters**: Configurable input parameters for data display and interaction
 
-<img width="800" alt="Widget Metadata Structure and Components" src="https://openbb-cms.directus.app/assets/132e5cda-b062-4094-8036-8c2d41db1527.png" />
+<img width="800" alt="Widget Metadata Structure and Components" src="https://openbb-cms.directus.app/assets/cffb6e08-31a2-4a4d-85cf-3cf0ae1d09eb.png" />
 
 ### Dashboards
 
@@ -14886,7 +16699,7 @@ Dashboards are your personal spaces in OpenBB Workspace, designed to adapt to yo
 
 The power of dashboards lies in their flexibility. You can add widgets and group them by linking their parameters - when you update a date range or a ticker symbol in one widget, related widgets will update automatically. This parameter grouping ensures your analysis remains synchronized across multiple data views.
 
-<img width="800" alt="OpenBB Workspace Dashboard Interface" src="https://openbb-cms.directus.app/assets/fbf80af0-8bc3-4ac6-b349-f8e1ec388cee.png" />
+<img width="800" alt="OpenBB Workspace Dashboard Interface" src="https://openbb-cms.directus.app/assets/9ef2b326-da32-49d0-b122-110bbc556ee7.png" />
 
 Beyond dynamic data widgets, dashboards support a rich variety of content types. You can enhance your analysis by adding static files like PDFs, images, text documents, and spreadsheets, incorporating AI-generated artifacts directly from your chats, or writing notes to document your thought process and findings. This combination of dynamic data, static resources, and personal annotations creates a wide-ranging analytical workspace that captures both the quantitative and qualitative aspects of your research.
 
@@ -14898,13 +16711,13 @@ AI Agents make OpenBB Workspace an intelligent system that understands your data
 
 What makes AI Agents particularly powerful is their contextual awareness. They can access your entire dashboard ecosystem, understand relationships between different data sources and maintain context across multiple queries. This enables sophisticated multi-step analysis where agents can gather data from various widgets, perform calculations, generate insights, and even create new visualizations based on their findings.
 
-<img width="800" alt="OpenBB Workspace AI Agents Interface" src="https://openbb-cms.directus.app/assets/ac287dfe-e279-42bb-8f84-a616ff9df8a8.png" />
+<img width="800" alt="OpenBB Workspace AI Agents Interface" src="https://openbb-cms.directus.app/assets/cbc29ba3-e55b-4ea4-89be-55db92bd017a.png" />
 
 AI Agents excel at both reactive and proactive analysis. They can respond to your specific queries about market conditions, company performance, or economic indicators while also monitoring your dashboards for anomalies, trends, or opportunities that require attention. You can configure agents with custom instructions and prompts, creating specialized assistants for different analytical tasks – from earnings analysis to risk assessment to market surveillance.
 
 The integration between AI Agents and your widget library creates a multiplier effect. Agents can dynamically combine data from multiple sources to apply advanced analytical techniques, and present results in formats that best suit your needs.
 
-<img width="800" alt="OpenBB Workspace AI Agent Widget Integration" src="https://openbb-cms.directus.app/assets/2b463b3b-e1cf-4079-8c11-b49cdcda60ac" />
+<img width="800" alt="OpenBB Workspace AI Agent Widget Integration" src="https://openbb-cms.directus.app/assets/4b79d88c-05c1-4dcb-b8de-31ca934e4066.png" />
 
 Finally, AI agents can produce artifacts (text, tables, charts) that are added back to the dashboard, closing the feedback loop.
 
@@ -14912,13 +16725,13 @@ Finally, AI agents can produce artifacts (text, tables, charts) that are added b
 
 Apps are pre-built dashboard templates designed for specific workflows. Each app includes a curated set of widgets with parameters already linked, a pre-selection of an AI agent for the task at hand, and custom prompts relevant to that use case. When you change a ticker or date range, all connected widgets update together.
 
-<img width="800" alt="OpenBB Workspace Multiple Applications View" src="https://openbb-cms.directus.app/assets/2fc9097e-0941-49df-8d83-7d6b5a87bb45.png" />
+<img width="800" alt="OpenBB Workspace Multiple Applications View" src="https://openbb-cms.directus.app/assets/0410ebc4-13cb-4ec2-aa8a-9ee370d1b56a.png" />
 
 Examples include portfolio management apps with position tracking and risk metrics, market surveillance apps with data monitoring and anomaly detection, and research apps with fundamental analysis and news sentiment tools. The workspace supports unlimited apps that can be shared across teams and customized to fit your exact needs.
 
 Explore our app gallery and use cases at [openbb.co/solutions](https://openbb.co/solutions).
 
-<img width="800" alt="OpenBB Workspace Applications Overview" src="https://openbb-cms.directus.app/assets/0daf9951-9600-41e9-8886-24077ae24b14.png" />
+<img width="800" alt="OpenBB Workspace Applications Overview" src="https://openbb-cms.directus.app/assets/2dabe15f-a422-441e-b888-04eda6db3e1b.png" />
 
 #### Prompts: Context-Aware Suggestions
 

@@ -849,7 +849,7 @@ aside[class*="docSidebarContainer"] {
 }
 
 .theme-doc-sidebar-menu > li:first-child {
-  @apply !mt-10;
+  @apply !mt-0;
 }
 
 .toc-link-active {

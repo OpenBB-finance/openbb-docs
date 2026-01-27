@@ -99,7 +99,7 @@ export default function DocSidebarItemCategory({
 		"OpenBB Terminal Pro": "/pro",
 		"OpenBB Add-in for Excel": "/excel",
 		"OpenBB Platform CLI": "/cli",
-		"ODP Desktop": "/desktop",
+		"ODP Desktop": "/odp",
 		"ODP Python": "/python",
 		"Snowflake": "/snowflake",
 	};

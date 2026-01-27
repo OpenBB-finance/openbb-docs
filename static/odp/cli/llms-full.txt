@@ -1,0 +1,1319 @@
+---
+title: Commands And Arguments
+sidebar_position: 4
+description: This page explains how to enter commands and arguments into the ODP CLI.
+keywords:
+- help arguments
+- auto-complete
+- global commands
+- support command
+- reset command
+- command line interface
+- metadata
+- cli
+- parameters
+- functions
+- commands
+- options
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Commands And Arguments | ODP CLI Docs" />
+
+Commands are displayed on-screen in a lighter colour, compared with menu items, and they will not be prefaced with, `>`.
+
+Functions have a variety of parameters that differ by endpoint and provider. The --help dialogue will provide guidance on nuances of any particular command.
+
+The available data sources for each command are displayed on the right side of the screen, and are selected with the `--provider` argument.
+
+## Help arguments
+
+The `help` command shows the current menu. The screen will display all the commands and menus that exist, including a short description for each of these.
+
+Adding `--help`, or `-h`, to any command will display the description and parameters for that particular function.
+
+## Entering Parameters
+
+Parameters are all defined through the same pattern, --argument, followed by a space, and then the value.
+
+If the parameter is a boolean (true/false), there is no value to enter. Adding the --argument flags the parameter to be the opposite of its default state.
+
+Use the auto-complete to prompt choices and reduce the amount of keystrokes required to run a complex function.
+
+## Auto-complete
+
+The ODP CLI is equipped with an auto completion engine that presents choices based on the current menu and command. Whenever you start typing, suggestion prompts will appear for existing commands and menus. When the command contains arguments, pressing the `space bar` after typing the command will present the list of available arguments.
+
+This functionality dramatically reduces the number of key strokes required to perform tasks and, in many cases, eliminates the need to consult the help dialogue for reminders. Choices - where they are bound by a defined list - are scrollable with the up and down arrow keys.
+
+## Global commands
+
+These are commands that can be used throughout the CLI and will work regardless of the menu where they belong.
+
+### Help
+
+`--help`, or `-h` can be attached to any command, as described above.
+
+### CLS
+
+The `cls` command clears the entire CLI screen.
+
+### Quit
+
+The `quit` command (can also use `q` or `..`) allows to leave the current menu to go one menu above. If the user is on the root, that will mean leaving the CLI.
+
+### Exit
+
+The `exit` command allows the user to exit the CLI.
+
+### Reset
+
+The `reset` command will reset the CLI to its default state. This is specially useful for development so you can refresh the CLI without having to close and open it again.
+
+### Results
+
+The `results` command will display the stack of `OBBjects` that have been generated during the session, which can be later injected on the data processing commands.
+
+
+---
+
+---
+title: Configuration & Settings
+sidebar_position: 5
+description: This documentation page details the various settings and feature flags used to customize the ODP CLI.
+keywords:
+- Settings Menu
+- Feature Flags Menu
+- customize CLI
+- alter CLI behaviour
+- environment variables
+- Documentation
+- ODP CLI
+- OpenBB Platform CLI
+- preferences
+- user
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Configuration & Settings - | ODP CLI Docs" />
+
+In addition to the ODP's `user_settings.json` file, described [on the environment variables page](/odp/python/settings/environment_variables), there are settings and environment variables affecting the CLI only.
+
+:::important
+API credentials are defined in the `user_settings.json` file.
+
+Find all the current data providers maintained in the OpenBB repository [on the extensions page](/odp/python/extensions/).
+
+Define default data sources by following the pattern outlined [on the data sources page](data-sources)
+:::
+
+## Settings Menu
+
+The `/settings` menu provides methods for customizing the look and feel of the CLI. The menu is divided into two sections:
+
+- Feature Flags
+  - On/Off status is reflected by red/green text.
+  - Status is toggled by entering the item as a command.
+- Preferences
+  - Choices and options will be presented as a typical function.
+
+### Feature Flags
+
+| Feature Flags  |                                                      Description |
+| :-----------   | :--------------------------------------------------------------- |
+| `interactive`  | Enable/disable interactive tables.  Disabling prints the table directly on the CLI screen. |
+| `cls`          |                                     Clear the screen after each command.  Default state is off. |
+| `promptkit`    |                                         Enable auto complete and history.  Default state is on. |
+| `richpanel`    |                                           Displays a border around menus.  Default state is on. |
+| `tbhint`       |                                Display usage hints in the bottom toolbar.  Default state is on. |
+| `exithelp`     |           Automatically print the screen after navigating back one menu.  Default state is off. |
+| `overwrite`    |               Automatically overwrite exported files with the same name.  Default state is off. |
+| `obbject_msg`  |       Displays a message whenever a new result is added to the registry.  Default state is off. |
+| `version`      |                     Displays the currently installed version number in the bottom right corner. |
+
+### Preferences
+
+| Preferences    |                                                      Description |
+| :-----------   | :--------------------------------------------------------------- |
+| `console_style`           | apply a custom rich style to the CLI  |
+| `flair`                   | choose flair icon      |
+| `timezone`                | pick timezone |
+| `language`                | translation language |
+| `n_rows`                  | number of rows to show on non interactive tables |
+| `n_cols`                  | number of columns to show on non interactive tables |
+| `obbject_res`             | define the maximum number of obbjects allowed in the registry  |
+| `obbject_display`         | define the maximum number of cached results to display on the help menu  |
+
+
+---
+
+---
+title: Data Sources
+sidebar_position: 7
+description: This page explains how to select a provider for any specific command, and set a default source for a route.
+keywords:
+- Workspace
+- CLI
+- provider
+- API keys
+- FinancialModelingPrep
+- Polygon
+- AlphaVantage
+- Intrinio
+- YahooFinance
+- source
+- data
+- default
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Data Sources | ODP CLI Docs" />
+
+Many commands have multiple data sources associated with it. This page describes how to select from multiple providers.
+
+:::important
+API credentials are defined in the `user_settings.json` file.
+
+Find all the current data providers maintained in the OpenBB repository [here](/odp/python/extensions).
+:::
+
+## Data Source In-Command
+
+To specify the data vendor for that particular command, use the `--provider` argument.
+
+Parameter choices can be viewed from the help dialogue, `-h` or `--help`.
+
+```console
+/equity/price/historical -h
+```
+
+```console
+usage: historical --symbol SYMBOL [SYMBOL ...] [--interval INTERVAL] [--start_date START_DATE] [--end_date END_DATE] [--chart]
+                  [--provider {fmp,intrinio,polygon,tiingo,yfinance}] [--start_time START_TIME] [--end_time END_TIME] [--timezone TIMEZONE]
+                  [--source {realtime,delayed,nasdaq_basic}] [--sort {asc,desc}] [--limit LIMIT] [--extended_hours] [--include_actions]
+                  [--adjustment {splits_and_dividends,unadjusted,splits_only}] [--adjusted] [--prepost] [-h] [--export EXPORT]
+                  [--sheet-name SHEET_NAME [SHEET_NAME ...]]
+
+Get historical price data for a given stock. This includes open, high, low, close, and volume.
+
+options:
+  --interval INTERVAL   Time interval of the data to return.
+  --start_date START_DATE
+                        Start date of the data, in YYYY-MM-DD format.
+  --end_date END_DATE   End date of the data, in YYYY-MM-DD format.
+  --chart               Whether to create a chart or not, by default False.
+  --provider {fmp,intrinio,polygon,tiingo,yfinance}
+                        The provider to use for the query, by default None.
+                            If None, the provider specified in defaults is selected or 'fmp' if there is
+                            no default.
+  --extended_hours      Include Pre and Post market data. (provider: polygon, yfinance)
+  --adjustment {splits_and_dividends,unadjusted,splits_only}
+                        The adjustment factor to apply. Default is splits only. (provider: polygon, yfinance)
+  -h, --help            show this help message
+  --export EXPORT       Export raw data into csv, json, xlsx and figure into png or jpg
+  --sheet-name SHEET_NAME [SHEET_NAME ...]
+                        Name of excel sheet to save data to. Only valid for .xlsx files.
+
+required arguments:
+  --symbol SYMBOL [SYMBOL ...]
+                        Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, polygon, tiingo, yfinance.
+
+intrinio:
+  --start_time START_TIME
+                        Return intervals starting at the specified time on the `start_date` formatted as 'HH:MM:SS'.
+  --end_time END_TIME   Return intervals stopping at the specified time on the `end_date` formatted as 'HH:MM:SS'.
+  --timezone TIMEZONE   Timezone of the data, in the IANA format (Continent/City).
+  --source {realtime,delayed,nasdaq_basic}
+                        The source of the data.
+
+polygon:
+  --sort {asc,desc}     Sort order of the data. This impacts the results in combination with the 'limit' parameter. The results are always returned in ascending order by date.
+  --limit LIMIT         The number of data entries to return.
+
+yfinance:
+  --include_actions     Include dividends and stock splits in results.
+```
+
+:::note
+Provider-specific parameters are listed at the bottom of the print out. They are ignored when entered, if it is not supported by the selected provider.
+:::
+
+## Setting The Default Source
+
+The default data providers for each command can be defined within the user configuration file: `/home/your-user/.openbb_platform/user_settings.json`. You can set a single provider or a priority list. If a list is set, the command will use the first provider for which all required credentials set.
+
+See the example below for `obb.equity.price.historical` command:
+
+```json
+# user_settings.json
+{
+    "defaults": {
+        "commands": {
+            "equity.price.historical": {
+                "provider": "fmp"
+            },
+            "equity.fundamental.balance": {
+                "provider": ["intrinio", "fmp", "polygon"]
+            },
+            ...
+        }
+    }
+}
+```
+
+
+---
+
+---
+title: Introduction
+sidebar_position: 0
+description: The ODP CLI is a command line interface wrapping the Open Data Platform by OpenBB. It offers a convenient way to interact with the Platform and its extensions, as well as automate data collection via OpenBB Routine Scripts. No experience with Python, or other programming languages, is required.
+keywords:
+- OpenBB
+- CLI
+- Platform
+- data connectors
+- data access
+- data processing
+- third-party data providers
+- introduction
+---
+
+<!-- markdownlint-disable MD012 MD031 MD033 -->
+
+import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ODP CLI Docs" />
+
+## Overview
+
+The ODP CLI is a command line interface wrapping the Open Data Platform by OpenBB. It offers a convenient way to interact with the Platform and its extensions, as well as automate data collection via OpenBB Routine Scripts.
+
+The CLI leverages the extendability of the ODP architecture in an easy-to-consume and script format.
+
+![CLI Home](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/d1617c3b-c83d-4491-a7bc-986321fd7230)
+
+## Guides & Documentation
+
+<ul className="grid grid-cols-1 gap-4 -ml-6">
+<NewReferenceCard
+    title="Installation"
+    description="An installation guide for the ODP CLI."
+    url="/odp/cli/installation"
+/>
+<NewReferenceCard
+    title="Quick Start"
+    description="A quick start guide for the ODP CLI."
+    url="/odp/cli/quickstart"
+/>
+<NewReferenceCard
+    title="Configuration & Settings"
+    description="An explanation of the settings and environment variables that customize the look and feel of the ODP CLI."
+    url="/odp/cli/configuration"
+/>
+<NewReferenceCard
+    title="Data Sources"
+    description="How-to switch providers for a command, and define the default source for a function."
+    url="/odp/cli/data-sources"
+/>
+<NewReferenceCard
+    title="OpenBBUserData Folder"
+    description="The OpenBBUserData folder is where exports, routines, and other related files are saved."
+    url="/odp/cli/openbbuserdata"
+/>
+<NewReferenceCard
+    title="Interactive Tables"
+    description="Understand how to sort, filter, hide columns, display more rows or export data on our tables."
+    url="/odp/cli/interactive-tables"
+/>
+<NewReferenceCard
+    title="Interactive Charts"
+    description="Explore how to overlay charts, change titles, draw lines, add text and much more on our charts."
+    url="/odp/cli/interactive-charts"
+/>
+</ul>
+
+---
+
+Want to contribute? Check out our [Development section](/odp/python/developer/architecture_overview).
+
+
+---
+
+---
+title: Installation
+sidebar_position: 2
+description: This page provides installation instructions for the ODP CLI.
+keywords:
+- Open Data Platform by OpenBB
+- ODP
+- OpenBB Platform
+- Python
+- CLI
+- installation
+- pip
+- pypi
+
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Installation | ODP CLI Docs" />
+
+## Pre-Requisites
+
+ODP CLI is a wrapper around the [OpenBB Python Package](/odp/python), and should be installed along side an existing OpenBB installation.
+
+- A Python virtual environment with a version between 3.9 and 3.11, inclusive, is required.
+
+Please refer to the [Python install documentation](/odp/python/installation) for instructions and more information.
+
+:::info
+If the ODP python package is not already installed, the `openbb-cli` package  will install all available components.
+:::
+
+### Windows
+
+The machine may need to have an installation of Visual C++ Build Tools available. Download the elements highlighted in the images below.
+
+<details>
+<summary mdxType="summary">"Microsoft Visual C++ 14.0 or greater is required"</summary>
+
+Download and install [C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/), restart the machine, then continue.
+
+![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/ceb57be0-6dae-42f2-aca6-bf62ce7d6135)
+
+![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/f8aef8fc-a080-4164-bd36-460714ec44f3)
+
+</details>
+
+### Linux Requirements
+
+Linux users will need to take additional steps prior to installation.
+
+#### Rust
+
+Rust and Cargo must be installed, system-level, and in the PATH. Follow the instructions on-screen to install and add to PATH in the shell profile.
+
+```bash
+curl --proto '=https' --tlsv1.3 https://sh.rustup.rs -sSf | sh
+```
+
+#### Webkit
+
+Next, install webkit.
+
+- Debian-based / Ubuntu / Mint: `sudo apt install libwebkit2gtk-4.0-dev`
+
+- Arch Linux / Manjaro: `sudo pacman -S webkit2gtk`
+
+- Fedora: `sudo dnf install gtk3-devel webkit2gtk3-devel`
+
+## PyPI
+
+Within your existing OpenBB environment, install `openbb-cli` with:
+
+```console
+pip install openbb-cli
+```
+
+The installation script adds `openbb` to the PATH within your Python environment. The application can be launched from any path, as long as the environment is active.
+
+```console
+openbb
+
+Welcome to Open Data Platform CLI v1.0.0
+```
+
+## Source
+
+Follow the instructions [here](/odp/python/installation#source) to clone the GitHub repo and install the Open Data Platform from the source code.
+
+Next, navigate into the folder: `~/OpenBB/openbb_platform`
+
+:::tip
+The Python environment should have `poetry` installed.
+
+```bash
+pip install poetry
+```
+
+:::
+
+Finally, enter:
+
+```console
+python dev_install.py -e --cli
+```
+
+## Installing New Modules
+
+New extensions, or removals, are automatically added (removed) to the CLI on the next launch.
+
+
+---
+
+---
+title: Interactive Charts
+sidebar_position: 9
+description: This page provides a detailed explanation of the OpenBB Interactive Charts. Understand various capabilities including annotation, color modification, drawing tools, data export, and supplementary data overlay.
+keywords:
+- interactive charts
+- PyWry
+- annotation
+- drawing
+- lines
+- modebar
+- plotly
+- data export
+- data overlay
+- editing chart title
+- Toolbar
+- Text Tools
+- Draw Tools
+- Export Tools
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Interactive Charts - | ODP CLI Docs" />
+
+Interactive charts open in a separate window ([PyWry](https://github.com/OpenBB-finance/pywry)). The OpenBB charting library provides interactive and highly customizable charts.
+
+:::tip
+Not all commands have a charting output, the ones that do, will display a chart argument (`--chart`), which will trigger the charting output instead of the default table output.
+
+Example: `equity/price/historical --symbol AAPL --chart`
+:::
+
+<details>
+<summary>Charting cheat sheet </summary>
+
+![Group 653](https://user-images.githubusercontent.com/85772166/234313541-3d725e1c-ce48-4413-9267-b03571e0eccd.png)
+
+</details>
+
+## Toolbar
+
+![Chart Tools](https://user-images.githubusercontent.com/85772166/233247997-55c03cbd-9ca9-4f5e-b3fb-3e5a9c63b6eb.png)
+
+The toolbar is located at the bottom of the window, and provides methods for:
+
+- Panning and zooming.
+- Modifying the title and axis labels.
+- Adjusting the hover read out.
+- Toggling light/dark mode.
+- Annotating and drawing.
+- Exporting raw data.
+- Saving the chart as an image.
+- Adding supplementary external data as an overlay.
+
+The label for each tool is displayed by holding the mouse over it.
+
+The toolbar's visibility can be toggled utilizing the `ctrl + h` shortcut.
+
+## Text Tools
+
+Annotate a chart by clicking on the `Add Text` button, or with the keyboard, `ctrl + t`.
+
+![Annotate Charts](https://user-images.githubusercontent.com/85772166/233248056-d459d7a0-ba2d-4533-896a-79406ded859e.png)
+
+Enter some text, make any adjustments to the options, then `submit`.  Place the crosshairs over the desired data point and click to place the text.
+
+![Place Text](https://user-images.githubusercontent.com/85772166/233728645-74734241-4da2-4cff-af17-b68a62e95113.png)
+
+After placement, the text can be updated or deleted by clicking on it again.
+
+![Delete Annotation](https://user-images.githubusercontent.com/85772166/233728428-55d2a8e5-a68a-4cd1-9dbf-4c1cd697187e.png)
+
+## Change Titles
+
+The title of the chart is edited by clicking the button, `Change Titles`, near the middle center of the toolbar, immediately to the right of the `Add Text` button.
+
+## Draw Tools
+
+![Edit Colors](https://user-images.githubusercontent.com/85772166/233729318-8af947fa-ce2a-43e2-85ab-657e583ac8b1.png)
+
+The fourth group of icons on the toolbar are for drawing lines and shapes.
+
+- Edit the colors.
+- Draw a straight line.
+- Draw a freeform line.
+- Draw a circle.
+- Draw a rectangle.
+- Erase a shape.
+
+To draw on the chart, select one of the four drawing buttons and drag the mouse over the desired area. Click on any existing shape to modify it by dragging with the mouse and editing the color, or remove it by clicking the toolbar button, `Erase Active Shape`. The edit colors button will pop up as a floating icon, and clicking on that will display the color palette.
+
+## Export Tools
+
+The two buttons at the far-right of the toolbar are for saving the raw data or, to save an image file of the chart at the current panned and zoomed view.
+
+![Export Tools](https://user-images.githubusercontent.com/85772166/233248436-08a2a463-403b-4b1b-b7d8-80cd5af7bee3.png)
+
+## Overlay
+
+The button, `Overlay chart from CSV`, provides an easy import method for supplementing a chart with additional data.  Clicking on the button opens a pop-up dialogue to select the file, column, and whether the overlay should be a bar, candlestick, or line chart.  As a candlestick, the CSV file must contain OHLC data.  The import window can also be opened with the keyboard, `ctrl-o`.
+
+![Overlay CSV](https://user-images.githubusercontent.com/85772166/233248522-16b539f4-b0ae-4c30-8c72-dfa59d0c0cfb.png)
+
+After choosing the file to overlay, select what to show and then click on `Submit`.
+
+![Overlay Options](https://user-images.githubusercontent.com/85772166/233250634-44864da0-0936-4d3c-8de2-c8374d26c1d2.png)
+
+![Overlay Chart](https://user-images.githubusercontent.com/85772166/233248639-6d12b16d-471f-4550-a8ab-8d8c18eeabb3.png)
+
+
+---
+
+---
+title: Interactive Tables
+sidebar_position: 10
+description: This page explains how to navigate and utilize OpenBB's interactive tables. Understand how to sort and filter columns, hide or remove columns, select number of rows per page, freeze index and column headers, and export the data.
+keywords:
+- interactive tables
+- PyWry technology
+- sorting columns
+- filtering columns
+- hiding columns
+- rows per page
+- freeze index
+- freeze column headers
+- exporting data
+- data visualization
+- customizing tables
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Interactive Tables - | ODP CLI Docs" />
+
+
+Interactive tables open in a separate window ([PyWry](https://github.com/OpenBB-finance/pywry)). These provide methods for searching, sorting, filtering, exporting and even adapting settings directly on the table.
+
+:::tip
+All ODP CLI results are displayed in interactive tables by default, unless the interactive model is disabled from the `/settings` menu.
+:::
+
+<details>
+<summary>Table cheat sheet </summary>
+
+![Chart Intro (5)](https://user-images.githubusercontent.com/85772166/234315026-de098953-111b-4b69-9124-31530c01407a.png)
+
+</details>
+
+## Sorting
+
+Columns can be sorted ascending/descending/unsorted, by clicking the controls to the right of each header title.  The status of the filtering is shown as a blue indicator.
+
+![Sort Columns](https://user-images.githubusercontent.com/85772166/233248754-20c18390-a7af-490c-9571-876447b1b0ae.png)
+
+## Filtering
+
+The settings button, at the lower-left corner, displays choices for customizing the table. By selecting the `Type` to be `Advanced`, columns become filterable.
+
+![Table Settings](https://user-images.githubusercontent.com/85772166/233248876-0d788ff4-974d-4d92-8186-56864469870a.png)
+
+The columns can be filtered with min/max values or by letters, depending on the content of each column.
+
+![Filtered Tables](https://user-images.githubusercontent.com/85772166/233248923-45873bf1-de6b-40f8-a4aa-05e7c3d21ab0.png)
+
+## Hiding columns
+
+The table will scroll to the right as far as there are columns.  Columns can be removed from the table by clicking the icon to the right of the settings button and unchecking it from the list.
+
+![Select Columns](https://user-images.githubusercontent.com/85772166/233248976-849791a6-c126-437c-bb54-454ba6ea4fa2.png)
+
+## Select rows per page
+
+The number of rows per page is defined in the drop down selection near the center, at the bottom.
+
+![Rows per Page](https://user-images.githubusercontent.com/85772166/233249018-8269896d-72f7-4e72-a4d4-2715d1f11b96.png)
+
+## Freeze the Index and Column Headers
+
+Right-click on the index name to enable/disable freezing when scrolling to the right. Column headers are frozen by default.
+
+![Index Freeze](https://user-images.githubusercontent.com/85772166/234103702-0965dfbd-24ca-4a66-8c76-9fac28abcff8.png)
+
+## Exporting Data
+
+At the bottom-right corner of the table window, there is a button for exporting the data.  To the left, the drop down selection for `Type` can be defined as a CSV, XLSX, or PNG file.  Exporting the table as a PNG file will create a screenshot of the table at its current view, and data that is not visible will not be captured.
+
+![Export Data](https://user-images.githubusercontent.com/85772166/233249065-60728dd1-612e-4684-b196-892f3604c0f4.png)
+
+
+---
+
+---
+title: OpenBBUserData Folder
+sidebar_position: 8
+description: The OpenBBUserData folder is where exports, routines, and other user-related content is saved and stored. Its default location is the home of the system user account.
+keywords:
+- OpenBBUserData folder
+- settings
+- data
+- preferences
+- exports
+- CLI
+- save
+- routines
+- xlsx
+- csv
+- user_settings.json
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="OpenBBUserData Folder | ODP CLI Docs" />
+
+The OpenBBUserData folder is where exports, routines, and other user-related content is saved and stored.
+
+:::info
+If a new file is placed in the folder (like a Routine) the CLI will need to be reset before auto complete will recognize it.
+:::
+
+## Default Location
+
+Its default location is the home of the system user account, similar to the following paths:
+- macOS: `Macintosh HD/Users/<YOUR_USERNAME>/OpenBBUserData`
+- Windows: `C:/Users/<YOUR_USERNAME>/OpenBBUserData`
+
+This folder contains all things user-created. For example:
+
+- Exported files
+- Styles and themes
+- Routines
+- Logs
+
+:::note
+**Note:** With a WSL-enabled Windows installation, this folder will be under the Linux partition
+:::
+
+## Update Folder Location
+
+The location of this folder can be set by the user by changing the user configuration file: `/home/your-user/.openbb_platform/user_settings.json`.
+
+```json
+{
+...
+"preferences": {
+    "data_directory": "/path/to/NewOpenBBUserData",
+    "export_directory": "/path/to/NewOpenBBUserData"
+},
+...
+}
+```
+
+
+---
+
+---
+title: Quick Start
+sidebar_position: 2
+description: This page is a quick start guide for the ODP CLI.
+keywords:
+- quickstart
+- quick start
+- tutorial
+- getting started
+- cli
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Quick Start - Usage | ODP CLI Docs" />
+
+## Launch
+
+- Configure any data provider credentials in the [`user_settings.json`](/odp/python/settings/user_settings/api_keys) file.
+- Open a Terminal and activate the environment where the `openbb-cli` package was installed.
+- On the command line, enter: `openbb`
+
+![CLI Home](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/d1617c3b-c83d-4491-a7bc-986321fd7230)
+
+## Menus
+
+:::info
+Menus are distinguishable from commands by the character, `>`, on the left of the screen.
+:::
+
+Enter a menu by typing it out and pressing return.
+
+```console
+economy
+```
+
+![Economy Menu](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/b68491fc-d6c3-42a7-80db-bfe2aa848a5a)
+
+### Go Back One Level
+
+Return to the parent menu by entering either:
+
+- `..`
+- `q`
+
+### Go Back To Home
+
+Return to the base menu by entering either:
+
+- `/`
+- `home`
+
+### Jump Between Menus
+
+Use absolute paths to navigate from anywhere, to anywhere.
+
+From:
+
+```console
+/equity/calendar/earnings
+```
+
+To:
+
+```console
+/economy/calendar
+```
+
+## Commands
+
+Commands are displayed on-screen in a lighter colour, compared with menu items, and they will not have, `>`.
+
+Functions have a variety of parameters that differ by endpoint and provider. Use the `--help` dialogue to understand the nuances of any particular command.
+
+### How To Enter Parameters
+
+Parameters are all defined through the same pattern, `--argument`, followed by a space, and then the value.
+
+If the parameter is a boolean (true/false), there is no value to enter. Adding the `--argument` flags the parameter to be the opposite of its default state.
+
+:::danger
+The use of positional arguments is not supported.
+
+❌ `historical AAPL --start_date 2024-01-01`
+
+✅ `historical --symbol AAPL --start_date 2024-01-01`
+:::
+
+### Use Auto Complete
+
+The auto completion engine is triggered when the spacebar is pressed following any command, or parameter with a defined set of choices.
+
+After the first parameter has been set, remaining parameters will be triggered by entering `--`.
+
+```console
+historical --symbol AAPL --start_date 2024-01-01 --
+```
+
+![Auto Complete](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/78e68bbd-094e-4558-bce0-92b8d556fcaf)
+
+### Data Processing Commands
+
+Data processing extensions, like `openbb-technical` accept `--data` as an input.
+
+:::info
+Command outputs are cached. These can be check using the `results` command and are selected with the `--data` parameter.
+:::
+
+```console
+# Store the command output
+/equity/price/historical --symbol SPY --start_date 2024-01-01 --provider yfinance
+
+# Check results content
+results
+
+# Use the results
+/technical/rsi --data OBB0 --chart
+```
+
+![SPY RSI](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/b480da04-92e6-48e2-bccf-cebc16fb083a)
+
+## Help Dialogues
+
+Display the help dialogue by attaching, `--help` or `-h`, to any command.
+
+:::info
+Use this to identify the providers compatible with each parameter, if applicable.
+:::
+
+```console
+calendar --help
+```
+
+```console
+usage: calendar [--start_date START_DATE] [--end_date END_DATE] [--provider {fmp,nasdaq,tradingeconomics}] [--country COUNTRY] [--importance {Low,Medium,High}]
+                [--group {interest rate,inflation,bonds,consumer,gdp,government,housing,labour,markets,money,prices,trade,business}] [-h] [--export EXPORT]
+                [--sheet-name SHEET_NAME [SHEET_NAME ...]]
+
+Get the upcoming, or historical, economic calendar of global events.
+
+options:
+  --start_date START_DATE
+                        Start date of the data, in YYYY-MM-DD format.
+  --end_date END_DATE   End date of the data, in YYYY-MM-DD format.
+  --provider {fmp,nasdaq,tradingeconomics}
+                        The provider to use for the query, by default None.
+                            If None, the provider specified in defaults is selected or 'fmp' if there is
+                            no default.
+  --country COUNTRY     Country of the event. (provider: nasdaq, tradingeconomics)
+  -h, --help            show this help message
+  --export EXPORT       Export raw data into csv, json, xlsx and figure into png or jpg
+  --sheet-name SHEET_NAME [SHEET_NAME ...]
+                        Name of excel sheet to save data to. Only valid for .xlsx files.
+
+tradingeconomics:
+  --importance {Low,Medium,High}
+                        Importance of the event.
+  --group {interest rate,inflation,bonds,consumer,gdp,government,housing,labour,markets,money,prices,trade,business}
+                        Grouping of events
+
+```
+
+If the source selected was Nasdaq, `--provider nasdaq`, the `--importance` and `--group` parameters will be ignored.
+
+```console
+/economy/calendar --provider nasdaq --country united_states
+```
+
+| date                | country       | event                    | actual   | previous   | consensus   | description   |
+|:--------------------|:--------------|:-------------------------|:---------|:-----------|:------------|:--------------|
+| 2024-05-08 13:30:00 | United States | Fed Governor Cook Speaks | -        | -          | -           |               |
+| cont... | | | | | | |
+
+## Export Data
+
+Data can be exported as a CSV, JSON, or XLSX file, and can also be exported directly from the interactive tables and charts.
+
+### Named File
+
+This command exports the Nasdaq directory as a specific CSV file. The path to the file is displayed on-screen.
+
+```console
+/equity/search --provider nasdaq --export nasdaq_directory.csv
+```
+
+```console
+Saved file: /Users/myusername/OpenBBUserData/nasdaq_directory.csv
+```
+
+### Unnamed File
+
+If only supplied with the file type, the export will be given a generic name beginning with the date and time.
+
+```console
+/equity/search --provider nasdaq --export csv
+```
+
+```
+Saved file: /Users/myusername/OpenBBUserData/20240508_145308_controllers_search.csv
+```
+
+### Specify Sheet Name
+
+Exports can share the same `.xlsx` file by providing a `--sheet-name`.
+
+```console
+/equity/search --provider nasdaq --export directory.xlsx --sheet-name nasdaq
+```
+
+## Run Multiple Commands
+
+A chain of commands can be run from a single line, separate each process with `/`. The example below will draw two charts and can be pasted as a single line.
+
+```console
+/equity/price/historical --symbol AAPL,MSFT,GOOGL,AMZN,META,NVDA,NFLX,TSLA,QQQ --start_date 2022-01-01 --provider yfinance --chart/performance --symbol AAPL,MSFT,GOOGL,AMZN,META,NVDA,NFLX,TSLA,QQQ --provider finviz --chart
+```
+
+## Example Routine
+
+To demonstrate how multiple commands are sequenced as a script, try running the example Routine.
+
+```console
+/exe --example
+```
+
+
+---
+
+---
+title: Advanced Routines
+sidebar_position: 5
+description: This page provides guidance on creating and running advanced workflows in the ODP CLI by
+  introducing variables and arguments for routines. It explains input variables,
+  relative time keyword variables, internal script variables and creating loops for
+  batch execution.
+keywords:
+- automated workflows
+- routines
+- arguments
+- variables
+- relative time keywords
+- internal script variables
+- loops
+- batch execution
+- Tutorial
+- Running Scripts
+- Executing Commands
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Advanced Routines - Routines | ODP CLI Docs" />
+
+## Input Variables
+
+Arguments are variables referenced within the `.openbb` script as `$ARGV` or `$ARGV[0]`, `$ARGV[1]`, and so on. They are provided in the CLI when running `exe` by adding the `--input` flag, followed by the variables separated by commas.
+
+### Example
+
+```text
+# This script requires you to use arguments. This can be done with the following:
+# exe --file routines_template_with_input.openbb -i TSLA
+# Replace the name of the file with your file.
+
+# Navigate to the menu
+/equity/price
+
+# Load the data and display a chart
+historical --symbol $ARGV --chart
+```
+
+## Set Variables
+
+In addition to external variables using the keyword, `ARGV`, internal variables can be defined with the, `$`, character.
+
+Note that the variable can have a single element or can be constituted by an array where elements are separated using a comma “,”.
+
+### Internal Variables Example
+
+```text
+# Example routine with internal variables.
+
+$TICKERS = XLE,XOP,XLB,XLI,XLP,XLY,XHE,XLV,XLF,KRE,XLK,XLC,XLU,XLRE
+
+/equity
+
+price
+
+historical --symbol $TICKERS --provider yfinance --start_date 2024-01-01 --chart
+
+home
+```
+
+## Relative Time Keyword Variables
+
+In addition to the powerful variables discussed earlier, OpenBB also supports the usage of relative keywords, particularly for working with dates. These relative keywords provide flexibility when specifying dates about the current day. There are four types of relative keywords:
+
+1. **AGO**: Denotes a time in the past relative to the present day. Valid examples include `$365DAYSAGO`, `$12MONTHSAGO`, `$1YEARSAGO`.
+
+2. **FROMNOW**: Denotes a time in the future relative to the present day. Valid examples include `$365DAYSFROMNOW`, `$12MONTHSFROMNOW`, `$1YEARSFROMNOW`.
+
+3. **LAST**: Refers to the last specific day of the week or month that has occurred. Valid examples include `$LASTMONDAY`, `$LASTJUNE`.
+
+4. **NEXT**: Refers to the next specific day of the week or month that will occur. Valid examples include `$NEXTFRIDAY`, `$NEXTNOVEMBER`.
+
+The result will be a date with the conventional date associated with OpenBB, i.e. `YYYY-MM-DD`.
+
+### Relative Time Example
+
+```text
+$TICKERS = XLE,XOP,XLB,XLI,XLP,XLY,XHE,XLV,XLF,KRE,XLK,XLC,XLU,XLRE
+
+/equity
+
+price
+
+historical --symbol $TICKERS --provider yfinance --start_date $3MONTHSAGO --chart
+
+..
+
+calendar
+
+earnings --start_date $NEXTMONDAY --end_date $NEXTFRIDAY --provider nasdaq
+
+home
+```
+
+## Foreach Loop
+
+Finally, what scripting language would this be if there were no loops? For this, we were inspired by MatLab. The loops in OpenBB utilize the foreach and end convention, allowing for iteration through a list of variables or arguments to execute a sequence of commands.
+
+To create a foreach loop, you need to follow these steps:
+
+1. Create the loop header using the syntax: `foreach $$VAR in X` where `X` represents either an argument or a list of variables. It's worth noting that you can choose alternative names for the `$$VAR` variable, as long as the `$$` convention is maintained.
+
+2. Insert the commands you wish to repeat on the subsequent lines.
+
+3. Conclude the loop with the keyword `end`.
+
+### Loop Example
+
+```text
+# Iterates through ARGV elements.
+foreach $$VAR in $ARGV[1:]
+    /equity/fundamental/filings --symbol $$VAR --provider sec
+end
+```
+
+
+---
+
+---
+title: Routines
+---
+
+import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Routines - | ODP CLI Docs" />
+
+<ul className="grid grid-cols-1 gap-4 -ml-6">
+  <NewReferenceCard
+    title="Introduction to Routines"
+    description="Create repeatable workflows with OpenBB routines that you can share with colleagues."
+    url="routines/introduction-to-routines"
+  />
+  <NewReferenceCard
+    title="Routine Macro Recorder"
+    description="Leverage the macro recorder to quickly build your favourite workflow routines."
+    url="routines/routine-macro-recorder"
+  />
+  <NewReferenceCard
+    title="Advanced Routines"
+    description="Become an ODP CLI power user by understanding routines inputs, setting variables, creating loops and more."
+    url="routines/advanced-routines"
+  />
+</ul>
+
+
+---
+
+---
+title: Introduction to Routines
+sidebar_position: 1
+description: The page provides a detailed introduction to OpenBB Routines, which allow
+  users to automate processes and repetitive tasks in financial analysis and data
+  collection. It explains conventions, basic scripts, routine execution, and guides users on getting
+  started with an example.
+keywords:
+- OpenBB Routines
+- automated processes
+- repetitive tasks
+- data collection
+- basic script
+- routine execution
+- automation
+- routines
+- cli
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Introduction to Routines - Routines | ODP CLI Docs" />
+
+## Overview
+
+OpenBB Routines allows users to capture and write simple scripts for automating processes and repetitive tasks. In essence, these are text plain-text files that can be created or modified in any basic text editor with the only difference being the `.openbb` extension.
+
+Other software like STATA, SPSS, and R-Studio share similar functionality in the area of Econometrics and the OpenBB routine scripts venture into the area of financial analysis and data collection to speed up the process.
+
+Routines make it easy to automate a series of processes, and this includes mining and dumping large amounts of data to organized spreadsheets.  Making use of `--export` and `--sheet-name`, data collection is more efficient and reliable, with results that are easily replicable.
+
+## Pipeline of Commands
+
+One of the main objectives of the ODP CLI is to automate a user's investment research workflow - not just a single command, but the complete process.  This is where the pipeline of commands comes in,  running a sequence of commands.
+
+An example of a pipeline of commands is:
+
+```console
+/equity/price/historical --symbol AAPL/../../technical/ema --data OBB0 --length 50
+```
+
+Which will perform a exponential moving average (`ema`) on the historical price of Apple (`AAPL`).
+
+### Step-by-Step Explanation
+
+This will do the following:
+
+1. `equity` - Go into `equity` menu.
+
+2. `price` - Go into `price` sub-menu.
+
+3. `historical --symbol AAPL` - Load historical price data for Apple.
+
+4. `..` (X2) will walk back to the root menu.
+
+5. `technical` -  Go into Technical Analysis (`technical`) menu.
+
+6. `ema --data OBB0 --length 50` - Run the exponential moving average indicator with windows of length 50 (`--length 50`) on the last cached result (`--data OBB0`)
+
+## Routine execution
+
+Run a routine file from the main menu, with the `exe` command. Try, `exe --example`, to get a sense of what this functionality does. Below, the `--help` dialogue is displayed.
+
+```console
+/exe -h
+```
+
+```console
+usage: exe [--file FILE [FILE ...]] [-i ROUTINE_ARGS] [-e] [--url URL] [-h]
+
+Execute automated routine script. For an example, please use `exe --example` and for documentation and to learn how create your own script type `about exe`.
+
+optional arguments:
+  --file FILE [FILE ...], -f FILE [FILE ...]
+                        The path or .openbb file to run. (default: None)
+  -i ROUTINE_ARGS, --input ROUTINE_ARGS
+                        Select multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD (default: None)
+  -e, --example         Run an example script to understand how routines can be used. (default: False)
+  --url URL             URL to run openbb script from. (default: None)
+  -h, --help            show this help message (default: False)
+
+For more information and examples, use 'about exe' to access the related guide.
+```
+
+## Basic Script
+
+The most basic script style contains 2 main elements:
+
+- **Comments**: any text after a hashtag (`#`) is referred to as a comment. This is used to explain what is happening within the line below and is ignored when the file is executed.
+- **Commands**: any text *without* a hashtag is being run inside the CLI as if the user had prompted that line in the terminal. Note that this means that you are able to create a pipeline of commands in a single line, i.e. `equity/price/historical --symbol AAPL --provider fmp` is a valid line for the script.
+
+For instance, the text below corresponds to the example file that OpenBB provides.
+
+```console
+# Navigate into the price sub-menu of the equity module.
+equity/price
+
+# Load a company ticker, e.g. Apple
+historical --symbol AAPL --provider yfinance
+
+# Show a candle chart with a 20 day Moving Average
+/technical/ema --data OBB0 --length 20
+
+# Switch over to the Fundamental Analysis menu
+/equity/fundamental
+
+# Show balance sheet
+balance --symbol aapl --provider yfinance
+
+# Show cash flow statement
+cash --symbol aapl --provider yfinance
+
+# Show income statement
+income --symbol aapl --provider yfinance
+
+# Return to home
+home
+```
+
+## Getting started
+
+As a starting point, let's use the example above.
+
+1. Create a new text file with the name `routines_template.openbb` and copy and paste the routine above.
+
+2. Move the file inside the `routines` folder within the [OpenBBUserData](/odp/cli/openbbuserdata) folder and, optionally, adjust the name to your liking.
+
+3. Open up the CLI, and type `exe --file routines_template`.  If you changed the name of the file, then replace, `routines_template`, with that.  As long as the file remains in the `~/OpenBBUserData/routines` folder, the CLI's auto-completer will provide it as a choice.
+
+
+---
+
+---
+title: Routine Macro Recorder
+sidebar_position: 4
+description: Learn how to use the macro recorder in OpenBB to start saving commands
+  and automate common tasks with scripts. This page guides you through the process
+  of recording, saving, and accessing your recorded routines.
+keywords:
+- macro recorder
+- script routines
+- global commands
+- command recording
+- routine script
+- workspace main menu
+- exe --file
+- OpenBBUserData
+- routines folder
+- cli
+- record
+- stop
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Routine Macro Recorder - Routines - Usage | ODP CLI Docs" />
+
+OpenBB script routines can be captured with the macro recorder, controlled with global commands. Enter, `record`, to start saving commands, and then, `stop`, terminates the recording. This means that any command you run will be captured in the script; and on `stop`, it will be saved to the `~/OpenBBUserData/routines/` folder.
+
+For example:
+
+```console
+record -n sample
+
+/equity/price/historical --symbol SPY --provider cboe --interval 1m/home/derivatives/options/chains --symbol SPY --provider cboe/home/stop/r
+```
+
+The final command after `stop`, `r`, resets the CLI so that the routine is presented as a choice in the `exe` command.
+
+It can now be played back by entering:
+
+```console
+/exe --file sample.openbb
+```
+
+:::tip
+The routine can be edited to replace parameter values with input variables - e.g, `$ARGV[0]`, `$ARGV[1]`, etc.
+:::
+
+
+---
+
+---
+title: Structure and Navigation
+sidebar_position: 3
+description: This page describes the layout and structure of the ODP CLI, as well as how to navigate it.
+keywords:
+- CLI application
+- ODP CLI
+- OpenBB Platform CLI
+- structure
+- navigation
+- Command Line Interface
+- navigating
+- Home
+- commands
+- menus
+- Absolute paths
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Structure and Navigation | ODP CLI Docs" />
+
+## Structure
+
+The ODP CLI is a Command Line Interface (CLI) application. Functions (commands) are called through the keyboard with results returned as charts, tables, or text.  Charts and tables (if enabled) are displayed in a new window, and are fully interactive, while text prints directly to the Terminal screen.
+
+A menu is a collection of commands (and sub-menus). A menu can be distinguished from a command because the former has a `>` on the left. The color of a command and a menu also differ.
+
+## Navigation
+
+Navigating through the CLI menus is similar to traversing folders from any operating system's command line prompt. The `/home` screen is the main directory where everything begins, and the menus are paths branched from the main. Instead of `C:\Users\OpenBB\Documents`, you'll have something like `/equity/price`. Instead of `cd ..`, you can do `..` to return the menu right above. To go back to the root menu you can do `/`.
+
+### Absolute Paths
+
+Absolute paths are also valid to-and-from any point. From the `/equity/price` menu, you can go directly to `crypto` menu with: `/crypto`. Note the forward slash at the start to denote the "absolute" path.
+
+### Home
+
+Return to the Home screen from anywhere by entering any of the following:
+
+- `/`
+- `home`
