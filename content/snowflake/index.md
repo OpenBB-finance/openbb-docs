@@ -42,26 +42,20 @@ This guide walks you through the first steps after installing.
 
 ## 1. Installation and Warehouse Configuration
 
-After installing the app, you must bind a warehouse reference for the app to function properly.
+**How to bind the warehouse (required):**
+
+You must give the app access to the default warehouse for whatever user will be using the application.
+
+```sql
+GRANT USAGE ON WAREHOUSE <user_default_warehouse> TO APPLICATION <app_name>;
+GRANT CALLER USAGE ON WAREHOUSE <user_default_warehouse> TO APPLICATION <app_name>;
+```
 
 **What the warehouse is used for:**
 
 - Executing Python notebook code via the `app_execute_py()` procedure
 - Running analytical queries from within the OpenBB UI
 - Backend operations that require compute resources
-
-**How to bind the warehouse (required):**
-
-```sql
-GRANT USAGE ON WAREHOUSE SYSADMIN_X_SMALL TO APPLICATION openbb_native_app;
-GRANT CALLER USAGE ON WAREHOUSE SYSADMIN_X_SMALL TO APPLICATION openbb_native_app;
-```
-
-**Choosing a warehouse:**
-
-- Select a warehouse with appropriate size for your workload (X-Small to start is usually fine)
-- Ensure your users have USAGE privilege on the selected warehouse
-- The warehouse binding is permanent for this app installation (but can be changed)
 
 ---
 
@@ -83,8 +77,8 @@ GRANT DATABASE ROLE SNOWFLAKE.CORTEX_AGENT_USER TO APPLICATION <app_name>;
 ```sql
 ALTER ACCOUNT SET CORTEX_ENABLED_CROSS_REGION = 'ANY_REGION';
 
-GRANT DATABASE ROLE SNOWFLAKE.CORTEX_USER TO APPLICATION openbb_native_app;
-GRANT DATABASE ROLE SNOWFLAKE.CORTEX_AGENT_USER TO APPLICATION openbb_native_app;
+GRANT DATABASE ROLE SNOWFLAKE.CORTEX_USER TO APPLICATION <app_name>;
+GRANT DATABASE ROLE SNOWFLAKE.CORTEX_AGENT_USER TO APPLICATION <app_name>;
 ```
 
 **Notes:**
@@ -100,33 +94,35 @@ GRANT DATABASE ROLE SNOWFLAKE.CORTEX_AGENT_USER TO APPLICATION openbb_native_app
 The app defines two application roles:
 
 - **`app_user`** → run the app and access the UI
-- **`app_admin`** → manage the service (start/stop/monitor)
+- **`app_admin`** → manage the service (start/stop/monitor/scale)
 
 As an account admin, map these roles to your own roles:
 
 ```sql
 -- Example: grant app roles to a role named OPENBB_TESTERS
-CREATE ROLE IF NOT EXISTS OPENBB_TESTERS;
+CREATE ROLE IF NOT EXISTS <role_name>;
 
-GRANT APPLICATION ROLE <app_name>.app_user  TO ROLE OPENBB_TESTERS;
-GRANT APPLICATION ROLE <app_name>.app_admin TO ROLE OPENBB_TESTERS;
+GRANT APPLICATION ROLE <app_name>.app_user  TO ROLE <role_name>;
+GRANT APPLICATION ROLE <app_name>.app_admin TO ROLE <role_name>;
 
 -- Assign that role to a user
-GRANT ROLE OPENBB_TESTERS TO USER <your_username>;
+GRANT ROLE <role_name> TO USER <your_username>;
 ```
 
 ---
 
 ## 4. Automatic Service Start
 
-The OpenBB service starts **automatically** after installation completes.
+The OpenBB services start **automatically** after installation completes.
 
 The app uses Snowflake's lifecycle callback system to automatically:
 
-- Create the compute pool
-- Start the container services
+- Create two compute pools (backend + app)
+- Create the warehouse used for the app
+- Start the backend service (database + Redis)
+- Start the app service (API + AI) after backend is ready
 
-**The service starts automatically when:**
+**The services start automatically when:**
 
 - The app is first installed
 - A new version or patch is deployed
@@ -135,91 +131,144 @@ The app uses Snowflake's lifecycle callback system to automatically:
 **Check service status:**
 
 ```sql
-CALL <app_name>.v1.get_service_status();
+CALL <app_name>.core.get_service_status();
+-- Returns: "Backend: READY, App: READY"
 ```
 
-**Example:**
+**Note:** The services may take 3-5 minutes to fully start after installation.
+
+---
+
+## 5. Manual Service Control (Optional)
+
+If you need to manually control the services, these procedures are available to admins:
+
+### Start/Stop All Services
 
 ```sql
-CALL openbb_native_app.v1.get_service_status();
-```
-
-**Note:** The service may take 2-3 minutes to fully start after installation.
-
-### Manual Service Control (Optional)
-
-If you need to manually control the service, these procedures are available to admins:
-
-```sql
--- Start/restart the service (usually not needed - automatic on install/upgrade)
+-- Start all services (usually not needed - automatic on install/upgrade)
 CALL <app_name>.core.start_openbb_service();
 
--- Stop the service
+-- Stop all services (suspends backend to preserve data, drops app service)
 CALL <app_name>.core.stop_openbb_service();
 
--- Restart the service (pulls latest container images)
+-- Restart all services
 CALL <app_name>.core.restart_openbb_service();
 ```
 
-### Viewing Container Logs (Troubleshooting)
+### Control Services Individually
+
+```sql
+-- Stop just the app service (safe - stateless)
+CALL <app_name>.core.stop_app_service();
+
+-- Suspend backend service (preserves database data)
+CALL <app_name>.core.suspend_backend_service();
+
+-- Resume backend service from suspended state
+CALL <app_name>.core.resume_backend_service();
+```
+
+**Important:** Never DROP the backend service directly - use `suspend_backend_service()` to preserve your Postgres data.
+
+---
+
+## 6. Scaling the App (Admin)
+
+Admins can adjust scaling parameters for the app pool and service:
+
+### Adjust Compute Pool Size
+
+```sql
+-- Set app pool to scale between 1 and 3 nodes (max 5)
+CALL <app_name>.core.set_app_pool_size(1, 3);
+```
+
+### Adjust Service Instance Count
+
+```sql
+-- Set app service to scale between 1 and 4 instances (max 8)
+CALL <app_name>.core.set_app_service_scale(1, 4);
+```
+
+**Notes:**
+
+- Backend pool is fixed at 1 node (required for block storage)
+- Contact OpenBB for limits higher than 5 nodes / 8 instances
+
+---
+
+## 7. Viewing Container Logs (Troubleshooting)
 
 Admins can view logs from each container to troubleshoot issues:
 
 ```sql
--- Get last 100 lines from API container
-CALL <app_name>.core.get_api_logs(100);
+-- App service containers
+CALL <app_name>.core.get_api_logs(100);    -- API/UI container
+CALL <app_name>.core.get_ai_logs(100);     -- ADA (AI copilot) container
 
--- Get last 100 lines from ADA (AI copilot) container
-CALL <app_name>.core.get_ai_logs(100);
+-- Backend service containers
+CALL <app_name>.core.get_db_logs(100);     -- PostgreSQL database
+CALL <app_name>.core.get_redis_logs(100);  -- Redis cache
 
--- Get last 100 lines from database container
-CALL <app_name>.core.get_db_logs(100);
-
--- Get last 100 lines from Redis container
-CALL <app_name>.core.get_redis_logs(100);
-
--- Or use the generic procedure for any container
-CALL <app_name>.core.get_container_logs('container_name', 100);
+-- Generic procedure for any container
+CALL <app_name>.core.get_container_logs('core.openbb_app', 'api', 100);
+CALL <app_name>.core.get_container_logs('core.openbb_backend', 'db', 100);
 ```
 
-**Example:**
+---
 
-```sql
--- View API logs
-CALL openbb_native_app.core.get_api_logs(500);
-
--- View ADA logs
-CALL openbb_native_app.core.get_ai_logs(500);
-```
-
-## 5. Grant Your Data to the App (read-only)
+## 8. Grant Your Data to the App (read-only)
 
 By default, the app cannot see your data. As an admin, grant the APPLICATION read-only access to the databases/schemas/tables you want the app to expose in its UI.
 
 > Replace `<app_name>` with your installed application name (e.g., `openbb_native_app`), and adjust database/schema names to your environment.
 
-**Note:** The warehouse was already configured during installation, so you don't need to grant warehouse access separately.
-
-### Option A — Grant at the database level (all schemas)
+### Grant at the database level (all schemas)
 
 Read-only across an entire database, including future objects.
 
 ```sql
 -- Database-wide read
-GRANT CALLER USAGE ON DATABASE SEC_DEMO TO APPLICATION openbb_native_app;
-GRANT CALLER USAGE ON SCHEMA SEC_DEMO.SEC_DEMO TO APPLICATION openbb_native_app;
+GRANT CALLER USAGE ON DATABASE <database_name> TO APPLICATION <app_name>;
+GRANT CALLER USAGE ON SCHEMA <database_name>.<schema_name> TO APPLICATION <app_name>;
 
 -- For ALL TABLES/VIEWS, use INHERITED CALLER
-GRANT INHERITED CALLER SELECT ON ALL TABLES IN SCHEMA SEC_DEMO.SEC_DEMO TO APPLICATION openbb_native_app;
-GRANT INHERITED CALLER SELECT ON ALL VIEWS IN SCHEMA SEC_DEMO.SEC_DEMO TO APPLICATION openbb_native_app;
+GRANT INHERITED CALLER SELECT ON ALL TABLES IN SCHEMA <database_name>.<schema_name> TO APPLICATION <app_name>;
+GRANT INHERITED CALLER SELECT ON ALL VIEWS IN SCHEMA <database_name>.<schema_name> TO APPLICATION <app_name>;
+
 -- If you have procedures to bring in
-GRANT INHERITED CALLER USAGE ON ALL PROCEDURES IN SCHEMA SEC_DEMO.SEC_DEMO TO APPLICATION openbb_native_app;
+GRANT INHERITED CALLER USAGE ON ALL PROCEDURES IN SCHEMA <database_name>.<schema_name> TO APPLICATION <app_name>;
 ```
+
+**Example (for a shared database):**
 
 ```sql
 -- Grant Shared Database Access
-GRANT CALLER USAGE ON DATABASE GLOBAL_WEATHER__CLIMATE_DATA_FOR_BI TO APPLICATION openbb_native_app;
-GRANT INHERITED CALLER USAGE ON ALL SCHEMAS IN DATABASE GLOBAL_WEATHER__CLIMATE_DATA_FOR_BI TO APPLICATION openbb_native_app;
-GRANT INHERITED CALLER SELECT ON ALL VIEWS IN DATABASE GLOBAL_WEATHER__CLIMATE_DATA_FOR_BI TO APPLICATION openbb_native_app;
-GRANT INHERITED CALLER SELECT ON ALL TABLES IN DATABASE GLOBAL_WEATHER__CLIMATE_DATA_FOR_BI TO APPLICATION openbb_native_app;
+GRANT CALLER USAGE ON DATABASE GLOBAL_WEATHER__CLIMATE_DATA_FOR_BI TO APPLICATION <app_name>;
+GRANT INHERITED CALLER USAGE ON ALL SCHEMAS IN DATABASE GLOBAL_WEATHER__CLIMATE_DATA_FOR_BI TO APPLICATION <app_name>;
+GRANT INHERITED CALLER SELECT ON ALL VIEWS IN DATABASE GLOBAL_WEATHER__CLIMATE_DATA_FOR_BI TO APPLICATION <app_name>;
+GRANT INHERITED CALLER SELECT ON ALL TABLES IN DATABASE GLOBAL_WEATHER__CLIMATE_DATA_FOR_BI TO APPLICATION <app_name>;
+GRANT IMPORTED PRIVILEGES ON ALL TABLES IN DATABASE GLOBAL_WEATHER__CLIMATE_DATA_FOR_BI TO ROLE ANALYTICS_USER;
+GRANT IMPORTED PRIVILEGES ON ALL VIEWS IN DATABASE GLOBAL_WEATHER__CLIMATE_DATA_FOR_BI TO ROLE ANALYTICS_USER;
 ```
+
+---
+
+## Quick Reference
+
+| Procedure | Description |
+|-----------|-------------|
+| `get_service_status()` | Check if services are running |
+| `start_openbb_service()` | Start all services |
+| `stop_openbb_service()` | Stop all services (safe) |
+| `restart_openbb_service()` | Restart all services |
+| `suspend_backend_service()` | Suspend backend (preserves data) |
+| `resume_backend_service()` | Resume backend from suspend |
+| `stop_app_service()` | Stop app service only |
+| `set_app_pool_size(min, max)` | Adjust app pool nodes (max 5) |
+| `set_app_service_scale(min, max)` | Adjust app instances (max 8) |
+| `get_api_logs(n)` | View API container logs |
+| `get_ai_logs(n)` | View ADA container logs |
+| `get_db_logs(n)` | View Postgres logs |
+| `get_redis_logs(n)` | View Redis logs |
