@@ -222,34 +222,39 @@ export default function PrimaryMenu() {
 
 	const isHome = location.pathname === "/";
 	const isWorkspace = location.pathname.startsWith("/workspace");
+	const isSnowflake = location.pathname.startsWith("/snowflake");
 	const isODP =
 		location.pathname.startsWith("/odp") ||
 		location.pathname.startsWith("/python") ||
 		location.pathname.startsWith("/cli");
 
-	const { workspaceSections, odpSections } = useMemo(() => {
-		if (!sidebarItems?.length) return { workspaceSections: [], odpSections: [] };
+	const { workspaceSections, odpSections, snowflakeSections } = useMemo(() => {
+		if (!sidebarItems?.length) return { workspaceSections: [], odpSections: [], snowflakeSections: [] };
 
 		const workspace = [];
 		const odp = [];
+		const snowflake = [];
 
 		sidebarItems.forEach((item) => {
 			if (item.type !== "category") return;
 
 			const label = item.label?.toLowerCase() || "";
-			if (label.includes("odp") || label.includes("desktop") || label.includes("python") || label.includes("cli")) {
+			if (label.includes("snowflake")) {
+				snowflake.push(item);
+			} else if (label.includes("odp") || label.includes("desktop") || label.includes("python") || label.includes("cli")) {
 				odp.push(item);
 			} else {
 				workspace.push(item);
 			}
 		});
 
-		return { workspaceSections: workspace, odpSections: odp };
+		return { workspaceSections: workspace, odpSections: odp, snowflakeSections: snowflake };
 	}, [sidebarItems]);
 
 	const [mainSections, setMainSections] = useState(() => ({
 		workspace: isWorkspace,
 		odp: isODP,
+		snowflake: isSnowflake,
 	}));
 
 	const [expandedItems, setExpandedItems] = useState(() =>
@@ -260,9 +265,10 @@ export default function PrimaryMenu() {
 		setMainSections({
 			workspace: isWorkspace,
 			odp: isODP,
+			snowflake: isSnowflake,
 		});
 		setExpandedItems(getInitialExpandedItems(sidebarItems, location.pathname));
-	}, [location.pathname, sidebarItems, isWorkspace, isODP]);
+	}, [location.pathname, sidebarItems, isWorkspace, isODP, isSnowflake]);
 
 	const toggleMainSection = (section) => {
 		setMainSections((prev) => ({
@@ -313,23 +319,45 @@ export default function PrimaryMenu() {
 					))}
 				</MainSection>
 
-				<MainSection
-					title="ODP"
-					isExpanded={mainSections.odp}
-					onToggle={() => toggleMainSection("odp")}
-					isActive={isODP}
-				>
-					{odpSections.map((section, idx) => (
-						<SidebarSection
-							key={idx}
-							sectionItem={section}
-							mobileSidebar={mobileSidebar}
-							location={location}
-							expandedItems={expandedItems}
-							toggleExpanded={toggleExpanded}
-						/>
-					))}
-				</MainSection>
+				{!isSnowflake && (
+					<MainSection
+						title="ODP"
+						isExpanded={mainSections.odp}
+						onToggle={() => toggleMainSection("odp")}
+						isActive={isODP}
+					>
+						{odpSections.map((section, idx) => (
+							<SidebarSection
+								key={idx}
+								sectionItem={section}
+								mobileSidebar={mobileSidebar}
+								location={location}
+								expandedItems={expandedItems}
+								toggleExpanded={toggleExpanded}
+							/>
+						))}
+					</MainSection>
+				)}
+
+				{isSnowflake && (
+					<MainSection
+						title="Snowflake"
+						isExpanded={mainSections.snowflake}
+						onToggle={() => toggleMainSection("snowflake")}
+						isActive={isSnowflake}
+					>
+						{snowflakeSections.map((section, idx) => (
+							<SidebarSection
+								key={idx}
+								sectionItem={section}
+								mobileSidebar={mobileSidebar}
+								location={location}
+								expandedItems={expandedItems}
+								toggleExpanded={toggleExpanded}
+							/>
+						))}
+					</MainSection>
+				)}
 
 				<div className="mobile-menu-login">
 					<a
