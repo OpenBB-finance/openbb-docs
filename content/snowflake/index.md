@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 Welcome to the OpenBB Native App!
 This guide walks you through the first steps after installing.
 
----
-
 ## Security Notice: Python Execution Capability
 
 **Important:** This app includes a Python notebook execution feature that allows users to run custom Python code within their Snowflake environment.
@@ -46,22 +44,23 @@ This guide walks you through the first steps after installing.
 
 You must give the app access to the default warehouse for whatever user will be using the application.
 
+The App will install its own warehouse but that is for some app related setup / use.
+
 ```sql
 GRANT USAGE ON WAREHOUSE <user_default_warehouse> TO APPLICATION <app_name>;
 GRANT CALLER USAGE ON WAREHOUSE <user_default_warehouse> TO APPLICATION <app_name>;
 ```
 
-**What the warehouse is used for:**
+**What the App warehouse is used for:**
 
 - Executing Python notebook code via the `app_execute_py()` procedure
-- Running analytical queries from within the OpenBB UI
 - Backend operations that require compute resources
 
 ---
 
 ## 2. Grant Cortex AI Privileges (Required for AI Features)
 
-For the AI/Agent functionality to work, you must enable Cortex cross-region support and grant Cortex database roles to the application. Run these commands as an **ACCOUNTADMIN**:
+For the AI/Agent functionality to work, you must enable Cortex cross-region support and grant Cortex database roles to the application. Some of these may already be true but this is the full list of commands to run. Run these commands as an **ACCOUNTADMIN**:
 
 ```sql
 -- Enable Cortex to work across regions (account-level setting)
@@ -89,7 +88,7 @@ GRANT DATABASE ROLE SNOWFLAKE.CORTEX_AGENT_USER TO APPLICATION <app_name>;
 
 ---
 
-## 3. Map App Roles to Your Account Roles
+## 3. Map App Roles to Your Account Roles (Optional)
 
 The app defines two application roles:
 
@@ -100,18 +99,55 @@ As an account admin, map these roles to your own roles:
 
 ```sql
 -- Example: grant app roles to a role named OPENBB_TESTERS
-CREATE ROLE IF NOT EXISTS <role_name>;
+CREATE ROLE IF NOT EXISTS OPENBB_TESTERS;
 
-GRANT APPLICATION ROLE <app_name>.app_user  TO ROLE <role_name>;
-GRANT APPLICATION ROLE <app_name>.app_admin TO ROLE <role_name>;
+GRANT APPLICATION ROLE <app_name>.app_user  TO ROLE OPENBB_TESTERS;
+GRANT APPLICATION ROLE <app_name>.app_admin TO ROLE OPENBB_TESTERS;
 
 -- Assign that role to a user
-GRANT ROLE <role_name> TO USER <your_username>;
+GRANT ROLE OPENBB_TESTERS TO USER <your_username>;
+```
+
+## 4. Grant Database/Schema/Table access to the App (read-only)
+
+By default, the app cannot see your data until it is explicitly shared with the application. As an admin, grant the APPLICATION access to the databases/schemas/tables you want the app to expose in its UI. The user will also need access to these Databases since every call is made as the user.
+
+> Replace `<app_name>` with your installed application name (e.g., `openbb_native_app`), and adjust database/schema names to your environment.
+
+**Example (for an owned database):**
+
+```sql
+-- Database-wide read
+GRANT CALLER USAGE ON DATABASE <database_name> TO APPLICATION <app_name>;
+GRANT CALLER USAGE ON SCHEMA <database_name>.<schema_name> TO APPLICATION <app_name>;
+GRANT INHERITED CALLER SELECT ON ALL TABLES IN SCHEMA <database_name>.<schema_name> TO APPLICATION <app_name>;
+GRANT INHERITED CALLER SELECT ON ALL VIEWS IN SCHEMA <database_name>.<schema_name> TO APPLICATION <app_name>;
+
+-- If you have procedures to bring in
+GRANT INHERITED CALLER USAGE ON ALL PROCEDURES IN SCHEMA <database_name>.<schema_name> TO APPLICATION <app_name>;
+```
+
+**Example (for a shared database):**
+
+Note : The syntax is a bit different for shared.
+
+```sql
+-- Grant Shared Database Access
+GRANT CALLER USAGE ON DATABASE GLOBAL_WEATHER__CLIMATE_DATA_FOR_BI TO APPLICATION <app_name>;
+GRANT INHERITED CALLER USAGE ON ALL SCHEMAS IN DATABASE GLOBAL_WEATHER__CLIMATE_DATA_FOR_BI TO APPLICATION <app_name>;
+GRANT INHERITED CALLER SELECT ON ALL VIEWS IN DATABASE GLOBAL_WEATHER__CLIMATE_DATA_FOR_BI TO APPLICATION <app_name>;
+GRANT INHERITED CALLER SELECT ON ALL TABLES IN DATABASE GLOBAL_WEATHER__CLIMATE_DATA_FOR_BI TO APPLICATION <app_name>;
+GRANT IMPORTED PRIVILEGES ON ALL TABLES IN DATABASE GLOBAL_WEATHER__CLIMATE_DATA_FOR_BI TO ROLE ANALYTICS_USER;
+GRANT IMPORTED PRIVILEGES ON ALL VIEWS IN DATABASE GLOBAL_WEATHER__CLIMATE_DATA_FOR_BI TO ROLE ANALYTICS_USER;
 ```
 
 ---
 
-## 4. Automatic Service Start
+Now when you refresh the page in the application you will see your table and views as widgets in the search menu.
+
+## Service Administration
+
+## 1. Automatic Service Start
 
 The OpenBB services start **automatically** after installation completes.
 
@@ -139,7 +175,7 @@ CALL <app_name>.core.get_service_status();
 
 ---
 
-## 5. Manual Service Control (Optional)
+## 2. Manual Service Control (Optional)
 
 If you need to manually control the services, these procedures are available to admins:
 
@@ -173,7 +209,7 @@ CALL <app_name>.core.resume_backend_service();
 
 ---
 
-## 6. Scaling the App (Admin)
+## 3. Scaling the App (Admin)
 
 Admins can adjust scaling parameters for the app pool and service:
 
@@ -198,7 +234,9 @@ CALL <app_name>.core.set_app_service_scale(1, 4);
 
 ---
 
-## 7. Viewing Container Logs (Troubleshooting)
+## Troubleshooting logs
+
+## 4. Viewing Container Logs (Troubleshooting)
 
 Admins can view logs from each container to troubleshoot issues:
 
@@ -214,43 +252,6 @@ CALL <app_name>.core.get_redis_logs(100);  -- Redis cache
 -- Generic procedure for any container
 CALL <app_name>.core.get_container_logs('core.openbb_app', 'api', 100);
 CALL <app_name>.core.get_container_logs('core.openbb_backend', 'db', 100);
-```
-
----
-
-## 8. Grant Your Data to the App (read-only)
-
-By default, the app cannot see your data. As an admin, grant the APPLICATION read-only access to the databases/schemas/tables you want the app to expose in its UI.
-
-> Replace `<app_name>` with your installed application name (e.g., `openbb_native_app`), and adjust database/schema names to your environment.
-
-### Grant at the database level (all schemas)
-
-Read-only across an entire database, including future objects.
-
-```sql
--- Database-wide read
-GRANT CALLER USAGE ON DATABASE <database_name> TO APPLICATION <app_name>;
-GRANT CALLER USAGE ON SCHEMA <database_name>.<schema_name> TO APPLICATION <app_name>;
-
--- For ALL TABLES/VIEWS, use INHERITED CALLER
-GRANT INHERITED CALLER SELECT ON ALL TABLES IN SCHEMA <database_name>.<schema_name> TO APPLICATION <app_name>;
-GRANT INHERITED CALLER SELECT ON ALL VIEWS IN SCHEMA <database_name>.<schema_name> TO APPLICATION <app_name>;
-
--- If you have procedures to bring in
-GRANT INHERITED CALLER USAGE ON ALL PROCEDURES IN SCHEMA <database_name>.<schema_name> TO APPLICATION <app_name>;
-```
-
-**Example (for a shared database):**
-
-```sql
--- Grant Shared Database Access
-GRANT CALLER USAGE ON DATABASE GLOBAL_WEATHER__CLIMATE_DATA_FOR_BI TO APPLICATION <app_name>;
-GRANT INHERITED CALLER USAGE ON ALL SCHEMAS IN DATABASE GLOBAL_WEATHER__CLIMATE_DATA_FOR_BI TO APPLICATION <app_name>;
-GRANT INHERITED CALLER SELECT ON ALL VIEWS IN DATABASE GLOBAL_WEATHER__CLIMATE_DATA_FOR_BI TO APPLICATION <app_name>;
-GRANT INHERITED CALLER SELECT ON ALL TABLES IN DATABASE GLOBAL_WEATHER__CLIMATE_DATA_FOR_BI TO APPLICATION <app_name>;
-GRANT IMPORTED PRIVILEGES ON ALL TABLES IN DATABASE GLOBAL_WEATHER__CLIMATE_DATA_FOR_BI TO ROLE ANALYTICS_USER;
-GRANT IMPORTED PRIVILEGES ON ALL VIEWS IN DATABASE GLOBAL_WEATHER__CLIMATE_DATA_FOR_BI TO ROLE ANALYTICS_USER;
 ```
 
 ---
