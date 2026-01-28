@@ -1,7 +1,9 @@
+import Link from "@docusaurus/Link";
+import { useLocation } from "@docusaurus/router";
 import { useThemeConfig } from "@docusaurus/theme-common";
 import {
-  splitNavbarItems,
-  useNavbarMobileSidebar,
+	splitNavbarItems,
+	useNavbarMobileSidebar,
 } from "@docusaurus/theme-common/internal";
 import NavbarColorModeToggle from "@theme/Navbar/ColorModeToggle";
 import NavbarLogo from "@theme/Navbar/Logo";
@@ -9,101 +11,105 @@ import NavbarMobileSidebarToggle from "@theme/Navbar/MobileSidebar/Toggle";
 import NavbarSearch from "@theme/Navbar/Search";
 import NavbarItem from "@theme/NavbarItem";
 import SearchBar from "@theme/SearchBar";
-import { useLocation } from "@docusaurus/router";
-import Link from "@docusaurus/Link";
 
 function useNavbarItems() {
-  // TODO temporary casting until ThemeConfig type is improved
-  return useThemeConfig().navbar.items;
+	// TODO temporary casting until ThemeConfig type is improved
+	return useThemeConfig().navbar.items;
 }
 
 function NavbarItems({ items }) {
-  return (
-    <>
-      {items.map((item, i) => (
-        <NavbarItem {...item} key={i} />
-      ))}
-    </>
-  );
+	return (
+		<>
+			{items.map((item, i) => (
+				<NavbarItem {...item} key={i} />
+			))}
+		</>
+	);
 }
 
 function NavbarTabs() {
-  const location = useLocation();
-  const isWelcome = location.pathname === "/";
-  const isWorkspace = location.pathname.startsWith("/workspace");
-  const isODP = location.pathname.startsWith("/odp");
+	const location = useLocation();
+	const isWelcome = location.pathname === "/";
+	const isWorkspace = location.pathname.startsWith("/workspace");
+	const isSnowflake = location.pathname.startsWith("/snowflake");
+	const isODP = location.pathname.startsWith("/odp");
 
-  return (
-    <div className="navbar-tabs">
-      <Link
-        to="/"
-        className={`navbar-tab navbar-tab-welcome ${isWelcome ? "navbar-tab--active" : ""}`}
+	return (
+		<div className="navbar-tabs">
+			<Link
+				to="/"
+				className={`navbar-tab navbar-tab-welcome ${isWelcome ? "navbar-tab--active" : ""}`}
+			>
+				Welcome
+			</Link>
+			<Link
+				to="/workspace"
+				className={`navbar-tab ${isWorkspace ? "navbar-tab--active" : ""}`}
+			>
+				Workspace
+			</Link>
+			<Link
+				to="/odp"
+				className={`navbar-tab ${isODP ? "navbar-tab--active" : ""}`}
+			>
+				ODP
+			</Link>
+			{/* TODO: Add Snowflake tab back in when it's released */}
+			{/* <Link
+        to="/snowflake"
+        className={`navbar-tab ${isSnowflake ? "navbar-tab--active" : ""}`}
       >
-        Welcome
-      </Link>
-      <Link
-        to="/workspace"
-        className={`navbar-tab ${isWorkspace ? "navbar-tab--active" : ""}`}
-      >
-        Workspace
-      </Link>
-      <Link
-        to="/odp"
-        className={`navbar-tab ${isODP ? "navbar-tab--active" : ""}`}
-      >
-        ODP
-      </Link>
-    </div>
-  );
+        Snowflake
+      </Link> */}
+		</div>
+	);
 }
 
 function NavbarContentLayout({ left, right, mobileRight }) {
-  return (
-    <div className="navbar__inner items-center">
-      <div className="navbar__items">{left}</div>
-      <div className="navbar__items navbar__items--right navbar-desktop-only">
-        {right}
-      </div>
-      <div className="navbar__items navbar__items--right navbar-mobile-only">
-        {mobileRight}
-      </div>
-    </div>
-  );
+	return (
+		<div className="navbar__inner items-center">
+			<div className="navbar__items">{left}</div>
+			<div className="navbar__items navbar__items--right navbar-desktop-only">
+				{right}
+			</div>
+			<div className="navbar__items navbar__items--right navbar-mobile-only">
+				{mobileRight}
+			</div>
+		</div>
+	);
 }
 
 export default function NavbarContent() {
-  const mobileSidebar = useNavbarMobileSidebar();
-  const items = useNavbarItems();
-  const [leftItems, rightItems] = splitNavbarItems(items);
-  const searchBarItem = items.find((item) => item.type === "search");
-  return (
-    <NavbarContentLayout
-      left={
-        // TODO stop hardcoding items?
-        <>
-          <NavbarLogo />
-          <NavbarTabs />
-          <NavbarItems items={leftItems} />
-        </>
-      }
-      right={
-        // TODO stop hardcoding items?
-        // Ask the user to add the respective navbar items => more flexible
-        <>
-          <NavbarItems items={rightItems} />
-          <div className="flex items-center">
-            <NavbarColorModeToggle />
-            {!searchBarItem && (
-              <NavbarSearch>
-                <SearchBar />
-              </NavbarSearch>
-            )}
-          </div>
-        </>
-      }
-      mobileRight={
-        <NavbarMobileSidebarToggle />
-      }
-    />
-  );
+	const mobileSidebar = useNavbarMobileSidebar();
+	const items = useNavbarItems();
+	const [leftItems, rightItems] = splitNavbarItems(items);
+	const searchBarItem = items.find((item) => item.type === "search");
+	return (
+		<NavbarContentLayout
+			left={
+				// TODO stop hardcoding items?
+				<>
+					<NavbarLogo />
+					<NavbarTabs />
+					<NavbarItems items={leftItems} />
+				</>
+			}
+			right={
+				// TODO stop hardcoding items?
+				// Ask the user to add the respective navbar items => more flexible
+				<>
+					<NavbarItems items={rightItems} />
+					<div className="flex items-center">
+						<NavbarColorModeToggle />
+						{!searchBarItem && (
+							<NavbarSearch>
+								<SearchBar />
+							</NavbarSearch>
+						)}
+					</div>
+				</>
+			}
+			mobileRight={<NavbarMobileSidebarToggle />}
+		/>
+	);
 }
