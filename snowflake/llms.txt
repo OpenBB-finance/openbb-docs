@@ -2,3 +2,4 @@
 
 ## Docs
 
+- [Quick Start](https://docs.openbb.co/snowflake/index): Get started with the OpenBB Native App for Snowflake. This guide walks you through installation, configuration, and granting data access.
