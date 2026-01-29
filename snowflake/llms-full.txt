@@ -1,7 +1,7 @@
 ---
 title: Quick Start
 sidebar_position: 0
-description: Get started with the OpenBB Native App for Snowflake. This guide walks you through installation, configuration, and granting data access.
+description: Get started with the OpenBB Snowflake Native App. This guide walks you through installation, configuration, and granting data access.
 keywords:
   - Snowflake Native App
   - OpenBB
@@ -15,7 +15,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="OpenBB Snowflake Native App - Quick Start" />
 
-Welcome to the OpenBB Native App!
+Welcome to the OpenBB Snowflake Native App!
 This guide walks you through the first steps after installing.
 
 ## Security Notice: Python Execution Capability
@@ -117,7 +117,7 @@ By default, the app cannot see your data until it is explicitly shared with the 
 **Example (for an owned database):**
 
 ```sql
--- Database-wide read
+-- Grant Access (Internal Database)
 GRANT CALLER USAGE ON DATABASE <database_name> TO APPLICATION <app_name>;
 GRANT CALLER USAGE ON SCHEMA <database_name>.<schema_name> TO APPLICATION <app_name>;
 GRANT INHERITED CALLER SELECT ON ALL TABLES IN SCHEMA <database_name>.<schema_name> TO APPLICATION <app_name>;
@@ -132,7 +132,7 @@ GRANT INHERITED CALLER USAGE ON ALL PROCEDURES IN SCHEMA <database_name>.<schema
 Note : The syntax is a bit different for shared.
 
 ```sql
--- Grant Shared Database Access
+-- Grant Access (Shared Database)
 GRANT CALLER USAGE ON DATABASE GLOBAL_WEATHER__CLIMATE_DATA_FOR_BI TO APPLICATION <app_name>;
 GRANT INHERITED CALLER USAGE ON ALL SCHEMAS IN DATABASE GLOBAL_WEATHER__CLIMATE_DATA_FOR_BI TO APPLICATION <app_name>;
 GRANT INHERITED CALLER SELECT ON ALL VIEWS IN DATABASE GLOBAL_WEATHER__CLIMATE_DATA_FOR_BI TO APPLICATION <app_name>;
@@ -143,7 +143,7 @@ GRANT IMPORTED PRIVILEGES ON ALL VIEWS IN DATABASE GLOBAL_WEATHER__CLIMATE_DATA_
 
 ---
 
-Now when you refresh the page in the application you will see your table and views as widgets in the search menu.
+Now when you refresh the workspace you will see your table and views as widgets in the search menu.
 
 ## Service Administration
 
