@@ -27,6 +27,22 @@
   background-color: #0088CC !important;
 }
 
+.DocSearch-Hit[aria-selected="true"] .DocSearch-Hit-title,
+.DocSearch-Hit[aria-selected="true"] .DocSearch-Hit-path,
+.DocSearch-Hit[aria-selected="true"] .DocSearch-Hit-content-wrapper,
+.DocSearch-Hit[aria-selected="true"] .DocSearch-Hit-Tree,
+.DocSearch-Hit[aria-selected="true"] .DocSearch-Hit-icon,
+.DocSearch-Hit[aria-selected="true"] .DocSearch-Hit-action,
+.DocSearch-Hit[aria-selected="true"] a,
+.DocSearch-Hit[aria-selected="true"] a * {
+  color: #ffffff !important;
+}
+
+.DocSearch-Hit[aria-selected="true"] mark {
+  color: #ffffff !important;
+  text-decoration: underline !important;
+}
+
 .DocSearch-Hit-title mark,
 .DocSearch-Hit-content mark {
   color: #0088CC !important;
