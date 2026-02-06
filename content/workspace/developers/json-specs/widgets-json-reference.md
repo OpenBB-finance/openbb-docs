@@ -163,6 +163,16 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
       Displays transpose the data in the table.
       _Example:_ `true`
 
+    - **enableAdvanced**
+      _Type:_ `boolean`
+      Indicates if the table should have advanced features enabled. When true, the side tab for "Columns" will show up on tables by default.
+      _Example:_ `true`
+
+    - **enableFormulas**
+      _Type:_ `boolean`
+      Indicates if the table should have formulas enabled. When true, the side tab for "Formulas" will show up on tables by default.
+      _Example:_ `true`
+
     - **chartView**
       _Type:_ object containing the following keys:
 
@@ -699,6 +709,8 @@ Below is an example `widgets.json` with a single widget defined. This widget wil
             "table": {
                 "enableCharts": true,
                 "showAll": true,
+                "enableAdvanced": true,
+                "enableFormulas": true,
                 "chartView": {
                     "enabled": true,
                     "chartType": "column",
