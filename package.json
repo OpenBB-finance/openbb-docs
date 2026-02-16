@@ -43,7 +43,7 @@
     "posthog-js": "^1.131.3",
     "preact": ">=10.26.10",
     "prism-react-renderer": "^2.3.1",
-    "qs": ">=6.14.1",
+    "qs": ">=6.14.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-player": "^2.16.0",
