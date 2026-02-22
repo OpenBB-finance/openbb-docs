@@ -16,6 +16,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 This guide explains how to implement TradingView charts in OpenBB using TradingView's Universal Data Feed (UDF) protocol. The UDF protocol allows you to create custom data feeds for TradingView charts.
 
+<img className="pro-border-gradient" width="800" alt="Basic Plotly Chart Example" src="https://openbb-cms.directus.app/assets/36f110ab-3cfb-4a46-b3b4-3541acdd7f27.png" />
+
+
 ## Prerequisites
 
 1. FastAPI or similar web framework for implementing the UDF endpoints

@@ -1,7 +1,7 @@
 ---
 title: Live Grid
 sidebar_position: 11
-description: Create a real-time data grid widget for OpenBB Workspace that displays live updates in a table format
+description: Live Grid
 keywords:
 - live grid
 - real-time data
@@ -15,30 +15,18 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Live Grid | OpenBB Workspace Docs" />
 
+A widget that displays real-time data updates in a table format using WebSocket connections. The live grid widget can be configured to only update certain cells when their values change or all of the cells.
 
-This guide will walk you through the process of creating a live grid widget for OpenBB Workspace. By the end of this guide, you will have a working live grid widget that can display real-time data updates for a table. The live grid widget can be configured to only update certain cells when their values change or all of the cells.
-
-## Step 1: Set Up Your Project
-
-To get started, create the main application file and the widget configuration file. You will only need these two files:
-
-- `main.py`: This file will contain your FastAPI application code.
-- `widgets.json`: This file will define the configuration for your widget.
-
-The backend will use the same FastAPI setup and structure as described in the [Overview](/workspace/developers/data-integration#1-create-the-api-server) page.
-
-## Step 2: Create the Live Feed Endpoints
-
-Edit the `main.py` file and add the following code. This sets up both a REST endpoint for initial data and a WebSocket endpoint for live updates:
+<img className="pro-border-gradient" width="600" alt="Live Grid Example" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/live_grid.png" />
 
 ```python
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect, HTTPException
+import asyncio
+from datetime import datetime
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException
 from fastapi.websockets import WebSocketState
 import numpy as np
-import asyncio
-from typing import List
-from datetime import datetime
 
+app = FastAPI()
 
 # Sample data store
 WS_DATA = {
@@ -49,8 +37,36 @@ WS_DATA = {
         "change": 4.46,
         "change_percent": 0.03,
     },
-    # ... other symbols ...
+    "GOOGL": {
+        "price": 140.0,
+        "prev_close": 138.20,
+        "volume": 800000,
+        "change": 1.80,
+        "change_percent": 0.013,
+    },
+    "MSFT": {
+        "price": 350.0,
+        "prev_close": 345.00,
+        "volume": 1200000,
+        "change": 5.00,
+        "change_percent": 0.014,
+    },
+    "AMZN": {
+        "price": 178.0,
+        "prev_close": 175.50,
+        "volume": 900000,
+        "change": 2.50,
+        "change_percent": 0.014,
+    },
+    "TSLA": {
+        "price": 245.0,
+        "prev_close": 240.00,
+        "volume": 1500000,
+        "change": 5.00,
+        "change_percent": 0.021,
+    },
 }
+
 
 def get_ws_data(symbol: str):
     """Generate real-time data for a symbol"""
@@ -71,22 +87,77 @@ def get_ws_data(symbol: str):
         "volume": volume,
     }
 
-# Live Feed Initial Data Endpoint (This sets the initial data for the widget + allows Copilot to grab the data)
-@app.get("/test_websocket")
-def test_websocket(symbol: str):
-    """Initial data endpoint"""
+
+@register_widget({
+    "name": "Live Grid",
+    "description": "Live Grid with real-time WebSocket updates",
+    "type": "live_grid",
+    "endpoint": "live_grid_data",
+    "wsEndpoint": "live_grid_ws",
+    "gridData": {"w": 20, "h": 9},
+    "data": {
+        "wsRowIdColumn": "symbol",
+        "table": {
+            "showAll": True,
+            "columnsDefs": [
+                {
+                    "field": "symbol",
+                    "headerName": "Symbol"
+                },
+                {
+                    "field": "price",
+                    "headerName": "Price",
+                    "renderFn": "showCellChange",
+                    "renderFnParams": {
+                        "colorValueKey": "change"
+                    }
+                },
+                {
+                    "field": "change_percent",
+                    "headerName": "Change %",
+                    "renderFn": "greenRed"
+                },
+                {
+                    "field": "volume",
+                    "enableCellChangeWs": False,
+                    "headerName": "Volume"
+                }
+            ]
+        }
+    },
+    "params": [
+        {
+            "paramName": "symbol",
+            "description": "The symbol to get details for",
+            "value": "TSLA",
+            "label": "Symbol",
+            "type": "text",
+            "multiSelect": True,
+            "options": [
+                {"label": "AAPL", "value": "AAPL"},
+                {"label": "GOOGL", "value": "GOOGL"},
+                {"label": "MSFT", "value": "MSFT"},
+                {"label": "AMZN", "value": "AMZN"},
+                {"label": "TSLA", "value": "TSLA"}
+            ]
+        }
+    ]
+})
+@app.get("/live_grid_data")
+def get_live_grid_data(symbol: str):
+    """Initial data endpoint for live grid"""
     symbols = symbol.split(",")
     return [
         {
-            "date": datetime.now().date(),
-            **get_ws_data(symbol),
+            "date": str(datetime.now().date()),
+            **get_ws_data(sym),
             "market_cap": np.random.randint(1000000000, 2000000000),
         }
-        for symbol in symbols
+        for sym in symbols
     ]
 
-# Live Feed WebSocket Endpoint
-@app.websocket("/ws")
+
+@app.websocket("/live_grid_ws")
 async def websocket_endpoint(websocket: WebSocket):
     """WebSocket endpoint for live updates"""
     await websocket.accept()
@@ -98,8 +169,9 @@ async def websocket_endpoint(websocket: WebSocket):
         await websocket.close(code=1011)
         raise HTTPException(status_code=500, detail=str(e))
 
-# Sample WebSocket Handler
+
 async def websocket_handler(websocket: WebSocket):
+    """Handle WebSocket connections for live grid updates"""
     subbed_symbols: set[str] = set()
 
     async def consumer_handler(ws: WebSocket):
@@ -145,96 +217,19 @@ async def websocket_handler(websocket: WebSocket):
         task.cancel()
 ```
 
-### Edit the widgets.json File
+### Key Configuration Options
 
-Open the `widgets.json` file and add the following configuration:
+- **`wsEndpoint`**: The WebSocket endpoint for receiving live updates
+- **`wsRowIdColumn`**: The column used to identify rows for updating (e.g., "symbol")
+- **`enableCellChangeWs`**: Boolean to control whether a cell updates via WebSocket. By default `true` for fields sent in the WebSocket. Set to `false` to prevent updates for specific columns
+- **`renderFn`**: The function used to render the cell. See [Render Functions](../widget-configuration/render-functions.md) for more options
 
-```json
-{
-  "live_grid_example": {
-    "name": "Live Grid",
-    "description": "Live Grid",
-    "type": "live_grid",
-    "endpoint": "test_websocket",
-    "wsEndpoint": "ws",
-    "data": {
-      "wsRowIdColumn": "symbol",
-      "table": {
-        "showAll": true,
-        "columnsDefs": [
-          {
-            "field": "symbol",
-            "headerName": "Symbol"
-          },
-          {
-            "field": "price",
-            "headerName": "Price",
-            "renderFn": "showCellChange",
-            "renderFnParams": {
-              "colorValueKey": "change"
-            }
-          },
-          {
-            "field": "change_percent",
-            "headerName": "Change %",
-            "renderFn": "greenRed"
-          },
-          {
-            "field": "volume",
-            "enableCellChangeWs": false,
-            "headerName": "Volume"
-          }
-        ]
-      }
-    },
-    "params": [
-      {
-        "paramName": "symbol",
-        "description": "The symbol to get details for",
-        "value": "TSLA",
-        "label": "Symbol",
-        "type": "text",
-        "multiSelect": true,
-        "options": [
-          {"label": "AAPL", "value": "AAPL"},
-          {"label": "GOOGL", "value": "GOOGL"},
-          {"label": "MSFT", "value": "MSFT"},
-          {"label": "AMZN", "value": "AMZN"},
-          {"label": "TSLA", "value": "TSLA"}
-        ]
-      }
-    ],
-    "gridData": {
-      "w": 20,
-      "h": 9
-    }
-  }
-}
-```
+### How It Works
 
-A few key points:
-
-- The `endpoint` is the endpoint that will be used to get the initial data for the widget.
-- The `wsEndpoint` is the endpoint that will be used to get the live updates for the widget.
-- The `enableCellChangeWs` is a boolean that will be used to determine if the cell change will be sent over the WebSocket. Use this to prevent the cell from being updated over the WebSocket. By default, it is set to `true` for fields that are sent in the websocket and appear in the data. The only field that is special here is the `wsRowIdColumn` which is the column that will be used to identify the row.
-- The `wsRowIdColumn` is the column that will be used to identify the row. This is important to set correctly to ensure the live updates are displayed correctly. This the key between your ws and the initial data.
-- The `renderFn` is the function that will be used to render the cell. You can find more information on the [Render Functions](../widget-configuration/render-functions.md) page. In our case we are using a custom function `showCellChange` to display the change in price and providing the key to use.
-
-## Step 3: Run the Application
-
-Start the FastAPI Server using Uvicorn. This will host your backend locally:
-
-```bash
-uvicorn main:app --host localhost --port 5050
-```
-
-## Step 4: Add to OpenBB Pro
-
-Navigate to [OpenBB Pro Apps](https://pro.openbb.co/app) and add your backend by clicking on the `Manage Backends` button in the top right corner. Select `Add Backend` and fill in the details. Your URL will be `http://localhost:5050`.
-
-Once you have added your backend, you can find the widget in the default category with the name `Live Grid`. The widget will display real-time price updates for the selected symbols.
-
-<img className="pro-border-gradient" width="600" alt="live-feed" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/live_grid.png" />
+1. **Initial Data**: The GET endpoint (`/live_grid_data`) provides the initial table data
+2. **WebSocket Connection**: The WebSocket endpoint (`/live_grid_ws`) handles real-time updates
+3. **Row Identification**: The `wsRowIdColumn` links WebSocket updates to specific table rows
+4. **Cell Updates**: Only cells that receive new data via WebSocket are updated, with optional visual change indicators
 
 ## Additional Resources
 
