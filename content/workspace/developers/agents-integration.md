@@ -1,6 +1,6 @@
 ---
 title: Agents Integration
-sidebar_position: 6
+sidebar_position: 7
 description: How to integrate your own AI agent service with OpenBB Workspace
 keywords:
 - AI
