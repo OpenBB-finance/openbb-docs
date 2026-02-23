@@ -23,6 +23,7 @@
 - [Overview](https://docs.openbb.co/workspace/analysts/widgets/overview): Understanding widgets - the building blocks of OpenBB Workspace dashboards that transform raw data into actionable insights.
 - [Sandbox Widgets](https://docs.openbb.co/workspace/analysts/widgets/sandbox-widgets): Explore OpenBB's pre-built demonstration widgets that showcase application capabilities upon login.
 - [Static Files](https://docs.openbb.co/workspace/analysts/widgets/static-files): Upload and integrate your own files into OpenBB Workspace - transform spreadsheets, PDFs, and images into interactive dashboard widgets.
+- [Agent Skills](https://docs.openbb.co/workspace/developers/agent-skills): Full documentation for OpenBB App Builder - building custom OpenBB Workspace applications through a structured pipeline.
 - [Agents Integration](https://docs.openbb.co/workspace/developers/agents-integration): How to integrate your own AI agent service with OpenBB Workspace
 - [Citations for documents](https://docs.openbb.co/workspace/developers/ai-features/citations-for-documents): Add document-specific citations with PDF text highlighting for source attribution
 - [Create charts](https://docs.openbb.co/workspace/developers/ai-features/create-charts): Stream inline charts as part of your agent’s response
@@ -63,13 +64,13 @@
 - [Text Input](https://docs.openbb.co/workspace/developers/widget-parameters/text-input): Learn how to implement and use text input parameters in OpenBB Workspace widgets, including configuration options and example usage
 - [AgGrid Table Charts](https://docs.openbb.co/workspace/developers/widget-types/aggrid-table-charts): AgGrid Table Charts
 - [File Viewer](https://docs.openbb.co/workspace/developers/widget-types/file-viewer): Guide to using PDF and multi-PDF viewer widgets in OpenBB Workspace
-- [Highcharts Chart](https://docs.openbb.co/workspace/developers/widget-types/highcharts): Learn how to create Highcharts widgets for OpenBB Workspace, with step-by-step instructions for backend integration, configuration, and theme support.
+- [Highcharts Chart](https://docs.openbb.co/workspace/developers/widget-types/highcharts): Highcharts Chart
 - [HTML](https://docs.openbb.co/workspace/developers/widget-types/html): Learn how to create and customize HTML widgets in OpenBB Workspace, enabling complete control over visualization and interaction design with custom HTML, CSS, and JavaScript.
-- [Live Grid](https://docs.openbb.co/workspace/developers/widget-types/live-grid): Create a real-time data grid widget for OpenBB Workspace that displays live updates in a table format
+- [Live Grid](https://docs.openbb.co/workspace/developers/widget-types/live-grid): Live Grid
 - [Markdown](https://docs.openbb.co/workspace/developers/widget-types/markdown): Learn how to create and customize markdown widgets in OpenBB Workspace, including basic markdown display and data-rich markdown with dynamic content integration.
 - [Metric](https://docs.openbb.co/workspace/developers/widget-types/metric): Learn how to integrate your own backend with OpenBB Workspace using the cookie-cutter or language-agnostic API approaches, with illustrative guides and principles for handling widget.json files, APIs, interfaces, Python, FastAPI, and more.
 - [Newsfeed](https://docs.openbb.co/workspace/developers/widget-types/newsfeed): Learn how to create a newsfeed widget for OpenBB Workspace that displays articles in a clean, organized format.
-- [Omni](https://docs.openbb.co/workspace/developers/widget-types/omni): Learn how to create versatile Omni widgets for OpenBB Workspace that can dynamically return different content types based on input parameters.
+- [Omni, SQL, Python](https://docs.openbb.co/workspace/developers/widget-types/omni): Learn how to create versatile Omni widgets for OpenBB Workspace that can dynamically return different content types based on input parameters, including SQL query and Python chart widgets.
 - [Plotly Charts](https://docs.openbb.co/workspace/developers/widget-types/plotly-charts): Plotly Charts
 - [SSRM Mode](https://docs.openbb.co/workspace/developers/widget-types/ssrm_mode): Server-Side Rendered Mode for handling large datasets efficiently in OpenBB Workspace widgets
 - [TradingView Charts](https://docs.openbb.co/workspace/developers/widget-types/tradingview-charts): How to implement TradingView charts in OpenBB using UDF (Universal Data Feed)

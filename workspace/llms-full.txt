@@ -2301,8 +2301,45 @@ Note that scanned images are better handled when uploaded as images (PNG or JPG)
 ---
 
 ---
+title: Agent Skills
+sidebar_position: 2
+description: Full documentation for OpenBB App Builder - building custom OpenBB Workspace applications through a structured pipeline.
+keywords:
+  - Agent Skills
+  - App Builder
+  - Custom Applications
+  - Widget Configuration
+  - FastAPI Backend
+  - Dashboard Design
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+import GitHubMarkdown from '@site/src/components/General/GitHubMarkdown.tsx';
+
+<HeadTitle title="Agent Skills | OpenBB Workspace Docs" />
+
+If you are building with an agent you can install the **openbb-app-builder skill** with:
+
+```bash
+npx skills add https://github.com/openbb-finance/backends-for-openbb --skill openbb-app-builder
+```
+
+More information [here](https://skills.sh/openbb-finance/backends-for-openbb/openbb-app-builder).
+
+The raw SKILL folder can be found [here](https://github.com/OpenBB-finance/backends-for-openbb/tree/66c16c8ee59aacdb562bfd9abb262d542dbe685e/.claude/skills/openbb-app-builder).
+
+---
+
+# Skill
+
+<GitHubMarkdown url="https://github.com/OpenBB-finance/backends-for-openbb/blob/main/.claude/skills/openbb-app-builder/SKILL.md" />
+
+
+---
+
+---
 title: Agents Integration
-sidebar_position: 6
+sidebar_position: 7
 description: How to integrate your own AI agent service with OpenBB Workspace
 keywords:
 - AI
@@ -8301,7 +8338,7 @@ If you don't want to set a date you can omit the value parameter or pass ```null
 
 ---
 title: OpenBB AI SDK
-sidebar_position: 7
+sidebar_position: 8
 description: Build custom agents for OpenBB Workspace using the OpenBB AI SDK helpers and models
 keywords:
 - OpenBB AI SDK
@@ -13035,95 +13072,55 @@ More examples can be found on the github repository at https://github.com/OpenBB
 ---
 title: Highcharts Chart
 sidebar_position: 14
-description: Learn how to create Highcharts widgets for OpenBB Workspace, with step-by-step instructions for backend integration, configuration, and theme support.
+description: Highcharts Chart
 keywords:
-- widgets.json
-- OpenBB API
-- Endpoint integration
-- widget configuration
-- Highcharts
-- Chart widgets
-- API implementation
-- Python
-- FastAPI
-- Workspace widgets
-- Widget definitions
+- highcharts
+- charts
+- visualization
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Highcharts Chart | OpenBB Workspace Docs" />
 
-This guide will walk you through the process of creating a chart widget for OpenBB Workspace using Highcharts. By the end of this guide, you will have a working Highcharts widget that you can add to OpenBB.
+A widget that demonstrates how to use the Highcharts library to create a chart. This gives you the ability to create any interactive type of charts with the Highcharts ecosystem.
 
-## Step 1: Set Up Your Project
+For Highcharts integration, we're using the `highcharts_core` Python package to create and configure the chart. Install it with:
 
-To get started, create the main application file and the widget configuration file. You will only need these two files:
+```bash
+pip install highcharts-core
+```
 
-- `main.py`: This file will contain your FastAPI application code.
-- `widgets.json`: This file will define the configuration for your widget.
-
-The backend will use the same FastAPI setup and structure as described in the [Overview](/workspace/developers/data-integration#1-create-the-api-server) page.
-
-## Step 2: Create the Chart Endpoint
-
-Edit the `main.py` file and add the following code. This code sets up a FastAPI application with an endpoint to serve the widget configuration and data for a Highcharts chart:
+<img className="pro-border-gradient" width="800" alt="Basic Plotly Chart Example" src="https://openbb-cms.directus.app/assets/fc125d0e-f26b-45f7-84ae-0562c20befdf.png" />
 
 ```python
-from pathlib import Path
-import json
-import pandas as pd
-import requests
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
-from highcharts_core.chart import Chart
-
-app = FastAPI()
-
-# Configure CORS
-origins = [
-    "https://pro.openbb.co",
-    "https://excel.openbb.co"
-]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-@app.get("/widgets.json")
-def get_widgets():
-    """Widgets configuration file for the OpenBB Data Integration"""
-    return JSONResponse(
-        content=json.load((Path(__file__).parent.resolve() / "widgets.json").open())
-    )
-
-# Highcharts chart endpoint
-@app.get("/chains-highchart")
+@register_widget({
+    "name": "Chains TVL Highcharts",
+    "description": "Get current TVL of all chains using Defi Llama and plot with Highcharts",
+    "category": "crypto",
+    "type": "chart-highcharts",
+    "endpoint": "chains_highchart",
+    "gridData": {"w": 20, "h": 9}
+})
+@app.get("/chains_highchart")
 def get_chains_highchart(theme: str = "dark"):
     """Get current TVL of all chains using Defi Llama"""
     response = requests.get("https://api.llama.fi/v2/chains")
 
     if response.status_code == 200:
-        df = pd.DataFrame(response.json())
+        chains = response.json()
 
-        top_30_df = df.sort_values(by='tvl', ascending=False).head(30)
+        # Sort by TVL and get top 30
+        top_30 = sorted(chains, key=lambda x: x.get('tvl', 0), reverse=True)[:30]
 
-        # Format TVL values to be more readable (in billions)
-        top_30_df['formatted_tvl'] = top_30_df['tvl'].apply(lambda x: round(x / 1e9, 2))
-
-        categories = top_30_df['name'].tolist()
-        data = top_30_df['formatted_tvl'].tolist()
+        # Extract categories and format TVL values (in billions)
+        categories = [chain['name'] for chain in top_30]
+        data = [round(chain['tvl'] / 1e9, 2) for chain in top_30]
 
         # Configure chart options with theme support
         chart_options = {
             'chart': {
                 'type': 'column',
-                'height': "50%",
                 'backgroundColor': 'transparent'
             },
             'title': {'text': 'Top 30 Chains by TVL'},
@@ -13156,76 +13153,69 @@ def get_chains_highchart(theme: str = "dark"):
         # Apply theme-specific styling
         if theme == 'dark':
             chart_options.update({
-                'title': {'style': {'color': '#ffffff'}},
+                'title': {'text': 'Top 30 Chains by TVL', 'style': {'color': '#ffffff'}},
                 'legend': {'itemStyle': {'color': '#ffffff'}},
+                'xAxis': {
+                    **chart_options['xAxis'],
+                    'title': {'text': 'Chain Name', 'style': {'color': '#ffffff'}},
+                    'lineColor': '#555555',
+                    'tickColor': '#555555'
+                },
+                'yAxis': {
+                    **chart_options['yAxis'],
+                    'title': {'text': 'Total Value Locked (TVL in billions $)', 'style': {'color': '#ffffff'}},
+                    'gridLineColor': '#333333'
+                },
                 'plotOptions': {
                     'series': {
                         'color': '#3498db'
                     }
                 }
             })
+        else:
+            chart_options.update({
+                'title': {'text': 'Top 30 Chains by TVL', 'style': {'color': '#333333'}},
+                'legend': {'itemStyle': {'color': '#333333'}},
+                'xAxis': {
+                    **chart_options['xAxis'],
+                    'title': {'text': 'Chain Name', 'style': {'color': '#333333'}},
+                    'lineColor': '#cccccc',
+                    'tickColor': '#cccccc'
+                },
+                'yAxis': {
+                    **chart_options['yAxis'],
+                    'title': {'text': 'Total Value Locked (TVL in billions $)', 'style': {'color': '#333333'}},
+                    'gridLineColor': '#e6e6e6'
+                },
+                'plotOptions': {
+                    'series': {
+                        'color': '#2980b9'
+                    }
+                }
+            })
 
         chart = Chart.from_options(chart_options)
-
         return chart.to_dict()
 
-    print(f"Request error {response.status_code}: {response.text}")
     return JSONResponse(
         content={"error": response.text}, status_code=response.status_code
     )
 ```
 
-For Highcharts integration, we're using the `highcharts_core` Python package to create and configure the chart. The chart is then converted to a dictionary using `chart.to_dict()` before being returned to the frontend.
-
-## Step 3: Edit the widgets.json File
-
-Edit the `widgets.json` file and add the following JSON data. This configuration defines the widget's properties and how it should be displayed:
-
-```json
-{
-  "chains_highchart": {
-    "name": "Chains chart example Highcharts",
-    "description": "Get current TVL of all chains and plot it with Highcharts",
-    "category": "crypto",
-    "type": "chart-highcharts",
-    "endpoint": "chains-highchart",
-    "gridData": {
-      "w": 20,
-      "h": 9
-    }
-  }
-}
-```
-
 Note that for Highcharts, the `type` field is set to `"chart-highcharts"` instead of just `"chart"` which is used for Plotly charts.
-
-For more information on the `widgets.json` file, see the [Widgets.json](../json-specs/widgets-json-reference) page.
-
-## Step 4: Run the Application
-
-Start the FastAPI Server using Uvicorn. This will host your backend locally:
-
-```bash
-uvicorn main:app --port 5050
-```
-
-## Step 5: Add to OpenBB Pro
-
-Navigate to [OpenBB Pro Apps](https://pro.openbb.co/app) and add your backend by clicking on the `Manage Backends` button in the top right corner. Select `Add Backend` and fill in the details. Your URL will be `http://localhost:5050`.
-
-Once you have added your backend, you can find the widget in the `Crypto` category with the name `Chains chart example Highchart`.
-
-<img className="pro-border-gradient" width="600" alt="highcharts-chart" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/highcharts.png" />
 
 ### Theme Support
 
-The example doesn't include theme support, but you can easily add it by adapting the endpoint to include the `theme` parameter.
+The example includes full theme support for both dark and light modes. The theme parameter is automatically provided by OpenBB Workspace based on the user's current display mode (dark/light). This enables dynamic chart styling that matches the workspace theme.
+
+- **Dark mode**: White text, dark grid lines, blue series color (#3498db)
+- **Light mode**: Dark text, light grid lines, darker blue series color (#2980b9)
 
 ## Additional Resources
 
-You can find more examples of how to set up your own backend in the [Backend for OpenBB Workspace GitHub](https://github.com/OpenBB-finance/backend-examples-for-openbb-workspace).
-
 For more information on Highcharts configuration options, visit the [Highcharts API Documentation](https://api.highcharts.com/highcharts/).
+
+You can find more examples of how to set up your own backend in the [Backend for OpenBB Workspace GitHub](https://github.com/OpenBB-finance/backend-examples-for-openbb-workspace).
 
 
 ---
@@ -13483,7 +13473,7 @@ The gridData parameter specifies the widget's size in the OpenBB Workspace grid 
 ---
 title: Live Grid
 sidebar_position: 11
-description: Create a real-time data grid widget for OpenBB Workspace that displays live updates in a table format
+description: Live Grid
 keywords:
 - live grid
 - real-time data
@@ -13497,30 +13487,18 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Live Grid | OpenBB Workspace Docs" />
 
+A widget that displays real-time data updates in a table format using WebSocket connections. The live grid widget can be configured to only update certain cells when their values change or all of the cells.
 
-This guide will walk you through the process of creating a live grid widget for OpenBB Workspace. By the end of this guide, you will have a working live grid widget that can display real-time data updates for a table. The live grid widget can be configured to only update certain cells when their values change or all of the cells.
-
-## Step 1: Set Up Your Project
-
-To get started, create the main application file and the widget configuration file. You will only need these two files:
-
-- `main.py`: This file will contain your FastAPI application code.
-- `widgets.json`: This file will define the configuration for your widget.
-
-The backend will use the same FastAPI setup and structure as described in the [Overview](/workspace/developers/data-integration#1-create-the-api-server) page.
-
-## Step 2: Create the Live Feed Endpoints
-
-Edit the `main.py` file and add the following code. This sets up both a REST endpoint for initial data and a WebSocket endpoint for live updates:
+<img className="pro-border-gradient" width="600" alt="Live Grid Example" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/live_grid.png" />
 
 ```python
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect, HTTPException
+import asyncio
+from datetime import datetime
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException
 from fastapi.websockets import WebSocketState
 import numpy as np
-import asyncio
-from typing import List
-from datetime import datetime
 
+app = FastAPI()
 
 # Sample data store
 WS_DATA = {
@@ -13531,8 +13509,36 @@ WS_DATA = {
         "change": 4.46,
         "change_percent": 0.03,
     },
-    # ... other symbols ...
+    "GOOGL": {
+        "price": 140.0,
+        "prev_close": 138.20,
+        "volume": 800000,
+        "change": 1.80,
+        "change_percent": 0.013,
+    },
+    "MSFT": {
+        "price": 350.0,
+        "prev_close": 345.00,
+        "volume": 1200000,
+        "change": 5.00,
+        "change_percent": 0.014,
+    },
+    "AMZN": {
+        "price": 178.0,
+        "prev_close": 175.50,
+        "volume": 900000,
+        "change": 2.50,
+        "change_percent": 0.014,
+    },
+    "TSLA": {
+        "price": 245.0,
+        "prev_close": 240.00,
+        "volume": 1500000,
+        "change": 5.00,
+        "change_percent": 0.021,
+    },
 }
+
 
 def get_ws_data(symbol: str):
     """Generate real-time data for a symbol"""
@@ -13553,22 +13559,77 @@ def get_ws_data(symbol: str):
         "volume": volume,
     }
 
-# Live Feed Initial Data Endpoint (This sets the initial data for the widget + allows Copilot to grab the data)
-@app.get("/test_websocket")
-def test_websocket(symbol: str):
-    """Initial data endpoint"""
+
+@register_widget({
+    "name": "Live Grid",
+    "description": "Live Grid with real-time WebSocket updates",
+    "type": "live_grid",
+    "endpoint": "live_grid_data",
+    "wsEndpoint": "live_grid_ws",
+    "gridData": {"w": 20, "h": 9},
+    "data": {
+        "wsRowIdColumn": "symbol",
+        "table": {
+            "showAll": True,
+            "columnsDefs": [
+                {
+                    "field": "symbol",
+                    "headerName": "Symbol"
+                },
+                {
+                    "field": "price",
+                    "headerName": "Price",
+                    "renderFn": "showCellChange",
+                    "renderFnParams": {
+                        "colorValueKey": "change"
+                    }
+                },
+                {
+                    "field": "change_percent",
+                    "headerName": "Change %",
+                    "renderFn": "greenRed"
+                },
+                {
+                    "field": "volume",
+                    "enableCellChangeWs": False,
+                    "headerName": "Volume"
+                }
+            ]
+        }
+    },
+    "params": [
+        {
+            "paramName": "symbol",
+            "description": "The symbol to get details for",
+            "value": "TSLA",
+            "label": "Symbol",
+            "type": "text",
+            "multiSelect": True,
+            "options": [
+                {"label": "AAPL", "value": "AAPL"},
+                {"label": "GOOGL", "value": "GOOGL"},
+                {"label": "MSFT", "value": "MSFT"},
+                {"label": "AMZN", "value": "AMZN"},
+                {"label": "TSLA", "value": "TSLA"}
+            ]
+        }
+    ]
+})
+@app.get("/live_grid_data")
+def get_live_grid_data(symbol: str):
+    """Initial data endpoint for live grid"""
     symbols = symbol.split(",")
     return [
         {
-            "date": datetime.now().date(),
-            **get_ws_data(symbol),
+            "date": str(datetime.now().date()),
+            **get_ws_data(sym),
             "market_cap": np.random.randint(1000000000, 2000000000),
         }
-        for symbol in symbols
+        for sym in symbols
     ]
 
-# Live Feed WebSocket Endpoint
-@app.websocket("/ws")
+
+@app.websocket("/live_grid_ws")
 async def websocket_endpoint(websocket: WebSocket):
     """WebSocket endpoint for live updates"""
     await websocket.accept()
@@ -13580,8 +13641,9 @@ async def websocket_endpoint(websocket: WebSocket):
         await websocket.close(code=1011)
         raise HTTPException(status_code=500, detail=str(e))
 
-# Sample WebSocket Handler
+
 async def websocket_handler(websocket: WebSocket):
+    """Handle WebSocket connections for live grid updates"""
     subbed_symbols: set[str] = set()
 
     async def consumer_handler(ws: WebSocket):
@@ -13627,96 +13689,19 @@ async def websocket_handler(websocket: WebSocket):
         task.cancel()
 ```
 
-### Edit the widgets.json File
+### Key Configuration Options
 
-Open the `widgets.json` file and add the following configuration:
+- **`wsEndpoint`**: The WebSocket endpoint for receiving live updates
+- **`wsRowIdColumn`**: The column used to identify rows for updating (e.g., "symbol")
+- **`enableCellChangeWs`**: Boolean to control whether a cell updates via WebSocket. By default `true` for fields sent in the WebSocket. Set to `false` to prevent updates for specific columns
+- **`renderFn`**: The function used to render the cell. See [Render Functions](../widget-configuration/render-functions.md) for more options
 
-```json
-{
-  "live_grid_example": {
-    "name": "Live Grid",
-    "description": "Live Grid",
-    "type": "live_grid",
-    "endpoint": "test_websocket",
-    "wsEndpoint": "ws",
-    "data": {
-      "wsRowIdColumn": "symbol",
-      "table": {
-        "showAll": true,
-        "columnsDefs": [
-          {
-            "field": "symbol",
-            "headerName": "Symbol"
-          },
-          {
-            "field": "price",
-            "headerName": "Price",
-            "renderFn": "showCellChange",
-            "renderFnParams": {
-              "colorValueKey": "change"
-            }
-          },
-          {
-            "field": "change_percent",
-            "headerName": "Change %",
-            "renderFn": "greenRed"
-          },
-          {
-            "field": "volume",
-            "enableCellChangeWs": false,
-            "headerName": "Volume"
-          }
-        ]
-      }
-    },
-    "params": [
-      {
-        "paramName": "symbol",
-        "description": "The symbol to get details for",
-        "value": "TSLA",
-        "label": "Symbol",
-        "type": "text",
-        "multiSelect": true,
-        "options": [
-          {"label": "AAPL", "value": "AAPL"},
-          {"label": "GOOGL", "value": "GOOGL"},
-          {"label": "MSFT", "value": "MSFT"},
-          {"label": "AMZN", "value": "AMZN"},
-          {"label": "TSLA", "value": "TSLA"}
-        ]
-      }
-    ],
-    "gridData": {
-      "w": 20,
-      "h": 9
-    }
-  }
-}
-```
+### How It Works
 
-A few key points:
-
-- The `endpoint` is the endpoint that will be used to get the initial data for the widget.
-- The `wsEndpoint` is the endpoint that will be used to get the live updates for the widget.
-- The `enableCellChangeWs` is a boolean that will be used to determine if the cell change will be sent over the WebSocket. Use this to prevent the cell from being updated over the WebSocket. By default, it is set to `true` for fields that are sent in the websocket and appear in the data. The only field that is special here is the `wsRowIdColumn` which is the column that will be used to identify the row.
-- The `wsRowIdColumn` is the column that will be used to identify the row. This is important to set correctly to ensure the live updates are displayed correctly. This the key between your ws and the initial data.
-- The `renderFn` is the function that will be used to render the cell. You can find more information on the [Render Functions](../widget-configuration/render-functions.md) page. In our case we are using a custom function `showCellChange` to display the change in price and providing the key to use.
-
-## Step 3: Run the Application
-
-Start the FastAPI Server using Uvicorn. This will host your backend locally:
-
-```bash
-uvicorn main:app --host localhost --port 5050
-```
-
-## Step 4: Add to OpenBB Pro
-
-Navigate to [OpenBB Pro Apps](https://pro.openbb.co/app) and add your backend by clicking on the `Manage Backends` button in the top right corner. Select `Add Backend` and fill in the details. Your URL will be `http://localhost:5050`.
-
-Once you have added your backend, you can find the widget in the default category with the name `Live Grid`. The widget will display real-time price updates for the selected symbols.
-
-<img className="pro-border-gradient" width="600" alt="live-feed" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/live_grid.png" />
+1. **Initial Data**: The GET endpoint (`/live_grid_data`) provides the initial table data
+2. **WebSocket Connection**: The WebSocket endpoint (`/live_grid_ws`) handles real-time updates
+3. **Row Identification**: The `wsRowIdColumn` links WebSocket updates to specific table rows
+4. **Cell Updates**: Only cells that receive new data via WebSocket are updated, with optional visual change indicators
 
 ## Additional Resources
 
@@ -14306,9 +14291,9 @@ def get_coindesk_news(limit: str = "10", lang: str = "EN", categories: Optional[
 ---
 
 ---
-title: Omni
+title: Omni, SQL, Python
 sidebar_position: 12
-description: Learn how to create versatile Omni widgets for OpenBB Workspace that can dynamically return different content types based on input parameters.
+description: Learn how to create versatile Omni widgets for OpenBB Workspace that can dynamically return different content types based on input parameters, including SQL query and Python chart widgets.
 keywords:
 - omni widget
 - dynamic content
@@ -14319,21 +14304,17 @@ keywords:
 - flexible widgets
 - OpenBB Workspace
 - widget development
+- SQL widget
+- Python widget
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Omni Widget | OpenBB Workspace Docs" />
+<HeadTitle title="Omni, SQL, Python | OpenBB Workspace Docs" />
 
 The Omni widget is a versatile widget type that can dynamically return different content formats (markdown, tables, or charts). Unlike other widgets that use GET requests, the Omni widget uses POST requests and passes all parameters in the request body. This widget requires the `prompt` parameter to be passed in the params section of the widget configuration.
 
-## Key Features
-
-- **Dynamic Output Control**: Can return different content types (text, table, chart)
-- **Create Widgets from Responses**: Create widgets directly from the response types returned by the backend.
-- **POST Request Method**: Uses POST instead of GET, with parameters passed in the request body
-- **Citation Support**: Built-in support for adding citations and source information
-- **Flexible Parameter Handling**: All widget parameters are passed in the POST data
+<img className="pro-border-gradient" width="800" alt="Basic Plotly Chart Example" src="https://openbb-cms.directus.app/assets/8740e757-a800-41b7-809c-f0ef3def1729.png" />
 
 ## Basic Omni Widget
 
@@ -14342,209 +14323,343 @@ Below is an example of a basic Omni widget that demonstrates the versatility by 
 <img className="pro-border-gradient" width="800" alt="Omni Widget Example" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/omni-widget.png" />
 
 ```python
-from pydantic import BaseModel, Field
-from typing import Any, List, Literal
-from uuid import UUID
-from fastapi import FastAPI, Body, Query
 import json
+from fastapi import FastAPI, Body
+import plotly.graph_objects as go
+from pydantic import BaseModel, Field
+from typing import Any, Literal
+
+app = FastAPI()
 
 class DataFormat(BaseModel):
     data_type: str
     parse_as: Literal["text", "table", "chart"]
 
-class ExtraCitation(BaseModel):
-    source_info: SourceInfo | None = Field(default=None)
-    details: List[dict] | None = Field(default=None)
-
 class OmniWidgetResponse(BaseModel):
     content: Any
     data_format: DataFormat
-    extra_citations: list[ExtraCitation] | None = Field(default_factory=list)
-    citable: bool = Field(default=True)
+    citable: bool = Field(default=False)
 
-@register_widget({
-    "name": "Omni Widget Example",
+@app.post("/omni-widget")
+async def get_omni_widget_post(data: str | dict = Body(...)):
+    """Basic Omni Widget example showing different return types"""
+    if isinstance(data, str):
+        data = json.loads(data)
+
+    prompt = data.get("prompt", "Hello World")
+
+    if data.get("type") == "table":
+        # 2x2 matrix with prompt value in all cells
+        content = [
+            {"col1": prompt, "col2": prompt},
+            {"col1": prompt, "col2": prompt},
+        ]
+        return OmniWidgetResponse(
+            content=content,
+            data_format=DataFormat(data_type="object", parse_as="table"),
+            citable=False,
+        )
+
+    if data.get("type") == "chart":
+        fig = go.Figure()
+        fig.add_trace(
+            go.Scatter(x=[1, 2, 3], y=[1, 3, 2], mode="lines", line=dict(color="#26a69a"))
+        )
+        fig.update_layout(title=prompt, showlegend=False)
+
+        content = json.loads(fig.to_json())
+
+        return OmniWidgetResponse(
+            content=content,
+            data_format=DataFormat(data_type="object", parse_as="chart"),
+            citable=False,
+        )
+
+    # Default to markdown - just output the prompt
+    return OmniWidgetResponse(
+        content=prompt,
+        data_format=DataFormat(data_type="object", parse_as="text"),
+        citable=False,
+    )
+```
+
+### Widget Configuration
+
+```json
+{
+  "omni_widget": {
+    "name": "Basic Omni Widget",
     "description": "A versatile omni widget that can display multiple types of content",
     "category": "General",
     "type": "omni",
     "endpoint": "omni-widget",
     "params": [
-        {
-            "paramName": "prompt",
-            "type": "text",
-            "description": "The prompt to send to the LLM to make queries or ask questions.",
-            "label": "Prompt",
-            "show": False
-        },
-        {
-            "paramName": "type",
-            "type": "text",
-            "description": "Type of content to return",
-            "label": "Content Type",
-            "show": True,
-            "options": [
-                {"value": "markdown", "label": "Markdown"},
-                {"value": "chart", "label": "Chart"},
-                {"value": "table", "label": "Table"}
-            ]
-        }
+      {
+        "paramName": "prompt",
+        "type": "text",
+        "description": "The prompt to send to the widget",
+        "label": "Prompt",
+        "show": false
+      },
+      {
+        "paramName": "type",
+        "type": "text",
+        "description": "Type of content to return",
+        "label": "Content Type",
+        "show": true,
+        "options": [
+          {"value": "markdown", "label": "Markdown"},
+          {"value": "chart", "label": "Chart"},
+          {"value": "table", "label": "Table"}
+        ]
+      }
     ],
     "gridData": {"w": 30, "h": 12}
-})
-@app.post("/omni-widget")
-async def get_omni_widget(
-    data: str | dict = Body(...)
-):
-    if isinstance(data, str):
-        data = json.loads(data)
-
-    # Return table format
-    if data.get("type") == "table":
-        content = [
-            {"col1": "value1", "col2": "value2", "col3": "value3", "col4": "value4"},
-            {"col1": "value5", "col2": "value6", "col3": "value7", "col4": "value8"},
-            {"col1": "value9", "col2": "value10", "col3": "value11", "col4": "value12"},
-        ]
-        
-        return OmniWidgetResponse(
-            content=content,
-            data_format=DataFormat(data_type="object", parse_as="table")
-        )
-
-    # Return chart format
-    if data.get("type") == "chart":
-        content = {
-            "data": [
-                {"x": [1, 2, 3], "y": [4, 1, 2], "type": "bar"},
-                {"x": [1, 2, 3], "y": [2, 4, 5], "type": "bar"},
-                {"x": [1, 2, 3], "y": [2, 3, 6], "type": "bar"},
-            ],
-            "layout": {
-                "title": "Dynamic Chart",
-                "template": "plotly_dark"
-            },
-        }
-        
-        return OmniWidgetResponse(
-            content=content,
-            data_format=DataFormat(data_type="object", parse_as="chart")
-        )
-
-    # Return markdown format (default)
-    content = f"""### Dynamic Omni Widget Response
-
-**Input Parameters:**
-- **Search Query:** `{search}`
-- **Content Type:** `{data.get('type', 'markdown')}`
-- **Prompt:** `{data.get('prompt', 'No prompt provided')}`
-
-#### Raw Data:
-    {json.dumps(data, indent=2)}        
-
-    """
-        
-    return OmniWidgetResponse(
-        content=content,
-        data_format=DataFormat(data_type="object", parse_as="text")
-    )
+  }
+}
 ```
 
-## Omni Widget with Citations
+## SQL Query Widget
 
-This example demonstrates how to add citation support to your Omni widget, which is useful when you want to use the widget in conjunction with an agent. The citations are added to the response if the `citable` parameter is set to `True`. This is shown in the example below and returned when the user is interacting with the widget through an agent.
+This example demonstrates an Omni widget that executes SQL queries against mock data. The `language` parameter enables SQL syntax highlighting in the input.
 
-<img className="pro-border-gradient" width="800" alt="Omni Widget with Citations Example" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/omni-widget+with+citation.png" />
+
+<img className="pro-border-gradient" width="800" alt="Basic Plotly Chart Example" src="https://openbb-cms.directus.app/assets/e7c186e2-753b-4ae9-8b86-990f0b93c008.png" />
+
 
 ```python
-@register_widget({
-    "name": "Omni Widget with Citations",
-    "description": "An omni widget that includes citation information",
-    "category": "General",
-    "type": "omni",
-    "endpoint": "omni-widget-citations",
-    "params": [
-        {
-            "paramName": "prompt",
-            "type": "text",
-            "description": "The prompt to send to the LLM to make queries or ask questions.",
-            "label": "Prompt",
-            "show": True
-        },
-        {
-            "paramName": "include_metadata",
-            "type": "boolean",
-            "description": "Include metadata in response",
-            "label": "Include Metadata",
-            "show": True,
-            "value": True
-        }
-    ],
-    "gridData": {"w": 30, "h": 15}
-})
-@app.post("/omni-widget-citations")
-async def get_omni_widget_with_citations(
-    data: str | dict = Body(...)
-):
+import json
+import sqlite3
+import re
+from fastapi import FastAPI, Body
+
+app = FastAPI()
+
+# Mock data for SQL widget
+MOCK_DATA = [
+    {"id": 1, "symbol": "AAPL", "name": "Apple Inc.", "price": 150.25, "volume": 45000000, "sector": "Technology"},
+    {"id": 2, "symbol": "MSFT", "name": "Microsoft Corporation", "price": 350.50, "volume": 32000000, "sector": "Technology"},
+    {"id": 3, "symbol": "GOOGL", "name": "Alphabet Inc.", "price": 140.75, "volume": 28000000, "sector": "Technology"},
+    {"id": 4, "symbol": "AMZN", "name": "Amazon.com Inc.", "price": 178.25, "volume": 38000000, "sector": "Consumer Cyclical"},
+    {"id": 5, "symbol": "TSLA", "name": "Tesla Inc.", "price": 245.80, "volume": 52000000, "sector": "Automotive"},
+    {"id": 6, "symbol": "JPM", "name": "JPMorgan Chase", "price": 195.30, "volume": 12000000, "sector": "Financial"},
+    {"id": 7, "symbol": "V", "name": "Visa Inc.", "price": 275.40, "volume": 8000000, "sector": "Financial"},
+    {"id": 8, "symbol": "JNJ", "name": "Johnson & Johnson", "price": 155.60, "volume": 6500000, "sector": "Healthcare"},
+    {"id": 9, "symbol": "WMT", "name": "Walmart Inc.", "price": 165.20, "volume": 7200000, "sector": "Consumer Defensive"},
+    {"id": 10, "symbol": "PG", "name": "Procter & Gamble", "price": 158.90, "volume": 5800000, "sector": "Consumer Defensive"},
+]
+
+
+def execute_sql_on_mock_data(sql: str) -> list[dict]:
+    """Execute SQL query against mock data using in-memory SQLite"""
+    conn = sqlite3.connect(":memory:")
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    # Create table and insert mock data
+    cursor.execute("""
+        CREATE TABLE stocks (
+            id INTEGER,
+            symbol TEXT,
+            name TEXT,
+            price REAL,
+            volume INTEGER,
+            sector TEXT
+        )
+    """)
+
+    for row in MOCK_DATA:
+        cursor.execute(
+            "INSERT INTO stocks VALUES (?, ?, ?, ?, ?, ?)",
+            (row["id"], row["symbol"], row["name"], row["price"], row["volume"], row["sector"])
+        )
+    conn.commit()
+
+    # Execute the user's query (replace DATA with stocks)
+    normalized_sql = re.sub(r'\bDATA\b', 'stocks', sql, flags=re.IGNORECASE)
+    cursor.execute(normalized_sql)
+    rows = cursor.fetchall()
+    conn.close()
+
+    return [dict(row) for row in rows]
+
+
+@app.post("/omni-sql-widget")
+async def get_omni_sql_widget(data: str | dict = Body(...)):
+    """SQL Query Widget - executes SQL against mock stock data"""
     if isinstance(data, str):
         data = json.loads(data)
 
-    # Create citation information
-    source_info = SourceInfo(
-        type="widget",
-        widget_id="omni_widget_citations",
-        origin="custom_backend",
-        name="Omni Widget with Citations",
-        description="Example widget demonstrating citation functionality",
-        metadata={
-            "prompt": data.get("prompt", ""),
-            "search_term": search,
-            "timestamp": "2024-01-01T00:00:00Z",
-            "data_source": "Custom API"
-        }
-    )
-    
-    extra_citation = ExtraCitation(
-        source_info=source_info,
-        details=[
-            {
-                "Source": "Custom Backend API",
-                "Prompt": data.get("prompt", ""),
-                "Search": search,
-                "Metadata_Included": data.get("include_metadata", False),
-                "Response_Type": "Dynamic Content"
-            }
-        ]
-    )
+    sql_query = data.get("prompt", "SELECT * FROM DATA LIMIT 5")
 
-    # Generate content based on parameters
-    content = f"""# Query Results
+    try:
+        results = execute_sql_on_mock_data(sql_query)
 
-**Search Query:** {search}
-**User Prompt:** {data.get('prompt', 'No prompt provided')}
+        if not results:
+            return OmniWidgetResponse(
+                content="No results found for the query.",
+                data_format=DataFormat(data_type="object", parse_as="text"),
+                citable=False,
+            )
 
-## Results
-This is dynamically generated content based on your input parameters.
+        return OmniWidgetResponse(
+            content=results,
+            data_format=DataFormat(data_type="object", parse_as="table"),
+            citable=False,
+        )
 
-### Metadata
+    except Exception as e:
+        error_content = f"""### SQL Query Error
+
+**Query:** `{sql_query}`
+
+**Error:** {str(e)}
+
+**Available columns:** id, symbol, name, price, volume, sector
+
+**Example queries:**
+- `SELECT * FROM DATA LIMIT 5`
+- `SELECT symbol, price FROM DATA WHERE sector = 'Technology'`
+- `SELECT sector, AVG(price) as avg_price FROM DATA GROUP BY sector`
 """
-    
-    if data.get("include_metadata"):
-        content += f"""
-- **Widget ID:** omni_widget_citations
-- **Timestamp:** 2024-01-01T00:00:00Z
-- **Data Source:** Custom API
-- **Parameters:** {json.dumps(data, indent=2)}
-"""
-    else:
-        content += "Metadata hidden (set 'Include Metadata' to true to view)"
-
-    return OmniWidgetResponse(
-        content=content,
-        data_format=DataFormat(data_type="object", parse_as="text"),
-        extra_citations=[extra_citation],
-        citable=True
-    )
+        return OmniWidgetResponse(
+            content=error_content,
+            data_format=DataFormat(data_type="object", parse_as="text"),
+            citable=False,
+        )
 ```
+
+### SQL Widget Configuration
+
+```json
+{
+  "omni_sql_widget": {
+    "name": "SQL Query Widget",
+    "description": "Execute SQL queries against mock stock data. Use 'DATA' as the table name.",
+    "category": "General",
+    "type": "omni",
+    "endpoint": "omni-sql-widget",
+    "params": [
+      {
+        "paramName": "prompt",
+        "type": "text",
+        "description": "Enter a SQL query. Available columns: id, symbol, name, price, volume, sector",
+        "label": "SQL Query",
+        "value": "SELECT * FROM DATA LIMIT 5",
+        "show": false,
+        "language": "sql"
+      }
+    ],
+    "gridData": {"w": 30, "h": 12}
+  }
+}
+```
+
+Note the `language: "sql"` parameter which enables SQL syntax highlighting in the input field.
+
+## Python Widget
+
+This example demonstrates an Omni widget that executes Python code to create Plotly charts dynamically.
+
+<img className="pro-border-gradient" width="800" alt="Basic Plotly Chart Example" src="https://openbb-cms.directus.app/assets/a39f2dbb-12f5-47c5-93fa-9206c7435545.png" />
+
+
+```python
+import json
+from fastapi import FastAPI, Body
+import plotly.graph_objects as go
+
+app = FastAPI()
+
+DEFAULT_PYTHON_CODE = '''# Create a simple bar chart
+fig = go.Figure()
+
+fig.add_trace(go.Bar(
+    x=["Q1", "Q2", "Q3", "Q4"],
+    y=[100, 150, 130, 180],
+    name="Revenue",
+    marker_color="#26a69a"
+))
+
+fig.add_trace(go.Bar(
+    x=["Q1", "Q2", "Q3", "Q4"],
+    y=[80, 120, 110, 150],
+    name="Profit",
+    marker_color="#ef5350"
+))
+
+fig.update_layout(
+    title="Quarterly Performance",
+    barmode="group",
+    xaxis_title="Quarter",
+    yaxis_title="Amount ($M)"
+)'''
+
+
+@app.post("/omni-python-widget")
+async def get_omni_python_widget(data: str | dict = Body(...)):
+    """Python Chart Widget - executes Python code to create Plotly charts"""
+    if isinstance(data, str):
+        data = json.loads(data)
+
+    python_code = data.get("prompt", DEFAULT_PYTHON_CODE)
+
+    try:
+        # Create a restricted namespace for execution
+        namespace = {"go": go}
+        exec(python_code, namespace)
+
+        fig = namespace.get("fig")
+        if fig is None:
+            return OmniWidgetResponse(
+                content="Error: No 'fig' variable found. Please assign your Plotly figure to 'fig'.",
+                data_format=DataFormat(data_type="object", parse_as="text"),
+                citable=False,
+            )
+
+        content = json.loads(fig.to_json())
+
+        return OmniWidgetResponse(
+            content=content,
+            data_format=DataFormat(data_type="object", parse_as="chart"),
+            citable=False,
+        )
+
+    except Exception as e:
+        error_content = f"### Python Execution Error\n\n**Error:** {str(e)}\n\n**Example code:**\n\nfig = go.Figure()\nfig.add_trace(go.Bar(x=['A', 'B', 'C'], y=[1, 2, 3]))"
+        return OmniWidgetResponse(
+            content=error_content,
+            data_format=DataFormat(data_type="object", parse_as="text"),
+            citable=False,
+        )
+```
+
+### Python Widget Configuration
+
+```json
+{
+  "omni_python_widget": {
+    "name": "Python Chart Widget",
+    "description": "Write Python code to create Plotly charts. Use 'fig' as the figure variable.",
+    "category": "General",
+    "type": "omni",
+    "endpoint": "omni-python-widget",
+    "params": [
+      {
+        "paramName": "prompt",
+        "type": "text",
+        "description": "Enter Python code to create a Plotly chart. Use 'go' for plotly.graph_objects.",
+        "label": "Python Code",
+        "show": false,
+        "language": "python"
+      }
+    ],
+    "gridData": {"w": 30, "h": 12}
+  }
+}
+```
+
+Note the `language: "python"` parameter which enables Python syntax highlighting in the input field.
 
 ## Important Implementation Notes
 
@@ -14560,18 +14675,20 @@ async def omni_endpoint(
     # Handle both string and dict formats
     if isinstance(data, str):
         data = json.loads(data)
-    
+
     # All widget parameters are available in the 'data' object
     param_value = data.get("paramName")
 ```
 
 ### Dynamic Output Control
 
+<img className="pro-border-gradient" width="800" alt="Basic Plotly Chart Example" src="https://openbb-cms.directus.app/assets/039a99d7-1b18-4501-b477-d233256b5ff7.png" />
+
 The Omni widget can return different content types based on the parse_as field in the DataFormat:
 
-"text": For markdown/text content
-"table": For tabular data (list of dictionaries)
-"chart": For Plotly chart objects
+- "text": For markdown/text content
+- "table": For tabular data (list of dictionaries)
+- "chart": For Plotly chart objects
 
 ```python
 # Text/Markdown output
@@ -14586,7 +14703,7 @@ return OmniWidgetResponse(
 return OmniWidgetResponse(
     content=[{"col1": "val1", "col2": "val2"}],
     data_format=DataFormat(data_type="object", parse_as="table")
-)   
+)
 ```
 
 ```python
@@ -14595,6 +14712,18 @@ return OmniWidgetResponse(
     content={"data": [...], "layout": {...}},
     data_format=DataFormat(data_type="object", parse_as="chart")
 )
+```
+
+### Language Parameter
+
+The `language` parameter in widget configuration enables syntax highlighting for the input:
+
+```json
+{
+  "paramName": "prompt",
+  "type": "text",
+  "language": "sql"  // or "python" or nothing for text
+}
 ```
 
 ### Parameter Handling
@@ -14610,7 +14739,7 @@ All widget parameters defined in the widget configuration are passed in the POST
         "type": "text",
         "description": "The prompt to send to the LLM to make queries or ask questions.",
         "label": "Prompt",
-        "show": False
+        "show": false
     }
     {
         "paramName": "user_input",
@@ -14637,13 +14766,28 @@ async def omni_endpoint(data: dict = Body(...)):
     # Process parameters...
 ```
 
+### Hide text/SQL/Python Area
+
+You can edit the input area text and run each widget with the run button.
+
+<img className="pro-border-gradient" width="800" alt="Basic Plotly Chart Example" src="https://openbb-cms.directus.app/assets/8740e757-a800-41b7-809c-f0ef3def1729.png" />
+
+But once you are happy you can hide that input area and when you want to run it again you can just click on the run button on the top left corner, and the business logic remains.
+
+<img className="pro-border-gradient" width="800" alt="Basic Plotly Chart Example" src="https://openbb-cms.directus.app/assets/4d32eeeb-2d39-4c4e-a7fd-54bdac58da20.png" />
+
+
+
 ## Use Cases
 
 The Omni widget is particularly useful for:
 
 - AI/LLM Integration: Dynamic content generation based on user prompts
 - Multi-format Data Display: Single endpoint that can return different visualizations
-- Citation-heavy Applications: Research tools that need to track data sources.
+- SQL Query Interfaces: Execute queries and display results as tables
+- Code Execution: Run Python code to generate charts dynamically
+- Citation-heavy Applications: Research tools that need to track data sources
+
 
 ---
 
@@ -15405,6 +15549,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 This guide explains how to implement TradingView charts in OpenBB using TradingView's Universal Data Feed (UDF) protocol. The UDF protocol allows you to create custom data feeds for TradingView charts.
 
+<img className="pro-border-gradient" width="800" alt="Basic Plotly Chart Example" src="https://openbb-cms.directus.app/assets/36f110ab-3cfb-4a46-b3b4-3541acdd7f27.png" />
+
+
 ## Prerequisites
 
 1. FastAPI or similar web framework for implementing the UDF endpoints
@@ -15632,6 +15779,7 @@ def generate_mock_price_data(symbol: str, from_time: int, to_time: int, resoluti
 - [UDF Protocol Documentation](https://www.tradingview.com/charting-library-docs/latest/connecting_data/UDF)
 
 The charting technology is provided by TradingView — a platform for traders and investors offering real-time market data, crypto heatmaps, screeners, and other professional tools, making it easy to follow Bitcoin, [Ethereum price](https://www.tradingview.com/symbols/ETHUSD/), and charts for any other asset.
+
 
 ---
 
