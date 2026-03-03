@@ -173,6 +173,12 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
       Indicates if the table should have formulas enabled. When true, the side tab for "Formulas" will show up on tables by default.
       _Example:_ `true`
 
+    - **formatterFn**
+      _Type:_ `string`
+      Applies a formatting function to all columns in the table. This is a convenient way to set a default format for the entire table instead of specifying `formatterFn` on each individual column in `columnsDefs`. Column-level `formatterFn` values in `columnsDefs` will override this table-level setting.
+      _Example:_ `"none"`
+      _Possible values:_ see [`formatterFn`](#formatterfn)
+
     - **chartView**
       _Type:_ object containing the following keys:
 
