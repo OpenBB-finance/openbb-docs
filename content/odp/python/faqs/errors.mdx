@@ -26,7 +26,7 @@ There could be a few reasons for this message.
 2. The provider extension is installed, but the static assets have not been refreshed. Rebuild the static assets from the command line with:
 
 ```sh
-python -c "import openbb;openbb.build()"
+openbb-build
 ```
 
 An environment variable to auto-build the static assets on import - if there are changes to the installed configuration - can be defined as:
@@ -128,6 +128,19 @@ Be sure to include the contents of the traceback, the operating system and versi
 </details>
 
 <details>
+<summary mdxType="summary">ImportError: cannot import name 'OBBject_*' from 'openbb_core.app.provider_interface'</summary>
+
+This error can happen when the static assets were not fully built. The build process may have been interrupted, or a subprocess might be creating a race condition by attempting to import modules before they are ready.
+
+The solution is to trigger a rebuild from the command line, with the environment active.
+
+```sh
+openbb-build
+```
+
+</details>
+
+<details>
 <summary mdxType="summary">How do I start in debug mode?</summary>
 
 Debug mode can be set as an environment variable, in `~/openbb_platform/.env`, as:
@@ -145,5 +158,16 @@ os.environ["OPENBB_DEBUG_MODE"] = "true"
 
 from openbb import obb
 ```
+
+</details>
+
+<details>
+<summary mdxType="summary">"Microsoft Visual C++ 14.0 or greater is required"</summary>
+
+Download and install [C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/), restart the machine, then continue.
+
+![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/ceb57be0-6dae-42f2-aca6-bf62ce7d6135)
+
+![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/f8aef8fc-a080-4164-bd36-460714ec44f3)
 
 </details>
