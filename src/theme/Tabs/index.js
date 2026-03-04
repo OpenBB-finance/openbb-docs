@@ -72,9 +72,9 @@ function TabList({ className, block, selectedValue, selectValue, tabValues }) {
                 "text-[#669dcb] border-[#669dcb]":
                   selectedValue === value && pathname.startsWith("/workspace"),
                 "text-[#FB923C] border-[#FB923C]":
-                  selectedValue === value && pathname.startsWith("/python"),
+                  selectedValue === value && pathname.startsWith("/odp"),
                 "border-transparent text-grey-400 hover:text-[#ffd4b1] hover:border-[#ffd4b1]":
-                  selectedValue !== value && pathname.startsWith("/python"),
+                  selectedValue !== value && pathname.startsWith("/odp"),
                 "border-transparent text-grey-400 hover:text-[#abd2f1] hover:border-[#abd2f1]":
                   selectedValue !== value && pathname.startsWith("/workspace"),
               },
