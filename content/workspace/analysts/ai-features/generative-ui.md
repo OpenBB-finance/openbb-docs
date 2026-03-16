@@ -1,5 +1,5 @@
 ---
-title: Generative UI (Beta)
+title: Generative UI
 sidebar_position: 13
 description: Understanding the Generative UI capabilities in OpenBB Copilot
 keywords:
@@ -7,12 +7,12 @@ keywords:
   - widgets
   - dynamic creation
   - widget parameters
-  - beta features
+  - dashboard manipulation
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Generative UI (Beta) | OpenBB Workspace Docs" />
+<HeadTitle title="Generative UI | OpenBB Workspace Docs" />
 
 When this feature is turned ON, copilot can manipulate widgets on the dashboard.
 
@@ -37,7 +37,7 @@ If global data is turned on, and the user asks information that the copilot beli
   <img
     className="pro-border-gradient"
     alt="Widget parameters"
-    src="https://openbb-cms.directus.app/assets/b5798412-cba3-4deb-898c-dde7ccd636c1.png"
+    src="https://openbb-cms.directus.app/assets/5e641714-20a7-4830-a82f-158a85259ec1.png"
     width="100%"
   />
 </div>
