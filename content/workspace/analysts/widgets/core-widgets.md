@@ -76,14 +76,15 @@ The Website widget brings external data sources directly into your dashboard, cr
 
 > **Note:** Some websites may restrict embedding. OpenBB automatically checks and only displays websites that permit embedding.
 
-## RSS Feeds Widget
+## RSS and Atom Feeds Widget
 
-The RSS Feeds widget serves as your personal news aggregator within OpenBB, keeping you informed with market-moving information. This essential tool provides:
+The RSS Feeds widget serves as your personal news aggregator within OpenBB, keeping you informed with market-moving information. This widget supports both RSS and Atom feed formats. This essential tool provides:
 
 - Curated financial news from top sources
 - Customizable news feed preferences
 - Real-time market updates
 - Integrated news analysis within your research workflow
+- Support for both RSS (e.g. https://feeds.bloomberg.com/markets/news.rss) and Atom feed formats (e.g. https://karpathy.bearblog.dev/feed/)
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
   <img

@@ -1,0 +1,54 @@
+---
+title: MCP Settings
+sidebar_position: 3
+description: This section details configuring the ODP settings and environment variables.
+keywords:
+  - ODP
+  - system_settings.json
+  - OpenBB Platform
+  - Python client
+  - getting started
+  - OpenBB Hub
+  - local environment
+  - environment variables
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="MCP Settings - ODP Python | OpenBB Docs" />
+
+Configurations on this page assume that [`openbb-mcp`](/odp/python/extensions/interface/openbb-mcp) is installed.
+
+All settings can be configured via the `mcp_settings.json` file or as environment variables.
+
+| Setting | Environment Variable | Type | Default | Description |
+|---|---|---|---|---|
+| `api_prefix` | `OPENBB_MCP_API_PREFIX` | string | `None` | Overrides the API prefix from SystemService. |
+| `name` | `OPENBB_MCP_NAME` | string | `"OpenBB MCP"` | Server name. |
+| `description` | `OPENBB_MCP_DESCRIPTION` | string | | Server description. |
+| `version` | `OPENBB_MCP_VERSION` | string | `None` | Server version. |
+| `default_tool_categories` | `OPENBB_MCP_DEFAULT_TOOL_CATEGORIES` | list[string] | `["all"]` | Default active tool categories on startup. |
+| `allowed_tool_categories` | `OPENBB_MCP_ALLOWED_TOOL_CATEGORIES` | list[string] | `None` | Restricts available tool categories to this list. |
+| `enable_tool_discovery` | `OPENBB_MCP_ENABLE_TOOL_DISCOVERY` | boolean | `True` | Enable tool discovery. |
+| `describe_responses` | `OPENBB_MCP_DESCRIBE_RESPONSES` | boolean | `False` | Include response types in tool descriptions. |
+| `system_prompt_file` | `OPENBB_MCP_SYSTEM_PROMPT_FILE` | string | `None` | Path to a text file for the system prompt. |
+| `server_prompts_file` | `OPENBB_MCP_SERVER_PROMPTS_FILE` | string | `None` | Path to a JSON file with a list of server prompt definitions. |
+| `cache_expiration_seconds` | `OPENBB_MCP_CACHE_EXPIRATION_SECONDS` | float | `None` | Cache expiration time in seconds. `0` to disable. |
+| `on_duplicate_tools` | `OPENBB_MCP_ON_DUPLICATE_TOOLS` | string | `None` | Behavior for duplicate tools (`warn`, `error`, `replace`, `ignore`). |
+| `on_duplicate_resources` | `OPENBB_MCP_ON_DUPLICATE_RESOURCES` | string | `None` | Behavior for duplicate resources. |
+| `on_duplicate_prompts` | `OPENBB_MCP_ON_DUPLICATE_PROMPTS` | string | `None` | Behavior for duplicate prompts. |
+| `resource_prefix_format` | `OPENBB_MCP_RESOURCE_PREFIX_FORMAT` | string | `None` | Format for resource URI prefixes (`protocol` or `path`). |
+| `mask_error_details` | `OPENBB_MCP_MASK_ERROR_DETAILS` | boolean | `None` | Mask error details from user functions. |
+| `dependencies` | `OPENBB_MCP_DEPENDENCIES` | list[string] | `None` | List of dependencies to install. |
+| `include_tags` | `OPENBB_MCP_INCLUDE_TAGS` | set[string] | `None` | Only expose components with these tags. |
+| `exclude_tags` | `OPENBB_MCP_EXCLUDE_TAGS` | set[string] | `None` | Exclude components with these tags. |
+| `module_exclusion_map` | `OPENBB_MCP_MODULE_EXCLUSION_MAP` | dict[str, str] | `None` | Map API tags to Python module names for exclusion. |
+| `uvicorn_config` | `OPENBB_MCP_UVICORN_CONFIG` | dict | `{"host": "127.0.0.1", "port": "8001"}` | Configuration for the Uvicorn server. |
+| `httpx_client_kwargs` | `OPENBB_MCP_HTTPX_CLIENT_KWARGS` | dict | `{}` | Configuration for the async httpx client. |
+| `client_auth` | `OPENBB_MCP_CLIENT_AUTH` | tuple[string, string] | `None` | `(username, password)` for client-side basic authentication (passed-through to HTTPX). |
+| `server_auth` | `OPENBB_MCP_SERVER_AUTH` | tuple[string, string] | `None` | `(username, password)` for server-side basic authentication. |
+
+:::note
+Runtime argument keys, in general, "-" and "_" are interchangeable.
+Nested uvicorn arguments should use `_`.
+:::

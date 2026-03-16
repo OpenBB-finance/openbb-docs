@@ -21,9 +21,9 @@ While it is expected for users to create their apps.json from the UI directly, a
 |----------|------|-------------|
 | `name` | string | The name of your app |
 | `description` | string | A detailed description of what your app does |
-| `img` | string | URL to the app's thumbnail image |
-| `img_dark` | string | Optional URL to the app's thumbnail for dark mode |
-| `img_light` | string | Optional URL to the app's thumbnail for light mode |
+| `img` | string | URL to the app's thumbnail image or base64 string |
+| `img_dark` | string | Optional URL to the app's thumbnail for dark mode or base64 string |
+| `img_light` | string | Optional URL to the app's thumbnail for light mode or base64 string|
 | `allowCustomization` | boolean | Whether users can customize the app |
 | `selected_agent` | string | Optional ID of the default AI agent for this app |
 | `authentication` | string | Optional authentication requirements |

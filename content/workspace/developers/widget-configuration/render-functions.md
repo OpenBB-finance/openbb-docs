@@ -48,8 +48,8 @@ In the `widgets.json` configuration, you can specify render functions to customi
 
 | Parameter | Type | Description | Options |
 |-----------|------|-------------|---------|
-| **condition** | `string` | The condition for applying the color | `"eq"`, `"ne"`, `"gt"`, `"lt"`, `"gte"`, `"lte"`, `"between"` |
-| **value** | `number` | The value for the condition | - |
+| **condition** | `string` | The condition for applying the color | `"eq"`, `"ne"`, `"gt"`, `"lt"`, `"gte"`, `"lte"`, `"between"`, `"contains"`, `"notContains"` |
+| **value** | `number` or `string` | The value for the condition. For `contains` and `notContains`, use a string value | - |
 | **range** | `object` | An object specifying `min` and `max` values for the between condition | `{min: number, max: number}` |
 | **color** | `string` | The color to apply | Hex code or `"green"`, `"red"`, `"blue"` |
 | **fill** | `boolean` | Indicates if the color should fill the cell | `true`/`false` |
@@ -104,6 +104,52 @@ The below example would apply a green color to the cell if the value is between 
 }
 ```
 
+**Example using `contains` and `notContains` conditions:**
+
+```json
+{
+    ...
+    "columnsDefs": [
+        {
+            "field": "status",
+            "headerName": "Status",
+            "cellDataType": "text",
+            "renderFn": "columnColor",
+            "renderFnParams": {
+                "colorRules": [
+                    {
+                        "condition": "contains",
+                        "value": "Active",
+                        "color": "green",
+                        "fill": true
+                    },
+                    {
+                        "condition": "contains",
+                        "value": "Pending",
+                        "color": "yellow",
+                        "fill": true
+                    },
+                    {
+                        "condition": "notContains",
+                        "value": "Active",
+                        "color": "red",
+                        "fill": true
+                    }
+                ]
+            }
+        }
+    ]
+}
+```
+
+This example:
+
+- Colors cells green if the status contains "Active"
+- Colors cells yellow if the status contains "Pending"
+- Colors cells red if the status does not contain "Active"
+
+**Note:** The `contains` and `notContains` conditions work with string values only.
+
 ### Multiple Render Functions and Color Rules
 
 If you want to use multiple render functions, you can pass an array of render functions to the `renderFn` parameter. Below is an example of a column that uses both the `cellOnClick` and `columnColor` render functions. We also specify the `colorValueKey` so that the `columnColor` render function knows which field to use for determining the color. In this case we want to color the symbol cell based on the `Analyst` field.
@@ -121,7 +167,9 @@ If you want to use multiple render functions, you can pass an array of render fu
             ],
             "renderFnParams": {
               "actionType": "groupBy",
-              "groupByParamName": "symbol",
+              "groupBy": {
+                "paramName": "symbol"
+              },
               "colorValueKey": "Analyst",
               "colorRules": [
                 {
@@ -135,6 +183,56 @@ If you want to use multiple render functions, you can pass an array of render fu
         },
       ] 
 }
+```
+
+### Using valueField for Custom Value Mapping
+
+The `valueField` option allows you to use a different field value than what's displayed in the cell. This is useful when your table displays human-readable values (like company names) but your API expects different values (like IDs).
+
+**Example:** A table displays company names, but clicking should pass the company ID to the parameter:
+
+```json
+{
+    ...
+    "columnsDefs": [
+        {
+            "field": "companyName",
+            "headerName": "Company",
+            "cellDataType": "text",
+            "renderFn": "cellOnClick",
+            "renderFnParams": {
+                "actionType": "groupBy",
+                "groupBy": {
+                    "paramName": "companyId",
+                    "valueField": "companyId"
+                }
+            }
+        }
+    ]
+}
+```
+
+In this example:
+
+- The cell displays the value from `companyName` field (e.g., "Apple Inc.")
+- When clicked, it passes the value from `companyId` field (e.g., "AAPL") to the `companyId` parameter
+- This allows you to show friendly names while using IDs for API calls
+
+**Data structure example:**
+
+```json
+[
+    {
+        "companyName": "Apple Inc.",
+        "companyId": "AAPL",
+        "price": 150.25
+    },
+    {
+        "companyName": "Microsoft Corporation",
+        "companyId": "MSFT",
+        "price": 350.50
+    }
+]
 ```
 
 ### Hover Card

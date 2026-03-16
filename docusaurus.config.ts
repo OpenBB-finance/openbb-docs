@@ -16,11 +16,16 @@ export default {
 	tagline: "OpenBB Docs",
 	url: "https://docs.openbb.co", // Your website URL
 	baseUrl: "/",
-	projectName: "OpenBBTerminal",
+	projectName: "OpenBB",
 	organizationName: "OpenBB-finance",
 	trailingSlash: false,
 	onBrokenLinks: "warn",
-	onBrokenMarkdownLinks: "warn",
+	onBrokenAnchors: "warn",
+	"markdown": {
+		"hooks": {
+			onBrokenMarkdownLinks: "warn",
+		}
+	},
 	favicon: "img/favicon.ico",
 
 	// GitHub pages deployment config.
@@ -38,10 +43,6 @@ export default {
 			"@docusaurus/plugin-client-redirects",
 			{
 				redirects: [
-					{
-						from: "/platform/development/contributing",
-						to: "/platform/developer_guide/misc/contributing",
-					},
 					{
 						from: "/pro/",
 						to: "/workspace/developers/data-integration",
@@ -88,8 +89,38 @@ export default {
 						from: "/getting-started/faqs",
 						to: "/workspace/getting-started/faqs",
 					},
+					// Redirects for old ODP paths
+					{
+						from: "/platform",
+						to: "/odp/python",
+					},
+					{
+						from: "/desktop",
+						to: "/odp/desktop",
+					},
+					{
+						from: "/python",
+						to: "/odp/python",
+					},
+					{
+						from: "/cli",
+						to: "/odp/cli",
+					},
 				],
 				createRedirects: (existingPath) => {
+					// Redirect old paths to new /odp/* structure
+					if (existingPath.startsWith("/odp/desktop/")) {
+						return existingPath.replace("/odp/desktop/", "/desktop/");
+					}
+					if (existingPath.startsWith("/odp/python/")) {
+						return [
+							existingPath.replace("/odp/python/", "/python/"),
+							existingPath.replace("/odp/python/", "/platform/"),
+						];
+					}
+					if (existingPath.startsWith("/odp/cli/")) {
+						return existingPath.replace("/odp/cli/", "/cli/");
+					}
 					if (existingPath.startsWith("/pro/")) {
 						const newPath = existingPath.replace("/pro/", "/workspace/developers/");
 						if (newPath.includes("data-connector")) {
@@ -118,16 +149,67 @@ export default {
 				},
 			};
 		},
+		async function sidebarExportPlugin(context) {
+			return {
+				name: "sidebar-export-plugin",
+				async contentLoaded({ content, actions }) {
+					// This runs after docs plugin processes content
+				},
+				async allContentLoaded({ allContent, actions }) {
+					const { setGlobalData, createData } = actions;
+					const docsContent = allContent["docusaurus-plugin-content-docs"]?.default;
+					const loadedVersion = docsContent?.loadedVersions?.[0];
+
+					if (loadedVersion?.sidebars?.tutorialSidebar) {
+						// Get the docs metadata to resolve labels
+						const docsMetadata = loadedVersion.docs;
+
+						// Recursively resolve labels for sidebar items
+						const resolveLabels = (items: any[]): any[] => {
+							return items.map(item => {
+								if (item.type === "doc") {
+									const doc = docsMetadata.find((d: any) => d.id === item.id);
+									return {
+										...item,
+										label: item.label || doc?.title || doc?.id?.split("/").pop(),
+										href: doc?.permalink,
+									};
+								}
+								if (item.type === "category") {
+									let categoryHref = null;
+									if (item.link?.type === "doc" && item.link?.id) {
+										const linkDoc = docsMetadata.find((d: any) => d.id === item.link.id);
+										categoryHref = linkDoc?.permalink;
+									}
+									return {
+										...item,
+										href: categoryHref,
+										items: item.items ? resolveLabels(item.items) : [],
+									};
+								}
+								return item;
+							});
+						};
+
+						const resolvedSidebar = resolveLabels(loadedVersion.sidebars.tutorialSidebar);
+						setGlobalData({ sidebar: resolvedSidebar });
+					}
+				},
+			};
+		},
 		async function pluginLlmsTxt(context) {
 			return {
 				name: "llms-txt-plugin",
 				loadContent: async () => {
 					const { siteDir } = context;
 					const contentDir = path.join(siteDir, "content");
+					// ODP has sub-sections that each get their own llms.txt
 					const sectionContent: Record<string, string[]> = {
 						workspace: [],
-						platform: [],
-						cli: [],
+						"odp/desktop": [],
+						"odp/python": [],
+						"odp/cli": [],
+						snowflake: [],
 					};
 
 					// recursive function to get all mdx files
@@ -148,9 +230,16 @@ export default {
 									const content = await fs.promises.readFile(fullPath, "utf8");
 									// Determine which section this file belongs to
 									const relativePath = path.relative(contentDir, fullPath);
-									const section = relativePath.split(path.sep)[0];
-									if (section in sectionContent) {
-										sectionContent[section].push(content);
+									const pathParts = relativePath.split(path.sep);
+									
+									// Check for ODP sub-sections first (odp/desktop, odp/python, odp/cli)
+									if (pathParts[0] === "odp" && pathParts.length > 1) {
+										const subSection = `odp/${pathParts[1]}`;
+										if (subSection in sectionContent) {
+											sectionContent[subSection].push(content);
+										}
+									} else if (pathParts[0] in sectionContent) {
+										sectionContent[pathParts[0]].push(content);
 									}
 								} catch (err) {
 									console.error(`Error processing file ${fullPath}:`, err);
@@ -199,19 +288,32 @@ export default {
 					).docs as Record<string, Record<string, unknown>>;
 
 					// Group routes by section
+					// ODP has sub-sections that each get their own llms.txt
 					const sectionRoutes: Record<string, string[]> = {
 						workspace: [],
-						platform: [],
-						cli: [],
+						"odp/desktop": [],
+						"odp/python": [],
+						"odp/cli": [],
+						snowflake: [],
 					};
 
-					for (const [path, record] of Object.entries(
+					for (const [docPath, record] of Object.entries(
 						currentVersionDocsRoutes,
 					)) {
-						const section = path.split("/")[0];
-						if (section in sectionRoutes) {
-							const fullUrl = `${context.siteConfig.url}/${path}`;
-							sectionRoutes[section].push(
+						const pathParts = docPath.split("/");
+						
+						// Check for ODP sub-sections first (odp/desktop, odp/python, odp/cli)
+						if (pathParts[0] === "odp" && pathParts.length > 1) {
+							const subSection = `odp/${pathParts[1]}`;
+							if (subSection in sectionRoutes) {
+								const fullUrl = `${context.siteConfig.url}/${docPath}`;
+								sectionRoutes[subSection].push(
+									`- [${record.title}](${fullUrl}): ${record.description}`,
+								);
+							}
+						} else if (pathParts[0] in sectionRoutes) {
+							const fullUrl = `${context.siteConfig.url}/${docPath}`;
+							sectionRoutes[pathParts[0]].push(
 								`- [${record.title}](${fullUrl}): ${record.description}`,
 							);
 						}
@@ -307,6 +409,11 @@ export default {
 	],
 	themeConfig: {
 		image: "img/banner.png",
+		docs: {
+			sidebar: {
+				autoCollapseCategories: true,
+			},
+		},
 		prism: {
 			theme: themes.vsLight,
 			darkTheme: themes.vsDark,

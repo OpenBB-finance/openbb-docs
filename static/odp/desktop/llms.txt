@@ -1,0 +1,11 @@
+# OpenBB Docs - odp/desktop
+
+## Docs
+
+- [API Keys](https://docs.openbb.co/odp/desktop/api-keys): Manage and store API credentials for data providers securely within the ODP Desktop App.
+- [Backends](https://docs.openbb.co/odp/desktop/backends): Run and manage background processes like the OpenBB API server, data streaming pipelines, or custom Python scripts directly within the OpenBB GUI.
+- [Environments](https://docs.openbb.co/odp/desktop/environments): Create and manage isolated Conda environments for your Python projects. Install packages, manage dependencies, and launch development tools like JupyterLab, all from the OpenBB GUI.
+- [Introduction](https://docs.openbb.co/odp/desktop/index): An overview of the Open Data Platform desktop application for creating and managing local environments and backend servers.
+- [Installation](https://docs.openbb.co/odp/desktop/installation): This page presents the general system requirements and installation instructions for the Open Data Platform (ODP) desktop application.
+- [Troubleshooting](https://docs.openbb.co/odp/desktop/troubleshooting): This page covers potential problems that might be encountered while using the ODP Desktop application.
+- [Uninstall](https://docs.openbb.co/odp/desktop/uninstall): Uninstall the Open Data Platform application.

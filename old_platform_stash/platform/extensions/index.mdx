@@ -1,0 +1,77 @@
+---
+title: Introduction
+sidebar_position: 0
+description: An overview of installable OpenBB Platform packages and extensions.
+keywords:
+  - OpenBB Platform
+  - Extension
+  - Router
+  - Provider
+  - Data
+  - Developer Tools
+  - API
+  - MCP
+  - Server
+---
+
+{/* markdownlint-disable MD012 MD031 MD033 MD037 */}
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
+
+<HeadTitle title="Packages & Extensions | OpenBB Docs" />
+
+# Installable Packages & Extensions
+
+OpenBB Platform is the combination of packages installed in an environment. The core package is the underlying infrastructure, while extensions represent API routes, data sources, and the response object.
+
+
+
+When you run, `pip install openbb`, you get all of the extensions maintained in the official OpenBB GitHub [repository](https://www.github.com/OpenBB-finance/OpenBB). You can create your own custom Python apps by extending the `openbb-core` library, or by selectively installing individual components.
+
+Anyone can build and publish an OpenBB Platform extension, 
+
+- see the [developer docs](/platform/developer_guide) for details - 
+
+:::warning
+Always follow best-practice when installing software on a machine. Compatibility, integrity, and security of third-party packages or distributions has not been verified or endorsed by OpenBB. 
+:::
+
+
+## Minimalist
+
+## Infrastructure
+
+<ul className="grid grid-cols-1 gap-2 -ml-6">
+  <NewReferenceCard
+    title="OpenBB Core"
+    description="An extendable, light-weight, Python package responsible for serialized ETL pipelines with Pydantic and FastAPI."
+    url="extensions/openbb-core"
+  />
+  <NewReferenceCard
+    title="OpenBB Charting"
+    description="An extendable, integerated, Plotly charting library for building views with the option to display in a dedicated window."
+    url="extensions/openbb-charting"
+  />
+</ul>
+
+
+## Interface
+
+<ul className="grid grid-cols-1 gap-2 -ml-6">
+  <NewReferenceCard
+    title="OpenBB Platform API"
+    description="A Python library for automatically generating OpenBB Workspace Widget configurations and serving as a Workspace Backend. Create dashboarding experiences with frontend, or additional, code required."
+    url="extensions/openbb-api"
+  />
+  <NewReferenceCard
+    title="OpenBB MCP Server"
+    description="A Python library for automatically converting OpenBB Platform environments, and FastAPI instances, into ready-to-use MCP servers. Highly configurable, and easily secured. Connect AI to your data, on your terms."
+    url="odp/environments"
+  />
+  <NewReferenceCard
+    title="OpenBB CLI"
+    description="A Python library for exploring the OpenBB Platform environment as a scriptable, Command Line Interface (CLI)."
+    url="/cli/"
+  />
+</ul>

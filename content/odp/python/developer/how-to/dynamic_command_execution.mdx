@@ -1,0 +1,52 @@
+---
+title: Dynamic Command Execution
+sidebar_position: 2
+description: This guide provides detailed instructions on how to execute commands dynamically in the OpenBB Python Package.
+keywords:
+- ODP
+- How-To
+- Python
+- OpenBB Platform
+- Custom commands
+- Dynamic Execution
+- command_runner
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Dynamic Command Execution - Developer | OpenBB Docs" />
+
+Dynamic execution provides an alternate entry point to functions.
+
+:::tip
+This is the pure Python method to run API endpoints without the need for static assets.
+:::
+
+Parameters should be formatted like the snippet below,
+where `standard_params` are items belonging to the Standard Model,
+and `extra_params` are all other parameters and keyword arguments.
+
+```python
+>>> from openbb_core.app.command_runner import CommandRunner
+>>>runner = CommandRunner()
+>>> output = await runner.run(
+    "/equity/fundamental/ratios",
+    provider_choices={
+        "provider": "fmp",
+    },
+    standard_params={
+        "symbol" : "TSLA",
+        "period" : "quarter",
+    },
+    extra_params={}
+)
+>>> output
+OBBject
+
+id: 065241b7-bd9d-7313-8000-9406d8afab75
+results: [{'symbol': 'TSLA', 'date': '2023-06-30', 'period': 'Q2', 'current_ratio':...
+provider: fmp
+warnings: None
+chart: None
+extra: {'metadata': {'arguments': {'provider_choices': {'provider': 'fmp'}, 'standa...
+```

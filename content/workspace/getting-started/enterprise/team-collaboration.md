@@ -40,9 +40,10 @@ Activity logging tracks when dashboards are shared, accessed, or modified. Permi
 
 ## Export Controls
 
-Manage how data and analyses can be extracted from the platform. Export controls operate through role-based permissions that determine which users can download data, generate reports, or share content outside the system. Administrators configure these controls to match organizational data governance policies.
-
-The export control system tracks all data movement activities. When users export dashboards or download data, the system records the action, identifies the user, and logs the specific content involved. This information supports compliance monitoring and data loss prevention initiatives.
+Manage how data and analyses can be extracted from the platform. Users are allowed to export:
+- Individual datasets in formats such as CSV, Excel, PNG and JSON.
+- Export dashboards (with multiple tabs) as PDF or PNG.
+- Export a folder (i.e. multiple dashboards) as a ZIP file.
 
 ## AI Features Integration
 

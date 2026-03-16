@@ -1,0 +1,163 @@
+---
+title: Installation
+sidebar_position: 1
+description:
+  This page presents the general system requirements, supported environments,
+  installation procedures, and setup for running the Open Data Platform - by OpenBB.
+keywords:
+  - ODP
+  - Open Data Platform
+  - Python
+  - System requirements
+  - Installation
+  - Docker
+  - virtual environment
+  - source
+  - Windows
+  - macOS
+  - Linux
+  - pip
+  - VS Code
+  - PyCharm
+  - Jupyter
+  - GitHub
+  - Conda
+  - venv
+  - API
+  - Repository
+  - Poetry
+  - PyPI
+  - Node.js
+  - npm
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Installation | OpenBB Docs" />
+
+Most systems capable of running Python `3.10-3.13` will be compatible.
+
+### System Requirements
+
+A modern processor (five years or less), running an up-to-date operating system, with at least 8GB of RAM, is recommended. Maintaining the system with current patches ensures maximum compatibility. At a minimum, Windows and macOS should be:
+
+- Windows 11
+- Mac OS Big Sur
+
+Linux users should run the command line update for the package manager, prior to installation.
+
+### Install via ODP Desktop
+
+For a graphical installer, see the [ODP Desktop](/odp/desktop/installation) application.
+
+### Setup Environment
+
+:::tip
+If you are having trouble with virtual environments or package installation, use the ODP [Desktop Application](/odp/desktop/installation) instead.
+:::
+
+The method for creating the environment will be a matter of user preference, from the command line - [Conda](https://docs.conda.io/projects/miniconda/en/latest/miniconda-install.html), [venv](https://docs.python.org/3/library/venv.html), etc. - or in a code editor and IDE - [VS Code](https://code.visualstudio.com/docs/languages/python), [PyCharm](https://www.jetbrains.com/pycharm/), [Jupyter](https://jupyter.org/).
+
+If you're interested in building a [Docker](/odp/python/installation#docker) container, skip ahead to the specific section [below](/odp/python/installation#docker).
+
+For those new to Python, [this article](https://www.infoworld.com/article/3306656/python-virtualenv-and-venv-dos-and-donts.html) shares some tips on getting started and why environments are important.
+
+See [this guide](https://code.visualstudio.com/docs/python/environments) for creating a Python environment in VS Code.
+
+Before installation, update the package manager so that `pip` is current, then create the environment with the desired version of Python.
+
+:::warning
+Installing packages directly to the system Python or `base` environment is not recommended. Create a new environment first.
+:::
+
+## Install
+
+With the environment created, and activated, begin the installation process.
+
+### PyPI
+
+```console
+pip install openbb
+```
+
+
+
+### Docker
+
+<details>
+<summary mdxType="summary">We provide a `platformAPI.Dockerfile` on [GitHub](https://raw.githubusercontent.com/OpenBB-finance/OpenBB/refs/heads/develop/build/docker/platformAPI.Dockerfile)</summary>
+
+Run the following command from the repo root to build the image:
+
+```bash
+docker build -f build/docker/platformAPI.Dockerfile -t openbb-platform:latest .
+```
+
+To run it:
+
+```bash
+docker run -it --rm -p 6900:6900 -v ~/.openbb_platform:/root/.openbb_platform openbb-platform:latest
+```
+
+This will mount the local `~/.openbb_platform` directory into the Docker container to use and exposes the API on port `6900`.
+
+</details>
+
+### Source
+
+To install from source, create a Python virtual environment and update `pip` and `setuptools`, within the newly created environment, **before** installing any packages.
+
+<details>
+To build the ODP Python packages from the source code, first install `git`:
+
+```console
+pip install git
+```
+
+Next, clone the repository from GitHub:
+
+```console
+git clone git@github.com:OpenBB-finance/OpenBB.git
+```
+
+When it is done, checkout the branch where the code is living:
+
+```console
+git checkout develop
+```
+
+Then, `cd` into the directory:
+
+```console
+cd openbb_platform
+```
+
+Install required packages
+
+```console
+pip install poetry
+```
+
+Finally, run the developer installation script:
+
+```console
+python dev_install.py
+```
+
+:::note
+To install all extensions and providers, run: `python dev_install.py -e`
+:::
+
+</details>
+
+## Post-Installation
+
+When using the Python Interface, the static assets will need to be generated. This happens on first import but, when installing inside a container or CI, invoke the build command immediately after installation.
+
+```console
+openbb-build
+```
+
+### Getting Started
+
+See the [quickstart](/odp/python/quickstart) guide for getting started with the ODP Python Package.

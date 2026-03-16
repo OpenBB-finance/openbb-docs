@@ -1,0 +1,73 @@
+---
+title: Introduction
+sidebar_position: 0
+description: The ODP CLI is a command line interface wrapping the Open Data Platform by OpenBB. It offers a convenient way to interact with the Platform and its extensions, as well as automate data collection via OpenBB Routine Scripts. No experience with Python, or other programming languages, is required.
+keywords:
+- OpenBB
+- CLI
+- Platform
+- data connectors
+- data access
+- data processing
+- third-party data providers
+- introduction
+---
+
+<!-- markdownlint-disable MD012 MD031 MD033 -->
+
+import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ODP CLI Docs" />
+
+## Overview
+
+The ODP CLI is a command line interface wrapping the Open Data Platform by OpenBB. It offers a convenient way to interact with the Platform and its extensions, as well as automate data collection via OpenBB Routine Scripts.
+
+The CLI leverages the extendability of the ODP architecture in an easy-to-consume and script format.
+
+![CLI Home](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/d1617c3b-c83d-4491-a7bc-986321fd7230)
+
+## Guides & Documentation
+
+<ul className="grid grid-cols-1 gap-4 -ml-6">
+<NewReferenceCard
+    title="Installation"
+    description="An installation guide for the ODP CLI."
+    url="/odp/cli/installation"
+/>
+<NewReferenceCard
+    title="Quick Start"
+    description="A quick start guide for the ODP CLI."
+    url="/odp/cli/quickstart"
+/>
+<NewReferenceCard
+    title="Configuration & Settings"
+    description="An explanation of the settings and environment variables that customize the look and feel of the ODP CLI."
+    url="/odp/cli/configuration"
+/>
+<NewReferenceCard
+    title="Data Sources"
+    description="How-to switch providers for a command, and define the default source for a function."
+    url="/odp/cli/data-sources"
+/>
+<NewReferenceCard
+    title="OpenBBUserData Folder"
+    description="The OpenBBUserData folder is where exports, routines, and other related files are saved."
+    url="/odp/cli/openbbuserdata"
+/>
+<NewReferenceCard
+    title="Interactive Tables"
+    description="Understand how to sort, filter, hide columns, display more rows or export data on our tables."
+    url="/odp/cli/interactive-tables"
+/>
+<NewReferenceCard
+    title="Interactive Charts"
+    description="Explore how to overlay charts, change titles, draw lines, add text and much more on our charts."
+    url="/odp/cli/interactive-charts"
+/>
+</ul>
+
+---
+
+Want to contribute? Check out our [Development section](/odp/python/developer/architecture_overview).

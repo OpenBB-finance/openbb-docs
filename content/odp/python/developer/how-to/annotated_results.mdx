@@ -1,0 +1,69 @@
+---
+title: Annotated Results
+sidebar_position: 6
+description: This guide provides instructions for returning extra response metadata from Provider extension models. Use this class to include important citations, credits, or other dictionary-like items that should not be included in table or chart data.
+keywords:
+- ODP
+- credits
+- source
+- citation
+- accreditation
+- OpenBB Platform
+- metadata
+- provider
+- results metadata
+- AnnotatedResult
+- annotations
+- develop
+- results
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Annotated Results & Metadata - Developer | OpenBB Docs" />
+
+## `AnnotatedResult` Class
+
+Use this class to return function metadata, or other data, that is not intended to be included with the main results.
+
+For example, source citations can be included by using this object as a wrapper for the real results.
+
+```python
+from openbb_core.provider.abstract.annotated_result import AnnotatedResult
+```
+
+Initialize the class with two objects.
+
+- ***result***: Any
+  - Serializable results - i.e, `list[dict]`
+- ***metadata***: dict
+  - JSON-encodable dictionary
+
+## How To Use
+
+:::important
+The class is used in conjunction with the [`ProviderInterface`](/odp/python/developer/extension_types/provider).
+:::
+
+In the provider's `Fetcher.transform_data` method, wrap and annotate the output like below.
+
+```python
+    @staticmethod
+    def transform_data(
+        query: FredSeriesQueryParams,
+        data: dict,
+        **kwargs: Any,
+    ) -> AnnotatedResult[list[FredSeriesData]]:
+        """Transform data."""
+        records = data.get("results", [])
+        metadata = data.get("metadata", {})
+
+        return AnnotatedResult(
+            result=[FredSeriesData.model_validate(r) for r in records],
+            metadata=metadata,
+        )
+```
+
+## Output
+
+When the pattern above is used, the metadata dictionary is returned to, `output.extra["results_metadata"]`.

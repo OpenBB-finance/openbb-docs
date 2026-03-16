@@ -1,0 +1,588 @@
+---
+title: Extensions
+sidebar_position: 12
+description: This guide provides detailed instructions for including command examples in the router endpoints of the OpenBB Platform.
+keywords:
+  - OpenBB community
+  - OpenBB Platform
+  - Custom commands
+  - API
+  - Python Interface
+  - Examples
+  - Usage
+  - Parameters
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Extensions | OpenBB Docs" />
+
+<div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+    <img src="https://openbb-cms.directus.app/assets/a25f6c03-19a8-4775-9e52-180aff8bf186.png" alt="Extensions" width="60%" />
+</div>
+
+
+## Getting Started
+
+The structure of the folder should look something like this:
+
+```md
+category/
+├── openbb_category/
+│ ├── subcategory1/
+│ │ ├── __init__.py
+│ │ └── subcategory1_router.py
+│ │
+│ ├── subcategory2/
+│ │ ├── __init__.py
+│ │ └── subcategory2_router.py
+│ │
+│ ├── category_router.py
+│ ├── category_views.py
+│ │
+│ └── helpers.py
+│
+│── integration/
+│ ├── test_category_api.py
+│ └── test_category_python.py
+│
+│── tests/
+│ └── test_helpers.py
+│
+├─- __init__.py
+├── pyproject.toml
+└── README.md
+```
+
+## Router implementation
+
+The router implementation corresponds to the `subcategory1_router.py`, `subcategory2_router.py` and even `category_router.py`.
+
+This is where you add the router commands. Here is an example for `openbb_category/economy_router.py`:
+
+```python
+"""Economy Router."""
+
+# pylint: disable=unused-argument
+
+from typing import Union
+
+from openbb_core.app.deprecation import OpenBBDeprecationWarning
+from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import APIEx
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.provider_interface import (
+    ExtraParams,
+    ProviderChoices,
+    StandardParams,
+)
+from openbb_core.app.query import Query
+from openbb_core.app.router import Router
+
+from openbb_economy.gdp.gdp_router import router as gdp_router
+from openbb_economy.shipping.shipping_router import router as shipping_router
+from openbb_economy.survey.survey_router import router as survey_router
+
+router = Router(prefix="", description="Economic data.")
+router.include_router(gdp_router)
+router.include_router(shipping_router)
+router.include_router(survey_router)
+
+
+@router.command(
+    model="EconomicCalendar",
+    examples=[
+        APIEx(
+            parameters={"provider": "fmp"},
+            description="By default, the calendar will be forward-looking.",
+        ),
+        APIEx(
+            parameters={
+                "provider": "fmp",
+                "start_date": "2020-03-01",
+                "end_date": "2020-03-31",
+            }
+        ),
+        APIEx(
+            description="By default, the calendar will be forward-looking.",
+            parameters={"provider": "nasdaq"},
+        ),
+    ],
+)
+async def calendar(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get the upcoming, or historical, economic calendar of global events."""
+    return await OBBject.from_query(Query(**locals()))
+```
+
+### Nested router
+
+There can be a nested router in order to highlight hierarchy. We typically stope at hierarchy 2, i.e. `obb.category.subcategory.function`.
+
+The subcategory routers are equivalent, at the exception that they don't include other routers.
+
+<details>
+<summary mdxType="summary">`openbb_category/gdp/gdp_router.py`</summary>
+
+```python
+"""Economy GDP Router."""
+
+from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import APIEx
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.provider_interface import (
+    ExtraParams,
+    ProviderChoices,
+    StandardParams,
+)
+from openbb_core.app.query import Query
+from openbb_core.app.router import Router
+
+router = Router(prefix="/gdp")
+
+# pylint: disable=unused-argument
+
+
+@router.command(
+    model="GdpForecast",
+    examples=[
+        APIEx(parameters={"provider": "oecd"}),
+        APIEx(
+            parameters={
+                "country": "united_states,germany,france",
+                "frequency": "annual",
+                "units": "capita",
+                "provider": "oecd",
+            }
+        ),
+    ],
+)
+async def forecast(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get Forecasted GDP Data."""
+    return await OBBject.from_query(Query(**locals()))
+```
+
+</details>
+
+### Smoke test
+
+Save the file, start a new Python session in a Terminal window, rebuild the app, and test it.
+
+```console
+import openbb
+
+openbb.build()
+
+exit()
+```
+
+Then run:
+
+```python
+from openbb import obb
+
+obb.economy.calendar(
+    "provider": "fmp",
+    "start_date": "2020-03-01",
+    "end_date": "2020-03-31",
+).to_df()
+
+obb.economy.gdp.forecast(
+    "country": "united_states,germany,france",
+    "frequency": "annual",
+    "units": "capita",
+    "provider": "oecd",
+).to_df()
+```
+
+This should allow you to understand whether the command has been implemented correctly.
+
+### Model Examples
+
+Usage examples are defined in the router and are expected to provide working syntax, with descriptions for complex functions requiring many parameters. It is encouraged to include examples for every endpoint.
+
+There are two models for defining examples, `APIEx` and `PythonEx`.
+
+```python
+from openbb_core.app.model.example import APIEx, PythonEx
+```
+
+:::info
+
+When a provider is not installed, its example will be excluded from `openapi.json` and Python docstrings.
+
+Submissions to our repository require:
+
+- If any endpoint is excluded from the schema it only needs to contain a Python example.
+- POST method examples should have both API and Python examples, unless they are excluded from the schema.
+
+:::
+
+#### APIEx
+
+`APIEx` is more structured (and has less freedom) aiming to be language agnostic.
+
+Requirements:
+- At least one example using all required parameters. It cannot use any provider-specific parameters here. It should not specify the provider field.
+- If there are more than three parameters, a description must be supplied in the example.
+
+```python
+@router.command(
+    model="WorldNews",
+    examples=[
+        APIEx(parameters={}),
+        APIEx(parameters={"limit": 100}),
+        APIEx(
+            description="Get news on the specified dates.",
+            parameters={"start_date": "2024-02-01", "end_date": "2024-02-07"},
+        ),
+        APIEx(
+            description="Display the headlines of the news.",
+            parameters={"display": "headline", "provider": "benzinga"},
+        ),
+        APIEx(
+            description="Get news by topics.",
+            parameters={"topics": "finance", "provider": "benzinga"},
+        ),
+        APIEx(
+            description="Get news by source using 'tingo' as provider.",
+            parameters={"provider": "tiingo", "source": "bloomberg"},
+        ),
+        APIEx(
+            description="Filter aticles by term using 'biztoc' as provider.",
+            parameters={"provider": "biztoc", "term": "apple"},
+        ),
+    ],
+)
+```
+
+#### PythonEx
+
+`PythonEx` gives more freedom to create complex examples.
+
+Requirements:
+- Descriptions are mandatory.
+
+```python
+@router.command(
+    methods=["POST"],
+    include_in_schema=False,
+    examples=[
+        PythonEx(
+            description="Perform Ordinary Least Squares (OLS) regression.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+                'obb.econometrics.ols_regression(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
+            ],
+        )
+    ],
+)
+```
+
+## Views implementation
+
+This `category_views.py` file only exists, if we want to display a specific chart from that dataset.
+
+This expects the user to utilize the `openbb-charting` extension. Here's what it looks like.
+
+![FRED Chart](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/67746ef0-7d61-4eed-b2e8-c32d001a8a00)
+
+In terms of implementation, these files can be quite large due to inherent customizability associated with charting.
+
+Here's an example for port information.
+
+```python
+"""Views for the Economy Extension."""
+
+# flake8: noqa: PLR0912
+# pylint: disable=too-many-branches
+
+from typing import TYPE_CHECKING, Any, Optional
+from warnings import warn
+
+if TYPE_CHECKING:
+    from openbb_charting.core.openbb_figure import (
+        OpenBBFigure,
+    )
+
+
+class EconomyViews:
+    """economy Views."""
+
+    @staticmethod
+    def economy_shipping_port_info(
+        **kwargs,
+    ) -> tuple["OpenBBFigure", dict[str, Any]]:
+        """Port Info Chart."""
+        # pylint: disable=import-outside-toplevel
+
+        provider = kwargs.get("provider")
+
+        if provider != "imf":
+            raise RuntimeError(
+                f"This charting method does not support {provider}. Supported providers: imf."
+            )
+
+        try:
+            from openbb_imf.views.port_info import (
+                plot_port_info_map,
+            )
+        except Exception as e:
+            raise RuntimeError("Unable to import the required module.") from e
+
+        data = (
+            kwargs.pop("data", None)
+            if "data" in kwargs and kwargs["data"] is not None
+            else kwargs.get("obbject_item")
+        )
+        fig = plot_port_info_map(data)  # type: ignore
+        fig.update_layout(
+            margin=dict(l=0, r=0, t=0, b=0),
+        )
+        content = fig.to_plotly_json()
+
+        content["config"] = dict(
+            responsive=False,
+            displayModeBar=False,
+            dragMode="pan",
+            doubleClick="reset",
+        )
+
+        return fig, content
+```
+
+## Helpers implementation
+
+This file in general doesn't exist, particularly if we are building a data extension.
+
+However, for a toolkit extension, this may be helpful to add helper functions or others.
+
+Example for `openbb_quantitative/helpers.py`:
+
+```python
+"""Helper functions for Quantitative Analysis."""
+
+from typing import TYPE_CHECKING, Union
+
+if TYPE_CHECKING:
+    from pandas import DataFrame, Series
+
+
+def validate_window(input_data: Union["Series", "DataFrame"], window: int) -> None:
+    """Validate the window input.
+
+    Parameters
+    ----------
+    input_data : Union[Series, DataFrame]
+        The input data to be validated.
+    window : int
+        The window to be validated.
+
+    Raises
+    ------
+    ValueError
+        If the window is greater than the input data length.
+    """
+    if window > len(input_data):
+        raise ValueError(
+            f"Window '{window}' is greater than the input data length '{len(input_data)}'"
+        )
+
+```
+
+## Tests
+
+This folder is usually empty for data extensions. With a `.gitkeep` file so the folder is recognized by git, even if empty.
+
+Unless we are doing a toolkit extension and the user wants to add additional tests to the `helpers.py` file created.
+
+In that case we may have something like `tests/test_quantitative_helpers.py`:
+
+```python
+"""Test the quantitative helpers."""
+
+import pandas as pd
+from extensions.quantitative.openbb_quantitative.helpers import (
+    validate_window,
+)
+
+
+def test_validate_window():
+    """Test the validate_window function."""
+    input_data = pd.Series(range(1, 100))
+    validate_window(
+        input_data=input_data,
+        window=20,
+    )
+```
+
+## Integration Tests
+
+The Python interface and Fast API each require a new integration test. Again, emulate an existing test and make sure to declare all parameters available to each provider.
+
+### API
+
+Here's an example of our `integration/test_economy_api.py`:
+
+```python
+"""Test Economy API."""
+
+import base64
+
+import pytest
+import requests
+from extensions.tests.conftest import parametrize
+from openbb_core.env import Env
+from openbb_core.provider.utils.helpers import get_querystring
+
+
+@pytest.fixture(scope="session")
+def headers():
+    """Get the headers for the API request."""
+    userpass = f"{Env().API_USERNAME}:{Env().API_PASSWORD}"
+    userpass_bytes = userpass.encode("ascii")
+    base64_bytes = base64.b64encode(userpass_bytes)
+
+    return {"Authorization": f"Basic {base64_bytes.decode('ascii')}"}
+
+
+# pylint: disable=redefined-outer-name
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "nasdaq",
+                "start_date": "2023-10-24",
+                "end_date": "2023-11-03",
+                "country": "united_states,japan",
+            }
+        ),
+        (
+            {
+                "provider": "tradingeconomics",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "country": "mexico,sweden",
+                "importance": "low",
+                "group": "gdp",
+                "calendar_id": None,
+            }
+        ),
+        (
+            {
+                "provider": "fmp",
+                "start_date": "2023-10-24",
+                "end_date": "2023-11-03",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_calendar(params, headers):
+    """Test the economy calendar endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/calendar?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+```
+
+To run this test, we will need to open a second terminal and start the server.
+
+```console
+uvicorn openbb_core.api.rest_api:app
+```
+
+Go back to the first terminal and run the test by entering:
+
+```console
+pytest test_economy_api.py
+```
+
+### Python
+
+Here's an example of our `integration/test_economy_python.py`:
+
+
+```python
+"""Test economy extension."""
+
+import pytest
+from extensions.tests.conftest import parametrize
+from openbb_core.app.model.obbject import OBBject
+
+
+@pytest.fixture(scope="session")
+def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
+    """Fixture to setup obb."""
+
+    if pytestconfig.getoption("markexpr") != "not integration":
+        import openbb  # pylint: disable=import-outside-toplevel
+
+        return openbb.obb
+
+
+# pylint: disable=redefined-outer-name
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "nasdaq",
+                "start_date": "2023-10-24",
+                "end_date": "2023-11-03",
+                "country": "united_states,japan",
+            }
+        ),
+        (
+            {
+                "provider": "tradingeconomics",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "country": "mexico,sweden",
+                "importance": "low",
+                "group": "gdp",
+                "calendar_id": None,
+            }
+        ),
+        (
+            {
+                "provider": "fmp",
+                "start_date": "2023-10-24",
+                "end_date": "2023-11-03",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_calendar(params, obb):
+    """Test economy calendar."""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.calendar(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+```
+
+You can run the test by running:
+
+```console
+pytest test_economy_python.py
+```

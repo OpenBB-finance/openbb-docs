@@ -1,0 +1,269 @@
+---
+title: HTTP Requests
+sidebar_position: 1
+description: This guide outlines OpenBB processes for making HTTP requests synchronously and asynchronously. Using the helpers will keep the codebase leaner and easier to maintain by eliminating duplicate processes. Anyone can build effective and efficient data fetchers, this guide outlines how to import and implement either type of request into any fetcher.
+keywords:
+- OpenBB Platform
+- Open source
+- Python interface
+- REST API
+- Code contribution
+- Requests
+- HTTP
+- Async
+- Synchronous
+- provider
+- extension
+- data
+- fetch
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="HTTP Requests - Contributor Guidelines - Development | OpenBB Docs" />
+
+Utility functions within the `openbb-core` simplify the procedure for making both asynchronous and synchronous requests.
+These cover the majority of typical requests and should be imported for use instead of creating a new client from scratch.
+
+## Generate Query String
+
+The helper function `get_querystring()` converts a dictionary of parameters to a standard query URL string.
+
+```python
+from openbb_core.provider.utils.helpers import get_querystring
+```
+
+<details>
+<summary mdxType="summary">Function Docstring</summary>
+
+```python
+
+Parameters
+----------
+items: dict
+    The dictionary to be turned into a querystring.
+
+exclude: List[str]
+    The keys to be excluded from the querystring.
+
+Returns
+-------
+str
+    The querystring.
+```
+</details>
+
+
+### Excluding Params
+
+Within the context of the Fetcher, the "query" object is a Pydantic model. To pass the query parameters to the helper function, apply `model_dump()` to the query object. This removes any key:values where the value is `None`.
+
+There may be parameters that are not intended to be included in the parameters portion of the URL string.
+Pass those as a `list` to the `exclude` parameter of `get_querystring()`. If None, pass an empty list.
+
+```python
+query_string = get_querystring(query.model_dump(), ["interval"])
+```
+
+## Making Requests
+
+:::info
+Using these functions applies `http` settings from [system_settings.json](/odp/python/settings/system_settings#http), if supplied.
+:::
+
+### Synchronous - Requests
+
+```python
+from openbb_core.provider.utils import make_request
+```
+
+This function is an abstract helper to make requests from a URL with potential headers and parameters.
+It accepts `**kwargs` and returns a `requests.Response` object.
+If no headers are supplied, it will attempt to use a generic user-agent.
+Add headers as a dictionary to the `headers` parameter of the query.
+
+All parameters of `requests.get` or `requests.post`are accessible and passed through as `**kwargs`.
+
+<details>
+<summary mdxType="summary">Function Docstring</summary>
+
+```python
+
+    Parameters
+    ----------
+    url : str
+        Url to make the request to
+    method : str, optional
+        HTTP method to use.  Can be "GET" or "POST", by default "GET"
+    timeout : int, optional
+        Timeout in seconds, by default 10.  Can be overwritten by user setting, request_timeout
+
+    Returns
+    -------
+    requests.Response
+        Request response object
+
+    Raises
+    ------
+    ValueError
+        If invalid method is passed
+```
+
+</details>
+
+### Requests Session Object
+
+Use this function to initialize and return a configured `requests.Session` object. There are no parameters.
+
+```python
+from openbb_core.provider.utils.helpers import get_requests_session
+
+session = get_requests_session()
+```
+
+### Asynchronous - AIOHTTP
+
+Use this function to make single URL requests asynchronously. No callback handling is required for JSON content.
+
+This function uses the `aiohttp` client and accepts `kwargs`.
+It has a default callback function that assumes the content is `json`.
+No post-request object parsing is required, but this behaviour is overridden with the `response_callback` parameter.
+
+
+```python
+from openbb_core.provider.utils.helpers import amake_request
+```
+
+<details>
+<summary mdxType="summary">Function Docstring</summary>
+
+```python
+    Parameters
+    ----------
+    url : str
+        Url to make the request to
+    method : str, optional
+        HTTP method to use.  Can be "GET" or "POST", by default "GET"
+    timeout : int, optional
+        Timeout in seconds, by default 10.  Can be overwritten by user setting, request_timeout
+    response_callback : Callable[[ClientResponse, ClientSession], Awaitable[Union[dict, List[dict]]]], optional
+        Async callback with response and session as arguments that returns the json, by default None
+    session : ClientSession, optional
+        Custom session to use for requests, by default None
+
+
+    Returns
+    -------
+    Union[dict, List[dict]]
+        Response json
+```
+
+</details>
+
+:::tip
+Don't forget to `await`!
+
+```python
+url = "https://someurlwithdata.profit"
+response_json = await amake_requests(url)
+```
+
+Absent `await`, the response is a coroutine.
+:::
+
+### Multi-URL Requests
+
+Use this function to download and handle data from a list of URLs. The same default callback function from `amake_request` exists, only here it appends the expected `json` output to a `list[dict]`.
+
+```python
+from openbb_core.provider.utils.helpers import amake_requests
+```
+
+
+<details>
+<summary mdxType="summary">Function Docstring</summary>
+
+```python
+    Parameters
+    ----------
+    urls : Union[str, List[str]]
+        List of urls to make requests to
+    method : Literal["GET", "POST"], optional
+        HTTP method to use.  Can be "GET" or "POST", by default "GET"
+    timeout : int, optional
+        Timeout in seconds, by default 10.  Can be overwritten by user setting, request_timeout
+    response_callback : Callable[[ClientResponse, ClientSession], Awaitable[Union[dict, List[dict]]]], optional
+        Async callback with response and session as arguments that returns the json, by default None
+    session : ClientSession, optional
+        Custom session to use for requests, by default None
+
+    Returns
+    -------
+    Union[dict, List[dict]]
+        Response json
+```
+
+</details>
+
+### Response Callback
+
+AIOHTTP uses a callback pattern, and if you need to handle response types other than JSON, pass a small handler as a parameter.
+
+The example below is a method for converting CSV data to a dictionary and appending it to a list.
+
+```python
+from io import StringIO
+from typing import Any
+from pandas import DataFrame
+
+results = []
+
+async def response_callback(response, _: Any):
+    """Callback for HTTP Client Response."""
+    response = await response.text()
+    data = DataFrame(StringIO(response), skiprows=2)
+    results.append(data.to_dict("records"))
+
+url = "https://someurlwithdata.profit"
+
+response_json = await amake_requests(url, response_callback=response_callback)
+```
+
+### AIOHTTP Session Object
+
+Use this function to initialize and return a configured AIOHTTP session object.
+
+```python
+from openbb_core.provider.utils.helpers import get_async_requests_session
+
+session = await get_async_requests_session()  # Don't do this in the main event loop of the file.
+```
+
+It can be used within an `async with` context block.
+
+```python
+
+url = "https://someurlwithdata.profit"
+
+async with await get_async_requests_session() as session:
+    async with await session.get(url) as response:
+        if response.status != 200:
+            raise OpenBBError(
+                f"Failed to fetch data: {response.status} -> {response.reason}"
+            )
+
+        data = await response.json()
+```
+
+## Asynchronous Fetchers
+
+When asynchronous methods are used within a Fetcher, implement the `aextract_data` method instead of `extract_data`.
+
+```python
+    @staticmethod
+    async def aextract_data(
+        query: SourceModelQueryParams,
+        credentials: Optional[dict[str, str]],
+        **kwargs: Any,
+    ) -> list[dict]:
+```

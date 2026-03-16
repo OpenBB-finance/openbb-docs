@@ -1,0 +1,42 @@
+---
+title: MCP Server
+sidebar_position: 3
+description: This page details the basics for getting started running the ODP Python Package as a MCP server.
+keywords:
+  - ODP
+  - Python Package
+  - tutorial
+  - MCP
+  - quickstart
+  - mcp_settings.json
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="MCP Server - Quick Start | OpenBB Docs" />
+
+Install the package to get started using the ODP Python Package as a MCP server.
+
+```sh
+pip install openbb-mcp-server
+```
+
+## Start Server
+
+The server is started using the command line executable:
+
+```sh
+openbb-mcp
+```
+
+This starts the server on http://127.0.0.1:8001 over the `streamable-http` transport and exposes all GET endpoints as MCP tools.
+
+## Add to Workspace
+
+Follow the steps [here](/workspace/analysts/ai-features/mcp-tools) to connect the server with Workspace.
+
+![workspace-mcp](https://openbb-cms.directus.app/assets/6d66dcf3-98c0-4150-aace-035a063df35a.png)
+
+## Documentation
+
+Go to the [documentation](/odp/python/extensions/interface/openbb-mcp) for detailed information on configuration, development, and usage.

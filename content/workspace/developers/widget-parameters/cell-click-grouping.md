@@ -68,7 +68,9 @@ def get_tickers_list():
                     "renderFn": "cellOnClick",
                     "renderFnParams": {
                         "actionType": "groupBy",
-                        "groupByParamName": "symbol"
+                        "groupBy": {
+                            "paramName": "symbol"
+                        }
                     }
                 },
                 {
@@ -113,7 +115,7 @@ def get_tickers_list():
     "endpoint": "widget_managed_by_parameter_from_cell_click_on_table_widget",
     "params": [
         {
-            "paramName": "symbol",  # Must match the groupByParamName in the table widget
+            "paramName": "symbol",  # Must match the groupBy.paramName in the table widget
             "description": "The symbol to get details for",
             "value": "AAPL",
             "label": "Symbol",
@@ -132,7 +134,7 @@ def get_tickers_list():
 This functionality is achieved through three key components:
 
 1. Both widgets must share the same `paramName` (in this case "symbol") to enable parameter synchronization
-2. The table widget's `cellOnClick` renderFn must be configured with `actionType: "groupBy"` and specify the `groupByParamName` as "symbol"
+2. The table widget's `cellOnClick` renderFn must be configured with `actionType: "groupBy"` and specify the `groupBy.paramName` as "symbol"
 3. Both widgets must reference the same endpoint (`/get_tickers_list`) for their options data
 
 The interaction flow works as follows:
@@ -141,4 +143,89 @@ The interaction flow works as follows:
 2. The `groupBy` action then updates the shared `symbol` parameter value
 3. Any widget that uses the `symbol` parameter will automatically refresh to display data for the newly selected symbol
 
-This implementation creates an intuitive user experience where selecting a symbol in the table instantly updates all connected widgets with the corresponding stock information. 
+This implementation creates an intuitive user experience where selecting a symbol in the table instantly updates all connected widgets with the corresponding stock information.
+
+## Using valueField for Custom Value Mapping
+
+The `valueField` option allows you to pass a different value than what's displayed in the cell. This is useful when your table shows human-readable values (like company names) but your API expects different values (like IDs or codes).
+
+**Example:** Display company names but pass company IDs when clicked:
+
+```python
+@register_widget({
+    "name": "Company List with ID Mapping",
+    "description": "Table showing company names but passing IDs on click",
+    "type": "table",
+    "endpoint": "company_list",
+    "params": [
+        {
+            "paramName": "companyId",  # Parameter expects ID, not name
+            "description": "Company identifier",
+            "value": "AAPL",
+            "label": "Company ID",
+            "type": "endpoint",
+            "optionsEndpoint": "/company_options",
+            "show": True
+        }
+    ],
+    "data": {
+        "table": {
+            "showAll": True,
+            "columnsDefs": [
+                {
+                    "field": "companyName",  # Display name in cell
+                    "headerName": "Company",
+                    "cellDataType": "text",
+                    "width": 200,
+                    "renderFn": "cellOnClick",
+                    "renderFnParams": {
+                        "actionType": "groupBy",
+                        "groupBy": {
+                            "paramName": "companyId",
+                            "valueField": "companyId"  # Use ID field instead of companyName
+                        }
+                    }
+                },
+                {
+                    "field": "price",
+                    "headerName": "Price",
+                    "cellDataType": "number",
+                    "formatterFn": "none",
+                    "width": 120
+                }
+            ]
+        }
+    }
+})
+```
+
+**Data structure:**
+
+```python
+@app.get("/company_list")
+def get_company_list():
+    return [
+        {
+            "companyName": "Apple Inc.",      # Displayed in cell
+            "companyId": "AAPL",              # Passed to parameter
+            "price": 150.25
+        },
+        {
+            "companyName": "Microsoft Corporation",
+            "companyId": "MSFT",
+            "price": 350.50
+        }
+    ]
+```
+
+In this example:
+
+- The table cell displays "Apple Inc." (from `companyName` field)
+- When clicked, it passes "AAPL" (from `companyId` field) to the `companyId` parameter
+- This allows you to show user-friendly names while using IDs for API calls
+
+**When to use valueField:**
+
+- When displaying human-readable text but needing to pass IDs or codes
+- When the displayed value differs from the parameter value format
+- When you want to decouple the display value from the API parameter value
