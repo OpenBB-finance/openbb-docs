@@ -55,4 +55,31 @@ The copilot can also add any type of text into a markdown widget automatically o
   />
 </div>
 
-Support to add static artifacts (tables or charts) on-the-fly is still not supported.
+## Add navigation bar
+
+The copilot can add navigation bars to your dashboard, allowing you to organize widgets into separate tabs for a cleaner and more structured layout.
+
+Additionally, all of the actions above can be performed across multiple widgets, navigation bars, or parameters at once. For example, you can ask the copilot to add multiple navigation tabs, each containing a different set of widgets — saving you from making one change at a time.
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img
+    className="pro-border-gradient"
+    alt="Add navigation bar"
+    src="https://openbb-cms.directus.app/assets/8939c838-c5b7-45e4-b543-c01e72a996cc.png"
+    width="100%"
+  />
+</div>
+
+## Create widgets on the fly
+
+The copilot can take its own outputs, such as tables, charts, or markdown note, and turn them directly into widgets on your dashboard. Instead of copying results manually, the Generative UI feature adds the copilot's response as a fully interactive widget that lives alongside the rest of your data.
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img
+    className="pro-border-gradient"
+    alt="Create widget on the fly"
+    src="https://openbb-cms.directus.app/assets/a8a40db3-2f11-48d1-a050-6be35bddb9c0.png"
+    width="100%"
+  />
+</div>
+
