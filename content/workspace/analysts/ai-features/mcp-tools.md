@@ -20,7 +20,7 @@ Model Context Protocol (MCP) integration enables seamless connection to third-pa
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
 >
   <img
-    src="https://openbb-cms.directus.app/assets/9e4121a3-a422-41fb-aaac-888f66b18fb2.png"
+    src="https://openbb-cms.directus.app/assets/031856b3-2f23-4856-ba14-01a2e65d297d.png"
     width="100%"
   />
 </div>
@@ -40,35 +40,33 @@ Clicking this button opens the MCP server enable/disable menu.
   />
 </div>
 
-Here you'll find the "+" icon that allows you to add or edit MCP servers.
+Here you'll find the option to "Manage MCP servers",  which will allow you to add, delete or edit MCP servers.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
 >
   <img
-    src="https://openbb-cms.directus.app/assets/861831f2-9bfc-41d2-bdd7-bc673ad39656.png"
+    src="https://openbb-cms.directus.app/assets/0ec2a6fc-bb39-409c-825a-a59ec91050f4.png"
     width="60%"
   />
 </div>
 
-Clicking the "+" icon opens the MCP Servers configuration dialog.
-
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
 >
   <img
-    src="https://openbb-cms.directus.app/assets/1d12fdc5-4424-4858-8c34-85db9c18ba2e.png"
-    width="100%"
+    src="https://openbb-cms.directus.app/assets/f722594d-5383-4ea1-a540-706d04aa773b.png"
+    width="60%"
   />
 </div>
 
-Within this dialog, clicking "Add Server" opens the following pop-up window.
+Then click on the "Add server" button, which then opens the MCP Servers configuration dialog.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
 >
   <img
-    src="https://openbb-cms.directus.app/assets/15e88b0c-d9d0-4697-87f0-2c82f0213d0f.png"
+    src="https://openbb-cms.directus.app/assets/0def926d-12be-4e5f-bbf2-e50b243a8020.png"
     width="100%"
   />
 </div>
@@ -103,7 +101,7 @@ In the MCP Servers Configuration dialog, clicking on a successfully connected se
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
 >
   <img
-    src="https://openbb-cms.directus.app/assets/3d2e53ed-5d63-46e8-b369-d0e19c7017ef.png"
+    src="https://openbb-cms.directus.app/assets/5e617b0b-095e-4875-bdb6-28acd9359ae4.png"
     width="100%"
   />
 </div>
@@ -116,7 +114,7 @@ With the MCP Tools dialog open, you can enable or disable specific MCP tools for
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
 >
   <img
-    src="https://openbb-cms.directus.app/assets/861831f2-9bfc-41d2-bdd7-bc673ad39656.png"
+    src="https://openbb-cms.directus.app/assets/e7b1de1a-b77a-4ca3-81e1-3586045fee7f.png"
     width="100%"
   />
 </div>
@@ -131,18 +129,6 @@ This toggles all fine-grained tool-level controls simultaneously. It's the most 
 
 Note: Enabling all tools doesn't guarantee Copilot will use every tool; rather, it makes them available for selection. This granular control helps narrow OpenBB Copilot's context to what's most relevant to your needs.
 
----
-
-If the MCP Server becomes disconnected, it will appear as disabled, as shown below:
-
-<div
-  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
->
-  <img
-    src="https://openbb-cms.directus.app/assets/d983cab2-9cf0-4d2a-85d2-0226860b890d.png"
-    width="100%"
-  />
-</div>
 
 ### MCP in action
 
@@ -154,7 +140,7 @@ For example, accessing OpenBB documentation requires two tools from the same MCP
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
 >
   <img
-    src="https://openbb-cms.directus.app/assets/5a9ef8ee-89e0-4f7c-853c-77fda234de00.png"
+    src="https://openbb-cms.directus.app/assets/a3fbad96-a2c5-4ebc-bfd9-bb6f59050cea.png"
     width="100%"
   />
 </div>
