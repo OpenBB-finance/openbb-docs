@@ -14,11 +14,11 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Generative UI | OpenBB Workspace Docs" />
 
-When this feature is turned ON, copilot can manipulate widgets on the dashboard.
+When Generative UI is enabled, the copilot can manipulate widgets directly on your dashboard.
 
 ## Update widget parameters
 
-The system understands the parameter schemas of each widget and based on a user prompt it can automatically update the parameters used in widgets on the dashboard.
+The copilot understands the parameter schemas of each widget and, based on your prompt, can automatically update the parameters across widgets on the dashboard.
 
 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
     <img
@@ -31,7 +31,7 @@ The system understands the parameter schemas of each widget and based on a user 
 
 ## Add widgets from Global Data
 
-If global data is turned on, and the user asks information that the copilot believes exists in one of the widgets in the widget library - then that widget gets automatically added to the dashboard.
+If Global Data is enabled and you ask for information that the copilot finds in the widget library, the matching widget is automatically added to your dashboard.
 
 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
@@ -44,7 +44,7 @@ If global data is turned on, and the user asks information that the copilot beli
 
 ## Add markdown note widget
 
-The copilot can also add any type of text into a markdown widget automatically on-the-fly.
+The copilot can also add text content as a markdown note widget directly on your dashboard.
 
 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
@@ -55,11 +55,9 @@ The copilot can also add any type of text into a markdown widget automatically o
   />
 </div>
 
-## Add navigation bar
+## Add and edit navigation bar
 
 The copilot can add navigation bars to your dashboard, allowing you to organize widgets into separate tabs for a cleaner and more structured layout.
-
-Additionally, all of the actions above can be performed across multiple widgets, navigation bars, or parameters at once. For example, you can ask the copilot to add multiple navigation tabs, each containing a different set of widgets — saving you from making one change at a time.
 
 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
@@ -70,9 +68,24 @@ Additionally, all of the actions above can be performed across multiple widgets,
   />
 </div>
 
+
+Beyond adding new tabs, you can also use this feature to edit existing tab names within the navigation bar.
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img
+    className="pro-border-gradient"
+    alt="Add navigation bar"
+    src="https://openbb-cms.directus.app/assets/b1acef02-c5e9-4275-8ee1-3de702165ebf.png"
+    width="100%"
+  />
+</div>
+
+As shown in the examples above, all of these actions can be performed across multiple widgets, navigation bars, or parameters at once. For example, you can ask the copilot to add multiple navigation tabs, each containing a different set of widgets — saving you from making one change at a time.
+
+
 ## Create widgets on the fly
 
-The copilot can take its own outputs, such as tables, charts, or markdown note, and turn them directly into widgets on your dashboard. Instead of copying results manually, the Generative UI feature adds the copilot's response as a fully interactive widget that lives alongside the rest of your data.
+The copilot can take its own outputs, such as tables, charts, or markdown notes, and turn them directly into widgets on your dashboard. Instead of copying results manually, the Generative UI feature adds the copilot's response as a fully interactive widget that lives alongside the rest of your data.
 
 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img

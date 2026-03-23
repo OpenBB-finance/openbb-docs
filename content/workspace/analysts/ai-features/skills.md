@@ -21,7 +21,7 @@ Skills are reusable instruction sets that extend what the OpenBB copilot can do.
   <img
     className="pro-border-gradient"
     alt="Skills overview"
-    src="https://openbb-cms.directus.app/assets/a8b15084-780d-4216-a979-57e77e93910a.png"
+    src="https://openbb-cms.directus.app/assets/fdfe9a60-687a-487c-bbb5-d20c16676010.png"
     width="100%"
   />
 </div>
