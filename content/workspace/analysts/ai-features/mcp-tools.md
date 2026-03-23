@@ -25,11 +25,11 @@ Model Context Protocol (MCP) integration enables seamless connection to third-pa
   />
 </div>
 
-We utilize the [use-mcp library](https://github.com/modelcontextprotocol/use-mcp) and support both MCP and SSE protocols, but not STDIO. If you are interested in STDIO support, we recommend exploring solutions like [https://github.com/supercorp-ai/supergateway](https://github.com/supercorp-ai/supergateway).
+We use the [use-mcp library](https://github.com/modelcontextprotocol/use-mcp) and support both MCP and SSE protocols, but not STDIO. If you need STDIO support, we recommend exploring solutions like [supergateway](https://github.com/supercorp-ai/supergateway).
 
 ### Configure your MCP Servers
 
-Clicking this button opens the MCP server enable/disable menu.
+To configure your MCP servers, open the MCP server menu from the copilot settings.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
@@ -40,62 +40,53 @@ Clicking this button opens the MCP server enable/disable menu.
   />
 </div>
 
-Here you'll find the option to "Manage MCP servers",  which will allow you to add, delete or edit MCP servers.
+From here, click "Manage MCP servers" in the top right to add, edit, or delete MCP servers.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
 >
   <img
     src="https://openbb-cms.directus.app/assets/0ec2a6fc-bb39-409c-825a-a59ec91050f4.png"
-    width="60%"
+    width="40%"
   />
 </div>
+
+This opens the MCP Servers tab under AI Library, where you can view all available ones and their active or inactive status.
+
+To add a new MCP server, click on the "Add server" button on the top right.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
 >
   <img
     src="https://openbb-cms.directus.app/assets/f722594d-5383-4ea1-a540-706d04aa773b.png"
-    width="60%"
+    width="100%"
   />
 </div>
 
-Then click on the "Add server" button, which then opens the MCP Servers configuration dialog.
+This opens the MCP server configuration dialog. Fill in the details, such as the server name and URL. 
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
 >
   <img
     src="https://openbb-cms.directus.app/assets/0def926d-12be-4e5f-bbf2-e50b243a8020.png"
-    width="100%"
+    width="60%"
   />
 </div>
 
-Clicking "Add" initiates the connection, regardless of OAuth configuration.
-
-Here's how OAuth appears when connecting to [Smithery.ai](https://smithery.ai/), a directory containing over 6,000 MCP servers.
+If your chosen MCP server requires authentication, similar to the one from Financial Modelling Prep below, click the "Add Custom Header" button in the bottom left and enter the key-value pair.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
 >
   <img
-    src="https://openbb-cms.directus.app/assets/0ef5c823-a1fe-4fec-9d17-9165e0d282b1.png"
-    width="100%"
+    src="https://openbb-cms.directus.app/assets/f90d207d-5efe-427b-99d3-246b479b61f1.png"
+    width="60%"
   />
 </div>
 
-After connecting, you'll return to the Workspace and see "Authenticating..." displayed.
-
-<div
-  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
->
-  <img
-    src="https://openbb-cms.directus.app/assets/2b3b1671-20c3-46de-9985-5c55ba22c2c5.png"
-    width="100%"
-  />
-</div>
-
-In the MCP Servers Configuration dialog, clicking on a successfully connected server displays the discovered tools. You can then open these tools to view their descriptions.
+Once you click "Add", you return to the MCP Servers tab where you can see each server's active status. Click on a connected server to view its discovered tools, and expand any tool to read its description.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
@@ -114,20 +105,18 @@ With the MCP Tools dialog open, you can enable or disable specific MCP tools for
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
 >
   <img
-    src="https://openbb-cms.directus.app/assets/e7b1de1a-b77a-4ca3-81e1-3586045fee7f.png"
-    width="100%"
+    src="https://openbb-cms.directus.app/assets/89cf6d3f-91eb-4ddb-8dfa-deeb2de8a473.png"
+    width="40%"
   />
 </div>
 
 Once an MCP Server is successfully connected, you can:
 
-1. Select all or none of the tools of a specific MCP Server.
+1. **Select all or none** — toggles every tool from a specific MCP server at once. This is the quickest way to include or exclude an entire server from Copilot's context.
 
-This toggles all fine-grained tool-level controls simultaneously. It's the most efficient way to exclude an MCP Server from Copilot's context.
+2. **Enable or disable individual tools** — gives you granular control over which tools from a server are available to Copilot.
 
-2. Turn ON/OFF a specific set of tools from an MCP Server.
-
-Note: Enabling all tools doesn't guarantee Copilot will use every tool; rather, it makes them available for selection. This granular control helps narrow OpenBB Copilot's context to what's most relevant to your needs.
+Enabling all tools does not guarantee Copilot will use every one — it simply makes them available. This granular control helps keep Copilot's context focused on what is most relevant to your needs.
 
 
 ### MCP in action
@@ -147,14 +136,14 @@ For example, accessing OpenBB documentation requires two tools from the same MCP
 
 ### Matching widget to MCP tools
 
-As shown above, in the reasoning step, you can see when and at which point the MCP tool was called. In addition, you can configure a widget that shares identical metadata, or what we refer to as “matching”, to the corresponding MCP tool.
+In the reasoning step shown above, you can see when each MCP tool was called. You can also configure a widget with matching metadata — this links the widget to its corresponding MCP tool.
 
-Once a matching widget has been set up, a citation marked with an asterisk (*) will appear at the end whenever the MCP tool is used. 
+Once a matching widget is set up, a citation marked with an asterisk (\*) appears whenever the MCP tool is used.
 
 <img className="pro-border-gradient" width="800" alt="Widget hover tooltip showing option to add to dashboard" src="https://openbb-cms.directus.app/assets/d2c50edb-43e2-4771-9125-b31117501a61.png" />
 
 
-Additionally, when you click “Add matching widget to dashboard,” the widget will be automatically added to your current dashboard, using the same parameters applied by Copilot.
+Click “Add matching widget to dashboard” to add the widget to your current dashboard with the same parameters applied by Copilot.
 
 
 

@@ -24,13 +24,14 @@ The agent prioritizes context in the following order:
 
 | Priority | Context Type | Description |
 |---|---|---|
-| 1 | Explicit | Widgets added to context specifically. |
-| 2 | MCP tool | Active MCP tools connected to the Copilot |
-| 3 | Attached files | Files uploaded directly to the Copilot |
-| 4 | Dashboard | All widgets currently on your dashboard (in all tabs). |
-| 5 | Conversation | The history of your current conversation. |
-| 6 | Global | All widgets available within the OpenBB Workspace. If Global Data enabled. |
-| 7 | Web search | Retrieve infromation from the web. If Web Search enabled. |
+| 1 | Skill | Custom instruction sets invoked via `/skill-name` syntax. |
+| 2 | Explicit | Widgets added to context specifically. |
+| 3 | MCP tool | Active MCP tools connected to the Copilot |
+| 4 | Attached files | Files uploaded directly to the Copilot |
+| 5 | Dashboard | All widgets currently on your dashboard (in all tabs). |
+| 6 | Conversation | The history of your current conversation. |
+| 7 | Global | All widgets available within the OpenBB Workspace. If Global Data enabled. |
+| 8 | Web search | Retrieve infromation from the web. If Web Search enabled. |
 
 ## Context Types
 
