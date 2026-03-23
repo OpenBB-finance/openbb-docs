@@ -80,7 +80,7 @@ Beyond adding new tabs, you can also use this feature to edit existing tab names
   />
 </div>
 
-As shown in the examples above, all of these actions can be performed across multiple widgets, navigation bars, or parameters at once. For example, you can ask the copilot to add multiple navigation tabs, each containing a different set of widgets — saving you from making one change at a time.
+As shown in the examples above, all of these actions can be performed across multiple widgets, navigation bars, or parameters at once. For example, you can ask the copilot to add multiple navigation tabs, each containing a different set of widgets, saving you from making one change at a time.
 
 
 ## Create widgets on the fly

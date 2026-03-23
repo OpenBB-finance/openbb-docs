@@ -112,11 +112,11 @@ With the MCP Tools dialog open, you can enable or disable specific MCP tools for
 
 Once an MCP Server is successfully connected, you can:
 
-1. **Select all or none** — toggles every tool from a specific MCP server at once. This is the quickest way to include or exclude an entire server from Copilot's context.
+1. **Select all or none**: toggles every tool from a specific MCP server at once. This is the quickest way to include or exclude an entire server from Copilot's context.
 
-2. **Enable or disable individual tools** — gives you granular control over which tools from a server are available to Copilot.
+2. **Enable or disable individual tools**: gives you granular control over which tools from a server are available to Copilot.
 
-Enabling all tools does not guarantee Copilot will use every one — it simply makes them available. This granular control helps keep Copilot's context focused on what is most relevant to your needs.
+Enabling all tools does not guarantee Copilot will use every one. It simply makes them available. This granular control helps keep Copilot's context focused on what is most relevant to your needs.
 
 
 ### MCP in action
@@ -136,7 +136,7 @@ For example, accessing OpenBB documentation requires two tools from the same MCP
 
 ### Matching widget to MCP tools
 
-In the reasoning step shown above, you can see when each MCP tool was called. You can also configure a widget with matching metadata — this links the widget to its corresponding MCP tool.
+In the reasoning step shown above, you can see when each MCP tool was called. You can also configure a widget with matching metadata. This links the widget to its corresponding MCP tool.
 
 Once a matching widget is set up, a citation marked with an asterisk (\*) appears whenever the MCP tool is used.
 

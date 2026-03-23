@@ -39,7 +39,7 @@ The agent prioritizes context in the following order:
 
 Explicit context represents the highest priority information source, allowing you to precisely direct the Copilot's attention to specific datasets. This mechanism is particularly powerful for ensuring accuracy when working with multiple similar datasets or when you need analysis focused on a specific dataset.
 
-When you add any of the following explicit context types — widgets, skills, or MCP tools — Copilot prioritizes them above all other available information. After sending the prompt, the context remains active.
+When you add any of the following explicit context types (widgets, skills, or MCP tools), Copilot prioritizes them above all other available information. After sending the prompt, the context remains active.
 
 #### 1. Skills
 
@@ -71,7 +71,7 @@ Similar to skills, MCP tools can be added to context using the `/` command. This
 
 #### 3. Widgets
 
-Click the "Add to context" button on any widget to create a direct reference that Copilot prioritizes. Alternatively, use the "@" symbol followed by a widget name for a quick tag reference — once the prompt is sent, the widget is removed from context.
+Click the "Add to context" button on any widget to create a direct reference that Copilot prioritizes. Alternatively, use the "@" symbol followed by a widget name for a quick tag reference. Once the prompt is sent, the widget is removed from context.
 
 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
@@ -84,7 +84,7 @@ Click the "Add to context" button on any widget to create a direct reference tha
 
 
 ### Skills
-Skills added under AI Library are prioritized next. Skills are reusable instruction sets that extend what the OpenBB Copilot can do — particularly useful when you want to create custom workflows.
+Skills added under AI Library are prioritized next. Skills are reusable instruction sets that extend what the OpenBB Copilot can do. This is particularly useful when you want to create custom workflows.
 
 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
