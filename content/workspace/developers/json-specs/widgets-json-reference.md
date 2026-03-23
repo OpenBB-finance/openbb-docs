@@ -96,6 +96,12 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
   _Possible values:_ `true`, `false`
   _Default:_ `false`
 
+- **exportable**
+  _Type:_ `boolean`
+  Controls whether the widget's data can be exported.
+  _Possible values:_ `true`, `false`
+  _Default:_ `true`
+
 - **gridData**
   _Type:_ object containing the following keys:
 
@@ -254,6 +260,11 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
         Specifies how to format the data.
         _Example:_ `"int"`
         _Possible values:_ see [`formatterFn`](#formatterfn)
+
+      - **decimalPlaces**
+        _Type:_ `number`
+        Overrides the default number of decimal places for this column. This takes precedence over any table-level formatting settings.
+        _Example:_ `2`
 
       - **renderFn**
         _Type:_ `string` or `array`
@@ -710,6 +721,7 @@ Below is an example `widgets.json` with a single widget defined. This widget wil
         "description": "A widget to demonstrate custom configuration",
         "endpoint": "custom-endpoint",
         "runButton": false,
+        "exportable": false,
         "data": {
             "dataKey": "customDataKey",
             "table": {
@@ -744,6 +756,7 @@ Below is an example `widgets.json` with a single widget defined. This widget wil
                         "chartDataType": "series",
                         "cellDataType": "number",
                         "formatterFn": "int",
+                        "decimalPlaces": 2,
                         "renderFn": "greenRed",
                         "width": 150
                     },
