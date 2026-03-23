@@ -61,7 +61,6 @@
 - [Equity Historical](https://docs.openbb.co/odp/python/data_models/EquityHistorical): Get historical price data for a given stock
 - [Equity Info](https://docs.openbb.co/odp/python/data_models/EquityInfo): Get general information about a company
 - [Equity Losers](https://docs.openbb.co/odp/python/data_models/EquityLosers): Get the top price losers in the stock market
-- [Equity NBBO](https://docs.openbb.co/odp/python/data_models/EquityNBBO): Get the National Best Bid and Offer for a given stock
 - [Equity Ownership](https://docs.openbb.co/odp/python/data_models/EquityOwnership): Get data about major holders for a given company over time
 - [Equity Peers](https://docs.openbb.co/odp/python/data_models/EquityPeers): Get the closest peers for a given company
 - [Equity Quote](https://docs.openbb.co/odp/python/data_models/EquityQuote): Get the latest quote for a given stock
@@ -94,7 +93,7 @@
 - [Fama French US Portfolio Returns](https://docs.openbb.co/odp/python/data_models/FamaFrenchUSPortfolioReturns): US Portfolio returns
 - [Federal Funds Rate](https://docs.openbb.co/odp/python/data_models/FederalFundsRate): Fed Funds Rate
 - [Financial Ratios](https://docs.openbb.co/odp/python/data_models/FinancialRatios): Get an extensive set of financial and accounting ratios for a given company over time
-- [Fomc Documents](https://docs.openbb.co/odp/python/data_models/FomcDocuments): Get FOMC documents by year and document type
+- [Fomc Documents](https://docs.openbb.co/odp/python/data_models/FomcDocuments): Get lists of FOMC documents by year and document type
 - [Form 13FHR](https://docs.openbb.co/odp/python/data_models/Form13FHR): Get the form 13F
 - [Forward Ebitda Estimates](https://docs.openbb.co/odp/python/data_models/ForwardEbitdaEstimates): Get forward EBITDA estimates
 - [Forward Eps Estimates](https://docs.openbb.co/odp/python/data_models/ForwardEpsEstimates): Get forward EPS estimates
@@ -129,6 +128,7 @@
 - [Index Search](https://docs.openbb.co/odp/python/data_models/IndexSearch): Filter indices for rows containing the query
 - [Index Sectors](https://docs.openbb.co/odp/python/data_models/IndexSectors): Get Index Sectors
 - [Index Snapshots](https://docs.openbb.co/odp/python/data_models/IndexSnapshots): Index Snapshots
+- [Inflation Expectations](https://docs.openbb.co/odp/python/data_models/InflationExpectations): Survey of forward inflation expectations from the Survey of Professional Forecasters
 - [Insider Trading](https://docs.openbb.co/odp/python/data_models/InsiderTrading): Get data about trading by a company's management team and board of directors
 - [Institutional Ownership](https://docs.openbb.co/odp/python/data_models/InstitutionalOwnership): Net statistics on institutional ownership for a given company, reported on 13-F filings
 - [Institutions Search](https://docs.openbb.co/odp/python/data_models/InstitutionsSearch): Search SEC-regulated institutions by name and return a list of results with CIK numbers
@@ -168,7 +168,7 @@
 - [Revenue Geographic](https://docs.openbb.co/odp/python/data_models/RevenueGeographic): Get the geographic breakdown of revenue for a given company over time
 - [Risk Premium](https://docs.openbb.co/odp/python/data_models/RiskPremium): Get Market Risk Premium by country
 - [Rss Litigation](https://docs.openbb.co/odp/python/data_models/RssLitigation): Get the RSS feed that provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court
-- [Schema Files](https://docs.openbb.co/odp/python/data_models/SchemaFiles): Use tool for navigating the directory of SEC XML schema files by year
+- [Schema Files](https://docs.openbb.co/odp/python/data_models/SchemaFiles): Explore SEC and FASB XBRL taxonomy schemas, labels, and presentation structures
 - [Search Attributes](https://docs.openbb.co/odp/python/data_models/SearchAttributes): Search Intrinio data tags to search in latest or historical attributes
 - [Sec Filing](https://docs.openbb.co/odp/python/data_models/SecFiling): Download the index headers, and cover page if available, for any SEC filing
 - [Sec Htm File](https://docs.openbb.co/odp/python/data_models/SecHtmFile): Download a raw HTML object from the SEC website
@@ -185,9 +185,12 @@
 - [SP500 Multiples](https://docs.openbb.co/odp/python/data_models/SP500Multiples): Get historical S&P 500 multiples and Shiller PE ratios
 - [Spot Rate](https://docs.openbb.co/odp/python/data_models/SpotRate): Spot Rates
 - [Survey Of Economic Conditions Chicago](https://docs.openbb.co/odp/python/data_models/SurveyOfEconomicConditionsChicago): Get The Survey Of Economic Conditions For The Chicago Region
+- [Svensson Yield Curve](https://docs.openbb.co/odp/python/data_models/SvenssonYieldCurve): Svensson Nominal Yield Curve Data
 - [Symbol Map](https://docs.openbb.co/odp/python/data_models/SymbolMap): Map a CIK number to a ticker symbol, leading 0s can be omitted or included
 - [Tips Yields](https://docs.openbb.co/odp/python/data_models/TipsYields): Get current Treasury inflation-protected securities yields
 - [Top Retail](https://docs.openbb.co/odp/python/data_models/TopRetail): Track over $30B USD/day of individual investors trades
+- [Total Factor Productivity](https://docs.openbb.co/odp/python/data_models/TotalFactorProductivity): Total Factor Productivity (TFP)
+A real-time, quarterly series on total factor productivity (TFP) for the U
 - [Trailing Dividend Yield](https://docs.openbb.co/odp/python/data_models/TrailingDividendYield): Get the 1 year trailing dividend yield for a given company over time
 - [Treasury Auctions](https://docs.openbb.co/odp/python/data_models/TreasuryAuctions): Government Treasury Auctions
 - [Treasury Constant Maturity](https://docs.openbb.co/odp/python/data_models/TreasuryConstantMaturity): Treasury Constant Maturity
@@ -270,6 +273,7 @@
 - [cointegration](https://docs.openbb.co/odp/python/reference/econometrics/cointegration): Learn how to use the two-step Engle-Granger test to show co-integration  between two time series in Python. Explore the parameters, input dataset, data columns,  and the OBBject returned with the test results.
 - [correlation_matrix](https://docs.openbb.co/odp/python/reference/econometrics/correlation_matrix): Learn how to get the correlation matrix of an input dataset using Python.  Find information on the parameters and return value of the function.
 - [Econometrics](https://docs.openbb.co/odp/python/reference/econometrics/index): Commands
+- [ols_regression](https://docs.openbb.co/odp/python/reference/econometrics/ols_regression): Learn how to perform OLS regression using statsmodels in Python. This  documentation explains the parameters required and the object returned.
 - [ols_regression_summary](https://docs.openbb.co/odp/python/reference/econometrics/ols_regression_summary): Learn how to perform OLS regression using statsmodels in Python. Explore  the parameters and returns of the function, including the data, target column, exogenous  variables, and summary object.
 - [panel_between](https://docs.openbb.co/odp/python/reference/econometrics/panel_between): Perform a Between estimator regression on panel data. This page provides  details on the parameters required and the returned OBBject with the fit model.
 - [panel_first_difference](https://docs.openbb.co/odp/python/reference/econometrics/panel_first_difference): Learn how to perform a first-difference estimate for panel data using  this Python function. Understand the parameters and the object returned by the function.
@@ -279,6 +283,7 @@
 - [panel_random_effects](https://docs.openbb.co/odp/python/reference/econometrics/panel_random_effects): Learn how to perform One-way Random Effects model for panel data using  a Python function. This function takes an input dataset, target column, and exogenous  variables as parameters and returns the fit model.
 - [residual_autocorrelation](https://docs.openbb.co/odp/python/reference/econometrics/residual_autocorrelation): Perform Breusch-Godfrey Lagrange Multiplier tests for residual autocorrelation  in a Python function. Learn about the parameters used and the returned object.
 - [unit_root](https://docs.openbb.co/odp/python/reference/econometrics/unit_root): Learn how to use the Augmented Dickey-Fuller unit root test to check  for stationarity in time series data. This function takes in an input dataset and  performs the test on specified data columns. The regression type can be customized,  and the function returns the results.
+- [variance_inflation_factor](https://docs.openbb.co/odp/python/reference/econometrics/variance_inflation_factor): Calculate VIF (variance inflation factor), which tests for collinearity
 - [available_indicators](https://docs.openbb.co/odp/python/reference/economy/available_indicators): Get the available economic indicators for a provider
 - [balance_of_payments](https://docs.openbb.co/odp/python/reference/economy/balance_of_payments): Balance of Payments Reports
 - [calendar](https://docs.openbb.co/odp/python/reference/economy/calendar): The Economic Calendar provides information on economic events and data.  Use the OBB Python function `obb.economy.calendar()` to retrieve economic calendar  data. The function accepts parameters such as start date, end date, provider, country,  importance, and group. It returns a list of economic calendar data, including the  date, event, reference, source, actual value, previous value, consensus value, and  forecast value. The data can be filtered by provider such as FMP, Nasdaq, or Trading  Economics.
@@ -288,7 +293,7 @@
 - [cpi](https://docs.openbb.co/odp/python/reference/economy/cpi): Get Consumer Price Index (CPI) data for various countries and calculate  inflation measurements. This economic indicator provides insights into the growth  rate of prices on a monthly, quarterly, and annual basis. Harmonized CPI data is  also available. Specify the start and end dates for the desired data range. The  data provider and metadata information are included in the results.
 - [direction_of_trade](https://docs.openbb.co/odp/python/reference/economy/direction_of_trade): Get Direction Of Trade Statistics from the IMF database
 - [export_destinations](https://docs.openbb.co/odp/python/reference/economy/export_destinations): Get top export destinations by country from the UN Comtrade International Trade Statistics Database
-- [fomc_documents](https://docs.openbb.co/odp/python/reference/economy/fomc_documents): Get FOMC documents by year and document type
+- [fomc_documents](https://docs.openbb.co/odp/python/reference/economy/fomc_documents): Get lists of FOMC documents by year and document type
 - [fred_regional](https://docs.openbb.co/odp/python/reference/economy/fred_regional): Query the Geo Fred API for regional economic data by series group
 - [fred_release_table](https://docs.openbb.co/odp/python/reference/economy/fred_release_table): Get economic release data by ID and/or element from FRED
 - [fred_search](https://docs.openbb.co/odp/python/reference/economy/fred_search): Search for FRED series or economic releases by ID or string
@@ -317,11 +322,14 @@
 - [bls_series](https://docs.openbb.co/odp/python/reference/economy/survey/bls_series): Get time series data for one, or more, BLS series IDs
 - [economic_conditions_chicago](https://docs.openbb.co/odp/python/reference/economy/survey/economic_conditions_chicago): Get The Survey Of Economic Conditions For The Chicago Region
 - [Survey](https://docs.openbb.co/odp/python/reference/economy/survey/index): Commands
+- [inflation_expectations](https://docs.openbb.co/odp/python/reference/economy/survey/inflation_expectations): Survey of forward inflation expectations from the Survey of Professional Forecasters
 - [manufacturing_outlook_ny](https://docs.openbb.co/odp/python/reference/economy/survey/manufacturing_outlook_ny): Get the Empire State Manufacturing Survey
 - [manufacturing_outlook_texas](https://docs.openbb.co/odp/python/reference/economy/survey/manufacturing_outlook_texas): Get The Manufacturing Outlook Survey For The Texas Region
 - [nonfarm_payrolls](https://docs.openbb.co/odp/python/reference/economy/survey/nonfarm_payrolls): Get Nonfarm Payrolls Survey
 - [sloos](https://docs.openbb.co/odp/python/reference/economy/survey/sloos): Get Senior Loan Officers Opinion Survey
 - [university_of_michigan](https://docs.openbb.co/odp/python/reference/economy/survey/university_of_michigan): Get University of Michigan Consumer Sentiment and Inflation Expectations Surveys
+- [total_factor_productivity](https://docs.openbb.co/odp/python/reference/economy/total_factor_productivity): Total Factor Productivity (TFP)
+A real-time, quarterly series on total factor productivity (TFP) for the U
 - [unemployment](https://docs.openbb.co/odp/python/reference/economy/unemployment): Get global unemployment data
 - [dividend](https://docs.openbb.co/odp/python/reference/equity/calendar/dividend): Get upcoming and historical dividend data with the OBB.equity.calendar.dividend  method. This method allows you to retrieve dividend information such as dates, amounts,  and provider details. It also provides warnings, charts, and metadata for further  analysis.
 - [earnings](https://docs.openbb.co/odp/python/reference/equity/calendar/earnings): Learn how to retrieve upcoming and historical earnings calendar data  using the OBB.equity.calendar.earnings Python function. The function allows you  to specify symbols, limit the number of data entries, and choose a data provider.  The returned data includes EPS, revenue, and other important details for the specified  symbols and dates.
@@ -393,7 +401,6 @@
 - [share_statistics](https://docs.openbb.co/odp/python/reference/equity/ownership/share_statistics): Learn how to retrieve and analyze share statistics for a given company  using the obb.equity.ownership.share_statistics API endpoint. This documentation  provides details on the parameters, return values, and data structure.
 - [historical](https://docs.openbb.co/odp/python/reference/equity/price/historical): Learn how to use the `obb.equity.price.historical` function to load historical  price data for a specific stock ticker. Find out about the available parameters  and providers, as well as the structure of the returned data and the columns it  contains.
 - [Price](https://docs.openbb.co/odp/python/reference/equity/price/index): Commands
-- [nbbo](https://docs.openbb.co/odp/python/reference/equity/price/nbbo): Learn how to load the National Best Bid and Offer (NBBO) for a specific  equity using the OBB.equity.price.nbbo API. Explore the parameters and data returned  by the query, including ask price, bid price, ask size, bid size, exchange details,  timestamps, and more.
 - [performance](https://docs.openbb.co/odp/python/reference/equity/price/performance): Learn how to calculate the price performance return for a symbol over  different time periods using the OBB.equity.price.performance function. Retrieve  data such as one-day return, week to date return, one-week return, month to date  return, and more. Understand the parameters, returns, and data structure of the  function.
 - [quote](https://docs.openbb.co/odp/python/reference/equity/price/quote): Learn how to load stock data for a specific ticker with the Equity Quote  function. Discover the various parameters and data returned, including day low,  day high, date, symbol, name, price, volume, and more.
 - [profile](https://docs.openbb.co/odp/python/reference/equity/profile): Get general price and performance metrics of a stock with the Equity  Information API. Retrieve data such as the symbol, name, price, open price, high  price, low price, close price, change in price, change percent, previous close,  type, exchange ID, bid, ask, volume, implied volatility, realized volatility, last  trade timestamp, annual high, and annual low.
@@ -431,6 +438,7 @@
 - [Corporate](https://docs.openbb.co/odp/python/reference/fixedincome/corporate/index): Commands
 - [spot_rates](https://docs.openbb.co/odp/python/reference/fixedincome/corporate/spot_rates): Learn about spot rates and how they are used to calculate the yield on  a bond. Understand the concept of discounting and its application in evaluating  pension liabilities. Explore the parameters needed to query and retrieve spot rate  data. Get the serializable results, provider information, warnings, chart, and metadata  associated with the query. Access the spot rate data including the date and rate.
 - [Government](https://docs.openbb.co/odp/python/reference/fixedincome/government/index): Commands
+- [svensson_yield_curve](https://docs.openbb.co/odp/python/reference/fixedincome/government/svensson_yield_curve): Svensson Nominal Yield Curve Data
 - [tips_yields](https://docs.openbb.co/odp/python/reference/fixedincome/government/tips_yields): Get current Treasury inflation-protected securities yields
 - [treasury_auctions](https://docs.openbb.co/odp/python/reference/fixedincome/government/treasury_auctions): Government Treasury Auctions
 - [treasury_prices](https://docs.openbb.co/odp/python/reference/fixedincome/government/treasury_prices): Government Treasury Prices by date
