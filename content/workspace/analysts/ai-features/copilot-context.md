@@ -24,32 +24,54 @@ The agent prioritizes context in the following order:
 
 | Priority | Context Type | Description |
 |---|---|---|
-| 1 | Explicit | Widgets added to context specifically. |
-| 2 | MCP tool | Active MCP tools connected to the Copilot |
-| 3 | Attached files | Files uploaded directly to the Copilot |
-| 4 | Dashboard | All widgets currently on your dashboard (in all tabs). |
-| 5 | Conversation | The history of your current conversation. |
-| 6 | Global | All widgets available within the OpenBB Workspace. If Global Data enabled. |
-| 7 | Web search | Retrieve infromation from the web. If Web Search enabled. |
+| 1 | Explicit | Widgets, skills, or MCP tools mentioned explicitly. |
+| 2 | Skill | Skills added under AI Library. |
+| 3 | MCP tool | Active MCP tools connected to the Copilot. |
+| 4 | Attached files | Files uploaded directly to the Copilot. |
+| 5 | Dashboard | All widgets currently on your dashboard (in all tabs). |
+| 6 | Conversation | The history of your current conversation. |
+| 7 | Global | All widgets available within the OpenBB Workspace, if Global Data is enabled. |
+| 8 | Web search | Retrieve information from the web, if Web Search is enabled. |
 
 ## Context Types
 
 ### Explicit Context
 
-Explicit context represents the highest priority information source, allowing you to precisely direct the Copilot's attention to specific datasets or widgets. This mechanism is particularly powerful for ensuring accuracy when working with multiple similar datasets or when you need analysis focused on a specific dataset.
+Explicit context represents the highest priority information source, allowing you to precisely direct the Copilot's attention to specific datasets. This mechanism is particularly powerful for ensuring accuracy when working with multiple similar datasets or when you need analysis focused on a specific dataset.
 
-When you click on the "Add to context" button on any widget you're creating a direct reference that the Copilot will prioritize above all other available information. After sending the prompt, that widget will remain in context.
+When you add any of the following explicit context types (widgets, skills, or MCP tools), Copilot prioritizes them above all other available information. After sending the prompt, the context remains active.
+
+#### 1. Skills
+
+When tagging a skill with the syntax `/skill:skill-name`, you are adding it explicitly to context.
 
 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
     className="pro-border-gradient"
     alt="Explicit context"
-    src="https://openbb-cms.directus.app/assets/24947294-2053-4efc-a68b-7ec90bf9875c.png"
+    src="https://openbb-cms.directus.app/assets/e6ba8c6c-9b80-461a-afb1-edfc16675134.png"
     width="100%"
   />
 </div>
 
-When you use the "@" symbol followed by a widget name and the prompt is sent, the widget will disappear from context. This is meant to be a quick tag reference.
+
+#### 2. MCP Tools
+
+Similar to skills, MCP tools can be added to context using the `/` command. This displays a list of all available tools, allowing you to select exactly which one to trigger.
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img
+    className="pro-border-gradient"
+    alt="Explicit context"
+    src="https://openbb-cms.directus.app/assets/7424cad9-9bd0-4c76-944e-1231126e1a62.png"
+    width="60%"
+  />
+</div>
+
+
+#### 3. Widgets
+
+Click the "Add to context" button on any widget to create a direct reference that Copilot prioritizes. Alternatively, use the "@" symbol followed by a widget name for a quick tag reference. Once the prompt is sent, the widget is removed from context.
 
 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
@@ -60,21 +82,36 @@ When you use the "@" symbol followed by a widget name and the prompt is sent, th
   />
 </div>
 
+
+### Skills
+Skills added under AI Library are prioritized next. Skills are reusable instruction sets that extend what the OpenBB Copilot can do. This is particularly useful when you want to create custom workflows. Even if you don't explicitly tag a skill, the Copilot will try to match one of the available skills to your request when relevant.
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img
+    className="pro-border-gradient"
+    alt="Skills overview"
+    src="https://openbb-cms.directus.app/assets/b746c198-d732-4c01-8a31-18db1da89d17.png"
+    width="100%"
+  />
+</div>
+
+To see all available skills, navigate to the "Skills" tab under AI Library. An example skill called `openbb-html-report` is included by default. To add your own custom skill, see the [Skills](/workspace/analysts/ai-features/skills) page.
+
 ### MCP Tools
 
-The second highest priority is active MCP tools connected to OpenBB Workspace. For more details, see the MCP tools documentation [here](/workspace/analysts/ai-features/mcp-tools).
+Active MCP tools connected to OpenBB Workspace are the next priority level. For more details, see the MCP tools documentation [here](/workspace/analysts/ai-features/mcp-tools).
 
-Depending on your use case, MCP tools offer a powerful way to connect to third-party data providers or specialized financial tools using a standardized protocol. This would eliminate the need for custom development inside OpenBB Workspace.
+Depending on your use case, MCP tools offer a powerful way to connect to third-party data providers or specialized financial tools using a standardized protocol. This eliminates the need for custom development inside OpenBB Workspace.
 
-To use MCP tools, make sure to configure it (see how to do it [here](/workspace/analysts/ai-features/mcp-tools#configure-your-mcp-servers), and then select all the desired MCP tools.
+To use MCP tools, first configure your servers (see [MCP Tools configuration](/workspace/analysts/ai-features/mcp-tools#configure-your-mcp-servers)), then select the desired tools.
 
 
 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
     className="pro-border-gradient"
-    alt="Attached files"
+    alt="MCP tools"
     src="https://openbb-cms.directus.app/assets/31809471-52b2-4dcb-a5f0-9276def2ae29.png"
-    width="60%"
+    width="100%"
   />
 </div>
 
@@ -83,9 +120,9 @@ When enabled, Copilot gains access to all active MCP tools. You can also explici
 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
     className="pro-border-gradient"
-    alt="Attached files"
+    alt="MCP tools"
     src="https://openbb-cms.directus.app/assets/0a77e58a-6c9f-4cc8-8983-ec8668ecc1c6.png"
-    width="60%"
+    width="100%"
   />
 </div>
 
@@ -109,13 +146,13 @@ Please note that for PDF files, text must be selectable as Optical Character Rec
 
 ### Dashboard Context
 
-The dashboard context provides the Copilot with comprehensive awareness of your currently active dashboard. All widgets on your active dashboard become automatically available as data sources, allowing the Copilot to understand the broader context of your work session. It also has access to the widgets metadata and the current parameters selected.
+The dashboard context provides the Copilot with comprehensive awareness of your currently active dashboard. All widgets on your active dashboard become automatically available as data sources, allowing the Copilot to understand the broader context of your work session. It also has access to each widget's metadata and the currently selected parameters.
 
 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
     className="pro-border-gradient"
     alt="Dashboard context"
-    src="https://openbb-cms.directus.app/assets/2fc343e5-6eb2-4ef6-ba10-f687868bdff4.png"
+    src="https://openbb-cms.directus.app/assets/e0c36999-e186-4ed9-87c7-9f47a50c2d34.png"
     width="100%"
   />
 </div>
@@ -126,7 +163,7 @@ Conversational context enables natural, iterative analysis by maintaining awaren
 
 The Copilot tracks your explicit questions and its responses. This memory allows for follow-up queries, refinement of analysis parameters, and building upon previous insights without needing to re-establish context.
 
-The system understands references to "the previous chart", "that analysis", or "the data we discussed" and can seamlessly continue complex analytical workflows across multiple conversation turns.
+The Copilot understands references to "the previous chart", "that analysis", or "the data we discussed" and can seamlessly continue complex analytical workflows across multiple conversation turns.
 
 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
@@ -137,9 +174,9 @@ The system understands references to "the previous chart", "that analysis", or "
   />
 </div>
 
-### Global Retrieval (ON/OFF flag)
+### Global Data (ON/OFF flag)
 
-The global retrieval system provides the Copilot with access to the entire OpenBB Workspace widget library, extending far beyond your current dashboard widgets.
+The Global Data provides the Copilot with access to the entire OpenBB Workspace widget library, extending far beyond your current dashboard widgets.
 
 When your current dashboard doesn't contain the specific data or analysis tool needed to answer a query, the Copilot can automatically identify and utilize the appropriate widgets from the entire widget library, effectively expanding your analytical capabilities on-demand without manual widget selection.
 
@@ -149,17 +186,26 @@ This is only possible due to the metadata associated with each widget and is why
   <img
     className="pro-border-gradient"
     alt="Global retrieval"
-    src="https://openbb-cms.directus.app/assets/f5661493-50ec-45c0-931a-8abd70d3bc9a.png"
+    src="https://openbb-cms.directus.app/assets/97a9f197-2c91-4135-820b-7135eae6fad0.png"
     width="60%"
   />
 </div>
 
 ### Web Search (ON/OFF flag)
 
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img
+    className="pro-border-gradient"
+    alt="Web search"
+    src="https://openbb-cms.directus.app/assets/339579b3-5ff6-456c-b4a5-2721096fbd5e.png"
+    width="60%"
+  />
+</div>
+
 The web search capability enables the Copilot to access real-time information from across the internet when:
 
 - The available workspace data is insufficient to fully answer your query.
-- The user asks to look for the information on the web.
+- You ask to look for information on the web.
 
 This feature automatically activates as a fallback mechanism, ensuring comprehensive responses even when dealing with breaking news, recent market developments, or information not available in your current workspace widgets.
 
@@ -167,7 +213,7 @@ This feature automatically activates as a fallback mechanism, ensuring comprehen
   <img
     className="pro-border-gradient"
     alt="Web search"
-    src="https://openbb-cms.directus.app/assets/3dffe668-2114-4c4c-b822-395da193f2a0.png"
+    src="https://openbb-cms.directus.app/assets/17c4c6da-13f7-49db-8f20-82204abc7c21.png"
     width="100%"
   />
 </div>

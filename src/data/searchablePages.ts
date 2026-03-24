@@ -1318,7 +1318,7 @@ export const searchablePages: SearchablePage[] = [
     ]
   },
   {
-    "title": "Generative UI (Beta)",
+    "title": "Generative UI",
     "path": "/workspace/analysts/ai-features/generative-ui",
     "category": "Workspace - Analysts",
     "description": "Understanding the Generative UI capabilities in OpenBB Copilot",
@@ -1327,7 +1327,7 @@ export const searchablePages: SearchablePage[] = [
       "widgets",
       "dynamic creation",
       "widget parameters",
-      "beta features"
+      "dashboard manipulation"
     ]
   },
   {
@@ -1386,19 +1386,6 @@ export const searchablePages: SearchablePage[] = [
       "Basics",
       "Examples",
       "Functions"
-    ]
-  },
-  {
-    "title": "Orchestrator Mode (Beta)",
-    "path": "/workspace/analysts/ai-features/orchestrator-mode",
-    "category": "Workspace - Analysts",
-    "description": "Understanding OpenBB Copilot's Orchestrator Mode for multi-agent workflows",
-    "keywords": [
-      "Orchestrator Mode",
-      "Multi-agent",
-      "Workflow coordination",
-      "Task delegation",
-      "Agent routing"
     ]
   },
   {
