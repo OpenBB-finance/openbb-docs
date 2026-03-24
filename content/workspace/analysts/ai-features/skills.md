@@ -1,7 +1,7 @@
 ---
 title: Skills
 sidebar_position: 14
-description: Create, manage, and invoke custom AI skills directly from the OpenBB Copilot chat interface
+description: Create and invoke custom AI skills from the OpenBB Copilot chat interface
 keywords:
 - skills
 - custom skills
@@ -15,20 +15,19 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Skills | OpenBB Workspace Docs" />
 
-Skills are reusable instruction sets that extend what the OpenBB Copilot can do. You can create custom skills tailored to your workflow and invoke them directly from the chat interface.
+Skills are reusable instruction sets that tell the Copilot how to perform a specific task. Instead of typing the same detailed prompt every time, you can create a skill once and invoke it directly from the chat with a simple command.
 
 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
     className="pro-border-gradient"
     alt="Skills overview"
-    src="https://openbb-cms.directus.app/assets/fdfe9a60-687a-487c-bbb5-d20c16676010.png"
+    src="https://openbb-cms.directus.app/assets/194dadb5-cc5d-4088-95d1-1d9505cd0dbf.png"
     width="100%"
   />
 </div>
 
-## What is a skill
 
-A skill is a saved set of instructions that tells the copilot how to perform a specific task. Instead of typing the same detailed prompt every time, you can create a skill once and reuse it with a simple command.
+For example, the `/openbb-html-report` skill, included by default, generates a full HTML report using data from your dashboard. Inside the skill, you can define report types, suggested structures, writing style, formatting rules, and any other guidelines for the Copilot to follow.
 
 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
@@ -39,12 +38,9 @@ A skill is a saved set of instructions that tells the copilot how to perform a s
   />
 </div>
 
-
-For example, a skill called `/openbb-html-report` generates a full HTML report using data from your dashboard. You define the detailed instructions inside the skill, such as report types, suggested structures, writing style, formatting rules, and any other guidelines the copilot should follow.
-
 ## Creating a skill
 
-To create a new skill, open the Skills panel from the copilot interface. Give your skill a name, a description, and the instructions the copilot should follow when the skill is invoked.
+To create a new skill, open the Skills tab under AI Library and select the "Add Skill" button in the top right corner. Give your skill a name, a description, and the instructions the Copilot should follow when invoked.
 
 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
@@ -58,7 +54,7 @@ To create a new skill, open the Skills panel from the copilot interface. Give yo
 
 ## Using a skill
 
-The copilot always tries to identify a relevant skill before proceeding with a task, so simply mentioning the skill's name in your prompt will very likely trigger it.
+The Copilot automatically tries to identify a relevant skill before proceeding with a task. Simply mentioning the skill name in your prompt will very likely trigger it.
 
 
 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
@@ -66,20 +62,31 @@ The copilot always tries to identify a relevant skill before proceeding with a t
     className="pro-border-gradient"
     alt="Invoking a skill"
     src="https://openbb-cms.directus.app/assets/19f1be6c-b320-411f-b82e-3b734d33124e.png"
-    width="60%"
+    width="100%"
   />
 </div>
 
-
-To force a specific skill and see its tag in the chat, type `/skill-name` to invoke it directly.
+If you want to force a specific skill, you can type `/skill:skill-name` to tag it directly. This ensures the Copilot invokes that exact skill.
 
 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
     className="pro-border-gradient"
     alt="Invoking a skill"
-    src="https://openbb-cms.directus.app/assets/37324700-c870-49eb-83b6-e845e93fee90.png"
-    width="60%"
+    src="https://openbb-cms.directus.app/assets/c1b4aea8-2e9d-42fa-9b5a-904b52bbd8d3.png"
+    width="100%"
   />
 </div>
 
+
+## Viewing all available Skills
+You can type `/` in the chat to see the full list of available Skills and MCP tools. You can also hover over it to see the skill description.
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img
+    className="pro-border-gradient"
+    alt="Invoking a skill"
+    src="https://openbb-cms.directus.app/assets/61e6f5e4-9fe8-4ae6-bcb0-6f3e57dca6e9.png"
+    width="100%"
+  />
+</div>
 
