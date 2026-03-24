@@ -43,14 +43,14 @@ When you add any of the following explicit context types (widgets, skills, or MC
 
 #### 1. Skills
 
-When tagging a skill with the syntax `/skill-name`, you are adding it explicitly to context.
+When tagging a skill with the syntax `/skill:skill-name`, you are adding it explicitly to context.
 
 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
     className="pro-border-gradient"
     alt="Explicit context"
-    src="https://openbb-cms.directus.app/assets/8f1f7e0e-1c93-4ea6-b858-a911a3fb15c2.png"
-    width="60%"
+    src="https://openbb-cms.directus.app/assets/e6ba8c6c-9b80-461a-afb1-edfc16675134.png"
+    width="100%"
   />
 </div>
 
@@ -84,7 +84,7 @@ Click the "Add to context" button on any widget to create a direct reference tha
 
 
 ### Skills
-Skills added under AI Library are prioritized next. Skills are reusable instruction sets that extend what the OpenBB Copilot can do. This is particularly useful when you want to create custom workflows.
+Skills added under AI Library are prioritized next. Skills are reusable instruction sets that extend what the OpenBB Copilot can do. This is particularly useful when you want to create custom workflows. Even if you don't explicitly tag a skill, the Copilot will try to match one of the available skills to your request when relevant.
 
 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
@@ -111,7 +111,7 @@ To use MCP tools, first configure your servers (see [MCP Tools configuration](/w
     className="pro-border-gradient"
     alt="MCP tools"
     src="https://openbb-cms.directus.app/assets/31809471-52b2-4dcb-a5f0-9276def2ae29.png"
-    width="60%"
+    width="100%"
   />
 </div>
 
@@ -122,7 +122,7 @@ When enabled, Copilot gains access to all active MCP tools. You can also explici
     className="pro-border-gradient"
     alt="MCP tools"
     src="https://openbb-cms.directus.app/assets/0a77e58a-6c9f-4cc8-8983-ec8668ecc1c6.png"
-    width="60%"
+    width="100%"
   />
 </div>
 
@@ -152,7 +152,7 @@ The dashboard context provides the Copilot with comprehensive awareness of your 
   <img
     className="pro-border-gradient"
     alt="Dashboard context"
-    src="https://openbb-cms.directus.app/assets/2fc343e5-6eb2-4ef6-ba10-f687868bdff4.png"
+    src="https://openbb-cms.directus.app/assets/e0c36999-e186-4ed9-87c7-9f47a50c2d34.png"
     width="100%"
   />
 </div>
@@ -174,9 +174,9 @@ The Copilot understands references to "the previous chart", "that analysis", or 
   />
 </div>
 
-### Global Retrieval (ON/OFF flag)
+### Global Data (ON/OFF flag)
 
-The global retrieval system provides the Copilot with access to the entire OpenBB Workspace widget library, extending far beyond your current dashboard widgets.
+The Global Data provides the Copilot with access to the entire OpenBB Workspace widget library, extending far beyond your current dashboard widgets.
 
 When your current dashboard doesn't contain the specific data or analysis tool needed to answer a query, the Copilot can automatically identify and utilize the appropriate widgets from the entire widget library, effectively expanding your analytical capabilities on-demand without manual widget selection.
 
@@ -186,12 +186,21 @@ This is only possible due to the metadata associated with each widget and is why
   <img
     className="pro-border-gradient"
     alt="Global retrieval"
-    src="https://openbb-cms.directus.app/assets/f5661493-50ec-45c0-931a-8abd70d3bc9a.png"
+    src="https://openbb-cms.directus.app/assets/97a9f197-2c91-4135-820b-7135eae6fad0.png"
     width="60%"
   />
 </div>
 
 ### Web Search (ON/OFF flag)
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img
+    className="pro-border-gradient"
+    alt="Web search"
+    src="https://openbb-cms.directus.app/assets/339579b3-5ff6-456c-b4a5-2721096fbd5e.png"
+    width="60%"
+  />
+</div>
 
 The web search capability enables the Copilot to access real-time information from across the internet when:
 
@@ -204,7 +213,7 @@ This feature automatically activates as a fallback mechanism, ensuring comprehen
   <img
     className="pro-border-gradient"
     alt="Web search"
-    src="https://openbb-cms.directus.app/assets/3dffe668-2114-4c4c-b822-395da193f2a0.png"
+    src="https://openbb-cms.directus.app/assets/17c4c6da-13f7-49db-8f20-82204abc7c21.png"
     width="100%"
   />
 </div>
