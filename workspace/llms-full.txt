@@ -139,32 +139,54 @@ The agent prioritizes context in the following order:
 
 | Priority | Context Type | Description |
 |---|---|---|
-| 1 | Explicit | Widgets added to context specifically. |
-| 2 | MCP tool | Active MCP tools connected to the Copilot |
-| 3 | Attached files | Files uploaded directly to the Copilot |
-| 4 | Dashboard | All widgets currently on your dashboard (in all tabs). |
-| 5 | Conversation | The history of your current conversation. |
-| 6 | Global | All widgets available within the OpenBB Workspace. If Global Data enabled. |
-| 7 | Web search | Retrieve infromation from the web. If Web Search enabled. |
+| 1 | Explicit | Widgets, skills, or MCP tools mentioned explicitly. |
+| 2 | Skill | Skills added under AI Library. |
+| 3 | MCP tool | Active MCP tools connected to the Copilot. |
+| 4 | Attached files | Files uploaded directly to the Copilot. |
+| 5 | Dashboard | All widgets currently on your dashboard (in all tabs). |
+| 6 | Conversation | The history of your current conversation. |
+| 7 | Global | All widgets available within the OpenBB Workspace, if Global Data is enabled. |
+| 8 | Web search | Retrieve information from the web, if Web Search is enabled. |
 
 ## Context Types
 
 ### Explicit Context
 
-Explicit context represents the highest priority information source, allowing you to precisely direct the Copilot's attention to specific datasets or widgets. This mechanism is particularly powerful for ensuring accuracy when working with multiple similar datasets or when you need analysis focused on a specific dataset.
+Explicit context represents the highest priority information source, allowing you to precisely direct the Copilot's attention to specific datasets. This mechanism is particularly powerful for ensuring accuracy when working with multiple similar datasets or when you need analysis focused on a specific dataset.
 
-When you click on the "Add to context" button on any widget you're creating a direct reference that the Copilot will prioritize above all other available information. After sending the prompt, that widget will remain in context.
+When you add any of the following explicit context types (widgets, skills, or MCP tools), Copilot prioritizes them above all other available information. After sending the prompt, the context remains active.
+
+#### 1. Skills
+
+When tagging a skill with the syntax `/skill:skill-name`, you are adding it explicitly to context.
 
 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
     className="pro-border-gradient"
     alt="Explicit context"
-    src="https://openbb-cms.directus.app/assets/24947294-2053-4efc-a68b-7ec90bf9875c.png"
+    src="https://openbb-cms.directus.app/assets/e6ba8c6c-9b80-461a-afb1-edfc16675134.png"
     width="100%"
   />
 </div>
 
-When you use the "@" symbol followed by a widget name and the prompt is sent, the widget will disappear from context. This is meant to be a quick tag reference.
+
+#### 2. MCP Tools
+
+Similar to skills, MCP tools can be added to context using the `/` command. This displays a list of all available tools, allowing you to select exactly which one to trigger.
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img
+    className="pro-border-gradient"
+    alt="Explicit context"
+    src="https://openbb-cms.directus.app/assets/7424cad9-9bd0-4c76-944e-1231126e1a62.png"
+    width="60%"
+  />
+</div>
+
+
+#### 3. Widgets
+
+Click the "Add to context" button on any widget to create a direct reference that Copilot prioritizes. Alternatively, use the "@" symbol followed by a widget name for a quick tag reference. Once the prompt is sent, the widget is removed from context.
 
 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
@@ -175,21 +197,36 @@ When you use the "@" symbol followed by a widget name and the prompt is sent, th
   />
 </div>
 
+
+### Skills
+Skills added under AI Library are prioritized next. Skills are reusable instruction sets that extend what the OpenBB Copilot can do. This is particularly useful when you want to create custom workflows. Even if you don't explicitly tag a skill, the Copilot will try to match one of the available skills to your request when relevant.
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img
+    className="pro-border-gradient"
+    alt="Skills overview"
+    src="https://openbb-cms.directus.app/assets/b746c198-d732-4c01-8a31-18db1da89d17.png"
+    width="100%"
+  />
+</div>
+
+To see all available skills, navigate to the "Skills" tab under AI Library. An example skill called `openbb-html-report` is included by default. To add your own custom skill, see the [Skills](/workspace/analysts/ai-features/skills) page.
+
 ### MCP Tools
 
-The second highest priority is active MCP tools connected to OpenBB Workspace. For more details, see the MCP tools documentation [here](/workspace/analysts/ai-features/mcp-tools).
+Active MCP tools connected to OpenBB Workspace are the next priority level. For more details, see the MCP tools documentation [here](/workspace/analysts/ai-features/mcp-tools).
 
-Depending on your use case, MCP tools offer a powerful way to connect to third-party data providers or specialized financial tools using a standardized protocol. This would eliminate the need for custom development inside OpenBB Workspace.
+Depending on your use case, MCP tools offer a powerful way to connect to third-party data providers or specialized financial tools using a standardized protocol. This eliminates the need for custom development inside OpenBB Workspace.
 
-To use MCP tools, make sure to configure it (see how to do it [here](/workspace/analysts/ai-features/mcp-tools#configure-your-mcp-servers), and then select all the desired MCP tools.
+To use MCP tools, first configure your servers (see [MCP Tools configuration](/workspace/analysts/ai-features/mcp-tools#configure-your-mcp-servers)), then select the desired tools.
 
 
 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
     className="pro-border-gradient"
-    alt="Attached files"
+    alt="MCP tools"
     src="https://openbb-cms.directus.app/assets/31809471-52b2-4dcb-a5f0-9276def2ae29.png"
-    width="60%"
+    width="100%"
   />
 </div>
 
@@ -198,9 +235,9 @@ When enabled, Copilot gains access to all active MCP tools. You can also explici
 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
     className="pro-border-gradient"
-    alt="Attached files"
+    alt="MCP tools"
     src="https://openbb-cms.directus.app/assets/0a77e58a-6c9f-4cc8-8983-ec8668ecc1c6.png"
-    width="60%"
+    width="100%"
   />
 </div>
 
@@ -224,13 +261,13 @@ Please note that for PDF files, text must be selectable as Optical Character Rec
 
 ### Dashboard Context
 
-The dashboard context provides the Copilot with comprehensive awareness of your currently active dashboard. All widgets on your active dashboard become automatically available as data sources, allowing the Copilot to understand the broader context of your work session. It also has access to the widgets metadata and the current parameters selected.
+The dashboard context provides the Copilot with comprehensive awareness of your currently active dashboard. All widgets on your active dashboard become automatically available as data sources, allowing the Copilot to understand the broader context of your work session. It also has access to each widget's metadata and the currently selected parameters.
 
 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
     className="pro-border-gradient"
     alt="Dashboard context"
-    src="https://openbb-cms.directus.app/assets/2fc343e5-6eb2-4ef6-ba10-f687868bdff4.png"
+    src="https://openbb-cms.directus.app/assets/e0c36999-e186-4ed9-87c7-9f47a50c2d34.png"
     width="100%"
   />
 </div>
@@ -241,7 +278,7 @@ Conversational context enables natural, iterative analysis by maintaining awaren
 
 The Copilot tracks your explicit questions and its responses. This memory allows for follow-up queries, refinement of analysis parameters, and building upon previous insights without needing to re-establish context.
 
-The system understands references to "the previous chart", "that analysis", or "the data we discussed" and can seamlessly continue complex analytical workflows across multiple conversation turns.
+The Copilot understands references to "the previous chart", "that analysis", or "the data we discussed" and can seamlessly continue complex analytical workflows across multiple conversation turns.
 
 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
@@ -252,9 +289,9 @@ The system understands references to "the previous chart", "that analysis", or "
   />
 </div>
 
-### Global Retrieval (ON/OFF flag)
+### Global Data (ON/OFF flag)
 
-The global retrieval system provides the Copilot with access to the entire OpenBB Workspace widget library, extending far beyond your current dashboard widgets.
+The Global Data provides the Copilot with access to the entire OpenBB Workspace widget library, extending far beyond your current dashboard widgets.
 
 When your current dashboard doesn't contain the specific data or analysis tool needed to answer a query, the Copilot can automatically identify and utilize the appropriate widgets from the entire widget library, effectively expanding your analytical capabilities on-demand without manual widget selection.
 
@@ -264,17 +301,26 @@ This is only possible due to the metadata associated with each widget and is why
   <img
     className="pro-border-gradient"
     alt="Global retrieval"
-    src="https://openbb-cms.directus.app/assets/f5661493-50ec-45c0-931a-8abd70d3bc9a.png"
+    src="https://openbb-cms.directus.app/assets/97a9f197-2c91-4135-820b-7135eae6fad0.png"
     width="60%"
   />
 </div>
 
 ### Web Search (ON/OFF flag)
 
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img
+    className="pro-border-gradient"
+    alt="Web search"
+    src="https://openbb-cms.directus.app/assets/339579b3-5ff6-456c-b4a5-2721096fbd5e.png"
+    width="60%"
+  />
+</div>
+
 The web search capability enables the Copilot to access real-time information from across the internet when:
 
 - The available workspace data is insufficient to fully answer your query.
-- The user asks to look for the information on the web.
+- You ask to look for information on the web.
 
 This feature automatically activates as a fallback mechanism, ensuring comprehensive responses even when dealing with breaking news, recent market developments, or information not available in your current workspace widgets.
 
@@ -282,7 +328,7 @@ This feature automatically activates as a fallback mechanism, ensuring comprehen
   <img
     className="pro-border-gradient"
     alt="Web search"
-    src="https://openbb-cms.directus.app/assets/3dffe668-2114-4c4c-b822-395da193f2a0.png"
+    src="https://openbb-cms.directus.app/assets/17c4c6da-13f7-49db-8f20-82204abc7c21.png"
     width="100%"
   />
 </div>
@@ -611,7 +657,7 @@ The system preserves the relationship between artifacts and their creation proce
 ---
 
 ---
-title: Generative UI (Beta)
+title: Generative UI
 sidebar_position: 13
 description: Understanding the Generative UI capabilities in OpenBB Copilot
 keywords:
@@ -619,18 +665,18 @@ keywords:
   - widgets
   - dynamic creation
   - widget parameters
-  - beta features
+  - dashboard manipulation
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Generative UI (Beta) | OpenBB Workspace Docs" />
+<HeadTitle title="Generative UI | OpenBB Workspace Docs" />
 
-When this feature is turned ON, copilot can manipulate widgets on the dashboard.
+When Generative UI is enabled, the copilot can manipulate widgets directly on your dashboard.
 
 ## Update widget parameters
 
-The system understands the parameter schemas of each widget and based on a user prompt it can automatically update the parameters used in widgets on the dashboard.
+The copilot understands the parameter schemas of each widget and, based on your prompt, can automatically update the parameters across widgets on the dashboard.
 
 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
     <img
@@ -643,20 +689,20 @@ The system understands the parameter schemas of each widget and based on a user 
 
 ## Add widgets from Global Data
 
-If global data is turned on, and the user asks information that the copilot believes exists in one of the widgets in the widget library - then that widget gets automatically added to the dashboard.
+If Global Data is enabled and you ask for information that the copilot finds in the widget library, the matching widget is automatically added to your dashboard.
 
 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
     className="pro-border-gradient"
     alt="Widget parameters"
-    src="https://openbb-cms.directus.app/assets/b5798412-cba3-4deb-898c-dde7ccd636c1.png"
+    src="https://openbb-cms.directus.app/assets/5e641714-20a7-4830-a82f-158a85259ec1.png"
     width="100%"
   />
 </div>
 
 ## Add markdown note widget
 
-The copilot can also add any type of text into a markdown widget automatically on-the-fly.
+The copilot can also add text content as a markdown note widget directly on your dashboard.
 
 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
   <img
@@ -667,7 +713,47 @@ The copilot can also add any type of text into a markdown widget automatically o
   />
 </div>
 
-Support to add static artifacts (tables or charts) on-the-fly is still not supported.
+## Add and edit navigation bar
+
+The copilot can add navigation bars to your dashboard, allowing you to organize widgets into separate tabs for a cleaner and more structured layout.
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img
+    className="pro-border-gradient"
+    alt="Add navigation bar"
+    src="https://openbb-cms.directus.app/assets/8939c838-c5b7-45e4-b543-c01e72a996cc.png"
+    width="100%"
+  />
+</div>
+
+
+Beyond adding new tabs, you can also use this feature to edit existing tab names within the navigation bar.
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img
+    className="pro-border-gradient"
+    alt="Add navigation bar"
+    src="https://openbb-cms.directus.app/assets/b1acef02-c5e9-4275-8ee1-3de702165ebf.png"
+    width="100%"
+  />
+</div>
+
+As shown in the examples above, all of these actions can be performed across multiple widgets, navigation bars, or parameters at once. For example, you can ask the copilot to add multiple navigation tabs, each containing a different set of widgets, saving you from making one change at a time.
+
+
+## Create widgets on the fly
+
+The copilot can take its own outputs, such as tables, charts, or markdown notes, and turn them directly into widgets on your dashboard. Instead of copying results manually, the Generative UI feature adds the copilot's response as a fully interactive widget that lives alongside the rest of your data.
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img
+    className="pro-border-gradient"
+    alt="Create widget on the fly"
+    src="https://openbb-cms.directus.app/assets/a8a40db3-2f11-48d1-a050-6be35bddb9c0.png"
+    width="100%"
+  />
+</div>
+
 
 
 ---
@@ -694,16 +780,16 @@ Model Context Protocol (MCP) integration enables seamless connection to third-pa
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
 >
   <img
-    src="https://openbb-cms.directus.app/assets/9e4121a3-a422-41fb-aaac-888f66b18fb2.png"
+    src="https://openbb-cms.directus.app/assets/031856b3-2f23-4856-ba14-01a2e65d297d.png"
     width="100%"
   />
 </div>
 
-We utilize the [use-mcp library](https://github.com/modelcontextprotocol/use-mcp) and support both MCP and SSE protocols, but not STDIO. If you are interested in STDIO support, we recommend exploring solutions like [https://github.com/supercorp-ai/supergateway](https://github.com/supercorp-ai/supergateway).
+We use the [use-mcp library](https://github.com/modelcontextprotocol/use-mcp) and support both MCP and SSE protocols, but not STDIO. If you need STDIO support, we recommend exploring solutions like [supergateway](https://github.com/supercorp-ai/supergateway).
 
 ### Configure your MCP Servers
 
-Clicking this button opens the MCP server enable/disable menu.
+To configure your MCP servers, open the MCP server menu from the copilot settings.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
@@ -714,70 +800,59 @@ Clicking this button opens the MCP server enable/disable menu.
   />
 </div>
 
-Here you'll find the "+" icon that allows you to add or edit MCP servers.
+From here, click "Manage MCP servers" in the top right to add, edit, or delete MCP servers.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
 >
   <img
-    src="https://openbb-cms.directus.app/assets/861831f2-9bfc-41d2-bdd7-bc673ad39656.png"
+    src="https://openbb-cms.directus.app/assets/0ec2a6fc-bb39-409c-825a-a59ec91050f4.png"
+    width="40%"
+  />
+</div>
+
+This opens the MCP Servers tab under AI Library, where you can view all available ones and their active or inactive status.
+
+To add a new MCP server, click on the "Add server" button on the top right.
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/f722594d-5383-4ea1-a540-706d04aa773b.png"
+    width="100%"
+  />
+</div>
+
+This opens the MCP server configuration dialog. Fill in the details, such as the server name and URL. 
+
+<div
+  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+>
+  <img
+    src="https://openbb-cms.directus.app/assets/0def926d-12be-4e5f-bbf2-e50b243a8020.png"
     width="60%"
   />
 </div>
 
-Clicking the "+" icon opens the MCP Servers configuration dialog.
+If your chosen MCP server requires authentication, similar to the one from Financial Modelling Prep below, click the "Add Custom Header" button in the bottom left and enter the key-value pair.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
 >
   <img
-    src="https://openbb-cms.directus.app/assets/1d12fdc5-4424-4858-8c34-85db9c18ba2e.png"
-    width="100%"
+    src="https://openbb-cms.directus.app/assets/f90d207d-5efe-427b-99d3-246b479b61f1.png"
+    width="60%"
   />
 </div>
 
-Within this dialog, clicking "Add Server" opens the following pop-up window.
+Once you click "Add", you return to the MCP Servers tab where you can see each server's active status. Click on a connected server to view its discovered tools, and expand any tool to read its description.
 
 <div
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
 >
   <img
-    src="https://openbb-cms.directus.app/assets/15e88b0c-d9d0-4697-87f0-2c82f0213d0f.png"
-    width="100%"
-  />
-</div>
-
-Clicking "Add" initiates the connection, regardless of OAuth configuration.
-
-Here's how OAuth appears when connecting to [Smithery.ai](https://smithery.ai/), a directory containing over 6,000 MCP servers.
-
-<div
-  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
->
-  <img
-    src="https://openbb-cms.directus.app/assets/0ef5c823-a1fe-4fec-9d17-9165e0d282b1.png"
-    width="100%"
-  />
-</div>
-
-After connecting, you'll return to the Workspace and see "Authenticating..." displayed.
-
-<div
-  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
->
-  <img
-    src="https://openbb-cms.directus.app/assets/2b3b1671-20c3-46de-9985-5c55ba22c2c5.png"
-    width="100%"
-  />
-</div>
-
-In the MCP Servers Configuration dialog, clicking on a successfully connected server displays the discovered tools. You can then open these tools to view their descriptions.
-
-<div
-  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
->
-  <img
-    src="https://openbb-cms.directus.app/assets/3d2e53ed-5d63-46e8-b369-d0e19c7017ef.png"
+    src="https://openbb-cms.directus.app/assets/5e617b0b-095e-4875-bdb6-28acd9359ae4.png"
     width="100%"
   />
 </div>
@@ -790,33 +865,19 @@ With the MCP Tools dialog open, you can enable or disable specific MCP tools for
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
 >
   <img
-    src="https://openbb-cms.directus.app/assets/861831f2-9bfc-41d2-bdd7-bc673ad39656.png"
-    width="100%"
+    src="https://openbb-cms.directus.app/assets/89cf6d3f-91eb-4ddb-8dfa-deeb2de8a473.png"
+    width="40%"
   />
 </div>
 
 Once an MCP Server is successfully connected, you can:
 
-1. Select all or none of the tools of a specific MCP Server.
+1. **Select all or none**: toggles every tool from a specific MCP server at once. This is the quickest way to include or exclude an entire server from Copilot's context.
 
-This toggles all fine-grained tool-level controls simultaneously. It's the most efficient way to exclude an MCP Server from Copilot's context.
+2. **Enable or disable individual tools**: gives you granular control over which tools from a server are available to Copilot.
 
-2. Turn ON/OFF a specific set of tools from an MCP Server.
+Enabling all tools does not guarantee Copilot will use every one. It simply makes them available. This granular control helps keep Copilot's context focused on what is most relevant to your needs.
 
-Note: Enabling all tools doesn't guarantee Copilot will use every tool; rather, it makes them available for selection. This granular control helps narrow OpenBB Copilot's context to what's most relevant to your needs.
-
----
-
-If the MCP Server becomes disconnected, it will appear as disabled, as shown below:
-
-<div
-  style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
->
-  <img
-    src="https://openbb-cms.directus.app/assets/d983cab2-9cf0-4d2a-85d2-0226860b890d.png"
-    width="100%"
-  />
-</div>
 
 ### MCP in action
 
@@ -828,21 +889,21 @@ For example, accessing OpenBB documentation requires two tools from the same MCP
   style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
 >
   <img
-    src="https://openbb-cms.directus.app/assets/5a9ef8ee-89e0-4f7c-853c-77fda234de00.png"
+    src="https://openbb-cms.directus.app/assets/a3fbad96-a2c5-4ebc-bfd9-bb6f59050cea.png"
     width="100%"
   />
 </div>
 
 ### Matching widget to MCP tools
 
-As shown above, in the reasoning step, you can see when and at which point the MCP tool was called. In addition, you can configure a widget that shares identical metadata, or what we refer to as “matching”, to the corresponding MCP tool.
+In the reasoning step shown above, you can see when each MCP tool was called. You can also configure a widget with matching metadata. This links the widget to its corresponding MCP tool.
 
-Once a matching widget has been set up, a citation marked with an asterisk (*) will appear at the end whenever the MCP tool is used. 
+Once a matching widget is set up, a citation marked with an asterisk (\*) appears whenever the MCP tool is used.
 
 <img className="pro-border-gradient" width="800" alt="Widget hover tooltip showing option to add to dashboard" src="https://openbb-cms.directus.app/assets/d2c50edb-43e2-4771-9125-b31117501a61.png" />
 
 
-Additionally, when you click “Add matching widget to dashboard,” the widget will be automatically added to your current dashboard, using the same parameters applied by Copilot.
+Click “Add matching widget to dashboard” to add the widget to your current dashboard with the same parameters applied by Copilot.
 
 
 
@@ -851,105 +912,97 @@ Additionally, when you click “Add matching widget to dashboard,” the widget 
 ---
 
 ---
-title: Orchestrator Mode (Beta)
+title: Skills
 sidebar_position: 14
-description: Understanding OpenBB Copilot's Orchestrator Mode for multi-agent workflows
+description: Create and invoke custom AI skills from the OpenBB Copilot chat interface
 keywords:
-- Orchestrator Mode
-- Multi-agent
-- Workflow coordination
-- Task delegation
-- Agent routing
+- skills
+- custom skills
+- AI skills
+- skill commands
+- reusable prompts
+- copilot skills
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Orchestrator Mode | OpenBB Workspace Docs" />
+<HeadTitle title="Skills | OpenBB Workspace Docs" />
 
-# Orchestrator Mode (Beta)
-
-Orchestrator Mode enables OpenBB Copilot to coordinate with specialized AI agents for complex analytical workflows. When activated, OpenBB Copilot becomes a central coordinator that evaluates user requests, identifies the most appropriate agents for specific tasks, and delegates work to optimize results.
-
-## Activating Orchestrator Mode
-
-After adding AI agents to your workspace, you'll see agent management settings showing available agents:
+Skills are reusable instruction sets that tell the Copilot how to perform a specific task. Instead of typing the same detailed prompt every time, you can create a skill once and invoke it directly from the chat with a simple command.
 
 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-  <img src="https://openbb-cms.directus.app/assets/d8223d51-17a4-4b47-914b-ff5656316fd0.png" alt="OpenBB Copilot as single enabled agent" width="40%" />
-</div>
-
-Initially, OpenBB Copilot operates as the only enabled agent. To activate Orchestrator Mode, toggle the switch next to OpenBB Copilot. This enables the copilot to delegate tasks to other available agents based on request complexity and agent specialization.
-
-<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-  <img src="https://openbb-cms.directus.app/assets/c6a46df6-d572-414c-8cb4-c74e70ae0a1a.png" alt="Orchestrator Mode activated" width="40%" />
-</div>
-
-## Agent Detection and Routing
-
-The orchestrator systematically evaluates available agents before processing user requests. It scans agent descriptions for domain-specific expertise that matches the user query and checks agent capabilities for specialized functions like data processing, mathematical calculations, or document analysis.
-
-Task categorization determines the optimal assignment approach. Preprocessing tasks include query optimization and prompt enhancement. Domain-specific tasks involve financial analysis, technical documentation, or mathematical computations. Processing tasks handle data transformation and content generation. Post-processing tasks manage output formatting and quality assurance.
-
-Agent selection follows a hierarchy of matching criteria. Primary matches occur when agent descriptions directly mention the task domain. Feature matches identify agents with relevant capabilities for the request. Specialization advantages favor agents offering superior expertise compared to general processing capabilities.
-
-## Direct Agent Interaction vs. Orchestration
-
-Users can interact with agents directly or through orchestration. Direct interaction addresses the specific agent with targeted requests:
-
-<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-  <img src="https://openbb-cms.directus.app/assets/5ad54690-5aa4-42d6-a0d7-c7a31fe19d58.png" alt="Direct agent interaction example" width="100%" />
-</div>
-
-With Orchestrator Mode activated, users can submit general requests to OpenBB Copilot. The orchestrator analyzes the request and determines whether specialized agent assistance would improve results.
-
-For example, a minimal or unclear prompt triggers automatic routing to a prompt optimization agent:
-
-<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-  <img src="https://openbb-cms.directus.app/assets/8a4b0c74-82b4-4e1c-ae2c-d905cf880d39.png" alt="Orchestrator routing to prompt optimizer" width="100%" />
-</div>
-
-Or routing to an agent that is better suitable to parse specific data (like FOMC document):
-
-<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-  <img src="https://openbb-cms.directus.app/assets/6486184f-2b36-44cf-829a-aa46bf1e41d5.png" alt="Orchestrator routing to FOMC Agent" width="100%" />
-</div>
-
-## Orchestration OFF
-
-When Orchestrator Mode is disabled, OpenBB Copilot cannot utilize any available sub-agents regardless of their specializations:
-
-<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-  <img src="https://openbb-cms.directus.app/assets/f16d219e-98f2-487e-9969-9164377c87de.png" alt="Orchestrator Mode disabled limiting agent access" width="100%" />
+  <img
+    className="pro-border-gradient"
+    alt="Skills overview"
+    src="https://openbb-cms.directus.app/assets/194dadb5-cc5d-4088-95d1-1d9505cd0dbf.png"
+    width="100%"
+  />
 </div>
 
 
-## Task Delegation Process
+For example, the `/openbb-html-report` skill, included by default, generates a full HTML report using data from your dashboard. Inside the skill, you can define report types, suggested structures, writing style, formatting rules, and any other guidelines for the Copilot to follow.
 
-The orchestrator follows structured delegation protocols. Single agent assignments handle complete tasks where one agent possesses all required expertise. The orchestrator sets direct response parameters, meaning the assigned agent's output appears directly to users without additional processing.
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img
+    className="pro-border-gradient"
+    alt="Skills overview"
+    src="https://openbb-cms.directus.app/assets/46599abd-5192-4ea5-9866-140da19735b0.png"
+    width="60%"
+  />
+</div>
 
-Multi-agent workflows coordinate complex requests requiring multiple specializations. The orchestrator breaks requests into discrete components, determines optimal execution sequences, and manages dependencies between tasks. Some tasks must complete before others begin, while parallel execution improves response speed for independent operations.
+## Creating a skill
 
-When delegating tasks, the orchestrator provides agents with specific context including relevant data, constraints, formatting requirements, and success criteria. This ensures agents have sufficient information to complete their assigned portions effectively.
+To create a new skill, open the Skills tab under AI Library and select the "Add Skill" button in the top right corner. Give your skill a name, a description, and the instructions the Copilot should follow when invoked.
 
-## Response Coordination
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img
+    className="pro-border-gradient"
+    alt="Creating a skill"
+    src="https://openbb-cms.directus.app/assets/19f304d2-b76c-4aa8-98ae-f2a0067af6f9.png"
+    width="60%"
+  />
+</div>
 
-Single agent responses appear directly when the orchestrator delegates complete responsibility to one specialized agent. This reduces latency for straightforward requests while maintaining orchestration capabilities for complex workflows.
 
-Multi-agent responses require coordination and synthesis. The orchestrator ensures consistent formatting across agent contributions, eliminates redundancy, and maintains logical narrative flow. Error recovery mechanisms attempt alternative strategies when agents cannot complete assigned tasks.
+## Using a skill
 
-## Memory and Context Management
+The Copilot automatically tries to identify a relevant skill before proceeding with a task. Simply mentioning the skill name in your prompt will very likely trigger it.
 
-The orchestrator maintains awareness of previous interactions and conversation history. It remembers recent widget additions, data retrievals, and analytical approaches to inform current delegation decisions. This contextual awareness prevents duplicate work and enables references to "this data" or "the previous analysis."
 
-When users reference earlier work, the orchestrator identifies the specific context and ensures relevant agents have access to that information. The system builds upon previous analyses rather than starting fresh for each request.
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img
+    className="pro-border-gradient"
+    alt="Invoking a skill"
+    src="https://openbb-cms.directus.app/assets/19f1be6c-b320-411f-b82e-3b734d33124e.png"
+    width="100%"
+  />
+</div>
 
-## Best Practices
+If you want to force a specific skill, you can type `/skill:skill-name` to tag it directly. This ensures the Copilot invokes that exact skill.
 
-Provide clear context about analytical objectives when submitting requests that might benefit from specialized expertise. Specify data sources, time frames, and analytical approaches when you have preferences about task completion methods.
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img
+    className="pro-border-gradient"
+    alt="Invoking a skill"
+    src="https://openbb-cms.directus.app/assets/c1b4aea8-2e9d-42fa-9b5a-904b52bbd8d3.png"
+    width="100%"
+  />
+</div>
 
-Reference specific data, widgets, or previous analyses when building upon earlier work. The orchestrator uses these references to maintain context continuity and optimize agent selection for follow-up tasks.
 
-Break down extremely complex queries into logical components when the orchestrator's automatic decomposition might not match your intended approach. While orchestration handles multi-step workflows effectively, clearer initial requests lead to more efficient delegation.
+## Viewing all available Skills
+You can type `/` in the chat to see the full list of available Skills and MCP tools. You can also hover over it to see the skill description.
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img
+    className="pro-border-gradient"
+    alt="Invoking a skill"
+    src="https://openbb-cms.directus.app/assets/61e6f5e4-9fe8-4ae6-bcb0-6f3e57dca6e9.png"
+    width="100%"
+  />
+</div>
+
 
 
 ---
@@ -2155,7 +2208,7 @@ By organizing widgets through consistent metadata and categories, OpenBB Workspa
 ---
 title: Sandbox Widgets
 sidebar_position: 6
-description: Explore OpenBB's pre-built demonstration widgets that showcase application capabilities upon login.
+description: Explore the pre-built sandbox widgets available when you first log into OpenBB Workspace.
 keywords:
 - sandbox widgets
 - demo widgets
@@ -2168,21 +2221,45 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Sandbox Widgets | OpenBB Workspace Docs" />
 
-When you first log into OpenBB Workspace on [`pro.openbb.co`](https://pro.openbb.co), you'll discover a collection of pre-built widgets already available in your workspace. These demonstration widgets serve a single purpose: to showcase what OpenBB is capable of achieving as an analytical application.
+When you first log into OpenBB Workspace on [`pro.openbb.co`](https://pro.openbb.co), you'll find a collection of pre-built widgets already available in your workspace. These sandbox widgets showcase what OpenBB can do as an analytical application.
+
+To view them, navigate to the Apps tab and select OpenBB Sandbox.
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img
+    className="pro-border-gradient"
+    alt="OpenBB Sandbox app"
+    src="https://openbb-cms.directus.app/assets/981a22a4-9c4b-4a26-a059-b5eb2bbb1c84.png"
+    width="60%"
+  />
+</div>
+
+
+Once you open the app, you can see all the sandbox widgets provided by OpenBB.
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img
+    className="pro-border-gradient"
+    alt="Sandbox widgets list"
+    src="https://openbb-cms.directus.app/assets/64ca1071-3cb8-4e8b-882b-db4eebe28f32.png"
+    width="100%"
+  />
+</div>
+
 
 #### Purpose
 
-These out-of-the-box widgets provide immediate examples of OpenBB's analytical capabilities without requiring any setup or configuration. They demonstrate the application's potential through realistic financial data scenarios and interactive functionality, giving you an instant understanding of what's possible within the workspace environment.
+These widgets provide immediate examples of OpenBB's analytical capabilities without requiring any setup or configuration. They demonstrate the application's potential through realistic financial data scenarios and interactive functionality, giving you a clear understanding of what's possible within the workspace.
 
-#### Demonstration Value
+#### What they demonstrate
 
-The pre-built widgets highlight OpenBB's core strengths in financial analysis, data visualization, and workflow integration. They showcase different widget types, parameter linking capabilities, AI agent integration, and the overall user experience you can expect when building your own analytical dashboards.
+The sandbox widgets highlight OpenBB's core strengths in financial analysis, data visualization, and workflow integration. They showcase different widget types, parameter linking, AI agent integration, and the overall experience you can expect when building your own dashboards.
 
-#### Important Understanding
+#### Keep in mind
 
-These widgets exist purely for demonstration purposes. They illustrate the application's capabilities and provide inspiration for your own analytical workflows, but they are not intended as production tools for actual financial analysis or decision-making.
+These widgets are for demonstration purposes only. They illustrate the application's capabilities and provide inspiration for your own workflows, but they are not intended as production tools for financial analysis or decision-making.
 
-The real value of OpenBB Workspace comes from connecting your own data sources, building custom widgets tailored to your specific analytical needs, and creating dashboards that reflect your unique research methodology and investment process.
+The real value of OpenBB Workspace comes from connecting your own data sources, building custom widgets tailored to your specific needs, and creating dashboards that reflect your research methodology and investment process.
 
 
 ---
