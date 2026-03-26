@@ -15,7 +15,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="AI Features — Dynamic skill loading | OpenBB Workspace Docs" />
 
-Build agents that dynamically discover and load skills from the workspace at query time. Instead of hardcoding all capabilities, the agent receives a lightweight skill catalog, decides which skill is relevant, and requests the full skill content from the client - keeping the initial context small and enabling an open-ended set of behaviors.
+Build agents that dynamically discover and load skills from the workspace at query time. The agent receives a lightweight skill catalog, decides which skill is relevant, and requests the full content from the client. This keeps the initial context small and supports an open-ended set of behaviors without hardcoding capabilities.
 
 Reference implementation in [this GitHub repository](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/41-vanilla-agent-dynamic-skill).
 
@@ -33,14 +33,14 @@ Agent being able to select the right skill:
 
 ## Architecture
 
-Dynamic skill loading follows a two-step handshake between the agent and the OpenBB workspace:
+Dynamic skill loading follows a two-step exchange between the agent and the OpenBB workspace:
 
-1. The workspace sends the request with a `skills_catalog` — a lightweight list of available skills (slug + description).
+1. The workspace sends the request with a `skills_catalog`, a lightweight list of available skills (slug + description).
 2. The agent decides if a skill is relevant and emits a `copilotFunctionCall` event for `get_skill_content` with the chosen slug.
 3. The workspace loads the full skill content and sends it back as a tool result containing the skill's markdown instructions.
 4. The agent incorporates those instructions into its system prompt and answers the user.
 
-This keeps the initial payload small and lets the agent pull in detailed instructions only when needed.
+Only the catalog is sent up front, so detailed instructions are pulled in only when needed.
 
 `agents.json` configuration:
 
@@ -66,9 +66,9 @@ return JSONResponse(content={
 
 The workspace sends a `skills_catalog` array with each request. Each entry contains:
 
-- **`slug`** — unique identifier for the skill (e.g. `"financial-analysis"`)
-- **`description`** — short description of what the skill does
-- **`updatedAt`** — timestamp of last update
+- **`slug`**: unique identifier for the skill (e.g. `"financial-analysis"`)
+- **`description`**: short description of what the skill does
+- **`updatedAt`**: timestamp of last update
 
 ```json
 {
@@ -93,10 +93,12 @@ The workspace sends a `skills_catalog` array with each request. Each entry conta
 
 ### OpenBB AI SDK
 
-- `QueryRequest`: Base request model — `SkillQueryRequest` extends it with `skills_catalog` and `selected_skills` fields
-- `message_chunk(text)`: Streams response content back to the user
-- `FunctionCallSSE` / `FunctionCallSSEData`: Emits a `copilotFunctionCall` event to request skill content from the workspace
-- Skill content arrives as a tool message with `function: "get_skill_content"`
+The SDK provides the building blocks for skill-aware agents:
+
+- **`QueryRequest`** is the base request model. `SkillQueryRequest` extends it with `skills_catalog` and `selected_skills` fields.
+- **`message_chunk(text)`** streams response content back to the user.
+- **`FunctionCallSSE`** / **`FunctionCallSSEData`** emit a `copilotFunctionCall` event to request skill content from the workspace.
+- Skill content arrives as a tool message with `function: "get_skill_content"`.
 
 ## Core logic
 
@@ -104,8 +106,8 @@ The workspace sends a `skills_catalog` array with each request. Each entry conta
 
 The request model extends `QueryRequest` with two skill-specific fields:
 
-- **`skills_catalog`** — the menu of available skills (slug + description). The LLM sees this to decide which skill to request.
-- **`selected_skills`** — the full skill content, already loaded. Present when the client pre-loaded a skill (e.g. user typed `/skill-name`) or after the LLM requested one and the client fetched it.
+- `skills_catalog` carries the list of available skills (slug + description) so the LLM can decide which skill to request.
+- `selected_skills` holds the full skill content when it has already been loaded, either because the client pre-loaded it (e.g. user typed `/skill-name`) or because the LLM requested one and the client fetched it.
 
 ```python
 from typing import Literal
@@ -133,7 +135,7 @@ class SkillQueryRequest(QueryRequest):
 
 ### Extracting the active skill
 
-The `_get_active_skill` helper checks whether a skill has already been loaded — either via `selected_skills` (client pre-loaded) or from the last tool message (LLM requested it, client fetched it):
+The `_get_active_skill` helper checks whether a skill has already been loaded, either via `selected_skills` (client pre-loaded) or from the last tool message (LLM requested it, client fetched it):
 
 ```python
 def _get_active_skill(request: SkillQueryRequest) -> SkillPayload | None:
@@ -162,7 +164,7 @@ def _get_active_skill(request: SkillQueryRequest) -> SkillPayload | None:
 
 ### Query endpoint
 
-The endpoint builds a system prompt that adapts based on whether a skill is active, constructs the OpenAI function definition inline when skill loading is allowed, and streams the response:
+The endpoint builds a system prompt that changes depending on skill state, constructs the OpenAI function definition inline when skill loading is allowed, and streams the response:
 
 ```python
 @app.post("/v1/query")
@@ -381,5 +383,5 @@ Rules for skill loading:
 - **One skill per request** — the agent loads at most one skill per turn to keep the flow simple and predictable.
 - **Lightweight catalog** — only slugs and descriptions are sent initially, keeping the prompt small even with many skills available.
 - **Client-side loading** — the workspace (not the agent) resolves and loads skill content, so the agent never needs filesystem or network access to skills.
-- **Extends `QueryRequest`** — `SkillQueryRequest` subclasses `QueryRequest` from `openbb_ai`, adding only the two skill fields. This means the agent gets typed message handling for free.
+- **Extends `QueryRequest`** — `SkillQueryRequest` subclasses `QueryRequest` from `openbb_ai`, adding only the two skill fields. The agent gets typed message handling for free.
 - **Graceful fallback** — if no skill is relevant, the agent answers directly without loading one.
