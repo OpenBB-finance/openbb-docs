@@ -14,7 +14,7 @@
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
     "typecheck": "tsc",
-    "lint": "markdownlint \"content/**/*.md\" \"content/**/*.mdx\"",
+    "lint": "rumdl check content",
     "generate-search-index": "node scripts/generate-search-index.js"
   },
   "dependencies": {
