@@ -30,6 +30,7 @@
 - [Create HTML artifacts](https://docs.openbb.co/workspace/developers/ai-features/create-html-artifacts): Stream inline HTML artifacts as part of your agent's response
 - [Create tables](https://docs.openbb.co/workspace/developers/ai-features/create-tables): Stream tabular data as an artifact in the conversation
 - [Custom agent features](https://docs.openbb.co/workspace/developers/ai-features/custom-agent-features): Configure and manage custom agent features based on workspace options
+- [Dynamic skill loading](https://docs.openbb.co/workspace/developers/ai-features/dynamic-skill-loading): Build agents that dynamically load skills from the workspace at runtime
 - [Highlight widget citations](https://docs.openbb.co/workspace/developers/ai-features/highlight-widget-citations): Cite widget data sources in your responses and display them in Workspace
 - [Interact with dashboard](https://docs.openbb.co/workspace/developers/ai-features/interact-with-dashboard): Receive full dashboard widget metadata and conditionally fetch data
 - [MCP tools integration](https://docs.openbb.co/workspace/developers/ai-features/mcp-tools): Integrate Model Context Protocol (MCP) tools with OpenBB agents for enhanced capabilities
