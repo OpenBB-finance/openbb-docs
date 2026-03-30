@@ -22,7 +22,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 ODP CLI is a wrapper around the [OpenBB Python Package](/odp/python), and should be installed along side an existing OpenBB installation.
 
-- A Python virtual environment with a version between 3.9 and 3.11, inclusive, is required.
+- A Python virtual environment with a version between 3.10 and 3.14, inclusive, is required.
 
 Please refer to the [Python install documentation](/odp/python/installation) for instructions and more information.
 
