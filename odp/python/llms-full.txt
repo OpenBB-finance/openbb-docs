@@ -43565,7 +43565,7 @@ async def also_empty(param: str) -> str:
 
 ---
 title: Annotated Results
-sidebar_position: 6
+sidebar_position: 4
 description: This guide provides instructions for returning extra response metadata from Provider extension models. Use this class to include important citations, credits, or other dictionary-like items that should not be included in table or chart data.
 keywords:
 - ODP
@@ -43637,8 +43637,98 @@ When the pattern above is used, the metadata dictionary is returned to, `output.
 ---
 
 ---
+title: Country Input Component
+sidebar_position: 1
+description: This guide describes the implementation of ISO 3166 as a reusable input component, and how to use it for input validation or output transoformations.
+keywords:
+- country
+- countries
+- ISO 3166
+- input
+- develop
+- odp
+- python
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Country Input Component - Developer | OpenBB Docs" />
+
+The `Country` class is a special type of string object. It behaves and evaluates like a string, but is extended with input validators and output formatters. Use this class for functions with a 'country' parameter, or to convert two and three-letter country codes, display labels, and names. All countries are spelled with English letters and exclude UTF characters such as umlauts.
+
+## Import
+
+```python
+from openbb_core.provider.utils.country_utils import Country
+```
+
+## Usage
+
+The `__repr__` of class instance will be the 2-letter country code.
+
+```python
+>>> Country("United States")
+'US'
+>>> Country("gb").name
+'United Kingdom'
+>>> Country("hk").alpha_3
+'HKG'
+>>> Country("United States") == 'US'
+True
+>>> c = Country("united_states")
+>>> isinstance(c, str)
+True
+>>> c.alpha_2
+'US'
+>>> c.alpha_3
+'USA'
+>>> c.name
+'United States'
+>>> c.groups
+['G7', 'G20', 'NATO', 'OECD']
+>>> c.is_member_of("G7")
+True
+```
+
+### Properties
+
+- **alpha_2** : str - ISO 3166-1 alpha-2 code.
+- **alpha_3** : str - ISO 3166-1 alpha-3 code.
+- **name** : str - The country's display name, in English.
+- **numeric**: str - ISO 3166-1 numeric code.
+- **groups**: list[str] - List of membership groups the country belongs to.
+
+### Methods
+
+- **is_member_of(self, group: str) -> bool**: Check if a country is a member of a specific group.
+
+## Updating Definitions
+
+If the definitions have become stale, you can refresh them in the environment with the update script.
+
+```sh
+pip install pycountry
+python -m openbb_core.provider.utils.update_country_data
+```
+
+## Sources
+
+- ISO 3166-1: https://en.wikipedia.org/wiki/ISO_3166-1
+- pycountry: https://github.com/pycountry/pycountry
+- G7: https://en.wikipedia.org/wiki/G7
+- G20: https://en.wikipedia.org/wiki/G20
+- EU: https://european-union.europa.eu/principles-countries-history/eu-countries_en
+- NATO: https://www.nato.int/en/about-us/organization/nato-member-countries
+- OECD: https://en.wikipedia.org/wiki/OECD
+- OPEC: https://en.wikipedia.org/wiki/OPEC
+- BRICS: https://en.wikipedia.org/wiki/BRICS
+
+
+---
+
+---
 title: Deprecating Endpoints
-sidebar_position: 6
+sidebar_position: 7
 description: This guide provides detailed instructions on how to deprecate an endpoint in the ODP Python Package.
 keywords:
 - ODP
@@ -43692,7 +43782,7 @@ Deprecating commands gives users advanced notice of breaking changes, and time t
 
 ---
 title: Disabling Output Validation
-sidebar_position: 3
+sidebar_position: 6
 description: This page provides instructions for disabling output validation, when defining a new router function.
 keywords:
 - Validation
@@ -43812,7 +43902,7 @@ try setting `no_validate=True`.
 
 ---
 title: Dynamic Command Execution
-sidebar_position: 2
+sidebar_position: 7
 description: This guide provides detailed instructions on how to execute commands dynamically in the OpenBB Python Package.
 keywords:
 - ODP
@@ -43868,7 +43958,7 @@ extra: {'metadata': {'arguments': {'provider_choices': {'provider': 'fmp'}, 'sta
 
 ---
 title: Function Examples
-sidebar_position: 2
+sidebar_position: 4
 description: This page explains how to add examples and code snippets to API and Python endpoints.
 keywords:
 - ODP
@@ -43961,8 +44051,80 @@ A description is required, and each item in the `code` list represents one line 
 ---
 
 ---
+title: Exchange Input Component
+sidebar_position: 2
+description: This guide describes the implementation of ISO 10383 as a reusable input component, and how to use it for input validation or output transoformations.
+keywords:
+- exchange
+- MIC
+- market
+- ISO 10383
+- input
+- develop
+- odp
+- python
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Exchange Input Component - Developer | OpenBB Docs" />
+
+The `Exchange` class is a special type of string object. It behaves and evaluates like a string, but is extended with input validators and output formatters.
+
+Use this class for functions with an 'exchange' parameter, or to convert between MICs, exchange acronyms or names.
+
+## Import
+
+```python
+from openbb_core.provider.utils.exchange_utils import Exchange
+```
+
+## Usage
+
+Initialize the class with any of the accepted inputs:
+
+- ISO 10383 MIC codes (e.g., "XNAS", "XNYS")
+- Exchange acronyms (e.g., "NASDAQ", "NYSE")
+- Full exchange names (e.g., "New York Stock Exchange")
+- lower_snake_case names (e.g., "new_york_stock_exchange")
+
+```python
+>>> e = Exchange("nasdaq")
+>>> str(e)
+'XNAS'
+>>> e.mic
+'XNAS'
+>>> e.acronym
+'NASDAQ'
+>>> e.name
+'NASDAQ - ALL MARKETS'
+```
+
+### Properties
+
+- **mic** : str - ISO 10383 Market Identifier Code.
+- **acronym** : str - Exchange acronym/short name.
+- **name** : str - Full exchange name.
+
+
+## Updating Definitions
+
+If the definitions have become stale, you can refresh them in the environment with the update script.
+
+```sh
+python -m openbb_core.provider.utils.update_exchange_data
+```
+
+## Source
+
+- https://www.iso20022.org/market-identifier-codes
+
+
+---
+
+---
 title: HTTP Requests
-sidebar_position: 1
+sidebar_position: 3
 description: This guide outlines OpenBB processes for making HTTP requests synchronously and asynchronously. Using the helpers will keep the codebase leaner and easier to maintain by eliminating duplicate processes. Anyone can build effective and efficient data fetchers, this guide outlines how to import and implement either type of request into any fetcher.
 keywords:
 - OpenBB Platform
@@ -44263,6 +44425,16 @@ Guides in this section provide short example code snippets and implementation st
 
 <ul className="grid grid-cols-1 gap-2 -ml-6">
   <NewReferenceCard
+    title="Country Input Component"
+    description="How to utilize the built-in reusable country component for input standardization and format conversion."
+    url="/odp/python/developer/how-to/country_input"
+  />
+  <NewReferenceCard
+    title="Exchange Input Component"
+    description="How to utilize the built-in reusable exchange component for input standardization and format conversion."
+    url="/odp/python/developer/how-to/exchange_input"
+  />
+  <NewReferenceCard
     title="HTTP Requests"
     description="How to utilize the built-in and configured session objects for external HTTP requests."
     url="/odp/python/developer/how-to/http_requests"
@@ -44271,6 +44443,31 @@ Guides in this section provide short example code snippets and implementation st
     title="Annotated Results"
     description="How to include additional metadata from a provider in the function output."
     url="/odp/python/developer/how-to/annotated_results"
+  />
+  <NewReferenceCard
+    title="Function Examples"
+    description="How to include function examples in the code."
+    url="/odp/python/developer/how-to/examples"
+  />
+  <NewReferenceCard
+    title="Validators"
+    description="How to validate models and fields with Pydantic validators."
+    url="/odp/python/developer/how-to/validators"
+  />
+  <NewReferenceCard
+    title="Disabling Output Validation"
+    description="How to disable output validation on a specific endpoint."
+    url="/odp/python/developer/how-to/disabling_output_validation"
+  />
+  <NewReferenceCard
+    title="Deprecating Endpoints"
+    description="How to mark an endpoint as deprecated."
+    url="/odp/python/developer/how-to/deprecating_endpoints"
+  />
+  <NewReferenceCard
+    title="Dynamic Command Execution"
+    description="How to use CommandRunner for dynamic command execution."
+    url="/odp/python/developer/how-to/dynamic_command_execution"
   />
 </ul>
 
@@ -44539,7 +44736,7 @@ When using the OpenBB QA Framework it is important to be aware of the following 
 
 ---
 title: Validators
-sidebar_position: 2
+sidebar_position: 5
 description: This guide describes the use of validators with model inputs and outputs.
 keywords:
 - ODP
@@ -47907,7 +48104,7 @@ There could be a few reasons for this message.
 2. The provider extension is installed, but the static assets have not been refreshed. Rebuild the static assets from the command line with:
 
 ```sh
-python -c "import openbb;openbb.build()"
+openbb-build
 ```
 
 An environment variable to auto-build the static assets on import - if there are changes to the installed configuration - can be defined as:
@@ -48009,6 +48206,19 @@ Be sure to include the contents of the traceback, the operating system and versi
 </details>
 
 <details>
+<summary mdxType="summary">ImportError: cannot import name 'OBBject_*' from 'openbb_core.app.provider_interface'</summary>
+
+This error can happen when the static assets were not fully built. The build process may have been interrupted, or a subprocess might be creating a race condition by attempting to import modules before they are ready.
+
+The solution is to trigger a rebuild from the command line, with the environment active.
+
+```sh
+openbb-build
+```
+
+</details>
+
+<details>
 <summary mdxType="summary">How do I start in debug mode?</summary>
 
 Debug mode can be set as an environment variable, in `~/openbb_platform/.env`, as:
@@ -48026,6 +48236,17 @@ os.environ["OPENBB_DEBUG_MODE"] = "true"
 
 from openbb import obb
 ```
+
+</details>
+
+<details>
+<summary mdxType="summary">"Microsoft Visual C++ 14.0 or greater is required"</summary>
+
+Download and install [C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/), restart the machine, then continue.
+
+![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/ceb57be0-6dae-42f2-aca6-bf62ce7d6135)
+
+![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/f8aef8fc-a080-4164-bd36-460714ec44f3)
 
 </details>
 
@@ -48301,7 +48522,7 @@ import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
 <HeadTitle title="Installation | OpenBB Docs" />
 
-Most systems capable of running Python `3.10-3.13` will be compatible.
+Most systems capable of running Python `3.10-3.14` will be compatible.
 
 ### System Requirements
 
@@ -48345,8 +48566,6 @@ With the environment created, and activated, begin the installation process.
 ```console
 pip install openbb
 ```
-
-
 
 ### Docker
 
