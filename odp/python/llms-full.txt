@@ -45937,7 +45937,7 @@ It provides drop-in-like functionality for the FastAPI + Uvicorn development sta
 
 ## Installation
 
-Install from PyPI in an environment with a Python version between 3.10 and 3.13:
+Install from PyPI in an environment with a Python version between 3.10 and 3.14:
 
 ```sh
 pip install openbb-platform-api
@@ -48395,7 +48395,7 @@ With cross-compatibility out-of-the-box, its ready-to-use data connectors, and a
 ## Installation
 
 :::info Packages are distributed via PyPI.
-They can be installed in any Python environment with a version between 3.10 and 3.13.
+They can be installed in any Python environment with a version between 3.10 and 3.14.
 ```sh
 pip install openbb
 ```
