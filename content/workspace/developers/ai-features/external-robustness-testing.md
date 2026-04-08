@@ -50,13 +50,13 @@ When one of those layers becomes unstable, use a single failure map to decide wh
 
 Use the external map as a triage layer, then inspect the matching OpenBB workflow component.
 
-| Symptom in an OpenBB workflow | Inspect first in your OpenBB setup |
-| --- | --- |
-| Answer cites the wrong filing or misses a passage | PDF parsing, context assembly, citations, retrieval boundaries |
-| The agent calls the wrong tool or uses the right tool with bad arguments | MCP tool metadata, tool descriptions, tool-call prompt framing |
-| The model answers confidently without grounding | source injection, citation handling, prompt instructions, response checks |
-| The workflow works once, then drifts on follow-up turns | conversation state, tool-result handoff, multi-request flow |
-| A multi-step task stalls or loops | reasoning visibility, tool sequencing, explicit stop/continue conditions |
+| Symptom in an OpenBB workflow | Example ProblemMap entry | Inspect first in your OpenBB setup |
+| --- | --- | --- |
+| Answer cites the wrong filing or misses a passage | No.1 hallucination & chunk drift; No.5 semantic ≠ embedding | PDF parsing, context assembly, citations, retrieval boundaries |
+| The agent calls the wrong tool or uses the right tool with bad arguments | No.13 multi-agent chaos | MCP tool metadata, tool descriptions, tool-call prompt framing |
+| The model answers confidently without grounding | No.1 hallucination & chunk drift | context assembly, citation handling, prompt instructions, response checks |
+| The workflow works once, then drifts on follow-up turns | No.14 bootstrap ordering | conversation state, tool-result handoff, multi-request flow |
+| A multi-step task stalls or loops | No.13 multi-agent chaos; No.14 bootstrap ordering | reasoning visibility, tool sequencing, explicit stop/continue conditions |
 
 ## Example workflow
 
