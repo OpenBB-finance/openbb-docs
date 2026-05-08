@@ -81,7 +81,7 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
 - **type**
   _Type:_ `string`
   Sets the default visualization type for the widget.
-  _Possible values:_ `"chart"`, `"table"`, `"table_ssrm"`, `"markdown"`, `"metric"`, `"note"`,  `"multi_file_viewer"`, `"live_grid"`, `"newsfeed"`, `"advanced-chart"`, `"chart-highcharts"`, `"youtube"`
+  _Possible values:_ `"chart"`, `"table"`, `"table_ssrm"`, `"markdown"`, `"metric"`, `"note"`,  `"multi_file_viewer"`, `"live_grid"`, `"newsfeed"`, `"advanced-chart"`, `"chart-highcharts"`, `"chart-vegalite"`, `"youtube"`
   _Default:_ `"table"`
 
 - **raw**
