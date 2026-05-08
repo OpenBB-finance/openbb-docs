@@ -29,7 +29,7 @@ OpenBB Workspace provides a powerful custom backend feature that enables you to 
 A custom backend is an API that returns data in a format that OpenBB Workspace understands, with specifications defined in a `widgets.json` file. This approach gives you complete flexibility in choosing your technology stack while ensuring compatibility with OpenBB Workspace.
 
 <TutorialVideo
-  youtubeLink="https://www.youtube.com/embed/BbAGb-fciIc?si=IM_WJ9miEaqFKJAN"
+  youtubeLink="https://www.youtube.com/embed/JWTFN6kGRMI?si=x5Ar4ofoDsWkvJoN"
   videoLegend="Learn how to integrate your custom backend with OpenBB Workspace"
 />
 

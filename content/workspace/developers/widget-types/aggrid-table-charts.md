@@ -766,6 +766,38 @@ The following example shows the ChartView interface:
 
 The highlighted ChartView option enables seamless conversion between table and chart views.
 
+### Chart Navigator
+
+Enable the navigator bar below the chart to pan and zoom across the data range. Set `chartNavigatorEnabled: true` inside the `chartView` configuration.
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+<img className="pro-border-gradient" width="800" alt="chart-navigator" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/chartnav.png" />
+</div>
+
+```python
+"chartView": {
+    "enabled": True,
+    "chartType": "line",
+    "chartNavigatorEnabled": True
+}
+```
+
+### Chart Mini Chart
+
+Display a mini chart overview next to the main chart for quick context and navigation. Set `chartMiniChartEnabled: true` inside the `chartView` configuration.
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+<img className="pro-border-gradient" width="800" alt="chart-mini-chart" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/nav2.png" />
+</div>
+
+```python
+"chartView": {
+    "enabled": True,
+    "chartType": "line",
+    "chartMiniChartEnabled": True
+}
+```
+
 ### Available Chart Types
 
 The built-in charts support a variety of types. Here are the allowed values:

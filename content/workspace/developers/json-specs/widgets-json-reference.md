@@ -218,6 +218,16 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
         Ignores stored cell range for the chart.
         _Example:_ `false`
 
+      - **chartNavigatorEnabled**
+        _Type:_ `boolean`
+        Shows the chart navigator bar below the chart, allowing users to pan and zoom through the range.
+        _Example:_ `true`
+
+      - **chartMiniChartEnabled**
+        _Type:_ `boolean`
+        Displays a mini chart overview below the main chart for quick navigation and context.
+        _Example:_ `true`
+
     - **columnsDefs**
       _Type:_ list of objects, each containing the following keys:
 
