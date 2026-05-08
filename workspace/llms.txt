@@ -75,6 +75,7 @@
 - [Plotly Charts](https://docs.openbb.co/workspace/developers/widget-types/plotly-charts): Plotly Charts
 - [SSRM Mode](https://docs.openbb.co/workspace/developers/widget-types/ssrm_mode): Server-Side Rendered Mode for handling large datasets efficiently in OpenBB Workspace widgets
 - [TradingView Charts](https://docs.openbb.co/workspace/developers/widget-types/tradingview-charts): How to implement TradingView charts in OpenBB using UDF (Universal Data Feed)
+- [Vega-Lite Chart](https://docs.openbb.co/workspace/developers/widget-types/vega-lite): Vega-Lite Chart
 - [YouTube](https://docs.openbb.co/workspace/developers/widget-types/youtube): Learn how to create YouTube video widgets in OpenBB Workspace, including basic video embedding and transcript support for AI assistants.
 - [Administration](https://docs.openbb.co/workspace/getting-started/enterprise/administration): Administration and management features for OpenBB Workspace Enterprise
 - [Data Control & Security](https://docs.openbb.co/workspace/getting-started/enterprise/data-control): Data sovereignty, security architecture, and compliance features in OpenBB Workspace Enterprise
