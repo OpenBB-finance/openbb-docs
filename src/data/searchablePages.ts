@@ -1760,6 +1760,26 @@ export const searchablePages: SearchablePage[] = [
     ]
   },
   {
+    "title": "Vega-Lite Chart",
+    "path": "/workspace/developers/widget-types/vega-lite",
+    "category": "Workspace - Developers",
+    "description": "Learn how to create Vega-Lite widgets for OpenBB Workspace, with step-by-step instructions for backend integration, configuration, and theme support.",
+    "keywords": [
+      "widgets.json",
+      "OpenBB API",
+      "Endpoint integration",
+      "widget configuration",
+      "Vega-Lite",
+      "Vega",
+      "Chart widgets",
+      "API implementation",
+      "Python",
+      "FastAPI",
+      "Workspace widgets",
+      "Widget definitions"
+    ]
+  },
+  {
     "title": "Highlight widget citations",
     "path": "/workspace/developers/ai-features/highlight-widget-citations",
     "category": "Workspace - Developers",
