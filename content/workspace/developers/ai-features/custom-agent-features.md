@@ -3,11 +3,11 @@ title: Custom agent features
 sidebar_position: 8
 description: Configure and manage custom agent features based on workspace options
 keywords:
-- features
-- configuration
-- workspace options
-- custom agents
-- SSE
+  - features
+  - configuration
+  - workspace options
+  - custom agents
+  - SSE
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
@@ -21,7 +21,6 @@ Reference implementation in [this GitHub repository](https://github.com/OpenBB-f
 <img className="pro-border-gradient" width="500" alt="Custom agent features - on and off" src="https://openbb-cms.directus.app/assets/f6d38500-4a9a-41e9-93b3-5579f2cb24c0.png" />
 
 <img className="pro-border-gradient" width="500" alt="Custom agent features - on and off" src="https://openbb-cms.directus.app/assets/b7b268df-e576-4cc7-837d-d7358fef23bb.png" />
-
 
 ## Architecture
 
@@ -92,10 +91,10 @@ return JSONResponse(content={
 
 ### OpenBB AI SDK
 
-- `QueryRequest.workspace_options`: List of enabled feature entries
+- `QueryRequest.workspace_options`: Dictionary of option values keyed by option id
 - `message_chunk(text)`: Streams response content with feature-aware messaging
-- Boolean features appear as bare names: `"feature-name" in workspace_options`
-- Text and select features appear as `"key=value"` strings: `"model=gpt-4o"`, `"agent-name=My Bot"`
+- Boolean features appear as `true` or `false`: `workspace_options["web-search"]`
+- Text and select features appear as string values: `workspace_options["model"]`
 
 ## Core logic
 
@@ -108,24 +107,16 @@ from sse_starlette.sse import EventSourceResponse
 @app.post("/v1/query")
 async def query(request: QueryRequest) -> EventSourceResponse:
     # Access workspace options from request payload
-    # Boolean features appear as bare names: ["web-search", "deep-research"]
-    # Text/select features appear as "key=value": ["model=gpt-4o", "agent-name=My Bot"]
-    workspace_options = getattr(request, "workspace_options", [])
-
-    # Helper to extract a value from "key=value" entries
-    def get_option_value(key: str, default: str = "") -> str:
-        for opt in workspace_options:
-            if opt.startswith(f"{key}="):
-                return opt.split("=", 1)[1]
-        return default
+    # Example: {"web-search": true, "model": "gpt-4o", "agent-name": "My Bot"}
+    workspace_options = getattr(request, "workspace_options", {}) or {}
 
     # Check boolean features
-    deep_research_enabled = "deep-research" in workspace_options
-    web_search_enabled = "web-search" in workspace_options
+    deep_research_enabled = bool(workspace_options.get("deep-research", False))
+    web_search_enabled = bool(workspace_options.get("web-search", True))
 
     # Read text/select feature values
-    model = get_option_value("model", "claude-sonnet-4-20250514")
-    agent_name = get_option_value("agent-name", "Example Agent")
+    model = workspace_options.get("model", "claude-sonnet-4-20250514")
+    agent_name = workspace_options.get("agent-name", "Example Agent")
 
     # Build feature status message
     features_msg = (
@@ -176,7 +167,9 @@ async def query(request: QueryRequest) -> EventSourceResponse:
 ## Feature types
 
 ### Boolean features
+
 Simple on/off toggles with a label and default state:
+
 ```python
 "features": {
     "deep-research": {
@@ -188,7 +181,9 @@ Simple on/off toggles with a label and default state:
 ```
 
 ### Text features
+
 Free-form string input with an optional placeholder:
+
 ```python
 "features": {
     "agent-name": {
@@ -202,7 +197,9 @@ Free-form string input with an optional placeholder:
 ```
 
 ### Select features
+
 Dropdown selection with a list of options:
+
 ```python
 "features": {
     "model": {
@@ -221,22 +218,18 @@ Dropdown selection with a list of options:
 ```
 
 ### Reading feature values
-Boolean features appear as bare names in `workspace_options`. Text and select features appear as `"key=value"` strings:
-```python
-workspace_options = getattr(request, "workspace_options", [])
 
-# Boolean features — check list membership
-if "deep-research" in workspace_options:
+Boolean, text, and select values are sent in `workspace_options` as a dictionary keyed by option id:
+
+```python
+workspace_options = getattr(request, "workspace_options", {}) or {}
+
+# Boolean features
+if workspace_options.get("deep-research", False):
     # Enable deep research capabilities
     pass
 
-# Text/select features — parse "key=value" entries
-def get_option_value(key: str, default: str = "") -> str:
-    for opt in workspace_options:
-        if opt.startswith(f"{key}="):
-            return opt.split("=", 1)[1]
-    return default
-
-model = get_option_value("model", "claude-sonnet-4-20250514")
-agent_name = get_option_value("agent-name", "Example Agent")
+# Text/select features
+model = workspace_options.get("model", "claude-sonnet-4-20250514")
+agent_name = workspace_options.get("agent-name", "Example Agent")
 ```
