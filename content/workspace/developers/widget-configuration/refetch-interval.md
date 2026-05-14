@@ -8,6 +8,9 @@ keywords:
 - data updates
 - refresh rate
 - widget updates
+- cron
+- cron expression
+- scheduled refresh
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
@@ -17,6 +20,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 The refetch interval is the interval at which the widget will be refreshed. Use lower values for real-time data (e.g., 60000 for 1-minute updates). Higher values are recommended for static or slowly changing data.
 
 - Default: 900000 (15 minutes) (minimum 1000)
+- Accepts a number (milliseconds), `false`, or a cron expression string
 - Set to `false` to disable automatic refreshing
 - Use lower values for real-time data (e.g., 60000 for 1-minute updates)
 - Higher values recommended for static or slowly changing data
@@ -67,7 +71,6 @@ def markdown_widget_with_refetch_interval_and_shorter_stale_time():
 
 ## Refetch interval with Run Button
 
-
 The refresh interval is set to 10000ms (10 seconds) but the run button is enabled, which means that the user can refresh the widget manually.
 
 <img className="pro-border-gradient" width="800" alt="Markdown Widget with Short Refetch Interval and Run Button Example" src="https://openbb-cms.directus.app/assets/24d777ae-d455-412d-9832-255e28eea11e.png" />
@@ -88,3 +91,42 @@ def markdown_widget_with_short_refetch_interval_and_run_button():
     current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     return f"### Current time: {current_time}"
 ```
+
+## Refetch Interval with Cron Expression
+
+Instead of a fixed interval in milliseconds, you can use a cron expression to schedule refetches at specific times. The widget will calculate the time until the next cron boundary and schedule the refetch accordingly.
+
+Cron-based `refetchInterval` controls when the widget refetches while it is active on the page. To show users the same schedule in the refresh tooltip, configure `dataUpdateDisplay` with the same cron expression. The tooltip's "Last update" value is calculated from the cron expression and represents the previous scheduled data update time, not the widget's last refresh time.
+
+<img className="pro-border-gradient" width="800" alt="Markdown Widget with Short Refetch Interval and Run Button Example" src="https://openbb-cms.directus.app/assets/97764965-85ea-49c2-82a0-d7122605da4a.png" />
+
+```python
+@register_widget({
+    "name": "Markdown Widget with Cron Refetch Only",
+    "description": "A markdown widget that auto-refreshes on cron schedule boundaries without displaying a separate data update schedule.",
+    "type": "markdown",
+    "endpoint": "markdown_widget_with_cron_refetch_only",
+    "refetchInterval": "*/1 * * * *",  # Every minute, using standard 5-field cron syntax
+    "gridData": {"w": 20, "h": 6},
+})
+@router.get("/markdown_widget_with_cron_refetch_only")
+def markdown_widget_with_cron_refetch_only():
+    """Returns a markdown widget that auto-refreshes every minute via cron without display metadata"""
+    updated_at = last_minute_data_update()
+    return (
+        "# Cron Refetch Only\n\n"
+        f"Data updated at: {updated_at}\n\n"
+        "Backend data schedule: Every minute\n\n"
+        "This timestamp is controlled by the backend data schedule, not request time."
+    )
+```
+
+Common cron expressions:
+
+| Expression | Description |
+|---|---|
+| `* * * * *` | Every minute |
+| `*/5 * * * *` | Every 5 minutes |
+| `0 * * * *` | Every hour |
+| `0 8 * * 1-5` | At 8:00AM, Monday through Friday |
+| `0 10 * * *` | Daily at 10:00AM |
