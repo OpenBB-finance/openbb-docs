@@ -8070,13 +8070,13 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
         The array structure is: `[category, series1, series2, ...]` where:
         - First element: The category column (x-axis)
         - Remaining elements: The series columns (y-axis data)
-        _Example:_ 
-        ```json
+  _Example:_
+  ```json
         "cellRangeCols": {
           "line": ["ticker", "weight", "weight2"],
           "column": ["date", "price", "volume"]
         }
-        ```
+  ```
 
       - **ignoreCellRange**
         _Type:_ `boolean`
@@ -8576,9 +8576,14 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
     _Example:_ `"get_company_revenue_data"`
 
 - **refetchInterval**
-  _Type:_ `number` or `false`
-  Time in milliseconds before the widget's data will refresh if on the page.  Minimum value is `1000`.
+  _Type:_ `number`, `false`, or `string` (cron expression)
+  Time in milliseconds before the widget's data will refresh if on the page. Minimum value is `1000` when using a number. Alternatively, accepts a cron expression string (e.g., `"0 10 * * 1-5"`) to schedule refetches at specific times.
   _Default:_ `900000` (15m)
+
+- **dataUpdateDisplay**
+  _Type:_ `string` (cron expression)
+  A cron expression that controls the "Data update" tooltip shown on the widget's refresh button. Displays the schedule in human-readable format and calculates the previous and next scheduled data update timestamps. These timestamps are based on the cron expression, not on the widget's last refresh time.
+  _Example:_ `"0 10 * * 1-5"` (weekdays at 10:00AM)
 
 - **staleTime**
   _Type:_ `number`
@@ -9542,6 +9547,104 @@ def markdown_widget_with_category_and_subcategory():
 ---
 
 ---
+title: Data Update Display
+sidebar_position: 21
+description: Learn about configuring data update display for widgets in OpenBB Workspace.
+keywords:
+- data update
+- cron schedule
+- displayed schedule
+- update display
+- widget updates
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Data Update Display | OpenBB Workspace Docs" />
+
+The data update display allows you to show users when a widget's data is expected to update. It renders an informational tooltip on the widget's refresh button showing the configured schedule, the previous scheduled data update time, and the next scheduled update time.
+
+- Accepts a cron expression string (e.g., `"0 8 * * 1-5"` for weekdays at 8:00AM)
+- Displays the schedule in human-readable format (e.g., "At 8:00AM, Monday through Friday")
+- Shows the previous update timestamp calculated from the cron expression
+- Shows the next update timestamp calculated from the cron expression
+- Appears as a "Data update" section in the widget's refresh tooltip
+
+`dataUpdateDisplay` is display-only. It does not trigger data fetching by itself, and the "Last update" value is calculated from the cron expression. It represents the last expected data update time, not the widget's last refresh time.
+
+<img className="pro-border-gradient" width="400" alt="data update display hover" src="https://openbb-cms.directus.app/assets/2acdfbcf-13a5-4c9e-84e7-94c100a6a464.png" />
+
+<img className="pro-border-gradient" width="600" alt="data update display widget" src="https://openbb-cms.directus.app/assets/c2001272-20e3-4183-a7ee-60c2618e8914.png" />
+
+```python
+@register_widget({
+    "name": "Markdown Widget with Data Update Display Only",
+    "description": "A markdown widget that displays a data update schedule without configuring automatic refresh.",
+    "type": "markdown",
+    "endpoint": "markdown_widget_with_data_update_display_only",
+    "dataUpdateDisplay": "0 10 * * *",  # Displays as updated every day at 10:00 without driving refetches
+    "gridData": {"w": 20, "h": 6},
+})
+@router.get("/markdown_widget_with_data_update_display_only")
+def markdown_widget_with_data_update_display_only():
+    """Returns a markdown widget with display-only data update metadata"""
+    updated_at = last_daily_data_update(hour=10, minute=0)
+    return (
+        "# Data Update Display Only\n\n"
+        f"Data updated at: {updated_at}\n\n"
+        "Backend data schedule: Every day at 10:00\n\n"
+        "This timestamp is controlled by the backend data schedule, not request time."
+    )
+```
+
+## Combined with Cron Refetch Interval
+
+You can use `dataUpdateDisplay` together with a cron-based `refetchInterval` to both schedule the actual widget refresh and display the schedule to users. When both use the same cron expression, the widget will refetch at the scheduled time while it is active on the page, and the tooltip will show the previous and next expected update times.
+
+The displayed "Last update" value follows the cron schedule. Manual refreshes can still update the widget data, but they do not change the scheduled data update timestamp shown in this section.
+
+
+<img className="pro-border-gradient" width="400" alt="Refetch interval hover" src="https://openbb-cms.directus.app/assets/d2b3ebb5-3d52-4e42-b3f8-33c245e59c90.png" />
+
+<img className="pro-border-gradient" width="600" alt="Refetch interval widget" src="https://openbb-cms.directus.app/assets/cdb5993d-eb0d-4d93-bbb7-6bb59ce6fbbb.png" />
+
+```python
+@register_widget({
+    "name": "Markdown Widget with Cron Refetch Interval",
+    "description": "A markdown widget that auto-refreshes on cron schedule boundaries and displays its data update schedule in widget metadata.",
+    "type": "markdown",
+    "endpoint": "markdown_widget_with_cron_refetch_interval",
+    "refetchInterval": "*/1 * * * *",  # Every minute, using standard 5-field cron syntax
+    "dataUpdateDisplay": "*/1 * * * *",  # Shows the data update schedule in the refresh indicator tooltip
+    "gridData": {"w": 20, "h": 6},
+})
+@router.get("/markdown_widget_with_cron_refetch_interval")
+def markdown_widget_with_cron_refetch_interval():
+    """Returns a markdown widget that auto-refreshes every minute via cron"""
+    updated_at = last_minute_data_update()
+    return (
+        "# Cron Refetch Interval\n\n"
+        f"Data updated at: {updated_at}\n\n"
+        "Backend data schedule: Every minute\n\n"
+        "This timestamp is controlled by the backend data schedule, not request time."
+    )
+```
+
+## Common Cron Expressions
+
+| Expression | Description |
+|---|---|
+| `* * * * *` | Every minute |
+| `*/5 * * * *` | Every 5 minutes |
+| `0 * * * *` | Every hour |
+| `0 8 * * 1-5` | At 8:00AM, Monday through Friday |
+| `0 10 * * *` | Daily at 10:00AM |
+| `0 0 * * 0` | Weekly on Sunday at midnight |
+
+
+---
+
+---
 title: Error Handling
 sidebar_position: 17
 description: Learn how to handle errors in your widgets in OpenBB Workspace.
@@ -9819,6 +9922,9 @@ keywords:
 - data updates
 - refresh rate
 - widget updates
+- cron
+- cron expression
+- scheduled refresh
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
@@ -9828,6 +9934,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 The refetch interval is the interval at which the widget will be refreshed. Use lower values for real-time data (e.g., 60000 for 1-minute updates). Higher values are recommended for static or slowly changing data.
 
 - Default: 900000 (15 minutes) (minimum 1000)
+- Accepts a number (milliseconds), `false`, or a cron expression string
 - Set to `false` to disable automatic refreshing
 - Use lower values for real-time data (e.g., 60000 for 1-minute updates)
 - Higher values recommended for static or slowly changing data
@@ -9878,7 +9985,6 @@ def markdown_widget_with_refetch_interval_and_shorter_stale_time():
 
 ## Refetch interval with Run Button
 
-
 The refresh interval is set to 10000ms (10 seconds) but the run button is enabled, which means that the user can refresh the widget manually.
 
 <img className="pro-border-gradient" width="800" alt="Markdown Widget with Short Refetch Interval and Run Button Example" src="https://openbb-cms.directus.app/assets/24d777ae-d455-412d-9832-255e28eea11e.png" />
@@ -9899,6 +10005,46 @@ def markdown_widget_with_short_refetch_interval_and_run_button():
     current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     return f"### Current time: {current_time}"
 ```
+
+## Refetch Interval with Cron Expression
+
+Instead of a fixed interval in milliseconds, you can use a cron expression to schedule refetches at specific times. The widget will calculate the time until the next cron boundary and schedule the refetch accordingly.
+
+Cron-based `refetchInterval` controls when the widget refetches while it is active on the page. To show users the same schedule in the refresh tooltip, configure `dataUpdateDisplay` with the same cron expression. The tooltip's "Last update" value is calculated from the cron expression and represents the previous scheduled data update time, not the widget's last refresh time.
+
+<img className="pro-border-gradient" width="800" alt="Markdown Widget with Short Refetch Interval and Run Button Example" src="https://openbb-cms.directus.app/assets/97764965-85ea-49c2-82a0-d7122605da4a.png" />
+
+```python
+@register_widget({
+    "name": "Markdown Widget with Cron Refetch Only",
+    "description": "A markdown widget that auto-refreshes on cron schedule boundaries without displaying a separate data update schedule.",
+    "type": "markdown",
+    "endpoint": "markdown_widget_with_cron_refetch_only",
+    "refetchInterval": "*/1 * * * *",  # Every minute, using standard 5-field cron syntax
+    "gridData": {"w": 20, "h": 6},
+})
+@router.get("/markdown_widget_with_cron_refetch_only")
+def markdown_widget_with_cron_refetch_only():
+    """Returns a markdown widget that auto-refreshes every minute via cron without display metadata"""
+    updated_at = last_minute_data_update()
+    return (
+        "# Cron Refetch Only\n\n"
+        f"Data updated at: {updated_at}\n\n"
+        "Backend data schedule: Every minute\n\n"
+        "This timestamp is controlled by the backend data schedule, not request time."
+    )
+```
+
+Common cron expressions:
+
+| Expression | Description |
+|---|---|
+| `* * * * *` | Every minute |
+| `*/5 * * * *` | Every 5 minutes |
+| `0 * * * *` | Every hour |
+| `0 8 * * 1-5` | At 8:00AM, Monday through Friday |
+| `0 10 * * *` | Daily at 10:00AM |
+
 
 ---
 

@@ -44,6 +44,7 @@
 - [widgets.json Reference](https://docs.openbb.co/workspace/developers/json-specs/widgets-json-reference): Learn how to integrate your own backend with OpenBB Workspace using the cookie-cutter or language-agnostic API approaches, with illustrative guides and principles for handling widget.json files, APIs, interfaces, Python, FastAPI and more.
 - [OpenBB AI SDK](https://docs.openbb.co/workspace/developers/openbb-ai-sdk): Build custom agents for OpenBB Workspace using the OpenBB AI SDK helpers and models
 - [Categories and Subcategories](https://docs.openbb.co/workspace/developers/widget-configuration/category-subcategory): Learn how to organize widgets using categories and subcategories in OpenBB Workspace.
+- [Data Update Display](https://docs.openbb.co/workspace/developers/widget-configuration/data-update-display): Learn about configuring data update display for widgets in OpenBB Workspace.
 - [Error Handling](https://docs.openbb.co/workspace/developers/widget-configuration/error-handling): Learn how to handle errors in your widgets in OpenBB Workspace.
 - [Grid Size](https://docs.openbb.co/workspace/developers/widget-configuration/grid-size): Learn about the grid-based layout system for widgets in OpenBB Workspace, including width and height specifications.
 - [Matching widget to MCP tool](https://docs.openbb.co/workspace/developers/widget-configuration/matching-widget-to-mcp-tool): Learn how you can make it so an MCP server and tool are associated with a specific widget
