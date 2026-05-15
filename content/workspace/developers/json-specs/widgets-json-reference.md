@@ -205,13 +205,13 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
         The array structure is: `[category, series1, series2, ...]` where:
         - First element: The category column (x-axis)
         - Remaining elements: The series columns (y-axis data)
-        _Example:_ 
-        ```json
+  _Example:_
+  ```json
         "cellRangeCols": {
           "line": ["ticker", "weight", "weight2"],
           "column": ["date", "price", "volume"]
         }
-        ```
+  ```
 
       - **ignoreCellRange**
         _Type:_ `boolean`
@@ -711,9 +711,14 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
     _Example:_ `"get_company_revenue_data"`
 
 - **refetchInterval**
-  _Type:_ `number` or `false`
-  Time in milliseconds before the widget's data will refresh if on the page.  Minimum value is `1000`.
+  _Type:_ `number`, `false`, or `string` (cron expression)
+  Time in milliseconds before the widget's data will refresh if on the page. Minimum value is `1000` when using a number. Alternatively, accepts a cron expression string (e.g., `"0 10 * * 1-5"`) to schedule refetches at specific times.
   _Default:_ `900000` (15m)
+
+- **dataUpdateDisplay**
+  _Type:_ `string` (cron expression)
+  A cron expression that controls the "Data update" tooltip shown on the widget's refresh button. Displays the schedule in human-readable format and calculates the previous and next scheduled data update timestamps. These timestamps are based on the cron expression, not on the widget's last refresh time.
+  _Example:_ `"0 10 * * 1-5"` (weekdays at 10:00AM)
 
 - **staleTime**
   _Type:_ `number`
