@@ -205,6 +205,7 @@ export default {
 					const contentDir = path.join(siteDir, "content");
 					// ODP has sub-sections that each get their own llms.txt
 					const sectionContent: Record<string, string[]> = {
+						agents: [],
 						workspace: [],
 						"odp/desktop": [],
 						"odp/python": [],
@@ -290,6 +291,7 @@ export default {
 					// Group routes by section
 					// ODP has sub-sections that each get their own llms.txt
 					const sectionRoutes: Record<string, string[]> = {
+						agents: [],
 						workspace: [],
 						"odp/desktop": [],
 						"odp/python": [],

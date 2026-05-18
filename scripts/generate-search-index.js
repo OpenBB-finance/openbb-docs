@@ -31,7 +31,9 @@ docs.forEach(doc => {
       const pathParts = id.split('/');
       let category = 'Documentation';
 
-      if (pathParts[0] === 'workspace') {
+      if (pathParts[0] === 'agents') {
+        category = 'Agents';
+      } else if (pathParts[0] === 'workspace') {
         category = 'Workspace';
       } else if (pathParts[0] === 'odp') {
         // Handle ODP subcategories

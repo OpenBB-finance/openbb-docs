@@ -1,0 +1,1066 @@
+---
+title: Workspace MCP Overview
+sidebar_position: 1
+description: Understand how the OpenBB Workspace MCP exposes a live Workspace browser session to external AI agents.
+keywords:
+- OpenBB Workspace MCP
+- Model Context Protocol
+- MCP server
+- AI agents
+- Workspace Companion
+- dashboard automation
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
+
+<HeadTitle title="Workspace MCP Overview | OpenBB Docs" />
+
+The OpenBB Workspace MCP is a local companion server that exposes your active Workspace browser session as Model Context Protocol (MCP) tools. An external MCP-capable agent can use those tools to inspect dashboards, fetch widget data, create widgets, manage tabs, register backends, and instantiate Workspace apps.
+
+Use it when an agent needs structured access to Workspace state. It avoids brittle browser automation because the agent calls Workspace commands directly instead of clicking through the UI.
+
+## How it differs from MCP tools inside Workspace
+
+OpenBB Workspace supports MCP in two directions:
+
+| Feature | Direction | Main use case |
+|---------|-----------|---------------|
+| Workspace MCP | External agent to Workspace | Let Codex, Claude Code, Cursor, a custom agent, or another MCP client control a live Workspace session. |
+| MCP tools in Copilot | Workspace to external MCP servers | Let Workspace Copilot call tools from third-party MCP servers. |
+
+The Workspace MCP is the first case. Workspace becomes the tool server, and your agent becomes the client.
+
+## Demo in Codex
+
+This demo shows Codex using the Workspace MCP to interact with an active OpenBB Workspace session.
+
+<TutorialVideo
+  youtubeLink="https://www.youtube.com/embed/Q4Pj9wMZgGs"
+/>
+
+## Architecture
+
+The Workspace MCP runs as a local sidecar process:
+
+```text
+MCP client or agent
+    |
+    | streamable HTTP MCP
+    v
+Workspace MCP sidecar
+    |
+    | WebSocket bridge
+    v
+OpenBB Workspace browser tab
+    |
+    | Workspace frontend state and backend calls
+    v
+Dashboards, widgets, apps, data backends, and skills
+```
+
+The sidecar exposes a stateless MCP endpoint at `http://127.0.0.1:8787/mcp` by default. Workspace connects to the same sidecar through a browser bridge. Tool calls sent by the agent are forwarded to the connected browser tab, executed by Workspace, and returned as structured results.
+
+The browser must stay open and connected. If the Workspace tab disconnects, the sidecar remains running but tool calls return an unavailable error until the browser reconnects.
+
+## What agents can do
+
+The current tool surface covers the main Workspace authoring and inspection workflows:
+
+| Area | Examples |
+|------|----------|
+| Session discovery | Read the current Workspace state, active dashboard, tabs, layout coordinates, available skills, and connected tools. |
+| Widget discovery | List widgets from connected backends, inspect widget schemas, and fetch dynamic parameter options. |
+| Data access | Fetch live widget data using the same data path the Workspace renderer uses. |
+| Dashboard authoring | Create, read, and rename dashboards; navigate between dashboards and tabs. |
+| Tab management | Create a navigation bar, add tabs, remove tabs, and rename tabs. |
+| Widget authoring | Create widgets from backend definitions, update widget parameters, resize or move widgets, read widget state, and delete individual widgets. |
+| Generated artifacts | Add generated notes, tables, charts, and HTML widgets without a backend connection. |
+| Backend and app workflows | Register data backends, refresh backends, list app templates, and instantiate apps into dashboards. |
+| Agent and skill workflows | Delegate tasks to configured Workspace agents and load skills from the Workspace skill library. |
+
+The MCP server also publishes app-builder resources under `openbb://workspace/...`. Agents can read these resources when they are building or reviewing Workspace backends, `widgets.json`, or `apps.json` files.
+
+## Common workflows
+
+### Build a dashboard from live Workspace state
+
+A typical dashboard workflow starts with `get_workspace_snapshot`, then uses identifiers from that response:
+
+1. Read the active dashboard and available backends.
+2. Create or select a dashboard.
+3. Add tabs with `manage_navigation_bar`.
+4. List widgets with `list_available_widgets`.
+5. Inspect the exact widget contract with `get_widget_schema`.
+6. Create widgets with explicit `origin`, `widget_id`, and `data_args`.
+7. Use `update_widget_layout` to place widgets on the 40-column grid.
+
+Agents should not invent dashboard IDs, widget IDs, tab IDs, backend IDs, or skill slugs. They should discover those values through the MCP tools and reuse them.
+
+### Build and open a custom app
+
+The Workspace MCP can close the loop for agent-built Workspace apps:
+
+1. The agent creates or modifies a backend that serves `widgets.json` and, when needed, `apps.json`.
+2. The agent registers the backend with `manage_backends`.
+3. The agent lists app templates with `manage_apps`.
+4. The agent instantiates an app into a dashboard with `manage_apps`.
+5. The agent validates rendered widgets with `get_workspace_snapshot`, `manage_dashboard`, and `get_widget_data`.
+6. The agent edits the backend or widget parameters and tests again.
+
+This is useful for development workflows where the agent owns both the backend code and the Workspace dashboard used to validate it.
+
+## Trust and security model
+
+Treat any MCP client connected to the Workspace MCP as trusted. The tool server can read Workspace state and mutate dashboards in the connected browser session.
+
+Keep the sidecar local:
+
+- Bind to `127.0.0.1`, which is the default.
+- Do not expose it on `0.0.0.0`, a LAN address, a tunnel, or a public reverse proxy.
+- Use local HTTP for `localhost` or `127.0.0.1`; HTTPS is not required for the local sidecar.
+- Connect only MCP clients you trust to read and change your Workspace.
+
+The Workspace MCP operates inside an existing authenticated browser session. It does not log in for you, manage authentication tokens, change billing, change organization settings, invite users, or share dashboards.
+
+## Requirements
+
+- An OpenBB Workspace browser tab.
+- The Workspace MCP sidecar running locally.
+- An MCP client that can connect to a streamable HTTP MCP server.
+- Python 3.13 when installing or running the sidecar directly.
+- `uv` for the recommended install path. The helper script installs `uv` if it is not already available.
+
+See [Workspace MCP Quickstart](/agents/workspace-mcp-quickstart) for setup steps and [Workspace MCP Tools](/agents/workspace-mcp-tools) for the tool reference.
+
+
+---
+
+---
+title: Workspace MCP Quickstart
+sidebar_position: 2
+description: Run the OpenBB Workspace MCP sidecar, connect Workspace, and attach an external MCP client.
+keywords:
+- OpenBB Workspace MCP
+- Workspace MCP quickstart
+- MCP client setup
+- Workspace Companion
+- Codex
+- Claude Code
+- Cursor
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Workspace MCP Quickstart | OpenBB Docs" />
+
+This guide starts the Workspace MCP sidecar on your machine, connects it to an OpenBB Workspace browser tab, and configures an MCP client to call Workspace tools.
+
+## Prerequisites
+
+Before you start:
+
+- OpenBB Workspace is available in your browser.
+- Your MCP client supports HTTP MCP servers.
+- Your machine can run Python 3.13.
+- You can install or run tools with `uv`.
+
+The helper script installs `uv` when it is missing. If you manage Python environments manually, install `uv` first and use the direct command shown below.
+
+## 1. Start the sidecar
+
+Run the sidecar:
+
+```bash
+curl -LsSf https://raw.githubusercontent.com/OpenBB-finance/workspace-mcp/main/scripts/run.sh | sh
+```
+
+The default server listens on:
+
+```text
+http://127.0.0.1:8787
+```
+
+The MCP endpoint is:
+
+```text
+http://127.0.0.1:8787/mcp
+```
+
+The script installs `uv` if needed, then runs `workspace-mcp` from the OpenBB Workspace MCP source archive.
+
+<details>
+<summary mdxType="summary">Use this if port 8787 is busy or you need a different host</summary>
+
+Pass CLI options after `--`:
+
+```bash
+curl -LsSf https://raw.githubusercontent.com/OpenBB-finance/workspace-mcp/main/scripts/run.sh | sh -s -- --host 127.0.0.1 --port 8787
+```
+
+</details>
+
+<details>
+<summary mdxType="summary">Use this if you need a fork, branch, persistent install, or local checkout</summary>
+
+To run a fork, branch, or local archive URL, set `WORKSPACE_MCP_SOURCE`:
+
+```bash
+export WORKSPACE_MCP_SOURCE="https://github.com/OpenBB-finance/workspace-mcp/archive/refs/heads/main.zip"
+curl -LsSf https://raw.githubusercontent.com/OpenBB-finance/workspace-mcp/main/scripts/run.sh | sh
+```
+
+If `uv` is already installed, you can run the package directly:
+
+```bash
+uv tool run \
+  --python 3.13 \
+  --from https://github.com/OpenBB-finance/workspace-mcp/archive/refs/heads/main.zip \
+  workspace-mcp \
+  --host 127.0.0.1 \
+  --port 8787
+```
+
+For a persistent local install:
+
+```bash
+uv tool install --python 3.13 https://github.com/OpenBB-finance/workspace-mcp/archive/refs/heads/main.zip
+workspace-mcp --host 127.0.0.1 --port 8787
+```
+
+If you are developing from a local checkout:
+
+```bash
+cd ~/Documents/git/workspace-mcp
+python -m workspace_mcp --host 127.0.0.1 --port 8787 --reload
+```
+
+</details>
+
+## 2. Check sidecar health
+
+In another terminal, call the health endpoint:
+
+```bash
+curl http://127.0.0.1:8787/health
+```
+
+Before Workspace connects, the response should show that the sidecar is running and no browser is attached:
+
+```json
+{
+  "ok": true,
+  "browser_connected": false,
+  "pending_commands": 0,
+  "session": null
+}
+```
+
+After Workspace connects, `browser_connected` should be `true` and `session` should include the current browser session metadata.
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="Terminal showing the Workspace MCP sidecar running correctly"
+    src="https://openbb-cms.directus.app/assets/2ed50bec-4bf9-4aed-99ef-9a1b7348901d.png"
+    width="800"
+  />
+</div>
+
+## 3. Connect Workspace to the sidecar
+
+Open OpenBB Workspace in your browser and connect the local companion:
+
+1. Open Workspace.
+2. Click the hamburger icon in the top-left corner.
+3. Open **Workspace MCP Companion**.
+4. Set the companion base URL to `http://127.0.0.1:8787`.
+5. Click the connect action after the sidecar is running.
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="Workspace menu showing where to open Workspace MCP Companion"
+    src="https://openbb-cms.directus.app/assets/22301170-4e45-4d5f-bb78-4f375b310577.png"
+    width="800"
+  />
+</div>
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="Workspace MCP Companion connected to the local sidecar"
+    src="https://openbb-cms.directus.app/assets/0df1ae5d-d391-42b7-8c36-25b9be5d6dfc.png"
+    width="800"
+  />
+</div>
+
+If you are testing against a local Workspace frontend build and the companion entry is not visible, make sure the local build enables the companion mode flag.
+
+By default, the sidecar allows CORS requests from `https://pro.openbb.co` and loopback origins such as `http://localhost:1420` and `http://127.0.0.1:1420`.
+
+For a different Workspace origin, pass `--cors-allow`:
+
+```bash
+workspace-mcp --cors-allow https://example.openbb.dev
+```
+
+Repeat `--cors-allow` or pass a comma-separated list to allow more than one origin:
+
+```bash
+workspace-mcp \
+  --cors-allow https://one.example.openbb.dev,https://two.example.openbb.dev \
+  --cors-allow http://localhost:1420
+```
+
+## 4. Configure your MCP client
+
+Point your MCP client at:
+
+```text
+http://127.0.0.1:8787/mcp
+```
+
+For clients that read a project `.mcp.json` file, use an HTTP server entry:
+
+```json
+{
+  "mcpServers": {
+    "workspace_mcp": {
+      "type": "http",
+      "url": "http://127.0.0.1:8787/mcp"
+    }
+  }
+}
+```
+
+If your client has an `mcp add` command or settings UI, choose the HTTP transport and use the same `/mcp` URL.
+
+For Codex:
+
+```bash
+codex mcp add workspace_mcp --url http://127.0.0.1:8787/mcp
+```
+
+For Claude Code:
+
+```bash
+claude mcp add --transport http workspace_mcp http://127.0.0.1:8787/mcp
+```
+
+## 5. Validate the connection
+
+Ask the agent to call `get_workspace_snapshot`. A successful call should return the active Workspace state, including dashboard metadata and the current dashboard composition when available.
+
+A practical validation prompt is:
+
+```text
+Call get_workspace_snapshot and tell me the active dashboard id and the visible tabs.
+```
+
+If the agent can list the dashboard and tabs, the MCP client, sidecar, and browser bridge are connected.
+
+## 6. Try common Workspace actions
+
+After the connection is working, ask the agent to read data from Workspace or add a widget to the current dashboard. The agent should inspect the live Workspace state first, then call the relevant MCP tools with identifiers from the snapshot.
+
+For reading data, use a prompt like:
+
+```text
+Read the data from the active Workspace dashboard and summarize the visible widgets.
+```
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="Codex reading Workspace data through the Workspace MCP"
+    src="https://openbb-cms.directus.app/assets/9863d4bb-2e7b-43dc-8da0-e13e58044cc8.png"
+    width="800"
+  />
+</div>
+
+For adding a widget, use a prompt like:
+
+```text
+Add a widget to this Workspace dashboard using one of the available connected backends.
+```
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="Codex adding a widget to Workspace through the Workspace MCP"
+    src="https://openbb-cms.directus.app/assets/029f832b-18bb-4903-ab2b-ba5e6cbb48e8.png"
+    width="800"
+  />
+</div>
+
+## Configuration reference
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `--host` | `127.0.0.1` | Host interface for the sidecar HTTP server. Keep this on loopback for normal use. |
+| `--port` | `8787` | Port for the sidecar HTTP server. |
+| `--mcp-path` | `/mcp` | Path for the streamable HTTP MCP endpoint. |
+| `--command-timeout-seconds` | `15.0` | Seconds to wait for one browser command result. |
+| `--cors-allow` | production Workspace and loopback origins | Extra browser origins allowed to call the sidecar. |
+| `--reload` | disabled | Restart the local development server when source files change. |
+
+In reload mode, the CLI also maps options to `OPENBB_WORKSPACE_MCP_*` environment variables so Uvicorn can recreate the app.
+
+## Troubleshooting
+
+| Symptom | What to check |
+|---------|---------------|
+| `No Workspace browser is connected.` | Open Workspace, open Workspace MCP Companion, and connect it to the sidecar base URL. |
+| `browser_connected` is `false` in `/health` | The sidecar is running, but the browser bridge has not connected or has disconnected. |
+| Browser CORS error | Add the Workspace browser origin with `--cors-allow`. |
+| Tool call times out | Keep the Workspace tab open and active enough to execute commands. Increase `--command-timeout-seconds` for slower operations. |
+| Agent changes the wrong dashboard | Start with `get_workspace_snapshot`, use `current_dashboard_uuid`, and pass explicit `dashboard_id` values for writes. |
+| Agent cannot create a widget | Use `list_available_widgets` and `get_widget_schema` first. `create_widget` requires exact `origin` and `widget_id` values. |
+| Agent cannot create a note | Use `add_generative_widget` with `widget_type: "note"`. Do not use `create_widget` with `rich_note`. |
+| MCP client cannot connect | Confirm the client supports HTTP MCP servers and uses `http://127.0.0.1:8787/mcp`, not the sidecar base URL. |
+
+Keep the sidecar bound to `127.0.0.1` unless you have a controlled local development reason to do otherwise.
+
+
+---
+
+---
+title: Workspace MCP Tools
+sidebar_position: 3
+description: Reference for the OpenBB Workspace MCP tools, prompts, resources, parameters, and recommended calling patterns.
+keywords:
+- OpenBB Workspace MCP tools
+- MCP tool reference
+- Workspace dashboard tools
+- Workspace widget tools
+- Workspace backend tools
+- Workspace apps
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Workspace MCP Tools | OpenBB Docs" />
+
+This page documents the tools exposed by the OpenBB Workspace MCP sidecar. Tool names and argument names use `snake_case`.
+
+## Calling conventions
+
+Start each new agent session with `get_workspace_snapshot`. It returns the active Workspace context, dashboard metadata, visible dashboard composition, available skills, and other identifiers the agent needs.
+
+Use identifiers returned by Workspace:
+
+- Use `dashboard_id` or `current_dashboard_uuid` for dashboard writes.
+- Use `widget_uuid` for an existing widget instance.
+- Use `origin` and `widget_id` from `list_available_widgets` when creating a backend widget.
+- Use `backend_id` from `manage_backends` when listing or instantiating apps from a backend.
+- Use `slug` from the snapshot when loading a skill.
+
+Avoid matching objects by display name. Dashboards, widgets, and apps can have duplicate names.
+
+Most write tools accept an optional `dashboard_id`. When omitted, Workspace targets the current dashboard route. Passing `dashboard_id` is safer when an agent has already resolved the target dashboard.
+
+Successful command results with object-shaped data may include:
+
+```json
+{
+  "session_context": {
+    "current_dashboard_uuid": "dashboard-uuid",
+    "current_tab_id": "overview"
+  }
+}
+```
+
+Reuse this context for follow-up writes. After a navigation command, the explicit dashboard or tab returned by that command is the most reliable value because browser context updates can lag by one round trip.
+
+## Return shape
+
+Tools return a structured command result:
+
+```json
+{
+  "ok": true,
+  "command": "get_workspace_snapshot",
+  "request_id": "cmd_...",
+  "message": "ok",
+  "data": {},
+  "error": null
+}
+```
+
+When a tool fails, `ok` is `false` and `error` includes a code and message. Common error codes are `invalid_request`, `unavailable`, `timeout`, and `command_failed`.
+
+## Discovery tools
+
+### `get_workspace_snapshot`
+
+Requests a fresh snapshot from the connected browser.
+
+Use this first when the agent needs current dashboard state, dashboard identifiers, dashboard composition, connected tools, available skills, or visible widgets.
+
+Arguments: none.
+
+The response can include:
+
+- `workspace_state`: current Workspace-level state.
+- `dashboards`: dashboard metadata.
+- `dashboard_composition`: tabs, widgets, layout coordinates, and groups for the current dashboard.
+- `widgets`: current widget buckets.
+- `tools`: tools available inside Workspace.
+- `skills`: skill metadata.
+
+### `list_available_widgets`
+
+Lists widgets available to the current Workspace session.
+
+Arguments:
+
+| Argument | Type | Required | Notes |
+|----------|------|----------|-------|
+| `origin` | string | No | Friendly backend/catalog label. Use an exact value from Workspace. |
+| `backend_id` | string | No | Backend UUID from `manage_backends`. Prefer this after registering or selecting a backend. |
+
+Use a filter when possible. Unfiltered catalogs can contain many widgets.
+
+The list intentionally excludes generated-only widgets such as `rich_note`. Create those with `add_generative_widget`.
+
+### `get_widget_schema`
+
+Fetches the exact creation contract for one available widget.
+
+Arguments:
+
+| Argument | Type | Required | Notes |
+|----------|------|----------|-------|
+| `origin` | string | Yes | Exact catalog value returned by `list_available_widgets`. |
+| `widget_id` | string | Yes | Exact widget identifier returned by `list_available_widgets`. |
+
+Call this before `create_widget`. The schema can include parameter definitions, layout defaults, and min/max grid constraints.
+
+If a parameter has `requires_options_lookup: true`, call `get_params_options` before creating or updating the widget.
+
+### `get_params_options`
+
+Fetches dynamic options for a widget parameter.
+
+Arguments:
+
+| Argument | Type | Required | Notes |
+|----------|------|----------|-------|
+| `origin` | string | Yes | Exact catalog value. |
+| `widget_id` | string | Yes | Exact widget identifier. |
+| `param_name` | string | Yes | Exact `paramName` from the widget schema. |
+| `data_args` | object | No | Values required by the parameter's `options_lookup_params`, when present. |
+
+Use this only when the widget schema says the parameter requires an options lookup.
+
+### `get_skill_content`
+
+Loads one skill body from the Workspace skill library.
+
+Arguments:
+
+| Argument | Type | Required | Notes |
+|----------|------|----------|-------|
+| `slug` | string | Yes | Exact skill slug from the latest snapshot. |
+| `reason` | string | No | Short reason for loading the skill. |
+
+## Data tools
+
+### `get_widget_data`
+
+Fetches live data for a Workspace widget or backend data source.
+
+Arguments:
+
+| Argument | Type | Required | Notes |
+|----------|------|----------|-------|
+| `origin` | string | Yes | Backend/catalog label. |
+| `widget_id` | string | Yes | Widget identifier. |
+| `data_args` | object | No | Widget parameters. Must be an object, not a JSON string. |
+| `widget_uuid` | string | No | Existing widget instance UUID. Include it when reading a widget already on a dashboard. |
+| `ssm_request` | object | No | Server-side row model request data for widgets that support it. |
+
+For chart widgets, include `raw: true` in `data_args` when the agent needs rows instead of a Plotly figure payload:
+
+```json
+{
+  "origin": "Example Backend",
+  "widget_id": "revenue_chart",
+  "widget_uuid": "widget-uuid",
+  "data_args": {
+    "symbol": "AAPL",
+    "raw": true
+  }
+}
+```
+
+## Dashboard and navigation tools
+
+### `manage_dashboard`
+
+Creates, reads, or updates one Workspace dashboard.
+
+Arguments:
+
+| Argument | Type | Required | Notes |
+|----------|------|----------|-------|
+| `operation` | string | Yes | One of `create`, `read`, or `update`. |
+| `dashboard_id` | string | Conditional | Required for `update`; optional for `read`; optional custom ID for `create`. |
+| `name` | string | Conditional | Required for `create` and `update`. |
+| `activate` | boolean | No | For `create`, defaults to `true`. |
+
+Examples:
+
+```json
+{
+  "operation": "create",
+  "name": "Earnings Review",
+  "activate": true
+}
+```
+
+```json
+{
+  "operation": "read",
+  "dashboard_id": "dashboard-uuid"
+}
+```
+
+The tool does not delete dashboards.
+
+### `navigate_workspace`
+
+Navigates the browser to an existing dashboard or switches an inner tab.
+
+Arguments:
+
+| Argument | Type | Required | Notes |
+|----------|------|----------|-------|
+| `operation` | string | Yes | One of `dashboard` or `tab`. |
+| `dashboard_id` | string | Conditional | Required for `operation: "dashboard"`; optional for tab switching. |
+| `tab_id` | string | Conditional | Required for `operation: "tab"`; optional when navigating to a dashboard. |
+
+Examples:
+
+```json
+{
+  "operation": "dashboard",
+  "dashboard_id": "dashboard-uuid"
+}
+```
+
+```json
+{
+  "operation": "tab",
+  "tab_id": "overview"
+}
+```
+
+### `manage_navigation_bar`
+
+Creates or mutates the navigation bar inside an existing dashboard.
+
+Arguments:
+
+| Argument | Type | Required | Notes |
+|----------|------|----------|-------|
+| `operation` | string | Yes | One of `create`, `add_tabs`, `remove_tabs`, or `rename_tabs`. |
+| `dashboard_id` | string | No | Target dashboard. Omit only when targeting the current route. |
+| `tabs` | array | Conditional | Required for `create`, `add_tabs`, and `remove_tabs`. Each item must be an object with only `name`. |
+| `rename_map` | object | Conditional | Required for `rename_tabs`. Keys are old tab IDs and values are new names. |
+
+Valid tab payload:
+
+```json
+{
+  "operation": "add_tabs",
+  "tabs": [
+    { "name": "Overview" },
+    { "name": "Charts" }
+  ]
+}
+```
+
+Do not pass string arrays such as `["Overview", "Charts"]`. Do not pass `tab_id` or `tab_name` fields. Workspace generates tab IDs from tab names, such as `Overview` to `overview`.
+
+For a new-tab workflow:
+
+1. Call `manage_navigation_bar` with `operation: "add_tabs"`.
+2. Call `navigate_workspace` with the generated `tab_id`.
+3. Create the widget or generated artifact on the active tab.
+
+### `update_widget_layout`
+
+Moves or resizes one widget in the dashboard layout grid.
+
+Arguments:
+
+| Argument | Type | Required | Notes |
+|----------|------|----------|-------|
+| `x` | number | Yes | Left position on the 40-column grid. |
+| `y` | number | Yes | Top position on the grid. |
+| `w` | number | Yes | Width in grid columns. |
+| `h` | number | Yes | Height in grid rows. |
+| `widget_uuid` | string | Recommended | Existing widget instance UUID. |
+| `widget_id` | string | No | Fallback only when exactly one matching widget instance exists. |
+| `dashboard_id` | string | No | Target dashboard. |
+| `tab_id` | string | No | Target tab. Use this when moving across tabs. |
+| `min_w`, `min_h`, `max_w`, `max_h` | number | No | Optional layout constraints. |
+
+The layout grid is 40 columns wide:
+
+- Full width: `w: 40`
+- Half width: `w: 20`
+- Quarter width: `w: 10`
+
+If a navigation bar is present, it usually occupies `y: 0` with `h: 2`, so content usually starts at `y: 2`.
+
+## Widget lifecycle tools
+
+### `read_widget`
+
+Reads one widget from a dashboard.
+
+Arguments:
+
+| Argument | Type | Required | Notes |
+|----------|------|----------|-------|
+| `widget_uuid` | string | Recommended | Preferred instance identifier. |
+| `widget_id` | string | No | Fallback only when exactly one matching instance exists. |
+| `dashboard_id` | string | No | Target dashboard. |
+
+Use this when the agent needs a widget's current config or rendered data from the active tab.
+
+### `create_widget`
+
+Creates one backend-provided widget on a dashboard.
+
+Arguments:
+
+| Argument | Type | Required | Notes |
+|----------|------|----------|-------|
+| `origin` | string | Yes | Exact catalog value from `list_available_widgets`. |
+| `widget_id` | string | Yes | Exact widget identifier from `list_available_widgets`. |
+| `dashboard_id` | string | No | Target dashboard. |
+| `data_args` | object | No | Widget parameters. |
+| `ui_args` | object | No | Widget UI configuration. |
+
+Call `list_available_widgets` and `get_widget_schema` first. If the schema has dynamic parameter options, call `get_params_options` before creating the widget.
+
+Do not use `create_widget` for rich text notes. Use `add_generative_widget` with `widget_type: "note"`.
+
+### `update_widget`
+
+Updates an existing widget's configuration.
+
+Arguments:
+
+| Argument | Type | Required | Notes |
+|----------|------|----------|-------|
+| `widget_uuid` | string | Recommended | Existing widget instance UUID. |
+| `widget_id` | string | No | Fallback only when exactly one matching instance exists. |
+| `dashboard_id` | string | No | Target dashboard. |
+| `data_args` | object | No | New widget parameters. |
+| `ui_args` | object | No | New widget UI configuration. |
+
+Use `update_widget_layout` for `x`, `y`, `w`, `h`, `gridData`, or tab placement. `update_widget` is for widget config only.
+
+### `delete_widget`
+
+Deletes one widget from a dashboard.
+
+Arguments:
+
+| Argument | Type | Required | Notes |
+|----------|------|----------|-------|
+| `widget_uuid` | string | Recommended | Existing widget instance UUID. |
+| `widget_id` | string | No | Fallback only when exactly one matching instance exists. |
+| `dashboard_id` | string | No | Target dashboard. |
+
+The tool is scoped to a single widget. It does not delete dashboards or folders.
+
+## Generated artifact tools
+
+### `add_generative_widget`
+
+Creates a generated note, table, chart, or HTML widget from inline data.
+
+Arguments:
+
+| Argument | Type | Required | Notes |
+|----------|------|----------|-------|
+| `widget_type` | string | Yes | One of `note`, `table`, `chart`, or `html`. |
+| `dashboard_id` | string | No | Target dashboard. |
+| `data` | string or array | Conditional | Notes and HTML use a string. Tables and charts use an array of objects. |
+| `name` | string | No | Widget name. |
+| `description` | string | No | Widget description. |
+| `chart_params` | object | Conditional | Required for charts. Uses camelCase keys. |
+| `inner_tab` | string | No | Existing tab target. This does not create a tab. |
+
+Valid note payload:
+
+```json
+{
+  "widget_type": "note",
+  "name": "Briefing",
+  "data": "# Briefing\n\nKey points from the current dashboard."
+}
+```
+
+Valid chart payload:
+
+```json
+{
+  "widget_type": "chart",
+  "name": "Quarterly revenue",
+  "data": [
+    { "quarter": "Q1", "revenue": 100 },
+    { "quarter": "Q2", "revenue": 140 },
+    { "quarter": "Q3", "revenue": 160 },
+    { "quarter": "Q4", "revenue": 210 }
+  ],
+  "chart_params": {
+    "chartType": "bar",
+    "xKey": "quarter",
+    "yKey": ["revenue"]
+  }
+}
+```
+
+For chart widgets, keep `chart_params` keys in camelCase: `chartType`, `xKey`, `yKey`, `angleKey`, and `calloutLabelKey`.
+
+## Backend and app tools
+
+### `manage_backends`
+
+Lists, adds, updates, refreshes, or removes Workspace data backends.
+
+Arguments:
+
+| Argument | Type | Required | Notes |
+|----------|------|----------|-------|
+| `operation` | string | Yes | One of `list`, `add`, `update`, `refresh`, or `remove`. |
+| `backend_id` | string | Conditional | Required for `update`, `refresh`, and `remove`. |
+| `name` | string | Conditional | Required for `add`; optional for `update`. |
+| `url` | string | Conditional | Required for `add`; optional for `update`. |
+| `endpoint_headers` | array | No | Header or query values sent to the backend. |
+| `validate_widgets` | boolean | No | Defaults to validation behavior in Workspace. |
+| `is_openbb_platform` | boolean | No | Marks the backend as an OpenBB Platform backend when needed. |
+
+Each `endpoint_headers` item has this shape:
+
+```json
+{
+  "key": "X-Auth-Token",
+  "value": "token-value",
+  "location": "headers"
+}
+```
+
+`location` is either `headers` or `query`. When omitted, it defaults to `headers`.
+
+Example:
+
+```json
+{
+  "operation": "add",
+  "name": "Research Backend",
+  "url": "http://127.0.0.1:8000",
+  "endpoint_headers": [
+    {
+      "key": "X-Auth-Token",
+      "value": "dev-token",
+      "location": "headers"
+    }
+  ]
+}
+```
+
+### `manage_apps`
+
+Lists, reads, or instantiates apps from a Workspace data backend.
+
+Arguments:
+
+| Argument | Type | Required | Notes |
+|----------|------|----------|-------|
+| `operation` | string | Yes | One of `list`, `read`, or `instantiate`. |
+| `backend_id` | string | Yes | Backend UUID from `manage_backends`. |
+| `app_name` | string | Conditional | Required for `read` and `instantiate` unless `template_id` is provided. |
+| `template_id` | string | Conditional | Required for `read` and `instantiate` unless `app_name` is provided. |
+| `dashboard_name` | string | No | Name for the instantiated dashboard. |
+| `activate` | boolean | No | Defaults to `true` for instantiation. |
+
+Apps are full dashboard templates declared in a backend's `apps.json`. Instantiating an app creates a dashboard with its tabs, widgets, parameter groups, and suggested prompts.
+
+Example:
+
+```json
+{
+  "operation": "instantiate",
+  "backend_id": "backend-uuid",
+  "app_name": "Macro Dashboard",
+  "dashboard_name": "Macro Dashboard - Agent Test",
+  "activate": true
+}
+```
+
+## Agent tools
+
+### `assign_tasks_to_agents`
+
+Delegates tasks to configured external Workspace agents.
+
+Arguments:
+
+| Argument | Type | Required | Notes |
+|----------|------|----------|-------|
+| `task_requests` | array | Yes | Each item needs `id`, `description`, `assigned_holder_url`, and `assigned_agent_id`. |
+
+Example:
+
+```json
+{
+  "task_requests": [
+    {
+      "id": "review-dashboard-1",
+      "description": "Review the current dashboard and flag anomalies in the revenue chart.",
+      "assigned_holder_url": "agent-holder-url",
+      "assigned_agent_id": "agent-id"
+    }
+  ]
+}
+```
+
+Use `get_workspace_snapshot` first to find configured agent identifiers. Do not invent `assigned_holder_url` or `assigned_agent_id`.
+
+## Prompts and resources
+
+The MCP server exposes two prompts:
+
+| Prompt | Purpose |
+|--------|---------|
+| `workspace_tool_usage` | General instructions for using the Workspace MCP tool surface. |
+| `workspace_session_context` | Current tracked dashboard and tab context. |
+
+It also exposes app-builder resources under `openbb://workspace/...`, including:
+
+- `openbb://workspace/app-builder/index`
+- `openbb://workspace/contract/backend`
+- `openbb://workspace/specs/widgets-json`
+- `openbb://workspace/specs/apps-json`
+- `openbb://workspace/specs/layout-grid`
+- `openbb://workspace/guides/build-an-app`
+- `openbb://workspace/guides/debug-app`
+- `openbb://workspace/examples/python-fastapi/minimal`
+- `openbb://workspace/validation/common-errors`
+
+Agents should read `openbb://workspace/app-builder/index` first when they need guidance for building, debugging, or reviewing Workspace apps.
+
+## Example workflows
+
+### Create a dashboard with tabs and a note
+
+Tool calls:
+
+```text
+manage_dashboard {
+  "operation": "create",
+  "name": "MCP Smoke Test",
+  "activate": true
+}
+
+manage_navigation_bar {
+  "operation": "create",
+  "tabs": [
+    { "name": "Overview" },
+    { "name": "Charts" }
+  ]
+}
+
+navigate_workspace {
+  "operation": "tab",
+  "tab_id": "overview"
+}
+
+add_generative_widget {
+  "widget_type": "note",
+  "name": "Smoke test",
+  "data": "# Smoke Test\n\nWorkspace MCP is connected."
+}
+```
+
+### Add a backend widget
+
+Tool calls:
+
+```text
+get_workspace_snapshot {}
+
+list_available_widgets {
+  "origin": "Research Backend"
+}
+
+get_widget_schema {
+  "origin": "Research Backend",
+  "widget_id": "company_filings"
+}
+
+create_widget {
+  "origin": "Research Backend",
+  "widget_id": "company_filings",
+  "dashboard_id": "dashboard-uuid",
+  "data_args": {
+    "symbol": "AAPL"
+  }
+}
+```
+
+### Register a backend and open an app
+
+Tool calls:
+
+```text
+manage_backends {
+  "operation": "add",
+  "name": "Local Macro Backend",
+  "url": "http://127.0.0.1:8000"
+}
+
+manage_backends {
+  "operation": "list"
+}
+
+manage_apps {
+  "operation": "list",
+  "backend_id": "backend-uuid"
+}
+
+manage_apps {
+  "operation": "instantiate",
+  "backend_id": "backend-uuid",
+  "template_id": "macro-dashboard",
+  "activate": true
+}
+```
+
+### Pull the data behind a chart
+
+Tool calls:
+
+```text
+get_workspace_snapshot {}
+
+get_widget_data {
+  "origin": "Research Backend",
+  "widget_id": "revenue_chart",
+  "widget_uuid": "widget-uuid",
+  "data_args": {
+    "symbol": "AAPL",
+    "raw": true
+  }
+}
+```
+
+Use `raw: true` when the agent needs rows for analysis instead of chart renderer JSON.

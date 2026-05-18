@@ -1,0 +1,7 @@
+# OpenBB Docs - agents
+
+## Docs
+
+- [Workspace MCP Overview](https://docs.openbb.co/agents/workspace-mcp-overview): Understand how the OpenBB Workspace MCP exposes a live Workspace browser session to external AI agents.
+- [Workspace MCP Quickstart](https://docs.openbb.co/agents/workspace-mcp-quickstart): Run the OpenBB Workspace MCP sidecar, connect Workspace, and attach an external MCP client.
+- [Workspace MCP Tools](https://docs.openbb.co/agents/workspace-mcp-tools): Reference for the OpenBB Workspace MCP tools, prompts, resources, parameters, and recommended calling patterns.
