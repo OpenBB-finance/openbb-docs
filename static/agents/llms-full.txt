@@ -1,4 +1,43 @@
 ---
+title: App Building Skill
+sidebar_position: 4
+description: Use the OpenBB App Builder skill to build custom OpenBB Workspace applications with an AI agent.
+keywords:
+  - Agent Skills
+  - App Builder
+  - Custom Applications
+  - Widget Configuration
+  - FastAPI Backend
+  - Dashboard Design
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+import GitHubMarkdown from '@site/src/components/General/GitHubMarkdown.tsx';
+
+<HeadTitle title="App Building Skill | OpenBB Workspace Docs" />
+
+The OpenBB App Builder skill helps agents build custom OpenBB Workspace applications, including backend endpoints, `widgets.json`, `apps.json`, dashboard layouts, and validation steps.
+
+If your agent supports installable skills, install the **openbb-app-builder skill** with:
+
+```bash
+npx skills add https://github.com/openbb-finance/backends-for-openbb --skill openbb-app-builder
+```
+
+More information is available on the [openbb-app-builder skill page](https://skills.sh/openbb-finance/backends-for-openbb/openbb-app-builder).
+
+The raw skill folder is available in the [backends-for-openbb repository](https://github.com/OpenBB-finance/backends-for-openbb/tree/66c16c8ee59aacdb562bfd9abb262d542dbe685e/.claude/skills/openbb-app-builder).
+
+---
+
+# Skill
+
+<GitHubMarkdown url="https://github.com/OpenBB-finance/backends-for-openbb/blob/main/.claude/skills/openbb-app-builder/SKILL.md" />
+
+
+---
+
+---
 title: Workspace MCP Overview
 sidebar_position: 1
 description: Understand how the OpenBB Workspace MCP exposes a live Workspace browser session to external AI agents.
@@ -175,6 +214,15 @@ Run the sidecar:
 curl -LsSf https://raw.githubusercontent.com/OpenBB-finance/workspace-mcp/main/scripts/run.sh | sh
 ```
 
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="Terminal showing the Workspace MCP sidecar running correctly"
+    src="https://openbb-cms.directus.app/assets/2ed50bec-4bf9-4aed-99ef-9a1b7348901d.png"
+    width="1000"
+  />
+</div>
+
 The default server listens on:
 
 ```text
@@ -258,14 +306,6 @@ Before Workspace connects, the response should show that the sidecar is running 
 
 After Workspace connects, `browser_connected` should be `true` and `session` should include the current browser session metadata.
 
-<div style={{display: 'flex', justifyContent: 'center'}}>
-  <img
-    className="pro-border-gradient"
-    alt="Terminal showing the Workspace MCP sidecar running correctly"
-    src="https://openbb-cms.directus.app/assets/2ed50bec-4bf9-4aed-99ef-9a1b7348901d.png"
-    width="800"
-  />
-</div>
 
 ## 3. Connect Workspace to the sidecar
 
@@ -274,8 +314,6 @@ Open OpenBB Workspace in your browser and connect the local companion:
 1. Open Workspace.
 2. Click the hamburger icon in the top-left corner.
 3. Open **Workspace MCP Companion**.
-4. Set the companion base URL to `http://127.0.0.1:8787`.
-5. Click the connect action after the sidecar is running.
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
   <img
@@ -285,6 +323,10 @@ Open OpenBB Workspace in your browser and connect the local companion:
     width="800"
   />
 </div>
+
+4. Set the companion base URL to `http://127.0.0.1:8787`.
+5. Click the connect action after the sidecar is running.
+
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
   <img
@@ -367,7 +409,7 @@ After the connection is working, ask the agent to read data from Workspace or ad
 For reading data, use a prompt like:
 
 ```text
-Read the data from the active Workspace dashboard and summarize the visible widgets.
+What data do you see on this dashboard and tab?
 ```
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
@@ -382,7 +424,7 @@ Read the data from the active Workspace dashboard and summarize the visible widg
 For adding a widget, use a prompt like:
 
 ```text
-Add a widget to this Workspace dashboard using one of the available connected backends.
+Analyze my current portfolio exposure and add a markdown note widget with that analysis in the same tab that is open
 ```
 
 <div style={{display: 'flex', justifyContent: 'center'}}>

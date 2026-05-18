@@ -44,6 +44,11 @@ export default {
 					id: "agents/workspace-mcp-tools",
 					label: "Workspace MCP Tools",
 				},
+				{
+					type: "doc",
+					id: "agents/app-building-skill",
+					label: "App Building Skill",
+				},
 			],
 		},
 		{

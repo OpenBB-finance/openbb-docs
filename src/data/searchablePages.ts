@@ -53,6 +53,20 @@ export const searchablePages: SearchablePage[] = [
     ]
   },
   {
+    "title": "App Building Skill",
+    "path": "/agents/app-building-skill",
+    "category": "Agents",
+    "description": "Use the OpenBB App Builder skill to build custom OpenBB Workspace applications with an AI agent.",
+    "keywords": [
+      "Agent Skills",
+      "App Builder",
+      "Custom Applications",
+      "Widget Configuration",
+      "FastAPI Backend",
+      "Dashboard Design"
+    ]
+  },
+  {
     "title": "Introduction",
     "path": "/cli/",
     "category": "CLI",

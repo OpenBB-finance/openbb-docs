@@ -64,6 +64,14 @@ export default {
 						to: "/workspace/developers/data-integration",
 					},
 					{
+						from: "/workspace/developers/agent-skills",
+						to: "/agents/app-building-skill",
+					},
+					{
+						from: "/agents/building-an-app",
+						to: "/agents/app-building-skill",
+					},
+					{
 						from: "/excel/enterprise",
 						to: "https://openbb.co/pricing",
 					},
