@@ -31,10 +31,18 @@ The helper script installs `uv` when it is missing. If you manage Python environ
 
 ## 1. Start the sidecar
 
-Run the sidecar:
+Install the sidecar from the [Workspace MCP repository](https://github.com/OpenBB-finance/workspace-mcp), or use one of the one-line installers below.
+
+**macOS, Linux, WSL, and Git Bash:**
 
 ```bash
 curl -LsSf https://raw.githubusercontent.com/OpenBB-finance/workspace-mcp/main/scripts/run.sh | sh
+```
+
+**Windows PowerShell:**
+
+```powershell
+powershell -ExecutionPolicy Bypass -Command "Invoke-RestMethod https://raw.githubusercontent.com/OpenBB-finance/workspace-mcp/main/scripts/run.ps1 | Invoke-Expression"
 ```
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
@@ -60,53 +68,7 @@ http://127.0.0.1:8787/mcp
 
 The script installs `uv` if needed, then runs `workspace-mcp` from the OpenBB Workspace MCP source archive.
 
-<details>
-<summary mdxType="summary">Use this if port 8787 is busy or you need a different host</summary>
-
-Pass CLI options after `--`:
-
-```bash
-curl -LsSf https://raw.githubusercontent.com/OpenBB-finance/workspace-mcp/main/scripts/run.sh | sh -s -- --host 127.0.0.1 --port 8787
-```
-
-</details>
-
-<details>
-<summary mdxType="summary">Use this if you need a fork, branch, persistent install, or local checkout</summary>
-
-To run a fork, branch, or local archive URL, set `WORKSPACE_MCP_SOURCE`:
-
-```bash
-export WORKSPACE_MCP_SOURCE="https://github.com/OpenBB-finance/workspace-mcp/archive/refs/heads/main.zip"
-curl -LsSf https://raw.githubusercontent.com/OpenBB-finance/workspace-mcp/main/scripts/run.sh | sh
-```
-
-If `uv` is already installed, you can run the package directly:
-
-```bash
-uv tool run \
-  --python 3.13 \
-  --from https://github.com/OpenBB-finance/workspace-mcp/archive/refs/heads/main.zip \
-  workspace-mcp \
-  --host 127.0.0.1 \
-  --port 8787
-```
-
-For a persistent local install:
-
-```bash
-uv tool install --python 3.13 https://github.com/OpenBB-finance/workspace-mcp/archive/refs/heads/main.zip
-workspace-mcp --host 127.0.0.1 --port 8787
-```
-
-If you are developing from a local checkout:
-
-```bash
-cd ~/Documents/git/workspace-mcp
-python -m workspace_mcp --host 127.0.0.1 --port 8787 --reload
-```
-
-</details>
+For advanced options (custom host/port, forks, branches, or local checkouts), see the [Workspace MCP repository](https://github.com/OpenBB-finance/workspace-mcp).
 
 ## 2. Check sidecar health
 
@@ -159,8 +121,6 @@ Open OpenBB Workspace in your browser and connect the local companion:
     width="800"
   />
 </div>
-
-If you are testing against a local Workspace frontend build and the companion entry is not visible, make sure the local build enables the companion mode flag.
 
 By default, the sidecar allows CORS requests from `https://pro.openbb.co` and loopback origins such as `http://localhost:1420` and `http://127.0.0.1:1420`.
 
@@ -280,9 +240,4 @@ In reload mode, the CLI also maps options to `OPENBB_WORKSPACE_MCP_*` environmen
 | `browser_connected` is `false` in `/health` | The sidecar is running, but the browser bridge has not connected or has disconnected. |
 | Browser CORS error | Add the Workspace browser origin with `--cors-allow`. |
 | Tool call times out | Keep the Workspace tab open and active enough to execute commands. Increase `--command-timeout-seconds` for slower operations. |
-| Agent changes the wrong dashboard | Start with `get_workspace_snapshot`, use `current_dashboard_uuid`, and pass explicit `dashboard_id` values for writes. |
-| Agent cannot create a widget | Use `list_available_widgets` and `get_widget_schema` first. `create_widget` requires exact `origin` and `widget_id` values. |
-| Agent cannot create a note | Use `add_generative_widget` with `widget_type: "note"`. Do not use `create_widget` with `rich_note`. |
 | MCP client cannot connect | Confirm the client supports HTTP MCP servers and uses `http://127.0.0.1:8787/mcp`, not the sidecar base URL. |
-
-Keep the sidecar bound to `127.0.0.1` unless you have a controlled local development reason to do otherwise.
