@@ -23,7 +23,6 @@
 - [Overview](https://docs.openbb.co/workspace/analysts/widgets/overview): Understanding widgets - the building blocks of OpenBB Workspace dashboards that transform raw data into actionable insights.
 - [Sandbox Widgets](https://docs.openbb.co/workspace/analysts/widgets/sandbox-widgets): Explore the pre-built sandbox widgets available when you first log into OpenBB Workspace.
 - [Static Files](https://docs.openbb.co/workspace/analysts/widgets/static-files): Upload and integrate your own files into OpenBB Workspace - transform spreadsheets, PDFs, and images into interactive dashboard widgets.
-- [Agent Skills](https://docs.openbb.co/workspace/developers/agent-skills): Full documentation for OpenBB App Builder - building custom OpenBB Workspace applications through a structured pipeline.
 - [Agents Integration](https://docs.openbb.co/workspace/developers/agents-integration): How to integrate your own AI agent service with OpenBB Workspace
 - [Citations for documents](https://docs.openbb.co/workspace/developers/ai-features/citations-for-documents): Add document-specific citations with PDF text highlighting for source attribution
 - [Create charts](https://docs.openbb.co/workspace/developers/ai-features/create-charts): Stream inline charts as part of your agent’s response

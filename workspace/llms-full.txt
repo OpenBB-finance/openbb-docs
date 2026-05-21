@@ -2378,43 +2378,6 @@ Note that scanned images are better handled when uploaded as images (PNG or JPG)
 ---
 
 ---
-title: Agent Skills
-sidebar_position: 2
-description: Full documentation for OpenBB App Builder - building custom OpenBB Workspace applications through a structured pipeline.
-keywords:
-  - Agent Skills
-  - App Builder
-  - Custom Applications
-  - Widget Configuration
-  - FastAPI Backend
-  - Dashboard Design
----
-
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-import GitHubMarkdown from '@site/src/components/General/GitHubMarkdown.tsx';
-
-<HeadTitle title="Agent Skills | OpenBB Workspace Docs" />
-
-If you are building with an agent you can install the **openbb-app-builder skill** with:
-
-```bash
-npx skills add https://github.com/openbb-finance/backends-for-openbb --skill openbb-app-builder
-```
-
-More information [here](https://skills.sh/openbb-finance/backends-for-openbb/openbb-app-builder).
-
-The raw SKILL folder can be found [here](https://github.com/OpenBB-finance/backends-for-openbb/tree/66c16c8ee59aacdb562bfd9abb262d542dbe685e/.claude/skills/openbb-app-builder).
-
----
-
-# Skill
-
-<GitHubMarkdown url="https://github.com/OpenBB-finance/backends-for-openbb/blob/main/.claude/skills/openbb-app-builder/SKILL.md" />
-
-
----
-
----
 title: Agents Integration
 sidebar_position: 7
 description: How to integrate your own AI agent service with OpenBB Workspace
@@ -5571,6 +5534,7 @@ While it is expected for users to create their apps.json from the UI directly, a
 | `tabs` | object | Collection of tabs, each with an ID, name, and layout configuration |
 | `groups` | array | Defines synchronized parameter groups for widgets. |
 | `prompts` | array | A list of suggested prompts for the current agent. |
+| `mcp_servers` | array | Optional list of MCP servers that can be connected to this app. When provided, the app's page will surface that an MCP server is available to connect to. |
 
 Each tab contains:
 - `id`: Unique identifier for the tab
@@ -5596,6 +5560,26 @@ For example:
     "What was the last Non-Farm Payrolls (NFP) number?",
     "Plot the 2-year and 10-year Treasury yields.",
     "What is the current 30-year Treasury yield?"
+]
+```
+
+Each MCP server entry contains:
+- `name`: Display name for the MCP server
+- `description`: Short description of what the server provides
+- `url`: The MCP server endpoint URL
+
+When `mcp_servers` is defined, the app's page in OpenBB Workspace will show that an MCP server is available, allowing users to connect to it directly from the app.
+
+For example:
+
+```json
+
+"mcp_servers": [
+    {
+        "name": "OpenBB Docs",
+        "description": "Search and retrieve content from the OpenBB documentation.",
+        "url": "https://openbb-docs-mcp.external.openbb.app/mcp"
+    }
 ]
 ```
 
