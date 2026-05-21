@@ -65,11 +65,15 @@ export default {
 					},
 					{
 						from: "/workspace/developers/agent-skills",
-						to: "/agents/app-building-skill",
+						to: "/agents/app-builder-resources",
 					},
 					{
 						from: "/agents/building-an-app",
-						to: "/agents/app-building-skill",
+						to: "/agents/app-builder-resources",
+					},
+					{
+						from: "/agents/app-building-skill",
+						to: "/agents/app-builder-resources",
 					},
 					{
 						from: "/excel/enterprise",

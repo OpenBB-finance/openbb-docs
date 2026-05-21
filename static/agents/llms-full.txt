@@ -1,10 +1,11 @@
 ---
-title: App Building Skill
+title: App Builder Resources
 sidebar_position: 4
-description: Use the OpenBB App Builder skill to build custom OpenBB Workspace applications with an AI agent.
+description: Use Workspace MCP app-builder resources, or install the generated OpenBB app-builder skill, to build custom OpenBB Workspace applications with an AI agent.
 keywords:
-  - Agent Skills
+  - Workspace MCP Resources
   - App Builder
+  - OpenBB App Builder
   - Custom Applications
   - Widget Configuration
   - FastAPI Backend
@@ -12,27 +13,62 @@ keywords:
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-import GitHubMarkdown from '@site/src/components/General/GitHubMarkdown.tsx';
 
-<HeadTitle title="App Building Skill | OpenBB Workspace Docs" />
+<HeadTitle title="App Builder Resources | OpenBB Workspace Docs" />
 
-The OpenBB App Builder skill helps agents build custom OpenBB Workspace applications, including backend endpoints, `widgets.json`, `apps.json`, dashboard layouts, and validation steps.
+The OpenBB app-builder instructions are maintained in the
+[Workspace MCP repository](https://github.com/OpenBB-finance/workspace-mcp).
+They help agents build custom OpenBB Workspace applications, including backend
+endpoints, `widgets.json`, `apps.json`, dashboard layouts, thumbnails, widget
+parameters, validation, and semantic output checks.
 
-If your agent supports installable skills, install the **openbb-app-builder skill** with:
+## Source of truth
 
-```bash
-npx skills add https://github.com/openbb-finance/backends-for-openbb --skill openbb-app-builder
+When your agent is connected to Workspace MCP, ask it to read the live MCP
+resource index:
+
+```text
+openbb://workspace/app-builder/index
 ```
 
-More information is available on the [openbb-app-builder skill page](https://skills.sh/openbb-finance/backends-for-openbb/openbb-app-builder).
+The index routes the agent to the right app-builder spec, guide, example, or
+validation resource for the task.
 
-The raw skill folder is available in the [backends-for-openbb repository](https://github.com/OpenBB-finance/backends-for-openbb/tree/66c16c8ee59aacdb562bfd9abb262d542dbe685e/.claude/skills/openbb-app-builder).
+## Installable skill package
 
----
+For agents that support installable skills, but are not using Workspace MCP
+resources directly, install the generated `openbb-app-builder` skill from the
+Workspace MCP repository:
 
-# Skill
+```bash
+npx skills add https://github.com/OpenBB-finance/workspace-mcp --skill openbb-app-builder
+```
 
-<GitHubMarkdown url="https://github.com/OpenBB-finance/backends-for-openbb/blob/main/.claude/skills/openbb-app-builder/SKILL.md" />
+This skill package is generated from the same Workspace MCP resource catalog.
+It is a compatibility artifact, not a separate source of truth.
+
+## Main resource entry points
+
+| Task | Resource |
+|------|----------|
+| Start any app-building task | `openbb://workspace/app-builder/index` |
+| Build a new app backend | `openbb://workspace/guides/build-an-app` |
+| Review an existing app | `openbb://workspace/guides/review-app` |
+| Debug a broken app | `openbb://workspace/guides/debug-app` |
+| Convert an endpoint to a widget | `openbb://workspace/guides/convert-endpoint-to-widget` |
+| Edit `widgets.json` | `openbb://workspace/specs/widgets-json` |
+| Edit `apps.json` | `openbb://workspace/specs/apps-json` |
+| Fix validation errors | `openbb://workspace/validation/common-errors` |
+
+## Repository locations
+
+- Canonical resources:
+  [workspace_mcp/app_builder/resources](https://github.com/OpenBB-finance/workspace-mcp/tree/main/workspace_mcp/app_builder/resources)
+- Generated installable skill:
+  [.claude/skills/openbb-app-builder](https://github.com/OpenBB-finance/workspace-mcp/tree/main/.claude/skills/openbb-app-builder)
+
+Do not install the old app-builder skill from backend example repositories.
+Use the generated skill from `workspace-mcp` when a skill install is needed.
 
 
 ---

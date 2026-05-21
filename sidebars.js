@@ -46,8 +46,8 @@ export default {
 				},
 				{
 					type: "doc",
-					id: "agents/app-building-skill",
-					label: "App Building Skill",
+					id: "agents/app-builder-resources",
+					label: "App Builder Resources",
 				},
 			],
 		},

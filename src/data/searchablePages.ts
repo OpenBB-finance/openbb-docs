@@ -53,13 +53,14 @@ export const searchablePages: SearchablePage[] = [
     ]
   },
   {
-    "title": "App Building Skill",
-    "path": "/agents/app-building-skill",
+    "title": "App Builder Resources",
+    "path": "/agents/app-builder-resources",
     "category": "Agents",
-    "description": "Use the OpenBB App Builder skill to build custom OpenBB Workspace applications with an AI agent.",
+    "description": "Use Workspace MCP app-builder resources, or install the generated OpenBB app-builder skill, to build custom OpenBB Workspace applications with an AI agent.",
     "keywords": [
-      "Agent Skills",
+      "Workspace MCP Resources",
       "App Builder",
+      "OpenBB App Builder",
       "Custom Applications",
       "Widget Configuration",
       "FastAPI Backend",
