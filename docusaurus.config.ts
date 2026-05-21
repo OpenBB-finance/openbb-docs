@@ -64,6 +64,18 @@ export default {
 						to: "/workspace/developers/data-integration",
 					},
 					{
+						from: "/workspace/developers/agent-skills",
+						to: "/agents/app-builder-resources",
+					},
+					{
+						from: "/agents/building-an-app",
+						to: "/agents/app-builder-resources",
+					},
+					{
+						from: "/agents/app-building-skill",
+						to: "/agents/app-builder-resources",
+					},
+					{
 						from: "/excel/enterprise",
 						to: "https://openbb.co/pricing",
 					},
@@ -205,6 +217,7 @@ export default {
 					const contentDir = path.join(siteDir, "content");
 					// ODP has sub-sections that each get their own llms.txt
 					const sectionContent: Record<string, string[]> = {
+						agents: [],
 						workspace: [],
 						"odp/desktop": [],
 						"odp/python": [],
@@ -290,6 +303,7 @@ export default {
 					// Group routes by section
 					// ODP has sub-sections that each get their own llms.txt
 					const sectionRoutes: Record<string, string[]> = {
+						agents: [],
 						workspace: [],
 						"odp/desktop": [],
 						"odp/python": [],

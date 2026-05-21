@@ -30,6 +30,7 @@ While it is expected for users to create their apps.json from the UI directly, a
 | `tabs` | object | Collection of tabs, each with an ID, name, and layout configuration |
 | `groups` | array | Defines synchronized parameter groups for widgets. |
 | `prompts` | array | A list of suggested prompts for the current agent. |
+| `mcp_servers` | array | Optional list of MCP servers that can be connected to this app. When provided, the app's page will surface that an MCP server is available to connect to. |
 
 Each tab contains:
 - `id`: Unique identifier for the tab
@@ -55,6 +56,26 @@ For example:
     "What was the last Non-Farm Payrolls (NFP) number?",
     "Plot the 2-year and 10-year Treasury yields.",
     "What is the current 30-year Treasury yield?"
+]
+```
+
+Each MCP server entry contains:
+- `name`: Display name for the MCP server
+- `description`: Short description of what the server provides
+- `url`: The MCP server endpoint URL
+
+When `mcp_servers` is defined, the app's page in OpenBB Workspace will show that an MCP server is available, allowing users to connect to it directly from the app.
+
+For example:
+
+```json
+
+"mcp_servers": [
+    {
+        "name": "OpenBB Docs",
+        "description": "Search and retrieve content from the OpenBB documentation.",
+        "url": "https://openbb-docs-mcp.external.openbb.app/mcp"
+    }
 ]
 ```
 
