@@ -27,6 +27,8 @@ pip install openbb-ai
 
 The code is open source and is [available in this repository](https://github.com/OpenBB-finance/openbb-ai).
 
+For workflow-level debugging across retrieval, tool calls, and reasoning, see [External robustness testing](./ai-features/external-robustness-testing).
+
 ## Building Your First Agent
 
 Every agent starts with a query handler that receives a `QueryRequest` object containing everything your agent needs:

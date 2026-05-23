@@ -26,6 +26,8 @@ Recommended stack: FastAPI with `EventSourceResponse` from `sse_starlette` and O
 
 See this repository to [get started](https://github.com/OpenBB-finance/agents-for-openbb).
 
+If you need a repeatable way to debug unstable agent behavior, see [External robustness testing](./ai-features/external-robustness-testing).
+
 ## Adding an Agent in Workspace
 
 1. Deploy your service (locally or remote).
