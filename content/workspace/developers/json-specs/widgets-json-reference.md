@@ -81,8 +81,18 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
 - **type**
   _Type:_ `string`
   Sets the default visualization type for the widget.
-  _Possible values:_ `"chart"`, `"table"`, `"table_ssrm"`, `"markdown"`, `"metric"`, `"note"`,  `"multi_file_viewer"`, `"live_grid"`, `"newsfeed"`, `"advanced-chart"`, `"chart-highcharts"`, `"chart-vegalite"`, `"youtube"`
+  _Possible values:_ `"chart"`, `"table"`, `"table_ssrm"`, `"markdown"`, `"metric"`, `"note"`,  `"multi_file_viewer"`, `"live_grid"`, `"newsfeed"`, `"advanced-chart"`, `"chart-highcharts"`, `"chart-vegalite"`, `"youtube"`, `"iframe"`
   _Default:_ `"table"`
+
+- **storage**
+  _Type:_ object
+  Persisted, widget-specific configuration. Currently used by the [Iframe](../widget-types/iframe) widget to auto-connect an MCP server when the widget mounts.
+  Contains the following keys:
+
+  - **mcpUrl**
+    _Type:_ `string`
+    The URL of an MCP server to auto-connect when an Iframe widget mounts. Tools exposed by that server become available to Copilot immediately, with no manual URL entry.
+    _Example:_ `"http://localhost:7769/mcp"`
 
 - **raw**
   _Type:_ `boolean`
