@@ -67,6 +67,7 @@
 - [File Viewer](https://docs.openbb.co/workspace/developers/widget-types/file-viewer): Guide to using PDF and multi-PDF viewer widgets in OpenBB Workspace
 - [Highcharts Chart](https://docs.openbb.co/workspace/developers/widget-types/highcharts): Highcharts Chart
 - [HTML](https://docs.openbb.co/workspace/developers/widget-types/html): Learn how to create and customize HTML widgets in OpenBB Workspace, enabling complete control over visualization and interaction design with custom HTML, CSS, and JavaScript.
+- [Iframe](https://docs.openbb.co/workspace/developers/widget-types/iframe): Embed an external web app (such as a Streamlit dashboard) as an iframe widget in OpenBB Workspace, with optional sub-widget export via the Iframe Widget Protocol and auto-connected MCP tools.
 - [Live Grid](https://docs.openbb.co/workspace/developers/widget-types/live-grid): Live Grid
 - [Markdown](https://docs.openbb.co/workspace/developers/widget-types/markdown): Learn how to create and customize markdown widgets in OpenBB Workspace, including basic markdown display and data-rich markdown with dynamic content integration.
 - [Metric](https://docs.openbb.co/workspace/developers/widget-types/metric): Learn how to integrate your own backend with OpenBB Workspace using the cookie-cutter or language-agnostic API approaches, with illustrative guides and principles for handling widget.json files, APIs, interfaces, Python, FastAPI, and more.

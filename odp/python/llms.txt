@@ -35,11 +35,14 @@
 - [Compare Company Facts](https://docs.openbb.co/odp/python/data_models/CompareCompanyFacts): Compare reported company facts and fundamental data points
 - [Compare Groups](https://docs.openbb.co/odp/python/data_models/CompareGroups): Get company data grouped by sector, industry or country and display either performance or valuation metrics
 - [Composite Leading Indicator](https://docs.openbb.co/odp/python/data_models/CompositeLeadingIndicator): Get the composite leading indicator (CLI)
+- [Congress Amendment Info](https://docs.openbb.co/odp/python/data_models/CongressAmendmentInfo): Get details for a specific amendment
+- [Congress Amendments](https://docs.openbb.co/odp/python/data_models/CongressAmendments): Get and filter lists of Congressional Amendments
 - [Congress Bill Info](https://docs.openbb.co/odp/python/data_models/CongressBillInfo): Get summary, status, and other metadata for a specific bill
 - [Congress Bills](https://docs.openbb.co/odp/python/data_models/CongressBills): Get and filter lists of Congressional Bills
+- [Congress Committee Info](https://docs.openbb.co/odp/python/data_models/CongressCommitteeInfo): Get metadata and membership for a single U
 - [Consumer Price Index](https://docs.openbb.co/odp/python/data_models/ConsumerPriceIndex): Get Consumer Price Index (CPI) data by country
 - [COT](https://docs.openbb.co/odp/python/data_models/COT): Get Commitment of Traders Reports
-- [COT Search](https://docs.openbb.co/odp/python/data_models/COTSearch): Get the current Commitment of Traders Reports
+- [COT Search](https://docs.openbb.co/odp/python/data_models/COTSearch): Search current Commitment of Traders Reports
 - [Country Interest Rates](https://docs.openbb.co/odp/python/data_models/CountryInterestRates): Get interest rates by country(s) and duration
 - [Country Profile](https://docs.openbb.co/odp/python/data_models/CountryProfile): Get a profile of country statistics and economic indicators
 - [Crypto Historical](https://docs.openbb.co/odp/python/data_models/CryptoHistorical): Get historical price data for cryptocurrency pair(s) within a provider
@@ -241,6 +244,9 @@ A real-time, quarterly series on total factor productivity (TFP) for the U
 - [MCP Server](https://docs.openbb.co/odp/python/quickstart/mcp): This page details the basics for getting started running the ODP Python Package as a MCP server.
 - [REST API](https://docs.openbb.co/odp/python/quickstart/rest_api): This page details the basics for getting started using the OpenBB Python Package as a REST API.
 - [Workspace Integration](https://docs.openbb.co/odp/python/quickstart/workspace): Get started using the Open Data Platform as a custom Workspace backend. Create visualizations, dashboards, and generate AI insights by connecting your ODP Python Packages directly to the Workspace UI.
+- [cot](https://docs.openbb.co/odp/python/reference/cftc/cot): Get Commitment of Traders Reports
+- [cot_search](https://docs.openbb.co/odp/python/reference/cftc/cot_search): Search current Commitment of Traders Reports
+- [Cftc](https://docs.openbb.co/odp/python/reference/cftc/index): Commands
 - [Commodity](https://docs.openbb.co/odp/python/reference/commodity/index): Menus
 - [petroleum_status_report](https://docs.openbb.co/odp/python/reference/commodity/petroleum_status_report): EIA Weekly Petroleum Status Report
 - [Price](https://docs.openbb.co/odp/python/reference/commodity/price/index): Commands
@@ -504,9 +510,6 @@ A real-time, quarterly series on total factor productivity (TFP) for the U
 - [variance](https://docs.openbb.co/odp/python/reference/quantitative/stats/variance): Calculate the variance of a target column
 - [summary](https://docs.openbb.co/odp/python/reference/quantitative/summary): Learn how to get summary statistics on time series data using Python.  This documentation page provides information on the parameters and return value  of the function.
 - [unitroot_test](https://docs.openbb.co/odp/python/reference/quantitative/unitroot_test): Learn about the Unit Root Test function in Python, including the Augmented  Dickey-Fuller test and the Kwiatkowski-Phillips-Schmidt-Shin test. Explore the parameters,  such as data, target, fuller_reg, and kpss_reg, and understand how to interpret  the unit root tests summary.
-- [cot](https://docs.openbb.co/odp/python/reference/regulators/cftc/cot): Learn how to lookup Commitment of Traders Reports by series ID and view  the results, metadata, warnings, and charts associated with the reports. Understand  the available parameters such as default report, provider, data type, legacy format,  report type, measure, start date, end date, and transform.
-- [cot_search](https://docs.openbb.co/odp/python/reference/regulators/cftc/cot_search): Learn about curated Commitment of Traders Reports series information  and how to perform a search for specific data. Find details on the parameters,  data returned, and available CFTC codes.
-- [Cftc](https://docs.openbb.co/odp/python/reference/regulators/cftc/index): Commands
 - [Regulators](https://docs.openbb.co/odp/python/reference/regulators/index): Menus
 - [cik_map](https://docs.openbb.co/odp/python/reference/regulators/sec/cik_map): Learn how to retrieve the CIK number corresponding to a ticker symbol  using the python obb.regulators.sec.cik_map function. Understand the available parameters,  return values, and data structure.
 - [filing_headers](https://docs.openbb.co/odp/python/reference/regulators/sec/filing_headers): Download the index headers, and cover page if available, for any SEC filing
@@ -545,9 +548,14 @@ A real-time, quarterly series on total factor productivity (TFP) for the U
 - [vwap](https://docs.openbb.co/odp/python/reference/technical/vwap): Learn about the Volume Weighted Average Price (VWAP) and how it measures  the average typical price by volume. Discover how it can be used with intraday charts  to identify general direction. Explore Python examples using the OpenBB OBB package.
 - [wma](https://docs.openbb.co/odp/python/reference/technical/wma): Learn about the Weighted Moving Average (WMA) and how it is used to give  more weight to recent data. Understand its unique calculation and how it compares  to the Simple Moving Average. Find out the parameters for the WMA function, such  as the target and index column names, length, and offset. See an example of using  the WMA function in Python with the OpenBB library to calculate WMA data for historical  stock prices.
 - [zlma](https://docs.openbb.co/odp/python/reference/technical/zlma): Learn about the zero lag exponential moving average (ZLEMA) and how it  can be used to perform EMA calculations on de-lagged data. Explore the parameters  and get examples of implementing ZLEMA in Python.
+- [amendment_info](https://docs.openbb.co/odp/python/reference/uscongress/amendment_info): Get details for a specific amendment
+- [amendment_text_urls](https://docs.openbb.co/odp/python/reference/uscongress/amendment_text_urls): Get document choices for a specific amendment
+- [amendments](https://docs.openbb.co/odp/python/reference/uscongress/amendments): Get and filter lists of Congressional Amendments
 - [bill_info](https://docs.openbb.co/odp/python/reference/uscongress/bill_info): Get summary, status, and other metadata for a specific bill
 - [bill_text_urls](https://docs.openbb.co/odp/python/reference/uscongress/bill_text_urls): Get document choices for a specific bill
 - [bills](https://docs.openbb.co/odp/python/reference/uscongress/bills): Get and filter lists of Congressional Bills
+- [committee_document_urls](https://docs.openbb.co/odp/python/reference/uscongress/committee_document_urls): Get document choices for a Congressional Committee
+- [committee_info](https://docs.openbb.co/odp/python/reference/uscongress/committee_info): Get metadata and membership for a single U
 - [Uscongress](https://docs.openbb.co/odp/python/reference/uscongress/index): Commands
 - [Environment Variables](https://docs.openbb.co/odp/python/settings/environment_variables): This section details configuring the ODP settings and environment variables.
 - [Settings](https://docs.openbb.co/odp/python/settings/index): This section details the various user and system settings and preferences for the ODP Python Package.
