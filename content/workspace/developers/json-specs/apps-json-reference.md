@@ -59,6 +59,20 @@ For example:
 ]
 ```
 
+#### Tagging widgets and tabs in prompts
+
+A prompt can reference a specific widget so the agent knows exactly which data to use. Use the `@[id:WIDGET_ID]` mention syntax inside the prompt string, where `WIDGET_ID` is the backend widget's id. When the prompt is rendered in OpenBB Workspace, the mention resolves to a chip showing the widget's name (for example, `@Peer Comparison`).
+
+For example, to tag a backend widget called "Peer Comparison" with the id `peer_comparison`:
+
+```json
+"prompts": [
+    "Compare $SYMBOL to its peers using @[id:peer_comparison] — which fundamentals stand out?"
+]
+```
+
+When rendered, `@[id:peer_comparison]` resolves to a `@Peer Comparison` chip. If the referenced widget is not available — for example, the backend is not connected — the mention falls through and displays as the raw `@[id:...]` string.
+
 Each MCP server entry contains:
 - `name`: Display name for the MCP server
 - `description`: Short description of what the server provides
