@@ -106,7 +106,7 @@ if request.workspace_state and request.workspace_state.current_dashboard_info:
 - **`urls`** - URLs shared in chat (max 4)
 - **`timezone`** - User's browser timezone (e.g., "America/New_York")
 - **`api_keys`** - Custom API keys from user
-- **`workspace_options`** - Enabled feature flags (including custom ones)
+- **`workspace_options`** - Workspace option values from AI feature settings. See [Custom agent features](./ai-features/custom-agent-features) for the payload shape.
 
 ## Requesting Widget Data
 
@@ -464,10 +464,12 @@ To see the available models check [https://github.com/OpenBB-finance/openbb-ai/b
 - `urls` - URL pages shared in chat for context (maximum 4 URLs allowed)
 - `timezone` - User's browser-detected timezone (e.g., "America/New_York", "Europe/London", "UTC")
 - `api_keys` - Custom API keys provided by user
-- `workspace_options` - Feature flags and custom options. Standard flags include:
+- `workspace_options` - Workspace option values from AI feature settings. Standard flags include:
   - `"widget-dashboard-select"` - Access to user-selected widgets
   - `"widget-dashboard-search"` - Access to all dashboard widgets
-  - Custom features defined in agent's `agents.json` by the user
+  - Custom features defined in the agent's `agents.json`
+
+See [Custom agent features](./ai-features/custom-agent-features) for the `workspace_options` payload shape.
 
 **`Widget`** - Widget definition representing a data source endpoint
 - `uuid` - Unique identifier for this widget instance (UUID format: `550e8400-e29b-41d4-a716-446655440000`)

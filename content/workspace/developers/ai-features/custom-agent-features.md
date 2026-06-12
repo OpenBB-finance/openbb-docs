@@ -3,11 +3,11 @@ title: Custom agent features
 sidebar_position: 8
 description: Configure and manage custom agent features based on workspace options
 keywords:
-- features
-- configuration
-- workspace options
-- custom agents
-- SSE
+  - features
+  - configuration
+  - workspace options
+  - custom agents
+  - SSE
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
@@ -18,9 +18,9 @@ Create agents that can dynamically enable or disable features based on workspace
 
 Reference implementation in [this GitHub repository](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/37-vanilla-agent-custom-features).
 
-<img className="pro-border-gradient" width="500" alt="Custom agent features - on and off" src="https://openbb-cms.directus.app/assets/f304643a-654b-4156-a4c4-dea934d18012.png" />
+<img className="pro-border-gradient" width="500" alt="Custom agent features - on and off" src="https://openbb-cms.directus.app/assets/f6d38500-4a9a-41e9-93b3-5579f2cb24c0.png" />
 
-<img className="pro-border-gradient" width="500" alt="Custom agent features - on and on" src="https://openbb-cms.directus.app/assets/aa51354c-b611-4c99-829c-cf6e35eb884b.png" />
+<img className="pro-border-gradient" width="500" alt="Custom agent features - on and off" src="https://openbb-cms.directus.app/assets/b7b268df-e576-4cc7-837d-d7358fef23bb.png" />
 
 ## Architecture
 
@@ -44,9 +44,28 @@ return JSONResponse(content={
                 "description": "Allows the copilot to do deep research",
             },
             "web-search": {
-                "label": "Web Search", 
+                "label": "Web Search",
                 "default": True,
                 "description": "Allows the copilot to search the web.",
+            },
+            "model": {
+                "label": "Model",
+                "type": "select",
+                "default": "claude-sonnet-4-20250514",
+                "description": "Select the LLM model to use.",
+                "options": [
+                    {"label": "Claude Opus 4", "value": "claude-opus-4-0-20250514"},
+                    {"label": "Claude Sonnet 4", "value": "claude-sonnet-4-20250514"},
+                    {"label": "GPT-4o", "value": "gpt-4o"},
+                    {"label": "GPT-4o mini", "value": "gpt-4o-mini"},
+                ],
+            },
+            "agent-name": {
+                "label": "Name of Agent",
+                "type": "text",
+                "default": "Example Agent",
+                "description": "Set the name the agent uses to introduce itself.",
+                "placeholder": "e.g. My Custom Agent",
             },
         },
     }
@@ -55,10 +74,12 @@ return JSONResponse(content={
 
 ### Feature configuration
 
-- **Simple features**: Boolean values for basic on/off features
-- **Complex features**: Objects with `label`, `default`, and `description` properties
-- **Built-in features**: Standard features like `streaming`, `widget-dashboard-select`, `widget-dashboard-search`
-- **Custom features**: User-defined features with custom behavior
+- **Boolean features**: Simple on/off toggles.
+  - Objects with `label`, `default`, and `description` properties
+- **Text features**: Free-form string input.
+  - Objects with `label`, `type: "text"`, `default`, `description`, and optional `placeholder`
+- **Select features**: Dropdown selection.
+  - Objects with `label`, `type: "select"`, `default`, `description`, and `options` (array of `{label, value}` objects)
 
 ### Query flow
 
@@ -70,9 +91,10 @@ return JSONResponse(content={
 
 ### OpenBB AI SDK
 
-- `QueryRequest.workspace_options`: List of enabled feature names
+- `QueryRequest.workspace_options`: Dictionary of option values keyed by option id
 - `message_chunk(text)`: Streams response content with feature-aware messaging
-- Feature checking via simple list membership: `"feature-name" in workspace_options`
+- Boolean features appear as `true` or `false`: `workspace_options["web-search"]`
+- Text and select features appear as string values: `workspace_options["model"]`
 
 ## Core logic
 
@@ -80,22 +102,28 @@ return JSONResponse(content={
 from typing import AsyncGenerator
 from openbb_ai import message_chunk
 from openbb_ai.models import MessageChunkSSE, QueryRequest
-from fastapi.responses import JSONResponse
 from sse_starlette.sse import EventSourceResponse
 
 @app.post("/v1/query")
 async def query(request: QueryRequest) -> EventSourceResponse:
     # Access workspace options from request payload
-    workspace_options = getattr(request, "workspace_options", [])
+    # Example: {"web-search": true, "model": "gpt-4o", "agent-name": "My Bot"}
+    workspace_options = getattr(request, "workspace_options", {}) or {}
 
-    # Check which features are enabled
-    deep_research_enabled = "deep-research" in workspace_options
-    web_search_enabled = "web-search" in workspace_options
+    # Check boolean features
+    deep_research_enabled = bool(workspace_options.get("deep-research", False))
+    web_search_enabled = bool(workspace_options.get("web-search", True))
+
+    # Read text/select feature values
+    model = workspace_options.get("model", "claude-sonnet-4-20250514")
+    agent_name = workspace_options.get("agent-name", "Example Agent")
 
     # Build feature status message
     features_msg = (
         f"- Deep Research: {'✅ Enabled' if deep_research_enabled else '❌ Disabled'}\n"
-        f"- Web Search: {'✅ Enabled' if web_search_enabled else '❌ Disabled'}"
+        f"- Web Search: {'✅ Enabled' if web_search_enabled else '❌ Disabled'}\n"
+        f"- Model: {model}\n"
+        f"- Agent Name: {agent_name}"
     )
 
     # Include feature status in system prompt
@@ -103,7 +131,7 @@ async def query(request: QueryRequest) -> EventSourceResponse:
         {
             "role": "system",
             "content": (
-                "You are a simple greeting agent.\n"
+                f'Your name is "{agent_name}".\n'
                 "Greet the user and let them know their current feature settings:\n"
                 f"{features_msg}\n"
                 "Keep your response brief and friendly."
@@ -139,36 +167,69 @@ async def query(request: QueryRequest) -> EventSourceResponse:
 ## Feature types
 
 ### Boolean features
-Simple on/off switches in the agent descriptor:
-```python
-"features": {
-    "streaming": True,
-    "some-feature": False
-}
-```
 
-### Complex features
-Rich feature objects with metadata:
+Simple on/off toggles with a label and default state:
+
 ```python
 "features": {
-    "research-mode": {
-        "label": "Research Mode",
-        "default": True,
-        "description": "Enables comprehensive research capabilities"
+    "deep-research": {
+        "label": "Deep Research",
+        "default": False,
+        "description": "Allows the copilot to do deep research",
     }
 }
 ```
 
-### Conditional behavior
-Adjust agent behavior based on enabled features:
+### Text features
+
+Free-form string input with an optional placeholder:
+
 ```python
-workspace_options = getattr(request, "workspace_options", [])
+"features": {
+    "agent-name": {
+        "label": "Name of Agent",
+        "type": "text",
+        "default": "Example Agent",
+        "description": "Set the name the agent uses to introduce itself.",
+        "placeholder": "e.g. My Custom Agent",
+    }
+}
+```
 
-if "research-mode" in workspace_options:
-    # Enable research capabilities
+### Select features
+
+Dropdown selection with a list of options:
+
+```python
+"features": {
+    "model": {
+        "label": "Model",
+        "type": "select",
+        "default": "claude-sonnet-4-20250514",
+        "description": "Select the LLM model to use.",
+        "options": [
+            {"label": "Claude Opus 4", "value": "claude-opus-4-0-20250514"},
+            {"label": "Claude Sonnet 4", "value": "claude-sonnet-4-20250514"},
+            {"label": "GPT-4o", "value": "gpt-4o"},
+            {"label": "GPT-4o mini", "value": "gpt-4o-mini"},
+        ],
+    }
+}
+```
+
+### Reading feature values
+
+Boolean, text, and select values are sent in `workspace_options` as a dictionary keyed by option id:
+
+```python
+workspace_options = getattr(request, "workspace_options", {}) or {}
+
+# Boolean features
+if workspace_options.get("deep-research", False):
+    # Enable deep research capabilities
     pass
 
-if "web-search" in workspace_options:
-    # Enable web search functionality
-    pass
+# Text/select features
+model = workspace_options.get("model", "claude-sonnet-4-20250514")
+agent_name = workspace_options.get("agent-name", "Example Agent")
 ```

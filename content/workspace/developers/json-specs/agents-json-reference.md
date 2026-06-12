@@ -107,6 +107,8 @@ Configuration object that declares the capabilities that your agent advertises t
 
 See continuation of this section for details on each feature.
 
+Custom feature controls are also declared in `features`. Use object values for custom toggle, text, and select controls. See [Custom agent features](../ai-features/custom-agent-features) for the control schema and `workspace_options` request payload.
+
 #### `streaming`: Streaming responses
 
 The streaming feature enables Server-Sent Events (SSE) for your agent's responses, allowing real-time streaming of content back to users. This provides a better user experience with progressive response rendering. This feature defaults to `True` for all agents even if not explicitly set.
