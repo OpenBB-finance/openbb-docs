@@ -188,6 +188,74 @@ The bridge below is the complete client side of the protocol — announce on loa
 })();
 ```
 
+## Pushing parameters back to Workspace
+
+The protocol messages above cover the **inbound** direction — Workspace pushing parameter values *into* the iframe with `openbb-params-update`. The parameter bridge is the **outbound** direction: a widget pushes a new parameter value *back to* Workspace. Workspace persists the update and re-sends it to every widget [grouped](../json-specs/apps-json-reference) on that parameter, so one widget can drive the rest of the dashboard.
+
+This lets you build interactive controls — a ticker selector, a date picker, a set of buttons — inside a widget and have the rest of the dashboard react to them.
+
+### The update message
+
+Send an `openbb:widget-params:update` message. Either update all params at once:
+
+```js
+{ type: "openbb:widget-params:update", params: { ticker: "NVDA" } }
+```
+
+…or a single named param:
+
+```js
+{ type: "openbb:widget-params:update", paramName: "ticker", value: "NVDA" }
+```
+
+For the update to propagate, the receiving widgets must share the same `paramName` and be in the same group. In `apps.json`, group the widgets with a `param` group on that parameter:
+
+```json
+"groups": [
+  {
+    "name": "Group 1",
+    "type": "param",
+    "paramName": "ticker",
+    "widgetIds": ["mock_quote", "bridge_iframe"],
+    "defaultValue": "AAPL"
+  }
+]
+```
+
+### Sending the message: iframe vs. HtmlViewer
+
+How you send the message depends on the widget type, because the two forward it differently:
+
+- **`iframe`** — the embedded page posts the message **directly** to the parent with `window.parent.postMessage(...)`.
+- **`html` (HtmlViewer)** — the page dispatches a **`CustomEvent`**; the bridge script Workspace injects into the HtmlViewer forwards it for you. The page must **not** `postMessage` itself.
+
+**Iframe widget** — post the update straight to the parent window:
+
+```js
+function pick(ticker) {
+  const msg = { type: "openbb:widget-params:update", params: { ticker } };
+  (window.top || window.parent).postMessage(msg, "*");
+}
+```
+
+**HtmlViewer widget** — dispatch a `CustomEvent` and let the injected bridge forward it (with the security token). Do not call `postMessage` directly:
+
+```js
+function pick(ticker) {
+  window.dispatchEvent(new CustomEvent("openbb:widget-params:update", {
+    detail: { type: "openbb:widget-params:update", params: { ticker } }
+  }));
+}
+```
+
+After Workspace persists the update, it re-sends the new value to every widget in the group, which then re-fetch with the new parameter — the full round-trip from one widget's button click to the whole group updating.
+
+:::note
+The HtmlViewer (`type: "html"`) outbound bridge relies on the page's JavaScript running so it can dispatch the `CustomEvent`. JavaScript in an [HTML widget](./html) executes, so the page's event handlers run as written.
+:::
+
+A complete working backend showing both paths (mock data, no API keys) is in the [iframe parameter bridge example](https://github.com/OpenBB-finance/backends-for-openbb/tree/main/widget-examples/iframe-bridge-example).
+
 ## Auto-connecting an MCP server
 
 Set `storage.mcpUrl` in the widget definition to attach an MCP server automatically when the iframe mounts. Its tools become available to Copilot with no manual setup:
