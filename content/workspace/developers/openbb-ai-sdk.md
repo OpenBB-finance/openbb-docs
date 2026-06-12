@@ -1,6 +1,6 @@
 ---
 title: OpenBB AI SDK
-sidebar_position: 8
+sidebar_position: 9
 description: Build custom agents for OpenBB Workspace using the OpenBB AI SDK helpers and models
 keywords:
 - OpenBB AI SDK
