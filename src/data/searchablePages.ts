@@ -11,6 +11,63 @@ export interface SearchablePage {
 
 export const searchablePages: SearchablePage[] = [
   {
+    "title": "Workspace MCP Overview",
+    "path": "/agents/workspace-mcp-overview",
+    "category": "Agents",
+    "description": "Understand how the OpenBB Workspace MCP exposes a live Workspace browser session to external AI agents.",
+    "keywords": [
+      "OpenBB Workspace MCP",
+      "Model Context Protocol",
+      "MCP server",
+      "AI agents",
+      "Workspace Companion",
+      "dashboard automation"
+    ]
+  },
+  {
+    "title": "Workspace MCP Quickstart",
+    "path": "/agents/workspace-mcp-quickstart",
+    "category": "Agents",
+    "description": "Run the OpenBB Workspace MCP sidecar, connect Workspace, and attach an external MCP client.",
+    "keywords": [
+      "OpenBB Workspace MCP",
+      "Workspace MCP quickstart",
+      "MCP client setup",
+      "Workspace Companion",
+      "Claude Code",
+      "Cursor"
+    ]
+  },
+  {
+    "title": "Workspace MCP Tools",
+    "path": "/agents/workspace-mcp-tools",
+    "category": "Agents",
+    "description": "Reference for the OpenBB Workspace MCP tools, prompts, resources, parameters, and recommended calling patterns.",
+    "keywords": [
+      "OpenBB Workspace MCP tools",
+      "MCP tool reference",
+      "Workspace dashboard tools",
+      "Workspace widget tools",
+      "Workspace backend tools",
+      "Workspace apps"
+    ]
+  },
+  {
+    "title": "App Builder Resources",
+    "path": "/agents/app-builder-resources",
+    "category": "Agents",
+    "description": "Use Workspace MCP app-builder resources, or install the generated OpenBB app-builder skill, to build custom OpenBB Workspace applications with an AI agent.",
+    "keywords": [
+      "Workspace MCP Resources",
+      "App Builder",
+      "OpenBB App Builder",
+      "Custom Applications",
+      "Widget Configuration",
+      "FastAPI Backend",
+      "Dashboard Design"
+    ]
+  },
+  {
     "title": "Introduction",
     "path": "/cli/",
     "category": "CLI",

@@ -29,6 +29,38 @@ PLATFORM_REFERENCE_UL_ELEMENT = '<ul className="grid grid-cols-1 md:grid-cols-2 
 # pylint: disable=redefined-outer-name
 
 
+def escape_mdx_curly_braces(text: Optional[str]) -> str:
+    """Escape curly braces so Docusaurus/MDX does not treat them as JSX expressions.
+
+    MDX interprets ``{...}`` in markdown as a JavaScript expression, which breaks the
+    build when docstring-derived text contains literal braces (e.g. ``{congress}``).
+    Braces inside fenced code blocks and inline code spans are left untouched, since
+    MDX does not evaluate expressions there.
+
+    Parameters
+    ----------
+    text: Optional[str]
+        Text that may contain literal curly braces.
+
+    Returns
+    -------
+    str
+        Text with curly braces outside of code escaped as HTML entities.
+    """
+
+    if not text:
+        return text or ""
+
+    # Split keeping fenced code blocks and inline code spans as their own segments.
+    # Captured delimiters land at odd indices; plain text lands at even indices.
+    parts = re.split(r"(```.*?```|`[^`]*`)", text, flags=re.DOTALL)
+    for i, part in enumerate(parts):
+        if i % 2 == 0:
+            parts[i] = part.replace("{", "&#123;").replace("}", "&#125;")
+
+    return "".join(parts)
+
+
 class Console:
     """Console class to log messages to the console."""
 
@@ -112,6 +144,8 @@ def create_reference_markdown_intro(
         Introduction section for the markdown file
     """
 
+    description = escape_mdx_curly_braces(description)
+
     deprecation_message = (
         ":::caution Deprecated\n" f"{deprecated['message']}\n" ":::\n\n"
         if deprecated["flag"]
@@ -174,14 +208,14 @@ def create_reference_markdown_tabular_section(
         content = f"<TabItem value='{provider}' label='{provider}'>\n\n"
 
         for i, param in enumerate(filtered):
-            name = param.get("name", "")
+            name = escape_mdx_curly_braces(param.get("name", ""))
             param_type = (
                 param.get("type", "")
                 .replace("Union[date | None, str]", "date | str | None")
                 .replace("Union[date, str]", "date | str")
                 .replace("Union[str, list[str]]", "str | list[str]")
             )
-            description = param.get("description", "")
+            description = escape_mdx_curly_braces(param.get("description", ""))
 
             # Use bold and code formatting instead of headings
             content += f"**{name}**: `{param_type}`<br/>\n"
@@ -190,7 +224,7 @@ def create_reference_markdown_tabular_section(
 
             # Only show default if it exists
             if default not in (None, "", "None"):
-                content += f"*Default:* {default}<br/>\n"
+                content += f"*Default:* {escape_mdx_curly_braces(str(default))}<br/>\n"
 
             if description:
                 # Format the description to preserve newlines and indentation
@@ -224,14 +258,14 @@ def create_reference_markdown_tabular_section(
                     if isinstance(options, list):
                         # List format
                         for option in options:
-                            content += f"- {option}\n"
+                            content += f"- {escape_mdx_curly_braces(str(option))}\n"
                     elif isinstance(options, str):
                         # String format - might be comma-separated or already formatted
                         if "," in options:
                             for option in options.split(","):
-                                content += f"- {option.strip()}\n"
+                                content += f"- {escape_mdx_curly_braces(option.strip())}\n"
                         else:
-                            content += f"- {options}\n"
+                            content += f"- {escape_mdx_curly_braces(options)}\n"
 
                     content += "</details>\n\n"
 
@@ -272,7 +306,7 @@ def create_reference_markdown_returns_section(returns: List[Dict[str, str]]) -> 
     # Process each return item
     for params in returns:
         if isinstance(params, dict):
-            name = params.get("name", "")
+            name = escape_mdx_curly_braces(params.get("name", ""))
             type_str = params.get("type", "")
             description = params.get("description", "")
 
@@ -287,11 +321,11 @@ def create_reference_markdown_returns_section(returns: List[Dict[str, str]]) -> 
                 markdown += "```\n\n"
             else:
                 # For single-line descriptions, use regular paragraph formatting
-                markdown += f"{description}\n\n"
+                markdown += f"{escape_mdx_curly_braces(description)}\n\n"
 
         elif isinstance(params, str):
             # For simple string returns, just add them directly
-            markdown += f"{params}\n"
+            markdown += f"{escape_mdx_curly_braces(params)}\n"
 
     markdown += "---\n"
 
@@ -677,7 +711,7 @@ def generate_platform_markdown(paths: Dict) -> None:
         reference_markdown_content += create_reference_markdown_intro(
             path[1:], description, path_data["deprecated"]
         )
-        reference_markdown_content += path_data["examples"]
+        reference_markdown_content += escape_mdx_curly_braces(path_data["examples"])
 
         if path_parameters_fields := path_data["parameters"]:
             reference_markdown_content += create_reference_markdown_tabular_section(

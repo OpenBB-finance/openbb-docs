@@ -19,10 +19,12 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="HTML | OpenBB Workspace Docs" />
 
-HTML widgets provide control over visualization design through server-rendered HTML, enabling the creation of custom styled dashboards and data displays. 
+HTML widgets provide control over visualization design through server-rendered HTML, enabling the creation of custom styled dashboards and data displays.
 
-:::warning Security Note
-HTML widgets render static HTML content only. JavaScript code within the HTML will not be executed for security reasons. All interactivity must be achieved through server-side logic and HTML/CSS features only.
+JavaScript inside the returned HTML **does execute**, so you can build interactive controls — buttons, inputs, event handlers — directly in the widget. To push a parameter value from an HtmlViewer widget back to Workspace (for example, to drive other widgets on the dashboard), dispatch a `CustomEvent` and let the injected bridge forward it; see [Pushing parameters back to Workspace](./iframe#pushing-parameters-back-to-workspace).
+
+:::note
+Treat HTML widgets like any other code you run: only render markup and scripts you trust. The page runs in the embedded context, so avoid injecting unsanitized third-party content into the HTML you return.
 :::
 
 <img className="pro-border-gradient" width="800" alt="HTML Widget Example" src="https://openbb-cms.directus.app/assets/8234f346-6b2e-49b2-b5de-7150c770a756.png" />
@@ -211,13 +213,11 @@ def html_widget():
             <button class="button" onclick="alert('Refreshing data...')">Refresh Dashboard</button>
         </div>
     </div>
-    
-    <!-- Note: JavaScript will not execute in HTML widgets for security reasons -->
-    <!-- This script tag is included only as an example - it will not run -->
+
     <script>
-        // This JavaScript code will NOT execute
-        // HTML widgets only render static HTML and CSS
-        // All dynamic behavior must be implemented server-side
+        // JavaScript inside an HTML widget executes, so event handlers like the
+        // onclick above run as written. You can also dispatch the parameter-bridge
+        // CustomEvent here to push values back to Workspace.
     </script>
 </body>
 </html>
@@ -230,18 +230,18 @@ The gridData parameter specifies the widget's size in the OpenBB Workspace grid 
 
 **Complete Design Control**: HTML widgets allow extensive customization through HTML markup and inline CSS styling, enabling the creation of professional-grade interfaces that match your organization's branding and design requirements.
 
-**Server-Side Rendering**: All content is generated server-side, ensuring security while allowing dynamic HTML generation based on real-time data, calculations, and API responses from your backend.
+**Server-Side Rendering**: Content is generated server-side, allowing dynamic HTML generation based on real-time data, calculations, and API responses from your backend.
+
+**Client-Side Interactivity**: JavaScript in the returned HTML executes, so you can add event handlers, build interactive controls, and push parameter updates back to Workspace through the [parameter bridge](./iframe#pushing-parameters-back-to-workspace).
 
 **Rich Styling Options**: Leverage the full power of inline CSS for advanced styling including animations, gradients, responsive layouts, and professional visual design that creates engaging dashboard experiences.
 
-**Data Integration**: Generate HTML content dynamically on the server based on live data sources, enabling real-time portfolio monitoring, market data display, and dynamic performance tracking through server-side updates.
+**Data Integration**: Generate HTML content dynamically on the server based on live data sources, enabling real-time portfolio monitoring, market data display, and dynamic performance tracking.
 
 ## Best Practices
 
 - Use semantic HTML structure for accessibility and maintainability
 - Implement responsive design patterns using CSS flexbox and grid layouts
-- Generate all dynamic content server-side before returning the HTML response
-- Use CSS animations and transitions for visual effects instead of JavaScript
-- Handle all data fetching and processing in the Python backend before rendering
-- Consider using HTML forms with server endpoints for user interactions
-- Refresh widgets periodically to update data rather than relying on client-side updates
+- Generate data-heavy content server-side before returning the HTML response, and use client-side JavaScript for interactivity
+- Only render markup and scripts you trust; avoid injecting unsanitized third-party content into the returned HTML
+- Use the [parameter bridge](./iframe#pushing-parameters-back-to-workspace) to drive other dashboard widgets from a control in the widget

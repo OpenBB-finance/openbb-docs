@@ -30,6 +30,7 @@ While it is expected for users to create their apps.json from the UI directly, a
 | `tabs` | object | Collection of tabs, each with an ID, name, and layout configuration |
 | `groups` | array | Defines synchronized parameter groups for widgets. |
 | `prompts` | array | A list of suggested prompts for the current agent. |
+| `mcp_servers` | array | Optional list of MCP servers that can be connected to this app. When provided, the app's page will surface that an MCP server is available to connect to. |
 
 Each tab contains:
 - `id`: Unique identifier for the tab
@@ -55,6 +56,40 @@ For example:
     "What was the last Non-Farm Payrolls (NFP) number?",
     "Plot the 2-year and 10-year Treasury yields.",
     "What is the current 30-year Treasury yield?"
+]
+```
+
+#### Tagging widgets and tabs in prompts
+
+A prompt can reference a specific widget so the agent knows exactly which data to use. Use the `@[id:WIDGET_ID]` mention syntax inside the prompt string, where `WIDGET_ID` is the backend widget's id. When the prompt is rendered in OpenBB Workspace, the mention resolves to a chip showing the widget's name (for example, `@Peer Comparison`).
+
+For example, to tag a backend widget called "Peer Comparison" with the id `peer_comparison`:
+
+```json
+"prompts": [
+    "Compare $SYMBOL to its peers using @[id:peer_comparison] — which fundamentals stand out?"
+]
+```
+
+When rendered, `@[id:peer_comparison]` resolves to a `@Peer Comparison` chip. If the referenced widget is not available — for example, the backend is not connected — the mention falls through and displays as the raw `@[id:...]` string.
+
+Each MCP server entry contains:
+- `name`: Display name for the MCP server
+- `description`: Short description of what the server provides
+- `url`: The MCP server endpoint URL
+
+When `mcp_servers` is defined, the app's page in OpenBB Workspace will show that an MCP server is available, allowing users to connect to it directly from the app.
+
+For example:
+
+```json
+
+"mcp_servers": [
+    {
+        "name": "OpenBB Docs",
+        "description": "Search and retrieve content from the OpenBB documentation.",
+        "url": "https://openbb-docs-mcp.external.openbb.app/mcp"
+    }
 ]
 ```
 
