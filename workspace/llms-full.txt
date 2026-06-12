@@ -3124,11 +3124,11 @@ title: Custom agent features
 sidebar_position: 8
 description: Configure and manage custom agent features based on workspace options
 keywords:
-- features
-- configuration
-- workspace options
-- custom agents
-- SSE
+  - features
+  - configuration
+  - workspace options
+  - custom agents
+  - SSE
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
@@ -3139,9 +3139,9 @@ Create agents that can dynamically enable or disable features based on workspace
 
 Reference implementation in [this GitHub repository](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/37-vanilla-agent-custom-features).
 
-<img className="pro-border-gradient" width="500" alt="Custom agent features - on and off" src="https://openbb-cms.directus.app/assets/f304643a-654b-4156-a4c4-dea934d18012.png" />
+<img className="pro-border-gradient" width="500" alt="Custom agent features - on and off" src="https://openbb-cms.directus.app/assets/f6d38500-4a9a-41e9-93b3-5579f2cb24c0.png" />
 
-<img className="pro-border-gradient" width="500" alt="Custom agent features - on and on" src="https://openbb-cms.directus.app/assets/aa51354c-b611-4c99-829c-cf6e35eb884b.png" />
+<img className="pro-border-gradient" width="500" alt="Custom agent features - on and off" src="https://openbb-cms.directus.app/assets/b7b268df-e576-4cc7-837d-d7358fef23bb.png" />
 
 ## Architecture
 
@@ -3165,9 +3165,28 @@ return JSONResponse(content={
                 "description": "Allows the copilot to do deep research",
             },
             "web-search": {
-                "label": "Web Search", 
+                "label": "Web Search",
                 "default": True,
                 "description": "Allows the copilot to search the web.",
+            },
+            "model": {
+                "label": "Model",
+                "type": "select",
+                "default": "claude-sonnet-4-20250514",
+                "description": "Select the LLM model to use.",
+                "options": [
+                    {"label": "Claude Opus 4", "value": "claude-opus-4-0-20250514"},
+                    {"label": "Claude Sonnet 4", "value": "claude-sonnet-4-20250514"},
+                    {"label": "GPT-4o", "value": "gpt-4o"},
+                    {"label": "GPT-4o mini", "value": "gpt-4o-mini"},
+                ],
+            },
+            "agent-name": {
+                "label": "Name of Agent",
+                "type": "text",
+                "default": "Example Agent",
+                "description": "Set the name the agent uses to introduce itself.",
+                "placeholder": "e.g. My Custom Agent",
             },
         },
     }
@@ -3176,10 +3195,12 @@ return JSONResponse(content={
 
 ### Feature configuration
 
-- **Simple features**: Boolean values for basic on/off features
-- **Complex features**: Objects with `label`, `default`, and `description` properties
-- **Built-in features**: Standard features like `streaming`, `widget-dashboard-select`, `widget-dashboard-search`
-- **Custom features**: User-defined features with custom behavior
+- **Boolean features**: Simple on/off toggles.
+  - Objects with `label`, `default`, and `description` properties
+- **Text features**: Free-form string input.
+  - Objects with `label`, `type: "text"`, `default`, `description`, and optional `placeholder`
+- **Select features**: Dropdown selection.
+  - Objects with `label`, `type: "select"`, `default`, `description`, and `options` (array of `{label, value}` objects)
 
 ### Query flow
 
@@ -3191,9 +3212,10 @@ return JSONResponse(content={
 
 ### OpenBB AI SDK
 
-- `QueryRequest.workspace_options`: List of enabled feature names
+- `QueryRequest.workspace_options`: Dictionary of option values keyed by option id
 - `message_chunk(text)`: Streams response content with feature-aware messaging
-- Feature checking via simple list membership: `"feature-name" in workspace_options`
+- Boolean features appear as `true` or `false`: `workspace_options["web-search"]`
+- Text and select features appear as string values: `workspace_options["model"]`
 
 ## Core logic
 
@@ -3201,22 +3223,28 @@ return JSONResponse(content={
 from typing import AsyncGenerator
 from openbb_ai import message_chunk
 from openbb_ai.models import MessageChunkSSE, QueryRequest
-from fastapi.responses import JSONResponse
 from sse_starlette.sse import EventSourceResponse
 
 @app.post("/v1/query")
 async def query(request: QueryRequest) -> EventSourceResponse:
     # Access workspace options from request payload
-    workspace_options = getattr(request, "workspace_options", [])
+    # Example: {"web-search": true, "model": "gpt-4o", "agent-name": "My Bot"}
+    workspace_options = getattr(request, "workspace_options", {}) or {}
 
-    # Check which features are enabled
-    deep_research_enabled = "deep-research" in workspace_options
-    web_search_enabled = "web-search" in workspace_options
+    # Check boolean features
+    deep_research_enabled = bool(workspace_options.get("deep-research", False))
+    web_search_enabled = bool(workspace_options.get("web-search", True))
+
+    # Read text/select feature values
+    model = workspace_options.get("model", "claude-sonnet-4-20250514")
+    agent_name = workspace_options.get("agent-name", "Example Agent")
 
     # Build feature status message
     features_msg = (
         f"- Deep Research: {'✅ Enabled' if deep_research_enabled else '❌ Disabled'}\n"
-        f"- Web Search: {'✅ Enabled' if web_search_enabled else '❌ Disabled'}"
+        f"- Web Search: {'✅ Enabled' if web_search_enabled else '❌ Disabled'}\n"
+        f"- Model: {model}\n"
+        f"- Agent Name: {agent_name}"
     )
 
     # Include feature status in system prompt
@@ -3224,7 +3252,7 @@ async def query(request: QueryRequest) -> EventSourceResponse:
         {
             "role": "system",
             "content": (
-                "You are a simple greeting agent.\n"
+                f'Your name is "{agent_name}".\n'
                 "Greet the user and let them know their current feature settings:\n"
                 f"{features_msg}\n"
                 "Keep your response brief and friendly."
@@ -3260,39 +3288,73 @@ async def query(request: QueryRequest) -> EventSourceResponse:
 ## Feature types
 
 ### Boolean features
-Simple on/off switches in the agent descriptor:
-```python
-"features": {
-    "streaming": True,
-    "some-feature": False
-}
-```
 
-### Complex features
-Rich feature objects with metadata:
+Simple on/off toggles with a label and default state:
+
 ```python
 "features": {
-    "research-mode": {
-        "label": "Research Mode",
-        "default": True,
-        "description": "Enables comprehensive research capabilities"
+    "deep-research": {
+        "label": "Deep Research",
+        "default": False,
+        "description": "Allows the copilot to do deep research",
     }
 }
 ```
 
-### Conditional behavior
-Adjust agent behavior based on enabled features:
+### Text features
+
+Free-form string input with an optional placeholder:
+
 ```python
-workspace_options = getattr(request, "workspace_options", [])
-
-if "research-mode" in workspace_options:
-    # Enable research capabilities
-    pass
-
-if "web-search" in workspace_options:
-    # Enable web search functionality
-    pass
+"features": {
+    "agent-name": {
+        "label": "Name of Agent",
+        "type": "text",
+        "default": "Example Agent",
+        "description": "Set the name the agent uses to introduce itself.",
+        "placeholder": "e.g. My Custom Agent",
+    }
+}
 ```
+
+### Select features
+
+Dropdown selection with a list of options:
+
+```python
+"features": {
+    "model": {
+        "label": "Model",
+        "type": "select",
+        "default": "claude-sonnet-4-20250514",
+        "description": "Select the LLM model to use.",
+        "options": [
+            {"label": "Claude Opus 4", "value": "claude-opus-4-0-20250514"},
+            {"label": "Claude Sonnet 4", "value": "claude-sonnet-4-20250514"},
+            {"label": "GPT-4o", "value": "gpt-4o"},
+            {"label": "GPT-4o mini", "value": "gpt-4o-mini"},
+        ],
+    }
+}
+```
+
+### Reading feature values
+
+Boolean, text, and select values are sent in `workspace_options` as a dictionary keyed by option id:
+
+```python
+workspace_options = getattr(request, "workspace_options", {}) or {}
+
+# Boolean features
+if workspace_options.get("deep-research", False):
+    # Enable deep research capabilities
+    pass
+
+# Text/select features
+model = workspace_options.get("model", "claude-sonnet-4-20250514")
+agent_name = workspace_options.get("agent-name", "Example Agent")
+```
+
 
 ---
 
@@ -4590,6 +4652,187 @@ async def query(request: QueryRequest) -> EventSourceResponse:
 ---
 
 ---
+title: User feedback
+sidebar_position: 10
+description: Receive and persist user feedback (thumbs up/down) from the workspace UI
+keywords:
+- feedback
+- thumbs up
+- thumbs down
+- user feedback
+- vote
+- SSE
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="AI Features — User feedback | OpenBB Workspace Docs" />
+
+Enable thumbs up/down buttons on agent responses and receive user feedback at a dedicated endpoint. This lets agents collect ratings, comments, and tags on their responses for quality monitoring and improvement.
+
+Reference implementation in [this GitHub repository](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/42-vanilla-agent-feedback).
+
+<img className="pro-border-gradient" width="500" alt="Custom agent features - on and off" src="https://openbb-cms.directus.app/assets/fc5bd25c-0909-47d3-912a-44d3bbb73198.png" />
+
+<img className="pro-border-gradient" width="500" alt="Custom agent features - on and off" src="https://openbb-cms.directus.app/assets/054422c0-f883-4456-a4c6-516440af9361.png" />
+
+<img className="pro-border-gradient" width="500" alt="Custom agent features - on and off" src="https://openbb-cms.directus.app/assets/729268ee-2389-4fbb-bc51-5bba6d1e0943.png" />
+
+<img className="pro-border-gradient" width="1000" alt="Custom agent features - on and off" src="https://openbb-cms.directus.app/assets/6ddfcf92-e8d8-4a58-bf06-f25bf5109182.png" />
+
+## Architecture
+
+Declare feedback support in the agent descriptor and expose a POST endpoint to receive votes. When feedback is enabled, the workspace renders thumbs up/down buttons on each agent response.
+
+`agents.json` configuration:
+
+```python
+return JSONResponse(content={
+    "vanilla_agent_feedback": {
+        "name": "Vanilla Agent Feedback",
+        "description": "A vanilla agent that receives and persists user feedback (thumbs up/down).",
+        "endpoints": {
+            "query": "/v1/query",
+            "feedback": "/v1/feedback",
+        },
+        "features": {
+            "streaming": True,
+            "widget-dashboard-select": False,
+            "widget-dashboard-search": False,
+            "feedback": True,
+        },
+    }
+})
+```
+
+- `"feedback": True` in `features` enables the thumbs up/down UI on agent responses
+- `"feedback": "/v1/feedback"` in `endpoints` tells the workspace where to POST feedback data
+
+### Query flow
+
+- User sends a query and the agent streams a normal response
+- After the response, the workspace renders thumbs up/down buttons
+- User clicks a thumb and optionally adds tags or a comment
+- Workspace POSTs a feedback payload to the agent's `/v1/feedback` endpoint
+- Agent persists the feedback (to a file, database, or analytics service)
+
+### OpenBB AI SDK
+
+- `QueryRequest` and `message_chunk(text)` handle the standard query flow
+- The feedback endpoint is a plain FastAPI POST route — no SDK wrapper is required
+- `FeedbackRequest` is a custom Pydantic model defined by the agent
+
+## Core logic
+
+### Feedback model
+
+```python
+from pydantic import BaseModel
+
+class FeedbackRequest(BaseModel):
+    vote: str                  # "thumbs_up" or "thumbs_down"
+    tags: list[str] = []       # e.g. ["Not factually correct / Hallucinations / Inaccurate"]
+    user_comment: str = ""     # Optional free-text comment
+    ai_response: str = ""      # The AI response that was rated
+    user_prompt: str = ""      # The user's original prompt
+    trace_id: str = ""         # Request trace ID for correlation
+```
+
+### Feedback endpoint
+
+```python
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+from fastapi.responses import JSONResponse
+
+FEEDBACK_FILE = Path(__file__).parent.parent / "feedback.json"
+
+@app.post("/v1/feedback")
+async def feedback(request: FeedbackRequest):
+    """Receive and persist user feedback to a local JSON file."""
+    entry = {
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        **request.model_dump(),
+    }
+
+    entries = []
+    if FEEDBACK_FILE.exists():
+        entries = json.loads(FEEDBACK_FILE.read_text())
+
+    entries.append(entry)
+    FEEDBACK_FILE.write_text(json.dumps(entries, indent=2))
+
+    return JSONResponse(content={"status": "ok"})
+```
+
+### Query endpoint
+
+The query endpoint is a standard streaming handler — nothing feedback-specific is required:
+
+```python
+from typing import AsyncGenerator
+import openai
+from openbb_ai import message_chunk
+from openbb_ai.models import MessageChunkSSE, QueryRequest
+from sse_starlette.sse import EventSourceResponse
+
+@app.post("/v1/query")
+async def query(request: QueryRequest) -> EventSourceResponse:
+    openai_messages = [
+        {"role": "system", "content": "You are a helpful financial assistant."}
+    ]
+
+    for message in request.messages:
+        if message.role == "human":
+            openai_messages.append({"role": "user", "content": message.content})
+        elif message.role == "ai" and isinstance(message.content, str):
+            openai_messages.append({"role": "assistant", "content": message.content})
+
+    async def execution_loop() -> AsyncGenerator[MessageChunkSSE, None]:
+        client = openai.AsyncOpenAI()
+        async for event in await client.chat.completions.create(
+            model="gpt-4o",
+            messages=openai_messages,
+            stream=True,
+        ):
+            if chunk := event.choices[0].delta.content:
+                yield message_chunk(chunk).model_dump()
+
+    return EventSourceResponse(
+        content=execution_loop(),
+        media_type="text/event-stream",
+    )
+```
+
+## Feedback payload
+
+The workspace sends the following JSON to the feedback endpoint:
+
+```json
+{
+  "vote": "thumbs_up",
+  "tags": ["Not factually correct / Hallucinations / Inaccurate"],
+  "user_comment": "Optional additional comment",
+  "ai_response": "The AI response that was rated",
+  "user_prompt": "The user's original prompt",
+  "trace_id": "request-trace-id"
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `vote` | string | `"thumbs_up"` or `"thumbs_down"` |
+| `tags` | string[] | Predefined feedback categories selected by the user |
+| `user_comment` | string | Optional free-text comment |
+| `ai_response` | string | The agent response that was rated |
+| `user_prompt` | string | The user's original prompt |
+| `trace_id` | string | Trace ID for correlating feedback with requests |
+
+
+---
+
+---
 title: Apps
 sidebar_position: 33
 description: Create and customize your own OpenBB Apps for optimized workflows
@@ -5328,6 +5571,8 @@ Configuration object that declares the capabilities that your agent advertises t
 | `features`           | object  | Yes      | `null`  | `{"streaming": true, "widget-dashboard-select": false}` |
 
 See continuation of this section for details on each feature.
+
+Custom feature controls are also declared in `features`. Use object values for custom toggle, text, and select controls. See [Custom agent features](../ai-features/custom-agent-features) for the control schema and `workspace_options` request payload.
 
 #### `streaming`: Streaming responses
 
@@ -8954,7 +9199,7 @@ if request.workspace_state and request.workspace_state.current_dashboard_info:
 - **`urls`** - URLs shared in chat (max 4)
 - **`timezone`** - User's browser timezone (e.g., "America/New_York")
 - **`api_keys`** - Custom API keys from user
-- **`workspace_options`** - Enabled feature flags (including custom ones)
+- **`workspace_options`** - Workspace option values from AI feature settings. See [Custom agent features](./ai-features/custom-agent-features) for the payload shape.
 
 ## Requesting Widget Data
 
@@ -9312,10 +9557,12 @@ To see the available models check [https://github.com/OpenBB-finance/openbb-ai/b
 - `urls` - URL pages shared in chat for context (maximum 4 URLs allowed)
 - `timezone` - User's browser-detected timezone (e.g., "America/New_York", "Europe/London", "UTC")
 - `api_keys` - Custom API keys provided by user
-- `workspace_options` - Feature flags and custom options. Standard flags include:
+- `workspace_options` - Workspace option values from AI feature settings. Standard flags include:
   - `"widget-dashboard-select"` - Access to user-selected widgets
   - `"widget-dashboard-search"` - Access to all dashboard widgets
-  - Custom features defined in agent's `agents.json` by the user
+  - Custom features defined in the agent's `agents.json`
+
+See [Custom agent features](./ai-features/custom-agent-features) for the `workspace_options` payload shape.
 
 **`Widget`** - Widget definition representing a data source endpoint
 - `uuid` - Unique identifier for this widget instance (UUID format: `550e8400-e29b-41d4-a716-446655440000`)
