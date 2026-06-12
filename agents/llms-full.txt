@@ -281,7 +281,24 @@ http://127.0.0.1:8787/mcp
 
 The script installs `uv` if needed, then runs `workspace-mcp` from the OpenBB Workspace MCP source archive.
 
-For advanced options (custom host/port, forks, branches, or local checkouts), see the [Workspace MCP repository](https://github.com/OpenBB-finance/workspace-mcp).
+### Passing options to the installer
+
+The one-line installers forward any arguments after `--` straight to `workspace-mcp`, so you can set options like `--cors-allow`, `--host`, or `--port` without installing the binary separately.
+
+**macOS, Linux, WSL, and Git Bash** — add `-s --` after `sh`, then the flags:
+
+```bash
+curl -LsSf https://raw.githubusercontent.com/OpenBB-finance/workspace-mcp/main/scripts/run.sh \
+  | sh -s -- --cors-allow https://your-origin.openbb.co
+```
+
+**Windows PowerShell** — append the flags to the run command:
+
+```powershell
+powershell -ExecutionPolicy Bypass -Command "Invoke-RestMethod https://raw.githubusercontent.com/OpenBB-finance/workspace-mcp/main/scripts/run.ps1 | Invoke-Expression" -- --cors-allow https://your-origin.openbb.co
+```
+
+See the [configuration reference](#configuration-reference) for the full list of options you can pass this way. For other advanced options (forks, branches, or local checkouts), see the [Workspace MCP repository](https://github.com/OpenBB-finance/workspace-mcp).
 
 ## 2. Check sidecar health
 
@@ -337,7 +354,14 @@ Open OpenBB Workspace in your browser and connect the local companion:
 
 By default, the sidecar allows CORS requests from `https://pro.openbb.co` and loopback origins such as `http://localhost:1420` and `http://127.0.0.1:1420`.
 
-For a different Workspace origin, pass `--cors-allow`:
+For a different Workspace origin, pass `--cors-allow`. If you started the sidecar with the one-line installer, forward the flag through `sh -s --`:
+
+```bash
+curl -LsSf https://raw.githubusercontent.com/OpenBB-finance/workspace-mcp/main/scripts/run.sh \
+  | sh -s -- --cors-allow https://example.openbb.dev
+```
+
+If you run the binary directly, pass it the same way:
 
 ```bash
 workspace-mcp --cors-allow https://example.openbb.dev
