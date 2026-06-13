@@ -15,11 +15,11 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Workspace MCP Tools | OpenBB Docs" />
 
-This page documents the tools exposed by the OpenBB Workspace MCP sidecar. Tool names and argument names use `snake_case`.
+This page documents the tools exposed by the OpenBB Workspace MCP server. Tool names and argument names use `snake_case`.
 
 ## Calling conventions
 
-Start each new agent session with `get_workspace_snapshot`. It returns the active Workspace context, dashboard metadata, visible dashboard composition, available skills, and other identifiers the agent needs.
+Start each agent session with `get_workspace_snapshot`. It returns the active Workspace context, dashboard metadata, visible dashboard composition, available skills, and other identifiers the agent needs.
 
 Use identifiers returned by Workspace:
 
@@ -241,7 +241,7 @@ Arguments:
 | `operation` | string | Yes | One of `create`, `add_tabs`, `remove_tabs`, or `rename_tabs`. |
 | `dashboard_id` | string | No | Target dashboard. Omit only when targeting the current route. |
 | `tabs` | array | Conditional | Required for `create`, `add_tabs`, and `remove_tabs`. Each item must be an object with only `name`. |
-| `rename_map` | object | Conditional | Required for `rename_tabs`. Keys are old tab IDs and values are new names. |
+| `rename_map` | object | Conditional | Required for `rename_tabs`. Keys are old tab IDs and values are replacement names. |
 
 Valid tab payload:
 
@@ -257,7 +257,7 @@ Valid tab payload:
 
 Do not pass string arrays such as `["Overview", "Charts"]`. Do not pass `tab_id` or `tab_name` fields. Workspace generates tab IDs from tab names, such as `Overview` to `overview`.
 
-For a new-tab workflow:
+To add content to a tab:
 
 1. Call `manage_navigation_bar` with `operation: "add_tabs"`.
 2. Call `navigate_workspace` with the generated `tab_id`.
@@ -276,7 +276,7 @@ Arguments:
 | `w` | number | Yes | Width in grid columns. |
 | `h` | number | Yes | Height in grid rows. |
 | `widget_uuid` | string | Recommended | Existing widget instance UUID. |
-| `widget_id` | string | No | Fallback only when exactly one matching widget instance exists. |
+| `widget_id` | string | No | Use only when exactly one matching widget instance exists. |
 | `dashboard_id` | string | No | Target dashboard. |
 | `tab_id` | string | No | Target tab. Use this when moving across tabs. |
 | `min_w`, `min_h`, `max_w`, `max_h` | number | No | Optional layout constraints. |
@@ -300,7 +300,7 @@ Arguments:
 | Argument | Type | Required | Notes |
 |----------|------|----------|-------|
 | `widget_uuid` | string | Recommended | Preferred instance identifier. |
-| `widget_id` | string | No | Fallback only when exactly one matching instance exists. |
+| `widget_id` | string | No | Use only when exactly one matching instance exists. |
 | `dashboard_id` | string | No | Target dashboard. |
 
 Use this when the agent needs a widget's current config or rendered data from the active tab.
@@ -332,10 +332,10 @@ Arguments:
 | Argument | Type | Required | Notes |
 |----------|------|----------|-------|
 | `widget_uuid` | string | Recommended | Existing widget instance UUID. |
-| `widget_id` | string | No | Fallback only when exactly one matching instance exists. |
+| `widget_id` | string | No | Use only when exactly one matching instance exists. |
 | `dashboard_id` | string | No | Target dashboard. |
-| `data_args` | object | No | New widget parameters. |
-| `ui_args` | object | No | New widget UI configuration. |
+| `data_args` | object | No | Replacement widget parameters. |
+| `ui_args` | object | No | Replacement widget UI configuration. |
 
 Use `update_widget_layout` for `x`, `y`, `w`, `h`, `gridData`, or tab placement. `update_widget` is for widget config only.
 
@@ -348,7 +348,7 @@ Arguments:
 | Argument | Type | Required | Notes |
 |----------|------|----------|-------|
 | `widget_uuid` | string | Recommended | Existing widget instance UUID. |
-| `widget_id` | string | No | Fallback only when exactly one matching instance exists. |
+| `widget_id` | string | No | Use only when exactly one matching instance exists. |
 | `dashboard_id` | string | No | Target dashboard. |
 
 The tool is scoped to a single widget. It does not delete dashboards or folders.
@@ -483,7 +483,7 @@ Example:
 
 ### `assign_tasks_to_agents`
 
-Delegates tasks to configured external Workspace agents.
+Delegates work to configured external Workspace agents.
 
 Arguments:
 
@@ -520,12 +520,19 @@ The MCP server exposes two prompts:
 It also exposes app-builder resources under `openbb://workspace/...`, including:
 
 - `openbb://workspace/app-builder/index`
+- `openbb://workspace/overview/what-is-workspace`
+- `openbb://workspace/overview/ai-agent-contract`
 - `openbb://workspace/contract/backend`
 - `openbb://workspace/specs/widgets-json`
 - `openbb://workspace/specs/apps-json`
+- `openbb://workspace/specs/widget-types`
+- `openbb://workspace/specs/widget-parameters`
 - `openbb://workspace/specs/layout-grid`
 - `openbb://workspace/guides/build-an-app`
+- `openbb://workspace/guides/review-app`
 - `openbb://workspace/guides/debug-app`
+- `openbb://workspace/guides/convert-endpoint-to-widget`
+- `openbb://workspace/examples/generic-http/minimal`
 - `openbb://workspace/examples/python-fastapi/minimal`
 - `openbb://workspace/validation/common-errors`
 
