@@ -26,7 +26,7 @@ Use identifiers returned by Workspace:
 - Use `dashboard_id` or `current_dashboard_uuid` for dashboard writes.
 - Use `widget_uuid` for an existing widget instance.
 - Use `origin` and `widget_id` from `list_available_widgets` when creating a backend widget.
-- Use `backend_id` from `manage_backends` when listing or instantiating apps from a backend.
+- Use `backend_id` from `manage_backends` to filter apps or widgets to one backend.
 - Use `slug` from the snapshot when loading a skill.
 
 Avoid matching objects by display name. Dashboards, widgets, and apps can have duplicate names.
@@ -452,29 +452,34 @@ Example:
 
 ### `manage_apps`
 
-Lists, reads, or instantiates apps from a Workspace data backend.
+Lists, reads, or instantiates Workspace apps.
 
 Arguments:
 
 | Argument | Type | Required | Notes |
 |----------|------|----------|-------|
 | `operation` | string | Yes | One of `list`, `read`, or `instantiate`. |
-| `backend_id` | string | Yes | Backend UUID from `manage_backends`. |
+| `backend_id` | string | No | Backend UUID from `manage_backends`. Omit to include apps from every source; pass it to filter to one backend. |
 | `app_name` | string | Conditional | Required for `read` and `instantiate` unless `template_id` is provided. |
 | `template_id` | string | Conditional | Required for `read` and `instantiate` unless `app_name` is provided. |
-| `dashboard_name` | string | No | Name for the instantiated dashboard. |
 | `activate` | boolean | No | Defaults to `true` for instantiation. |
 
-Apps are full dashboard templates declared in a backend's `apps.json`. Instantiating an app creates a dashboard with its tabs, widgets, parameter groups, and suggested prompts.
+Apps are full dashboard templates. `list` returns every app the user can see, from three sources marked by a `type` field:
+
+- `backend`: apps declared in the `apps.json` of the user's own backends.
+- `shared`: backend apps shared with the user through their organization.
+- `saved`: apps the user created or saved in Workspace, or that were shared with them. These have no `backend_id`; reference them by `template_id`.
+
+Each listed app includes `name`, `template_id`, `description`, `type`, `backend_id`, `backend_name`, `is_shared`, and `created_by`. `read` and `instantiate` resolve `app_name` or `template_id` across all sources.
+
+Instantiating an app always creates a fresh dashboard with the app's tabs, widgets, parameter groups, and suggested prompts, and returns its `dashboard_id`.
 
 Example:
 
 ```json
 {
   "operation": "instantiate",
-  "backend_id": "backend-uuid",
   "app_name": "Macro Dashboard",
-  "dashboard_name": "Macro Dashboard - Agent Test",
   "activate": true
 }
 ```
