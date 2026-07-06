@@ -22,7 +22,7 @@ This guide connects an external MCP client to an active OpenBB Workspace browser
 
 Before you start:
 
-- OpenBB Workspace is available in your browser.
+- OpenBB Workspace is open in your browser at [pro.openbb.co](https://pro.openbb.co).
 - Your MCP client supports HTTP MCP servers.
 - You can edit your MCP client configuration.
 
@@ -47,38 +47,74 @@ Open OpenBB Workspace in your browser and open the hosted companion:
 
 The companion shows the hosted MCP endpoint. The endpoint path is `/mcp` on the same backend host used by Workspace.
 
-## 2. Create a Workspace MCP token
+## 2. Connect the browser bridge
 
-In the companion modal:
+Turn on the connection toggle next to the **Endpoint** field. The status changes to **Connected**, and the active browser tab is now bridged to the hosted MCP service.
 
-1. Enter a token name.
-2. Click **Create token**.
-3. Copy the token shown in the success message.
-
-The raw token is shown once. Existing tokens are listed by name and prefix, and can be revoked from the same modal.
-
-Workspace MCP tokens are personal access tokens for MCP. They are sent as bearer tokens to `/mcp`, remain valid until revoked, and do not authenticate normal Workspace API routes.
-
-## 3. Connect the browser bridge
-
-Click **Connect** in the Workspace MCP Companion. This connects the active browser tab to the hosted MCP service.
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="Workspace MCP Companion showing the endpoint connected and the Create Token button"
+    src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/mcp+companion.png"
+    width="550"
+  />
+</div>
 
 Each user has one active Workspace MCP browser bridge. If you connect from another tab or device, the latest bridge replaces the previous one.
 
+Token creation is only available while the bridge is connected, so complete this step first.
+
+## 3. Create a Workspace MCP token
+
+In the companion modal, under **Active Tokens**:
+
+1. Click **Create Token**.
+2. You should now see a screen like below, now enter a token name and click **Generate Token**.
+3. Copy the token connection string from the field shown in the dialog after generating.
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="Create token dialog with the token name field and Generate Token button"
+    src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/generate+token.png"
+    width="550"
+  />
+</div>
+
+Workspace MCP tokens are personal access tokens for MCP. They are sent as bearer tokens to `/mcp`, remain valid until revoked, and do not authenticate normal Workspace API routes.
+
 ## 4. Configure your MCP client
 
-Use the endpoint copied from Workspace MCP Companion and send the token as an HTTP authorization header:
+After the token is generated, the same dialog shows ready-to-paste connection snippets with the endpoint and token already filled in:
+
+- **Prompt**: a natural-language instruction you can paste into any agent that can configure its own MCP servers.
+- **.mcp.json**: an HTTP server entry for clients that read an `.mcp.json` file.
+- **Claude Code**: a `claude mcp add` command.
+- **Codex**: a `codex mcp add` command.
+
+Pick the tab for your client and copy the snippet. That is usually all the configuration you need.
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="Create token dialog showing the generated token and the connection snippet tabs"
+    src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/create+token.png"
+    width="550"
+  />
+</div>
+
+For other clients, use the endpoint copied from Workspace MCP Companion and send the token as an HTTP authorization header:
 
 ```text
 Authorization: Bearer obb_mcp_...
 ```
 
-For clients that read a project `.mcp.json` file, use an HTTP server entry with headers:
+For clients that read a project `.mcp.json` file, the entry looks like this:
 
 ```json
 {
   "mcpServers": {
-    "workspace_mcp": {
+    "openbb": {
       "type": "http",
       "url": "https://pro.openbb.co/mcp",
       "headers": {
@@ -91,19 +127,19 @@ For clients that read a project `.mcp.json` file, use an HTTP server entry with 
 
 Replace the URL with the endpoint shown in Workspace MCP Companion.
 
-For Codex, store the token in an environment variable and point Codex at the hosted `/mcp` endpoint:
+For Codex, the snippet stores the token in an environment variable and points Codex at the hosted `/mcp` endpoint:
 
 ```bash
-export OPENBB_WORKSPACE_MCP_TOKEN=obb_mcp_...
-codex mcp add workspace_mcp \
+export OBB_MCP_TOKEN=obb_mcp_...
+codex mcp add openbb \
   --url https://pro.openbb.co/mcp \
-  --bearer-token-env-var OPENBB_WORKSPACE_MCP_TOKEN
+  --bearer-token-env-var OBB_MCP_TOKEN
 ```
 
 For Claude Code:
 
 ```bash
-claude mcp add --transport http workspace_mcp \
+claude mcp add --transport http openbb \
   https://pro.openbb.co/mcp \
   --header "Authorization: Bearer obb_mcp_..."
 ```
@@ -161,7 +197,7 @@ Analyze my current portfolio exposure and add a markdown note widget with that a
 | Symptom | What to check |
 |---------|---------------|
 | `Could not validate Workspace MCP credentials` | Confirm the MCP client sends `Authorization: Bearer <token>` and that the token has not been revoked. |
-| `No active Workspace browser connected` | Open Workspace, open Workspace MCP Companion, and click **Connect**. |
+| `No active Workspace browser connected` | Open Workspace, open Workspace MCP Companion, and turn on the connection toggle. |
 | Tool call times out | Keep the Workspace tab open and active enough to execute commands. |
 | MCP client cannot connect | Confirm the client supports HTTP MCP servers and uses the hosted `/mcp` URL copied from Workspace MCP Companion. |
 | Agent sees out-of-date dashboard state | Call `get_workspace_snapshot` again after navigation or reconnect the browser bridge. |

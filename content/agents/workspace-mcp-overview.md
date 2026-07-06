@@ -16,7 +16,9 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 <HeadTitle title="Workspace MCP Overview | OpenBB Docs" />
 
-The OpenBB Workspace MCP exposes your active Workspace browser session as Model Context Protocol (MCP) tools through a hosted backend endpoint. An external MCP-capable agent can use those tools to inspect dashboards, fetch widget data, create widgets, manage tabs, register backends, and instantiate Workspace apps.
+The OpenBB Workspace MCP lets your AI agent — Claude Code, Codex, Cursor, or any MCP-capable client — see and control your OpenBB Workspace: read the data on your dashboards, build new dashboards and widgets, and test the apps it builds.
+
+It works by exposing your active Workspace browser session as Model Context Protocol (MCP) tools through a hosted backend endpoint. An external agent can use those tools to inspect dashboards, fetch widget data, create widgets, manage tabs, register backends, and instantiate Workspace apps.
 
 Use it when an agent needs structured access to Workspace state. It avoids brittle browser automation because the agent calls Workspace commands directly instead of clicking through the UI.
 
@@ -59,7 +61,7 @@ OpenBB Workspace browser tab
 Dashboards, widgets, apps, data backends, and skills
 ```
 
-OpenBB Workspace shows the hosted MCP endpoint in the Workspace MCP Companion. The endpoint path is `/mcp` on the same backend host used by Workspace. Workspace connects to the backend through a browser bridge. Tool calls sent by the agent are forwarded to the connected browser tab, executed by Workspace, and returned as structured results.
+OpenBB Workspace shows the hosted MCP endpoint in the Workspace MCP Companion. The endpoint path is `/mcp` on the same backend host used by Workspace. The Companion keeps your Workspace tab connected to OpenBB's servers — this connection is the browser bridge — so the agent's tool calls can reach your session. Tool calls sent by the agent are forwarded to the connected browser tab, executed by the Workspace, and returned as structured results.
 
 The browser must stay open and connected. If the Workspace tab disconnects, tool calls return an unavailable error until the browser reconnects. Each user has one active Workspace MCP bridge; connecting another browser bridge replaces the previous one.
 
