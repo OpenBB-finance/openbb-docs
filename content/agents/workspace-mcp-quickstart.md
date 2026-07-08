@@ -1,7 +1,7 @@
 ---
 title: Workspace MCP Quickstart
 sidebar_position: 2
-description: Run the OpenBB Workspace MCP sidecar, connect Workspace, and attach an external MCP client.
+description: Create a Workspace MCP token, connect the browser bridge, and attach an external MCP client.
 keywords:
 - OpenBB Workspace MCP
 - Workspace MCP quickstart
@@ -16,102 +16,21 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Workspace MCP Quickstart | OpenBB Docs" />
 
-This guide starts the Workspace MCP sidecar on your machine, connects it to an OpenBB Workspace browser tab, and configures an MCP client to call Workspace tools.
+This guide connects an external MCP client to an active OpenBB Workspace browser session through the hosted Workspace MCP endpoint.
 
 ## Prerequisites
 
 Before you start:
 
-- OpenBB Workspace is available in your browser.
+- OpenBB Workspace is open in your browser at [pro.openbb.co](https://pro.openbb.co).
 - Your MCP client supports HTTP MCP servers.
-- Your machine can run Python 3.13.
-- You can install or run tools with `uv`.
+- You can edit your MCP client configuration.
 
-The helper script installs `uv` when it is missing. If you manage Python environments manually, install `uv` first and use the direct command shown below.
+The Workspace tab must stay open and connected while the external agent uses Workspace MCP tools.
 
-## 1. Start the sidecar
+## 1. Open Workspace MCP Companion
 
-Install the sidecar from the [Workspace MCP repository](https://github.com/OpenBB-finance/workspace-mcp), or use one of the one-line installers below.
-
-**macOS, Linux, WSL, and Git Bash:**
-
-```bash
-curl -LsSf https://raw.githubusercontent.com/OpenBB-finance/workspace-mcp/main/scripts/run.sh | sh
-```
-
-**Windows PowerShell:**
-
-```powershell
-powershell -ExecutionPolicy Bypass -Command "Invoke-RestMethod https://raw.githubusercontent.com/OpenBB-finance/workspace-mcp/main/scripts/run.ps1 | Invoke-Expression"
-```
-
-<div style={{display: 'flex', justifyContent: 'center'}}>
-  <img
-    className="pro-border-gradient"
-    alt="Terminal showing the Workspace MCP sidecar running correctly"
-    src="https://openbb-cms.directus.app/assets/2ed50bec-4bf9-4aed-99ef-9a1b7348901d.png"
-    width="1000"
-  />
-</div>
-
-The default server listens on:
-
-```text
-http://127.0.0.1:8787
-```
-
-The MCP endpoint is:
-
-```text
-http://127.0.0.1:8787/mcp
-```
-
-The script installs `uv` if needed, then runs `workspace-mcp` from the OpenBB Workspace MCP source archive.
-
-### Passing options to the installer
-
-The one-line installers forward any arguments after `--` straight to `workspace-mcp`, so you can set options like `--cors-allow`, `--host`, or `--port` without installing the binary separately.
-
-**macOS, Linux, WSL, and Git Bash** — add `-s --` after `sh`, then the flags:
-
-```bash
-curl -LsSf https://raw.githubusercontent.com/OpenBB-finance/workspace-mcp/main/scripts/run.sh \
-  | sh -s -- --cors-allow https://your-origin.openbb.co
-```
-
-**Windows PowerShell** — append the flags to the run command:
-
-```powershell
-powershell -ExecutionPolicy Bypass -Command "Invoke-RestMethod https://raw.githubusercontent.com/OpenBB-finance/workspace-mcp/main/scripts/run.ps1 | Invoke-Expression" -- --cors-allow https://your-origin.openbb.co
-```
-
-See the [configuration reference](#configuration-reference) for the full list of options you can pass this way. For other advanced options (forks, branches, or local checkouts), see the [Workspace MCP repository](https://github.com/OpenBB-finance/workspace-mcp).
-
-## 2. Check sidecar health
-
-In another terminal, call the health endpoint:
-
-```bash
-curl http://127.0.0.1:8787/health
-```
-
-Before Workspace connects, the response should show that the sidecar is running and no browser is attached:
-
-```json
-{
-  "ok": true,
-  "browser_connected": false,
-  "pending_commands": 0,
-  "session": null
-}
-```
-
-After Workspace connects, `browser_connected` should be `true` and `session` should include the current browser session metadata.
-
-
-## 3. Connect Workspace to the sidecar
-
-Open OpenBB Workspace in your browser and connect the local companion:
+Open OpenBB Workspace in your browser and open the hosted companion:
 
 1. Open Workspace.
 2. Click the hamburger icon in the top-left corner.
@@ -126,76 +45,106 @@ Open OpenBB Workspace in your browser and connect the local companion:
   />
 </div>
 
-4. Set the companion base URL to `http://127.0.0.1:8787`.
-5. Click the connect action after the sidecar is running.
+The companion shows the hosted MCP endpoint. The endpoint path is `/mcp` on the same backend host used by Workspace.
 
+## 2. Connect the browser bridge
+
+Turn on the connection toggle next to the **Endpoint** field. The status changes to **Connected**, and the active browser tab is now bridged to the hosted MCP service.
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
   <img
     className="pro-border-gradient"
-    alt="Workspace MCP Companion connected to the local sidecar"
-    src="https://openbb-cms.directus.app/assets/0df1ae5d-d391-42b7-8c36-25b9be5d6dfc.png"
-    width="800"
+    alt="Workspace MCP Companion showing the endpoint connected and the Create Token button"
+    src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/mcp+companion.png"
+    width="550"
   />
 </div>
 
-By default, the sidecar allows CORS requests from `https://pro.openbb.co` and loopback origins such as `http://localhost:1420` and `http://127.0.0.1:1420`.
+Each user has one active Workspace MCP browser bridge. If you connect from another tab or device, the latest bridge replaces the previous one.
 
-For a different Workspace origin, pass `--cors-allow`. If you started the sidecar with the one-line installer, forward the flag through `sh -s --`:
+Token creation is only available while the bridge is connected, so complete this step first.
 
-```bash
-curl -LsSf https://raw.githubusercontent.com/OpenBB-finance/workspace-mcp/main/scripts/run.sh \
-  | sh -s -- --cors-allow https://example.openbb.dev
-```
+## 3. Create a Workspace MCP token
 
-If you run the binary directly, pass it the same way:
+In the companion modal, under **Active Tokens**:
 
-```bash
-workspace-mcp --cors-allow https://example.openbb.dev
-```
+1. Click **Create Token**.
+2. You should now see a screen like below, now enter a token name and click **Generate Token**.
+3. Copy the token connection string from the field shown in the dialog after generating.
 
-Repeat `--cors-allow` or pass a comma-separated list to allow more than one origin:
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="Create token dialog with the token name field and Generate Token button"
+    src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/generate+token.png"
+    width="550"
+  />
+</div>
 
-```bash
-workspace-mcp \
-  --cors-allow https://one.example.openbb.dev,https://two.example.openbb.dev \
-  --cors-allow http://localhost:1420
-```
+Workspace MCP tokens are personal access tokens for MCP. They are sent as bearer tokens to `/mcp`, remain valid until revoked, and do not authenticate normal Workspace API routes.
 
 ## 4. Configure your MCP client
 
-Point your MCP client at:
+After the token is generated, the same dialog shows ready-to-paste connection snippets with the endpoint and token already filled in:
+
+- **Prompt**: a natural-language instruction you can paste into any agent that can configure its own MCP servers.
+- **.mcp.json**: an HTTP server entry for clients that read an `.mcp.json` file.
+- **Claude Code**: a `claude mcp add` command.
+- **Codex**: a `codex mcp add` command.
+
+Pick the tab for your client and copy the snippet. That is usually all the configuration you need.
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="Create token dialog showing the generated token and the connection snippet tabs"
+    src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/create+token.png"
+    width="550"
+  />
+</div>
+
+For other clients, use the endpoint copied from Workspace MCP Companion and send the token as an HTTP authorization header:
 
 ```text
-http://127.0.0.1:8787/mcp
+Authorization: Bearer obb_mcp_...
 ```
 
-For clients that read a project `.mcp.json` file, use an HTTP server entry:
+For clients that read a project `.mcp.json` file, the entry looks like this:
 
 ```json
 {
   "mcpServers": {
-    "workspace_mcp": {
+    "openbb": {
       "type": "http",
-      "url": "http://127.0.0.1:8787/mcp"
+      "url": "https://pro.openbb.co/mcp",
+      "headers": {
+        "Authorization": "Bearer obb_mcp_..."
+      }
     }
   }
 }
 ```
 
-If your client has an `mcp add` command or settings UI, choose the HTTP transport and use the same `/mcp` URL.
+Replace the URL with the endpoint shown in Workspace MCP Companion.
 
-For Codex:
+For Codex, the snippet stores the token in an environment variable and points Codex at the hosted `/mcp` endpoint:
 
 ```bash
-codex mcp add workspace_mcp --url http://127.0.0.1:8787/mcp
+export OBB_MCP_TOKEN=obb_mcp_...
+codex mcp add openbb \
+  --url https://pro.openbb.co/mcp \
+  --bearer-token-env-var OBB_MCP_TOKEN
 ```
 
 For Claude Code:
 
 ```bash
-claude mcp add --transport http workspace_mcp http://127.0.0.1:8787/mcp
+claude mcp add --transport http openbb \
+  https://pro.openbb.co/mcp \
+  --header "Authorization: Bearer obb_mcp_..."
 ```
+
+If your client has an `mcp add` command or settings UI, choose the HTTP transport, use the hosted `/mcp` URL, and configure the same `Authorization` header.
 
 ## 5. Validate the connection
 
@@ -207,7 +156,7 @@ A practical validation prompt is:
 Call get_workspace_snapshot and tell me the active dashboard id and the visible tabs.
 ```
 
-If the agent can list the dashboard and tabs, the MCP client, sidecar, and browser bridge are connected.
+If the agent can list the dashboard and tabs, the MCP client, hosted MCP endpoint, and browser bridge are connected.
 
 ## 6. Try common Workspace actions
 
@@ -243,25 +192,12 @@ Analyze my current portfolio exposure and add a markdown note widget with that a
   />
 </div>
 
-## Configuration reference
-
-| Option | Default | Description |
-|--------|---------|-------------|
-| `--host` | `127.0.0.1` | Host interface for the sidecar HTTP server. Keep this on loopback for normal use. |
-| `--port` | `8787` | Port for the sidecar HTTP server. |
-| `--mcp-path` | `/mcp` | Path for the streamable HTTP MCP endpoint. |
-| `--command-timeout-seconds` | `15.0` | Seconds to wait for one browser command result. |
-| `--cors-allow` | production Workspace and loopback origins | Extra browser origins allowed to call the sidecar. |
-| `--reload` | disabled | Restart the local development server when source files change. |
-
-In reload mode, the CLI also maps options to `OPENBB_WORKSPACE_MCP_*` environment variables so Uvicorn can recreate the app.
-
 ## Troubleshooting
 
 | Symptom | What to check |
 |---------|---------------|
-| `No Workspace browser is connected.` | Open Workspace, open Workspace MCP Companion, and connect it to the sidecar base URL. |
-| `browser_connected` is `false` in `/health` | The sidecar is running, but the browser bridge has not connected or has disconnected. |
-| Browser CORS error | Add the Workspace browser origin with `--cors-allow`. |
-| Tool call times out | Keep the Workspace tab open and active enough to execute commands. Increase `--command-timeout-seconds` for slower operations. |
-| MCP client cannot connect | Confirm the client supports HTTP MCP servers and uses `http://127.0.0.1:8787/mcp`, not the sidecar base URL. |
+| `Could not validate Workspace MCP credentials` | Confirm the MCP client sends `Authorization: Bearer <token>` and that the token has not been revoked. |
+| `No active Workspace browser connected` | Open Workspace, open Workspace MCP Companion, and turn on the connection toggle. |
+| Tool call times out | Keep the Workspace tab open and active enough to execute commands. |
+| MCP client cannot connect | Confirm the client supports HTTP MCP servers and uses the hosted `/mcp` URL copied from Workspace MCP Companion. |
+| Agent sees out-of-date dashboard state | Call `get_workspace_snapshot` again after navigation or reconnect the browser bridge. |

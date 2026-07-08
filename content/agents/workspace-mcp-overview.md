@@ -16,7 +16,9 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 <HeadTitle title="Workspace MCP Overview | OpenBB Docs" />
 
-The OpenBB Workspace MCP is a local companion server that exposes your active Workspace browser session as Model Context Protocol (MCP) tools. An external MCP-capable agent can use those tools to inspect dashboards, fetch widget data, create widgets, manage tabs, register backends, and instantiate Workspace apps.
+The OpenBB Workspace MCP lets your AI agent — Claude Code, Codex, Cursor, or any MCP-capable client — see and control your OpenBB Workspace: read the data on your dashboards, build new dashboards and widgets, and test the apps it builds.
+
+It works by exposing your active Workspace browser session as Model Context Protocol (MCP) tools through a hosted backend endpoint. An external agent can use those tools to inspect dashboards, fetch widget data, create widgets, manage tabs, register backends, and instantiate Workspace apps.
 
 Use it when an agent needs structured access to Workspace state. It avoids brittle browser automation because the agent calls Workspace commands directly instead of clicking through the UI.
 
@@ -41,14 +43,14 @@ This demo shows Codex using the Workspace MCP to interact with an active OpenBB 
 
 ## Architecture
 
-The Workspace MCP runs as a local sidecar process:
+The Workspace MCP is served by the OpenBB backend:
 
 ```text
 MCP client or agent
     |
     | streamable HTTP MCP
     v
-Workspace MCP sidecar
+OpenBB backend `/mcp`
     |
     | WebSocket bridge
     v
@@ -59,13 +61,13 @@ OpenBB Workspace browser tab
 Dashboards, widgets, apps, data backends, and skills
 ```
 
-The sidecar exposes a stateless MCP endpoint at `http://127.0.0.1:8787/mcp` by default. Workspace connects to the same sidecar through a browser bridge. Tool calls sent by the agent are forwarded to the connected browser tab, executed by Workspace, and returned as structured results.
+OpenBB Workspace shows the hosted MCP endpoint in the Workspace MCP Companion. The endpoint path is `/mcp` on the same backend host used by Workspace. The Companion keeps your Workspace tab connected to OpenBB's servers — this connection is the browser bridge — so the agent's tool calls can reach your session. Tool calls sent by the agent are forwarded to the connected browser tab, executed by the Workspace, and returned as structured results.
 
-The browser must stay open and connected. If the Workspace tab disconnects, the sidecar remains running but tool calls return an unavailable error until the browser reconnects.
+The browser must stay open and connected. If the Workspace tab disconnects, tool calls return an unavailable error until the browser reconnects. Each user has one active Workspace MCP bridge; connecting another browser bridge replaces the previous one.
 
 ## What agents can do
 
-The current tool surface covers the main Workspace authoring and inspection workflows:
+Workspace MCP covers the main Workspace authoring and inspection workflows:
 
 | Area | Examples |
 |------|----------|
@@ -77,7 +79,7 @@ The current tool surface covers the main Workspace authoring and inspection work
 | Widget authoring | Create widgets from backend definitions, update widget parameters, resize or move widgets, read widget state, and delete individual widgets. |
 | Generated artifacts | Add generated notes, tables, charts, and HTML widgets without a backend connection. |
 | Backend and app workflows | Register data backends, refresh backends, list app templates, and instantiate apps into dashboards. |
-| Agent and skill workflows | Delegate tasks to configured Workspace agents and load skills from the Workspace skill library. |
+| Agent and skill workflows | Delegate work to configured Workspace agents and load skills from the Workspace skill library. |
 
 The MCP server also publishes app-builder resources under `openbb://workspace/...`. Agents can read these resources when they are building or reviewing Workspace backends, `widgets.json`, or `apps.json` files.
 
@@ -114,21 +116,20 @@ This is useful for development workflows where the agent owns both the backend c
 
 Treat any MCP client connected to the Workspace MCP as trusted. The tool server can read Workspace state and mutate dashboards in the connected browser session.
 
-Keep the sidecar local:
+Workspace MCP uses a Workspace MCP personal access token:
 
-- Bind to `127.0.0.1`, which is the default.
-- Do not expose it on `0.0.0.0`, a LAN address, a tunnel, or a public reverse proxy.
-- Use local HTTP for `localhost` or `127.0.0.1`; HTTPS is not required for the local sidecar.
+- Send the token as `Authorization: Bearer <token>`.
+- Store the token in your MCP client configuration.
+- Revoke the token from Workspace when it should stop working.
 - Connect only MCP clients you trust to read and change your Workspace.
 
-The Workspace MCP operates inside an existing authenticated browser session. It does not log in for you, manage authentication tokens, change billing, change organization settings, invite users, or share dashboards.
+The Workspace MCP personal access token authenticates the `/mcp` endpoint only. It is not accepted by normal Workspace API routes, and it does not change billing, organization settings, user invites, or dashboard sharing.
 
 ## Requirements
 
 - An OpenBB Workspace browser tab.
-- The Workspace MCP sidecar running locally.
+- The Workspace MCP Companion connected in Workspace.
 - An MCP client that can connect to a streamable HTTP MCP server.
-- Python 3.13 when installing or running the sidecar directly.
-- `uv` for the recommended install path. The helper script installs `uv` if it is not already available.
+- A Workspace MCP personal access token created in Workspace.
 
 See [Workspace MCP Quickstart](/agents/workspace-mcp-quickstart) for setup steps and [Workspace MCP Tools](/agents/workspace-mcp-tools) for the tool reference.
