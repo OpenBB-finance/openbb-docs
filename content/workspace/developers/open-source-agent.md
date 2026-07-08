@@ -26,9 +26,11 @@ Agent Rita runs as an HTTP service that implements the Workspace agent contract:
 - `GET /agents.json` returns the agent metadata, available models, and supported Workspace features.
 - `POST /v1/query` receives chat messages, dashboard context, widgets, and available MCP tools, then streams Server-Sent Events (SSE) back to Workspace.
 
+Agent Rita also exposes auxiliary generation routes for Workspace UI tasks, such as `POST /v1/generate/dashboard/title` for dashboard names and `POST /v1/generate/chat/title` for chat titles. These routes use the configured model provider for single-shot generation outside the main chat stream.
+
 If MCP servers are configured in Workspace, Agent Rita can use their tools. Workspace owns those MCP connections, sends the available tool descriptors in each request, executes selected tools, and forwards results back to the agent through the normal `/v1/query` flow.
 
-This keeps the agent focused on Workspace-specific state: widget discovery, widget data round-trips, SQL over loaded data, citations, generated artifacts, and native Workspace actions.
+This keeps the agent focused on Workspace-specific state: widget discovery, widget data round-trips, SQL over loaded data, citations, generated artifacts, and native Workspace actions. The Agent Rita repository includes an optional companion MCP server in `mcp-server/` for web search, web-page fetch, Python execution, Mermaid rendering, and document RAG.
 
 ## Run locally
 
@@ -70,13 +72,31 @@ export DEFAULT_MODEL=ollama:gpt-oss:20b
 Start the agent:
 
 ```bash
-bun run dev
+bun run dev:agent
 ```
 
 By default, the agent listens on:
 
 ```text
 http://localhost:7777
+```
+
+To run the agent and the companion MCP server together:
+
+```bash
+bun run dev:all
+```
+
+To run only the companion MCP server:
+
+```bash
+bun run dev:mcp
+```
+
+By default, the companion MCP server listens on:
+
+```text
+http://localhost:8787/mcp
 ```
 
 ## Connect it to Workspace
@@ -93,7 +113,9 @@ http://localhost:7777
 
 Workspace fetches `http://localhost:7777/agents.json` and uses the advertised `/v1/query` endpoint for chat requests. If you have MCP servers configured in Workspace, their tools are included in requests to Agent Rita and can be used by the agent when relevant.
 
-If Workspace runs in Docker, on another machine, or behind a remote URL, replace `localhost` with a host that the browser can reach.
+To use the companion MCP tools, add `http://localhost:8787/mcp` as an MCP server in Workspace. Workspace will include those tool descriptors in Agent Rita requests.
+
+If Agent Rita or its companion MCP server runs in Docker, on another machine, or behind a remote URL, replace `localhost` with a host that the browser can reach.
 
 ## Configuration
 
@@ -101,12 +123,15 @@ Common environment variables:
 
 | Variable | Used by | Description |
 | --- | --- | --- |
-| `OPENAI_API_KEY` | Agent | Enables OpenAI chat models. |
+| `OPENAI_API_KEY` | Agent, companion MCP server | Enables OpenAI chat models. Also powers document RAG embeddings for `query_documents` and `list_documents`. |
 | `OPENROUTER_API_KEY` | Agent | Enables OpenRouter models. |
 | `GROQ_API_KEY` | Agent | Enables Groq models. |
 | `OLLAMA_BASE_URL` | Agent | Sets the Ollama API URL. Defaults to `http://localhost:11434/api`. |
 | `DEFAULT_MODEL` | Agent | Selects the default model shown in `agents.json`. |
 | `PORT` | Agent | Sets the agent port. Defaults to `7777`. |
+| `MCP_PORT` | Companion MCP server | Sets the companion MCP server port. Defaults to `8787`. |
+| `TAVILY_API_KEY` | Companion MCP server | Enables `web_search`. |
+| `DAYTONA_API_KEY` | Companion MCP server | Enables `execute_code`. |
 
 ## What to customize
 
@@ -114,7 +139,10 @@ For Workspace-specific behavior, start with the agent service:
 
 - `src/routes/agents.ts` controls the `agents.json` response.
 - `src/routes/query.ts` receives Workspace requests and chooses the model.
+- `src/routes/generate/` contains the single-shot generation routes for dashboard titles, chat titles, prompt enhancement, widget metadata, and code generation.
 - `src/agent/` contains the main agent loop, prompt builder, context handling, round-trip handling, and tool registration.
 - `src/agent/tools/` contains local tools for widget search, widget data, skills, SQL, generated artifacts, and native Workspace bridge actions.
+- `src/mcp/` maps Workspace-provided MCP tool descriptors into model-callable tools and handles returned MCP citations, artifacts, and typed results.
+- `mcp-server/` contains the optional companion MCP server for web search, web-page fetch, Mermaid rendering, Python execution, and document RAG.
 
 If you are building a smaller custom agent from scratch, see [Agents Integration](/workspace/developers/agents-integration), [OpenBB AI SDK](/workspace/developers/openbb-ai-sdk), and the [`agents.json` reference](/workspace/developers/json-specs/agents-json-reference).
