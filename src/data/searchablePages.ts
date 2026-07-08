@@ -28,7 +28,7 @@ export const searchablePages: SearchablePage[] = [
     "title": "Workspace MCP Quickstart",
     "path": "/agents/workspace-mcp-quickstart",
     "category": "Agents",
-    "description": "Run the OpenBB Workspace MCP sidecar, connect Workspace, and attach an external MCP client.",
+    "description": "Create a Workspace MCP token, connect the browser bridge, and attach an external MCP client.",
     "keywords": [
       "OpenBB Workspace MCP",
       "Workspace MCP quickstart",
