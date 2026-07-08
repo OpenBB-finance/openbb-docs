@@ -112,10 +112,16 @@ If Workspace Lite runs behind a reverse proxy, allow long-lived HTTP responses a
 | Variable | Default | Purpose |
 | --- | --- | --- |
 | `PORT` | `3000` | Container listen port |
-| `BACKEND_URL` | `/api` | Frontend API base URL |
-| `FRONTENDURL` | `http://localhost:3000` | Public Workspace URL |
-| `SELFURL` | `http://localhost:3000/api` | Public API URL |
-| `PROURL` | `http://localhost:3000` | Workspace public URL |
+| `DATA_DIR` | `/data` | Persistent data directory inside the container |
+| `TZ` | `America/New_York` | Container timezone |
+| `AI_API_URL` | empty | AI service URL used by Workspace AI features |
+| `AUTHENTICATION_SEND_USER_EMAIL_AS_HEADER` | `false` | Send the signed-in user's email as a request header |
 | `AI_COPILOT_ENABLED` | `true` | Show Copilot UI |
 | `AI_COPILOT_AI_ENHANCEMENTS` | `true` | Enable AI enhancement UI |
+| `UI_SHOW_MARKETPLACE` | `true` | Show the Apps Marketplace tab |
+| `UI_SHOW_MINIMIZE_WIDGET` | `true` | Show widget minimize controls |
+| `UI_SHOW_CHART_GENERATION` | `true` | Show chart generation controls |
+| `UI_SHOW_CHANGELOG` | `true` | Show the in-app changelog |
+| `UI_SHOW_COPILOT_SWITCHER` | `true` | Show the Copilot switcher |
+| `MCP_DEFAULT_SERVER_ENABLED` | `true` | Add the default MCP server for new users |
 | `DATA_ALLOW_HTML_JS_EXECUTION` | `true` | Allow HTML widgets to execute JavaScript |
