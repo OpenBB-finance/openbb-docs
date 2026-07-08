@@ -49,6 +49,11 @@ export default {
 					id: "agents/app-builder-resources",
 					label: "App Builder Resources",
 				},
+				{
+					type: "doc",
+					id: "agents/agent-rita",
+					label: "Agent Rita",
+				},
 			],
 		},
 		{
