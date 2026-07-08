@@ -2,6 +2,7 @@
 
 ## Docs
 
+- [Agent Rita](https://docs.openbb.co/agents/agent-rita): Run Agent Rita, OpenBB's open source reference agent for Workspace.
 - [App Builder Resources](https://docs.openbb.co/agents/app-builder-resources): Use Workspace MCP app-builder resources, or install the generated OpenBB app-builder skill, to build custom OpenBB Workspace applications with an AI agent.
 - [Workspace MCP Overview](https://docs.openbb.co/agents/workspace-mcp-overview): Understand how the OpenBB Workspace MCP exposes a live Workspace browser session to external AI agents.
 - [Workspace MCP Quickstart](https://docs.openbb.co/agents/workspace-mcp-quickstart): Create a Workspace MCP token, connect the browser bridge, and attach an external MCP client.

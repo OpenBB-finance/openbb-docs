@@ -42,6 +42,7 @@
 - [agents.json Reference](https://docs.openbb.co/workspace/developers/json-specs/agents-json-reference): Complete reference guide for configuring custom AI agents in OpenBB Workspace using the agents.json endpoint
 - [apps.json Reference](https://docs.openbb.co/workspace/developers/json-specs/apps-json-reference): Learn about the structure and configuration of apps.json for creating custom applications in OpenBB Workspace
 - [widgets.json Reference](https://docs.openbb.co/workspace/developers/json-specs/widgets-json-reference): Learn how to integrate your own backend with OpenBB Workspace using the cookie-cutter or language-agnostic API approaches, with illustrative guides and principles for handling widget.json files, APIs, interfaces, Python, FastAPI and more.
+- [Open Source Agent](https://docs.openbb.co/workspace/developers/open-source-agent): Run and customize Agent Rita, OpenBB's open source reference agent for Workspace.
 - [OpenBB AI SDK](https://docs.openbb.co/workspace/developers/openbb-ai-sdk): Build custom agents for OpenBB Workspace using the OpenBB AI SDK helpers and models
 - [Categories and Subcategories](https://docs.openbb.co/workspace/developers/widget-configuration/category-subcategory): Learn how to organize widgets using categories and subcategories in OpenBB Workspace.
 - [Data Update Display](https://docs.openbb.co/workspace/developers/widget-configuration/data-update-display): Learn about configuring data update display for widgets in OpenBB Workspace.
