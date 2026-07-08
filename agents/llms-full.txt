@@ -16,43 +16,34 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="App Builder Resources | OpenBB Workspace Docs" />
 
-The OpenBB app-builder instructions are maintained in the
-[Workspace MCP repository](https://github.com/OpenBB-finance/workspace-mcp).
-They help agents build custom OpenBB Workspace applications, including backend
-endpoints, `widgets.json`, `apps.json`, dashboard layouts, thumbnails, widget
-parameters, validation, and semantic output checks.
+The OpenBB app-builder instructions are maintained in the [Workspace MCP repository](https://github.com/OpenBB-finance/workspace-mcp). They help agents build custom OpenBB Workspace applications, including backend endpoints, `widgets.json`, `apps.json`, dashboard layouts, thumbnails, widget parameters, validation, and semantic output checks.
 
 ## Source of truth
 
-When your agent is connected to Workspace MCP, ask it to read the live MCP
-resource index:
+When your agent is connected to Workspace MCP, ask it to read the live MCP resource index:
 
 ```text
 openbb://workspace/app-builder/index
 ```
 
-The index routes the agent to the right app-builder spec, guide, example, or
-validation resource for the task.
+The index routes the agent to the right app-builder spec, guide, example, or validation resource for the work.
 
 ## Installable skill package
 
-For agents that support installable skills, but are not using Workspace MCP
-resources directly, install the generated `openbb-app-builder` skill from the
-Workspace MCP repository:
+For agents that support installable skills, but are not using Workspace MCP resources directly, install the generated `openbb-app-builder` skill from the Workspace MCP repository:
 
 ```bash
 npx skills add https://github.com/OpenBB-finance/workspace-mcp --skill openbb-app-builder
 ```
 
-This skill package is generated from the same Workspace MCP resource catalog.
-It is a compatibility artifact, not a separate source of truth.
+This skill package is generated from the same Workspace MCP resource catalog. It is a compatibility artifact, not a separate source of truth.
 
 ## Main resource entry points
 
-| Task | Resource |
+| Use case | Resource |
 |------|----------|
-| Start any app-building task | `openbb://workspace/app-builder/index` |
-| Build a new app backend | `openbb://workspace/guides/build-an-app` |
+| Start app-building work | `openbb://workspace/app-builder/index` |
+| Build an app backend | `openbb://workspace/guides/build-an-app` |
 | Review an existing app | `openbb://workspace/guides/review-app` |
 | Debug a broken app | `openbb://workspace/guides/debug-app` |
 | Convert an endpoint to a widget | `openbb://workspace/guides/convert-endpoint-to-widget` |
@@ -91,7 +82,9 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 <HeadTitle title="Workspace MCP Overview | OpenBB Docs" />
 
-The OpenBB Workspace MCP is a local companion server that exposes your active Workspace browser session as Model Context Protocol (MCP) tools. An external MCP-capable agent can use those tools to inspect dashboards, fetch widget data, create widgets, manage tabs, register backends, and instantiate Workspace apps.
+The OpenBB Workspace MCP lets your AI agent — Claude Code, Codex, Cursor, or any MCP-capable client — see and control your OpenBB Workspace: read the data on your dashboards, build new dashboards and widgets, and test the apps it builds.
+
+It works by exposing your active Workspace browser session as Model Context Protocol (MCP) tools through a hosted backend endpoint. An external agent can use those tools to inspect dashboards, fetch widget data, create widgets, manage tabs, register backends, and instantiate Workspace apps.
 
 Use it when an agent needs structured access to Workspace state. It avoids brittle browser automation because the agent calls Workspace commands directly instead of clicking through the UI.
 
@@ -116,14 +109,14 @@ This demo shows Codex using the Workspace MCP to interact with an active OpenBB 
 
 ## Architecture
 
-The Workspace MCP runs as a local sidecar process:
+The Workspace MCP is served by the OpenBB backend:
 
 ```text
 MCP client or agent
     |
     | streamable HTTP MCP
     v
-Workspace MCP sidecar
+OpenBB backend `/mcp`
     |
     | WebSocket bridge
     v
@@ -134,13 +127,13 @@ OpenBB Workspace browser tab
 Dashboards, widgets, apps, data backends, and skills
 ```
 
-The sidecar exposes a stateless MCP endpoint at `http://127.0.0.1:8787/mcp` by default. Workspace connects to the same sidecar through a browser bridge. Tool calls sent by the agent are forwarded to the connected browser tab, executed by Workspace, and returned as structured results.
+OpenBB Workspace shows the hosted MCP endpoint in the Workspace MCP Companion. The endpoint path is `/mcp` on the same backend host used by Workspace. The Companion keeps your Workspace tab connected to OpenBB's servers — this connection is the browser bridge — so the agent's tool calls can reach your session. Tool calls sent by the agent are forwarded to the connected browser tab, executed by the Workspace, and returned as structured results.
 
-The browser must stay open and connected. If the Workspace tab disconnects, the sidecar remains running but tool calls return an unavailable error until the browser reconnects.
+The browser must stay open and connected. If the Workspace tab disconnects, tool calls return an unavailable error until the browser reconnects. Each user has one active Workspace MCP bridge; connecting another browser bridge replaces the previous one.
 
 ## What agents can do
 
-The current tool surface covers the main Workspace authoring and inspection workflows:
+Workspace MCP covers the main Workspace authoring and inspection workflows:
 
 | Area | Examples |
 |------|----------|
@@ -152,7 +145,7 @@ The current tool surface covers the main Workspace authoring and inspection work
 | Widget authoring | Create widgets from backend definitions, update widget parameters, resize or move widgets, read widget state, and delete individual widgets. |
 | Generated artifacts | Add generated notes, tables, charts, and HTML widgets without a backend connection. |
 | Backend and app workflows | Register data backends, refresh backends, list app templates, and instantiate apps into dashboards. |
-| Agent and skill workflows | Delegate tasks to configured Workspace agents and load skills from the Workspace skill library. |
+| Agent and skill workflows | Delegate work to configured Workspace agents and load skills from the Workspace skill library. |
 
 The MCP server also publishes app-builder resources under `openbb://workspace/...`. Agents can read these resources when they are building or reviewing Workspace backends, `widgets.json`, or `apps.json` files.
 
@@ -189,22 +182,21 @@ This is useful for development workflows where the agent owns both the backend c
 
 Treat any MCP client connected to the Workspace MCP as trusted. The tool server can read Workspace state and mutate dashboards in the connected browser session.
 
-Keep the sidecar local:
+Workspace MCP uses a Workspace MCP personal access token:
 
-- Bind to `127.0.0.1`, which is the default.
-- Do not expose it on `0.0.0.0`, a LAN address, a tunnel, or a public reverse proxy.
-- Use local HTTP for `localhost` or `127.0.0.1`; HTTPS is not required for the local sidecar.
+- Send the token as `Authorization: Bearer <token>`.
+- Store the token in your MCP client configuration.
+- Revoke the token from Workspace when it should stop working.
 - Connect only MCP clients you trust to read and change your Workspace.
 
-The Workspace MCP operates inside an existing authenticated browser session. It does not log in for you, manage authentication tokens, change billing, change organization settings, invite users, or share dashboards.
+The Workspace MCP personal access token authenticates the `/mcp` endpoint only. It is not accepted by normal Workspace API routes, and it does not change billing, organization settings, user invites, or dashboard sharing.
 
 ## Requirements
 
 - An OpenBB Workspace browser tab.
-- The Workspace MCP sidecar running locally.
+- The Workspace MCP Companion connected in Workspace.
 - An MCP client that can connect to a streamable HTTP MCP server.
-- Python 3.13 when installing or running the sidecar directly.
-- `uv` for the recommended install path. The helper script installs `uv` if it is not already available.
+- A Workspace MCP personal access token created in Workspace.
 
 See [Workspace MCP Quickstart](/agents/workspace-mcp-quickstart) for setup steps and [Workspace MCP Tools](/agents/workspace-mcp-tools) for the tool reference.
 
@@ -214,7 +206,7 @@ See [Workspace MCP Quickstart](/agents/workspace-mcp-quickstart) for setup steps
 ---
 title: Workspace MCP Quickstart
 sidebar_position: 2
-description: Run the OpenBB Workspace MCP sidecar, connect Workspace, and attach an external MCP client.
+description: Create a Workspace MCP token, connect the browser bridge, and attach an external MCP client.
 keywords:
 - OpenBB Workspace MCP
 - Workspace MCP quickstart
@@ -229,102 +221,21 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Workspace MCP Quickstart | OpenBB Docs" />
 
-This guide starts the Workspace MCP sidecar on your machine, connects it to an OpenBB Workspace browser tab, and configures an MCP client to call Workspace tools.
+This guide connects an external MCP client to an active OpenBB Workspace browser session through the hosted Workspace MCP endpoint.
 
 ## Prerequisites
 
 Before you start:
 
-- OpenBB Workspace is available in your browser.
+- OpenBB Workspace is open in your browser at [pro.openbb.co](https://pro.openbb.co).
 - Your MCP client supports HTTP MCP servers.
-- Your machine can run Python 3.13.
-- You can install or run tools with `uv`.
+- You can edit your MCP client configuration.
 
-The helper script installs `uv` when it is missing. If you manage Python environments manually, install `uv` first and use the direct command shown below.
+The Workspace tab must stay open and connected while the external agent uses Workspace MCP tools.
 
-## 1. Start the sidecar
+## 1. Open Workspace MCP Companion
 
-Install the sidecar from the [Workspace MCP repository](https://github.com/OpenBB-finance/workspace-mcp), or use one of the one-line installers below.
-
-**macOS, Linux, WSL, and Git Bash:**
-
-```bash
-curl -LsSf https://raw.githubusercontent.com/OpenBB-finance/workspace-mcp/main/scripts/run.sh | sh
-```
-
-**Windows PowerShell:**
-
-```powershell
-powershell -ExecutionPolicy Bypass -Command "Invoke-RestMethod https://raw.githubusercontent.com/OpenBB-finance/workspace-mcp/main/scripts/run.ps1 | Invoke-Expression"
-```
-
-<div style={{display: 'flex', justifyContent: 'center'}}>
-  <img
-    className="pro-border-gradient"
-    alt="Terminal showing the Workspace MCP sidecar running correctly"
-    src="https://openbb-cms.directus.app/assets/2ed50bec-4bf9-4aed-99ef-9a1b7348901d.png"
-    width="1000"
-  />
-</div>
-
-The default server listens on:
-
-```text
-http://127.0.0.1:8787
-```
-
-The MCP endpoint is:
-
-```text
-http://127.0.0.1:8787/mcp
-```
-
-The script installs `uv` if needed, then runs `workspace-mcp` from the OpenBB Workspace MCP source archive.
-
-### Passing options to the installer
-
-The one-line installers forward any arguments after `--` straight to `workspace-mcp`, so you can set options like `--cors-allow`, `--host`, or `--port` without installing the binary separately.
-
-**macOS, Linux, WSL, and Git Bash** — add `-s --` after `sh`, then the flags:
-
-```bash
-curl -LsSf https://raw.githubusercontent.com/OpenBB-finance/workspace-mcp/main/scripts/run.sh \
-  | sh -s -- --cors-allow https://your-origin.openbb.co
-```
-
-**Windows PowerShell** — append the flags to the run command:
-
-```powershell
-powershell -ExecutionPolicy Bypass -Command "Invoke-RestMethod https://raw.githubusercontent.com/OpenBB-finance/workspace-mcp/main/scripts/run.ps1 | Invoke-Expression" -- --cors-allow https://your-origin.openbb.co
-```
-
-See the [configuration reference](#configuration-reference) for the full list of options you can pass this way. For other advanced options (forks, branches, or local checkouts), see the [Workspace MCP repository](https://github.com/OpenBB-finance/workspace-mcp).
-
-## 2. Check sidecar health
-
-In another terminal, call the health endpoint:
-
-```bash
-curl http://127.0.0.1:8787/health
-```
-
-Before Workspace connects, the response should show that the sidecar is running and no browser is attached:
-
-```json
-{
-  "ok": true,
-  "browser_connected": false,
-  "pending_commands": 0,
-  "session": null
-}
-```
-
-After Workspace connects, `browser_connected` should be `true` and `session` should include the current browser session metadata.
-
-
-## 3. Connect Workspace to the sidecar
-
-Open OpenBB Workspace in your browser and connect the local companion:
+Open OpenBB Workspace in your browser and open the hosted companion:
 
 1. Open Workspace.
 2. Click the hamburger icon in the top-left corner.
@@ -339,76 +250,106 @@ Open OpenBB Workspace in your browser and connect the local companion:
   />
 </div>
 
-4. Set the companion base URL to `http://127.0.0.1:8787`.
-5. Click the connect action after the sidecar is running.
+The companion shows the hosted MCP endpoint. The endpoint path is `/mcp` on the same backend host used by Workspace.
 
+## 2. Connect the browser bridge
+
+Turn on the connection toggle next to the **Endpoint** field. The status changes to **Connected**, and the active browser tab is now bridged to the hosted MCP service.
 
 <div style={{display: 'flex', justifyContent: 'center'}}>
   <img
     className="pro-border-gradient"
-    alt="Workspace MCP Companion connected to the local sidecar"
-    src="https://openbb-cms.directus.app/assets/0df1ae5d-d391-42b7-8c36-25b9be5d6dfc.png"
-    width="800"
+    alt="Workspace MCP Companion showing the endpoint connected and the Create Token button"
+    src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/mcp+companion.png"
+    width="550"
   />
 </div>
 
-By default, the sidecar allows CORS requests from `https://pro.openbb.co` and loopback origins such as `http://localhost:1420` and `http://127.0.0.1:1420`.
+Each user has one active Workspace MCP browser bridge. If you connect from another tab or device, the latest bridge replaces the previous one.
 
-For a different Workspace origin, pass `--cors-allow`. If you started the sidecar with the one-line installer, forward the flag through `sh -s --`:
+Token creation is only available while the bridge is connected, so complete this step first.
 
-```bash
-curl -LsSf https://raw.githubusercontent.com/OpenBB-finance/workspace-mcp/main/scripts/run.sh \
-  | sh -s -- --cors-allow https://example.openbb.dev
-```
+## 3. Create a Workspace MCP token
 
-If you run the binary directly, pass it the same way:
+In the companion modal, under **Active Tokens**:
 
-```bash
-workspace-mcp --cors-allow https://example.openbb.dev
-```
+1. Click **Create Token**.
+2. You should now see a screen like below, now enter a token name and click **Generate Token**.
+3. Copy the token connection string from the field shown in the dialog after generating.
 
-Repeat `--cors-allow` or pass a comma-separated list to allow more than one origin:
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="Create token dialog with the token name field and Generate Token button"
+    src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/generate+token.png"
+    width="550"
+  />
+</div>
 
-```bash
-workspace-mcp \
-  --cors-allow https://one.example.openbb.dev,https://two.example.openbb.dev \
-  --cors-allow http://localhost:1420
-```
+Workspace MCP tokens are personal access tokens for MCP. They are sent as bearer tokens to `/mcp`, remain valid until revoked, and do not authenticate normal Workspace API routes.
 
 ## 4. Configure your MCP client
 
-Point your MCP client at:
+After the token is generated, the same dialog shows ready-to-paste connection snippets with the endpoint and token already filled in:
+
+- **Prompt**: a natural-language instruction you can paste into any agent that can configure its own MCP servers.
+- **.mcp.json**: an HTTP server entry for clients that read an `.mcp.json` file.
+- **Claude Code**: a `claude mcp add` command.
+- **Codex**: a `codex mcp add` command.
+
+Pick the tab for your client and copy the snippet. That is usually all the configuration you need.
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="Create token dialog showing the generated token and the connection snippet tabs"
+    src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/create+token.png"
+    width="550"
+  />
+</div>
+
+For other clients, use the endpoint copied from Workspace MCP Companion and send the token as an HTTP authorization header:
 
 ```text
-http://127.0.0.1:8787/mcp
+Authorization: Bearer obb_mcp_...
 ```
 
-For clients that read a project `.mcp.json` file, use an HTTP server entry:
+For clients that read a project `.mcp.json` file, the entry looks like this:
 
 ```json
 {
   "mcpServers": {
-    "workspace_mcp": {
+    "openbb": {
       "type": "http",
-      "url": "http://127.0.0.1:8787/mcp"
+      "url": "https://pro.openbb.co/mcp",
+      "headers": {
+        "Authorization": "Bearer obb_mcp_..."
+      }
     }
   }
 }
 ```
 
-If your client has an `mcp add` command or settings UI, choose the HTTP transport and use the same `/mcp` URL.
+Replace the URL with the endpoint shown in Workspace MCP Companion.
 
-For Codex:
+For Codex, the snippet stores the token in an environment variable and points Codex at the hosted `/mcp` endpoint:
 
 ```bash
-codex mcp add workspace_mcp --url http://127.0.0.1:8787/mcp
+export OBB_MCP_TOKEN=obb_mcp_...
+codex mcp add openbb \
+  --url https://pro.openbb.co/mcp \
+  --bearer-token-env-var OBB_MCP_TOKEN
 ```
 
 For Claude Code:
 
 ```bash
-claude mcp add --transport http workspace_mcp http://127.0.0.1:8787/mcp
+claude mcp add --transport http openbb \
+  https://pro.openbb.co/mcp \
+  --header "Authorization: Bearer obb_mcp_..."
 ```
+
+If your client has an `mcp add` command or settings UI, choose the HTTP transport, use the hosted `/mcp` URL, and configure the same `Authorization` header.
 
 ## 5. Validate the connection
 
@@ -420,7 +361,7 @@ A practical validation prompt is:
 Call get_workspace_snapshot and tell me the active dashboard id and the visible tabs.
 ```
 
-If the agent can list the dashboard and tabs, the MCP client, sidecar, and browser bridge are connected.
+If the agent can list the dashboard and tabs, the MCP client, hosted MCP endpoint, and browser bridge are connected.
 
 ## 6. Try common Workspace actions
 
@@ -456,28 +397,15 @@ Analyze my current portfolio exposure and add a markdown note widget with that a
   />
 </div>
 
-## Configuration reference
-
-| Option | Default | Description |
-|--------|---------|-------------|
-| `--host` | `127.0.0.1` | Host interface for the sidecar HTTP server. Keep this on loopback for normal use. |
-| `--port` | `8787` | Port for the sidecar HTTP server. |
-| `--mcp-path` | `/mcp` | Path for the streamable HTTP MCP endpoint. |
-| `--command-timeout-seconds` | `15.0` | Seconds to wait for one browser command result. |
-| `--cors-allow` | production Workspace and loopback origins | Extra browser origins allowed to call the sidecar. |
-| `--reload` | disabled | Restart the local development server when source files change. |
-
-In reload mode, the CLI also maps options to `OPENBB_WORKSPACE_MCP_*` environment variables so Uvicorn can recreate the app.
-
 ## Troubleshooting
 
 | Symptom | What to check |
 |---------|---------------|
-| `No Workspace browser is connected.` | Open Workspace, open Workspace MCP Companion, and connect it to the sidecar base URL. |
-| `browser_connected` is `false` in `/health` | The sidecar is running, but the browser bridge has not connected or has disconnected. |
-| Browser CORS error | Add the Workspace browser origin with `--cors-allow`. |
-| Tool call times out | Keep the Workspace tab open and active enough to execute commands. Increase `--command-timeout-seconds` for slower operations. |
-| MCP client cannot connect | Confirm the client supports HTTP MCP servers and uses `http://127.0.0.1:8787/mcp`, not the sidecar base URL. |
+| `Could not validate Workspace MCP credentials` | Confirm the MCP client sends `Authorization: Bearer <token>` and that the token has not been revoked. |
+| `No active Workspace browser connected` | Open Workspace, open Workspace MCP Companion, and turn on the connection toggle. |
+| Tool call times out | Keep the Workspace tab open and active enough to execute commands. |
+| MCP client cannot connect | Confirm the client supports HTTP MCP servers and uses the hosted `/mcp` URL copied from Workspace MCP Companion. |
+| Agent sees out-of-date dashboard state | Call `get_workspace_snapshot` again after navigation or reconnect the browser bridge. |
 
 
 ---
@@ -499,18 +427,18 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Workspace MCP Tools | OpenBB Docs" />
 
-This page documents the tools exposed by the OpenBB Workspace MCP sidecar. Tool names and argument names use `snake_case`.
+This page documents the tools exposed by the OpenBB Workspace MCP server. Tool names and argument names use `snake_case`.
 
 ## Calling conventions
 
-Start each new agent session with `get_workspace_snapshot`. It returns the active Workspace context, dashboard metadata, visible dashboard composition, available skills, and other identifiers the agent needs.
+Start each agent session with `get_workspace_snapshot`. It returns the active Workspace context, dashboard metadata, visible dashboard composition, available skills, and other identifiers the agent needs.
 
 Use identifiers returned by Workspace:
 
 - Use `dashboard_id` or `current_dashboard_uuid` for dashboard writes.
 - Use `widget_uuid` for an existing widget instance.
 - Use `origin` and `widget_id` from `list_available_widgets` when creating a backend widget.
-- Use `backend_id` from `manage_backends` when listing or instantiating apps from a backend.
+- Use `backend_id` from `manage_backends` to filter apps or widgets to one backend.
 - Use `slug` from the snapshot when loading a skill.
 
 Avoid matching objects by display name. Dashboards, widgets, and apps can have duplicate names.
@@ -725,7 +653,7 @@ Arguments:
 | `operation` | string | Yes | One of `create`, `add_tabs`, `remove_tabs`, or `rename_tabs`. |
 | `dashboard_id` | string | No | Target dashboard. Omit only when targeting the current route. |
 | `tabs` | array | Conditional | Required for `create`, `add_tabs`, and `remove_tabs`. Each item must be an object with only `name`. |
-| `rename_map` | object | Conditional | Required for `rename_tabs`. Keys are old tab IDs and values are new names. |
+| `rename_map` | object | Conditional | Required for `rename_tabs`. Keys are old tab IDs and values are replacement names. |
 
 Valid tab payload:
 
@@ -741,7 +669,7 @@ Valid tab payload:
 
 Do not pass string arrays such as `["Overview", "Charts"]`. Do not pass `tab_id` or `tab_name` fields. Workspace generates tab IDs from tab names, such as `Overview` to `overview`.
 
-For a new-tab workflow:
+To add content to a tab:
 
 1. Call `manage_navigation_bar` with `operation: "add_tabs"`.
 2. Call `navigate_workspace` with the generated `tab_id`.
@@ -760,7 +688,7 @@ Arguments:
 | `w` | number | Yes | Width in grid columns. |
 | `h` | number | Yes | Height in grid rows. |
 | `widget_uuid` | string | Recommended | Existing widget instance UUID. |
-| `widget_id` | string | No | Fallback only when exactly one matching widget instance exists. |
+| `widget_id` | string | No | Use only when exactly one matching widget instance exists. |
 | `dashboard_id` | string | No | Target dashboard. |
 | `tab_id` | string | No | Target tab. Use this when moving across tabs. |
 | `min_w`, `min_h`, `max_w`, `max_h` | number | No | Optional layout constraints. |
@@ -784,7 +712,7 @@ Arguments:
 | Argument | Type | Required | Notes |
 |----------|------|----------|-------|
 | `widget_uuid` | string | Recommended | Preferred instance identifier. |
-| `widget_id` | string | No | Fallback only when exactly one matching instance exists. |
+| `widget_id` | string | No | Use only when exactly one matching instance exists. |
 | `dashboard_id` | string | No | Target dashboard. |
 
 Use this when the agent needs a widget's current config or rendered data from the active tab.
@@ -816,10 +744,10 @@ Arguments:
 | Argument | Type | Required | Notes |
 |----------|------|----------|-------|
 | `widget_uuid` | string | Recommended | Existing widget instance UUID. |
-| `widget_id` | string | No | Fallback only when exactly one matching instance exists. |
+| `widget_id` | string | No | Use only when exactly one matching instance exists. |
 | `dashboard_id` | string | No | Target dashboard. |
-| `data_args` | object | No | New widget parameters. |
-| `ui_args` | object | No | New widget UI configuration. |
+| `data_args` | object | No | Replacement widget parameters. |
+| `ui_args` | object | No | Replacement widget UI configuration. |
 
 Use `update_widget_layout` for `x`, `y`, `w`, `h`, `gridData`, or tab placement. `update_widget` is for widget config only.
 
@@ -832,7 +760,7 @@ Arguments:
 | Argument | Type | Required | Notes |
 |----------|------|----------|-------|
 | `widget_uuid` | string | Recommended | Existing widget instance UUID. |
-| `widget_id` | string | No | Fallback only when exactly one matching instance exists. |
+| `widget_id` | string | No | Use only when exactly one matching instance exists. |
 | `dashboard_id` | string | No | Target dashboard. |
 
 The tool is scoped to a single widget. It does not delete dashboards or folders.
@@ -936,29 +864,34 @@ Example:
 
 ### `manage_apps`
 
-Lists, reads, or instantiates apps from a Workspace data backend.
+Lists, reads, or instantiates Workspace apps.
 
 Arguments:
 
 | Argument | Type | Required | Notes |
 |----------|------|----------|-------|
 | `operation` | string | Yes | One of `list`, `read`, or `instantiate`. |
-| `backend_id` | string | Yes | Backend UUID from `manage_backends`. |
+| `backend_id` | string | No | Backend UUID from `manage_backends`. Omit to include apps from every source; pass it to filter to one backend. |
 | `app_name` | string | Conditional | Required for `read` and `instantiate` unless `template_id` is provided. |
 | `template_id` | string | Conditional | Required for `read` and `instantiate` unless `app_name` is provided. |
-| `dashboard_name` | string | No | Name for the instantiated dashboard. |
 | `activate` | boolean | No | Defaults to `true` for instantiation. |
 
-Apps are full dashboard templates declared in a backend's `apps.json`. Instantiating an app creates a dashboard with its tabs, widgets, parameter groups, and suggested prompts.
+Apps are full dashboard templates. `list` returns every app the user can see, from three sources marked by a `type` field:
+
+- `backend`: apps declared in the `apps.json` of the user's own backends.
+- `shared`: backend apps shared with the user through their organization.
+- `saved`: apps the user created or saved in Workspace, or that were shared with them. These have no `backend_id`; reference them by `template_id`.
+
+Each listed app includes `name`, `template_id`, `description`, `type`, `backend_id`, `backend_name`, `is_shared`, and `created_by`. `read` and `instantiate` resolve `app_name` or `template_id` across all sources.
+
+Instantiating an app always creates a fresh dashboard with the app's tabs, widgets, parameter groups, and suggested prompts, and returns its `dashboard_id`.
 
 Example:
 
 ```json
 {
   "operation": "instantiate",
-  "backend_id": "backend-uuid",
   "app_name": "Macro Dashboard",
-  "dashboard_name": "Macro Dashboard - Agent Test",
   "activate": true
 }
 ```
@@ -967,7 +900,7 @@ Example:
 
 ### `assign_tasks_to_agents`
 
-Delegates tasks to configured external Workspace agents.
+Delegates work to configured external Workspace agents.
 
 Arguments:
 
@@ -1004,12 +937,19 @@ The MCP server exposes two prompts:
 It also exposes app-builder resources under `openbb://workspace/...`, including:
 
 - `openbb://workspace/app-builder/index`
+- `openbb://workspace/overview/what-is-workspace`
+- `openbb://workspace/overview/ai-agent-contract`
 - `openbb://workspace/contract/backend`
 - `openbb://workspace/specs/widgets-json`
 - `openbb://workspace/specs/apps-json`
+- `openbb://workspace/specs/widget-types`
+- `openbb://workspace/specs/widget-parameters`
 - `openbb://workspace/specs/layout-grid`
 - `openbb://workspace/guides/build-an-app`
+- `openbb://workspace/guides/review-app`
 - `openbb://workspace/guides/debug-app`
+- `openbb://workspace/guides/convert-endpoint-to-widget`
+- `openbb://workspace/examples/generic-http/minimal`
 - `openbb://workspace/examples/python-fastapi/minimal`
 - `openbb://workspace/validation/common-errors`
 
