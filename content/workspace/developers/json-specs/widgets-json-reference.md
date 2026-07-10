@@ -320,6 +320,11 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
             _Example:_ `"id"`
             _Example use case:_ If your table displays company names in the cell but your API expects company IDs, set `valueField: "companyId"` to use the ID field from the row data instead of the displayed name.
 
+          - **forceUpdate**
+            _Type:_ `boolean` (optional)
+            By default, clicking a cell updates the shared parameter for the other widgets in the group, but the widget containing the clicked cell does not re-fetch its own data. Set this to `true` to force the source widget to update as well when one of its cells is clicked.
+            _Example:_ `true`
+
         - **colorValueKey**
           _Type:_ `string`
           Specifies which field to use for determining the color when showing cell changes.

@@ -229,3 +229,31 @@ In this example:
 - When displaying human-readable text but needing to pass IDs or codes
 - When the displayed value differs from the parameter value format
 - When you want to decouple the display value from the API parameter value
+
+## Using forceUpdate to Refresh the Source Widget
+
+By default, clicking a cell only updates the other widgets that share the parameter — the table widget containing the clicked cell does not re-fetch its own data. This avoids unnecessary requests, since the table usually just provides the selection.
+
+If the table widget itself also depends on the parameter (for example, it filters or highlights its rows based on the selected symbol), set `forceUpdate: True` in the `groupBy` configuration so the source widget re-fetches its data as well:
+
+```python
+{
+    "field": "symbol",
+    "headerName": "Symbol",
+    "cellDataType": "text",
+    "width": 120,
+    "renderFn": "cellOnClick",
+    "renderFnParams": {
+        "actionType": "groupBy",
+        "groupBy": {
+            "paramName": "symbol",
+            "forceUpdate": True  # Also re-fetch this widget's data on click
+        }
+    }
+}
+```
+
+**When to use forceUpdate:**
+
+- When the table widget's own endpoint uses the parameter being updated
+- When clicking a cell should refresh the data shown in the source table, not just the connected widgets

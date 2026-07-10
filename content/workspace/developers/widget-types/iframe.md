@@ -8,6 +8,8 @@ keywords:
 - streamlit
 - embed external app
 - postMessage
+- openbb-auth
+- auth headers
 - mcpUrl
 - destructiveHint
 - sub-widgets
@@ -24,6 +26,7 @@ On its own, an iframe just renders the URL. But by implementing the **Iframe Wid
 
 - **Export sub-widgets** — declare tables and markdown sections inside the iframe that Workspace can pull out as standalone dashboard widgets.
 - **Receive toolbar parameters** — react to Workspace parameters (dropdowns, dates, toggles) without a backend round-trip.
+- **Receive auth headers** — get the auth headers configured on the widget's backend connection, so the app can make authenticated API calls without re-prompting for credentials.
 - **Auto-connect an MCP server** — wire up Copilot tools the moment the widget mounts.
 - **Auto-refresh on mutating tool calls** — remount the iframe after a destructive MCP tool runs so the UI reflects new state.
 
@@ -92,6 +95,7 @@ The protocol is a small set of `postMessage` events exchanged between the embedd
 
 - **`openbb-request`** — Workspace asks the iframe for a sub-widget's data. A `widgetId` of `null` means "send everything."
 - **`openbb-params-update`** — Workspace pushes new toolbar parameter values to the iframe (e.g. the user changed a dropdown). The app reads these and re-renders.
+- **`openbb-auth`** — Workspace sends the widget's configured auth headers to the iframe in response to `openbb-connect`. See [Receiving auth headers](#receiving-auth-headers-openbb-auth).
 
 ### Sub-widget manifests
 
@@ -187,6 +191,49 @@ The bridge below is the complete client side of the protocol — announce on loa
   });
 })();
 ```
+
+## Receiving auth headers (`openbb-auth`)
+
+If the widget's backend connection was configured with auth headers (for example an `Authorization` or `X-API-KEY` header entered when the backend was added to Workspace), Workspace forwards those headers to the embedded app so it can make authenticated requests of its own — for instance, calling the same backend the widget belongs to.
+
+The flow is part of the handshake:
+
+1. The embedded app sends `openbb-connect` (as in the [Minimal bridge](#minimal-bridge) above).
+2. Workspace replies with an `openbb-auth` message containing the configured headers:
+
+   ```js
+   {
+     type: "openbb-auth",
+     headers: { "Authorization": "Bearer ...", "X-API-KEY": "..." }
+   }
+   ```
+
+3. The app stores the headers and attaches them to its API calls:
+
+   ```js
+   let authHeaders = {};
+
+   window.addEventListener("message", function (event) {
+     if (event.data?.type === "openbb-auth") {
+       authHeaders = event.data.headers;
+       // e.g. re-fetch data now that credentials are available
+     }
+   });
+
+   // Later, in your data fetching:
+   fetch("https://my-backend.example.com/portfolio", { headers: authHeaders });
+   ```
+
+Because `openbb-auth` is only sent in reply to `openbb-connect`, register your `message` listener before (or at the same time as) sending the handshake, or the reply may arrive before you are listening.
+
+### Security constraints
+
+Workspace only sends `openbb-auth` when **both** of these hold:
+
+- The backend connection actually has headers configured — if there are none, no message is sent.
+- The `openbb-connect` message's origin **exactly matches** the origin of the iframe's `src` URL. The reply is posted targeted at that origin (never `"*"`), so credentials cannot leak to a different origin.
+
+The origin check means pages that send the handshake from a nested sub-frame on a *different* origin than the widget's `endpoint` URL (some component-based frameworks do this) will not receive the headers — send `openbb-connect` from the top-level page of your app in that case.
 
 ## Pushing parameters back to Workspace
 
