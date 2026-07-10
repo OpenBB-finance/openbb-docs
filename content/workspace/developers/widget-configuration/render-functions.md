@@ -235,6 +235,32 @@ In this example:
 ]
 ```
 
+### Using forceUpdate to Refresh the Source Widget
+
+By default, when a cell click updates a parameter through the `groupBy` action, only the other widgets that share the parameter are refreshed — the widget containing the clicked cell does not re-fetch its own data. If the source widget also uses the parameter (for example, the table filters or highlights rows based on the selected symbol), set `forceUpdate: true` so it updates too:
+
+```json
+{
+    ...
+    "columnsDefs": [
+        {
+            "field": "symbol",
+            "headerName": "Symbol",
+            "renderFn": "cellOnClick",
+            "renderFnParams": {
+                "actionType": "groupBy",
+                "groupBy": {
+                    "paramName": "symbol",
+                    "forceUpdate": true
+                }
+            }
+        }
+    ]
+}
+```
+
+With `forceUpdate: true`, clicking a symbol cell updates the `symbol` parameter and re-fetches the table widget's own data in addition to updating the other widgets in the group.
+
 ### Hover Card
 
 To use the hover card render function, you need to add it to the `columnsDefs` array in your `widgets.json` file for the column you want to apply it to.
