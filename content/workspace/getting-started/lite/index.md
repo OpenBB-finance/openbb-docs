@@ -18,6 +18,8 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 OpenBB Workspace Lite is the self-hosted Workspace package for small investment teams that already have data sources and need a shared workspace they control.
 
+For pricing and access, see [OpenBB pricing](https://openbb.co/pricing).
+
 ## Who It Is For
 
 Workspace Lite is designed for smaller self-hosted deployments among teams of roughly 1-20 people.

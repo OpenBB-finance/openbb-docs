@@ -37,6 +37,14 @@ You need:
 
 You do not need your own AWS account. The AWS credentials provided by OpenBB authorize registry access for the Workspace Lite image.
 
+## Install With A Coding Agent
+
+Give your coding agent this prompt:
+
+```text
+Install OpenBB Workspace Lite by following https://docs.openbb.co/workspace/getting-started/lite/installation. Ask me for the registry credentials and image tag when needed.
+```
+
 ## Configure Registry Credentials
 
 Create a dedicated AWS CLI profile for the registry credentials:
