@@ -79,6 +79,10 @@ docker run -d \
   lite.openbb.co/openbb-lite:<version>
 ```
 
+## AI Features
+
+Set `AI_API_URL` to the base URL of a Workspace-compatible AI service that users' browsers can reach. The [Workspace AI service](/workspace/developers/ai-features/workspace-ai-service) page documents the endpoint contract. [Agent Rita](/agents/agent-rita) is a reference implementation.
+
 ## Workspace MCP
 
 Workspace Lite comes with the MCP companion enabled. See the [Workspace MCP overview](/agents/workspace-mcp-overview) for the user-facing MCP workflow.
