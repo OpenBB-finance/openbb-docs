@@ -29,7 +29,7 @@ docker run -d \
   -e PROURL=https://workspace.example.com \
   -e SELFURL=https://workspace.example.com/api \
   --name openbb \
-  lite.openbb.co/openbb-lite:<version>
+  lite.openbb.co/openbb-lite:latest
 ```
 
 Use HTTPS for shared deployments.
@@ -43,7 +43,7 @@ docker run -d \
   -p 8080:3000 \
   -v openbb-data:/data \
   --name openbb \
-  lite.openbb.co/openbb-lite:<version>
+  lite.openbb.co/openbb-lite:latest
 ```
 
 Open Workspace Lite at `http://localhost:8080`.
@@ -59,7 +59,7 @@ docker run -d \
   -e OPENBB_ADMIN_EMAIL=admin@example.com \
   -e OPENBB_ADMIN_PASSWORD='replace-with-a-strong-password' \
   --name openbb \
-  lite.openbb.co/openbb-lite:<version>
+  lite.openbb.co/openbb-lite:latest
 ```
 
 Set these values before the first start of a new `/data` volume.
@@ -76,7 +76,7 @@ docker run -d \
   -v openbb-data:/data \
   -e UI_SHOW_MARKETPLACE=false \
   --name openbb \
-  lite.openbb.co/openbb-lite:<version>
+  lite.openbb.co/openbb-lite:latest
 ```
 
 ## AI Features
@@ -95,7 +95,7 @@ docker run -d \
   -v openbb-data:/data \
   -e UI_SHOW_COMPANION_MCP_MODE=false \
   --name openbb \
-  lite.openbb.co/openbb-lite:<version>
+  lite.openbb.co/openbb-lite:latest
 ```
 
 Disable the default MCP server for new users with `MCP_DEFAULT_SERVER_ENABLED=false`:
@@ -106,7 +106,7 @@ docker run -d \
   -v openbb-data:/data \
   -e MCP_DEFAULT_SERVER_ENABLED=false \
   --name openbb \
-  lite.openbb.co/openbb-lite:<version>
+  lite.openbb.co/openbb-lite:latest
 ```
 
 If Workspace Lite runs behind a reverse proxy, allow long-lived HTTP responses and WebSocket upgrades for `/api/pro/workspace-mcp`.

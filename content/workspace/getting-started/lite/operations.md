@@ -62,12 +62,12 @@ Before updating:
 - read the release notes provided by OpenBB
 - back up `/data`
 - record the currently running image version
-- confirm the new image tag and registry access
+- confirm registry access
 
-Pull the new image:
+Pull the new image. The explicit `docker pull` is required — Docker reuses the locally cached `latest` otherwise:
 
 ```bash
-docker pull lite.openbb.co/openbb-lite:<new-version>
+docker pull lite.openbb.co/openbb-lite:latest
 ```
 
 Stop and remove the old container. Keep the `openbb-data` volume:
@@ -84,7 +84,7 @@ docker run -d \
   -p 3000:3000 \
   -v openbb-data:/data \
   --name openbb \
-  lite.openbb.co/openbb-lite:<new-version>
+  lite.openbb.co/openbb-lite:latest
 ```
 
 Check sign-in, dashboards, connected backends, files, Apps, and MCP behavior before removing the old image from the host.

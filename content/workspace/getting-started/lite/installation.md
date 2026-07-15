@@ -21,10 +21,10 @@ OpenBB Workspace Lite is delivered through the private container registry. OpenB
 The commands below use the private container registry path:
 
 ```text
-lite.openbb.co/openbb-lite:<version>
+lite.openbb.co/openbb-lite:latest
 ```
 
-Replace `<version>` with the image tag from your OpenBB release instructions.
+The `latest` tag always points to the most recent generally available release.
 
 ## Requirements
 
@@ -35,36 +35,33 @@ You need:
 - Registry credentials provided by OpenBB.
 - Network access from the host to `lite.openbb.co`.
 
-You do not need your own AWS account. The AWS credentials provided by OpenBB authorize registry access for the Workspace Lite image.
+You do not need your own AWS account or to run `aws configure`. The AWS credentials provided by OpenBB authorize registry access for the Workspace Lite image and are passed as environment variables for the login command only.
 
 ## Install With A Coding Agent
 
 Give your coding agent this prompt:
 
 ```text
-Install OpenBB Workspace Lite by following https://docs.openbb.co/workspace/getting-started/lite/installation. Ask me for the registry credentials and image tag when needed.
-```
-
-## Configure Registry Credentials
-
-Create a dedicated AWS CLI profile for the registry credentials:
-
-```bash
-aws configure --profile openbb-lite
-```
-
-Enter the access key ID, secret access key, and region provided by OpenBB. Unless OpenBB gives you a different region, use:
-
-```text
-us-east-1
+Install OpenBB Workspace Lite by following https://docs.openbb.co/workspace/getting-started/lite/installation. Ask me for the registry credentials when needed.
 ```
 
 ## Log In To The Registry
 
-Authenticate Docker to the private registry:
+Authenticate Docker to the private registry using the access key ID and secret access key provided by OpenBB.
+
+macOS / Linux:
 
 ```bash
-aws ecr get-login-password --region us-east-1 --profile openbb-lite | docker login --username AWS --password-stdin lite.openbb.co
+AWS_ACCESS_KEY_ID="<access-key-id>" AWS_SECRET_ACCESS_KEY="<secret-access-key>" AWS_DEFAULT_REGION="us-east-1" aws ecr get-login-password | docker login --username AWS --password-stdin lite.openbb.co
+```
+
+Windows PowerShell:
+
+```powershell
+$env:AWS_ACCESS_KEY_ID="<access-key-id>"
+$env:AWS_SECRET_ACCESS_KEY="<secret-access-key>"
+$env:AWS_DEFAULT_REGION="us-east-1"
+aws ecr get-login-password | docker login --username AWS --password-stdin lite.openbb.co
 ```
 
 A successful login prints:
@@ -75,16 +72,16 @@ Login Succeeded
 
 ## Pull The Image
 
-Pull the image using the tag from your OpenBB instructions email:
+Pull the image:
 
 ```bash
-docker pull lite.openbb.co/openbb-lite:<version>
+docker pull lite.openbb.co/openbb-lite:latest
 ```
 
 If you need a platform-specific image, include the platform architecture in the pull command. For example:
 
 ```bash
-docker pull --platform linux/amd64 lite.openbb.co/openbb-lite:<version>
+docker pull --platform linux/amd64 lite.openbb.co/openbb-lite:latest
 ```
 
 ## Start Workspace Lite
@@ -98,7 +95,7 @@ docker run -d \
   -p 3000:3000 \
   -v openbb-data:/data \
   --name openbb \
-  lite.openbb.co/openbb-lite:<version>
+  lite.openbb.co/openbb-lite:latest
 ```
 
 Open Workspace Lite at:
@@ -139,13 +136,15 @@ The `/data` volume keeps the database, uploaded files, and generated secrets acr
 
 ## Troubleshooting
 
-If `docker login` fails, confirm the AWS profile, region, and registry hostname:
+If `docker login` fails, confirm the credentials, region, and registry hostname by running the login command's first half on its own:
 
 ```bash
-aws ecr get-login-password --region us-east-1 --profile openbb-lite
+AWS_ACCESS_KEY_ID="<access-key-id>" AWS_SECRET_ACCESS_KEY="<secret-access-key>" AWS_DEFAULT_REGION="us-east-1" aws ecr get-login-password
 ```
 
-If `docker pull` fails with `denied` after `Login Succeeded`, your registry credentials may not have access to the image or tag. Confirm the image tag and registry access with OpenBB.
+A long token printed to the terminal means the credentials are valid.
+
+If `docker pull` fails with `denied` after `Login Succeeded`, your registry credentials may not have access to the image. Confirm registry access with OpenBB.
 
 If the container starts but the page does not load, inspect the logs:
 
