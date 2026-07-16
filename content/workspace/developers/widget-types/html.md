@@ -238,6 +238,46 @@ The gridData parameter specifies the widget's size in the OpenBB Workspace grid 
 
 **Data Integration**: Generate HTML content dynamically on the server based on live data sources, enabling real-time portfolio monitoring, market data display, and dynamic performance tracking.
 
+## Raw Data View
+
+An HTML widget can expose the data behind its visualization by setting `"raw": true` in the widget configuration. This adds a button in the top right corner of the widget that switches between the rendered HTML and a table of the underlying data — and it also helps the OpenBB Copilot understand the data in the widget.
+
+When the user switches to the raw view, OpenBB Workspace calls the **same endpoint** again with `raw=true` appended to the query parameters (alongside all the widget's other parameters). Your endpoint should accept a `raw` parameter that defaults to `False` and branch on it:
+
+- No `raw` parameter (the normal view — Workspace omits it entirely): return the HTML content as usual.
+- `raw=true`: return JSON — a list of records (or an object with a `results` key containing one). This is rendered as a table.
+
+You return either HTML or the raw JSON data, never both combined.
+
+```python
+@register_widget({
+    "name": "Portfolio Dashboard",
+    "description": "Portfolio overview with raw data view",
+    "type": "html",
+    "endpoint": "portfolio_dashboard",
+    "raw": True,
+    "gridData": {"w": 40, "h": 20},
+})
+@app.get("/portfolio_dashboard")
+def portfolio_dashboard(raw: bool = False):
+    positions = [
+        {"symbol": "AAPL", "shares": 100, "price": 182.50},
+        {"symbol": "GOOGL", "shares": 50, "price": 141.20},
+        {"symbol": "MSFT", "shares": 75, "price": 378.80},
+    ]
+
+    # Raw view: return the underlying data as JSON
+    if raw:
+        return positions
+
+    # Default view: return the rendered HTML
+    rows = "".join(
+        f"<li><strong>{p['symbol']}</strong> — {p['shares']} shares @ ${p['price']}</li>"
+        for p in positions
+    )
+    return HTMLResponse(content=f"<ul>{rows}</ul>")
+```
+
 ## Best Practices
 
 - Use semantic HTML structure for accessibility and maintainability
