@@ -30,3 +30,6 @@ content/workspace/widgets-library
 
 # Download Platform code from https://github.com/OpenBB-finance/OpenBBTerminal
 openbb_platform
+
+# Code editor configurations
+.vscode/
