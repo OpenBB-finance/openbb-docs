@@ -104,13 +104,19 @@ Open Workspace Lite at:
 http://localhost:3000
 ```
 
-The first start generates an admin account and runtime secrets. Read the generated admin credentials from the container logs:
+The first start generates an admin account and runtime secrets. Print the generated admin email and password at any time:
 
 ```bash
-docker logs openbb
+docker exec openbb credentials
 ```
 
-The credentials are also stored inside the container volume at:
+The credentials are also printed at the end of the startup logs:
+
+```bash
+docker logs openbb --tail 15
+```
+
+They are stored inside the container volume at:
 
 ```text
 /data/secrets.env
