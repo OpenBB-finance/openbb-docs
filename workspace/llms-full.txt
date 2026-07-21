@@ -4833,6 +4833,64 @@ The workspace sends the following JSON to the feedback endpoint:
 ---
 
 ---
+title: Workspace AI service
+sidebar_position: 11
+description: Implement the AI service endpoints used by Workspace Lite and Enterprise UI features.
+keywords:
+- Workspace AI service
+- AI_API_URL
+- Agent Rita
+- dashboard titles
+- prompt enhancement
+- widget metadata
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Workspace AI Service | OpenBB Workspace Docs" />
+
+Workspace Lite and Enterprise deployments can use an AI service for UI generation tasks. These are separate from the custom agent integrations described [here](/workspace/developers/agents-integration).
+
+Set the AI service base URL in the deployment configuration. E.G. OpenBB Workspace [Lite uses `AI_API_URL`](/workspace/getting-started/lite/configuration#ai-features). Requests originate in the user's browser, so the URL must be reachable from the browser. For shared deployments, use HTTPS and allow cross-origin requests from the Workspace origin.
+
+[Agent Rita](/agents/agent-rita) is a reference implementation. Adding Agent Rita as a custom chat agent does not configure these UI features; the operator must also set the deployment's AI service URL.
+
+## Endpoints
+
+| Endpoint | Request | Response | Workspace usage |
+| --- | --- | --- | --- |
+| `POST /v1/generate/chat/title` | JSON containing `messages` | JSON string | Generate a chat title |
+| `POST /v1/generate/dashboard/title` | JSON containing `widgets` | Plain text | Generate a dashboard name |
+| `POST /v1/enhance_prompt` | JSON containing `messages` and optional Workspace context | Plain text | Rewrite a prompt without changing its intent |
+| `POST /v1/generate/widget_info` | JSON containing `widget_generation_request` | JSON with `title`, `description`, `category`, and `subcategory` | Generate widget metadata |
+| `POST /v1/generate/widget_info/file` | Multipart form data containing `file` | JSON with `title` and `description` | Generate uploaded-file metadata |
+| `POST /v1/generate/code` | JSON containing the widget ID, prompt, language, and optional code or data context | JSON containing `generated_code` or an error | Generate or modify table code |
+
+## Authentication
+
+Workspace includes the signed-in user's bearer token in these requests. Validate the token in the AI service or place the service behind an authenticated gateway. Do not log authorization headers or forwarded API keys.
+
+## Reference behavior
+
+| Endpoint | Processing and fallback behavior |
+| --- | --- |
+| Chat title | Uses the last five human messages, truncated to 500 characters each. Returns `"New Chat"` when no human message is available or generation fails. |
+| Dashboard title | Uses up to 20 widget names. Returns `My Dashboard` when no names are available or generation fails. |
+| Prompt enhancement | Uses the latest human message and up to 30 widget names. Returns the original prompt when generation fails. |
+| Widget metadata | Uses up to 3,000 characters of widget data. Falls back to metadata supplied in the request. |
+| Uploaded-file metadata | Accepts files up to 25 MB and reads up to 3,000 characters. Falls back to the filename. |
+| Code generation | Supports SQL and Python, with optional current code, SQL schema, and up to five sample rows. Returns a failure object when generation fails. |
+
+Requests that fail endpoint schema validation return `400`. The uploaded-file endpoint returns `400` when the file is missing and `413` when it exceeds 25 MB. Model-provider failures return the endpoint-specific fallback response with status `200`.
+
+Workspace can request `text` code generation and provide `semantic_models`. Agent Rita's current code-generation route supports only `sql` and `python`, so it does not implement that variant.
+
+See the [Agent Rita source code](https://github.com/OpenBB-finance/agent-rita/tree/main/src/routes/generate) for the reference route implementations.
+
+
+---
+
+---
 title: Apps
 sidebar_position: 33
 description: Create and customize your own OpenBB Apps for optimized workflows
@@ -9148,7 +9206,7 @@ Agent Rita runs as an HTTP service that implements the Workspace agent contract:
 - `GET /agents.json` returns the agent metadata, available models, and supported Workspace features.
 - `POST /v1/query` receives chat messages, dashboard context, widgets, and available MCP tools, then streams Server-Sent Events (SSE) back to Workspace.
 
-Agent Rita also exposes auxiliary generation routes for Workspace UI tasks, such as `POST /v1/generate/dashboard/title` for dashboard names and `POST /v1/generate/chat/title` for chat titles. These routes use the configured model provider for single-shot generation outside the main chat stream.
+Agent Rita also implements the [Workspace AI service endpoints](/workspace/developers/ai-features/workspace-ai-service) for single-shot UI generation tasks outside the main chat stream.
 
 If MCP servers are configured in Workspace, Agent Rita can use their tools. Workspace owns those MCP connections, sends the available tool descriptors in each request, executes selected tools, and forwards results back to the agent through the normal `/v1/query` flow.
 
@@ -18227,6 +18285,469 @@ Follow this troubleshooting checklist:
 5. **Validate JSON**: Ensure widgets.json has valid syntax
 
 For detailed debugging steps, see the [Troubleshooting Guide](/workspace/developers/data-integration).
+
+---
+
+---
+title: Configure Workspace Lite
+sidebar_position: 3
+description: Configure OpenBB Workspace Lite with container environment variables.
+keywords:
+  - OpenBB Workspace Lite configuration
+  - Workspace Lite environment variables
+  - Workspace Lite Marketplace
+  - Workspace Lite MCP
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Configure Workspace Lite | OpenBB Workspace Docs" />
+
+# Configure Workspace Lite
+
+OpenBB Workspace Lite configuration is passed to the container with environment variables. Apply configuration changes by recreating the container with the same `/data` mount and the updated variables.
+
+## Public URL
+
+When Workspace Lite runs behind a reverse proxy or DNS name, set the public URLs used by Workspace:
+
+```bash
+docker run -d \
+  -p 3000:3000 \
+  -v openbb-data:/data \
+  -e FRONTENDURL=https://workspace.example.com \
+  -e PROURL=https://workspace.example.com \
+  -e SELFURL=https://workspace.example.com/api \
+  --name openbb \
+  lite.openbb.co/openbb-lite:latest
+```
+
+Use HTTPS for shared deployments.
+
+## Host Port
+
+If port `3000` is already in use on the host, map a different host port to the container port:
+
+```bash
+docker run -d \
+  -p 8080:3000 \
+  -v openbb-data:/data \
+  --name openbb \
+  lite.openbb.co/openbb-lite:latest
+```
+
+Open Workspace Lite at `http://localhost:8080`.
+
+## Initial Admin Account
+
+The first start generates an admin account and prints the credentials to the container logs. Set the initial admin email and password yourself by passing these variables on the first run:
+
+```bash
+docker run -d \
+  -p 3000:3000 \
+  -v openbb-data:/data \
+  -e OPENBB_ADMIN_EMAIL=admin@example.com \
+  -e OPENBB_ADMIN_PASSWORD='replace-with-a-strong-password' \
+  --name openbb \
+  lite.openbb.co/openbb-lite:latest
+```
+
+Set these values before the first start of a new `/data` volume.
+
+## Apps Marketplace
+
+The Apps Marketplace tab is available in Workspace Lite. Marketplace browsing requires outbound access to OpenBB's marketplace service.
+
+Hide the Marketplace tab by starting the container with `UI_SHOW_MARKETPLACE=false`:
+
+```bash
+docker run -d \
+  -p 3000:3000 \
+  -v openbb-data:/data \
+  -e UI_SHOW_MARKETPLACE=false \
+  --name openbb \
+  lite.openbb.co/openbb-lite:latest
+```
+
+## AI Features
+
+Set `AI_API_URL` to the base URL of a Workspace-compatible AI service that users' browsers can reach. The [Workspace AI service](/workspace/developers/ai-features/workspace-ai-service) page documents the endpoint contract. [Agent Rita](/agents/agent-rita) is a reference implementation.
+
+## Workspace MCP
+
+Workspace Lite comes with the MCP companion enabled. See the [Workspace MCP overview](/agents/workspace-mcp-overview) for the user-facing MCP workflow.
+
+Hide the MCP companion by starting the container with `UI_SHOW_COMPANION_MCP_MODE=false`:
+
+```bash
+docker run -d \
+  -p 3000:3000 \
+  -v openbb-data:/data \
+  -e UI_SHOW_COMPANION_MCP_MODE=false \
+  --name openbb \
+  lite.openbb.co/openbb-lite:latest
+```
+
+Disable the default MCP server for new users with `MCP_DEFAULT_SERVER_ENABLED=false`:
+
+```bash
+docker run -d \
+  -p 3000:3000 \
+  -v openbb-data:/data \
+  -e MCP_DEFAULT_SERVER_ENABLED=false \
+  --name openbb \
+  lite.openbb.co/openbb-lite:latest
+```
+
+If Workspace Lite runs behind a reverse proxy, allow long-lived HTTP responses and WebSocket upgrades for `/api/pro/workspace-mcp`.
+
+## Other Controls
+
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| `PORT` | `3000` | Container listen port |
+| `DATA_DIR` | `/data` | Persistent data directory inside the container |
+| `TZ` | `America/New_York` | Container timezone |
+| `AI_API_URL` | empty | AI service URL used by Workspace AI features |
+| `AUTHENTICATION_SEND_USER_EMAIL_AS_HEADER` | `false` | Send the signed-in user's email as a request header |
+| `AI_COPILOT_ENABLED` | `true` | Show Copilot UI |
+| `AI_COPILOT_AI_ENHANCEMENTS` | `true` | Enable AI enhancement UI |
+| `UI_SHOW_MARKETPLACE` | `true` | Show the Apps Marketplace tab |
+| `UI_SHOW_MINIMIZE_WIDGET` | `true` | Show widget minimize controls |
+| `UI_SHOW_CHART_GENERATION` | `true` | Show chart generation controls |
+| `UI_SHOW_CHANGELOG` | `true` | Show the in-app changelog |
+| `UI_SHOW_COPILOT_SWITCHER` | `true` | Show the Copilot switcher |
+| `MCP_DEFAULT_SERVER_ENABLED` | `true` | Add the default MCP server for new users |
+| `DATA_ALLOW_HTML_JS_EXECUTION` | `true` | Allow HTML widgets to execute JavaScript |
+
+
+---
+
+---
+title: Workspace Lite
+sidebar_position: 1
+description: Run OpenBB Workspace Lite as a self-hosted workspace for small investment teams.
+keywords:
+  - OpenBB Workspace Lite
+  - Workspace Lite
+  - self-hosted workspace
+  - Docker
+  - small investment teams
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Workspace Lite | OpenBB Workspace Docs" />
+
+# Workspace Lite
+
+OpenBB Workspace Lite is the self-hosted Workspace package for small investment teams that already have data sources and need a shared workspace they control.
+
+For pricing and access, see [OpenBB pricing](https://openbb.co/pricing).
+
+## Who It Is For
+
+Workspace Lite is designed for smaller self-hosted deployments among teams of roughly 1-20 people.
+
+It fits teams that:
+
+- Have at least one data source to connect, such as a database, data feed, or internal API.
+- Need to share dashboards, apps, and agent-compatible analysis across a small team.
+- Want to run Workspace inside their own environment for compliance reasons.
+- Can operate a Docker container but do not want to run a Kubernetes-based enterprise deployment.
+
+The strongest trigger is usually one of these:
+
+- "I have been using the community tier and need to make this official for my whole team."
+- "I want to run this internally for compliance reasons."
+
+## Who It Is Not For
+
+Workspace Lite is not the right starting point for teams with no data infrastructure at all. A team working only from local spreadsheets has an earlier data organization problem to solve first.
+
+Workspace Lite is also not intended for firms that need SSO, multi-entity deployment, or custom infrastructure support. Those requirements belong in a larger Workspace deployment.
+
+## Feature Set
+
+Workspace Lite uses email and password for authentication.
+
+Admins add users from the Workspace admin UI. A temporary password is displayed to the admin in the UI at creation time. The user will be prompted to change it after signing in.
+
+The Apps Marketplace tab is available in Workspace Lite. Marketplace browsing requires outbound access to OpenBB's marketplace service. Learn how to hide the tab in the [Lite configuration section](/workspace/getting-started/lite/configuration#apps-marketplace).
+
+Workspace Lite comes with the MCP companion enabled. Read about the MCP companion in the [Workspace MCP overview](/agents/workspace-mcp-overview). Learn how to disable this functionality in the [Lite configuration section](/workspace/getting-started/lite/configuration#workspace-mcp).
+
+## Next Steps
+
+Install Workspace Lite:
+
+[Install Workspace Lite](/workspace/getting-started/lite/installation)
+
+Configure Workspace Lite:
+
+[Configure Workspace Lite](/workspace/getting-started/lite/configuration)
+
+Operate, back up, and update Workspace Lite:
+
+[Operate Workspace Lite](/workspace/getting-started/lite/operations)
+
+
+---
+
+---
+title: Install Workspace Lite
+sidebar_position: 2
+description: Pull and run OpenBB Workspace Lite from the private container registry.
+keywords:
+  - OpenBB Workspace Lite install
+  - Workspace Lite Docker
+  - lite.openbb.co
+  - AWS ECR login
+  - private registry
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Install Workspace Lite | OpenBB Workspace Docs" />
+
+# Install Workspace Lite
+
+OpenBB Workspace Lite is delivered through the private container registry. OpenBB provides registry credentials.
+
+The commands below use the private container registry path:
+
+```text
+lite.openbb.co/openbb-lite:latest
+```
+
+The `latest` tag always points to the most recent generally available release.
+
+## Requirements
+
+You need:
+
+- [Docker](https://docs.docker.com/get-started/get-docker/) installed and running.
+- [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) installed locally.
+- Registry credentials provided by OpenBB.
+- Network access from the host to `lite.openbb.co`.
+
+You do not need your own AWS account or to run `aws configure`. The AWS credentials provided by OpenBB authorize registry access for the Workspace Lite image and are passed as environment variables for the login command only.
+
+## Install With A Coding Agent
+
+Give your coding agent this prompt:
+
+```text
+Install OpenBB Workspace Lite by following https://docs.openbb.co/workspace/getting-started/lite/installation. Ask me for the registry credentials when needed.
+```
+
+## Log In To The Registry
+
+Authenticate Docker to the private registry using the access key ID and secret access key provided by OpenBB.
+
+macOS / Linux:
+
+```bash
+AWS_ACCESS_KEY_ID="<access-key-id>" AWS_SECRET_ACCESS_KEY="<secret-access-key>" AWS_DEFAULT_REGION="us-east-1" aws ecr get-login-password | docker login --username AWS --password-stdin lite.openbb.co
+```
+
+Windows PowerShell:
+
+```powershell
+$env:AWS_ACCESS_KEY_ID="<access-key-id>"
+$env:AWS_SECRET_ACCESS_KEY="<secret-access-key>"
+$env:AWS_DEFAULT_REGION="us-east-1"
+aws ecr get-login-password | docker login --username AWS --password-stdin lite.openbb.co
+```
+
+A successful login prints:
+
+```text
+Login Succeeded
+```
+
+## Pull The Image
+
+Pull the image:
+
+```bash
+docker pull lite.openbb.co/openbb-lite:latest
+```
+
+If you need a platform-specific image, include the platform architecture in the pull command. For example:
+
+```bash
+docker pull --platform linux/amd64 lite.openbb.co/openbb-lite:latest
+```
+
+## Start Workspace Lite
+
+Mount a host folder or Docker volume to `/data` before using Workspace Lite with team data. The `/data` mount stores the database, uploaded files, and generated secrets.
+
+Run the container with a persistent Docker volume:
+
+```bash
+docker run -d \
+  -p 3000:3000 \
+  -v openbb-data:/data \
+  --name openbb \
+  lite.openbb.co/openbb-lite:latest
+```
+
+Open Workspace Lite at:
+
+```text
+http://localhost:3000
+```
+
+The first start generates an admin account and runtime secrets. Print the generated admin email and password at any time:
+
+```bash
+docker exec openbb credentials
+```
+
+The credentials are also printed at the end of the startup logs:
+
+```bash
+docker logs openbb --tail 15
+```
+
+They are stored inside the container volume at:
+
+```text
+/data/secrets.env
+```
+
+Keep this file private. It contains the generated admin password and runtime secrets.
+
+## Stop And Start
+
+Stop the container:
+
+```bash
+docker stop openbb
+```
+
+Start it again:
+
+```bash
+docker start openbb
+```
+
+The `/data` volume keeps the database, uploaded files, and generated secrets across restarts.
+
+## Troubleshooting
+
+If `docker login` fails, confirm the credentials, region, and registry hostname by running the login command's first half on its own:
+
+```bash
+AWS_ACCESS_KEY_ID="<access-key-id>" AWS_SECRET_ACCESS_KEY="<secret-access-key>" AWS_DEFAULT_REGION="us-east-1" aws ecr get-login-password
+```
+
+A long token printed to the terminal means the credentials are valid.
+
+If `docker pull` fails with `denied` after `Login Succeeded`, your registry credentials may not have access to the image. Confirm registry access with OpenBB.
+
+If the container starts but the page does not load, inspect the logs:
+
+```bash
+docker logs openbb
+```
+
+
+---
+
+---
+title: Operate Workspace Lite
+sidebar_position: 4
+description: Back up, update, and administer OpenBB Workspace Lite.
+keywords:
+  - OpenBB Workspace Lite operations
+  - Workspace Lite backup
+  - Workspace Lite users
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Operate Workspace Lite | OpenBB Workspace Docs" />
+
+# Operate Workspace Lite
+
+Workspace Lite is customer-hosted. You provision the host, secure the network, operate the container, back up `/data`, and manage users.
+
+OpenBB provides the Workspace Lite image and generally available updates through the private container registry during the subscription term.
+
+## Persistent Data
+
+Workspace Lite stores persistent state under `/data`. Mount `/data` to a host folder or a Docker volume before using Workspace Lite with team data.
+
+| Path | Purpose |
+| --- | --- |
+| `/data/openbb.db` | SQLite database |
+| `/data/storage` | Uploaded files and local folder storage |
+| `/data/secrets.env` | Generated runtime secrets and admin credentials |
+
+Use the full `/data` mount as the backup and restore boundary.
+
+## Secrets
+
+Treat `/data/secrets.env` as sensitive. Back it up with the database and storage files. Do not publish container logs from first start without redacting the admin password.
+
+## Users And Authentication
+
+Workspace Lite uses local email and password authentication. Admins manage users from the Workspace admin UI.
+
+When an admin adds a user, Workspace returns a temporary password in the UI. Copy that password before closing the toast and send it to the user through your secure internal channel.
+
+Use named admin accounts for administrators who need ongoing access. Rotate the generated first-start admin password after setup.
+
+## Backups & Restore
+
+Back up the full `/data` mount. A backup should include:
+
+- `/data/openbb.db`
+- `/data/openbb.db-wal` and `/data/openbb.db-shm` if present
+- `/data/storage`
+- `/data/secrets.env`
+
+For a cold backup, stop the container first.
+
+Restore the `/data` backup into a new volume, then start Workspace Lite against that volume. You can then start the same or newer compatible Workspace Lite image against that volume.
+
+## Updates
+
+Before updating:
+
+- read the release notes provided by OpenBB
+- back up `/data`
+- record the currently running image version
+- confirm registry access
+
+Pull the new image. The explicit `docker pull` is required — Docker reuses the locally cached `latest` otherwise:
+
+```bash
+docker pull lite.openbb.co/openbb-lite:latest
+```
+
+Stop and remove the old container. Keep the `openbb-data` volume:
+
+```bash
+docker stop openbb
+docker rm openbb
+```
+
+Start the new version against the same volume:
+
+```bash
+docker run -d \
+  -p 3000:3000 \
+  -v openbb-data:/data \
+  --name openbb \
+  lite.openbb.co/openbb-lite:latest
+```
+
+Check sign-in, dashboards, connected backends, files, Apps, and MCP behavior before removing the old image from the host.
+
 
 ---
 

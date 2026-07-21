@@ -37,6 +37,7 @@
 - [Parse widget data](https://docs.openbb.co/workspace/developers/ai-features/parse-widget-data): Retrieve data from selected widgets and pass it as raw context to your LLM
 - [Share step-by-step reasoning](https://docs.openbb.co/workspace/developers/ai-features/share-step-by-step-reasoning): Stream status updates alongside model output during long operations
 - [User feedback](https://docs.openbb.co/workspace/developers/ai-features/user-feedback): Receive and persist user feedback (thumbs up/down) from the workspace UI
+- [Workspace AI service](https://docs.openbb.co/workspace/developers/ai-features/workspace-ai-service): Implement the AI service endpoints used by Workspace Lite and Enterprise UI features.
 - [Apps](https://docs.openbb.co/workspace/developers/apps/index): Create and customize your own OpenBB Apps for optimized workflows
 - [Data Integration](https://docs.openbb.co/workspace/developers/data-integration): Learn how to integrate your own data sources and APIs into OpenBB Workspace with a custom backend solution.
 - [agents.json Reference](https://docs.openbb.co/workspace/developers/json-specs/agents-json-reference): Complete reference guide for configuring custom AI agents in OpenBB Workspace using the agents.json endpoint
@@ -86,6 +87,10 @@
 - [Support & Services](https://docs.openbb.co/workspace/getting-started/enterprise/support-services): Enterprise support, professional services, and success programs for OpenBB Workspace
 - [Team Collaboration](https://docs.openbb.co/workspace/getting-started/enterprise/team-collaboration): Collaborative features for teams in OpenBB Workspace Enterprise
 - [FAQs](https://docs.openbb.co/workspace/getting-started/faqs): Common questions and answers about OpenBB Workspace, data integration, custom backends, and troubleshooting.
+- [Configure Workspace Lite](https://docs.openbb.co/workspace/getting-started/lite/configuration): Configure OpenBB Workspace Lite with container environment variables.
+- [Workspace Lite](https://docs.openbb.co/workspace/getting-started/lite/index): Run OpenBB Workspace Lite as a self-hosted workspace for small investment teams.
+- [Install Workspace Lite](https://docs.openbb.co/workspace/getting-started/lite/installation): Pull and run OpenBB Workspace Lite from the private container registry.
+- [Operate Workspace Lite](https://docs.openbb.co/workspace/getting-started/lite/operations): Back up, update, and administer OpenBB Workspace Lite.
 - [OpenBB Python Package](https://docs.openbb.co/workspace/getting-started/platform-installer): Learn how to integrate the Open Data Platform data to OpenBB Workspace
 - [Progressive Web App (PWA)](https://docs.openbb.co/workspace/getting-started/pwa): Install OpenBB Workspace as a Progressive Web App for a native experience on desktop and mobile devices.
 - [Workspace Overview](https://docs.openbb.co/workspace/index): OpenBB Workspace is a secure enterprise UI application for AI workflows, featuring data integration, AI model deployment, flexible UI customization, and on-premises deployment capabilities.
