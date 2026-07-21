@@ -96,7 +96,7 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
 
 - **raw**
   _Type:_ `boolean`
-  ONLY used for Plotly configuration. If true will create a button on the widget to switch between the chart and raw data.
+  Used by [Plotly](../widget-types/plotly-charts), [Highcharts](../widget-types/highcharts), [Vega-Lite](../widget-types/vega-lite), [HTML](../widget-types/html#raw-data-view) and [YouTube](../widget-types/youtube) widgets. If true, creates a button on the widget to switch between the rendered view and the raw data behind it. The widget's endpoint is re-requested with `raw=true` as a query parameter and should return the underlying data as JSON (for YouTube widgets, the video transcript).
   _Possible values:_ `true`, `false`
   _Default:_ `false`
 

@@ -77,6 +77,7 @@ Each MCP server entry contains:
 - `name`: Display name for the MCP server
 - `description`: Short description of what the server provides
 - `url`: The MCP server endpoint URL
+- `authType` (optional): How users authenticate with the server — `"oauth"` (default) or `"token"`
 
 When `mcp_servers` is defined, the app's page in OpenBB Workspace will show that an MCP server is available, allowing users to connect to it directly from the app.
 
@@ -89,6 +90,29 @@ For example:
         "name": "OpenBB Docs",
         "description": "Search and retrieve content from the OpenBB documentation.",
         "url": "https://openbb-docs-mcp.external.openbb.app/mcp"
+    }
+]
+```
+
+#### MCP server authentication
+
+The `authType` field controls how OpenBB Workspace authenticates users against your MCP server. It primarily drives the **marketplace UI**: when your app is listed on the OpenBB marketplace, the app's page shows a connect flow for the MCP server that matches the declared auth type.
+
+- `"oauth"` (or omitted): When the server responds with a 401, Workspace starts the standard MCP OAuth flow — the user authorizes in a popup and Workspace manages the resulting tokens. Use this when your server implements the MCP authorization spec.
+- `"token"`: On the marketplace app page, Workspace prompts the user to paste a static access token when connecting. The token is stored for that MCP server only and sent as an `Authorization: Bearer <token>` header on every request to it. A 401 is treated as an invalid or expired token (the user is asked to update it) — Workspace never falls back to the OAuth flow for these servers.
+
+For custom backends connected directly (not through the marketplace), there is no token prompt: an MCP server declared with `"token"` still skips the OAuth flow, and Workspace forwards the headers configured on the backend connection (e.g. an `Authorization` header) to the MCP server instead.
+
+Use `"token"` when your server authenticates with long-lived API tokens or personal access tokens instead of OAuth:
+
+```json
+
+"mcp_servers": [
+    {
+        "name": "Acme Research MCP",
+        "description": "Query Acme research data via MCP tools.",
+        "url": "https://mcp.acmedata.com/mcp",
+        "authType": "token"
     }
 ]
 ```
