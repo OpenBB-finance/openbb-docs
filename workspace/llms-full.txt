@@ -5826,6 +5826,7 @@ Each MCP server entry contains:
 - `name`: Display name for the MCP server
 - `description`: Short description of what the server provides
 - `url`: The MCP server endpoint URL
+- `authType` (optional): How users authenticate with the server — `"oauth"` (default) or `"token"`
 
 When `mcp_servers` is defined, the app's page in OpenBB Workspace will show that an MCP server is available, allowing users to connect to it directly from the app.
 
@@ -5838,6 +5839,29 @@ For example:
         "name": "OpenBB Docs",
         "description": "Search and retrieve content from the OpenBB documentation.",
         "url": "https://openbb-docs-mcp.external.openbb.app/mcp"
+    }
+]
+```
+
+#### MCP server authentication
+
+The `authType` field controls how OpenBB Workspace authenticates users against your MCP server. It primarily drives the **marketplace UI**: when your app is listed on the OpenBB marketplace, the app's page shows a connect flow for the MCP server that matches the declared auth type.
+
+- `"oauth"` (or omitted): When the server responds with a 401, Workspace starts the standard MCP OAuth flow — the user authorizes in a popup and Workspace manages the resulting tokens. Use this when your server implements the MCP authorization spec.
+- `"token"`: On the marketplace app page, Workspace prompts the user to paste a static access token when connecting. The token is stored for that MCP server only and sent as an `Authorization: Bearer <token>` header on every request to it. A 401 is treated as an invalid or expired token (the user is asked to update it) — Workspace never falls back to the OAuth flow for these servers.
+
+For custom backends connected directly (not through the marketplace), there is no token prompt: an MCP server declared with `"token"` still skips the OAuth flow, and Workspace forwards the headers configured on the backend connection (e.g. an `Authorization` header) to the MCP server instead.
+
+Use `"token"` when your server authenticates with long-lived API tokens or personal access tokens instead of OAuth:
+
+```json
+
+"mcp_servers": [
+    {
+        "name": "Acme Research MCP",
+        "description": "Query Acme research data via MCP tools.",
+        "url": "https://mcp.acmedata.com/mcp",
+        "authType": "token"
     }
 ]
 ```
@@ -8204,7 +8228,7 @@ A `Widgets.json` table is a configuration structure with any of the named attrib
 
 - **raw**
   _Type:_ `boolean`
-  ONLY used for Plotly configuration. If true will create a button on the widget to switch between the chart and raw data.
+  Used by [Plotly](../widget-types/plotly-charts), [Highcharts](../widget-types/highcharts), [Vega-Lite](../widget-types/vega-lite), [HTML](../widget-types/html#raw-data-view) and [YouTube](../widget-types/youtube) widgets. If true, creates a button on the widget to switch between the rendered view and the raw data behind it. The widget's endpoint is re-requested with `raw=true` as a query parameter and should return the underlying data as JSON (for YouTube widgets, the video transcript).
   _Possible values:_ `true`, `false`
   _Default:_ `false`
 
@@ -14600,6 +14624,46 @@ The gridData parameter specifies the widget's size in the OpenBB Workspace grid 
 **Rich Styling Options**: Leverage the full power of inline CSS for advanced styling including animations, gradients, responsive layouts, and professional visual design that creates engaging dashboard experiences.
 
 **Data Integration**: Generate HTML content dynamically on the server based on live data sources, enabling real-time portfolio monitoring, market data display, and dynamic performance tracking.
+
+## Raw Data View
+
+An HTML widget can expose the data behind its visualization by setting `"raw": true` in the widget configuration. This adds a button in the top right corner of the widget that switches between the rendered HTML and a table of the underlying data — and it also helps the OpenBB Copilot understand the data in the widget.
+
+When the user switches to the raw view, OpenBB Workspace calls the **same endpoint** again with `raw=true` appended to the query parameters (alongside all the widget's other parameters). Your endpoint should accept a `raw` parameter that defaults to `False` and branch on it:
+
+- No `raw` parameter (the normal view — Workspace omits it entirely): return the HTML content as usual.
+- `raw=true`: return JSON — a list of records (or an object with a `results` key containing one). This is rendered as a table.
+
+You return either HTML or the raw JSON data, never both combined.
+
+```python
+@register_widget({
+    "name": "Portfolio Dashboard",
+    "description": "Portfolio overview with raw data view",
+    "type": "html",
+    "endpoint": "portfolio_dashboard",
+    "raw": True,
+    "gridData": {"w": 40, "h": 20},
+})
+@app.get("/portfolio_dashboard")
+def portfolio_dashboard(raw: bool = False):
+    positions = [
+        {"symbol": "AAPL", "shares": 100, "price": 182.50},
+        {"symbol": "GOOGL", "shares": 50, "price": 141.20},
+        {"symbol": "MSFT", "shares": 75, "price": 378.80},
+    ]
+
+    # Raw view: return the underlying data as JSON
+    if raw:
+        return positions
+
+    # Default view: return the rendered HTML
+    rows = "".join(
+        f"<li><strong>{p['symbol']}</strong> — {p['shares']} shares @ ${p['price']}</li>"
+        for p in positions
+    )
+    return HTMLResponse(content=f"<ul>{rows}</ul>")
+```
 
 ## Best Practices
 
