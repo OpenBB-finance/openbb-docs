@@ -26,7 +26,7 @@ Agent Rita runs as an HTTP service that implements the Workspace agent contract:
 - `GET /agents.json` returns the agent metadata, available models, and supported Workspace features.
 - `POST /v1/query` receives chat messages, dashboard context, widgets, and available MCP tools, then streams Server-Sent Events (SSE) back to Workspace.
 
-Agent Rita also exposes auxiliary generation routes for Workspace UI tasks, such as `POST /v1/generate/dashboard/title` for dashboard names and `POST /v1/generate/chat/title` for chat titles. These routes use the configured model provider for single-shot generation outside the main chat stream.
+Agent Rita also implements the [Workspace AI service endpoints](/workspace/developers/ai-features/workspace-ai-service) for single-shot UI generation tasks outside the main chat stream.
 
 If MCP servers are configured in Workspace, Agent Rita can use their tools. Workspace owns those MCP connections, sends the available tool descriptors in each request, executes selected tools, and forwards results back to the agent through the normal `/v1/query` flow.
 

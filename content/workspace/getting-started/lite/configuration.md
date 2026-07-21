@@ -1,0 +1,131 @@
+---
+title: Configure Workspace Lite
+sidebar_position: 3
+description: Configure OpenBB Workspace Lite with container environment variables.
+keywords:
+  - OpenBB Workspace Lite configuration
+  - Workspace Lite environment variables
+  - Workspace Lite Marketplace
+  - Workspace Lite MCP
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Configure Workspace Lite | OpenBB Workspace Docs" />
+
+# Configure Workspace Lite
+
+OpenBB Workspace Lite configuration is passed to the container with environment variables. Apply configuration changes by recreating the container with the same `/data` mount and the updated variables.
+
+## Public URL
+
+When Workspace Lite runs behind a reverse proxy or DNS name, set the public URLs used by Workspace:
+
+```bash
+docker run -d \
+  -p 3000:3000 \
+  -v openbb-data:/data \
+  -e FRONTENDURL=https://workspace.example.com \
+  -e PROURL=https://workspace.example.com \
+  -e SELFURL=https://workspace.example.com/api \
+  --name openbb \
+  lite.openbb.co/openbb-lite:latest
+```
+
+Use HTTPS for shared deployments.
+
+## Host Port
+
+If port `3000` is already in use on the host, map a different host port to the container port:
+
+```bash
+docker run -d \
+  -p 8080:3000 \
+  -v openbb-data:/data \
+  --name openbb \
+  lite.openbb.co/openbb-lite:latest
+```
+
+Open Workspace Lite at `http://localhost:8080`.
+
+## Initial Admin Account
+
+The first start generates an admin account and prints the credentials to the container logs. Set the initial admin email and password yourself by passing these variables on the first run:
+
+```bash
+docker run -d \
+  -p 3000:3000 \
+  -v openbb-data:/data \
+  -e OPENBB_ADMIN_EMAIL=admin@example.com \
+  -e OPENBB_ADMIN_PASSWORD='replace-with-a-strong-password' \
+  --name openbb \
+  lite.openbb.co/openbb-lite:latest
+```
+
+Set these values before the first start of a new `/data` volume.
+
+## Apps Marketplace
+
+The Apps Marketplace tab is available in Workspace Lite. Marketplace browsing requires outbound access to OpenBB's marketplace service.
+
+Hide the Marketplace tab by starting the container with `UI_SHOW_MARKETPLACE=false`:
+
+```bash
+docker run -d \
+  -p 3000:3000 \
+  -v openbb-data:/data \
+  -e UI_SHOW_MARKETPLACE=false \
+  --name openbb \
+  lite.openbb.co/openbb-lite:latest
+```
+
+## AI Features
+
+Set `AI_API_URL` to the base URL of a Workspace-compatible AI service that users' browsers can reach. The [Workspace AI service](/workspace/developers/ai-features/workspace-ai-service) page documents the endpoint contract. [Agent Rita](/agents/agent-rita) is a reference implementation.
+
+## Workspace MCP
+
+Workspace Lite comes with the MCP companion enabled. See the [Workspace MCP overview](/agents/workspace-mcp-overview) for the user-facing MCP workflow.
+
+Hide the MCP companion by starting the container with `UI_SHOW_COMPANION_MCP_MODE=false`:
+
+```bash
+docker run -d \
+  -p 3000:3000 \
+  -v openbb-data:/data \
+  -e UI_SHOW_COMPANION_MCP_MODE=false \
+  --name openbb \
+  lite.openbb.co/openbb-lite:latest
+```
+
+Disable the default MCP server for new users with `MCP_DEFAULT_SERVER_ENABLED=false`:
+
+```bash
+docker run -d \
+  -p 3000:3000 \
+  -v openbb-data:/data \
+  -e MCP_DEFAULT_SERVER_ENABLED=false \
+  --name openbb \
+  lite.openbb.co/openbb-lite:latest
+```
+
+If Workspace Lite runs behind a reverse proxy, allow long-lived HTTP responses and WebSocket upgrades for `/api/pro/workspace-mcp`.
+
+## Other Controls
+
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| `PORT` | `3000` | Container listen port |
+| `DATA_DIR` | `/data` | Persistent data directory inside the container |
+| `TZ` | `America/New_York` | Container timezone |
+| `AI_API_URL` | empty | AI service URL used by Workspace AI features |
+| `AUTHENTICATION_SEND_USER_EMAIL_AS_HEADER` | `false` | Send the signed-in user's email as a request header |
+| `AI_COPILOT_ENABLED` | `true` | Show Copilot UI |
+| `AI_COPILOT_AI_ENHANCEMENTS` | `true` | Enable AI enhancement UI |
+| `UI_SHOW_MARKETPLACE` | `true` | Show the Apps Marketplace tab |
+| `UI_SHOW_MINIMIZE_WIDGET` | `true` | Show widget minimize controls |
+| `UI_SHOW_CHART_GENERATION` | `true` | Show chart generation controls |
+| `UI_SHOW_CHANGELOG` | `true` | Show the in-app changelog |
+| `UI_SHOW_COPILOT_SWITCHER` | `true` | Show the Copilot switcher |
+| `MCP_DEFAULT_SERVER_ENABLED` | `true` | Add the default MCP server for new users |
+| `DATA_ALLOW_HTML_JS_EXECUTION` | `true` | Allow HTML widgets to execute JavaScript |
