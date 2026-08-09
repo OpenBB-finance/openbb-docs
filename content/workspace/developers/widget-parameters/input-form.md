@@ -17,7 +17,7 @@ The form parameter type (`"type": "form"`) allows you to create complex input fo
 
 Forms require a dedicated endpoint and are always sent with a POST request. This endpoint will be called when the form is submitted.
 
-You can see a full example of this in the [Form Example](https://github.com/OpenBB-finance/backend-examples-for-openbb-workspace/tree/main/advanced_examples/form_parameter) section.
+You can see a full example of this in the [Form Example](https://github.com/OpenBB-finance/backends-for-openbb/tree/main/widget-examples/parameters-types/form_parameter) section.
 
 <img className="pro-border-gradient" width="500" alt="form-parameter" src="https://openbb-assets.s3.us-east-1.amazonaws.com/docs/pro/form-parameter.png" />
 

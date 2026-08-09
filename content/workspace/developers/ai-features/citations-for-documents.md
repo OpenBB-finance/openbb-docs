@@ -16,7 +16,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Extract and cite specific content from PDF documents with precise text highlighting. Use `pdfplumber` to get text positions and create visual citations in Workspace.
 
-Reference implementation [in this GitHub repository](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/vanilla-agent-pdf-citations).
+Reference implementation [in this GitHub repository](https://github.com/OpenBB-finance/agents-for-openbb/tree/main/36-vanilla-agent-pdf-citations).
 
 <img className="pro-border-gradient" width="800" alt="Document Citations" src="https://openbb-cms.directus.app/assets/c47a15c0-562c-4fc1-a221-a11cef487826.png" />
 

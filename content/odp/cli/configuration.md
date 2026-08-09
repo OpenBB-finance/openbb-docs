@@ -24,7 +24,7 @@ In addition to the ODP's `user_settings.json` file, described [on the environmen
 :::important
 API credentials are defined in the `user_settings.json` file.
 
-Find all the current data providers maintained in the OpenBB repository [on the extensions page](/odp/python/extensions/).
+Find all the current data providers maintained in the OpenBB repository [on the extensions page](/odp/python/extensions).
 
 Define default data sources by following the pattern outlined [on the data sources page](data-sources)
 :::
