@@ -1,0 +1,68 @@
+---
+title: Exchange Input Component
+sidebar_position: 2
+description: This guide describes the implementation of ISO 10383 as a reusable input component, and how to use it for input validation or output transoformations.
+keywords:
+- exchange
+- MIC
+- market
+- ISO 10383
+- input
+- develop
+- odp
+- python
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Exchange Input Component - Developer | OpenBB Docs" />
+
+The `Exchange` class is a special type of string object. It behaves and evaluates like a string, but is extended with input validators and output formatters.
+
+Use this class for functions with an 'exchange' parameter, or to convert between MICs, exchange acronyms or names.
+
+## Import
+
+```python
+from openbb_core.provider.utils.exchange_utils import Exchange
+```
+
+## Usage
+
+Initialize the class with any of the accepted inputs:
+
+- ISO 10383 MIC codes (e.g., "XNAS", "XNYS")
+- Exchange acronyms (e.g., "NASDAQ", "NYSE")
+- Full exchange names (e.g., "New York Stock Exchange")
+- lower_snake_case names (e.g., "new_york_stock_exchange")
+
+```python
+>>> e = Exchange("nasdaq")
+>>> str(e)
+'XNAS'
+>>> e.mic
+'XNAS'
+>>> e.acronym
+'NASDAQ'
+>>> e.name
+'NASDAQ - ALL MARKETS'
+```
+
+### Properties
+
+- **mic** : str - ISO 10383 Market Identifier Code.
+- **acronym** : str - Exchange acronym/short name.
+- **name** : str - Full exchange name.
+
+
+## Updating Definitions
+
+If the definitions have become stale, you can refresh them in the environment with the update script.
+
+```sh
+python -m openbb_core.provider.utils.update_exchange_data
+```
+
+## Source
+
+- https://www.iso20022.org/market-identifier-codes

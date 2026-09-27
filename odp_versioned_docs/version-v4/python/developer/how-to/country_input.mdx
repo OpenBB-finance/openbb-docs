@@ -1,0 +1,86 @@
+---
+title: Country Input Component
+sidebar_position: 1
+description: This guide describes the implementation of ISO 3166 as a reusable input component, and how to use it for input validation or output transoformations.
+keywords:
+- country
+- countries
+- ISO 3166
+- input
+- develop
+- odp
+- python
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Country Input Component - Developer | OpenBB Docs" />
+
+The `Country` class is a special type of string object. It behaves and evaluates like a string, but is extended with input validators and output formatters. Use this class for functions with a 'country' parameter, or to convert two and three-letter country codes, display labels, and names. All countries are spelled with English letters and exclude UTF characters such as umlauts.
+
+## Import
+
+```python
+from openbb_core.provider.utils.country_utils import Country
+```
+
+## Usage
+
+The `__repr__` of class instance will be the 2-letter country code.
+
+```python
+>>> Country("United States")
+'US'
+>>> Country("gb").name
+'United Kingdom'
+>>> Country("hk").alpha_3
+'HKG'
+>>> Country("United States") == 'US'
+True
+>>> c = Country("united_states")
+>>> isinstance(c, str)
+True
+>>> c.alpha_2
+'US'
+>>> c.alpha_3
+'USA'
+>>> c.name
+'United States'
+>>> c.groups
+['G7', 'G20', 'NATO', 'OECD']
+>>> c.is_member_of("G7")
+True
+```
+
+### Properties
+
+- **alpha_2** : str - ISO 3166-1 alpha-2 code.
+- **alpha_3** : str - ISO 3166-1 alpha-3 code.
+- **name** : str - The country's display name, in English.
+- **numeric**: str - ISO 3166-1 numeric code.
+- **groups**: list[str] - List of membership groups the country belongs to.
+
+### Methods
+
+- **is_member_of(self, group: str) -> bool**: Check if a country is a member of a specific group.
+
+## Updating Definitions
+
+If the definitions have become stale, you can refresh them in the environment with the update script.
+
+```sh
+pip install pycountry
+python -m openbb_core.provider.utils.update_country_data
+```
+
+## Sources
+
+- ISO 3166-1: https://en.wikipedia.org/wiki/ISO_3166-1
+- pycountry: https://github.com/pycountry/pycountry
+- G7: https://en.wikipedia.org/wiki/G7
+- G20: https://en.wikipedia.org/wiki/G20
+- EU: https://european-union.europa.eu/principles-countries-history/eu-countries_en
+- NATO: https://www.nato.int/en/about-us/organization/nato-member-countries
+- OECD: https://en.wikipedia.org/wiki/OECD
+- OPEC: https://en.wikipedia.org/wiki/OPEC
+- BRICS: https://en.wikipedia.org/wiki/BRICS

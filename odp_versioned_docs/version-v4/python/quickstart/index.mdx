@@ -1,0 +1,260 @@
+---
+title: Quick Start
+sidebar_position: 1
+description: Get started with the OpenBB Platform by following this quickstart guide for the Python interface.
+keywords:
+- ODP
+- Python Package
+- OpenBB Platform
+- investment research infrastructure
+- data connectors
+- financial reports
+- OpenBB team
+- quickstart
+- getting started
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Python Interface - Quick Start | OpenBB Docs" />
+
+## Import
+
+To get started with the ODP Python Package, import it with:
+
+```python
+from openbb import obb
+```
+
+Show the contents of any given path with:
+
+```python
+>>>obb.equity
+/equity
+    /calendar
+    /compare
+    /darkpool
+    /discovery
+    /estimates
+    /fundamental
+    historical_market_cap
+    market_snapshots
+    /ownership
+    /price
+    profile
+    screener
+    search
+    /shorts
+```
+
+Each endpoint might have multiple data providers servicing it, and parameter choices may vary.
+Consult the docstring for details specific to your combination of installed extensions and available providers.
+
+```python
+# Docstring snippet from `obb.equity.price.historical`
+interval : str
+    Time interval of the data to return. (provider: alpha_vantage, cboe, fmp, intrinio, polygon, tiingo, tmx, tradier, yfinance)
+    Choices for alpha_vantage: '1m', '5m', '15m', '30m', '60m', '1d', '1W', '1M'
+    Choices for cboe: '1m', '1d'
+    Choices for fmp: '1m', '5m', '15m', '30m', '1h', '4h', '1d'
+    Choices for intrinio: '1m', '5m', '10m', '15m', '30m', '60m', '1h', '1d', '1W', '1M', '1Q', '1Y'
+    Choices for tradier: '1m', '5m', '15m', '1d', '1W', '1M'
+    Choices for yfinance: '1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1W', '1M', '1Q'
+```
+
+## Query
+
+When the `provider` parameter is not supplied (default), it will pick the first available in alphabetical order.
+
+If a provider requires an API key for this endpoint, and has not been added to the [settings](/odp/python/settings/user_settings/api_keys), it will skip and try the next.
+
+```python
+# Get the price of a stock 
+>>> quote_data = obb.equity.price.quote(symbol="AAPL", provider="yfinance")
+>>> quote_data
+
+OBBject
+
+id: 06649f4e-896c-7b31-8000-52242b1605f2
+results: [{'symbol': 'AAPL', 'asset_type': 'EQUITY', 'name': 'Apple Inc.', 'exchang...
+provider: yfinance
+warnings: None
+chart: None
+extra: {'metadata': {'arguments': {'provider_choices': {'provider': 'yfinance'}, 's...
+```
+
+To output as a DataFrame, use the `to_df()` method.
+
+```python
+>>> quote_data.to_df().T
+
+symbol                    AAPL
+asset_type              EQUITY
+name                Apple Inc.
+exchange                   NMS
+bid                      232.3
+bid_size                     1
+ask                     257.91
+ask_size                     1
+last_price              245.27
+open                    255.04
+high                    256.38
+low                     244.57
+volume                61999098
+prev_close              254.04
+year_high                260.1
+year_low                169.21
+ma_50d                237.0188
+ma_200d              222.25485
+volume_average      54836700.0
+volume_average_10d  43155290.0
+currency                   USD
+```
+
+### Historical Stock Prices
+
+Time series data will always have `start_date` and `end_date` parameters.
+The default date range will vary by function, in this example it is one year. 
+
+```python
+>>> output = obb.equity.price.historical(symbol="AAPL", provider="yfinance").to_df()
+>>> df = output.to_df()
+>>> df
+
+                  open        high         low       close    volume  dividend
+date                                                                          
+2024-10-14  228.699997  231.729996  228.600006  231.300003  39882100       0.0
+2024-10-15  233.610001  237.490005  232.369995  233.850006  64751400       0.0
+2024-10-16  231.600006  232.119995  229.839996  231.779999  34082200       0.0
+2024-10-17  233.429993  233.850006  230.520004  232.149994  32993800       0.0
+2024-10-18  236.179993  236.179993  234.009995  235.000000  46431500       0.0
+...                ...         ...         ...         ...       ...       ...
+2025-10-06  257.989990  259.070007  255.050003  256.690002  44664100       0.0
+2025-10-07  256.809998  257.399994  255.429993  256.480011  31955800       0.0
+2025-10-08  256.519989  258.519989  256.109985  258.059998  36496900       0.0
+2025-10-09  257.809998  258.000000  253.139999  254.039993  38322000       0.0
+2025-10-10  254.940002  256.380005  244.000000  245.270004  61782400       0.0
+
+[249 rows x 6 columns]
+```
+
+### Technical Analysis
+
+Use the output to feed the input of data processing functions.
+
+```python
+>>> ta = obb.technical.donchian(data=output.results).to_df().dropna(how="any")
+>>> ta
+
+                  open        high         low       close    volume  dividend   DCL_20_20   DCM_20_20   DCU_20_20
+date                                                                                                              
+2024-11-08  227.169998  228.660004  226.410004  226.960007  38328800      0.25  219.710007  228.600006  237.490005
+2024-11-11  225.000000  225.699997  221.500000  224.229996  42005600      0.00  219.710007  228.600006  237.490005
+2024-11-12  224.550003  225.589996  223.360001  224.229996  40398300      0.00  219.710007  228.280006  236.850006
+2024-11-13  224.009995  226.649994  222.759995  225.119995  48566200      0.00  219.710007  228.280006  236.850006
+2024-11-14  225.020004  228.869995  225.000000  228.220001  44923900      0.00  219.710007  228.280006  236.850006
+...                ...         ...         ...         ...       ...       ...         ...         ...         ...
+2025-10-06  257.989990  259.070007  255.050003  256.690002  44664100      0.00  225.949997  242.594994  259.239990
+2025-10-07  256.809998  257.399994  255.429993  256.480011  31955800      0.00  225.949997  242.594994  259.239990
+2025-10-08  256.519989  258.519989  256.109985  258.059998  36496900      0.00  226.649994  242.944992  259.239990
+2025-10-09  257.809998  258.000000  253.139999  254.039993  38322000      0.00  229.020004  244.129997  259.239990
+2025-10-10  254.940002  256.380005  244.000000  245.270004  61782400      0.00  235.029999  247.134995  259.239990
+
+[230 rows x 9 columns]
+```
+
+## Reference
+
+All function metadata is available directly as a JSON dictionary.
+
+```python
+>>> obb.reference.keys()
+
+dict_keys(['openbb', 'info', 'paths', 'routers'])
+```
+
+<details>
+<summary mdxType="summary">Example JSON Content</summary>
+
+```json
+{
+    "deprecated": {
+        "flag": null,
+        "message": null
+    },
+    "description": "Get summary, status, and other metadata for a specific bill.\n\nEnter the URL of the bill as: https://api.congress.gov/v3/bill/119/hr/131?\n\nURLs for bills can be found from the `uscongress.bills` endpoint.\n\nThe raw JSON response from the API will be returned along with a formatted\ntext version of the key information from the raw response.\n\nIn OpenBB Workspace, this command returns as a Markdown widget.",
+    "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.uscongress.bill_info(provider='congress_gov', bill_url=https://api.congress.gov/v3/bill/119/s/1947?)\n# The bill URL can be shortened to just the bill number (e.g., '119/s/1947').\nobb.uscongress.bill_info(bill_url=119/s/1947, provider='congress_gov')\n```\n\n",
+    "parameters": {
+        "standard": [],
+        "congress_gov": [
+            {
+                "name": "bill_url",
+                "type": "str",
+                "description": "Enter a base URL of a bill (e.g., 'https://api.congress.gov/v3/bill/119/s/1947?format=json'). Alternatively, you can enter a bill number (e.g., '119/s/1947').",
+                "default": "",
+                "optional": false,
+                "choices": null
+            }
+        ]
+    },
+    "returns": {
+        "OBBject": [
+            {
+                "name": "results",
+                "type": "list[CongressBillInfo]",
+                "description": "Serializable results."
+            },
+            {
+                "name": "provider",
+                "type": "Optional[Literal['congress_gov']]",
+                "description": "Provider name."
+            },
+            {
+                "name": "warnings",
+                "type": "Optional[list[Warning_]]",
+                "description": "list of warnings."
+            },
+            {
+                "name": "chart",
+                "type": "Optional[Chart]",
+                "description": "Chart object."
+            },
+            {
+                "name": "extra",
+                "type": "dict[str, Any]",
+                "description": "Extra info."
+            }
+        ]
+    },
+    "data": {
+        "standard": [],
+        "congress_gov": [
+            {
+                "name": "markdown_content",
+                "type": "str",
+                "description": "Aggregated metadata for the bill in Markdown format.",
+                "default": "",
+                "optional": false,
+                "choices": null
+            },
+            {
+                "name": "raw_data",
+                "type": "dict[str, Any]",
+                "description": "Raw JSON data from the collected bill information.",
+                "default": "",
+                "optional": false,
+                "choices": null
+            }
+        ]
+    },
+    "model": "CongressBillInfo",
+    "openapi_extra": {
+        "model": "CongressBillInfo"
+    }
+}
+```
+</details>
+
+## Next Steps
+
+Go to the [Workspace](/odp/python/quickstart/workspace) page to get started using ODP as an OpenBB Workspace Backend.
