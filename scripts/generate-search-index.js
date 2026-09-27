@@ -2,76 +2,85 @@ const fs = require('fs');
 const path = require('path');
 const matter = require('gray-matter');
 
-// Read the globalData.json to get all doc pages
 const globalDataPath = path.join(__dirname, '../.docusaurus/globalData.json');
 const globalData = JSON.parse(fs.readFileSync(globalDataPath, 'utf8'));
 
-const docs = globalData['docusaurus-plugin-content-docs'].default.versions[0].docs;
+const instances = [
+  { pluginId: 'default', contentDir: path.join(__dirname, '../content'), idPrefix: '' },
+  { pluginId: 'odp', contentDir: path.join(__dirname, '../content-odp'), idPrefix: 'odp/' },
+];
+
+const generatedOdpPage = /^python\/(reference|data_models)\/(?!index$)/;
 
 const searchablePages = [];
 
-// Process each doc
-docs.forEach(doc => {
-  const { id, path: docPath } = doc;
-
-  // Determine the file path - try both .md and .mdx extensions
-  const contentPath = path.join(__dirname, '../content');
-  let filePath = path.join(contentPath, `${id}.md`);
-
-  if (!fs.existsSync(filePath)) {
-    filePath = path.join(contentPath, `${id}.mdx`);
+function categoryFor(pathParts) {
+  if (pathParts[0] === 'agents') {
+    return 'Agents';
   }
+  if (pathParts[0] === 'workspace') {
+    return 'Workspace';
+  }
+  if (pathParts[0] !== 'odp') {
+    return 'Documentation';
+  }
+  let category = 'ODP';
+  if (pathParts[1] === 'python') {
+    category = 'ODP Python';
+  } else if (pathParts[1] === 'cli') {
+    category = 'ODP CLI';
+  } else if (pathParts[1] === 'desktop') {
+    category = 'ODP Desktop';
+  }
+  if (pathParts.length > 2 && pathParts[2] !== 'index') {
+    const subcategory = pathParts[2]
+      .split('-')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+    category = `${category} - ${subcategory}`;
+  }
+  return category;
+}
 
-  if (fs.existsSync(filePath)) {
+instances.forEach(({ pluginId, contentDir, idPrefix }) => {
+  const instance = globalData['docusaurus-plugin-content-docs'][pluginId];
+  if (!instance) {
+    return;
+  }
+  const version = instance.versions.find(v => v.name === 'current') || instance.versions[0];
+
+  version.docs.forEach(doc => {
+    const { id, path: docPath } = doc;
+
+    if (pluginId === 'odp' && generatedOdpPage.test(id)) {
+      return;
+    }
+
+    let filePath = path.join(contentDir, `${id}.md`);
+    if (!fs.existsSync(filePath)) {
+      filePath = path.join(contentDir, `${id}.mdx`);
+    }
+
+    if (!fs.existsSync(filePath)) {
+      console.warn(`File not found: ${filePath}`);
+      return;
+    }
+
     try {
-      const fileContents = fs.readFileSync(filePath, 'utf8');
-      const { data } = matter(fileContents);
-
-      // Extract category from the path
-      const pathParts = id.split('/');
-      let category = 'Documentation';
-
-      if (pathParts[0] === 'agents') {
-        category = 'Agents';
-      } else if (pathParts[0] === 'workspace') {
-        category = 'Workspace';
-      } else if (pathParts[0] === 'odp') {
-        // Handle ODP subcategories
-        if (pathParts[1] === 'python') {
-          category = 'ODP Python';
-        } else if (pathParts[1] === 'cli') {
-          category = 'ODP CLI';
-        } else if (pathParts[1] === 'desktop') {
-          category = 'ODP Desktop';
-        } else {
-          category = 'ODP';
-        }
-        // Add further subcategory if available
-        if (pathParts.length > 2 && pathParts[2] !== 'index') {
-          const subcategory = pathParts[2]
-            .split('-')
-            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-            .join(' ');
-          category = `${category} - ${subcategory}`;
-        }
-      }
-
+      const { data } = matter(fs.readFileSync(filePath, 'utf8'));
       searchablePages.push({
         title: data.title || id.split('/').pop().replace(/-/g, ' '),
         path: docPath,
-        category: category,
+        category: categoryFor(`${idPrefix}${id}`.split('/')),
         description: data.description || '',
         keywords: data.keywords || []
       });
     } catch (err) {
       console.warn(`Error processing ${filePath}:`, err.message);
     }
-  } else {
-    console.warn(`File not found: ${filePath}`);
-  }
+  });
 });
 
-// Sort by category and title
 searchablePages.sort((a, b) => {
   if (a.category !== b.category) {
     return a.category.localeCompare(b.category);
@@ -79,12 +88,8 @@ searchablePages.sort((a, b) => {
   return a.title.localeCompare(b.title);
 });
 
-// Write to a TypeScript file
 const outputPath = path.join(__dirname, '../src/data/searchablePages.ts');
-const tsContent = `// Auto-generated search index - do not edit manually
-// Run 'npm run generate-search-index' to update this file
-
-export interface SearchablePage {
+const tsContent = `export interface SearchablePage {
   title: string;
   path: string;
   category: string;
@@ -95,7 +100,6 @@ export interface SearchablePage {
 export const searchablePages: SearchablePage[] = ${JSON.stringify(searchablePages, null, 2)};
 `;
 
-// Ensure the data directory exists
 const dataDir = path.join(__dirname, '../src/data');
 if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir, { recursive: true });
@@ -103,5 +107,5 @@ if (!fs.existsSync(dataDir)) {
 
 fs.writeFileSync(outputPath, tsContent, 'utf8');
 
-console.log(`✅ Generated search index with ${searchablePages.length} pages`);
-console.log(`📝 Output: ${outputPath}`);
+console.log(`Generated search index with ${searchablePages.length} pages`);
+console.log(`Output: ${outputPath}`);

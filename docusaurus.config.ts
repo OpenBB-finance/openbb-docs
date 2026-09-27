@@ -242,11 +242,7 @@ export default {
 				loadContent: async () => {
 					const { siteDir } = context;
 					const contentDir = path.join(siteDir, "content");
-					// Versioned ODP content (Desktop/Python/CLI) lives in content-odp/.
-					// The v5 working tree is the directory itself; v4 lives under
-					// versioned_docs-odp/version-v4/ and is scanned separately below.
 					const odpContentDir = path.join(siteDir, "content-odp");
-					// Each section gets its own llms.txt
 					const sectionContent: Record<string, string[]> = {
 						agents: [],
 						workspace: [],
@@ -256,28 +252,27 @@ export default {
 						snowflake: [],
 					};
 
-					// recursive function to get all mdx files
-					const getMdxFiles = async (dir: string, sectionResolver: (rel: string) => string | null) => {
+					const getMdxFiles = async (dir: string, baseDir: string, sectionResolver: (rel: string) => string | null) => {
 						let entries: import("fs").Dirent[];
 						try {
 							entries = await fs.promises.readdir(dir, {
 								withFileTypes: true,
 							});
 						} catch {
-							return; // dir may not exist (e.g., before first versioning)
+							return;
 						}
 
 						for (const entry of entries) {
 							const fullPath = path.join(dir, entry.name);
 							if (entry.isDirectory()) {
-								await getMdxFiles(fullPath, sectionResolver);
+								await getMdxFiles(fullPath, baseDir, sectionResolver);
 							} else if (
 								entry.name.endsWith(".mdx") ||
 								entry.name.endsWith(".md")
 							) {
 								try {
 									const content = await fs.promises.readFile(fullPath, "utf8");
-									const relativePath = path.relative(dir === odpContentDir ? odpContentDir : contentDir, fullPath);
+									const relativePath = path.relative(baseDir, fullPath);
 									const section = sectionResolver(relativePath);
 									if (section && section in sectionContent) {
 										sectionContent[section].push(content);
@@ -289,21 +284,17 @@ export default {
 						}
 					};
 
-					// Default classic-preset docs (agents/, workspace/, snowflake/, ...).
-					await getMdxFiles(contentDir, (rel) => {
+					await getMdxFiles(contentDir, contentDir, (rel) => {
 						const parts = rel.split(path.sep);
 						return parts[0] in sectionContent ? parts[0] : null;
 					});
 
-					// odp docs plugin (desktop/, python/, cli/). Map each top-level dir
-					// onto `odp/<dir>` so the existing static URLs stay the same.
-					await getMdxFiles(odpContentDir, (rel) => {
+					await getMdxFiles(odpContentDir, odpContentDir, (rel) => {
 						const parts = rel.split(path.sep);
 						const section = `odp/${parts[0]}`;
 						return section;
 					});
 
-					// Log content sizes for each section
 					for (const [section, content] of Object.entries(sectionContent)) {
 						const totalSize = content.reduce(
 							(acc, curr) => acc + curr.length,
@@ -323,7 +314,6 @@ export default {
 					const { siteDir } = context;
 					const staticDir = path.join(siteDir, "static");
 
-					// Group routes by section
 					const sectionRoutes: Record<string, string[]> = {
 						agents: [],
 						workspace: [],
@@ -333,29 +323,28 @@ export default {
 						snowflake: [],
 					};
 
-					// Walk every docs plugin instance (default + odp). For each, pick
-					// the route that carries the current version's docs.
 					const docsPluginRouteConfigs = routes.filter(
 						(route) => route.plugin.name === "docusaurus-plugin-content-docs",
 					);
 
 					for (const docsPluginRouteConfig of docsPluginRouteConfigs) {
 						const versionedRouteConfig = docsPluginRouteConfig.routes?.find(
-							(route) => (route.props as Record<string, unknown> | undefined)?.version,
+							(route) =>
+								((route.props as Record<string, unknown> | undefined)?.version as
+									| Record<string, unknown>
+									| undefined)?.isLast === true,
 						);
 						if (!versionedRouteConfig?.props?.version) continue;
 
+						const idPrefix = docsPluginRouteConfig.plugin.id === "odp" ? "odp/" : "";
 						const docs = (
 							versionedRouteConfig.props.version as Record<string, unknown>
 						).docs as Record<string, Record<string, unknown>>;
 
-						for (const [docPath, record] of Object.entries(docs)) {
+						for (const [docId, record] of Object.entries(docs)) {
+							const docPath = `${idPrefix}${docId}`;
 							const pathParts = docPath.split("/");
 
-							// Default instance docs carry the section name as the first
-							// path part (e.g., "workspace/foo"). The odp instance routes
-							// are mounted under `/odp/...` so they already carry the
-							// `odp/<section>/...` prefix.
 							if (pathParts[0] === "odp" && pathParts.length > 1) {
 								const subSection = `odp/${pathParts[1]}`;
 								if (subSection in sectionRoutes) {
@@ -373,21 +362,17 @@ export default {
 						}
 					}
 
-					// Process each section
 					for (const [section, routes] of Object.entries(sectionRoutes)) {
 						try {
-							// Create directory in static folder
 							const sectionDir = path.join(staticDir, section);
 							await fs.promises.mkdir(sectionDir, { recursive: true });
 
-							// Write section-specific llms.txt
 							const llmsTxt = `# ${context.siteConfig.title} - ${section}\n\n## Docs\n\n${routes.join("\n")}`;
 							await fs.promises.writeFile(
 								path.join(sectionDir, "llms.txt"),
 								llmsTxt,
 							);
 
-							// Also write to build output directory for direct access
 							const buildSectionDir = path.join(outDir, section);
 							await fs.promises.mkdir(buildSectionDir, { recursive: true });
 							await fs.promises.writeFile(
@@ -395,7 +380,6 @@ export default {
 								llmsTxt,
 							);
 
-							// Write section-specific llms-full.txt
 							const sectionFullContent =
 								sectionContent[section].join("\n\n---\n\n");
 
@@ -404,7 +388,6 @@ export default {
 								sectionFullContent,
 							);
 
-							// Also write to build output directory for direct access
 							await fs.promises.writeFile(
 								path.join(buildSectionDir, "llms-full.txt"),
 								sectionFullContent,

@@ -4,7 +4,7 @@ import React, { forwardRef } from "react"
 const ExternalLink = forwardRef<
 	HTMLAnchorElement,
 	{
-		children: JSX.Element | JSX.Element[] | string
+		children: React.JSX.Element | React.JSX.Element[] | string
 		href: string
 		type?: "link" | "button"
 		extraClassNames?: string

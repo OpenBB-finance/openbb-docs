@@ -109,9 +109,8 @@ function SidebarCategory({ item, mobileSidebar, location, expandedItems, toggleE
 }
 
 function SidebarItem({ item, mobileSidebar, location, expandedItems, toggleExpanded, level = 0 }) {
-	// Handle type: "doc" - convert to link format
 	if (item.type === "doc") {
-		const href = docIdToHref(item.id);
+		const href = item.href || docIdToHref(item.id);
 		return (
 			<SidebarLink
 				item={{ ...item, href, label: item.label || item.id.split("/").pop() }}

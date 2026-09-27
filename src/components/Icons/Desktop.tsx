@@ -1,4 +1,3 @@
-import * as React from "react"
 import React, { SVGProps } from "react"
 interface SVGRProps {
   title?: string

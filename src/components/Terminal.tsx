@@ -7,7 +7,7 @@ export default function Terminal({
   rootClassnames = "",
   children,
 }: {
-  children: JSX.Element | JSX.Element[];
+  children: React.JSX.Element | React.JSX.Element[];
   extraClassnames?: string;
   rootClassnames?: string;
 }) {

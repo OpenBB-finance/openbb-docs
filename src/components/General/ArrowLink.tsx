@@ -10,7 +10,7 @@ export default function ArrowLink({
 	extraClassNames = "",
 	arrowClassNames = "",
 }: {
-	label?: string | JSX.Element | JSX.Element[]
+	label?: string | React.JSX.Element | React.JSX.Element[]
 	url: string
 	noAnchor?: boolean
 	extraClassNames?: string
