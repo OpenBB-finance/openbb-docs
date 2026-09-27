@@ -1,262 +1,177 @@
 ---
 title: Technical Indicators
 sidebar_position: 2
-description: A tutorial of the technical indicators included with the openbb-charting library, including how to get started using them.
+description: Drawing technical indicator overlays and subplots on openbb-charting price charts, and registering a price chart view for a V5 command.
 keywords:
-- tutorial
-- ODP
-- Open Data Platform by OpenBB
-- OpenBB Platform
-- getting started
-- extensions
 - charting
-- view
-- Plotly
-- toolkits
 - indicators
+- technical analysis
+- candlestick
+- Heikin Ashi
+- chart view
 - Plotly
 - OpenBBFigure
-- PyWry
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+<!-- markdownlint-disable MD012 MD031 MD033 MD037 -->
 
-<HeadTitle title="Technical Indicators - OpenBB Charting | OpenBB Docs" />
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+import candlesImage from "./image.png";
 
-Select indicators (technical) can be added to a chart where the data is OHLC+V prices over time, and the data is for one symbol only.
-They are meant as quick visualizations, and a way to build more complex charts.
-As starting points, they can be refined to perfection by manipulating the figure object directly.
+<HeadTitle title="Technical Indicators - openbb-charting | OpenBB Python (V5)" />
+
+`openbb-charting` includes a price chart that draws candlesticks and volume for one symbol's OHLC(V) history and layers technical indicators on top of it, either on the price panel or in panels below. The indicators are computed at draw time with `pandas-ta-openbb`; they are a visual aid, separate from the [`openbb-technical`](../../data-processing/technical.mdx) commands that return indicator values as data.
+
+The price chart is the `price_historical` function in `openbb_charting.charts.price_historical`. A command uses it when its chart view calls that function.
+
+## Adding a price chart to a V5 command
+
+The provider namespaces documented for V5 do not register price chart views. A small package can add one for any command that returns OHLC(V) history. Each method on the view class is named after the command's route, with slashes replaced by underscores. Save the class as `my_price_charts/views.py`:
 
 ```python
-from datetime import datetime, timedelta
-from openbb import obb
-data = obb.equity.price.historical(
-    "TSLA",
-    provider="yfinance",
-    interval="15m",
-    start_date=(datetime.now()-timedelta(days=21)).date(),
-    chart=True,
-    chart_params=dict(
-        heikin_ashi=True,
-        indicators=(dict(
-            ema=dict(length=[8,32]),
-            srlines={}, # For indicators, an empty dictionary implies the default state.
-            rsi=dict(length=32)
-        ))
-    )
-)
-data.show()
+from openbb_charting.charts.price_historical import price_historical
+
+
+class PriceViews:
+    @staticmethod
+    def cboe_equity_historical(**kwargs):
+        return price_historical(**kwargs)
+
+    @staticmethod
+    def nasdaq_equity_historical(**kwargs):
+        return price_historical(**kwargs)
 ```
 
-![TSLA Intraday With Indicators](https://github.com/OpenBB-finance/OpenBB/assets/85772166/7d8d95d8-0383-4e9d-9477-7ad2424328df)
+Register the class in the package's `pyproject.toml`, install the package from its directory, and rebuild:
 
-## Available Indicators
+```toml
+[project]
+name = "my-price-charts"
+version = "0.1.0"
+dependencies = ["openbb-charting"]
 
-To get all the indicators, use the `charting.indicators()` method.
-The object returned is a Pydantic model where each indicator is field.
-If you don't catch it, it will print as a docstring to the console.
+[project.entry-points."openbb_charting_extension"]
+my_price_charts = "my_price_charts.views:PriceViews"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+```
+
+```sh
+pip install -e .
+openbb-build
+```
+
+`obb.cboe.equity.historical` and `obb.nasdaq.equity.historical` now accept `chart=True`, and their results can be redrawn with indicators. The [charting extension guide](../../../developer/extension_types/charting.md) covers views in more detail.
+
+## Drawing indicators
+
+Pass an `indicators` dictionary to `charting.to_chart()`. Each key names an indicator and each value is a dictionary of its arguments; an empty dictionary uses the defaults.
 
 ```python
-data.charting.indicators()
+from openbb import obb
+
+spy = obb.cboe.equity.historical(symbol="SPY", start_date="2024-01-01", chart=True)
+spy.show()
+
+spy.charting.to_chart(
+    indicators={
+        "ema": {"length": [20, 50]},
+        "bbands": {"length": 20},
+        "rsi": {"length": 14},
+        "macd": {},
+    },
+    title="SPY",
+)
 ```
 
 <details>
-<summary mdxType="summary">Indicator Details</summary>
+<summary mdxType="summary">Sample price chart</summary>
 
-```console
-SMA:
-    length : Union[int, list[int]]
-        Window length for the moving average, by default is 50.
-        The number is relative to the interval of the time series data.
-    offset : int
-        Number of periods to offset for the moving average, by default is 0.
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="Candlestick price chart with a volume panel"
+    src={candlesImage}
+    width="100%"
+  />
+</div>
 
-EMA:
-    length : Union[int, list[int]]
-        Window length for the moving average, by default is 50.
-        The number is relative to the interval of the time series data.
-    offset : int
-        Number of periods to offset for the moving average, by default is 0.
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="Candlestick price chart with 50-day and 200-day exponential moving averages"
+    src="https://github.com/OpenBB-finance/OpenBB/assets/85772166/b427d68b-777e-4230-852a-df749c5dbc46"
+    width="100%"
+  />
+</div>
 
-HMA:
-    length : Union[int, list[int]]
-        Window length for the moving average, by default is 50.
-        The number is relative to the interval of the time series data.
-    offset : int
-        Number of periods to offset for the moving average, by default is 0.
-
-WMA:
-    length : Union[int, list[int]]
-        Window length for the moving average, by default is 50.
-        The number is relative to the interval of the time series data.
-    offset : int
-        Number of periods to offset for the moving average, by default is 0.
-
-ZLMA:
-    length : Union[int, list[int]]
-        Window length for the moving average, by default is 50.
-        The number is relative to the interval of the time series data.
-    offset : int
-        Number of periods to offset for the moving average, by default is 0.
-
-AD:
-    offset : int
-        Offset value for the AD, by default is 0.
-
-AD Oscillator:
-    fast : int
-        Number of periods to use for the fast calculation, by default 3.
-    slow : int
-        Number of periods to use for the slow calculation, by default 10.
-    offset : int
-        Offset to be used for the calculation, by default is 0.
-
-ADX:
-    length : int
-        Window length for the ADX, by default is 50.
-    scalar : float
-        Scalar to multiply the ADX by, default is 100.
-    drift : int
-        Drift value for the ADX, by default is 1.
-
-Aroon:
-    length : int
-        Window length for the Aroon, by default is 50.
-    scalar : float
-        Scalar to multiply the Aroon by, default is 100.
-
-ATR:
-    length : int
-        Window length for the ATR, by default is 14.
-    mamode : Literal[rma, ema, sma, wma]
-        The mode to use for the moving average calculation.
-    drift : int
-        The difference period.
-    offset : int
-        Number of periods to offset the result, by default is 0.
-
-CCI:
-    length : int
-        Window length for the CCI, by default is 14.
-    scalar : float
-        Scalar to multiply the CCI by, default is 0.015.
-
-Clenow:
-    period : int
-        The number of periods for the momentum, by default 90.
-
-Demark:
-    show_all : bool
-        Show 1 - 13.
-        If set to False, show 6 - 9.
-    offset : int
-        Number of periods to offset the result, by default is 0.
-
-Donchian:
-    lower : Union[int, NoneType]
-        Window length for the lower band, by default is 20.
-    upper : Union[int, NoneType]
-        Window length for the upper band, by default is 20.
-    offset : Union[int, NoneType]
-        Number of periods to offset the result, by default is 0.
-
-Fib:
-    period : int
-        The period to calculate the Fibonacci Retracement, by default 120.
-    start_date : Union[str, NoneType]
-        The start date for the Fibonacci Retracement.
-    end_date : Union[str, NoneType]
-        The end date for the Fibonacci Retracement.
-
-Fisher:
-    length : int
-        Window length for the Fisher Transform, by default is 14.
-    signal : int
-        Fisher Signal Period
-
-Ichimoku:
-    conversion : int
-        The conversion line period, by default 9.
-    base : int
-        The base line period, by default 26
-    lagging : int
-        The lagging line period, by default 52.
-    offset : int
-        The offset period, by default 26.
-    lookahead : bool
-        Drops the Chikou Span Column to prevent potential data leak
-
-KC:
-    length : int
-        Window length for the Keltner Channel, by default is 20.
-    scalar : float
-        Scalar to multiply the ATR, by default is 2.
-    mamode : Literal[ema, sma, wma, hna, zlma, rma]
-        The mode to use for the moving average calculation, by default is ema.
-    offset : int
-        Number of periods to offset the result, by default is 0.
-
-MACD:
-    fast : Union[int, NoneType]
-        Window length for the fast EMA, by default is 12.
-    slow : Union[int, NoneType]
-        Window length for the slow EMA, by default is 26.
-    signal : Union[int, NoneType]
-        Window length for the signal line, by default is 9.
-    scalar : Union[float, NoneType]
-        Scalar to multiply the MACD by, default is 100.
-
-OBV:
-    offset : int
-        Number of periods to offset the result, by default is 0.
-
-RSI:
-    length : int
-        Window length for the RSI, by default is 14.
-    scalar : float
-        Scalar to multiply the RSI by, default is 100.
-    drift : int
-        Drift value for the RSI, by default is 1.
-
-SRLines:
-    show : bool
-        Show the support and resistance lines.
-
-Stoch:
-    fast_k : int
-        The fast K period, by default 14.
-    slow_d : int
-        The slow D period, by default 3.
-    slow_k : int
-        The slow K period, by default 3.
-```
 </details>
 
-The model can be converted to a dictionary and then passed through the `indicators` params.
-
-:::warning
-Some indicators, like RSI and MACD, create subplots. Only 4 subplots (not including the main candles + volume) can be created within the same view.
-:::
-
-The chart below is built from the same object as the one above.
+Other keyword arguments control the price panel. `candles=False` draws a line of the close instead of candlesticks, `heikin_ashi=True` converts the candles to Heikin Ashi, `volume=False` hides the volume bars, and `title` sets the chart title. `render=False` stores the figure on the result without displaying it.
 
 ```python
-indicators = data.charting.indicators().dict()
-macd=indicators.get("macd")
-kc=indicators.get("kc")
-chart_params=dict(
-    candles=False,
-    title="My New Chart",
-    indicators=(dict(
-        macd=macd,
-        kc=kc,
-    ))
+spy.charting.to_chart(
+    indicators={"kc": {}, "adx": {"length": 14}, "obv": {}},
+    heikin_ashi=True,
 )
-data.charting.to_chart(**chart_params)
 ```
 
-![indicators2](https://github.com/OpenBB-finance/OpenBB/assets/85772166/76c06aff-a568-4b7f-80d4-c58a73c0f1d7)
+<details>
+<summary mdxType="summary">Sample charts with indicators</summary>
 
-:::tip
-Data can be exported directly from the chart as a CSV. Use the button at the bottom-right of the mode bar.
-:::
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="Intraday Heikin Ashi candlestick chart with two exponential moving averages and an RSI panel"
+    src="https://github.com/OpenBB-finance/OpenBB/assets/85772166/7d8d95d8-0383-4e9d-9477-7ad2424328df"
+    width="100%"
+  />
+</div>
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="Line price chart with Keltner Channels and a MACD panel"
+    src="https://github.com/OpenBB-finance/OpenBB/assets/85772166/76c06aff-a568-4b7f-80d4-c58a73c0f1d7"
+    width="100%"
+  />
+</div>
+
+</details>
+
+Indicators apply only when the data holds a single symbol. With several symbols, the price chart draws one line per symbol, as cumulative returns when there are more than two, and ignores `indicators`.
+
+## Available indicators
+
+For most keys, the arguments are passed unchanged to the `pandas-ta-openbb` function of the same name, so any argument that function accepts can be set; omitted arguments take that function's defaults. The moving averages read only `length`, which can be an integer or a list of integers to draw several lines.
+
+| Key | Drawn | Needs | Arguments |
+| --- | --- | --- | --- |
+| `sma`, `ema`, `wma`, `hma`, `zlma`, `rma` | On price | close | `length` |
+| `bbands` | On price | close | pandas-ta `bbands` |
+| `kc` | On price | high, low, close | pandas-ta `kc` |
+| `donchian` | On price | high, low | pandas-ta `donchian` |
+| `ichimoku` | On price | high, low, close | `conversion_period` 9, `base_period` 26, `lagging_line_period` 52, `displacement` 26 |
+| `fib` | On price | close | `limit` 120, `start_date`, `end_date` |
+| `clenow` | On price | close | `window` 90 |
+| `demark` | On price | close | `min_val` 5 |
+| `rsi` | Subplot | close | pandas-ta `rsi` |
+| `macd` | Subplot | close | pandas-ta `macd` |
+| `stoch` | Subplot | high, low, close | pandas-ta `stoch` |
+| `cci` | Subplot | high, low, close | pandas-ta `cci` |
+| `fisher` | Subplot | high, low | pandas-ta `fisher` |
+| `cg` | Subplot | close | pandas-ta `cg` |
+| `adx` | Subplot | high, low, close | pandas-ta `adx` |
+| `aroon` | Subplot, two rows | high, low | pandas-ta `aroon` |
+| `atr` | Subplot | high, low, close | pandas-ta `atr` |
+| `ad` | Subplot | high, low, close, volume | pandas-ta `ad` |
+| `adosc` | Subplot | high, low, close, volume | pandas-ta `adosc` |
+| `obv` | Subplot | close, volume | pandas-ta `obv` |
+
+`fib` and `clenow` are calculated with helpers from `openbb-technical`, which must be installed. Volume-based indicators are skipped with a warning when the data has no volume.
+
+The chart holds at most four subplot rows below the price panel, and indicators beyond that are skipped with a warning. Use only the keys in this table: an unrecognized key makes the indicator calculation fail with a warning, which can leave the other calculated indicators off the chart.
+
+`Charting.indicators()` returns a model describing the indicator set, printed as a parameter listing. Its field names are not always the keys the chart reads: the accumulation/distribution oscillator is listed as `adoscillator` but drawn only under the key `adosc`, and the `fib`, `clenow`, `demark`, and `ichimoku` parameter names it shows differ from the ones in the table above.

@@ -1,52 +1,47 @@
 ---
 title: Dynamic Command Execution
-sidebar_position: 7
-description: This guide provides detailed instructions on how to execute commands dynamically in the OpenBB Python Package.
+sidebar_position: 9
+description: Run OpenBB commands by route with CommandRunner, without the generated obb package, for services and tools that choose commands at runtime.
 keywords:
-- ODP
-- How-To
-- Python
-- OpenBB Platform
-- Custom commands
-- Dynamic Execution
-- command_runner
+  - OpenBB V5
+  - CommandRunner
+  - dynamic execution
+  - route
+  - provider_choices
+  - standard_params
+  - extra_params
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-<HeadTitle title="Dynamic Command Execution - Developer | OpenBB Docs" />
+<HeadTitle title="Dynamic Command Execution | OpenBB Python (V5)" />
 
-Dynamic execution provides an alternate entry point to functions.
-
-:::tip
-This is the pure Python method to run API endpoints without the need for static assets.
-:::
-
-Parameters should be formatted like the snippet below,
-where `standard_params` are items belonging to the Standard Model,
-and `extra_params` are all other parameters and keyword arguments.
+`CommandRunner` runs a command by its route string, the same way the generated `obb` methods and the REST API do internally. It reads the installed routers directly, so it works without the generated package and without an HTTP server. Use it when the command is chosen at runtime, for example from a configuration file or a job queue.
 
 ```python
->>> from openbb_core.app.command_runner import CommandRunner
->>>runner = CommandRunner()
->>> output = await runner.run(
-    "/equity/fundamental/ratios",
-    provider_choices={
-        "provider": "fmp",
-    },
-    standard_params={
-        "symbol" : "TSLA",
-        "period" : "quarter",
-    },
-    extra_params={}
-)
->>> output
-OBBject
+from openbb_core.app.command_runner import CommandRunner
 
-id: 065241b7-bd9d-7313-8000-9406d8afab75
-results: [{'symbol': 'TSLA', 'date': '2023-06-30', 'period': 'Q2', 'current_ratio':...
-provider: fmp
-warnings: None
-chart: None
-extra: {'metadata': {'arguments': {'provider_choices': {'provider': 'fmp'}, 'standa...
+runner = CommandRunner()
 ```
+
+`CommandRunner()` loads the installed extensions and the user and system settings from disk. Arguments for provider-backed commands are grouped the way the generated methods group them: `provider_choices` names the provider, `standard_params` holds fields from the model's standard parent, and `extra_params` holds provider-specific fields. `openbb-famafrench` models have no standard parent, so everything goes in `extra_params`:
+
+```python
+output = await runner.run(
+    "/famafrench/factors",
+    provider_choices={"provider": "famafrench"},
+    standard_params={},
+    extra_params={"region": "europe", "factor": "5_factors"},
+)
+output.to_dataframe()
+```
+
+`run` is a coroutine. From synchronous code, call `runner.sync_run(...)` with the same arguments. Commands without a `model` take their parameters as keyword arguments instead:
+
+```python
+output = runner.sync_run("/quantitative/stats/skew", params={"data": rows, "target": "close"})
+```
+
+Here `params` is the command's request-body model, passed as a dictionary, and `rows` is a list of records.
+
+The runner skips the conveniences of the generated methods. It does not pick a provider when a model has several, does not apply per-command defaults from the user settings, does not join list inputs into comma-separated strings, and does not apply the `output_type` preference, so it always returns what the command returns, usually an `OBBject`. Route strings match the REST paths without the `/api/v1` prefix. The keys of `obb.reference["paths"]` list every route in the built package.

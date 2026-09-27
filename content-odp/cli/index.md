@@ -2,7 +2,9 @@
 title: ODP CLI
 sidebar_position: 0
 description: >
-  Command-line client for the OpenBB Platform and any OpenAPI 3.x server.
+  Command-line client for the OpenBB Platform and any OpenAPI 3.x server, with
+  one-shot dispatch, NDJSON batch mode, an interactive REPL, and extension
+  code generation.
 keywords:
   - openbb-cli
   - openbb
@@ -13,31 +15,18 @@ keywords:
   - OpenAPI
 ---
 
-`openbb-cli` is a command-line client for the OpenBB Platform and any OpenAPI 3.x server. Install once, talk to many APIs from the shell.
+`openbb-cli` installs the `openbb` command, a client for the OpenBB Platform and for any service that publishes an OpenAPI 3.x document. The same set of commands can be driven three ways. By default, `openbb <command> --key value` runs one command, writes a single JSON line to stdout, and exits with a status that reflects the outcome, which suits scripts, CI jobs, and agents. `openbb --batch` reads NDJSON requests from stdin and writes one NDJSON response per request as each finishes. `openbb -i` opens an interactive REPL with menus, tab completion, a registry of cached results, and routine scripts.
 
-## What it does
+```bash
+openbb oecd.gdp_real --country japan --frequency annual
+```
 
-- **One-shot dispatch.** `openbb <command> --key value` runs one command, prints a JSON line, exits.
-- **Batch.** `openbb --batch` reads NDJSON requests from stdin, writes NDJSON responses to stdout, concurrent.
-- **Interactive REPL.** `openbb -i` — menu navigation, tab-completion, command history, result registry.
-- **Four backends.** In-process `obb`, an `openbb-platform-api` server (`--server`), a precomputed `.spec` file (`--spec`), or a generic OpenAPI 3.x server (`--server`).
-- **`.spec` files.** `openbb --generate-spec --server URL -o file.spec` once; `--spec file.spec` afterwards skips the OpenAPI fetch on every invocation.
-- **Multi-spec namespaces.** `--spec congress=congress.spec --spec nyfed=nyfed.spec` mounts each under its own namespace; per-namespace headers, query params, and auth.
-- **Codegen.** `--generate-extension --spec api.spec -o ./openbb-foo` produces an installable OpenBB extension — `Provider` + `Fetcher` + router — that registers with `openbb-build`.
-- **Auth.** Static headers (`-H`), query params (`-Q`), or an importable `AuthHook` for RBAC and dynamic credentials.
-- **Layered configuration.** `pyproject.toml` → user-global `openbb.toml` → project `openbb.toml` → `--config` → `.env` → `OPENBB_*` env vars → CLI flags.
-- **Introspection.** `--list-commands` and `--describe COMMAND[:provider]` print the catalog and per-command schemas as JSON.
+Where the commands come from depends on the backend. Without a backend flag, the CLI imports the local `openbb` package and calls the extensions installed in that Python environment, so the command above needs `openbb-oecd`. `--server URL` reads the OpenAPI document of an `openbb-api` server, or of any other OpenAPI 3.x service, and sends each command over HTTP. `--spec PATH` does the same from a `.spec` file saved with `--generate-spec`, skipping the schema download on every call. Passing `--spec NAME=PATH` more than once mounts several APIs side by side, each under its own namespace and with its own headers, query parameters, and auth hook.
 
-## Sections
+A `.spec` file can also be turned into an installable OpenBB extension with `--generate-extension`. The generated project registers a provider, holds a fetcher module for each GET command, and mounts routers that mirror the API's paths; after `pip install` and `openbb-build`, its commands appear under `obb.<namespace>` in Python.
 
-| Page | Topic |
-| ---- | ----- |
-| [Installation](/odp/cli/installation) | `pip install openbb-cli` |
-| [Quickstart](/odp/cli/quickstart) | One-shot, batch, REPL |
-| [Modes](/odp/cli/modes) | Non-TTY, batch, REPL semantics |
-| [Backends](/odp/cli/backends) | The four backend types |
-| [Configuration](/odp/cli/configuration) | `openbb.toml`, env vars, layer order |
-| [Authentication](/odp/cli/auth) | Headers, query params, auth hooks |
-| [Settings reference](/odp/cli/settings) | `openbb_cli.models.settings.Settings` |
-| [Codegen](/odp/cli/codegen) | `--generate-spec`, `--generate-extension`, `--socrata-story` |
-| [CLI flags](/odp/cli/reference/cli-flags) | Every flag |
+## Pages in this section
+
+Start with [Installation](./installation.md) and the [Quickstart](./quickstart.md), which walks through one-shot, batch, and REPL use. [Modes](./modes.md) covers argument parsing, the NDJSON wire format, and exit codes. [Backends](./backends.md) explains how each backend resolves commands and what a `.spec` file contains. [Configuration](./configuration.md) describes `openbb.toml`, `.env` files, environment variables, and their precedence, while [Settings](./settings.md) lists the REPL display settings stored in `~/.openbb_platform/.cli.env`. [Authentication](./auth.md) covers static headers, query parameters, and importable auth hooks. [Codegen](./codegen.md) documents `--generate-spec`, `--socrata-story`, and `--generate-extension`. Every flag is listed in the [CLI flags reference](./reference/cli-flags.md).
+
+The interactive REPL has its own section. [Structure and Navigation](./repl/structure-and-navigation.md) explains menus, paths, and the global commands, [Commands and Arguments](./repl/commands-and-arguments.md) covers help output, flags, and completion, and [Data Sources](./repl/data-sources.md) shows how providers and credentials are selected. Cached results, the `load` command, and the `/feature` table tools are described in [Results Registry](./repl/results.md). Display options are covered in [Interactive Tables](./repl/interactive-tables.md) and [Interactive Charts](./repl/interactive-charts.md), file locations in [OpenBBUserData Folder](./repl/openbbuserdata.md), and scripted sessions in [Routines](./repl/routines/introduction-to-routines.md).

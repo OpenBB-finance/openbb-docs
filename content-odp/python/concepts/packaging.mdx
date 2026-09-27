@@ -2,37 +2,46 @@
 title: Packaging and static assets
 sidebar_position: 4
 description: >
-  `openbb-build` generates the static `openbb` Python package locally from the
-  installed extensions' metadata.
+  How the openbb Python package is generated from installed extensions, when
+  it rebuilds on its own, and when to run openbb-build.
 keywords:
   - openbb-build
+  - openbb.build
   - static assets
-  - package_builder
-  - PackageBuilder
+  - OPENBB_AUTO_BUILD
+  - reference.json
 ---
 
 import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
 <HeadTitle title="Packaging and static assets | OpenBB Python (V5)" />
 
-The Python Interface (`from openbb import obb`) is generated into the `openbb` package inside the active environment's `site-packages/`. The generated files reflect the set of installed extensions in that environment; they are not shipped pre-built in a wheel.
+The Python Interface is generated code. `openbb-core` ships the `openbb` package with a placeholder `package` directory, and a build step writes one module per router path into `site-packages/openbb/package/` plus a command reference at `site-packages/openbb/assets/reference.json`. The generated methods carry the signatures, type hints, and docstrings for every installed command. They contain no business logic; each one forwards to the live router function, so the output always reflects the installed code.
 
-Trigger a build with the `openbb-build` console script or by calling `openbb_core.build:main`. Both invoke `openbb.build()`.
+Because the files describe the extensions installed in one environment, they are not shipped pre-built. The REST API does not use them at all: `openbb_core.api.rest_api:app` loads routers from entry points every time it starts.
 
-## `package_builder` public surface
+## When the package rebuilds
 
-`openbb_core.app.static.package_builder`:
+Importing `openbb` compares the extensions recorded in `reference.json` with the installed entry points, by name and distribution version. If an extension was added, removed, or changed version, the import prints the difference and rebuilds before `obb` is created. Set `OPENBB_AUTO_BUILD=false` to skip the check, for example in read-only deployments where the build step runs ahead of time.
 
-- `PackageBuilder`
-- `ClassDefinition`
-- `DocstringGenerator`
-- `ImportDefinition`
-- `MethodDefinition`
-- `ModuleBuilder`
-- `PathHandler`
-- `ReferenceGenerator`
-- `FileLock`
-- `RouterLoader`
-- `TAB`, `create_indent`
+The check does not notice edits to an extension installed in editable mode when its version stays the same. Rebuild by hand after changing anything the generated code copies: command names or signatures, `QueryParams` and `Data` fields or descriptions, `fetcher_dict` keys, examples, or entry points. Changes inside fetcher methods, router function bodies, and helpers take effect without a rebuild.
 
-Also re-exported at the same path: `CHARTING_INSTALLED`, `CORE_VERSION`, `VERSION`, `Console`, `DataProcessingSupportedTypes`, `Env`, `ExtensionLoader`, `Linters`, `OpenBBGroups`, `SystemService`.
+## Triggering a build
+
+From a shell, run the console script that `openbb-core` installs:
+
+```bash
+openbb-build
+```
+
+It imports `openbb` in a subprocess, which triggers the automatic build when one is needed, and calls `openbb.build()` if it was not. From Python:
+
+```python
+import openbb
+
+openbb.build()
+```
+
+`openbb.build()` regenerates every module. Its `lint` argument (default `True`) runs `ruff check --fix-only` over the generated files, and `verbose=True` prints each file as it is written. Restart the interpreter afterwards so `from openbb import obb` loads the new modules.
+
+The build writes into the environment's `site-packages`, so the process needs write access there. Only one build runs at a time; a second concurrent build fails with a `RuntimeError` naming the lock file. If a build fails, set `OPENBB_DEBUG_MODE=true` and run `openbb-build` again for the full traceback.

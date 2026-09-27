@@ -1,335 +1,157 @@
 ---
 title: Provider Extensions
-sidebar_position: 3
-description: This page provides information about how to write provider extensions for the OpenBB Python Package using the ETL pattern, and how to add them to Routers as endpoints.
+sidebar_position: 1
+description: Build a provider extension with QueryParams, Data, and Fetcher classes, register it, and expose it under its own obb namespace.
 keywords:
   - ODP
-  - Provider
+  - OpenBB V5
+  - provider
+  - Fetcher
+  - QueryParams
   - Data
-  - Standardization
-  - ETL
-  - Router
-  - API
-  - OBBject
-  - Python
-  - Development
-  - OpenBB Platform
-  - extensions
-  - endpoints
+  - TET pattern
+  - fetcher_dict
+  - credentials
   - how-to
 ---
 
 import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-<HeadTitle title="Build Provider Extensions - Developer | OpenBB Docs" />
+<HeadTitle title="Provider Extensions | OpenBB Python (V5)" />
 
-A provider extension refers to a specific source of data.
-Each endpoint can be serviced by multiple providers,
-and shared parameters or data fields are considered as "standard" items.
+This guide builds `openbb-demo`, a package that registers a provider named `demo` and a command `obb.demo.prices`. It follows the layout of the V5 data packages: the provider and the router that exposes it ship together. The TET pattern and the model-name lookup are described in [Architecture](../../concepts/architecture.mdx#the-provider-layer); this page only covers the steps.
 
-:::important
-By themselves, provider extensions do not map to any specific endpoint or API route.
+## Project layout
 
-Instead, they map to metamodels and the router function references a model through a specific pattern.
-:::
-
-## Folder structure
-
-```shell
-provider_example
-├── README.md
-├── openbb_empty_provider
-│   └── __init__.py
-│   └── models
-│       └── __init__.py
-│       └── empty_model.py
-│   └── utils
-│       └── __init__.py
-│       └── helpers.py
-├── poetry.lock
-└── pyproject.toml
+```text
+openbb-demo/
+├── pyproject.toml
+└── openbb_demo/
+    ├── __init__.py
+    ├── demo_router.py
+    └── models/
+        ├── __init__.py
+        └── prices.py
 ```
 
-The main `__init__.py` file will initialize a `Provider` class and map all of the models to the metamodels referenced in router endpoints.
+`openbb_demo/models/__init__.py` can be empty. `openbb_demo/__init__.py` holds the `Provider`, and `demo_router.py` holds the commands.
 
-## TOML File
+## Define the models and fetcher
 
-The entry point for the extension is specified as a Poetry plugin, near the bottom of the file.
-
-```toml
-[tool.poetry.plugins."openbb_provider_extension"]
-empty = "openbb_empty_provider:empty_provider"
-```
-
-<details>
-<summary mdxType="summary">`pyproject.toml`</summary>
-```toml
-[tool.poetry]
-name = "openbb-empty-provider"
-version = "0.0.0"
-description = "Empty provider extension for OpenBB"
-authors = ["Hello <hello@world.co>"]
-readme = "README.md"
-packages = [{ include = "openbb_empty_provider" }]
-
-[tool.poetry.dependencies]
-python = "^3.10,<3.14"
-openbb-core = "*"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.poetry.plugins."openbb_provider_extension"]
-empty = "openbb_empty_provider:empty_provider"
-```
-
-</details>
-
-## Provider Definition
-
-Open or create the main `__init__.py` file with a code editor.
-
-Initialize an instance of the `Provider` class by naming the local variable as `{name}_provider`.
-This should be the same as what was defined in `pyproject.toml`
-
-:::tip
-`__init__.py` requires imports which may not have been built yet.
-
-Install the extension with an empty `fetcher_dict` field - `fetcher_dict={}` - then add them when ready.
-
-When installing the extension, adding or changing items in the `fetcher_dict`, you must run `openbb-build` from the command line before using the Python Interface.
-:::
+A model file contains three classes. `DemoPricesQueryParams` validates the inputs, `DemoPricesData` validates one output row, and `DemoPricesFetcher` connects them. `openbb_demo/models/prices.py`:
 
 ```python
-from openbb_core.provider.abstract.provider import Provider
-from openbb_empty_provider.models.empty_model import EmptyFetcher
-
-
-empty_provider = Provider(
-    name="empty",
-    website="http://empty.io",
-    description="""The empty provider is a supplier of promises.""",
-    # credentials=["api_key"],  # Credentials added here are mapped to `user_settings.json` in the `credentials` key.
-    # Don't do "empty_api_key" here, the `name` will prefix whatever items are listed in the credentials field.
-    fetcher_dict={
-        "EmptyModel": EmptyFetcher  # The key is mapped to in @router.command(model="EmptyModel", methods=["GET"])
-    },
-)
-```
-
-## Provider Model
-
-Provider data pipelines use the [`Fetcher`](/odp/python/developer/architecture_overview#fetcher-class) class to transform and validate user input, extract raw data from the source, and transform the data into serializable content.
-
-Transformed data will be ready to load into a database or use by downstream processes.
-
-The entire file consists of three classes, and it can be executed asynchronously without initialization.
-
-- `QueryParams`
-- `Data`
-- `Fetcher`
-
-### Standard Models
-
-If an endpoint is shared between multiple providers, they are likely to have some common ground.
-
-In this case, the metamodel will represent the standard, and the providers shall inherit from the standard.
-
-A standard model will have only `QueryParams` and `Data`, both are a subclass of `pydantic.BaseModel`.
-
-<details>
-<summary mdxType="summary">Example Standard Model</summary>
-```python
-"""Some Time Series Standard Model"""
+"""Demo prices model."""
 
 from datetime import date as dateType
+from typing import Any
 
 from openbb_core.provider.abstract.data import Data
+from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.query_params import QueryParams
 from pydantic import Field
 
-class SomeTimeSeriesQueryParams(QueryParams):
-    """Some Time Series Query Params"""
-    symbol: str = Field(
-        description="Ticker symbol for the time series."
+
+class DemoPricesQueryParams(QueryParams):
+    """Demo prices query."""
+
+    symbol: str = Field(description="Symbol to get prices for.")
+    start_date: dateType | None = Field(default=None, description="Start date.")
+
+
+class DemoPricesData(Data):
+    """Demo prices data."""
+
+    __alias_dict__ = {"date": "d", "close": "c"}
+
+    date: dateType = Field(description="Trading date.")
+    symbol: str = Field(description="Symbol.")
+    close: float = Field(description="Closing price.")
+    change_percent: float | None = Field(
+        default=None, description="Change from the prior close, as a normalized percent."
     )
-    start_date: dateType | None = Field(
-        default=None,
-        description="Start date of the data.",
-    )
-    end_date: dateType | None = Field(
-        default=None,
-        description="End date of the data.",
-    )
-
-class SomeTimeSeriesData(Data):
-    """Some Time Series Data"""
-
-    date: dateType = Field(
-        description="Date of the data.",
-    )
-    symbol: str = Field(
-        description="Symbol for the data.",
-    )
-    value: float = Field(
-        description="End of day value of the symbol."
-    )
-```
-</details>
-
-The provider should then inherit from this model, prefixing the name with itself.
-
-```python
-class EmptySomeTimeSeriesQueryParams(SomeTimeSeriesQueryParams):
-    """Empty Some Time Series Query Params"""
-    # No `pass` required if no additional parameters are added.
 
 
-# Add additional fields, or modify the standard model definition to suit.
+class DemoPricesFetcher(Fetcher[DemoPricesQueryParams, list[DemoPricesData]]):
+    """Demo prices fetcher."""
 
-class EmptySomeTimeSeriesData(SomeTimeSeriesData):
-    """Empty Some Time Series Data"""
-
-    unit: str | None = Field(
-        default=None,
-        description="Unit of measurement represented by the value."
-    )
-```
-
-:::info
-The resulting function signature will register these parameters as `extra_params`, but their definitions will display in the docstring and `reference` metadata. Required provider parameters may appear as `Optional` in docstrings, but their inputs will be validated using the model at execution.
-:::
-
-### Fetcher
-
-Next, build the `Fetcher` class. Use the code block below as a template, the structure and signatures will always be similar.
-Most of the business logic happens in one of, `extract_data` or `aextract_data`.
-
-A Fetcher divides the process into three distinct sections:
-
-- Transform Query
-  - Validates the user input against the QueryParams model.
-- Extract Data
-  - Gets the raw data (or as close to raw as possible) from the source.
-- Transform Data
-  - Validate the data against the Data model and return the results.
-  - Output is returned to the user under `OBBject.results`.
-
-<details>
-<summary mdxType="summary">Example Fetcher Code</summary>
-```python
-class EmptySomeTimeSeriesFetcher(
-    Fetcher[
-        EmptySomeTimeSeriesQueryParams,
-        list[
-            EmptySomeTimeSeriesData
-        ],  # Remove list if returning a single record or dictionary
-    ]
-):
-    """Some Time Series Fetcher."""
-
-    # Use this to disable the requirement of credentials for this endpoint
-    # and provider, if applicable.
-
-    # require_credentials = False
+    require_credentials = False
 
     @staticmethod
-    def transform_query(params: dict) -> EmptySomeTimeSeriesQueryParams:
-        """Transform query params."""
-        transformed_params = params.copy()
-        # if transformed_params.get("some_param"):
-        #     do something with it here.
-        # and use field_validator in the model to set defaults.
-        return EmptySomeTimeSeriesQueryParams(**transformed_params)
+    def transform_query(params: dict[str, Any]) -> DemoPricesQueryParams:
+        """Validate the query."""
+        return DemoPricesQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
-        query: EmptySomeTimeSeriesQueryParams,
-        credentials: dict | None,
-        **kwargs,
-    ) -> list:  # Typing here should match the 'data' input of 'transform_data'.
-        """Extract data."""
-        # pylint: disable=import-outside-toplevel
-        # from openbb_core.provider.utils.helpers import (
-        #    make_request,
-        #    amake_request,
-        #    amake_requests,
-        #    get_querystring,
-        #    get_requests_session,
-        #    get_async_requests_session,
-        # )
-        # Use these to make HTTP requests.
-        # Always lazy-load imports inside functions to avoid circular imports
-        # and to speed up initial load time of the application.
-
-        # Example of making a request
-        # url = "https://example.com/api"
-        # querystring = get_querystring(
-        #     {
-        #         "symbol": query.symbol,
-        #         "start_date": query.start_date,
-        #         "end_date": query.end_date,
-        #         # Add other parameters here
-        #     }
-        # )
-        #
-        # headers = {
-        #     "Authorization": f"Bearer {credentials['empty_api_key']}"
-        # } if credentials else ""
-        #
-        # response = await amake_request(url, headers=headers, params=querystring)
-        #
-        # data = response.json()
-        #
-        # Process the data into a list of EmptySomeTimeSeriesData
-        data = [
-            {
-                "date": dateType(2023, 1, 1),
-                "symbol": query.symbol,
-                "value": 100.0,
-                "unit": "USD",
-            },
-            {
-                "date": dateType(2023, 1, 2),
-                "symbol": query.symbol,
-                "value": 101.5,
-                "unit": "USD",
-            },
-            # Add more records as needed
+        query: DemoPricesQueryParams,
+        credentials: dict[str, str] | None,
+        **kwargs: Any,
+    ) -> list[dict]:
+        """Return raw rows."""
+        return [
+            {"d": "2025-01-02", "symbol": query.symbol, "c": 101.5, "changePercent": 0.012},
+            {"d": "2025-01-03", "symbol": query.symbol, "c": 100.9, "changePercent": -0.0059},
         ]
-
-        return data
 
     @staticmethod
     def transform_data(
-        query: EmptySomeTimeSeriesQueryParams, data: list, **kwargs: Any
-    ) -> list[EmptySomeTimeSeriesData]:
-        """Transform data."""
-        # Here you can clean and validate the data as needed.
-        # The model should do most of the heavy lifting.
-        return [EmptySomeTimeSeriesData.model_validate(item) for item in data]
-
-# This is the complete model, it can be executed with:
-# result = await EmptySomeTimeSeriesFetcher.fetch_data({}, {})
-# Where the first dict is the query parameters, and the second is the credentials.
-# If no credentials are required, use an empty dict.
+        query: DemoPricesQueryParams,
+        data: list[dict],
+        **kwargs: Any,
+    ) -> list[DemoPricesData]:
+        """Validate rows."""
+        rows = [DemoPricesData.model_validate(row) for row in data]
+        if query.start_date:
+            rows = [row for row in rows if row.date >= query.start_date]
+        return rows
 ```
-</details>
 
+The rows here are static so the example runs offline. A real fetcher requests them in `aextract_data` with the helpers in [HTTP requests](../how-to/http_requests.mdx), passing `**kwargs` through so the user's request timeout applies. Implement `extract_data` instead for a synchronous source; if both exist, `aextract_data` is used. `__alias_dict__` maps the source keys `d` and `c` onto the field names, and `changePercent` needs no mapping because `Data` accepts camelCase keys for snake_case fields.
 
-## Add to Endpoint
-
-Mapping the model to a router endpoint requires installing or building a [router extension](/odp/python/developer/extension_types/router).
-
-The function definition itself is copy/pastable and repeatable, where the only thing that changes is the metamodel referenced in the `@router.command` decorator.
-
-<details>
-<summary mdxType="summary">Example Router Function</summary>
+A fetcher can be run on its own, without installing anything, which is the quickest way to check it:
 
 ```python
+import asyncio
+
+from openbb_demo.models.prices import DemoPricesFetcher
+
+rows = asyncio.run(DemoPricesFetcher.fetch_data({"symbol": "ABC"}, {}))
+DemoPricesFetcher.test({"symbol": "ABC"}, {})
+```
+
+`fetch_data(params, credentials)` runs all three steps and returns the transformed rows. `test()` runs the same steps and asserts that each stage returns the declared types; it returns `None` when everything passes. [Tests](../how-to/tests.mdx) turns this into a recorded unit test.
+
+## Register the provider
+
+`openbb_demo/__init__.py` creates the `Provider` that the entry point points to:
+
+```python
+"""Demo provider."""
+
+from openbb_core.provider.abstract.provider import Provider
+
+from openbb_demo.models.prices import DemoPricesFetcher
+
+demo_provider = Provider(
+    name="demo",
+    description="Demo prices for extension development.",
+    website="https://example.com",
+    fetcher_dict={"DemoPrices": DemoPricesFetcher},
+)
+```
+
+`name` is the value callers pass as `provider="demo"`. Each `fetcher_dict` key is a model name that router commands refer to. The optional `repr_name` sets a display name and `instructions` tells users how to obtain credentials.
+
+## Add a command
+
+`openbb_demo/demo_router.py` exposes the model as a command. The signature and body are the same for every provider-backed command; only `model` and the function name change.
+
+```python
+"""Demo router."""
+
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.example import APIEx, PythonEx
+from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -339,37 +161,167 @@ from openbb_core.app.provider_interface import (
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
 
-router = Router(prefix="", description="An Empty OpenBB Router Extension.")
+router = Router(prefix="", description="Demo data.")
 
-# This uses the Provider Interface to call the empty provider fetcher.
+
 @router.command(
-    model="EmptyModel",  # <-- metamodel name goes here
-    examples=[
-        APIEx(parameters={"provider": "empty"}),
-        PythonEx(
-            description="Say Hello.",
-            code=[
-                "result = obb.empty.hello()",
-            ],
-        ),
-    ],
+    model="DemoPrices",
+    examples=[APIEx(parameters={"symbol": "ABC", "provider": "demo"})],
 )
-async def empty_function(
+async def prices(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """An empty function using the Provider Interface."""
+    """Get daily closing prices."""
     return await OBBject.from_query(Query(**locals()))
 ```
 
-</details>
+If no installed provider registers the `model` name, the command is skipped when routers load. Set `OPENBB_DEBUG_MODE=true` to see a warning naming the missing model. [Router extensions](router.md) covers the other decorator options.
 
-### Rebuild Static Assets
+## Declare the entry points
 
-After modifying the router mappings, rebuild the Python static assets.
+`pyproject.toml` registers the provider and the router. The two entry-point names do not have to match, but keeping them the same makes `provider="demo"` and `obb.demo` line up.
 
-```sh
+```toml
+[project]
+name = "openbb-demo"
+version = "0.1.0"
+requires-python = ">=3.10"
+dependencies = ["openbb-core[pandas]>=2.0.0"]
+
+[project.entry-points."openbb_provider_extension"]
+demo = "openbb_demo:demo_provider"
+
+[project.entry-points."openbb_core_extension"]
+demo = "openbb_demo.demo_router:router"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["openbb_demo"]
+```
+
+## Install and call it
+
+Install the package in editable mode in an environment that has `openbb-core`, then rebuild the Python Interface:
+
+```bash
+pip install -e .
 openbb-build
 ```
+
+```python
+from openbb import obb
+
+output = obb.demo.prices(symbol="ABC", start_date="2025-01-03")
+output.results
+```
+
+```text
+[DemoPricesData(date=2025-01-03, symbol=ABC, close=100.9, change_percent=-0.0059)]
+```
+
+`demo` is the only provider for `DemoPrices`, so `provider` defaults to it. Because the models do not inherit from a standard model, `symbol` and `start_date` are keyword arguments on the generated method; the next section changes that. The REST API serves the same command at `/api/v1/demo/prices` without a rebuild:
+
+```bash
+uvicorn openbb_core.api.rest_api:app --port 8000
+curl "http://127.0.0.1:8000/api/v1/demo/prices?symbol=ABC"
+```
+
+Rebuild with `openbb-build` whenever a model field, command signature, or `fetcher_dict` key changes. Edits inside fetcher methods apply on the next call. [Packaging](../../concepts/packaging.mdx) explains the rule.
+
+## Build on a standard model
+
+Inheriting from a model in `openbb_core.provider.standard_models` gives the standard fields their shared names, descriptions, and validators, and makes them named parameters on the generated method. Fields you add remain provider-specific. This fetcher builds on `EquityHistorical`:
+
+```python
+"""Demo equity historical model."""
+
+from typing import Any, Literal
+
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.equity_historical import (
+    EquityHistoricalData,
+    EquityHistoricalQueryParams,
+)
+from pydantic import Field
+
+
+class DemoEquityHistoricalQueryParams(EquityHistoricalQueryParams):
+    """Demo equity historical query."""
+
+    interval: Literal["1d", "1w"] = Field(default="1d", description="Bar interval.")
+
+
+class DemoEquityHistoricalData(EquityHistoricalData):
+    """Demo equity historical data."""
+
+    __alias_dict__ = {
+        "date": "t",
+        "open": "o",
+        "high": "h",
+        "low": "l",
+        "close": "c",
+        "volume": "v",
+    }
+
+
+class DemoEquityHistoricalFetcher(
+    Fetcher[DemoEquityHistoricalQueryParams, list[DemoEquityHistoricalData]]
+):
+    """Demo equity historical fetcher."""
+
+    require_credentials = False
+
+    @staticmethod
+    def transform_query(params: dict[str, Any]) -> DemoEquityHistoricalQueryParams:
+        """Validate the query."""
+        return DemoEquityHistoricalQueryParams(**params)
+
+    @staticmethod
+    async def aextract_data(
+        query: DemoEquityHistoricalQueryParams,
+        credentials: dict[str, str] | None,
+        **kwargs: Any,
+    ) -> list[dict]:
+        """Return raw bars."""
+        return [
+            {"t": "2025-01-02", "o": 100, "h": 102, "l": 99, "c": 101.5, "v": 12000},
+            {"t": "2025-01-03", "o": 101.5, "h": 101.8, "l": 100.2, "c": 100.9, "v": 9000},
+        ]
+
+    @staticmethod
+    def transform_data(
+        query: DemoEquityHistoricalQueryParams,
+        data: list[dict],
+        **kwargs: Any,
+    ) -> list[DemoEquityHistoricalData]:
+        """Validate bars."""
+        return [DemoEquityHistoricalData.model_validate(row) for row in data]
+```
+
+Register it as `"DemoEquityHistorical": DemoEquityHistoricalFetcher` in `fetcher_dict` and add a command with `model="DemoEquityHistorical"`, named `historical`, to the router. After a rebuild, `obb.demo.historical` has `symbol`, `start_date`, and `end_date` in its signature and takes `interval` as a keyword argument. The standard model's validator also upper-cases `symbol`. [Standardization](../standardization.mdx) explains why V5 packages use a provider-prefixed model name like this rather than the bare standard name.
+
+## Require credentials
+
+List credential names on the provider, and the engine prefixes each with the provider name:
+
+```python
+demo_provider = Provider(
+    name="demo",
+    description="Demo prices for extension development.",
+    website="https://example.com",
+    credentials=["api_key"],
+    fetcher_dict={"DemoPrices": DemoPricesFetcher},
+)
+```
+
+Users then set `demo_api_key`, for example with `obb.user.credentials.demo_api_key = "..."` or the `DEMO_API_KEY` environment variable; [Credentials](../../user-guide/credentials.mdx) lists every option. The fetcher receives the value as a plain string in `credentials["demo_api_key"]`. Before a fetcher runs, the engine raises an `OpenBBError` naming any missing credential. Setting `require_credentials = False` on a fetcher, as in the examples above, skips that check for that fetcher and passes whatever credentials are set.
+
+## Report errors
+
+Raise `EmptyDataError` from `openbb_core.provider.utils.errors` when a request succeeds but returns nothing, `UnauthorizedError` from the same module when the source rejects the credentials, and `OpenBBError` from `openbb_core.app.model.abstract.error` for other failures the caller can act on. The REST API maps them to status codes 204, 502, and 400. Any other exception becomes a 500. [Warnings and errors](../../user-guide/warnings-and-errors.mdx) shows how callers see them.

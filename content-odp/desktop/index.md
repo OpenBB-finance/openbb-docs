@@ -42,7 +42,7 @@ The initial environment (`openbb`) is setup when you first run the application, 
   - `openbb-api` and `openbb-mcp` executables
 - Optional packages selected during installation
 - Jupyter Lab & Notebook in a dedicated window
-  - Python langugage server
+  - Python language server
 - Isolated `npm` executable
 
 </details>
@@ -75,7 +75,9 @@ By default, this will run: `openbb-api --host 127.0.0.1 --port 6900`
 
 </details>
 
-4. Open Workspace in your browser and connect to http://127.0.0.1:6900.  You now have a fully local data stack.
+### **Step 4**
+
+Open Workspace in your browser and connect to `http://127.0.0.1:6900`.
 
 <details>
 <summary mdxType="summary">Workspace Screenshot</summary>
@@ -96,17 +98,17 @@ The application operates as a system tray icon, and its main window has three, n
   <NewReferenceCard
     title="Backends"
     description="Define and control background servers such as `openbb-api` or any custom script."
-    url="desktop/backends"
+    url="/odp/desktop/backends"
   />
   <NewReferenceCard
     title="Environments"
     description="Create and manage isolated Conda Python environments."
-    url="desktop/environments"
+    url="/odp/desktop/environments"
   />
   <NewReferenceCard
     title="API Keys"
     description="Manage API Keys for use with the OpenBB Python packages and API."
-    url="desktop/api-keys"
+    url="/odp/desktop/api-keys"
   />
 </ul>
 

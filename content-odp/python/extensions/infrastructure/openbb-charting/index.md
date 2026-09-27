@@ -1,263 +1,211 @@
 ---
 title: openbb-charting
-sidebar_position: 2
-description: Learn about the openbb-charting extension and adding Plotly charts to the response object.
+sidebar_position: 1
+description: The openbb-charting extension - the charting accessor on OBBject, the chart parameter on commands with a chart view, Plotly chart builders, and interactive tables.
 keywords:
 - charts
 - charting
 - Plotly
-- GraphObject
-- Figure
+- OpenBBFigure
 - PyWry
 - OBBject
-- Indicators
+- chart views
+- tables
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 MD037 -->
 
 import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
-import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 
-<HeadTitle title="OpenBB Charting | OpenBB Docs" />
+<HeadTitle title="openbb-charting | OpenBB Python (V5)" />
 
-This extension provides a charting library for Open Data Platform by OpenBB.
+`openbb-charting` is an OBBject extension built on Plotly. Installing it does three things. Every command result gains a `charting` accessor with chart builders and a table viewer. Commands that have a registered chart view gain a `chart` parameter. And the REST API returns the chart's Plotly JSON alongside the data when `chart=True` is sent.
 
-The library includes:
-
-- API charting infrastructure
-- Mutable `chart` attribute in every response object
-- Plotly charting components
-- Pre-built charts for a set of endpoints
-- Optional extra for dedicated window creation
-  - Includes an interactive `table()` method in the Python Interface
-
-:::note
-*The charting library is an `OBBject` extension, which means you'll have the functionality it exposes on every command result.*
-:::
+This page covers version 4.0.0, the release for V5.
 
 ## Installation
 
-To install the extension, run the following command in this folder:
-
-```bash
+```sh
 pip install openbb-charting
+openbb-build
 ```
 
-### Extras
-
-The PyWry dependency handles the display of interactive charts and tables in a separate window.
-
-Add the PyWry extra for standalone window creation.
+The package depends on `openbb-core[pandas]`, `pandas-ta-openbb`, and `plotly`. Charts and tables open in a native desktop window through PyWry, which is an optional extra:
 
 ```sh
 pip install "openbb-charting[pywry]"
 ```
 
-### PyWry on Linux
+On Linux, PyWry needs the system WebKit and GTK libraries first:
 
-For Linux systems, the PyWry dependency requires certain dependencies to be installed first.
+| Distribution | Command |
+| --- | --- |
+| Debian, Ubuntu, Mint | `sudo apt install libwebkit2gtk-4.1-dev libgtk-3-dev` |
+| Arch, Manjaro | `sudo pacman -S webkit2gtk` |
+| Fedora | `sudo dnf install gtk3-devel webkit2gtk3-devel` |
 
-- Debian-based / Ubuntu / Mint:
-`sudo apt install libwebkit2gtk-4.0-dev`
+Without PyWry, figures fall back to Plotly's default renderer through `plotly.io.show`, and the interactive `table()` viewer is unavailable.
 
-- Arch Linux / Manjaro:
-`sudo pacman -S webkit2gtk`
+## Commands with charts
 
-- Fedora:
-`sudo dnf install gtk3-devel webkit2gtk3-devel`
+A chart view is a function that turns a command's results into a figure. Extensions register views through the `openbb_charting_extension` entry point, and a view is matched to a command by its route: `/quantitative/factors` maps to `quantitative_factors`. When `openbb-build` finds a view for a command, it adds `chart: bool = False` to that command's signature.
 
-## Set Theme
+List the registered views:
 
-The default theme setting is `dark`, and this can be changed to "light" in the [user preference](/odp/python/settings/user_settings/preferences)
-for both, `chart_style` and `table_style`.
+```python
+from openbb_charting import Charting
 
-For the current Python session, set them with:
+Charting.functions()
+```
+
+The V5 packages ship these views.
+
+| Package | Commands with `chart=True` |
+| --- | --- |
+| `openbb-econometrics` | `econometrics.correlation_matrix` |
+| `openbb-quantitative` | `quantitative.factors`, `quantitative.risk_decomposition`, `quantitative.attribution`, `quantitative.rolling.factors` |
+| `openbb-technical` | `technical.sma`, `ema`, `wma`, `hma`, `zlma`, `rsi`, `macd`, `adx`, `aroon`, `cones`, `relative_rotation` |
+| `openbb-imf` | `imf.portwatch.country_activity`, `monthly_trade`, `container_metrics`, `disruptions_map`, `disruption_sankey` |
+
+Provider namespaces other than `obb.imf` do not register views, so their commands have no `chart` parameter. Their results can still be charted with the generic tools below.
+
+## Creating and showing a chart
+
+Pass `chart=True`, then call `show()` on the result:
 
 ```python
 from openbb import obb
 
-obb.user.prefernces.chart_style="dark"
-obb.user.prefernces.table_style="light"
+prices = obb.cboe.equity.historical(symbol="XLE", start_date="2021-01-01").to_df()
+returns = prices["close"].pct_change().mul(100).dropna().rename("xle").to_frame()
+factors = obb.famafrench.factors(frequency="daily", start_date="2021-01-01").results
 
-```
-
-## Available Charts
-
-Not all the endpoints are supported by the charting extension. To discover which endpoints are supported, you can run the following command:
-
-```python
-from openbb_charting import Charting
-Charting.functions()
-```
-
-This produces the same result as using the class method from the `OBBject.charting` function response.
-
-```console
-Methods
--------
-show
-    Display chart and save it to the OBBject.
-to_chart
-    Redraw the chart and save it to the OBBject, with an optional entry point for Data.
-functions
-    Return a list of Platform commands with charting functions.
-get_params
-    Return the charting parameters for the function the OBBject was created from.
-indicators
-    Return the list of the available technical indicators to use with the `to_chart` method and OHLC+V data.
-table
-    Display an interactive table.
-create_line_chart
-    Create a line chart from external data.
-create_bar_chart
-    Create a bar chart, on a single x-axis with one or more values for the y-axis, from external data.
-create_correlation_matrix
-    Create a correlation matrix from external data.
-toggle_chart_style
-    Toggle the chart style, of an existing chart, between light and dark mode.
-```
-
-## Usage
-
-:::important user_settings.json
-This extension requires that the [user preference](/odp/python/settings/user_settings/preferences) for `output_type` is set to, "OBBject", the default state.
-:::
-
-To use, run any of the ODP Python Package endpoints with the `chart` argument set to `True`.
-
-```python
->>> from openbb import obb
->>> equity_data = obb.equity.price.historical(symbol="TSLA", chart=True)
->>> equity_data
-
-OBBject[T]
-
-id: 068ec8c8-9ea2-78dc-8000-97703428789b
-results: [{'date': datetime.date(2024, 10, 14), 'open': 220.1300048828125, 'high': ...
-provider: yfinance
-warnings: None
-chart: {'content': {'data': [{'close': {'dtype': 'f8', 'bdata': 'AAAAwB5la0AAAACAPX...
-extra: {'metadata': {'arguments': {'provider_choices': {'provider': 'yfinance'}, 's...
-```
-
-The chart will be returned in the response object under the `chart` attribute.
-
-Display the current figure by calling:
-
-```python
-equity_data.show()
-```
-
-<details>
-<summary mdxType="summary">Sample Chart</summary>
-
-![candles](image.png)
-
-</details>
-
-### Chart Params
-
-:::note
-When a supported endpoint is called with `chart=True`, chart parameters can be passed as a nested dictionary under the name, `chart_params`.
-
-```python
-chart_params = dict(
-    title="AAPL 50/200 Day EMA",
-    indicators=dict(
-        ema=dict(length=[50,200]),
-    ),
-)
-params = dict(
-    symbol="AAPL",
-    start_date="2022-01-01",
-    provider="yfinance",
+result = obb.quantitative.risk_decomposition(
+    data=returns,
+    factors_data=factors,
+    target="xle",
+    risk_free_column="rf",
+    periods=["3 Month", "1 Year", "Max"],
     chart=True,
-    chart_params=chart_params,
 )
-data = obb.equity.price.historical(**params)
+result.show()
 ```
-`chart_params` are sent in the body of the request when using the API.
-:::
 
-Passing only `chart=True` will return a default view which can be modified and drawn again post-request, via the `OBBject`.
+The chart is stored on `result.chart`, which has three fields: `fig`, the `OpenBBFigure` (a Plotly `Figure` subclass); `content`, the figure as Plotly JSON; and `format`, which is `"plotly"`. Over the REST API, `fig` is dropped and `content` is returned, ready for any Plotly client. `show()` raises an error when no chart has been created.
 
-```console
-OBBject
+## Redrawing a chart
 
-id: 06614d74-7443-7201-8000-a65f358136a3
-results: [{'date': datetime.date(2022, 1, 3), 'open': 177.8300018310547, 'high': 18...
-provider: yfinance
-warnings: None
-chart: {'content': {'data': [{'close': [182.00999450683594, 179.6999969482422, 174....
-extra: {'metadata': {'arguments': {'provider_choices': {'provider': 'yfinance'}, 's...
-```
+`charting.to_chart()` builds the chart again from the result and replaces `result.chart`. It also creates a chart for a result that was fetched without `chart=True`. Keyword arguments pass through to the view, so each view defines what it accepts; the quantitative views, for example, take `title` and `layout_kwargs`, a dictionary applied with Plotly's `update_layout`.
 
 ```python
-data.show()
-```
-
-<details>
-<summary mdxType="summary">Sample Chart With EMA</summary>
-
-![candles with ema](https://github.com/OpenBB-finance/OpenBB/assets/85772166/b427d68b-777e-4230-852a-df749c5dbc46)
-
-</details>
-
-### Endpoints Without Charts
-
-Most functions do not have dedicated charts. However, it's still possible to generate one automatically. Try passing it through a quantitative analysis command.
-
-```python
-data = obb.equity.price.historical(
-    symbol="XLK",
-    start_date="2023-01-01",
-    provider="yfinance",
+result.charting.to_chart(
+    title="XLE variance share by factor",
+    layout_kwargs={"height": 500},
 )
-qa = obb.quantitative.rolling.stdev(data.results, target="close")
-
-qa.charting.show(title="XLK Rolling 21 Day Standard Deviation")
 ```
 
-<details>
-<summary mdxType="summary">Sample Generic Line Chart</summary>
+Set `render=False` to update `result.chart` without displaying it.
 
-![auto chart](https://github.com/OpenBB-finance/OpenBB/assets/85772166/f87a6648-7365-4529-a254-35897af448ca)
-
-</details>
-
-### Tables
-
-Interactive tables are displayed by the `table` method.
-
-:::important
-This functionality is intended for response object exploration and is not suitable for production environments.
-:::
+When a command has no view, `to_chart()` draws a generic line chart of the results instead. For price history, that is a line of the `close` column; for multi-symbol data, one line per symbol.
 
 ```python
-data = obb.equity.price.quote("AAPL,MSFT,GOOGL,META,TSLA,AMZN", provider="yfinance")
-data.charting.table()
+spy = obb.cboe.equity.historical(symbol="SPY", start_date="2024-01-01")
+spy.charting.to_chart()
 ```
 
 <details>
-<summary mdxType="summary">Sample Interactive Table</summary>
+<summary mdxType="summary">Sample generic line chart</summary>
 
-![Interactive Tables](https://github.com/OpenBB-finance/OpenBB/assets/85772166/77f5f812-b933-4ced-929c-c1e39b2a3eed)
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="Generic line chart created from a command without a dedicated chart view"
+    src="https://github.com/OpenBB-finance/OpenBB/assets/85772166/f87a6648-7365-4529-a254-35897af448ca"
+    width="100%"
+  />
+</div>
 
 </details>
 
-External data can also be supplied, providing an opportunity to filter or apply Pandas operations before display.
+## Charts from any data
+
+Four builders on the accessor take external data, a DataFrame or a list of `Data` such as `results`, and return an `OpenBBFigure`. They do not modify `result.chart`.
+
+| Method | Builds |
+| --- | --- |
+| `create_line_chart(data, target=None, x=None, y=None, y2=None, normalize=False, returns=False, same_axis=False, render=True, ...)` | Line chart; multi-symbol data is pivoted to one line per symbol |
+| `create_bar_chart(data, x, y, barmode="group", orientation="v", render=True, ...)` | Bar chart with one or more `y` columns |
+| `create_correlation_matrix(data, method="pearson", colorscale="RdBu", title="Asset Correlation Matrix")` | Correlation heat map of the numeric columns |
+| `create_3d_surface(X, Y, Z, xtitle="DTE", ytitle="Strike", ztitle="IV", ...)` | Triangulated 3D surface from three series |
+
+`create_line_chart` and `create_bar_chart` display the figure unless `render=False`; the other two only return it. `returns=True` plots cumulative percent returns and `normalize=True` plots z-scores, which puts series of different scale on one axis.
 
 ```python
-new_df = df.to_df().T
-new_df.index.name="metric"
-new_df.columns = new_df.loc["symbol"]
-new_df.drop("symbol", inplace=True)
-data.charting.table(data=new_df)
+basket = obb.cboe.equity.historical(symbol="XLE,XLF,XLK,SPY", start_date="2024-01-01")
+
+basket.charting.create_line_chart(
+    data=basket.results, target="close", returns=True, title="Cumulative return"
+)
+
+closes = basket.to_df().pivot(columns="symbol", values="close")
+change = closes.iloc[-1].div(closes.iloc[0]).sub(1).mul(100).rename("change").reset_index()
+
+basket.charting.create_bar_chart(
+    data=change, x="symbol", y="change", orientation="h", title="Percent change"
+)
+```
+
+## Interactive tables
+
+`charting.table()` opens the results, or a DataFrame passed as `data`, in a sortable, filterable grid with a pandas query bar. It requires the PyWry extra. The displayed data is a copy; the result is not modified.
+
+```python
+basket.charting.table()
+basket.charting.table(data=change, title="Percent change")
 ```
 
 <details>
-<summary mdxType="summary">Sample Custom Data Table</summary>
+<summary mdxType="summary">Sample interactive table</summary>
 
-![Tables From External Data](https://github.com/OpenBB-finance/OpenBB/assets/85772166/d02f8c34-e1d1-4001-a73e-d3b948a4c5c1)
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="Interactive table window showing command results"
+    src="https://github.com/OpenBB-finance/OpenBB/assets/85772166/77f5f812-b933-4ced-929c-c1e39b2a3eed"
+    width="100%"
+  />
+</div>
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="Interactive table window showing a DataFrame passed as external data"
+    src="https://github.com/OpenBB-finance/OpenBB/assets/85772166/d02f8c34-e1d1-4001-a73e-d3b948a4c5c1"
+    width="100%"
+  />
+</div>
 
 </details>
+
+## Theme
+
+Charts and tables use the dark theme by default. The chart styles are read from the `chart_style` and `table_style` preferences in `~/.openbb_platform/user_settings.json`, each `"dark"` or `"light"`:
+
+```json
+{
+  "preferences": {
+    "chart_style": "light",
+    "table_style": "light"
+  }
+}
+```
+
+`charting.toggle_chart_style()` switches an existing chart between the two. In the PyWry window, the toolbar button does the same.
+
+## Extending the charting layer
+
+Three entry-point groups customize charting without changing the core. `openbb_charting_extension` registers view classes, as described above. `openbb_charting_hooks` registers `ChartingHook` subclasses, imported from `openbb_core.app.charting`, which run at the `resolve_data`, `pre_figure`, `post_figure`, `pre_render`, and `post_render` stages of every chart; set `routes` to limit a hook to specific commands and `priority` to order hooks, lower first. `openbb_charting_backend` registers a rendering backend, selected with the `charting_backend` system setting.
+
+A package can also replace the engine entirely by registering an OBBject extension named `charting`. When more than one is installed, the `charting_extension` system setting chooses between them. The [charting extension guide](../../../developer/extension_types/charting.md) walks through writing a view.
+
+For indicator overlays on price charts, see [technical indicators](./indicators.md).

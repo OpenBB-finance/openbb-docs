@@ -2,134 +2,83 @@
 title: Backends
 sidebar_position: 4
 description: >
-  The four dispatch backends — in-process LocalDispatcher, HTTP dispatcher
-  against an openbb-platform-api server, HTTP dispatcher against a precomputed
-  .spec file, and HTTP dispatcher against a generic OpenAPI 3.x server.
+  How openbb-cli resolves commands in-process, against an openbb-api or other
+  OpenAPI 3.x server, from a .spec file, and across several specs mounted
+  under namespaces.
 keywords:
   - openbb-cli backends
-  - LocalDispatcher
-  - HTTP dispatcher
+  - in-process
+  - openbb-api
   - .spec
   - OpenAPI
-  - MultiSpecDispatcher
+  - multi-spec
 ---
 
-Every command goes through a `Dispatcher` — a Protocol declared at `openbb_cli.dispatchers.base.Dispatcher`:
+A backend decides where the commands come from and how they run. The CLI picks one per invocation. Any configured spec wins: `--spec`, `[specs.<name>]` tables or a `spec` key in `openbb.toml`, the `OPENBB_SPEC_PATH` variable, or `--socrata-story` used without `--generate-spec`. Without a spec, `--server` (or `OPENBB_SERVER_URL`, or `server` in `openbb.toml`) selects a live server. With neither, commands run in-process.
 
-```python
-@runtime_checkable
-class Dispatcher(Protocol):
-    async def dispatch(self, request: Request) -> Response: ...
-    async def aclose(self) -> None: ...
+## In-process
+
+The in-process backend imports the `openbb` package from the current Python environment and resolves the dotted command path as attributes under `obb`, so `oecd.gdp_real` calls `obb.oecd.gdp_real(...)`. The available commands are exactly the installed extensions, and the import happens again on every invocation. Results are the command's `OBBject`, serialized with unset and null fields removed.
+
+Because nothing goes over HTTP, headers, query parameters, and auth hooks are not applied. There is also no schema to read, so `--list-commands`, `--describe`, and the `__commands__` and `__schema__` batch commands are unavailable, and flags are parsed with the generic rules described in [Modes](./modes.md#one-shot).
+
+## Server
+
+With `--server URL`, the CLI downloads `<URL>/openapi.json` at the start of every invocation, with a 10-second timeout, and accepts JSON or YAML. If that request fails or does not return an OpenAPI document, it loads `<URL>/` and looks for an OpenAPI document embedded as JSON in the page, which is how some API portals publish their schema. External `$ref` documents on the same origin are fetched and inlined; references to other origins are rejected. Headers and query parameters from `-H`, `-Q`, and the configuration apply to these requests, but auth hooks do not.
+
+The downloaded document is converted into the same structure as a `.spec` file, and each command request then goes to the server with a 60-second timeout. The server can be an `openbb-api` instance or any other service that publishes OpenAPI 3.x.
+
+`--openapi-path` is only read by `--generate-spec`. For an API that publishes its schema somewhere other than `/openapi.json` or its landing page, generate a spec with `--openapi-path` once and dispatch with `--spec`.
+
+## Spec files
+
+A `.spec` file is the converted OpenAPI document saved as compact JSON by `--generate-spec` (see [Codegen](./codegen.md)). Dispatching from it skips the schema download. The file records the base URL, so `--server` is not needed. On load, the CLI checks the format version, validates the structure, and recomputes the SHA-256 digest stored in the file; a file edited after generation fails the check and must be regenerated.
+
+| Field | Type | Contents |
+| ----- | ---- | -------- |
+| `version` | integer | Format version, currently `5`. Other versions are rejected. |
+| `base_url` | string | Base URL requests are sent to. When the OpenAPI `servers` entry adds a path, it is included. |
+| `api_prefix` | string | Leading path shared by every operation, removed when naming commands. |
+| `commands` | object | One entry per dotted command, with `url_path`, `url_templates` when several URLs map to the same name, `method`, `description`, `parameters`, `providers`, `request_body_schema`, and `response_schema`. |
+| `routers` | object | Every dotted prefix mapped to `menu` or `command`; the REPL builds its menus from it. |
+| `reference` | object | Descriptions for commands (`paths`) and menus (`routers`), taken from operation descriptions and OpenAPI tag descriptions. |
+| `generated_at` | string | ISO 8601 timestamp of generation. |
+| `generator` | string | `openbb-cli==<version>`. |
+| `source_url` | string | Where the OpenAPI document was read from. |
+| `api_version` | string | The `openapi` or `swagger` value of the source document. |
+| `content_sha256` | string | SHA-256 of every other field, written last. |
+
+## From OpenAPI paths to commands
+
+The same conversion runs for `--server` and `--generate-spec`. The CLI strips the longest leading path that all operations share, joins the remaining segments with dots, drops `{placeholder}` segments, and replaces a `.` inside a segment with `_`, so `/api/v1/oecd/gdp_real` becomes `oecd.gdp_real`. A path with both GET and POST is mapped to its GET operation. Paths that differ only in placeholders, such as `/items/{id}` and `/items/{id}/{version}`, merge into one command, and at call time the CLI uses the longest URL whose placeholders are all supplied.
+
+Parameters come from the operation, from the path item, and from the fields of a JSON request body; body fields that hold objects take a JSON string on the command line. API keys declared as `apiKey` security schemes become optional parameters.
+
+Responses are decoded as JSON when the server says so and returned as text otherwise. When the body is an object that holds one list of records, such as the `results` list of an OpenBB response, the records become the result and the remaining fields are kept as metadata. String values are converted to numbers or booleans where the response schema declares those types, and a Plotly figure payload is returned as a chart.
+
+## OpenBB providers
+
+An operation that declares a `provider` parameter with a fixed set of values is treated as an OpenBB command with those providers. Parameters are assigned to providers from the `(provider: ...)` tags in their descriptions. On the command line and in the REPL, `--provider NAME` then limits the accepted flags to the shared ones plus that provider's, and a flag belonging to another provider is an error. `--describe` groups the parameters and response schema by provider, and `--describe COMMAND:PROVIDER` returns a single provider's group. Operations without a `provider` parameter accept every declared flag, and the `:PROVIDER` suffix has no effect on them.
+
+## Multiple specs
+
+`--spec NAME=PATH` mounts a spec under the namespace `NAME`, and the flag can be repeated. When more than one spec is given, every entry must be named. Commands are addressed as `<namespace>.<command>`, and the namespace is stripped before the request reaches that spec's backend. A command that does not start with a mounted namespace fails with `UnknownNamespace`.
+
+```bash
+openbb --spec platform=platform.spec --spec nyfed=nyfed.spec platform.oecd.gdp_real --country japan
 ```
 
-The dispatcher is selected from CLI flags by `openbb_cli.cli._build_dispatcher`:
+Each namespace keeps its own base URL, headers, query parameters, and auth hook. A header or query token written as `NS:KEY=VALUE` applies only to namespace `NS`; the prefix is recognized only when `NS` is a mounted namespace.
 
-| Selector | Dispatcher | Notes |
-| -------- | ---------- | ----- |
-| no `--server`, no `--spec` | `LocalDispatcher` | In-process; imports `from openbb import obb`. |
-| `--server URL` | `http_dispatcher_from_server(URL)` | Fetches `<URL>/openapi.json` (or `--openapi-path`) at start, then dispatches through HTTP. |
-| `--spec PATH` *(single, no namespace)* | `http_dispatcher_from_spec(load_spec(PATH))` | Skips the OpenAPI fetch. |
-| `--spec NAME=PATH` *(one or more)* | `MultiSpecDispatcher({name: http_dispatcher_from_spec(...)})` | Each spec mounts under its namespace. |
+| Source | Applies to |
+| ------ | ---------- |
+| `-H KEY=VALUE`, `--header-file`, `[headers]` | Every namespace. |
+| `-H NS:KEY=VALUE`, `[specs.NS.headers]` | Namespace `NS`, overriding a global header with the same name. |
+| `-Q KEY=VALUE`, `--query-param-file`, `OPENBB_HTTP_QUERY_*`, `[query]` | Every namespace. |
+| `-Q NS:KEY=VALUE`, `[specs.NS.query]` | Namespace `NS`, overriding a global parameter with the same name. |
+| Top-level `auth-hook` | Every namespace without a hook of its own. |
+| `auth-hook` inside `[specs.NS]` | Namespace `NS`, replacing the top-level hook. |
 
-`dispatch()` is async; one-shot mode wraps it in `asyncio.run`. Batch mode keeps the dispatcher open across requests and calls `aclose()` once the input stream ends.
+`--list-commands` returns the commands of every namespace with the namespace prefix, and `--describe NS.command[:PROVIDER]` is forwarded to the right spec.
 
-## `LocalDispatcher` — in-process
-
-`openbb_cli.dispatchers.local.LocalDispatcher`. The default backend when neither `--server` nor `--spec` is supplied. Imports the local `openbb` namespace package on first dispatch and resolves the dotted command path against it.
-
-Trade-offs vs the HTTP backends:
-
-- No HTTP roundtrip; lowest per-call latency once the import has happened.
-- The initial `import openbb` and static-package load can take seconds; for short-lived invocations the HTTP backend with a precomputed `.spec` is faster cold-start.
-- The full command surface is whatever extensions are installed in the active Python environment.
-
-## HTTP dispatcher — server
-
-`openbb_cli.dispatchers.http.http_dispatcher_from_server`. Built when `--server URL` is supplied (and no `--spec`).
-
-On construction it calls `openbb_cli.dispatchers.openapi_schema.fetch_openapi(URL, path=openapi_path, headers=..., query_params=...)`. The fetched OpenAPI document is normalized into the same in-memory shape as a `.spec` document and used to build the argparse surface and validate parameters.
-
-The HTTP dispatcher detects whether the upstream is an OpenBB Platform server by looking for the `provider` discriminator parameter on operations; that detection turns on OpenBB-specific affordances (per-provider parameter narrowing, `OBBject` envelope handling, the `obb.reference` menu tree).
-
-## HTTP dispatcher — `.spec`
-
-`openbb_cli.dispatchers.http.http_dispatcher_from_spec(load_spec(PATH))`. Same dispatcher as `--server`, but seeded from an on-disk JSON document instead of a live HTTP fetch.
-
-The `.spec` document is the output of `--generate-spec`. Top-level shape (`openbb_cli.dispatchers.spec.SpecDocument`):
-
-| Field | Type | Notes |
-| ----- | ---- | ----- |
-| `version` | `int` | `SPEC_VERSION` constant; currently `5`. Load fails on mismatch. |
-| `base_url` | `str` | Server URL the spec was generated against. |
-| `api_prefix` | `str` | Path prefix prepended to every operation (default detected from `paths`). |
-| `commands` | `dict[str, _CommandSpec]` | Keyed by dotted command path. Each entry carries `url_path`, `url_templates`, `method`, `description`, `parameters`, `providers`, `request_body_schema`, `response_schema`. |
-| `routers` | `dict[str, Any]` | Namespace tree used by the REPL. |
-| `reference` | `dict[str, Any]` | Mirror of `obb.reference` when the source was an OpenBB server. |
-| `generated_at` | `str \| None` | ISO timestamp. |
-| `generator` | `str` | Identifier string written by `--generate-spec`. |
-| `source_url` | `str` | URL the OpenAPI document was fetched from. |
-| `api_version` | `str` | Value of `openapi` / `swagger` field from the source document. |
-| `content_sha256` | `str` | Stamped at write time, deterministically hashes every other field. |
-
-See [Codegen](/odp/cli/codegen) for how to generate a spec, and the [CLI flags reference](/odp/cli/reference/cli-flags) for the surrounding flag set.
-
-## HTTP dispatcher — generic OpenAPI 3.x
-
-The same `http_dispatcher_from_server` / `http_dispatcher_from_spec` dispatchers also serve any OpenAPI 3.x upstream. The CLI applies its OpenBB-aware behavior only when the operation has a `provider` discriminator parameter; without it, the upstream is treated as a plain OpenAPI source.
-
-Practical implications when the upstream is not an OpenBB server:
-
-| Aspect | OpenBB upstream | Generic OpenAPI |
-| ------ | --------------- | --------------- |
-| Response envelope | `OBBject` (`id`, `results`, `provider`, `warnings`, `chart`, `extra`) | Whatever the server returns. |
-| Per-provider flag narrowing | `--provider X` filters accepted flags | All declared flags are accepted. |
-| `--describe COMMAND:PROVIDER` | Returns the provider's slice | Suffix ignored. |
-| REPL menu tree | Built from `obb.reference` (router descriptions, command groupings) | Built from URL path prefixes. |
-
-OpenAPI documents can be fetched from any of: a server with `/openapi.json`, a server with a custom path (`--openapi-path`), or an HTML page that embeds the spec inline (`openbb_cli.dispatchers.openapi_schema` extracts it).
-
-## `MultiSpecDispatcher` — multi-spec
-
-`openbb_cli.dispatchers.multi.MultiSpecDispatcher`. Built when `--spec` is passed more than once or as `NAME=PATH`. Mounts each child dispatcher under its namespace; commands resolve as `<namespace>.<rest>`.
-
-Routing is purely by leading namespace token: a dispatched `Request(command="congress.bill.info", ...)` is routed to the child dispatcher registered under `"congress"`, which sees the command `"bill.info"`.
-
-Configuration is per-namespace — headers, query params, and auth hooks can be scoped:
-
-| Source | Scope |
-| ------ | ----- |
-| `--header Authorization=...` | Global; sent to every backend. |
-| `--header congress:Authorization=...` | Only the `congress` backend. |
-| `[headers]` in `openbb.toml` | Global. |
-| `[specs.congress.headers]` in `openbb.toml` | Only the `congress` backend. |
-| `auth-hook = "..."` (top level) | Global. |
-| `[specs.congress] auth-hook = "..."` | Only the `congress` backend; overrides the global. |
-
-`--list-commands` aggregates across every namespace; `--describe NAMESPACE.command[:provider]` resolves to the right backend automatically.
-
-## Request / Response wire format
-
-`openbb_cli.dispatchers.protocol.Request` / `Response`:
-
-```python
-class Request(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-    id: str | None = None
-    command: str
-    params: dict[str, Any] = {}
-
-class Response(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-    id: str | None = None
-    ok: bool
-    result: Any = None
-    error: ResponseError | None = None
-
-class ResponseError(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-    type: str
-    message: str
-```
-
-Both models use `extra="forbid"`; unknown fields error rather than silently drop. The same models drive batch NDJSON, one-shot stdout, and the introspection commands.
+`--socrata-story` also works as a backend: without `--generate-spec`, it builds a temporary spec for the current run. On its own it gives the flat command set; next to named specs it is mounted as `socrata`.

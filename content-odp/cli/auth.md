@@ -1,96 +1,82 @@
 ---
 title: Authentication
-sidebar_position: 6
+sidebar_position: 7
 description: >
-  Headers, query params, and importable auth hooks. AuthContext / AuthDecision
-  contract for RBAC, token refresh, and per-request credentials.
+  Static headers, query parameters, and importable auth hooks for the HTTP
+  backends, with the AuthContext and AuthDecision contract used for RBAC and
+  per-request credentials.
 keywords:
   - openbb-cli auth
   - AuthContext
   - AuthDecision
   - auth-hook
   - RBAC
-  - X-API-Key
+  - headers
+  - query parameters
 ---
 
-The CLI supports three layers of authentication: static headers, static query params, and an importable auth hook. All three apply to every HTTP-backed dispatch (server, single-spec, multi-spec). The in-process `LocalDispatcher` doesn't make HTTP calls and ignores them.
+Credentials for HTTP backends (`--server`, a single spec, or several specs) come from three places: static headers, static query parameters, and an importable auth hook that runs before every request. The in-process backend makes no HTTP calls and ignores all three; it reads provider credentials from the OpenBB user settings, as described in [Data Sources](./repl/data-sources.md).
 
 ## Static headers
 
 ```bash
-openbb --server URL \
-  -H "Authorization: Bearer xxx" \
+openbb --server http://127.0.0.1:6900 \
+  -H "Authorization: Bearer $TOKEN" \
   -H "X-Tenant: acme" \
-  some.command
+  oecd.gdp_real --country japan
 ```
 
-Both `KEY=VALUE` and `KEY: VALUE` forms are accepted. Repeat `-H` / `--header` for multiple entries.
+`-H` accepts `KEY=VALUE` and `KEY: VALUE`, splitting at whichever separator comes first, and can be repeated. The same headers are sent when the CLI downloads a server's OpenAPI document.
 
-Sources (lowest priority to highest):
-
-1. `[headers]` table in `openbb.toml`.
-2. `[specs.<ns>.headers]` for the matching namespace (multi-spec).
-3. `--header-file PATH` (JSON object of string values).
-4. `-H` / `--header` flags.
-
-Per-namespace scoping (multi-spec): prefix the flag value with `<NS>:` to apply only to that backend — `-H congress:Authorization=Bearer xxx`.
+Headers are merged key by key from the `[headers]` table in `openbb.toml`, then the JSON object in `--header-file`, then `-H` flags, with later sources winning. With several specs mounted, a flag written as `-H NS:KEY=VALUE` and the `[specs.NS.headers]` table apply only to namespace `NS` and override global headers of the same name there.
 
 ## Static query parameters
 
 ```bash
-openbb --server URL -Q api_key=xxx some.command
+openbb --spec api.spec -Q api_key="$API_KEY" some.command
 ```
 
-Sources (lowest priority to highest):
-
-1. `[query]` table in `openbb.toml`.
-2. `[specs.<ns>.query]` for the matching namespace.
-3. `--query-param-file PATH` (JSON object of string values).
-4. Environment variables prefixed `OPENBB_HTTP_QUERY_` — `OPENBB_HTTP_QUERY_API_KEY=xxx` becomes `?api_key=xxx`.
-5. `-Q` / `--query-param` flags.
-
-Per-namespace scoping mirrors headers: `-Q congress:api_key=xxx`.
+`-Q` takes `KEY=VALUE` and can be repeated. Query parameters are merged from the `[query]` table, then `--query-param-file`, then environment variables named `OPENBB_HTTP_QUERY_<NAME>`, then `-Q` flags. The part of the variable name after the prefix is lower-cased, so `OPENBB_HTTP_QUERY_API_KEY=xxx` sends `api_key=xxx`. Namespace scoping works as for headers, with `-Q NS:KEY=VALUE` and `[specs.NS.query]`.
 
 ## Auth hooks
 
-For RBAC, expiring tokens, or per-user credentials, point `auth-hook` at an importable callable. Configured in TOML by `module:attribute` path — global, or per `[specs.<ns>]`:
+An auth hook is a Python callable that the CLI imports by `module.path:attribute` and calls before each HTTP request. Use it for tokens that expire, credentials held in a vault, or rules about which user may call which command. Hooks are configured in `openbb.toml`, either at the top level for every backend or inside a `[specs.NAME]` table, where the namespace's hook replaces the top-level one:
 
 ```toml
-auth-hook = "myapp.auth:default_hook"          # global
+auth-hook = "myapp.auth:default_hook"
 
-[specs.congress]
-path = "/path/to/congress.spec"
-auth-hook = "myapp.auth:congress_hook"         # overrides global
+[specs.nyfed]
+path = "/srv/specs/nyfed.spec"
+auth-hook = "myapp.auth:nyfed_hook"
 
 [specs.internal]
-path = "/path/to/internal.spec"
+path = "/srv/specs/internal.spec"
 auth-hook = "myapp.auth:rbac_hook"
 ```
 
-The hook receives an `AuthContext` and returns an `AuthDecision`. Both are frozen dataclasses defined in `openbb_cli.auth`:
+The hook receives an `AuthContext` and returns an `AuthDecision`, both frozen dataclasses importable from `openbb_cli.auth`.
+
+| `AuthContext` field | Type | Value |
+| ------------------- | ---- | ----- |
+| `namespace` | `str \| None` | The spec namespace, or `None` for `--server` and a single unnamed spec. |
+| `command` | `str` | Dotted command path within that namespace. |
+| `params` | `dict[str, Any]` | The request parameters. |
+| `method` | `str` | `get` or `post` for a dispatch, `list` during `--list-commands`, and `schema` during `--describe`. |
+
+| `AuthDecision` field | Type | Default | Effect |
+| -------------------- | ---- | ------- | ------ |
+| `headers` | `dict[str, str] \| None` | `None` | Headers added to this request. |
+| `query_params` | `dict[str, str] \| None` | `None` | Query parameters added to this request. |
+| `allow` | `bool` | `True` | `False` denies the request. |
+| `deny_reason` | `str \| None` | `None` | Message returned with the denial. |
+
+The following hook, saved as `myapp/auth.py` on the Python path, denies commands the current user may not call and adds a bearer token otherwise. `current_user` and `get_token` stand in for your own identity code.
 
 ```python
-@dataclass(frozen=True)
-class AuthContext:
-    namespace: str | None     # spec namespace, or None for single-spec / server
-    command: str              # dotted command path
-    params: dict[str, Any] = field(default_factory=dict)
-    method: str = "post"      # http method
-
-@dataclass(frozen=True)
-class AuthDecision:
-    headers: dict[str, str] | None = None
-    query_params: dict[str, str] | None = None
-    allow: bool = True
-    deny_reason: str | None = None
-```
-
-Example RBAC hook:
-
-```python
-# myapp/auth.py
 from openbb_cli.auth import AuthContext, AuthDecision
+
 from myapp.identity import current_user, get_token
+
 
 def rbac_hook(ctx: AuthContext) -> AuthDecision:
     user = current_user()
@@ -99,13 +85,10 @@ def rbac_hook(ctx: AuthContext) -> AuthDecision:
     return AuthDecision(headers={"Authorization": f"Bearer {get_token(user)}"})
 ```
 
-Hook resolution rules:
+Hooks can be plain functions or coroutines; the CLI awaits the result when needed. Headers and query parameters from the decision take precedence over the static ones, and parameters that the command itself sends in the query string or as headers take precedence over the hook's. A decision with `allow=False` ends the request with an `AccessDenied` error and no network call. A hook that raises, or returns anything other than an `AuthDecision`, is treated as a denial, with the exception or the wrong type named in the message.
 
-- Both sync and async callables are accepted; coroutines are awaited.
-- The hook is resolved at startup by `openbb_cli.auth.resolve_auth_hook(spec)` — `module:attribute` form. Missing modules, missing attributes, and non-callables raise on startup; the CLI exits with status 2.
-- Returned `headers` / `query_params` merge on top of the static auth sources (hook wins on conflict).
-- `allow=False` short-circuits the dispatch with an `AccessDenied` error response. No network call is made.
+Configured hooks are imported on every invocation, before the selected mode runs, even for `--show-config`, `--print-config-template`, and the in-process backend. A malformed `module.path:attribute` string, a module that cannot be imported, a missing attribute, or an attribute that is not callable stops the CLI with exit status 2. Hooks are not called when the CLI downloads an OpenAPI document; only static headers and query parameters are sent then.
 
-## Hooks and introspection
+## Hooks and the command catalog
 
-`--list-commands` invokes the hook for every command and silently drops denied entries from the listing. `--describe COMMAND` returns `AccessDenied` when the hook denies. RBAC implementations that hide endpoints hide them everywhere — discovery, schema, and dispatch.
+`--list-commands` and the `__commands__` batch command call the hook once for every command and leave out the ones it denies. `--describe` and `__schema__` return `AccessDenied` for a denied command. A hook that hides a command therefore hides it from listing, description, and dispatch alike.

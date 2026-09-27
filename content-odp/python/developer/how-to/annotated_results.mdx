@@ -1,69 +1,59 @@
 ---
 title: Annotated Results
 sidebar_position: 4
-description: This guide provides instructions for returning extra response metadata from Provider extension models. Use this class to include important citations, credits, or other dictionary-like items that should not be included in table or chart data.
+description: Return citations, dataset descriptions, or other metadata from a fetcher alongside its results with AnnotatedResult.
 keywords:
-- ODP
-- credits
-- source
-- citation
-- accreditation
-- OpenBB Platform
-- metadata
-- provider
-- results metadata
-- AnnotatedResult
-- annotations
-- develop
-- results
+  - OpenBB V5
+  - AnnotatedResult
+  - results_metadata
+  - metadata
+  - citation
+  - provider
+  - Fetcher
+  - transform_data
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-<HeadTitle title="Annotated Results & Metadata - Developer | OpenBB Docs" />
+<HeadTitle title="Annotated Results | OpenBB Python (V5)" />
 
-## `AnnotatedResult` Class
-
-Use this class to return function metadata, or other data, that is not intended to be included with the main results.
-
-For example, source citations can be included by using this object as a wrapper for the real results.
+Some sources return information about the data as well as the data: a dataset description, units, a citation, or the time the source last updated. That information does not belong in the result rows, where it would repeat on every row and show up as a column in tables and charts. `AnnotatedResult` lets a fetcher return it separately.
 
 ```python
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 ```
 
-Initialize the class with two objects.
+`AnnotatedResult` has two fields: `result`, the rows the fetcher would otherwise return, and `metadata`, a JSON-serializable dictionary.
 
-- ***result***: Any
-  - Serializable results - i.e, `list[dict]`
-- ***metadata***: dict
-  - JSON-encodable dictionary
+## Return it from transform_data
 
-## How To Use
-
-:::important
-The class is used in conjunction with the [`ProviderInterface`](/odp/python/developer/extension_types/provider).
-:::
-
-In the provider's `Fetcher.transform_data` method, wrap and annotate the output like below.
+Wrap the output of `transform_data` and change the return annotation to match. The fetcher's generic type parameters stay the same. This is a shortened version of the Fama-French breakpoints fetcher in `openbb-famafrench`, which attaches the dataset description:
 
 ```python
-    @staticmethod
-    def transform_data(
-        query: FredSeriesQueryParams,
-        data: dict,
-        **kwargs: Any,
-    ) -> AnnotatedResult[list[FredSeriesData]]:
-        """Transform data."""
-        records = data.get("results", [])
-        metadata = data.get("metadata", {})
-
-        return AnnotatedResult(
-            result=[FredSeriesData.model_validate(r) for r in records],
-            metadata=metadata,
-        )
+@staticmethod
+def transform_data(
+    query: FamaFrenchBreakpointQueryParams,
+    data: tuple,
+    **kwargs: Any,
+) -> AnnotatedResult[list[FamaFrenchBreakpointData]]:
+    """Transform the extracted data."""
+    dfs, meta = data
+    df = dfs[0]
+    return AnnotatedResult(
+        result=[FamaFrenchBreakpointData(**d) for d in df.to_dict(orient="records")],
+        metadata={"description": meta[0]},
+    )
 ```
 
-## Output
+The command's router function does not change. `OBBject.from_query` unwraps the annotated result: `results` gets the rows and `extra["results_metadata"]` gets the dictionary.
 
-When the pattern above is used, the metadata dictionary is returned to, `output.extra["results_metadata"]`.
+## Read it
+
+```python
+from openbb import obb
+
+output = obb.famafrench.breakpoints(breakpoint_type="op")
+output.extra["results_metadata"]["description"]
+```
+
+The REST API includes the same dictionary under `extra.results_metadata` in the JSON response. For streaming commands, `OBBStream.from_query` stores it in the stream's `extra["results_metadata"]`.

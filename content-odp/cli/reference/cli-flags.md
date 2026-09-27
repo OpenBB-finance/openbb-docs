@@ -2,88 +2,82 @@
 title: CLI flags
 sidebar_position: 0
 description: >
-  Every flag accepted by `openbb`, with type, default, environment variable
+  Every flag accepted by openbb, with its default, environment variable
   fallback, and behavior.
 keywords:
   - openbb-cli flags
-  - argparse
   - --server
   - --spec
   - --batch
+  - --generate-extension
 ---
 
-`openbb` is `openbb_cli.cli:main`, dispatching through the argparse parser built in `openbb_cli.dispatchers.runtime.build_parser`. Flags marked **mode** are part of the mutually-exclusive top-level mode group; supplying more than one is an argparse error.
+`openbb -h` prints the same list. Flags that take a value accept both `--flag value` and `--flag=value`.
 
-## Mode flags (mutually exclusive)
+## Modes
 
-| Flag | Action | Effect |
-| ---- | ------ | ------ |
-| `-i`, `--interactive` | `store_true` | Drop into the interactive REPL. |
-| `--batch` | `store_true` | Read NDJSON `Request` lines from stdin, write NDJSON `Response` lines to stdout, concurrent up to `--batch-concurrency`. |
-| `--generate-spec` | `store_true` | Build a `.spec` file from `--server` (with optional `--openapi-path`) or `--socrata-story`, write to `--output`, exit. |
-| `--generate-extension` | `store_true` | Generate an installable OpenBB extension from `--spec`, write to `--output`. See [Codegen](/odp/cli/codegen). |
-| `--list-commands` | `store_true` | Print the command catalog as JSON; equivalent to dispatching the reserved `__commands__` command. |
-| `--describe COMMAND` | `default=None` | Print the schema for one command as JSON; equivalent to dispatching `__schema__` with `--name=COMMAND`. `COMMAND:PROVIDER` narrows to that provider for OpenBB upstreams. |
-| `--print-config-template` | `store_true` | Print a documented TOML template covering every supported setting; lines without a resolved value are commented. |
-| `--show-config` | `store_true` | Print the layered TOML config (`pyproject` → user-global → project → `--config`) as JSON. |
+These flags are mutually exclusive. Without any of them, the CLI runs the command given as positional arguments and exits; see [Modes](../modes.md).
 
-When no mode flag is supplied and one or more positional arguments are given, the CLI runs in non-TTY one-shot mode.
+| Flag | Effect |
+| ---- | ------ |
+| `-i`, `--interactive` | Open the interactive REPL. |
+| `--batch` | Read NDJSON requests from stdin and write NDJSON responses to stdout, up to `--batch-concurrency` at a time. |
+| `--generate-spec` | Write a `.spec` file built from `--server`, with optional `--openapi-path`, or from `--socrata-story`, then exit. |
+| `--generate-extension` | Write an installable OpenBB extension project built from one `--spec` into `--output`, then exit. See [Codegen](../codegen.md). |
+| `--list-commands` | Print the command catalog as a JSON response, the same as the `__commands__` batch command. Needs `--spec` or `--server`. |
+| `--describe COMMAND[:PROVIDER]` | Print one command's parameters and response schema as a JSON response, the same as `__schema__`. Needs `--spec` or `--server`. The `:PROVIDER` suffix selects one provider's parameters for commands that declare providers. |
+| `--print-config-template` | Print a commented TOML configuration template. |
+| `--show-config` | Print the merged TOML configuration as JSON. |
 
-## Backend selection
+## Backend
 
 | Flag | Default | Environment | Notes |
 | ---- | ------- | ----------- | ----- |
-| `--server URL` | unset | `OPENBB_SERVER_URL` | Dispatch over HTTP against an OpenAPI 3.x server. |
-| `--spec [NAME=]PATH` *(repeatable)* | `[]` | `OPENBB_SPEC_PATH` | Use a precomputed `.spec` file. Repeat with `NAME=PATH` to mount multiple specs under namespaces. |
-| `--openapi-path PATH` | unset | none | Path or URL to the OpenAPI document on the server. Defaults to `/openapi.json`. Required for servers that publish elsewhere (e.g. NY Fed at `/static/docs/markets-api.yml`). |
+| `--server URL` | none | `OPENBB_SERVER_URL` | Dispatch over HTTP to an `openbb-api` or other OpenAPI 3.x server. Ignored for dispatch when a spec is configured. |
+| `--spec [NAME=]PATH` | none | `OPENBB_SPEC_PATH` | Dispatch from a `.spec` file. Repeatable; with more than one, every entry needs a `NAME=` namespace. The variable is used only when no spec is set by flag or `openbb.toml`. |
+| `--openapi-path PATH` | none | none | Path appended to the server URL, or a full URL, of the OpenAPI document. When unset, `/openapi.json` is tried. Read only by `--generate-spec`. |
+| `--socrata-story URL_OR_PATH` | none | none | Build a spec from a Socrata story or dataset. With `--generate-spec` it is saved; otherwise it is used for this run only. |
 
-If neither `--server` nor `--spec` is supplied, dispatch goes through the in-process `LocalDispatcher` (`from openbb import obb`).
+With no spec and no server, commands run in-process against the installed `openbb` extensions. [Backends](../backends.md) covers the selection rules.
 
 ## Auth
 
 | Flag | Default | Environment | Notes |
 | ---- | ------- | ----------- | ----- |
-| `-H KEY=VALUE`, `--header KEY=VALUE` *(repeatable)* | `[]` | none | Additional HTTP header. Both `KEY=VALUE` and `KEY: VALUE` forms accepted. With multi-spec, prefix the value with `<NS>:` to scope to one namespace. |
-| `--header-file PATH` | unset | `OPENBB_HEADER_FILE` | JSON object of additional headers. `--header` flags take precedence on conflicts. |
-| `-Q KEY=VALUE`, `--query-param KEY=VALUE` *(repeatable)* | `[]` | `OPENBB_HTTP_QUERY_*` (env vars matching `OPENBB_HTTP_QUERY_NAME=VALUE` are auto-promoted to `?name=value`) | Additional query parameter sent on every dispatched request. With multi-spec, prefix the value with `<NS>:` to scope. |
-| `--query-param-file PATH` | unset | `OPENBB_QUERY_PARAM_FILE` | JSON object of additional query params. `--query-param` flags and `OPENBB_HTTP_QUERY_*` env vars take precedence on conflicts. |
+| `-H KEY=VALUE`, `--header KEY=VALUE` | none | none | HTTP header for every request and for the OpenAPI download. `KEY: VALUE` also works. Repeatable. `NS:KEY=VALUE` limits it to namespace `NS`. |
+| `--header-file PATH` | none | `OPENBB_HEADER_FILE` | JSON object of headers. `-H` flags win on conflicts. |
+| `-Q KEY=VALUE`, `--query-param KEY=VALUE` | none | `OPENBB_HTTP_QUERY_<NAME>` | Query parameter for every request. Repeatable. `NS:KEY=VALUE` limits it to namespace `NS`. Each `OPENBB_HTTP_QUERY_<NAME>` variable adds `<name>` in lower case. |
+| `--query-param-file PATH` | none | `OPENBB_QUERY_PARAM_FILE` | JSON object of query parameters. `OPENBB_HTTP_QUERY_*` variables and `-Q` flags win on conflicts. |
 
-See [Authentication](/odp/cli/auth) for auth hooks (TOML-configured importable callables).
+Auth hooks have no flag; they are configured in `openbb.toml`. See [Authentication](../auth.md).
 
-## Codegen options
+## Codegen
 
 | Flag | Default | Used by | Notes |
 | ---- | ------- | ------- | ----- |
-| `--output PATH`, `-o PATH` | `openbb.spec` | `--generate-spec`, `--generate-extension` | Output spec path or project directory. |
-| `--provider-name NAME` | derived from `--output` basename | `--generate-extension` | Snake-case provider identifier. |
-| `--project-name NAME` | `openbb-<provider-name>` | `--generate-extension` | PyPI distribution name. |
-| `--package-name NAME` | `openbb_<provider-name>` | `--generate-extension` | Python package directory. |
-| `--router-name NAME` | `<provider-name>` | `--generate-extension` | Top-level router identifier. |
-| `--include PATTERN` *(repeatable)* | `None` | `--generate-extension` | Keep only commands matching the glob. Takes priority over `--exclude`. |
-| `--exclude PATTERN` *(repeatable)* | `None` | `--generate-extension` | Drop commands matching the glob. Ignored if `--include` is set. |
-| `--socrata-story URL_OR_PATH` | `None` | `--generate-spec` | Build a spec from a Socrata story instead of an OpenAPI document. |
+| `--output PATH`, `-o PATH` | `openbb.spec` | `--generate-spec`, `--generate-extension` | Spec file path, or the parent directory of the generated project. The `output` key in `openbb.toml` is not applied in v5. |
+| `--provider-name NAME` | name of the `--output` directory | `--generate-extension` | Source of the snake_case slug for the provider, namespace, and default names. |
+| `--project-name NAME` | `openbb-<slug>` | `--generate-extension` | Distribution name and project directory. |
+| `--package-name NAME` | `openbb_<slug>` | `--generate-extension` | Python package directory. |
+| `--router-name NAME` | none | `--generate-extension` | Accepted but not used in v5; the namespace is the slug. |
+| `--include PATTERN` | `None` | `--generate-extension` | Keep only commands whose dotted name matches the glob. Repeatable. Overrides `--exclude`. |
+| `--exclude PATTERN` | `None` | `--generate-extension` | Drop commands whose dotted name matches the glob. Repeatable. Ignored when `--include` is set. |
 
-## Config and env files
+## Configuration files
 
 | Flag | Default | Environment | Notes |
 | ---- | ------- | ----------- | ----- |
-| `--config PATH` | unset | `OPENBB_CLI_CONFIG` | Explicit TOML config file. Layered atop `[tool.openbb-cli]` in pyproject, user-global `openbb.toml`, and any project-local `openbb.toml`. |
-| `--env-file PATH` | unset | `OPENBB_CLI_ENV_FILE` | Additional `.env` to load into the process environment. `~/.openbb_platform/.env` is always tried first; real shell exports always win. |
+| `--config PATH` | none | `OPENBB_CLI_CONFIG` | TOML file merged over `pyproject.toml`, the user-global `openbb.toml`, and the project `openbb.toml`. See [Configuration](../configuration.md). |
+| `--env-file PATH` | none | `OPENBB_CLI_ENV_FILE` | `.env` file loaded into the environment after `~/.openbb_platform/.env`. Variables that are already set are kept. |
 
 ## Runtime
 
 | Flag | Default | Environment | Notes |
 | ---- | ------- | ----------- | ----- |
-| `--batch-concurrency N` | `8` | `OPENBB_CLI_BATCH_CONCURRENCY` | Maximum concurrent in-flight dispatches in `--batch` mode. |
-| `--dev` | `False` | none | Developer mode (sets `Settings.DEV_BACKEND = True`). |
-| `--debug` | `False` | none | Debug logging (sets `Settings.DEBUG_MODE = True`). |
+| `--batch-concurrency N` | `8` | `OPENBB_CLI_BATCH_CONCURRENCY` | Maximum number of batch requests in flight. The `batch-concurrency` key in `openbb.toml` is not applied in v5. |
+| `--dev` | off | none | Sets `DEV_BACKEND` for the REPL session. Only used with `-i`. |
+| `--debug` | off | none | Sets `DEBUG_MODE` for the REPL session. Only used with `-i`. |
 
-## Positional
+## Positional arguments
 
-| Position | Default | Notes |
-| -------- | ------- | ----- |
-| `command` (REMAINDER) | empty | Dotted command path followed by `--key value` pairs (or `--key=value`). With `-i`, becomes the initial REPL command. |
-
-### Argument coercion
-
-The non-TTY parser walks the positional REMAINDER as `command [--key value | --key=value]*`. Values are coerced via `ast.literal_eval` after a short-circuit lookup for `true` / `false` / `null` (returns `True` / `False` / `None`). Hyphens in flag names are normalized to underscores (`--start-date 2024-01-01` ↔ `start_date="2024-01-01"`). Flags supplied without a value default to `True`.
+Everything after the flags is collected as the command: the dotted command path followed by `--key value` or `--key=value` pairs. With `-i`, it is run as the first REPL input instead, written as a REPL path such as `/oecd/gdp_real --country japan`. With `--generate-spec`, a single positional argument is taken as the output path when `--output` is not given. [Modes](../modes.md#one-shot) explains how the pairs are parsed for each backend.

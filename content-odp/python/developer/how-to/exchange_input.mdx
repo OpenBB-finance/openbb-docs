@@ -1,68 +1,70 @@
 ---
-title: Exchange Input Component
-sidebar_position: 2
-description: This guide describes the implementation of ISO 10383 as a reusable input component, and how to use it for input validation or output transoformations.
+title: Exchange Input
+sidebar_position: 3
+description: Accept exchange MICs, acronyms, or names in a provider's parameters and normalize them to ISO 10383 codes with the Exchange type.
 keywords:
-- exchange
-- MIC
-- market
-- ISO 10383
-- input
-- develop
-- odp
-- python
+  - OpenBB V5
+  - exchange
+  - MIC
+  - ISO 10383
+  - Exchange
+  - QueryParams
+  - input validation
+  - develop
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-<HeadTitle title="Exchange Input Component - Developer | OpenBB Docs" />
+<HeadTitle title="Exchange Input | OpenBB Python (V5)" />
 
-The `Exchange` class is a special type of string object. It behaves and evaluates like a string, but is extended with input validators and output formatters.
-
-Use this class for functions with an 'exchange' parameter, or to convert between MICs, exchange acronyms or names.
-
-## Import
+`Exchange` is a `str` subclass that resolves an exchange identifier to its ISO 10383 Market Identifier Code (MIC) and carries the acronym and full name as properties. Use it for `exchange` parameters so providers accept the same inputs and receive a MIC.
 
 ```python
 from openbb_core.provider.utils.exchange_utils import Exchange
 ```
 
-## Usage
+## Accepted inputs
 
-Initialize the class with any of the accepted inputs:
-
-- ISO 10383 MIC codes (e.g., "XNAS", "XNYS")
-- Exchange acronyms (e.g., "NASDAQ", "NYSE")
-- Full exchange names (e.g., "New York Stock Exchange")
-- lower_snake_case names (e.g., "new_york_stock_exchange")
+The constructor accepts a MIC (`"XNAS"`), an acronym (`"NASDAQ"`), the registered name, or the registered name in snake_case, all without regard to case. Registered names are the ones in the ISO list, such as `"LONDON STOCK EXCHANGE"` or `"NEW YORK STOCK EXCHANGE, INC."`, so the MIC or acronym is usually the more reliable input. Anything unknown raises `ValueError`.
 
 ```python
 >>> e = Exchange("nasdaq")
->>> str(e)
-'XNAS'
->>> e.mic
+>>> e
 'XNAS'
 >>> e.acronym
 'NASDAQ'
 >>> e.name
 'NASDAQ - ALL MARKETS'
+>>> Exchange("london_stock_exchange")
+'XLON'
+>>> Exchange("XNYS").name
+'NEW YORK STOCK EXCHANGE, INC.'
 ```
 
-### Properties
+The value compares and serializes as the MIC. `mic`, `acronym`, and `name` return the three identifiers. When several segment MICs share an acronym, the acronym resolves to the operating MIC.
 
-- **mic** : str - ISO 10383 Market Identifier Code.
-- **acronym** : str - Exchange acronym/short name.
-- **name** : str - Full exchange name.
+## Use it in a model
+
+`Exchange` works as a Pydantic field type:
+
+```python
+from openbb_core.provider.abstract.query_params import QueryParams
+from openbb_core.provider.utils.exchange_utils import Exchange
+from pydantic import Field
 
 
-## Updating Definitions
+class DemoListingsQueryParams(QueryParams):
+    """Query with an exchange parameter."""
 
-If the definitions have become stale, you can refresh them in the environment with the update script.
+    exchange: Exchange = Field(description="Exchange MIC, acronym, or name.")
+```
 
-```sh
+`DemoListingsQueryParams(exchange="NYSE")` stores `'XNYS'`, and `query.exchange.acronym` returns the short form for sources that expect it.
+
+## Refresh the data
+
+The definitions ship with `openbb-core` in `exchange_data.json`. The module `openbb_core.provider.utils.update_exchange_data` downloads the current MIC registry from iso20022.org and rewrites that file in the installed package. `--operating-only` leaves out segment MICs.
+
+```bash
 python -m openbb_core.provider.utils.update_exchange_data
 ```
-
-## Source
-
-- https://www.iso20022.org/market-identifier-codes

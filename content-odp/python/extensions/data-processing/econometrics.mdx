@@ -1,82 +1,149 @@
 ---
 title: openbb-econometrics
-sidebar_position: 0
-description: An overview of the `openbb-econometrics` Python package.
+sidebar_position: 1
+description: The openbb-econometrics extension - OLS regression and diagnostics, stationarity and cointegration tests, Granger causality, GARCH-family volatility models, and panel estimators.
 keywords:
-  - ODP
-  - Python Package
-  - OpenBB Platform
-  - Extension
-  - Router
-  - Econometrics
+  - econometrics
+  - OLS
+  - regression diagnostics
+  - unit root
+  - KPSS
+  - cointegration
+  - Granger causality
+  - GARCH
+  - panel data
   - statsmodels
-  - pandas
-  - Data
-  - POST
+  - linearmodels
+  - arch
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 MD037 -->
 
 import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
-import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 
-<HeadTitle title="OpenBB Econometrics - Python Packages & Extensions | OpenBB Docs" />
+<HeadTitle title="openbb-econometrics | OpenBB Python (V5)" />
 
-The `openbb-econometrics` extension provides API access to common econometrics models.
+`openbb-econometrics` adds the `obb.econometrics` namespace: 21 commands that run econometric models and tests on data you pass in. It fetches nothing itself. The input is any tabular dataset, such as the `results` of a provider command, a pandas DataFrame, or a list of dictionaries, and every command returns an `OBBject`.
 
 ## Installation
 
-```console
-pip install openbb-econometrics
-```
-
-### Dependencies
-
-Installation includes a new router path (`obb.econometrics`), and additional Python libraries:
-
-- arch
-- linearmodels
-- pandas-ta-openbb
-    - scipy
-    - statsmodels
-
-:::info Optional
-
-The `econometrics` router has one chart, a correlation matrix, exposed when `openbb-charting` is installed.
-:::
-
-### Post Installation
-
-After installation, rebuild the Python Interface.
-
 ```sh
+pip install openbb-econometrics
 openbb-build
 ```
 
-## Endpoints
+The package depends on `openbb-core[pandas]`, `statsmodels`, `linearmodels`, `scipy`, and `arch`.
 
-The `obb.econometrics` namespace includes:
+Each command is also a `POST` endpoint under `/api/v1/econometrics/` when the environment is served with [`openbb-api`](../interface/openbb-api.mdx).
+
+## Commands
+
+| Group | Command | Model or test |
+| --- | --- | --- |
+| Tools | `correlation_matrix` | Pearson, Kendall, or Spearman correlation of every numeric column |
+| Tools | `summary_statistics` | Count, mean, standard deviation, quartiles, skew, and excess kurtosis per column |
+| Regression | `ols_regression` | OLS coefficient table with standard errors, t-statistics, p-values, and 95% intervals |
+| Regression | `ols_regression_summary` | OLS fit statistics: R², adjusted R², F-statistic, AIC, BIC, log-likelihood, and the statsmodels text summary |
+| Diagnostics | `autocorrelation` | Durbin-Watson statistic on OLS residuals |
+| Diagnostics | `residual_autocorrelation` | Breusch-Godfrey LM test on OLS residuals |
+| Diagnostics | `heteroskedasticity` | Breusch-Pagan and White tests |
+| Diagnostics | `normality` | Jarque-Bera test on OLS residuals |
+| Diagnostics | `variance_inflation_factor` | VIF for each column |
+| Time series | `unit_root` | Augmented Dickey-Fuller test |
+| Time series | `kpss` | KPSS stationarity test |
+| Time series | `cointegration` | Engle-Granger two-step test for every pair of columns |
+| Time series | `cointegration_johansen` | Johansen trace and maximum-eigenvalue tests |
+| Time series | `causality` | Granger causality test |
+| Time series | `garch` | GARCH-family conditional volatility model |
+| Panel | `panel_pooled` | Pooled OLS |
+| Panel | `panel_between` | Between estimator |
+| Panel | `panel_fixed` | Fixed effects, entity and optionally time |
+| Panel | `panel_random_effects` | One-way random effects |
+| Panel | `panel_first_difference` | First-difference estimator |
+| Panel | `panel_fmac` | Fama-MacBeth |
+
+`ols_regression`, `ols_regression_summary`, and the panel estimators accept a `cov_type` argument for heteroskedasticity-consistent standard errors: `HC0` through `HC3` for OLS, and `"robust"` for the panel models. The panel commands expect data indexed by entity and time, so pass a DataFrame with a two-level `MultiIndex`.
+
+## Example: factor regression
+
+This example regresses the daily excess return of the XLE energy ETF on the Fama-French three factors. Prices come from `obb.cboe`, factors from `obb.famafrench`, and neither needs a credential. Fama-French returns are in percent, so the ETF return is scaled to match.
 
 ```python
->>> from openbb import obb
->>> obb.econometrics
+from openbb import obb
 
-/econometrics
-    autocorrelation
-    causality
-    cointegration
-    correlation_matrix
-    ols_regression
-    ols_regression_summary
-    panel_between
-    panel_first_difference
-    panel_fixed
-    panel_fmac
-    panel_pooled
-    panel_random_effects
-    residual_autocorrelation
-    unit_root
-    variance_inflation_factor
+prices = obb.cboe.equity.historical(symbol="XLE", start_date="2022-01-01").to_df()
+factors = obb.famafrench.factors(frequency="daily", start_date="2022-01-01").to_df()
+
+returns = prices["close"].pct_change().mul(100).rename("xle")
+data = factors.join(returns, how="inner").dropna()
+data["xle_excess"] = data["xle"] - data["rf"]
+
+ols = obb.econometrics.ols_regression(
+    data=data,
+    y_column="xle_excess",
+    x_columns=["mkt_rf", "smb", "hml"],
+    cov_type="HC1",
+)
+ols.to_df()
 ```
 
-Go to the [reference](/odp/python/reference/econometrics) page for function, parameter, and response descriptions, as well as code examples.
+The result has one row per regressor, including the intercept `const`. The same arguments work with the diagnostic commands:
+
+```python
+fit = obb.econometrics.ols_regression_summary(
+    data=data, y_column="xle_excess", x_columns=["mkt_rf", "smb", "hml"]
+)
+print(fit.results.summary)
+
+obb.econometrics.heteroskedasticity(
+    data=data, y_column="xle_excess", x_columns=["mkt_rf", "smb", "hml"]
+).to_df()
+```
+
+## Stationarity and causality
+
+`unit_root` and `kpss` test opposite null hypotheses: ADF assumes a unit root, KPSS assumes stationarity. Running both on the same column gives a clearer answer than either alone.
+
+```python
+obb.econometrics.unit_root(data=data, column="xle", regression="c")
+obb.econometrics.kpss(data=data, column="xle", regression="c")
+obb.econometrics.causality(data=data, y_column="xle", x_column="mkt_rf", lag=5)
+```
+
+`kpss` reports `p_value_interpolated=False` when the statistic falls outside statsmodels' lookup table, meaning the true p-value is more extreme than the one reported. `cointegration` tests every pair of the columns you name, and `cointegration_johansen` tests them jointly and reports one row per cointegration rank.
+
+## GARCH volatility models
+
+`garch` fits a model from the GARCH family with the `arch` library and returns the estimated conditional volatility for each observation. It is best applied to a return series, not to prices.
+
+| Argument | Values | Default |
+| --- | --- | --- |
+| `mean` | `Constant`, `Zero`, `LS`, `AR`, `ARX`, `HAR`, `HARX` | `Constant` |
+| `lags` | Lag order for the `AR`, `ARX`, `HAR`, and `HARX` means | `0` |
+| `x_columns` | Exogenous regressors for the `LS`, `ARX`, and `HARX` means | `None` |
+| `vol` | `GARCH`, `ARCH`, `EGARCH`, `FIGARCH`, `APARCH`, `HARCH` | `GARCH` |
+| `p` | Order of the symmetric ARCH term | `1` |
+| `o` | Order of the asymmetric (leverage) term | `0` |
+| `q` | Order of the lagged volatility term | `1` |
+| `power` | Power applied to volatility; `2.0` is standard GARCH | `2.0` |
+| `distribution` | `normal`, `t`, `skewt`, `ged` | `normal` |
+
+The fitted parameters, AIC, BIC, and log-likelihood are returned in `extra["results_metadata"]` rather than in `results`.
+
+```python
+egarch = obb.econometrics.garch(
+    data=data,
+    column="xle",
+    vol="EGARCH",
+    o=1,
+    distribution="t",
+)
+egarch.to_df()
+egarch.extra["results_metadata"]
+```
+
+## Chart
+
+With [`openbb-charting`](../infrastructure/openbb-charting/index.md) installed, `correlation_matrix` accepts `chart=True`. It is the only command in this extension with a chart view.
+
+Go to the [reference](/odp/python/reference/econometrics) for every parameter and returned field.

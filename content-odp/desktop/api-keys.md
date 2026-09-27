@@ -33,12 +33,12 @@ For example, if `openbb-fred` was selected, `fred_api_key` will appear on the sc
 
 ## Features
 
-- Interface for adding and modifying `credentials` entries stored in the [`user_settings.json`](/odp/python/settings/user_settings/api_keys) file.
+- Interface for adding and modifying `credentials` entries stored in the `user_settings.json` file; see [Credentials](../python/settings/index.mdx#credentials).
   - Import key:value pairs from file (`.json` or `.env`).
 - Easy access to key ODP configuration files in the `~/.openbb_platform` directory, opening directly in the default text editor:
-  - `user_settings.json` (see the docs [here](/odp/python/settings/user_settings).)
-  - `system_settings.json` (see the docs [here](/odp/python/settings/system_settings).)
-  - `.env` (see the docs [here](/odp/python/settings/environment_variables).)
+  - [`user_settings.json`](../python/settings/index.mdx#user_settingsjson)
+  - [`system_settings.json`](../python/settings/index.mdx#system_settingsjson)
+  - [`.env`](../python/settings/index.mdx#environment-variables)
 
 ## Edit, Save, & Remove
 

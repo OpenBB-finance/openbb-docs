@@ -1,0 +1,110 @@
+---
+title: Configure preferences and defaults
+sidebar_position: 2
+description: >
+  Change user preferences for a session or permanently, choose a default
+  provider per command, and pre-fill command parameters.
+keywords:
+  - preferences
+  - defaults
+  - default provider
+  - output_type
+  - show_warnings
+  - user_settings.json
+  - obb.user.preferences
+  - obb.user.defaults
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Configure preferences and defaults | OpenBB Python (V5)" />
+
+User preferences and command defaults live next to credentials in `~/.openbb_platform/user_settings.json`. In a Python session they are exposed as `obb.user.preferences` and `obb.user.defaults`. Changes made through `obb.user` last until the session ends; edits to the JSON file apply to new Python sessions and to the next REST or MCP request.
+
+## Change a preference for the session
+
+Preferences are validated on assignment, so a value outside the allowed set raises a Pydantic `ValidationError` immediately instead of failing on the next command.
+
+```python
+from openbb import obb
+
+obb.user.preferences.output_type = "dataframe"
+obb.user.preferences.show_warnings = True
+obb.user.preferences.request_timeout = 30
+```
+
+`output_type` controls what Python commands return and has no effect on REST or MCP responses; [Output types](output-types.mdx) lists the values and their dependencies. `show_warnings` prints the warnings a command captured when it finishes, in addition to storing them on the result; see [Handle warnings and errors](warnings-and-errors.mdx). `request_timeout` is the timeout, in seconds, for provider HTTP requests made through the `openbb-core` request helpers, and defaults to 60. Setting `metadata` to `False` stops `openbb-core` from adding execution details under `extra["metadata"]` on each result.
+
+The directory preferences point at `~/OpenBBUserData` and its subfolders by default. Logs are written under `data_directory/logs`, some providers store response caches in `cache_directory`, and `openbb-charting` uses `export_directory`, `user_styles_directory`, `chart_style`, and `table_style`. Types and defaults for every field are in [Settings & Configuration](../settings/index.mdx).
+
+## Save preferences
+
+To keep a preference across sessions, add it to the `preferences` object in `user_settings.json`. Keys you leave out keep their defaults.
+
+```json
+{
+  "credentials": {},
+  "preferences": {
+    "output_type": "dataframe",
+    "show_warnings": true,
+    "request_timeout": 30
+  },
+  "defaults": {
+    "commands": {}
+  }
+}
+```
+
+## Choose a default provider per command
+
+Some commands are served by more than one provider. `obb.news.company`, from `openbb-news`, is served by `nasdaq` and `tmx` when `openbb-nasdaq` and `openbb-tmx` are installed. The docstring lists them after "Default priority", and `obb.coverage.providers` maps each provider to its commands.
+
+When the call includes `provider=`, that provider is used. Otherwise the Python Interface takes the command's entry in `defaults.commands` or, without one, the installed providers in alphabetical order. A list with a single provider is used as-is. With several, the first provider whose credentials are all set wins, and if none qualifies the call raises `OpenBBError` with the message `Provider fallback failed.` followed by the reason for each provider.
+
+In `user_settings.json`, key each entry by the command path. A leading slash is optional and slashes are converted to dots, so `"/news/company"` and `"news.company"` are equivalent. `provider` can be a string or a list in priority order.
+
+```json
+{
+  "defaults": {
+    "commands": {
+      "news.company": {
+        "provider": ["tmx", "nasdaq"],
+        "limit": 20
+      }
+    }
+  }
+}
+```
+
+Every other key in the entry is a parameter default. It is applied only where the parameter's value would otherwise be `None`, so it fills parameters left unset whose own default is `None`, and `limit=5` in the call still wins over `20` from the file.
+
+To change defaults in a running session, use the dotted path and a list. Assigning into the dictionary skips the normalization applied to the JSON file, so `"/news/company"` or `"provider": "tmx"` would not behave as they do there.
+
+```python
+from openbb import obb
+
+obb.user.defaults.commands["news.company"] = {"provider": ["tmx", "nasdaq"], "limit": 20}
+```
+
+## Defaults over the REST API
+
+The REST API applies parameter defaults from `defaults.commands` but ignores the `provider` key. An endpoint with a single provider uses it automatically. An endpoint with several providers requires `provider` in the query string and responds with `422` when it is missing. The example uses the default `openbb-api` address:
+
+```bash
+curl "http://127.0.0.1:6900/api/v1/news/company?symbol=RY&provider=tmx"
+```
+
+## Verify
+
+Print the active settings, then run a command without `provider=` and check which one was selected. With the entry above and `openbb-news`, `openbb-nasdaq`, and `openbb-tmx` installed, the result reports `tmx` and the recorded arguments include the default `limit`.
+
+```python
+from openbb import obb
+
+print(obb.user.preferences)
+print(obb.user.defaults)
+
+result = obb.news.company(symbol="RY")
+print(result.provider)
+print(result.extra["metadata"].arguments)
+```

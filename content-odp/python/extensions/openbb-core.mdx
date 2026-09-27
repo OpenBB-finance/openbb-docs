@@ -1,75 +1,90 @@
 ---
 title: openbb-core
 sidebar_position: 1
-description: Learn about the openbb-core package and its role as the base layer.
+description: The openbb-core package - the runtime that discovers installed extensions and exposes them as the obb Python client and a REST API.
 keywords:
-- core
-- OpenBB API
-- Python Interface
-- Extensions
-- Routers
-- OBBject
-- FastAPI
-- Pandas
-- Numpy
+  - openbb-core
+  - openbb-build
+  - entry points
+  - Router
+  - Provider
+  - OBBject
+  - FastAPI
+  - Pydantic
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 MD037 -->
 
 import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
-import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 
-<HeadTitle title="OpenBB Core | OpenBB Docs" />
+<HeadTitle title="openbb-core | OpenBB Python (V5)" />
 
-Developing with the `openbb-core` allows you to build once, then deploy everywhere.
-The package serves as the foundational component of the OpenBB open-source ecosystem,
-encapsulating essential services and infrastructure for other extensions.
+`openbb-core` is the runtime layer. By itself it ships no data, no providers, and no commands. It finds the extensions installed in the current Python environment, merges them into one router, generates the typed `obb` client from that router, and serves the same router as a FastAPI application. Every call returns an [`OBBject`](../concepts/obbject.mdx).
 
-:::info
-The majority of users will not need to install, or interact with, this package directly, beyond running `openbb-build`.
-:::
-
-## Key Features
-
-- **Extendable API Routing Mechanism** (`Router` Class): Simplifies the process of defining API routes and endpoints - out of the box Python and Web endpoints.
-- **Standardized Data Model** (`Data` Class): A flexible and dynamic Pydantic model capable of handling various data structures.
-- **Standardized Query Params** (`QueryParams` Class): A Pydantic model for handling querying to different providers.
-- **Dynamic Field Support**: Enables handling of undefined fields, providing versatility in data processing.
-- **Robust Data Validation**: Utilizes Pydantic's validation features to ensure data integrity.
+The package contains both the `openbb_core` module and the `openbb` module that `from openbb import obb` imports. Most users never install it directly; provider and toolkit packages depend on it.
 
 ## Installation
-
-Install `openbb-core` as a standalone package from PyPI with:
 
 ```sh
 pip install openbb-core
 ```
 
-### Dependencies
+Two optional extras are declared. `pandas` adds pandas, which the data-processing extensions, `openbb-news`, and `openbb-charting` require through `openbb-core[pandas]`. `flask` adds Flask and `a2wsgi`.
 
-Current specifications can be found in the pyproject.toml [file](https://raw.githubusercontent.com/OpenBB-finance/OpenBB/refs/heads/develop/) of the GitHub repository.
+```sh
+pip install "openbb-core[pandas]"
+```
 
-The top-level dependencies are:
+The package requires Python `>=3.10,<4`. Its direct dependencies are `fastapi`, `uvicorn`, `pydantic` 2, `websockets`, `aiohttp`, `requests`, `python-multipart`, `uuid7`, `importlib-metadata`, `python-dotenv`, `ruff`, `pyjwt`, and, on Python 3.10, `tomli`.
 
-- pydantic
-- fastapi
-- uvicorn
-- requests
-- aiohttp
-- websockets
-- python-multipart
-- uuid7
-- html5lib
-- importlib-metadata
-- python-dotenv
-- ruff
-- pyjwt
-- pandas
+## Entry points
 
-## Usage
+Extensions register with the runtime through setuptools entry points. The core reads three groups.
 
-Most usage is described in other parts of this documentation.
+| Group | Target | Result |
+| --- | --- | --- |
+| `openbb_core_extension` | a `Router`, `FastAPI`, or `APIRouter` instance | Commands mounted under `obb.<name>` and `/api/v1/<name>` |
+| `openbb_provider_extension` | a `Provider` instance | A data source selectable with `provider="<name>"` |
+| `openbb_obbject_extension` | an `Extension` instance | An accessor on every `OBBject`, or a callback on command output |
 
-General concepts and classes are explained on the [Architecture Overview](/odp/python/developer/architecture_overview) page.
+A fourth group, `openbb_charting_extension`, is read by the charting engine rather than by the core; it maps chart views to command routes. The [extension types](../concepts/extensions.mdx) page describes each group and its options.
 
-Go to the [Extension Types](/odp/python/developer/extension_types) page to learn about, or get started building, OpenBB extensions.
+Each V5 provider package registers both a provider entry point and a router entry point, which is how `obb.fred`, `obb.sec`, and the other provider namespaces come to exist.
+
+## Building the Python client
+
+The `obb` object is generated code. After installing, upgrading, or removing an extension, regenerate it:
+
+```sh
+openbb-build
+```
+
+The command imports `openbb` in a subprocess, which rebuilds the static package when it is missing or stale, and calls `openbb.build()` directly if the import did not rebuild. Importing `openbb` also rebuilds on its own when it detects that extensions were added or removed since the last build; set `OPENBB_AUTO_BUILD=false` to turn that off, for example in a container image where the build ran at install time.
+
+## Serving the REST API
+
+The router that backs `from openbb import obb` is also a FastAPI application at `openbb_core.api.rest_api:app`, so any ASGI server can run it:
+
+```sh
+uvicorn openbb_core.api.rest_api:app --reload
+```
+
+The interactive OpenAPI documentation is served at `/docs`. For Workspace integration, widgets, and launcher options, use [`openbb-api`](./interface/openbb-api.mdx), which wraps this application.
+
+## Classes for extension authors
+
+Extension packages build on a small set of public classes.
+
+| Class | Import path | Role |
+| --- | --- | --- |
+| `Router` | `openbb_core.app.router` | Declares commands with `@router.command(...)` |
+| `Provider` | `openbb_core.provider.abstract.provider` | Describes a data source, its credentials, and its fetchers |
+| `Fetcher` | `openbb_core.provider.abstract.fetcher` | Implements `transform_query`, `extract_data` or `aextract_data`, and `transform_data` |
+| `QueryParams` | `openbb_core.provider.abstract.query_params` | Base Pydantic model for command parameters |
+| `Data` | `openbb_core.provider.abstract.data` | Base Pydantic model for returned rows |
+| `OBBject` | `openbb_core.app.model.obbject` | The response envelope |
+| `Extension` | `openbb_core.app.model.extension` | Registers an OBBject accessor or command-output callback |
+
+A provider's credentials are named `<provider>_<credential>`: a `Provider(name="fred", credentials=["api_key"])` produces the credential `fred_api_key`.
+
+See the [architecture](../concepts/architecture.mdx) page for how a call flows through these pieces, and the [extension types](../developer/extension_types/index.md) section to start building.

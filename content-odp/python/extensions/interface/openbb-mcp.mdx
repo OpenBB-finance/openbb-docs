@@ -1,388 +1,360 @@
 ---
 title: openbb-mcp
-sidebar_position: 4
-description: Learn how to use the `openbb-mcp-server` Python library to convert a FastAPI application into a Workspace-ready MCP server.
+sidebar_position: 2
+description: >
+  Reference for openbb-mcp-server V5: the openbb-mcp launcher, settings,
+  openbb.toml tables, authentication, tool discovery, prompts, skills, per-route
+  mcp_config, and .spec proxy mode.
 keywords:
-- MCP Server
-- MCP Tool
-- AI
-- Ada
-- Agent
-- Copilot
-- Prompts
-- openapi.json
-- OpenBB MCP
-- FastAPI
-- Python
-- FastMCP
-- Workspace widgets
-- Widget definitions
-- Autogenerate
+  - openbb-mcp
+  - openbb-mcp-server
+  - MCP
+  - Model Context Protocol
+  - FastMCP
+  - mcp_settings.json
+  - openbb.toml
+  - tool discovery
+  - prompts
+  - skills
+  - mcp_config
+  - .spec
 ---
 
-The, [openbb-mcp-server](https://pypi.org/project/openbb-mcp-server/), Python package is for converting OPD Python installations, or other FastAPI instances, into Workspace-compatible MCP servers accessible from the chat interface.
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-Servers can be extensively configured in a manner similar to [`openbb-api`](/odp/python/extensions/interface/openbb-api), the Minimum Viable Python approach.
+<HeadTitle title="openbb-mcp | OpenBB Python (V5)" />
 
-## Features
+The [`openbb-mcp-server`](https://pypi.org/project/openbb-mcp-server/) package installs the `openbb-mcp` command, which serves the routes of a FastAPI app as Model Context Protocol tools through [FastMCP](https://gofastmcp.com). By default the app is the OpenBB REST API built from the installed extensions. `--app` serves any other FastAPI app, and `--spec` serves a proxy built from an `openbb-cli` `.spec` file.
 
-- Convert any FastAPI application into a MCP server.
-- Configure MCP tools and prompts through inline code via `openapi_extra`, under the `mcp_config` key.
-- Add a system prompt to provide connecting agents with comprehensive onboarding and usage instructions.
-- Add server prompts for agents to execute multi-tool workflows with minimal reasoning effort.
-- Compatible with `stdio`, `sse`, and `streamable-http` transports.
-- Supports dynamic tool discovery and fixed tool sets.
-- No-code Basic Auth implementation via Bearer token.
+## Installation
 
-## Installation & Usage
-
-```sh
-pip install openbb-mcp-server
+```bash
+pip install openbb-mcp-server openbb-cboe openbb-imf
 ```
 
-Start the OpenBB MCP server with default settings:
+The package requires Python 3.10 or newer and `openbb-core` 2.x. The tools come from whatever provider and extension packages are installed alongside it. The `cli` extra installs `openbb-cli` and enables four more tools:
 
-```sh
+```bash
+pip install "openbb-mcp-server[cli]"
+```
+
+## Launch
+
+```bash
 openbb-mcp
 ```
 
-### Command Line Arguments
+The default transport is `streamable-http` at `http://127.0.0.1:8001/mcp`. Run `openbb-mcp --help` to print the flags and a commented `openbb.toml` example.
 
-Enter `openbb-mcp --help` to see the docstring from the command line.
+| Flag | Default | Description |
+| --- | --- | --- |
+| `--app` | Installed REST API | FastAPI app whose routes become tools: a Python file, `file.py:name`, or `package.module:name`. |
+| `--name` | `app` | Name of the app instance or factory function. A `:name` suffix on `--app` sets it too. |
+| `--factory` | Off | Call `--name` to create the app. |
+| `--spec` | None | `.spec` file to serve as a proxy. Cannot be combined with `--app`. |
+| `--config-file` | None | TOML file applied on top of the discovered `openbb.toml` files. Also read from `OPENBB_MCP_CONFIG`, `OPENBB_API_CONFIG`, or `OPENBB_CONFIG`. |
+| `--transport` | `streamable-http` | `streamable-http`, `sse`, or `stdio`. |
+| `--host` | `127.0.0.1` | Bind address for the HTTP transports. |
+| `--port` | `8001` | Bind port for the HTTP transports. |
+| `--allowed-categories` | All | Comma-separated categories to serve. Routes in other categories are never registered. |
+| `--default-categories` | `all` | With tool discovery off, the categories whose tools are listed and callable. |
+| `--tool-discovery` | Off | Hide the command tools behind the discovery tools. |
+| `--system-prompt` | None | Text file used as the system prompt. |
+| `--server-prompts` | None | JSON file of prompt definitions. |
 
-<details>
-<summary mdxType="summary">Arguments List</summary>
-
-```sh
---help
-    Show this help message and exit.
-
---app <app_path>
-    The path to the FastAPI app instance. This can be in the format
-    'module.path:app_instance' or a file path 'path/to/app.py'.
-    If not provided, the server will run with the default built-in app.
-
---name <name>
-    The name of the FastAPI app instance or factory function in the app file.
-    Defaults to 'app'.
-
---factory
-    If set, the app is treated as a factory function that will be called
-    to create the FastAPI app instance.
-
---host <host>
-    The host to bind the server to. Defaults to '127.0.0.1'.
-    This is a uvicorn argument.
-
---port <port>
-    The port to bind the server to. Defaults to 8000.
-    This is a uvicorn argument.
-
---transport <transport>
-    The transport mechanism to use for the MCP server.
-    Defaults to 'streamable-http'.
-
---allowed-categories <categories>
-    A comma-separated list of tool categories to allow.
-    If not provided, all categories are allowed.
-
---default-categories <categories>
-    A comma-separated list of tool categories to be enabled by default.
-    Defaults to 'all'.
-
---no-tool-discovery
-    If set, tool discovery will be disabled.
-
---system-prompt <path>
-    Path to a TXT file with the system prompt.
-
---server-prompts <path>
-    Path to a JSON file with a list of server prompts.
-```
-
-</details>
-
-#### All other arguments will be passed to `uvicorn.run`.
-
-## Settings Reference
-
-Go [here](/odp/python/settings/mcp_settings) to see the complete table.
-All settings can be configured via the `mcp_settings.json` file or as environment variables.
+Every other `--key value` pair is routed by name. A key that matches a [setting](#settings), with hyphens or underscores, sets it, as in `--enable-cli-tools false` or `--server-auth '["user", "pass"]'`. A key starting with `httpx-` sets an option of the httpx client that sends tool calls to the app, as in `--httpx-verify false`. Anything else goes to uvicorn with hyphens converted to underscores, as in `--log-level debug` or `--ssl-keyfile key.pem`. The values `true` and `false` become booleans, and a value wrapped in `[]` or `{}` is parsed as JSON.
 
 ## Configuration
 
-The server can be configured through multiple methods, with settings applied in the following order of precedence:
+Settings are resolved from four sources. Each overrides the ones below it:
 
-1.  **Command Line Arguments**: Highest priority, overriding all other methods.
-2.  **Environment Variables**: Each setting can be controlled by an environment variable, which will override the configuration file.
-3.  **Configuration File**: A JSON file at `~/.openbb_platform/mcp_settings.json` provides the base configuration.
-    - If the configuration file does not exist, one will be populated with defaults.
+1. Command-line flags.
+2. The `[mcp]` table of the `openbb.toml` files, applied as if its keys were flags.
+3. `OPENBB_MCP_*` environment variables.
+4. `~/.openbb_platform/mcp_settings.json`, which the server writes with the defaults on its first run.
 
-:::note
-For some data providers, you need to set API key in the `~/.openbb_platform/user_settings.json` file.
-:::
+For some data providers, the API key must be set in the OpenBB [credentials](../../user-guide/credentials.mdx), not in the MCP settings.
+
+### Settings
+
+| Setting | Environment variable | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `name` | `OPENBB_MCP_NAME` | `str` | `"OpenBB MCP"` | Server name reported to clients. |
+| `description` | `OPENBB_MCP_DESCRIPTION` | `str` | Built-in text | Server description. |
+| `version` | `OPENBB_MCP_VERSION` | `str` | `None` | Server version. |
+| `instructions` | `OPENBB_MCP_INSTRUCTIONS` | `str` | `None` | Text sent to the client during the MCP `initialize` handshake. When unset, the system prompt fills it. |
+| `api_prefix` | `OPENBB_MCP_API_PREFIX` | `str` | `None` | Prefix stripped from route paths when naming tools. `None` uses the OpenBB API prefix, `/api/v1`. |
+| `default_tool_categories` | `OPENBB_MCP_DEFAULT_TOOL_CATEGORIES` | `list[str]` | `["all"]` | With tool discovery off, the categories served. Other tools are registered but disabled, unless a route sets `enable`. Ignored with tool discovery on. |
+| `allowed_tool_categories` | `OPENBB_MCP_ALLOWED_TOOL_CATEGORIES` | `list[str]` | `None` | The only categories served, with or without discovery. `None` or `["all"]` serves every category. |
+| `enable_tool_discovery` | `OPENBB_MCP_ENABLE_TOOL_DISCOVERY` | `bool` | `False` | Hide the command tools behind `available_categories`, `available_tools`, `search_tools`, and `call_tool`. |
+| `list_page_size` | `OPENBB_MCP_LIST_PAGE_SIZE` | `int` | `None` | Maximum items per page in MCP list responses. `None` returns everything in one page. |
+| `describe_responses` | `OPENBB_MCP_DESCRIBE_RESPONSES` | `bool` | `False` | Keep the query parameter and response documentation in tool descriptions. When `False`, descriptions stop before it. |
+| `system_prompt_file` | `OPENBB_MCP_SYSTEM_PROMPT_FILE` | `str` | `None` | Path to a text file used as the system prompt. |
+| `server_prompts_file` | `OPENBB_MCP_SERVER_PROMPTS_FILE` | `str` | `None` | Path to a JSON file of prompt definitions. |
+| `default_skills_dir` | `OPENBB_MCP_DEFAULT_SKILLS_DIR` | `str` | Bundled skills | Directory of skills, one subdirectory with a `SKILL.md` per skill. `null` or an empty string disables it. |
+| `skills_reload` | `OPENBB_MCP_SKILLS_RELOAD` | `bool` | `False` | Re-read skill files on every read. |
+| `skills_providers` | `OPENBB_MCP_SKILLS_PROVIDERS` | `list[str]` | `None` | Vendor skill directories to load: `claude`, `cursor`, `vscode`, `copilot`, `codex`, `gemini`, `goose`, `opencode`. |
+| `enable_cli_tools` | `OPENBB_MCP_ENABLE_CLI_TOOLS` | `bool` | `True` | Register the `openbb-cli` dispatcher tools when `openbb-cli` is installed. |
+| `on_duplicate` | `OPENBB_MCP_ON_DUPLICATE` | `str` | `None` | What to do when a tool, resource, or prompt is registered twice: `warn`, `error`, `replace`, or `ignore`. |
+| `mask_error_details` | `OPENBB_MCP_MASK_ERROR_DETAILS` | `bool` | `None` | Hide exception details from clients. |
+| `module_exclusion_map` | `OPENBB_MCP_MODULE_EXCLUSION_MAP` | `dict[str, str]` | `None` | Route path segments mapped to Python modules. Routes under a segment are hidden while its module is imported. `None` uses `{"coverage": "openbb_core"}`; `{}` hides nothing. |
+| `uvicorn_config` | `OPENBB_MCP_UVICORN_CONFIG` | `dict` | `{"host": "127.0.0.1", "port": "8001"}` | Keyword arguments for uvicorn on the HTTP transports. Keys use underscores. |
+| `httpx_client_kwargs` | `OPENBB_MCP_HTTPX_CLIENT_KWARGS` | `dict` | `{}` | Options for the httpx client that sends tool calls to the app, such as `headers`, `timeout`, or `verify`. |
+| `client_auth` | `OPENBB_MCP_CLIENT_AUTH` | `[str, str]` | `None` | Username and password sent as httpx `auth` on requests to the app. |
+| `server_auth` | `OPENBB_MCP_SERVER_AUTH` | `[str, str]` | `None` | Username and password that HTTP clients must send as a Bearer token. |
+
+### Lists and dictionaries
+
+List settings accept a comma-separated string or a JSON array, on the command line and in environment variables. Dictionary settings accept a JSON object on the command line; environment variables also accept comma-separated `key:value` pairs. Wrap JSON in single quotes in the shell so the double quotes reach the server intact.
+
+```bash
+openbb-mcp --default-categories cboe,imf
+openbb-mcp --default-categories '["cboe", "imf"]'
+openbb-mcp --uvicorn-config '{"host": "0.0.0.0", "port": 9000}'
+```
+
+```bash
+OPENBB_MCP_DEFAULT_TOOL_CATEGORIES="cboe,imf"
+OPENBB_MCP_UVICORN_CONFIG="host:0.0.0.0,port:9000"
+OPENBB_MCP_HTTPX_CLIENT_KWARGS='{"timeout": 30}'
+```
+
+### openbb.toml
+
+At startup `openbb-mcp` merges the layered `openbb.toml` files, lowest priority first: the `[tool.openbb]` table of the nearest `pyproject.toml` (so `[tool.openbb.mcp]` there), `~/.openbb_platform/openbb.toml`, the nearest `openbb.toml` walking up from the working directory, and the file given by `--config-file`, `OPENBB_MCP_CONFIG`, `OPENBB_API_CONFIG`, or `OPENBB_CONFIG`. `.openbb.toml` works in place of `openbb.toml`, and a syntax error in the explicit file stops the server at startup. The `[system]` table and the top-level shortcuts apply to the system settings of the server process, as described in [openbb.toml](../../user-guide/openbb-toml.mdx).
+
+```toml
+[mcp]
+host = "0.0.0.0"
+port = 8005
+default-categories = "cboe,imf"
+tool-discovery = true
+enable_cli_tools = false
+
+[mcp.auth]
+hooks = ["my_pkg.auth:check_bearer_token"]
+
+[mcp.middleware]
+hooks = ["my_pkg.middleware:log_requests"]
+
+[env]
+OPENBB_MCP_NAME = "Research MCP"
+```
+
+`[mcp]` holds defaults for any flag or setting, with hyphens or underscores. `[env]` sets environment variables before the server starts, without replacing variables already set in the shell, and expands `$VAR` or `${VAR}` references. An entry that references an unset variable is skipped with a warning.
+
+`[mcp.auth]` and `[mcp.middleware]` list `module:attribute` references to `async def hook(request, call_next)` functions. They wrap the `streamable-http` and `sse` transports, not `stdio`. Auth hooks run before middleware hooks, and each list runs in order. A reference that cannot be imported, is not async, or takes fewer than two arguments stops the server at startup.
+
+`[mcp.spec]` configures [spec proxy mode](#spec-proxy-mode). When it is absent, a top-level `[spec]` table is used instead, so one `openbb.toml` can configure the same proxy for `openbb-api` and `openbb-mcp`.
 
 ## Authentication
 
-The MCP server supports client-side and server-side authentication to secure endpoints.
+### Server authentication
 
-### Server-Side Authentication
-
-Server-side authentication requires incoming requests to provide credentials. This is configured using the `server_auth` setting, which accepts a tuple of `(username, password)`.
-
-When `server_auth` is enabled, clients must include an `Authorization` header with a `Bearer` token. The token should be a Base64-encoded string of `username:password`.
-
-**Example: Environment Variable**
-
-```env
-OPENBB_MCP_SERVER_AUTH='["myuser", "mypass"]'
-```
-
-**Example: `mcp_settings.json`**
+`server_auth` requires every HTTP request to carry `Authorization: Bearer <token>`, where the token is the Base64 encoding of `username:password`. Requests without a valid token are rejected. Set it in `mcp_settings.json`, in the environment, or on the command line:
 
 ```json
 {
-  "server_auth": ["myuser", "mypass"]
+  "server_auth": ["admin", "secretpass"]
 }
 ```
 
-### Client-Side Authentication
+```bash
+OPENBB_MCP_SERVER_AUTH='["admin", "secretpass"]'
+```
 
-Client-side authentication configures the MCP server to use credentials when making downstream requests. This is useful when the server needs to authenticate with other services.
+A client then sends the encoded pair, here `base64("admin:secretpass")`:
 
-**Example: Environment Variable**
+```json
+{
+  "mcpServers": {
+    "openbb-mcp": {
+      "url": "http://127.0.0.1:8001/mcp",
+      "headers": {
+        "Authorization": "Bearer YWRtaW46c2VjcmV0cGFzcw=="
+      }
+    }
+  }
+}
+```
 
-```env
+### Client authentication
+
+`client_auth` is the credential the MCP server sends to the app it wraps, as httpx `auth`. A username and password pair is sent as HTTP Basic authentication, which matches the login of an OpenBB API started with `OPENBB_API_AUTH` enabled.
+
+```bash
 OPENBB_MCP_CLIENT_AUTH='["client_user", "client_pass"]'
 ```
 
-**Example: `mcp_settings.json`**
+### In code
+
+`create_mcp_server` builds the FastMCP server from settings and an app. Its `auth` argument accepts any FastMCP `AuthProvider`, a `(username, password)` pair with the same meaning as `server_auth`, or `None`; anything else raises `TypeError`.
+
+```python
+from fastapi import FastAPI
+from fastmcp.server.auth.providers.jwt import JWTVerifier
+from openbb_mcp_server.app.app import create_mcp_server
+from openbb_mcp_server.models.settings import MCPSettings
+
+auth = JWTVerifier(
+    jwks_uri="https://auth.example.com/.well-known/jwks.json",
+    issuer="https://auth.example.com",
+    audience="openbb-mcp",
+)
+mcp = create_mcp_server(MCPSettings(), FastAPI(), auth=auth)
+mcp.run(transport="streamable-http")
+```
+
+## Spec proxy mode
+
+A `.spec` file, written by `openbb --generate-spec`, records the routes and address of an OpenBB API server. [Codegen](../../../cli/codegen.md) covers generating one. With `--spec`, the server builds a FastAPI app whose routes forward each request to the spec's `base_url`, and serves those routes as tools. The MCP process then needs no provider packages; the data comes from the upstream server.
+
+```bash
+openbb --generate-spec --server https://api.example.com --output api.spec
+openbb-mcp --spec api.spec
+```
+
+The spec is checked at startup: it must be version 5, have a `base_url` and a `commands` table, and carry a `content_sha256` that matches its contents. `[mcp.spec]` adds what the file cannot hold:
+
+```toml
+[mcp.spec]
+path = "/etc/openbb/api.spec"
+base_url = "https://upstream.example.com"
+content_sha256 = "<expected sha256>"
+
+[mcp.spec.headers]
+Authorization = "Bearer $OPENBB_UPSTREAM_TOKEN"
+```
+
+`base_url` replaces the recorded address, `content_sha256` pins the expected revision, and `[mcp.spec.headers]` adds headers to every upstream request with `$VAR` substitution, replacing any header of the same name. To serve several specs, give each a `[mcp.spec.NAME]` table with its own `path`, an optional `mount` that defaults to `/NAME`, and its own `base_url`, `content_sha256`, `headers`, `auth`, and `middleware`. The [openbb-api reference](openbb-api.mdx#spec-proxy-mode) describes the same tables for the REST launcher in more detail.
+
+## Tools
+
+### Names and categories
+
+A tool's name is built from its route path after the API prefix, skipping `{placeholder}` segments. `/api/v1/cboe/equity/quote` is `cboe_equity_quote`, a two-segment path such as `/demo/items` is `demo_items`, and a single-segment path repeats the segment, so `/hello` is `hello_hello`. When one path serves several methods, the non-GET tools get a `_<method>` suffix, as in `demo_items_post`. A route's `mcp_config.name` replaces the generated name.
+
+The first path segment is the tool's category, and the second, on paths with three or more segments, its subcategory; other tools fall in the subcategory `general`. For the default app, categories are the provider namespaces such as `cboe`, `imf`, and `fred`, plus `news`, `econometrics`, `quantitative`, and `technical` when those packages are installed.
+
+### Built-in tools
+
+These tools are registered next to the command tools:
+
+| Tool | Purpose |
+| --- | --- |
+| `run_pipeline` | Run several tools in sequence on the server, feeding earlier results into later arguments. |
+| `list_prompts` | List prompts with their arguments. |
+| `get_prompt` | Render a prompt by `name` with optional `arguments`. |
+| `list_resources` | List resources, including skills. |
+| `read_resource` | Read a resource by `uri`. |
+| `install_skill` | Write a skill into the bundled or a vendor skills directory. |
+| `openbb_dispatch` | Run one command through `openbb-cli`. Requires the `cli` extra. |
+| `openbb_batch_dispatch` | Run a list of commands concurrently through `openbb-cli`. Requires the `cli` extra. |
+| `openbb_list_commands` | List every command with a one-line description. Requires the `cli` extra. |
+| `openbb_describe_command` | Describe one command's parameters and output schema. Requires the `cli` extra. |
+
+The four `openbb_*` tools take an optional `server_url`. Without one they use `OPENBB_SERVER_URL`, and without that they run in process. Set `enable_cli_tools` to `false` to leave them out.
+
+`install_skill` writes files to the server's disk for any connected client. When clients are not trusted, keep the skills directories read-only for the server process or require `server_auth`.
+
+### Tool discovery
+
+With `--tool-discovery`, the command tools are left out of the tool list and reached through four more tools:
+
+| Tool | Purpose |
+| --- | --- |
+| `available_categories` | Categories and subcategories with tool counts. |
+| `available_tools` | Tools in a `category`, optionally one `subcategory`, with one-sentence descriptions. |
+| `search_tools` | Full definitions, including input schemas, of the tools that best match a natural-language query. |
+| `call_tool` | Run any tool by name with its arguments. |
+
+A hidden tool can also be called directly by name. Discovery keeps no per-session state, so every client and transport sees the same tool list and several clients can share one server.
+
+Without discovery, `default_tool_categories` limits the tools that are listed and callable, and tools outside those categories fail as unknown tools. With discovery, `default_tool_categories` is ignored. `allowed_tool_categories` applies in both modes: routes outside it are never registered and cannot be reached by name, through `call_tool`, or through `run_pipeline`.
+
+### Pipelines
+
+`openbb-econometrics`, `openbb-quantitative`, and `openbb-technical` commands take the rows to analyze as a `data` argument. `run_pipeline` passes rows between steps on the server, so a price history does not travel through the conversation. Each step has an optional `id`, a `tool`, its `arguments`, and `inputs`, which map an argument name to an earlier step's `id`. The input is that step's `results`, the rows of a chart artifact, a lone wrapped `result`, or the whole output when it has none of these. `outputs` selects the steps to return and defaults to the last one.
 
 ```json
 {
-  "client_auth": ["client_user", "client_pass"]
+  "steps": [
+    {
+      "id": "prices",
+      "tool": "cboe_equity_historical",
+      "arguments": {"symbol": "AAPL", "provider": "cboe"}
+    },
+    {
+      "id": "rsi",
+      "tool": "technical_rsi",
+      "arguments": {"length": 14},
+      "inputs": {"data": "prices"}
+    }
+  ],
+  "outputs": ["rsi"]
 }
 ```
 
-### Programmatic Authentication
+The pipeline is validated before any step runs, a step cannot call `run_pipeline`, and a failing step is reported by its id. `run_pipeline` calls only tools the server serves.
 
-For advanced use cases, you can pass a pre-configured authentication object directly to the `create_mcp_server` function using the `auth` parameter. This allows you to implement custom authentication logic or use third-party authentication providers.
+### Parameter choices
 
-```python
-from fastmcp.server.auth.providers import BearerProvider
-from openbb_mcp_server.app import create_mcp_server
+Tool input schemas state the valid values of each parameter, taken from the provider `choices` and `x-widget_config` options declared on the command. A parameter with one fixed set of values gets an `enum`. When providers accept different values, the description lists them by provider, and multi-value or partially declared choices are listed in the description. A parameter whose options come from an `optionsEndpoint` names the tool that lists them.
 
-# Create a custom auth provider
-custom_auth = BearerProvider(...)
+### Charts
 
-# Pass it to the server
-mcp_server = create_mcp_server(settings, fastapi_app, auth=custom_auth)
-```
+A Plotly figure in a tool result, returned directly or as an `OBBject` `chart` when the call passes `chart: true`, is replaced by an OpenBB Workspace artifact. Line, bar, scatter, pie, and donut figures become a `chart` artifact whose `content` rows and `chart_params` redraw the figure. Other figures become a `table` artifact of their data. Tool output schemas declare the artifact in place of the figure.
 
-## Advanced Configuration: Lists and Dictionaries
+## Prompts
 
-For settings that accept a list or a dictionary, you have two flexible formats for defining them in both command-line arguments and environment variables.
+### System prompt
 
-#### 1. Comma-Separated Strings
+`--system-prompt`, `system_prompt_file`, or `OPENBB_MCP_SYSTEM_PROMPT_FILE` points to a text file. Its content is served as the `system_prompt` prompt and the `resource://system_prompt` resource, and fills `instructions` when that setting is empty. Clients do not apply it automatically; instruct them to read it.
 
-This is a simple and readable way to define lists and simple dictionaries.
+When skills are loaded and no system prompt file is set, the server adds a short `system_prompt` that points the agent to the skills.
 
--   **Lists**: Provide a string of comma-separated values.
-    -   Example: `equity,news,crypto`
--   **Dictionaries**: Provide a string of comma-separated `key:value` pairs.
-    -   Example: `host:0.0.0.0,port:9000`
+### Server prompts
 
-#### 2. JSON-Encoded Strings
-
-For more complex data structures, or to ensure precise type handling (e.g., for numbers and booleans), you can use a JSON-encoded string.
-
--   **Lists**: A standard JSON array.
-    -   Example: `'["equity", "news", "crypto"]'`
--   **Dictionaries**: A standard JSON object.
-    -   Example: `'{"host": "0.0.0.0", "port": 9000}'`
-
-**Important Note on Quoting**: When passing JSON-encoded strings on the command line, it is highly recommended to wrap the entire string in **single quotes (`'`)**. This prevents your shell from interpreting the double quotes (`"`) inside the JSON string, which can lead to parsing errors.
-
-#### Practical Examples
-
-Here’s how you can apply these formats in practice:
-
-**Command-Line Arguments:**
-
-```sh
-# List with comma-separated values
-openbb-mcp --default-categories equity,news
-
-# List with a JSON-encoded string (note the single quotes)
-openbb-mcp --default-categories '["equity", "news"]'
-
-# Dictionary with comma-separated key:value pairs
-openbb-mcp --uvicorn-config "host:0.0.0.0,port:9000"
-
-# Dictionary with a JSON-encoded string (note the single quotes)
-openbb-mcp --uvicorn-config '{"host": "0.0.0.0", "port": 9000, "env_file": "./path_to/.env"}'
-```
-
-**Environment Variables (in a `.env` file):**
-
-```env
-# List with comma-separated values
-OPENBB_MCP_DEFAULT_TOOL_CATEGORIES="equity,news"
-
-# List with a JSON-encoded string
-OPENBB_MCP_DEFAULT_TOOL_CATEGORIES='["equity", "news"]'
-
-# Dictionary with comma-separated key:value pairs
-OPENBB_MCP_UVICORN_CONFIG="host:0.0.0.0,port:9000"
-
-# Dictionary with a JSON-encoded string
-OPENBB_MCP_UVICORN_CONFIG='{"host": "0.0.0.0", "port": 9000, "env_file": "./path_to/.env"}'
-```
-
-## Tool Categories
-
-The server organizes OpenBB tools into categories based on the included API Routers (paths).
-Categories depend on the installed extensions, but will be the first path in the API after the given prefix.
-
-For example:
-
-- **`equity`** - Stock data, fundamentals, price history, estimates
-- **`crypto`** - Cryptocurrency data and analysis
-- **`economy`** - Economic indicators, GDP, employment data
-- **`news`** - Financial news from various sources
-
-Each category contains subcategories that group related functionality (e.g., `equity_price`, `equity_fundamental`, etc.).
-
-### Root Tools
-
-An additional set of tools are tagged as "admin", or "prompt".
-
-<details>
-<summary mdxType="summary">Tool List</summary>
-
-- available_categories: List all categories.
-
-- available_tools: List all tools by category.
-  - `category`: Category of tool to list.
-  - `subcategory`: Optional subcategory. Use 'general' for tools directly under the category.
-
-- activate_tools: Activate a tool for use.
-  - `tool_names`: Names of tools to activate. Comma-separated string for multiple.
-
-- deactivate_tools: Deactivate a tool after use.
-  - `tool_names`: Names of tools to deactivate. Comma-separated string for multiple.
-
-- list_prompts: Lists all available prompts in the server.
-
-- execute_prompt: Execute a prompt with arguments, if any.
-  - `prompt_name`: Name of the prompt to execute.
-  - `arguments`: Dictionary of argument:value for the prompt.
-
-</details>
-
-## Tool Discovery
-
-When `enable_tool_discovery` is enabled (default), the server provides discovery tools that allow agents to:
-
-- Discover available tool categories and subcategories
-- See tool counts and descriptions before activating
-- Enable/disable specific tools dynamically during a session
-- Start with minimal tools and progressively add more as needed
-
-To take full advantage of minimal startup tools, you should set the `--default-categories` argument to `admin`. This will enable only the discovery tools at startup.
-
-For multi-client deployments or scenarios where you want a fixed toolset, disable tool discovery with `--no-tool-discovery`.
-
-## System Prompt
-
-A system prompt file can be added on initialization, or defined in the configuration file, or as an environment variable.
-It should be a valid, relative or absolute, path to a `.txt` file.
-
-The system prompt is made available as a resource, `resource://system_prompt`, and is discoverable from the, `list_prompts`, tool.
-
-Clients will not automatically use the system prompt, instruct them to use it as part of their onboarding and orientation.
-
-## Server Prompts
-
-A system prompt file can be added on initialization, or defined in the configuration file, or as an environment variable.
-It should be a valid, relative or absolute, path to a `.json` file with a list of prompt definitions.
-
-Each entry in the JSON file is a dictionary with the following properties:
-
-- **`name`**: Name of the prompt.
-- **`description`**: A brief description of the prompt.
-- **`content`**: The content for rendering the prompt.
-- **`arguments`**: Optional list of arguments.
-  - **`name`**: Name of the argument.
-  - **`type`**: Simple Python type as a string - i.e, "int".
-  - **`default`**: Supplying a default value makes the parameter Optional.
-  - **`description`**: Description of the parameter. Supply need-to-know details for the LLM.
-- **`tags`**: List of tags to apply to the argument.
-
-Prompts here should provide the LLM a clear path for executing a workflow combining multiple tools or steps, for example:
-
-<details>
-<summary mdxType="summary">Example Server Prompt</summary>
+`--server-prompts`, `server_prompts_file`, or `OPENBB_MCP_SERVER_PROMPTS_FILE` points to a JSON list of prompts. Each prompt has a `name`, a `description`, and a `content` string with `{placeholder}` arguments, plus optional `arguments` and `tags`. Each argument has a `name`, a `type` (`str`, `int`, `float`, `bool`, `list`, `dict`, or `any`), and an optional `default` and `description`. An argument without a default is required. An invalid prompt or argument is logged as an error and skipped.
 
 ```json
 [
-    {
-      "name": "equity_analysis",
-      "description": "Perform a comprehensive equity analysis using multiple data sources and metrics",
-      "content": "Conduct a comprehensive analysis of {symbol} for {analysis_period}. Follow this workflow:\n1. First, get basic stock quote and recent price performance using equity_price_performance.\n2. Retrieve fundamental data including financial statements, ratios, and key metrics using [equity_fundamental_ratios, equity_fundamental_metrics, quity_fundamental_balance].\n3. Gather recent news and analyst estimates for the company using [news_company, equity_estiments_price_target].\n4. Compare valuation metrics with industry peers using equity_compare_peers.\n5. Summarize findings with investment recommendation.\n\nFocus areas: {focus_areas}\nRisk tolerance: {risk_tolerance}",
-      "arguments": [
-        {
-          "name": "symbol",
-          "type": "str",
-          "description": "Stock ticker symbol to analyze (e.g., AAPL, TSLA)"
-        },
-        {
-          "name": "analysis_period",
-          "type": "str",
-          "default": "last 12 months",
-          "description": "Time period for the analysis"
-        },
-        {
-          "name": "focus_areas",
-          "type": "str",
-          "default": "growth, profitability, valuation",
-          "description": "Specific areas to focus on in the analysis"
-        },
-        {
-          "name": "risk_tolerance",
-          "type": "str",
-          "default": "moderate",
-          "description": "Risk tolerance level: conservative, moderate, or aggressive"
-        }
-      ],
-      "tags": ["equity", "analysis", "comprehensive"]
-    }
+  {
+    "name": "options_review",
+    "description": "Review the options market for one symbol.",
+    "content": "Review the options market for {symbol}. Get the quote with cboe_equity_quote, then summarize the implied volatility term structure with cboe_options_term_structure. Focus on {focus}.",
+    "arguments": [
+      {
+        "name": "symbol",
+        "type": "str",
+        "description": "Ticker symbol, such as AAPL."
+      },
+      {
+        "name": "focus",
+        "type": "str",
+        "default": "near-term expirations",
+        "description": "What the summary should emphasize."
+      }
+    ],
+    "tags": ["options"]
+  }
 ]
 ```
 
-</details>
+### Inline prompts
 
-:::warning
-An invalid prompt definition, or prompt argument, will be logged to the console as an error.
-The item will be ignored, and will not raise an error.
-:::
-
-## Inline Prompts
-
-Prompts can be added to an endpoint through the `openapi_extra` dictionary.
-
-Adding prompts here will help the LLM use the endpoint for specific purposes, with less reasoning overhead.
-
-Direct it to `execute_prompt`, or to make note that helpful prompts may be included in the tool's metadata.
-
-The block below assumes `app` is an instance of `FastAPI`
-
-<details>
-<summary mdxType="summary">Example Inline Prompt</summary>
+A route can carry prompts in `openapi_extra["mcp_config"]["prompts"]`. Each `{placeholder}` in `content` becomes an argument: a prompt argument of the same name, else the endpoint parameter, else a required string. The rendered prompt starts by naming the route's tool, and the tool's description lists its prompts.
 
 ```python
+from typing import Literal
+
+from fastapi import FastAPI
+
+app = FastAPI()
+
+
 @app.get(
-    "/economy/gdp",
+    "/macro/gdp",
     openapi_extra={
         "mcp_config": {
             "prompts": [
@@ -398,26 +370,8 @@ The block below assumes `app` is an instance of `FastAPI`
                             "description": "Number of years to summarize.",
                         }
                     ],
-                    "tags": ["economy", "gdp", "summary"],
-                },
-                {
-                    "name": "gdp_comparison_prompt",
-                    "description": "Compare the GDP of two countries.",
-                    "content": "Compare the GDP growth of {country1} and {country2}.",
-                    "arguments": [
-                        {
-                            "name": "country1",
-                            "type": "str",
-                            "description": "First country for comparison.",
-                        },
-                        {
-                            "name": "country2",
-                            "type": "str",
-                            "description": "Second country for comparison.",
-                        },
-                    ],
-                    "tags": ["economy", "gdp", "comparison"],
-                },
+                    "tags": ["gdp", "summary"],
+                }
             ]
         }
     },
@@ -427,159 +381,89 @@ def get_gdp_data(country: str, period: Literal["annual", "quarterly"] = "annual"
     return {"country": country, "period": period}
 ```
 
-</details>
+The description of the `macro_gdp` tool then ends with:
 
-Along with being added to `list_prompts`, prompts will be included with the tool's metadata, returned by `list_tools`.
+```markdown
+**Associated Prompts:**
+- **gdp_summary_prompt**: Generate a brief summary of GDP for a country.
+  - Arguments: `country`, `years`
+```
 
-The discovery metadata for this tool would look like:
-
-__Economy Tools:__
-
-- __`economy_gdp`__: Get GDP data for a specific country.
-
-  - __Associated Prompts:__
-
-    - `gdp_summary_prompt`: Generate a brief summary of GDP for a country. (Arguments: `years`, `country`)
-    - `gdp_comparison_prompt`: Compare the GDP of two countries. (Arguments: `country1`, `country2`)
-
-Use a prompt with the `execute_prompt` tool:
+MCP passes prompt arguments as strings, so quote every value in a `get_prompt` call:
 
 ```json
 {
-  "prompt_name": "gdp_summary_prompt",
-  "arguments": {
-    "years": 10,
-    "country": "Japan"
-  }
+  "name": "gdp_summary_prompt",
+  "arguments": {"years": "10", "country": "Japan"}
 }
 ```
 
-Which outputs:
-
 ```json
 {
-  "description": "Generate a brief summary of GDP for a country.",
   "messages": [
     {
       "role": "user",
-      "content": {
-        "type": "text",
-        "text": "Use the tool, economy_gdp, to perform the following task.\n\nProvide a concise summary of the GDP for Japan over the last 10 years."
-      }
+      "content": "Use the tool, macro_gdp, to perform the following task.\n\nProvide a concise summary of the GDP for Japan over the last 10 years."
     }
   ]
 }
 ```
 
-## Inline MCP Configuration
+## Skills
 
-In addition to defining prompts, the `openapi_extra.mcp_config` dictionary allows for more granular control over how your FastAPI routes are exposed as MCP tools.
-By using the `MCPConfigModel`, you can validate your configuration and access several powerful properties to customize tool behavior.
+Skills are Markdown guides served as MCP resources at `skill://<name>/SKILL.md` and listed by `list_resources`. The server ships five:
 
-It can be imported with:
+| Skill | Covers |
+| --- | --- |
+| `develop_extension` | Creating a new OpenBB extension from scratch. |
+| `build_workspace_app` | Building, running, and serving a Workspace application from an extension project. |
+| `configure_mcp_server` | Installing, configuring, and connecting `openbb-mcp-server`. |
+| `work_with_server` | Calling tools, reading responses, and handling errors as an agent. |
+| `use_openbb_cli` | The `openbb` command line, `.spec` files, and spec proxy mode. |
 
-```
-from openbb_mcp_server.models.mcp_config import MCPConfigModel
-```
+Set `default_skills_dir` to another directory to replace them, or to `null` or an empty string to turn them off. `skills_providers` also loads skill directories from other tools, such as `["claude", "cursor"]`, and `skills_reload` re-reads skill files on every read while you edit them.
 
-Including this configuration in the `openapi_extra` slot will override any automatically generated value.
-You only need to enter the values that you wish to customize.
+## Per-route configuration
 
-Below are the properties you can define within `mcp_config`:
+`openapi_extra["mcp_config"]` controls how one route becomes a tool. If `mcp_config` is absent, `openapi_extra["x-mcp"]` is read instead. Values are validated with `MCPConfigModel`; an invalid configuration is logged as an error and ignored for that route.
 
-<details>
-<summary mdxType="summary">Properties</summary>
-
--   **`expose`** (`Optional[bool]`): Set to `False` to completely hide a route from the MCP server. This is useful for internal or deprecated endpoints that should not be available as tools.
-
--   **`mcp_type`** (`Optional[MCPType]`): Classify the route as a specific MCP type. Valid options are `"tool"`, `"resource"`, or `"resource_template"`.
-
--   **`methods`** (`Optional[list[HTTPMethod]]`): Specify which HTTP methods to expose for a route that supports multiple methods (e.g., GET, POST). If omitted, all supported methods are exposed. Valid methods include `"GET"`, `"POST"`, `"PUT"`, `"PATCH"`, `"DELETE"`, `"HEAD"`, `"OPTIONS"`, and `*` (for all).
-
--   **`exclude_args`** (`Optional[list[str]]`): Provide a list of argument names to exclude from the tool’s signature. This is useful for filtering out parameters that are handled internally or are not relevant to the end-user.
-
-- **`prompts`** (`Optional[list[dict[str, str]]]`): List of prompts specific to the endpoint. Keys for a prompt are:
-  - **`name`**: Name of the prompt.
-  - **`description`**: A brief description of the prompt.
-  - **`content`**: The content for rendering the prompt. Endpoint parameters are inferred by placeholders.
-  - **`arguments`**: Optional list of arguments. Items can be exclusive to the prompt, and not referenced in the endpoint.
-    - **`name`**: Name of the argument.
-    - **`type`**: Simple Python type as a string - i.e, "int".
-    - **`default`**: Supplying a default value makes the parameter Optional.
-    - **`description`**: Description of the parameter. Supply need-to-know details for the LLM.
-  - **`tags`**: List of tags to apply to the argument.
-
-</details>
-
-### MCPConfigModel Validation
-
-Values will be validated by the model before including in the server. Invalid configurations will be logged to the console as an error, and the inline definition will be ignored.
-
-```console
-ERROR    Invalid MCP config found in route, 'GET /equity/price'. Skipping tool customization because of validation error ->
-          1 validation error for MCPConfigModel
-          mcp_type
-            Input should be 'tool', 'resource' or 'resource_template' [type=enum, input_value='some_setting', input_type=str]
-              For further information visit https://errors.pydantic.dev/2.11/v/enum
-```
-
-
-### Example
-
-Here is an example demonstrating how to use these properties to fine-tune a tool’s behavior:
+| Key | Type | Effect |
+| --- | --- | --- |
+| `expose` | `bool` | `False` hides the route from the server. |
+| `mcp_type` | `str` | Serve the route as a `tool`, `resource`, or `resource_template`. |
+| `methods` | `list[str]` | HTTP methods of the route to serve, or `["*"]` for all. The others are left out. |
+| `exclude_args` | `list[str]` | Arguments left out of the tool's input schema. Each needs a default, which is then used. |
+| `name` | `str` | Tool name, replacing the generated one. |
+| `tags` | `list[str]` | Tags added next to the category. |
+| `enable` | `bool` | With discovery off, serve (`True`) or hide (`False`) the tool regardless of `default_tool_categories`. |
+| `describe_responses` | `bool` | Override `describe_responses` for this tool. |
+| `mime_type` | `str` | MIME type of a route served as a resource. |
+| `prompts` | `list[dict]` | [Inline prompts](#inline-prompts). |
 
 ```python
 @app.get(
     "/some/route",
     openapi_extra={
         "mcp_config": {
-            "expose": True,
             "mcp_type": "tool",
             "methods": ["GET"],
             "exclude_args": ["internal_param"],
-            "prompts": [
-                # ... prompt definitions ...
-            ]
+            "name": "some_route",
         }
     },
 )
 def some_route(param1: str, internal_param: str = "default"):
-    """An example route with advanced MCP configuration."""
+    """An example route with MCP configuration."""
     return {"param1": param1}
 ```
 
-In this example, the `/some/route` endpoint is explicitly exposed as a `tool` for the `GET` method only, and the `internal_param` argument is hidden from the tool’s interface.
+In OpenBB routers, pass the dictionary as the `mcp_config` argument of `@router.command`, which stores it in `openapi_extra`.
 
-## Client Examples
-
-Start the server with the appropriate transport and configuration for the client, the default transport is `http`.
-
-```bash
-# Start with default settings
-openbb-mcp
-
-# Use an alternative transport
-openbb-mcp --transport sse
-
-# Start with specific categories and custom host/port
-openbb-mcp --default-categories equity,news --host 0.0.0.0 --port 8080
-
-# Start with allowed categories restriction
-openbb-mcp --allowed-categories equity,crypto,news
-
-# Disable tool discovery for multi-client usage
-openbb-mcp --no-tool-discovery
-```
+## Connect a client
 
 ### Claude Desktop
 
-To connect the OpenBB MCP server with Claude Desktop, you need to configure it as a custom tool server. Here are the steps:
-
-<details>
-<summary mdxType="summary">Steps</summary>
-
-1.  Locate the settings or configuration file for Claude Desktop where you can define custom MCP servers.
-2.  Add the following entry to your `mcpServers` configuration. This will configure Claude Desktop to launch the OpenBB MCP server automatically using `stdio` for communication.
+Claude Desktop starts the server itself over `stdio`. With [uv](https://docs.astral.sh/uv/) installed, `uvx` creates the environment on demand; add a `--with` pair for each provider package:
 
 ```json
 {
@@ -590,7 +474,9 @@ To connect the OpenBB MCP server with Claude Desktop, you need to configure it a
         "--from",
         "openbb-mcp-server",
         "--with",
-        "openbb",
+        "openbb-cboe",
+        "--with",
+        "openbb-imf",
         "openbb-mcp",
         "--transport",
         "stdio"
@@ -600,91 +486,83 @@ To connect the OpenBB MCP server with Claude Desktop, you need to configure it a
 }
 ```
 
-3.  Ensure that `uvx`, is installed and available in your system's PATH. If not, follow the installation instructions.
-4.  Restart Claude Desktop to apply the changes. You should now see "openbb-mcp" as an available tool source.
-
-</details>
+Restart Claude Desktop after editing its configuration.
 
 ### Cursor
 
-To use OpenBB tools within Cursor, you first need to run the MCP server and then tell Cursor how to connect to it.
-
-<details>
-<summary mdxType="summary">Steps</summary>
-
-**Step 1: Run the OpenBB MCP Server**
-
-Open your terminal and start the server. You can use the default settings or customize it.
-
-For a default setup, run:
-```bash
-openbb-mcp
-```
-The server will start on `http://127.0.0.1:8001`.
-
-**Step 2: Configure Cursor**
-
-Add the following configuration to the `mcpServers` object in your `mcp.json` file. If the `mcpServers` object doesn't exist, you can add it.
+Start the server with `openbb-mcp`, then add it to the `mcpServers` object in Cursor's `mcp.json`:
 
 ```json
 {
   "mcpServers": {
     "openbb-mcp": {
-      "url": "http://localhost:8001/mcp/"
+      "url": "http://127.0.0.1:8001/mcp"
     }
   }
 }
 ```
 
-</details>
-
 ### VS Code
 
-<details>
-<summary mdxType="summary">Steps</summary>
+Enable MCP support in the user settings: open **Preferences: Open User Settings** from the command palette, search for `mcp`, and check the option under **Chat**.
 
-**Step 1: Enable MCP in VS Code Settings**
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="Enabling MCP in VS Code settings"
+    src="https://github.com/user-attachments/assets/5ace29de-e59c-45c3-b751-c6d92614e0ee"
+    width="100%"
+  />
+</div>
 
-Enter `shift + command + p` and open "Preferences: Open User Settings"
+Start the server with `openbb-mcp`, then run **MCP: Add Server** from the command palette and choose **HTTP**.
 
-Search for "mcp", and the item should show up under "Chat". Check the box to enable MCP server integrations.
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="The MCP: Add Server command in VS Code"
+    src="https://github.com/user-attachments/assets/9b13a5b6-ec20-43e2-9aae-7982e9fdcae6"
+    width="595"
+  />
+</div>
 
-<img width="1278" height="411" alt="vs-code-mcp-enable" src="https://github.com/user-attachments/assets/5ace29de-e59c-45c3-b751-c6d92614e0ee" />
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="Choosing the HTTP server type in VS Code"
+    src="https://github.com/user-attachments/assets/d2a06e4b-404a-4317-ad2c-241c1ac5e04b"
+    width="594"
+  />
+</div>
 
-**Step 2: Run the OpenBB MCP Server**
+Enter the URL the server prints at startup, `http://127.0.0.1:8001/mcp` by default, give the server a name, and save it globally or for the workspace. VS Code writes the entry to an `mcp.json` file, and the tools become available in chat.
 
-Open your terminal and start the server. You can use the default settings or customize it.
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="The generated mcp.json in VS Code"
+    src="https://github.com/user-attachments/assets/fdea335b-0523-4103-be3e-b5d9675c25b3"
+    width="402"
+  />
+</div>
 
-For a default setup, run:
-```bash
-openbb-mcp
-```
-The server will start on `http://127.0.0.1:8001`.
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="OpenBB MCP tools in the VS Code chat"
+    src="https://github.com/user-attachments/assets/06c39248-aedd-4f53-9560-6dfbae1efaf8"
+    width="601"
+  />
+</div>
 
-**Step 3: Add Server as HTTP**
+For the Cline extension, start the server with `--transport sse`.
 
-Enter `shift + command + p` and select "MCP: Add Server".
+### OpenBB Workspace
 
-<img width="595" height="412" alt="vs-code-mcp-commands" src="https://github.com/user-attachments/assets/9b13a5b6-ec20-43e2-9aae-7982e9fdcae6" />
+Follow the [MCP tools](/workspace/analysts/ai-features/mcp-tools) guide to add the server URL to Workspace.
 
-Press enter and then select HTTP.
+## Changes from V4
 
-<img width="594" height="174" alt="vs-code-mcp-add-http" src="https://github.com/user-attachments/assets/d2a06e4b-404a-4317-ad2c-241c1ac5e04b" />
+Compared with `openbb-mcp-server` 1.4.1, the version on the V4 `main` branch, discovery no longer activates tools per session. `activate_tools`, `deactivate_tools`, and `activate_category` were removed; hidden tools are found with `search_tools` and run with `call_tool` or by name. `run_pipeline`, the `openbb-cli` dispatcher tools, chart artifacts, `openbb.toml` support, `--config-file`, and `--spec` are new.
 
-Copy the URL from the console of the running server, and enter it
-
-```sh
-INFO     Starting MCP server 'OpenBB MCP' with transport 'streamable-http' on http://127.0.0.1:8001/mcp
-```
-
-Give it a name, and add it either as global or to a workspace. The end result will create a `mcp.json` VS Code configuration file for the chosen domain.
-
-<img width="402" height="195" alt="vs-code-mcp-json" src="https://github.com/user-attachments/assets/fdea335b-0523-4103-be3e-b5d9675c25b3" />
-
-The tools can now be added as context to the chat.
-
-<img width="601" height="442" alt="vs-code-mcp-tools" src="https://github.com/user-attachments/assets/06c39248-aedd-4f53-9560-6dfbae1efaf8" />
-
-**Note**: When adding to the Cline extension, set `--transport sse` when starting the server.
-
-</details>
+`on_duplicate` replaces `on_duplicate_tools`, `on_duplicate_resources`, and `on_duplicate_prompts`. `cache_expiration_seconds`, `resource_prefix_format`, `dependencies`, and `deprecation_warnings` were removed, and `enable_cli_tools` was added.

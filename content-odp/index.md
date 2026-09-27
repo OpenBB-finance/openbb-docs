@@ -43,8 +43,7 @@ It consists of three main components:
   />
   <NewReferenceCard
     title="ODP CLI"
-    description="A command-line interface wrapping the environnent's installed ODP Python packages.
-."
+    description="A command-line interface for the ODP Python packages installed in an environment, and for any OpenAPI server."
     url="/odp/cli"
   />
 </ul>

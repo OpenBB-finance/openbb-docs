@@ -1,90 +1,84 @@
 ---
 title: Function Examples
-sidebar_position: 4
-description: This page explains how to add examples and code snippets to API and Python endpoints.
+sidebar_position: 5
+description: Add APIEx and PythonEx usage examples to router commands for generated docstrings, the OpenAPI schema, and the reference docs.
 keywords:
-- ODP
-- How-To
-- Python
-- OpenBB Platform
-- Custom commands
-- Examples
-- Docstring
+  - OpenBB V5
+  - APIEx
+  - PythonEx
+  - examples
+  - docstring
+  - router.command
+  - OpenAPI
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-<HeadTitle title="Docstring Examples - Developer | OpenBB Docs" />
+<HeadTitle title="Function Examples | OpenBB Python (V5)" />
 
-This page explains how to add examples and code snippets to API and Python endpoints.
-Usage examples are defined in the [router](/odp/python/developer/extension_types/router)
-and are expected to provide working syntax, with descriptions for complex functions requiring many parameters.
-It is encouraged to include examples for every endpoint.
-
-There are two models for defining examples, `APIEx` and `PythonEx`.
+Every command should carry at least one working example. Examples are declared in the `examples` argument of `@router.command`, stored in the route's OpenAPI metadata, and written into the Examples section of the generated Python docstring as `>>>` lines. The generated [reference pages](/odp/python/reference/famafrench/factors) and the repository's integration-test generators read them too.
 
 ```python
 from openbb_core.app.model.example import APIEx, PythonEx
 ```
 
-:::info
-When a provider is not installed, its example - if any - will be excluded from `openapi.json` and Python docstrings.
-:::
+## APIEx
 
-### APIEx
-
-`APIEx` is more structured (and has less freedom) aiming to be language agnostic.
-
-Each example can have a description and as many parameters as desired.
+`APIEx` describes a call as a dictionary of parameters, which keeps it language-neutral: the same example renders as a Python call and as REST query parameters. The `openbb-famafrench` router declares its `factors` examples like this:
 
 ```python
 @router.command(
-    model="WorldNews",
+    model="FamaFrenchFactors",
+    methods=["GET"],
     examples=[
-        APIEx(parameters={}),
-        APIEx(parameters={"limit": 100}),
         APIEx(
-            description="Get news on the specified dates.",
-            parameters={"start_date": "2024-02-01", "end_date": "2024-02-07"},
+            description="Fama-French 3-factors data for America, default is monthly.",
+            parameters={
+                "provider": "famafrench",
+            },
         ),
         APIEx(
-            description="Display the headlines of the news.",
-            parameters={"display": "headline", "provider": "benzinga"},
+            description="Fama-French 5-factors data for Europe.",
+            parameters={
+                "provider": "famafrench",
+                "region": "europe",
+                "factor": "5_factors",
+            },
         ),
-        APIEx(
-            description="Get news by topics.",
-            parameters={"topics": "finance", "provider": "benzinga"},
-        ),
-        APIEx(
-            description="Get news by source using 'tingo' as provider.",
-            parameters={"provider": "tiingo", "source": "bloomberg"},
-        ),
-        APIEx(
-            description="Filter aticles by term using 'biztoc' as provider.",
-            parameters={"provider": "biztoc", "term": "apple"},
-        ),
+    ],
+)
+async def factors(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Fama-French factors."""
+    return await OBBject.from_query(Query(**locals()))
+```
+
+In the docstring the second example becomes `obb.famafrench.factors(provider='famafrench', region='europe', factor='5_factors')`, preceded by its description as a comment line.
+
+Parameter values can be strings, numbers, booleans, lists of strings, or lists of dictionaries. `provider`, when present, must be a string. `description` is optional, but it is required once an example has more than three parameters besides `provider`; the model raises a validation error otherwise. When the provider named in an example is not installed, that example is left out of the docstring and the OpenAPI schema.
+
+POST commands that take a `data` list can use `APIEx.mock_data("timeseries")` for a small OHLCV sample or `APIEx.mock_data("panel")` for multi-index panel data, instead of pasting rows:
+
+```python
+APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries")})
+```
+
+## PythonEx
+
+`PythonEx` holds free-form code for examples that need more than one call. `description` is required, and each item of `code` is one line.
+
+```python
+PythonEx(
+    description="50-day simple moving average of SPY closing prices from Cboe.",
+    code=[
+        "data = obb.cboe.equity.historical(symbol='SPY', provider='cboe').results",
+        "sma = obb.technical.sma(data=data, length=50)",
     ],
 )
 ```
 
-### PythonEx
-
-`PythonEx` gives more freedom to create complex examples.
-
-A description is required, and each item in the `code` list represents one line of code.
-
-```python
-@router.command(
-    methods=["POST"],
-    include_in_schema=False,
-    examples=[
-        PythonEx(
-            description="Perform Ordinary Least Squares (OLS) regression.",
-            code=[
-                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
-                'obb.econometrics.ols_regression(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
-            ],
-        )
-    ],
-)
-```
+`PythonEx` examples are always kept, whatever is installed, so write them against commands that users of your extension will have. Rebuild with `openbb-build` to see changed examples in the generated docstrings.

@@ -2,8 +2,8 @@
 title: The OBBject envelope
 sidebar_position: 2
 description: >
-  OBBject is the return type used across openbb-core. Fields and accessor
-  methods as they exist in V5.
+  OBBject is the return type used across openbb-core. Its fields, conversion
+  methods, and how the output_type preference applies them.
 keywords:
   - OBBject
   - to_dataframe
@@ -12,52 +12,54 @@ keywords:
   - to_dict
   - to_llm
   - show
+  - output_type
 ---
 
 import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
 <HeadTitle title="OBBject | OpenBB Python (V5)" />
 
-`openbb_core.app.model.obbject.OBBject` is a `Generic[T]` Pydantic model that wraps command results together with provider attribution, warnings, an optional chart, and extension-attached accessors.
+`OBBject`, imported from `openbb_core.app.model.obbject`, is a generic Pydantic model (`OBBject[T]`) that wraps command results together with provider attribution, warnings, an optional chart, and metadata. Router commands build it with `OBBject(results=...)` or, for provider-backed commands, `await OBBject.from_query(query)`.
 
-Streaming commands return [`OBBStream`](/odp/python/concepts/streaming) instead. The two envelopes are siblings — a router declares one or the other via its return annotation.
+Streaming commands return an [`OBBStream`](streaming.mdx) instead. A router declares one or the other through its return annotation.
 
 ## Fields
 
 | Field | Type | Default |
 | --- | --- | --- |
+| `id` | `str` | A new UUIDv7 string |
 | `results` | `T \| None` | `None` |
 | `provider` | `str \| None` | `None` |
 | `warnings` | `list[Warning_] \| None` | `None` |
 | `chart` | `Chart \| None` | `None` |
 | `extra` | `dict[str, Any]` | `{}` |
 
-Class-level attributes:
+The runner fills `provider` from the command's provider choice and `warnings` from any warnings raised while the command ran. When the `metadata` preference is on (the default), `extra["metadata"]` holds the arguments, route, start timestamp, and duration in nanoseconds. Fetchers that return an `AnnotatedResult` put their metadata in `extra["results_metadata"]`.
 
-- `accessors: ClassVar[set[str]]` — names of registered accessors. Populated by OBBject extensions.
-- `_user_settings`, `_system_settings` — references to the active settings models.
+`OBBject.accessors` is a class-level set with the names of every accessor registered by an [OBBject extension](../developer/extension_types/obbject.md).
 
-## Accessor methods
+## Conversion methods
 
 | Method | Returns |
 | --- | --- |
-| `to_df(index="date", sort_by=None, ascending=None)` | `pandas.DataFrame` (alias for `to_dataframe`) |
 | `to_dataframe(index="date", sort_by=None, ascending=None)` | `pandas.DataFrame` |
+| `to_df(...)` | Alias for `to_dataframe` |
 | `to_polars()` | `polars.DataFrame` |
 | `to_numpy()` | `numpy.ndarray` |
-| `to_dict(orient="list")` | `dict \| list[dict]` — `orient` is one of `"dict", "list", "series", "split", "tight", "records", "index"` |
-| `to_llm()` | `str` — JSON-encoded `records` orient of the dataframe form, with ISO date format |
-| `show(**kwargs)` | `None` — invokes the chart's `fig.show(...)`. Raises `OpenBBError` if no chart is set. |
-| `from_query(query)` (`classmethod`, `async`) | `OBBject` |
+| `to_dict(orient="list")` | `dict` or `list[dict]`; `orient` is one of `"dict"`, `"list"`, `"series"`, `"split"`, `"tight"`, `"records"`, `"index"` |
+| `to_llm()` | `str`: the results as JSON records with ISO dates |
+| `show(**kwargs)` | `None`: displays the chart; raises `OpenBBError` when no chart is set |
 
-There is no `to_chart()` method. Charts are displayed via `show(...)` after a chart has been produced by passing `chart=True` at call time.
+All conversions except `show()` go through pandas, so they need `openbb-core[pandas]`. `to_polars()` also needs `polars` and `pyarrow`. The Pydantic methods `model_dump()` and `model_dump_json()` serialize the whole envelope without extra dependencies.
 
-## `output_type` preference
+A chart is produced by passing `chart=True` to a command that has a chart view, with a charting extension installed. `show()` then renders it.
 
-When `user_settings.preferences.output_type == "OBBject"`, the `OBBject` is returned as-is. For any other accepted value, the corresponding accessor is called on the `OBBject` before returning. Accepted values:
+## The output_type preference
 
-```
+`user_settings.preferences.output_type` controls what the Python Interface returns. With `"OBBject"`, the default, the envelope is returned as-is. Any other value calls `to_<value>()` on the envelope before returning. The accepted values are:
+
+```python
 Literal["OBBject", "dataframe", "polars", "numpy", "dict", "chart", "llm"]
 ```
 
-Default: `"OBBject"`. The model uses `validate_assignment=True`, so an unsupported assignment raises a validation error.
+`"chart"` passes validation, but `OBBject` has no `to_chart()` method, so the conversion fails; use `chart=True` and `show()` instead. The preferences model validates on assignment, so setting an unsupported value raises a validation error. [Output types](../user-guide/output-types.mdx) covers setting the preference.

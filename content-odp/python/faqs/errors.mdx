@@ -1,155 +1,151 @@
 ---
 title: Errors
 sidebar_position: 3
-description: This page contains some frequently asked questions about Open Data Platform errors.
+description: Common OpenBB Python V5 error messages, their REST API status codes, and how to resolve them.
 keywords:
-  - provider
-  - data
-  - source
   - error
   - OpenBBError
-  - unknown error
   - EmptyDataError
+  - UnauthorizedError
+  - missing credential
+  - provider
+  - debug mode
+  - openbb-build
 ---
 
 import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-<HeadTitle title="Errors FAQ - FAQs | OpenBB Docs" />
+<HeadTitle title="Errors FAQ | OpenBB Python (V5)" />
+
+The Python interface condenses exceptions into a short message that starts with `[Error] ->`, `[Empty] ->`, or `[Unexpected Error] ->`. Set `OPENBB_DEBUG_MODE=true` to see the full traceback instead. The REST API maps the same exceptions to the HTTP status codes listed below.
 
 <details>
-<summary mdxType="summary">[Arg] provider -> input: nasdaq -> Input should be 'fmp' or 'yfinance'</summary>
+<summary mdxType="summary">[Arg] provider -> input: cboe -> Input should be 'nasdaq' or 'tmx'</summary>
 
-There could be a few reasons for this message.
+The value passed as `provider` is not one of the providers installed for that command.
 
-1. The provider supplied is not installed, in which case install it and follow the next step.
+The provider package may not be installed. Install it and import `openbb` again.
 
-2. The provider extension is installed, but the static assets have not been refreshed. Rebuild the static assets from the command line with:
+The package may be installed while the `openbb` package has not been rebuilt. With `OPENBB_AUTO_BUILD` at its default of `true`, importing `openbb` rebuilds when the installed extensions change. If that did not happen, rebuild from the command line with the environment active:
 
-```sh
+```bash
 openbb-build
 ```
 
-An environment variable to auto-build the static assets on import - if there are changes to the installed configuration - can be defined as:
-
-```env
-OPENBB_AUTO_BUILD="true"
-```
-
-The expected behaviour is for this to be "true" by default, however can be situations where the flag does not trigger a build.
-Manually invoke the process from the command line if necessary.
-
-3. Not every endpoint is supported by every provider. To see the coverage of commands and data providers within the current installation, use `reference` property in the app. The docstring for each function contains the same information as the code block below.
+The provider may not cover the command. The command's docstring lists its providers under the `provider` parameter, and `obb.reference` returns the same information:
 
 ```python
 from openbb import obb
 
-path = "/index/available"
-
-[d for d in obb.reference["paths"][path]["parameters"] if d != "standard"]
+[p for p in obb.reference["paths"]["/news/company"]["parameters"] if p != "standard"]
 ```
 
-```sh
-['cboe', 'fmp', 'tmx', 'yfinance']
+```console
+['nasdaq', 'tmx']
 ```
 
-Complete breakdowns of query and return fields by provider and endpoint are available at [docs.openbb.co/python](https://docs.openbb.co/python)
+</details>
+
+<details>
+<summary mdxType="summary">AttributeError: 'App' object has no attribute 'equity'</summary>
+
+The V5 provider packages do not install the shared asset-class namespaces from V4, such as `obb.equity`, `obb.economy`, and `obb.fixedincome`. Each provider package owns its own namespace, for example `obb.fred`, `obb.sec`, or `obb.nasdaq`. [Migration from V4](../migration-from-v4.mdx) lists the changes.
+
+For a V5 namespace, the error means the extension that provides it is not installed, or it is installed and the `openbb` package has not been rebuilt. Install the extension and run `openbb-build` if importing `openbb` did not rebuild it.
 
 </details>
 
 <details>
-<summary mdxType="summary">Attribute Error: 'App' object has no attribute 'some attribute'</summary>
+<summary mdxType="summary">Missing credential 'fred_api_key'</summary>
 
-There could be a few reasons for this message that are similar to the issue above.
-
-1. The extension is not installed.
-
-- Install it and rebuild the static files (described in the item above.)
-
-2. No installed provider extension services an endpoint within the router.
-
-- Under these conditions, the router is excluded from the app factory.
-
-3. The extension is installed, a provider does service the router, but the static assets have not been rebuilt.
-
-- Rebuild the static files (described in the item above.)
-
-</details>
-
-<details>
-<summary mdxType="summary">Unauthorized Error - HTTP Status Code 502</summary>
-
-This error is raised when provider credentials are supplied but is invalid for the particular endpoint.
-
-Verify your credentials, access level, and subscription status directly with the provider.
-
-</details>
-
-<details>
-<summary mdxType="summary">Unprocessable Entity (OpenBBError) - HTTP Status Code 422</summary>
-
-This error is raised for handled exceptions. An abbreviated traceback message will display, and the full message is enabled via debug mode.
-
-A common reason for this error is because a required parameter was not supplied, or was an incorrect choice. It may also be raised during parsing and transformation, post-request.
-
-</details>
-
-<details>
-<summary mdxType="summary">Empty Data Error - HTTP Status Code 204</summary>
-
-Also a 204 status code from the API. It means that the data was returned empty but the operation was a success.
-
-There might not be anything wrong, or it could be the result of parameter choices. In which case, widen the scope of the query to capture output.
-
-Some sources will return bad requests with a 200 status code and no message.
-
-If all parameter permutations are only capable of returning an empty response, please open a bug issue on [GitHub](https://github.com/OpenBB-finance/OpenBB/issues/new?assignees=&labels=type%3Abug&projects=&template=bug_report.md&title=%5BBug%5D) with the operating system and version, Python version, and the syntax responsible for the error.
-
-</details>
-
-<details>
-<summary mdxType="summary">Unexpected Error - HTTP Status Code 500</summary>
-
-An unhandled exception. Traceback messages are truncated unless the debug environment variable is set.
+The endpoint needs a provider credential that is not set. Add it to `~/.openbb_platform/user_settings.json`, set the matching environment variable (`FRED_API_KEY`), or assign it for the current session:
 
 ```python
-import os
-
-os.environ["OPENBB_DEBUG_MODE"] = "true"
-
 from openbb import obb
 
-# run the syntax that created the error and the full traceback will print to the console.
+obb.user.credentials.fred_api_key = "your-fred-key"
 ```
 
-If the issue originates from OpenBB code, please open a bug issue on [GitHub](https://github.com/OpenBB-finance/OpenBB/issues/new?assignees=&labels=type%3Abug&projects=&template=bug_report.md&title=%5BBug%5D)
+A related message, `Provider fallback failed.`, appears when a command is called without `provider` and none of the providers in its priority list has all of its credentials set. Each provider is listed with the reason it was skipped: `missing credentials` or `not installed`. Pass `provider` explicitly or set the missing credentials.
 
-Be sure to include the contents of the traceback, the operating system and version, Python version, and the syntax responsible for the error.
+[Settings & Configuration](../settings/index.mdx#credentials) lists the credential names that V5 providers use.
 
 </details>
 
 <details>
-<summary mdxType="summary">ImportError: cannot import name 'OBBject_*' from 'openbb_core.app.provider_interface'</summary>
+<summary mdxType="summary">json.decoder.JSONDecodeError when importing openbb</summary>
 
-This error can happen when the static assets were not fully built. The build process may have been interrupted, or a subprocess might be creating a race condition by attempting to import modules before they are ready.
+`user_settings.json` or `system_settings.json` in `~/.openbb_platform/` is not valid JSON. Trailing commas and comments are the usual cause. Fix the file, or remove it to have a default one created on the next import.
 
-The solution is to trigger a rebuild from the command line, with the environment active.
+</details>
 
-```sh
-openbb-build
+<details>
+<summary mdxType="summary">RuntimeError: OBBject Extension Error</summary>
+
+An installed OBBject extension runs on command output, and running it has not been permitted. Extensions that only read the output need `allow_on_command_output`; extensions that modify it also need `allow_mutable_extensions`. Set them in `~/.openbb_platform/system_settings.json`:
+
+```json
+{
+  "allow_on_command_output": true,
+  "allow_mutable_extensions": true
+}
 ```
+
+The environment variables `OPENBB_ALLOW_ON_COMMAND_OUTPUT` and `OPENBB_ALLOW_MUTABLE_EXTENSIONS` set the same values. Enable them only for extensions installed from a trusted source.
+
+</details>
+
+<details>
+<summary mdxType="summary">Unauthorized (UnauthorizedError) - HTTP status 502</summary>
+
+The provider rejected the credentials that were sent. The default message reads `Unauthorized <provider> API request. Please check your <provider> credentials and subscription access.`
+
+Verify the credential value, its access level, and the subscription status directly with the provider.
+
+</details>
+
+<details>
+<summary mdxType="summary">Bad Request (OpenBBError) - HTTP status 400</summary>
+
+A handled error raised by openbb-core or a provider, such as a missing credential. The message after `[Error] ->` in Python, or the `detail` field of the API response, states the cause.
+
+</details>
+
+<details>
+<summary mdxType="summary">Unprocessable Entity - HTTP status 422</summary>
+
+Parameter validation failed: a required parameter is missing, or a value has the wrong type or is not an allowed choice. In Python, the message starts with the number of errors and lists each one on an `[Arg]` line with the parameter name, the input, and the reason.
+
+</details>
+
+<details>
+<summary mdxType="summary">No Content (EmptyDataError) - HTTP status 204</summary>
+
+The request succeeded but returned no data. The Python message defaults to `[Empty] -> No results found. Try adjusting the query parameters.`, and the API responds with status 204 and an empty body.
+
+Widen the query, for example with a longer date range or fewer filters. If every combination of parameters returns nothing, open a bug report on [GitHub](https://github.com/OpenBB-finance/OpenBB/issues/new?assignees=&labels=type%3Abug&projects=&template=bug_report.md&title=%5BBug%5D) with the operating system and version, the Python version, and the code that produced the error.
+
+</details>
+
+<details>
+<summary mdxType="summary">Unexpected Error - HTTP status 500</summary>
+
+An exception that openbb-core does not handle. The Python message has the form `[Unexpected Error] -> <ExceptionClass> -> <message>`, and the API returns `Unexpected Error -> <ExceptionClass> -> <message>` in `detail`. Set debug mode, described below, and run the code again to get the full traceback.
+
+If the traceback points to OpenBB code, open a bug report on [GitHub](https://github.com/OpenBB-finance/OpenBB/issues/new?assignees=&labels=type%3Abug&projects=&template=bug_report.md&title=%5BBug%5D) with the traceback, the operating system and version, the Python version, and the code that produced the error.
 
 </details>
 
 <details>
 <summary mdxType="summary">How do I start in debug mode?</summary>
 
-Debug mode can be set as an environment variable, in `~/openbb_platform/.env`, as:
+Debug mode is controlled by the `OPENBB_DEBUG_MODE` environment variable. To enable it permanently, add it to `~/.openbb_platform/.env`:
 
 ```env
 OPENBB_DEBUG_MODE=true
 ```
 
-It can be invoked for the current session only by adding this code before importing the OpenBB package.
+To enable it for one session, set it before importing `openbb`:
 
 ```python
 import os
@@ -159,15 +155,29 @@ os.environ["OPENBB_DEBUG_MODE"] = "true"
 from openbb import obb
 ```
 
+With debug mode on, Python raises the original exception with its full traceback, and the REST API re-raises it so the traceback appears in the server log. For `openbb-api` and `openbb-mcp`, `debug-mode = true` in `openbb.toml` has the same effect. The `debug_mode` key in `system_settings.json` only affects openbb-charting and does not enable full tracebacks.
+
 </details>
 
 <details>
 <summary mdxType="summary">"Microsoft Visual C++ 14.0 or greater is required"</summary>
 
-Download and install [C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/), restart the machine, then continue.
+A dependency is being compiled from source on Windows. Download and install [Microsoft C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/), restart the machine, then run the installation again.
 
-![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/ceb57be0-6dae-42f2-aca6-bf62ce7d6135)
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    alt="Microsoft C++ Build Tools installer, first screen"
+    src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/ceb57be0-6dae-42f2-aca6-bf62ce7d6135"
+    width="80%"
+  />
+</div>
 
-![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/f8aef8fc-a080-4164-bd36-460714ec44f3)
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    alt="Microsoft C++ Build Tools installer, workload selection"
+    src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/f8aef8fc-a080-4164-bd36-460714ec44f3"
+    width="80%"
+  />
+</div>
 
 </details>

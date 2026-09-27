@@ -1,0 +1,120 @@
+---
+title: Output types
+sidebar_position: 4
+description: >
+  Convert command results to pandas, Polars, NumPy, dictionaries, or JSON for
+  LLM tools, per call or as a session default, and the packages each needs.
+keywords:
+  - output_type
+  - to_dataframe
+  - to_polars
+  - to_numpy
+  - to_dict
+  - to_llm
+  - results_metadata
+  - LLM
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Output types | OpenBB Python (V5)" />
+
+Python commands return an `OBBject` by default. Its `results` field holds the validated records, and the object carries the provider name, captured warnings, an optional chart, and an `extra` dictionary. The fields and methods are described in [The OBBject envelope](../concepts/obbject.mdx). This page covers turning results into other types.
+
+## Convert one result
+
+Call a conversion method on the returned object. The examples use the FRED key from [Configure credentials](credentials.mdx).
+
+```python
+from openbb import obb
+
+result = obb.fred.economy.fred_series(symbol="GDP,UNRATE", start_date="2020-01-01")
+
+df = result.to_dataframe()
+columns = result.to_dict()
+records = result.to_dict(orient="records")
+array = result.to_numpy()
+text = result.to_llm()
+```
+
+`to_dataframe()`, also available as `to_df()`, sets the `date` column as the index when there is one; pass `index=None` to keep it as a column, or `sort_by` and `ascending` to sort. `to_dict()` accepts the pandas orientations `"dict"`, `"list"`, `"series"`, `"split"`, `"tight"`, `"records"`, and `"index"`, with `"list"` as the default. `to_numpy()` and `to_dict()` build a DataFrame first without an index, and `to_llm()` returns a JSON string of records with ISO 8601 dates. Calling any of them on an empty result raises `OpenBBError` with `Results not found.`
+
+## Set a default for the session
+
+`obb.user.preferences.output_type` makes every command call the matching method before returning. The value can also be saved in `user_settings.json`, as shown in [Configure preferences and defaults](preferences-and-defaults.mdx).
+
+```python
+from openbb import obb
+
+obb.user.preferences.output_type = "dataframe"
+df = obb.fred.economy.fred_series(symbol="GDP", start_date="2020-01-01")
+```
+
+| `output_type` | Method called | Returns | Needs |
+| --- | --- | --- | --- |
+| `"OBBject"` (default) | none | `OBBject` | nothing extra |
+| `"dataframe"` | `to_dataframe()` | `pandas.DataFrame` | pandas |
+| `"numpy"` | `to_numpy()` | `numpy.ndarray` | pandas |
+| `"dict"` | `to_dict()` | `dict` of column lists | pandas |
+| `"llm"` | `to_llm()` | `str` | pandas |
+| `"polars"` | `to_polars()` | `polars.DataFrame` | pandas, `polars`, `pyarrow` |
+| `"chart"` | `to_chart()` | not usable in V5 | see below |
+
+pandas is an optional extra of `openbb-core` (`openbb-core[pandas]`), and every V5 provider package depends on it, so it is present once any provider is installed. NumPy is installed with pandas. Polars is not a dependency of any OpenBB package; add it with `pip install polars pyarrow`, or the conversion raises an `OpenBBError` that names the missing package and that install command.
+
+`OBBject` has no `to_chart()` method, so `"chart"` passes validation but every command then raises an `OpenBBError` for the missing attribute. To draw a chart, install `openbb-charting`, pass `chart=True` to a command that supports it, and call `result.show()`; see [openbb-charting](../extensions/infrastructure/openbb-charting/index.md).
+
+The preference applies only to commands that return an `OBBject`. A command annotated with another return type, such as `obb.news.rss_providers()`, which returns a list, raises an `OpenBBError` when `output_type` is anything other than `"OBBject"`. Switch back to `"OBBject"` for those calls.
+
+The preference has no effect on the REST API or the MCP server. REST responses are JSON objects with the `id`, `results`, `provider`, `warnings`, `chart`, and `extra` fields.
+
+## Keep the metadata
+
+Converted outputs contain only `results`. Everything under `extra` is dropped, so read it from the `OBBject` before converting. `extra["metadata"]` records the arguments, duration in nanoseconds, route, and start time of the call, unless the `metadata` preference is off. Providers can also attach `extra["results_metadata"]`; FRED stores the title, units, frequency, seasonal adjustment, and notes of each series under its ID.
+
+```python
+from openbb import obb
+
+obb.user.preferences.output_type = "OBBject"
+result = obb.fred.economy.fred_series(symbol="GDP")
+
+print(result.extra["results_metadata"]["GDP"]["title"])
+df = result.to_dataframe()
+```
+
+## Prepare output for LLM tools
+
+`"llm"` returns the records as a JSON string, which can be passed straight into a prompt or a tool response. When exposing `obb` functions as tools, the generated docstrings can also be shortened. Set `python_settings` in `~/.openbb_platform/system_settings.json`; the valid sections are `description`, `parameters`, `returns`, and `examples`, and `docstring_max_length` truncates longer docstrings with `...`.
+
+```json
+{
+  "python_settings": {
+    "docstring_sections": ["description", "examples"],
+    "docstring_max_length": 1024
+  }
+}
+```
+
+Docstrings are generated when the Python Interface is built, so rebuild after changing these settings:
+
+```bash
+openbb-build
+```
+
+## Verify
+
+Set each type in turn and check what comes back. Without Polars installed, the `"polars"` line reports the missing dependency.
+
+```python
+from openbb import obb
+
+for output_type in ["OBBject", "dataframe", "numpy", "dict", "llm", "polars"]:
+    obb.user.preferences.output_type = output_type
+    try:
+        value = obb.fred.economy.fred_series(symbol="GDP", limit=5)
+        print(output_type, type(value).__name__)
+    except Exception as error:
+        print(output_type, error)
+
+obb.user.preferences.output_type = "OBBject"
+```

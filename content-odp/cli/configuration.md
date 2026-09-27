@@ -2,74 +2,43 @@
 title: Configuration
 sidebar_position: 5
 description: >
-  Layered configuration loader for openbb-cli — pyproject, user-global TOML,
-  project TOML, explicit --config, .env, OPENBB_* env vars, CLI flags.
+  How openbb-cli combines openbb.toml files, pyproject.toml, .env files,
+  environment variables, and flags, and which keys each source accepts.
 keywords:
   - openbb-cli configuration
   - openbb.toml
   - OPENBB_CLI_CONFIG
-  - layered loader
+  - .env
+  - environment variables
 ---
 
-## Layer order
+Backend, auth, and codegen options can come from TOML files, `.env` files, environment variables, and flags. REPL display settings such as the output mode or flair are stored separately, in `~/.openbb_platform/.cli.env`, and are changed from the REPL; see [Settings](./settings.md).
 
-The configuration loader at `openbb_cli.config.loader.load_config` walks these in order — lowest priority first, later layers overwrite earlier ones:
+## TOML files
 
-1. Built-in defaults from the argparse parser.
-2. `[tool.openbb-cli]` in the nearest ancestor `pyproject.toml`, walking up from CWD.
-3. `~/.openbb_platform/openbb.toml` (or `.openbb.toml`).
-4. `openbb.toml` (or `.openbb.toml`) in the nearest ancestor directory of CWD.
-5. The file pointed at by `--config PATH`, or `$OPENBB_CLI_CONFIG` if neither is supplied.
-6. `.env` files: `~/.openbb_platform/.env` and the file at `$OPENBB_CLI_ENV_FILE` (loaded into `os.environ`).
-7. `OPENBB_*` environment variables.
-8. CLI flags.
+The CLI reads up to four TOML sources and deep-merges them, with later sources overriding earlier ones key by key:
 
-Layers 2–5 are deep-merged into a single dict; top-level kebab-case keys are normalized to snake_case so they match argparse `dest` names. Nested tables (`[specs.<ns>]`, `[headers]`, `[query]`, `[settings]`) keep their original key casing.
+1. The `[tool.openbb-cli]` table of the nearest `pyproject.toml`, searching upward from the working directory.
+2. `~/.openbb_platform/openbb.toml`, or `~/.openbb_platform/.openbb.toml`.
+3. The first `openbb.toml` or `.openbb.toml` found searching upward from the working directory.
+4. The file named by `--config PATH`, or by `OPENBB_CLI_CONFIG` when the flag is absent.
 
-## Bootstrap a template
+A missing file, or one that fails to parse, is skipped without a message. `openbb --show-config` prints the merged result as JSON, which is the quickest way to see what the CLI actually loaded. Top-level keys may be written in kebab-case or snake_case; keys inside tables keep their spelling.
+
+`openbb --print-config-template` prints a commented template that lists the supported keys with their flag and environment variable. Keys that already have a value in the merged configuration are printed uncommented with that value, so the output can be saved as a starting point:
 
 ```bash
 openbb --print-config-template > ~/.openbb_platform/openbb.toml
 ```
 
-Lines without a resolved value are commented out, so dropping the output at the user-global location is a valid starting point. Currently-resolved values are inlined as live values.
-
-## Inspect the merged config
-
-```bash
-openbb --show-config
-```
-
-Prints the result of layering pyproject → user-global → project → `--config` as JSON. Useful for debugging which layer a given setting is coming from.
-
-## Schema
+## Keys
 
 ```toml
-# ── Backend / dispatch ──────────────────────────────────────────────
-server = "https://api.example.com"     # --server
-spec = "/path/to/api.spec"             # --spec (single, unprefixed)
-openapi-path = "/openapi.json"         # --openapi-path
-header-file = "/path/to/headers.json"  # --header-file
-query-param-file = "/path/to/q.json"   # --query-param-file
-output = "openbb.spec"                 # --output for --generate-spec
-batch-concurrency = 8                  # --batch-concurrency
-
-# ── Multi-spec ──────────────────────────────────────────────────────
-[specs.congress]
-path = "/path/to/congress.spec"
-auth-hook = "myapp.auth:congress_hook"
-[specs.congress.headers]
-Authorization = "Bearer ..."
-[specs.congress.query]
-api_key = "..."
-
-[specs.nyfed]
-path = "/path/to/nyfed.spec"
-[specs.nyfed.query]
-api_key = "..."
-
-# ── Auth — global, applied to every backend ─────────────────────────
-auth-hook = "myapp.auth:default_hook"  # importable "module.path:attr"
+server = "http://127.0.0.1:6900"
+openapi-path = "/openapi.json"
+header-file = "/etc/openbb/headers.json"
+query-param-file = "/etc/openbb/query.json"
+auth-hook = "myapp.auth:default_hook"
 
 [headers]
 Authorization = "Bearer ..."
@@ -78,72 +47,71 @@ Authorization = "Bearer ..."
 [query]
 api_key = "..."
 
-# ── REPL display preferences (top-level shortcuts) ─────────────────
-output-mode = "rich"        # rich | json | tsv | html
-flair = ":fox_face"
+[specs.platform]
+path = "/srv/specs/platform.spec"
+
+[specs.nyfed]
+path = "/srv/specs/nyfed.spec"
+auth-hook = "myapp.auth:nyfed_hook"
+
+[specs.nyfed.headers]
+Authorization = "Bearer ..."
+
+[specs.nyfed.query]
+api_key = "..."
+```
+
+| Key | Flag | Environment variable | Notes |
+| --- | ---- | -------------------- | ----- |
+| `server` | `--server` | `OPENBB_SERVER_URL` | Server for dispatch and `--generate-spec`. |
+| `spec` | `--spec PATH` | `OPENBB_SPEC_PATH` | One unnamed spec. Ignored when `[specs]` tables exist. |
+| `[specs.NAME]` | `--spec NAME=PATH` | none | Needs `path`; may hold `auth-hook` and `headers` and `query` tables. |
+| `openapi-path` | `--openapi-path` | none | Only used by `--generate-spec`. |
+| `header-file` | `--header-file` | `OPENBB_HEADER_FILE` | JSON object of header names and values. |
+| `query-param-file` | `--query-param-file` | `OPENBB_QUERY_PARAM_FILE` | JSON object of query parameter names and values. |
+| `[headers]` | `-H` | none | Headers for every HTTP backend. |
+| `[query]` | `-Q` | `OPENBB_HTTP_QUERY_<NAME>` | Query parameters for every HTTP backend. |
+| `auth-hook` | none | none | `module.path:attribute` of an importable hook; see [Authentication](./auth.md). |
+| `output`, `batch-concurrency` | `--output`, `--batch-concurrency` | `OPENBB_CLI_BATCH_CONCURRENCY` | Read into the merged configuration but not applied in v5, because both flags have built-in defaults. Pass the flag or set the variable. |
+
+Paths in `spec`, `[specs.NAME]`, `header-file`, and `query-param-file` are used as written, without `~` expansion, so give absolute paths or paths relative to the working directory. `--config` and `--env-file` do expand `~`.
+
+## Precedence
+
+For `server`, `header-file`, and `query-param-file`, a flag beats the environment variable, which beats the TOML value. `openapi-path` has no variable, so the flag beats TOML.
+
+Specs are chosen as a whole rather than merged. `--spec` flags replace every spec in the configuration; without them, `[specs.NAME]` tables are used, then a top-level `spec` key, then `OPENBB_SPEC_PATH`. `[specs.NAME]` headers, query tables, and auth hooks still apply when `--spec NAME=PATH` uses the same name. When any spec is in effect, `server` is ignored for dispatch.
+
+Headers are merged key by key, from lowest to highest priority: `[headers]`, the `--header-file` object, then `-H` flags. Query parameters follow the same order with `OPENBB_HTTP_QUERY_*` variables inserted before `-Q` flags: `[query]`, `--query-param-file`, the environment, then `-Q`. In a multi-spec setup, the per-namespace values from `[specs.NAME.headers]`, `[specs.NAME.query]`, and `NAME:`-prefixed flags are applied on top of the merged global values.
+
+## .env files and environment variables
+
+Before reading any TOML, the CLI loads `~/.openbb_platform/.env` and then the file named by `--env-file` or `OPENBB_CLI_ENV_FILE`. A variable that is already set is never replaced, so a shell export beats both files, and the user-global `.env` beats `--env-file` for the same name. Apart from `OPENBB_CLI_ENV_FILE` itself, any variable in the table below can be set in these files.
+
+| Variable | Effect |
+| -------- | ------ |
+| `OPENBB_CLI_CONFIG` | TOML file used when `--config` is not passed. |
+| `OPENBB_CLI_ENV_FILE` | `.env` file used when `--env-file` is not passed. |
+| `OPENBB_SERVER_URL` | Default for `--server`. |
+| `OPENBB_SPEC_PATH` | Spec used when no `--spec` flag, `[specs]` table, or `spec` key is present. |
+| `OPENBB_HEADER_FILE` | Default for `--header-file`. |
+| `OPENBB_QUERY_PARAM_FILE` | Default for `--query-param-file`. |
+| `OPENBB_CLI_BATCH_CONCURRENCY` | Default for `--batch-concurrency`. Built-in default is 8. |
+| `OPENBB_HTTP_QUERY_<NAME>` | Adds the query parameter `<name>` in lower case to every HTTP request, so `OPENBB_HTTP_QUERY_API_KEY=xxx` sends `api_key=xxx`. |
+
+## Display keys and the `[settings]` table
+
+The loader also accepts four top-level display keys and a `[settings]` table, and `--print-config-template` lists them:
+
+```toml
+output-mode = "rich"
+flair = ":rocket"
 timezone = "America/New_York"
 rich-style = "dark"
 
-# ── Every other Settings field ─────────────────────────────────────
 [settings]
-allowed-number-of-rows = 50
 use-prompt-toolkit = true
 toolbar-hint = false
 ```
 
-## Backend selection
-
-Three forms; pick one:
-
-| Form | Behavior |
-| ---- | -------- |
-| `server = "URL"` | Dispatch through the URL; OpenAPI document fetched from `<URL>/openapi.json` unless `openapi-path` is set. |
-| `spec = "PATH"` | Single `.spec` file with the flat (unprefixed) command surface. |
-| `[specs.<ns>]` tables | Multi-spec: every namespace gets its own backend, scoped headers/query/auth-hook. |
-
-`server` and the `spec` / `[specs]` forms are mutually exclusive at dispatch time. If you supply both, the loader keeps both keys in the merged config but the CLI uses `[specs]` over `spec` over `server` for dispatch selection.
-
-## Auth — headers, query params, hooks
-
-The `[headers]` and `[query]` tables apply to every backend. Per-namespace overrides go under `[specs.<ns>.headers]` and `[specs.<ns>.query]`. CLI flags (`-H` / `--header`, `-Q` / `--query-param`) override TOML values on conflicts; `--header-file` / `--query-param-file` JSON files merge below CLI flags but above TOML.
-
-For dynamic credentials (RBAC, expiring tokens, vault-sourced secrets), point `auth-hook` at an importable callable. See [Authentication](/odp/cli/auth).
-
-## REPL display preferences
-
-Four top-level shortcut keys map onto the `Settings` model via `apply_settings_to_env`, which seeds them as `OPENBB_*` env vars before argparse runs:
-
-| Top-level key | Env var | Settings field |
-| ------------- | ------- | -------------- |
-| `output-mode` | `OPENBB_OUTPUT_MODE` | `OUTPUT_MODE` |
-| `flair` | `OPENBB_FLAIR` | `FLAIR` |
-| `timezone` | `OPENBB_TIMEZONE` | `TIMEZONE` |
-| `rich-style` | `OPENBB_RICH_STYLE` | `RICH_STYLE` |
-
-Every other Settings field is settable through `[settings]` (kebab-case keys allowed; uppercased into `OPENBB_*` env vars).
-
-## Environment variables
-
-| Variable | Used by |
-| -------- | ------- |
-| `OPENBB_CLI_CONFIG` | Falls back into `--config` when the flag is omitted. |
-| `OPENBB_CLI_ENV_FILE` | Falls back into `--env-file` when the flag is omitted. |
-| `OPENBB_SERVER_URL` | Default for `--server`. |
-| `OPENBB_SPEC_PATH` | Default for `--spec` when no `--spec` flag and no `[specs]` config are present. |
-| `OPENBB_HEADER_FILE` | Default for `--header-file`. |
-| `OPENBB_QUERY_PARAM_FILE` | Default for `--query-param-file`. |
-| `OPENBB_CLI_BATCH_CONCURRENCY` | Default for `--batch-concurrency` (default `8`). |
-| `OPENBB_HTTP_QUERY_<NAME>` | Auto-promoted to `?<name>=<value>` on every dispatch — `OPENBB_HTTP_QUERY_API_KEY=xxx` becomes `?api_key=xxx`. |
-| `OPENBB_<KEY>` | All other `Settings` fields (and `[settings]` table entries) are exported as `OPENBB_<UPPERCASED_KEY>`. |
-
-`~/.openbb_platform/.env` is always tried as the user-global dotenv. `$OPENBB_CLI_ENV_FILE` / `--env-file` is loaded after it. Real shell exports always beat both — `load_env_files` uses `os.environ.setdefault`.
-
-## What's recognized from TOML
-
-`_CONFIG_SCALAR_KEYS` in `openbb_cli.cli` lists the scalar argparse defaults that the loader can fill from TOML:
-
-```
-server, openapi_path, header_file, query_param_file, output, batch_concurrency
-```
-
-These match the corresponding argparse `dest` names. Argparse defaults already set by an environment variable are not overridden by TOML — TOML is treated as the layer below env.
+In v5 these entries only reach the process environment. Each `[settings]` entry is exported as `OPENBB_<KEY>` in upper snake case unless that variable is already set, and the four top-level keys are exported as `OPENBB_OUTPUT_MODE`, `OPENBB_FLAIR`, `OPENBB_TIMEZONE`, and `OPENBB_RICH_STYLE`, replacing any existing value. The REPL's settings model does not read the process environment; it loads `~/.openbb_platform/.cli.env` only. Neither these TOML entries nor `OPENBB_*` exports in your shell change the REPL, so use the `/settings` menu, which writes to `.cli.env`, as described in [Settings](./settings.md).

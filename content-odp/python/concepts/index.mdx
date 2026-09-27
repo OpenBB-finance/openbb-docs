@@ -2,10 +2,14 @@
 title: Concepts
 sidebar_position: 0
 description: >
-  Conceptual overview of openbb-core.
+  How openbb-core is put together: the two interfaces, the OBBject envelope,
+  extension types, streaming, and the generated Python package.
 keywords:
   - openbb-core
   - concepts
+  - architecture
+  - OBBject
+  - extensions
 ---
 
 import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
@@ -13,30 +17,32 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 
 <HeadTitle title="Concepts | OpenBB Python (V5)" />
 
+These pages explain how the engine works. The [Developer](../developer/index.md) section builds on them with step-by-step guides.
+
 <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 -ml-6">
   <NewReferenceCard
     title="Architecture"
-    description="The Python Interface and REST API surfaces, and the entry-point groups for extensions."
+    description="The Python Interface and REST API, how a command call flows through routers and providers, and where extensions plug in."
     url="/odp/python/concepts/architecture"
   />
   <NewReferenceCard
     title="The OBBject envelope"
-    description="Fields and accessor methods on openbb_core.app.model.obbject.OBBject."
+    description="Fields and conversion methods of the object every command returns, and the output_type preference."
     url="/odp/python/concepts/obbject"
   />
   <NewReferenceCard
     title="Extension types"
-    description="The four entry-point groups: router, provider, OBBject, and charting/views."
+    description="The router, provider, OBBject, and charting entry-point groups and what each entry point must resolve to."
     url="/odp/python/concepts/extensions"
   />
   <NewReferenceCard
-    title="Streaming responses"
-    description="OBBStream and StreamingResponse — the AsyncIterator-typed return path added in V5."
-    url="/odp/python/concepts/streaming"
+    title="Packaging and static assets"
+    description="How the openbb package is generated, when it rebuilds, and when to run openbb-build."
+    url="/odp/python/concepts/packaging"
   />
   <NewReferenceCard
-    title="Packaging and static assets"
-    description="openbb-build and the openbb_core.app.static.package_builder surface."
-    url="/odp/python/concepts/packaging"
+    title="Streaming responses"
+    description="OBBStream in Python and text/event-stream over REST, for fetchers that yield rows as they arrive."
+    url="/odp/python/concepts/streaming"
   />
 </ul>

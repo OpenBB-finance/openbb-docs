@@ -2,8 +2,9 @@
 title: OpenBB Python (V5)
 sidebar_position: 0
 description: >
-  OpenBB Python documentation for V5 — installation, settings, quickstarts,
-  concepts, and migration notes from V4.
+  OpenBB Python V5 documentation: installation, quickstarts, settings, user
+  guides, concepts, extension development, the API reference, and migration
+  from V4.
 keywords:
   - ODP
   - OpenBB Python
@@ -21,48 +22,63 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 
 <HeadTitle title="OpenBB Python (V5) | OpenBB Docs" />
 
-The ODP Python Package serves as scaffolding for a unified API that is standardized, consumable, and deployable across multiple mediums simultaneously - REST API, pure Python, Jupyter Notebook, MCP, Docker, OpenBB Workspace, Excel, etc. - from a single source of truth.
-
-With cross-compatibility out-of-the-box, its ready-to-use data connectors, and a wealth of extensions, it lets you concentrate on creating outstanding research reports and applications quickly and easily.
+OpenBB Python is a set of packages built on `openbb-core`. Each provider package connects one data source and adds its own namespace, such as `obb.fred`, `obb.sec`, or `obb.cboe`. The same installed commands are available from Python with `from openbb import obb`, as a REST API, as MCP tools, and as OpenBB Workspace widgets, and extensions you write yourself plug into all of them the same way.
 
 :::important
-V5 of OpenBB Python is a breaking release. Some provider packages are no longer published, while others have been removed from the repository and are no longer included with, `pip install openbb`. 
-
-The complete list of breaking changes lives in [Migration from V4](/odp/python/migration-from-v4).
+V5 is a breaking release. Commands move from shared routers such as `obb.equity` into provider namespaces, fifteen V4 provider packages are removed, and the license changes from AGPL-3.0 to Apache-2.0. [Migration from V4](./migration-from-v4.mdx) lists every change. The V4 documentation remains available under [/odp/v4/python](/odp/v4/python).
 :::
-
 
 ## Browse by section
 
 <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 -ml-6">
   <NewReferenceCard
     title="Installation"
-    description="Install openbb-core and related packages."
+    description="Install openbb-core with the provider packages you need, or from source."
     url="/odp/python/installation"
   />
   <NewReferenceCard
+    title="Quickstart"
+    description="First calls from Python, a first extension, and serving commands over REST, MCP, and Workspace."
+    url="/odp/python/quickstart"
+  />
+  <NewReferenceCard
     title="Settings & Configuration"
-    description="UserSettings, SystemSettings, the openbb.toml schema, the layered loader, environment variables."
+    description="user_settings.json, system_settings.json, openbb.toml, environment variables, and their precedence."
     url="/odp/python/settings"
   />
   <NewReferenceCard
-    title="Quickstart — User"
-    description="from openbb import obb in a few steps."
-    url="/odp/python/quickstart/user"
-  />
-  <NewReferenceCard
-    title="Quickstart — Developer"
-    description="Register a FastAPI app as an openbb_core_extension."
-    url="/odp/python/quickstart/developer"
+    title="User Guide"
+    description="Credentials, preferences and defaults, output types, query parameters, warnings, and errors."
+    url="/odp/python/user-guide"
   />
   <NewReferenceCard
     title="Concepts"
-    description="Explanations of core concepts for users and developers."
+    description="Architecture, the OBBject envelope, extension types, streaming, and the generated package."
     url="/odp/python/concepts"
   />
   <NewReferenceCard
+    title="Developer"
+    description="Build provider, router, OBBject, and charting extensions, with how-to guides for common tasks."
+    url="/odp/python/developer"
+  />
+  <NewReferenceCard
+    title="Extensions"
+    description="The V5 provider packages, openbb-news, the data-processing extensions, charting, and the API and MCP servers."
+    url="/odp/python/extensions"
+  />
+  <NewReferenceCard
+    title="API Reference"
+    description="Every command in the V5 packages, with parameters, returned fields, and examples."
+    url="/odp/python/reference"
+  />
+  <NewReferenceCard
+    title="Data Models"
+    description="The query parameter and data models behind each command."
+    url="/odp/python/data_models"
+  />
+  <NewReferenceCard
     title="Migration from V4"
-    description="Breaking changes from PR #7489."
+    description="Removed providers, new namespaces, configuration, packaging, CLI, and REST API changes."
     url="/odp/python/migration-from-v4"
   />
 </ul>

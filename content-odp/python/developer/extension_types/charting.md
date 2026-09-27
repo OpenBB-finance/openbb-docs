@@ -1,257 +1,117 @@
 ---
 title: Charting Extensions
-sidebar_position: 5
-description: This page is a guide for adding custom views to any router endpoint that are included with the response object when the user sets `chart=True`.
+sidebar_position: 6
+description: Add chart views to router commands so that calling them with chart=True attaches a chart to the OBBject, in Python and over REST.
 keywords:
-  - OBBject
-  - Python
-  - Development
-  - OpenBB Platform
-  - extensions
-  - obbject extension
-  - how-to
+  - ODP
+  - OpenBB V5
   - charting
-  - Plotly
   - openbb-charting
+  - openbb_charting_extension
+  - views
+  - OpenBBFigure
+  - Plotly
+  - ChartingHook
+  - how-to
 ---
 
 import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-<HeadTitle title="Charting Extensions - Developer | OpenBB Docs" />
+<HeadTitle title="Charting Extensions | OpenBB Python (V5)" />
 
-This page is a guide for adding custom views to any router endpoint,
-included with the response object when the user sets `chart=True`.
+A charting extension supplies a chart view for one or more command routes. When `openbb-charting` is installed and a command has a view, the command gains a `chart` parameter; calling it with `chart=True` runs the view and stores the result in `OBBject.chart`. This guide adds a view for the `obb.demo.prices` command from [Provider extensions](provider.md). The matching rules are summarized in [Extension types](../../concepts/extensions.mdx).
 
-The infrastructure is generally compatible with any JSON serializable object,
-but some handling and helpers are optimized for Plotly Figure objects.
+## Write a view
 
-## Folder structure
-
-```shell
-obbject_example
-├── README.md
-├── openbb_empty_charting
-│   └── __init__.py
-├── poetry.lock
-└── pyproject.toml
-```
-
-Extension code can go directly in the `__init__.py` file.
-
-### TOML File
-
-The entry point for the extension is specified as a Poetry plugin, near the bottom of the file.
-
-```toml
-[tool.poetry.plugins."openbb_charting_extension"]
-empty = "openbb_empty_charting:EmptyViews"
-```
-
-Where `EmptyViews` is a class with static methods for each endpoint being implemented.
-
-A complete `pyproject.toml` looks something like:
-
-<details>
-<summary mdxType="summary">`pyproject.toml`</summary>
-
-```toml
-[tool.poetry]
-name = "openbb-empty-charting"
-version = "0.0.1"
-description = "An empty OBBject extension"
-authors = ["Hello <hello@world.co>"]
-readme = "README.md"
-packages = [{ include = "openbb_empty_charting" }]
-
-[tool.poetry.dependencies]
-python = "^3.10,<3.14"
-openbb-core = "*"
-openbb-charting = "*"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.poetry.plugins."openbb_charting_extension"]
-empty = "openbb_empty_charting:EmptyViews"
-```
-
-</details>
-
-:::important
-Extension logic will map routers, and while not necessary to define as a dependency,
-it is assumed that routers for specific endpoints are installed in the environment.
-
-For example, `openbb-equity` should be installed if mapping to, `obb.equity.price.quote`.
-
-To not rely on `openbb-charting`, add the plugin definition to a [Router extension](/odp/python/developer/extension_types/router).
-This has the effect of making the extension optional, because endpoint views will only be accessible when `openbb-charting` is installed.
-:::
-
-### Writing the Extension
-
-In this example the extension code all lives inside `__init__.py`.
-
-:::info
-The example below uses [`openbb-empty-router`](/odp/python/developer/extension_types/router) as the router extension.
+A view class holds one static method per route. The method name is the route with the leading `/` removed and every other `/` replaced by `_`, so `/demo/prices` becomes `demo_prices`. Only public functions defined in the same module as the class count as views. `openbb_demo/demo_views.py`:
 
 ```python
->>> from openbb import obb
+"""Demo chart views."""
 
->>> obb.empty.hello()
+from typing import TYPE_CHECKING, Any
 
-OBBject[T]
+if TYPE_CHECKING:
+    from openbb_charting.core.openbb_figure import OpenBBFigure
 
-id: 068fa8b2-968c-7059-8000-e6a8e3501eba
-results: Hello from the Empty Router extension!
-provider: None
-warnings: None
-chart: None
-extra: {'metadata': {'arguments': {'provider_choices': {}, 'standard_params': {}, '...
-```
 
-- `**kwargs` should be the only argument for the function.
-- Functions should be static methods of the target entry point.
-- Response types can be:
-  - `openbb_core.app.model.charts.chart.Chart`
-  - `openbb_charting.core.openbb_figure.OpenBBFigure | plotly.graph_objects.Figure | Any`
-  - dict-like represention of the chart
-  - `tuple[<figure-object>, <JSON-serializable-content>]`
-
-:::
-
-<details>
-<summary mdxType="summary">Example Extension</summary>
-
-```python
-"""Empty Router Views."""
-
-class EmptyViews:
-    """Empty Views."""
+class DemoViews:
+    """Chart views for demo commands."""
 
     @staticmethod
-    def empty_hello( # Map to any full router path like this, i.e, `etf_countries`
-        **kwargs,
-    ):
-        """Empty Hello World Chart.
-
-        Parameters
-        ----------
-        some_param: int
-            This parameter is now under kwargs["extra_params"]["some_param"]
-        """
-        # pylint: disable=import-outside-toplevel
-
-        # Import modules here instead of at the top of the file.
-        # This prevents circular imports and decouples from application initialization.
-
-
-        # This is an object that can be used to return the results.
-        # It accepts "fig", "content", and "format" as inputs.
-        # Content is the JSON serialized representation returned to the API,
-        # "fig" is the Python object holding the chart. 
-        from openbb_core.app.model.charts.chart import Chart
-
-
-        # This is the general purpose Figure object,
-        # it is a subclass of plotly.graph_objects.Figure
-        # It can be used to display content in a dedicated window
-        # when `pywry` is installed from PyPI.
+    def demo_prices(**kwargs: Any) -> tuple["OpenBBFigure", dict[str, Any]]:
+        """Chart closing prices returned by /demo/prices."""
         from openbb_charting.core.openbb_figure import OpenBBFigure
-        
-        # Code will execute when router endpoint is called, and `chart=True`.
 
-        print(kwargs)
-
+        rows = kwargs["obbject_item"]
         fig = OpenBBFigure()
-        fig.add_bar(
-            x=["A", "B", "C"], y=[1, 2, 3]
-        )
-        fig.update_layout(
-            title="Hello Chart!",
-            template="plotly_dark"
-        )
-        return Chart(
-            fig=fig,  # Binary figure object
-            content=fig.to_plotly_json(),  # JSON-econdable version.
-            format="plotly"  # For user reference.
-        )
+        fig.add_scatter(x=[row.date for row in rows], y=[row.close for row in rows], name="Close")
+        content = fig.show(external=True).to_plotly_json()
+        return fig, content
 ```
 
-</details>
+Importing `openbb_charting` inside the method keeps the module importable when the package is installed without it.
 
-<details>
-<summary mdxType="summary">This results in:</summary>
+The view receives keyword arguments only. `obbject_item` is the command's `results`, `standard_params` and `extra_params` are the parameters the command was called with, `provider` is the provider name, `extra` is the `OBBject.extra` dictionary, and `charting_settings` carries the user's chart and table style preferences. To make a chart configurable, add the option as a command parameter; it arrives in `standard_params` or `extra_params`.
 
+The return value can take several forms. An `OpenBBFigure`, a subclass of the Plotly `Figure`, is serialized for you. A `(figure, content)` tuple stores `content` as the JSON form, or recomputes it when the figure is an `OpenBBFigure`. A `Chart` from `openbb_core.app.model.charts.chart` is stored as-is, which lets a view return non-Plotly output with its own `format`. If the view raises an unexpected exception, `openbb-charting` falls back to a generic line chart of the results.
+
+## Register the view
+
+Point an `openbb_charting_extension` entry point at the class. Declaring `openbb-charting` as an optional dependency keeps it out of installs that do not chart:
+
+```toml
+[project.optional-dependencies]
+charting = ["openbb-charting"]
+
+[project.entry-points."openbb_charting_extension"]
+demo = "openbb_demo.demo_views:DemoViews"
+```
+
+The entry-point name is not used for matching, so views for several routers can live in one class and one entry point.
+
+## Use the chart
+
+Install the package with the extra and rebuild, so the generated `obb.demo.prices` method gains its `chart` parameter:
+
+```bash
+pip install -e ".[charting]"
+openbb-build
+```
 
 ```python
->>> res = obb.empty.hello(chart=True, some_param= 2)
-{
-    'extra_params': {'some_param': 2}, # Additional keyword arguments.
-    'obbject_item': 'Hello from the Empty Router extension!',  # This is the function's results object.
-    'charting_settings': {"chart_style": "dark", "table_style": "dark", ... }  # Portion of the user_settings.json
-    'standard_params': {},  # Main keyword arguments.
-    'provider': None,
-    'extra': {}  # The 
-}
+from openbb import obb
 
->>> res
-
-OBBject[T]
-
-id: 068fac1e-e9fe-7037-8000-b993cc3e848f
-results: Hello from the Empty Router extension!
-provider: None
-warnings: None
-chart: {'content': {'data': [{'x': ['A', 'B', 'C'], 'y': [1, 2, 3], 'type': 'bar'}]...
-extra: {'metadata': {'arguments': {'provider_choices': {}, 'standard_params': {}, '...
+output = obb.demo.prices(symbol="ABC", chart=True)
+output.show()
+output.chart.content
 ```
 
-</details>
+`show()` renders the figure, and `output.chart.content` is the JSON form. Over REST, `GET /api/v1/demo/prices?symbol=ABC&chart=true` returns the same `chart.content` in the response body; the figure object itself is not serialized. If the view fails, the command still returns its results and the error is reported as a warning, unless `OPENBB_DEBUG_MODE` is set.
 
-## **Kwargs
+`output.charting.get_params()` shows the view's docstring, which is the place to document the chart's options. [openbb-charting](../../extensions/infrastructure/openbb-charting/index.md) covers the rest of the `charting` accessor.
 
-Kwargs is a dictionary with the function's results, user settings, and execution metadata.
+## Modify charts with hooks
 
-Implemented methods intercept the execution before completion, and returning sets the `chart` attribute in the `OBBject` response object.
-
-```
-dict_keys(
-    [
-        'obbject_item', 'charting_settings', 'standard_params', 'extra_params', 'provider', 'extra'
-    ]
-)
-```
-
-- **`kwargs["obbject_item"]`**: The validated 'results' object in the final output.
-- **`kwargs["charting_settings"]`**: [User settings](/odp/python/settings/user_settings/preferences) are passed in for handling, if required.
-- **`kwargs["standard_params"]`**: Parameters handled by the standard model, if any.
-- **`kwargs["extra_params"]`**: All other parameters passed to the main function.
-- **`kwargs["extra"]`**: [Metadata](/odp/python/developer/how-to/annotated_results) returned by a [provider extension](/odp/python/developer/extension_types/provider).
-
-
-## Conveying Parameters
-
-If chart generation is being parameterized, the best thing to do is include them in the main function definition.
-However, it may not be possible - or desired - to add more definitions to the endpoint code.
-
-The docstring is available in the Python Interface with the `openbb-charting` method, `get_params`. This calls Python `help` on the function.
+To change charts produced by views you do not own, register a `ChartingHook` under the `openbb_charting_hooks` entry-point group. A hook can override `resolve_data`, `pre_figure`, `post_figure`, `pre_render`, and `post_render`; each receives a `HookContext` with the route, figure, content, parameters, and settings, and may change it in place. `routes` limits a hook to specific routes, and hooks with a lower `priority` run first (the default is 100).
 
 ```python
->>> res = obb.empty.hello(chart=True, some_param= 2)
->>> res.charting.get_params()
+from openbb_core.app.charting import ChartingHook, HookContext
 
-Help on function empty_hello in module openbb_empty_charting:
 
-empty_hello(**kwargs)
-    Empty Hello World Chart.
+class Watermark(ChartingHook):
+    """Add a watermark to demo charts."""
 
-    Parameters
-    ----------
-    some_param: int
-        This parameter is now under kwargs["extra_params"]["some_param"]
+    routes = ("/demo/prices",)
+
+    def post_figure(self, context: HookContext) -> None:
+        """Annotate the figure and refresh its JSON content."""
+        context.figure.add_annotation(text="Internal use", showarrow=False)
+        context.content = context.figure.to_plotly_json()
 ```
 
-## Usage
+```toml
+[project.entry-points."openbb_charting_hooks"]
+watermark = "my_package.hooks:Watermark"
+```
 
-See the documentation [here](/odp/python/extensions/infrastructure/openbb-charting) for usage instructions and examples.
+The content is computed before `post_figure` runs, so a hook that edits the figure should also refresh `context.content` for the change to reach REST responses.

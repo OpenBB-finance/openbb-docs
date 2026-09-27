@@ -1,127 +1,88 @@
 ---
-title: Introduction
+title: Extension Types
 sidebar_position: 0
-description: An overview of the three types of OpenBB extensions.
+description: Guides for each kind of OpenBB extension and how to scaffold a new extension project with openbb-cookiecutter.
 keywords:
   - ODP
-  - OpenBB Platform
-  - Develop
-  - Extension
-  - Provider
-  - Router
+  - OpenBB V5
+  - extension
+  - provider
+  - router
   - OBBject
-  - Local Development
-  - Python
+  - charting
+  - openbb-cookiecutter
 ---
-
-<!-- markdownlint-disable MD012 MD031 MD033 MD037 -->
 
 import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 
-<HeadTitle title="Extension Types | OpenBB Docs" />
+<HeadTitle title="Extension Types | OpenBB Python (V5)" />
 
-<ul className="grid grid-cols-1 gap-2 -ml-6">
+Each guide below builds one kind of extension. [Extension types](../../concepts/extensions.mdx) in Concepts lists the entry-point groups and what each entry point must resolve to; the guides assume that background. A data package normally combines a provider and a router, so start with the provider guide.
+
+<ul className="grid grid-cols-1 md:grid-cols-2 gap-4 -ml-6">
   <NewReferenceCard
-    title="Provider Extensions"
-    description="Get started building OpenBB Provider Extensions."
+    title="Provider extensions"
+    description="Build a data source with QueryParams, Data, and Fetcher classes, and expose it under its own namespace."
     url="/odp/python/developer/extension_types/provider"
   />
-</ul>
-
-<ul className="grid grid-cols-1 gap-2 -ml-6">
   <NewReferenceCard
-    title="Router Extensions"
-    description="Create new routes and endpoints with OpenBB Router Extensions."
+    title="Router extensions"
+    description="Add commands to obb and routes to the REST API with @router.command."
     url="/odp/python/developer/extension_types/router"
   />
-</ul>
-
-<ul className="grid grid-cols-1 gap-2 -ml-6">
   <NewReferenceCard
-    title="Convert FastAPI to ODP Python Package"
-    description="Instantly convert FastAPI applications to OpenBB Router Extensions."
+    title="From FastAPI"
+    description="Register an existing FastAPI app or APIRouter as a router extension without rewriting it."
     url="/odp/python/developer/extension_types/from_fastapi"
   />
-</ul>
-
-<ul className="grid grid-cols-1 gap-2 -ml-6">
   <NewReferenceCard
-    title="OBBject"
-    description="Add functionality to the OBBject response object."
+    title="OBBject extensions"
+    description="Add accessor methods to every command result in the Python Interface."
     url="/odp/python/developer/extension_types/obbject"
   />
-</ul>
-
-<ul className="grid grid-cols-1 gap-2 -ml-6">
   <NewReferenceCard
-    title="Charting"
-    description="Add custom charts and views to OpenBB Router endpoints."
+    title="OBBject plugins"
+    description="Run callbacks on command output before it is returned, on both interfaces."
+    url="/odp/python/developer/extension_types/plugins"
+  />
+  <NewReferenceCard
+    title="Charting extensions"
+    description="Add chart views that commands produce when called with chart=True."
     url="/odp/python/developer/extension_types/charting"
   />
 </ul>
 
-<ul className="grid grid-cols-1 gap-2 -ml-6">
-  <NewReferenceCard
-    title="Plugins"
-    description="Plugin to the command execution loop and customize the output behavior with endpoint callbacks."
-    url="/odp/python/developer/extension_types/plugins"
-  />
-</ul>
+## Scaffold a project with openbb-cookiecutter
 
-## OpenBB CookieCutter
+`openbb-cookiecutter` generates an installable extension project with working examples, tests, and a `pyproject.toml` that already declares the entry points. Run it without installing it through `uv`, or install it with pip:
 
-`openbb-cookiecutter` is a PyPI package with a simple CL utility that creates a new Python project folder to develop OpenBB Python extensions.
-
-### Template Structure
-
-The Cookiecutter template prompts the user for information to use in the `pyproject.toml` file, and then generates a project based on that information.
-All fields are optional.
-
-- Your Name
-- Your Email
-- Project Name
-- Project Tag (some-distributable-package)
-- Package Name ("include" code folder name - "some_package")
-- Provider Name - name of the provider for the entry point - i.e, 'fmp'
-- Router Name - name of the router path - i.e. `obb.{some_package}`
-- OBBject Name - name of the OBBject accessor namespace.
-
-The template will generate all extension types as a single, installable Python project.
-You likely won't always use all in tandem, just delete the unwanted folders and entrypoints.
-
-### Usage
-
-1. Install in a Python environment from PyPI with:
-
-```
-pip install openbb-cookiecutter
-```
-
-Alternatively, install and launch with `uvx`:
-
-```
+```bash
 uvx openbb-cookiecutter
 ```
 
-2. Navigate the current working directory to the desired output location and run:
-
-```
+```bash
+pip install openbb-cookiecutter
 openbb-cookiecutter
 ```
 
-Enter values or press `enter` to continue with the default.
+The command prompts for the author, project name, project tag (the distribution name), package name, which extension types to include, and the provider, router, and OBBject names those types use. The extension types are `router`, `provider`, `charting`, `obbject`, `on_command_output`, or `all`. Pass them with `-e` to skip that prompt. `--no-input` accepts every default, which includes all extension types, and `--extra-context KEY=VALUE` overrides a single value:
 
-3. Create a new Python environment for the project.
-
-4. Navigate into the generated folder and install with:
-
-```
-pip install -e .
+```bash
+openbb-cookiecutter -e router provider
+openbb-cookiecutter --no-input -o ./extensions -e all --extra-context provider_name=my_source
 ```
 
-5. Python static files will be generated on first import, or trigger with `openbb-build`.
+Interactive runs derive the default project tag and package name from the project name. With `--no-input`, unspecified values come from the template defaults (`extension-template`, `extension_template`, `template`, `template_ext`), so pass every name you want to change.
 
-6. Import the Python package or start the API and use like any other OpenBB application.
+With every type selected, the generated package contains `providers/<provider_name>/` with an `Example` model and an `EquityHistorical` implementation built on the standard model, `routers/<router_name>.py` with GET, POST, and provider-backed commands, `routers/<router_name>_views.py` with a chart view, and `obbject/<obbject_name>/` with two accessors and an on-command-output plugin. Unselected types are removed. Because a provider and an OBBject extension each register credentials under their own name, the template refuses to use the same value for `provider_name` and `obbject_name`.
 
-7. Modify the business logic and get started building!
+From the generated directory, create the environment, build the Python Interface, and run the tests:
+
+```bash
+uv sync
+uv run openbb-build
+uv run pytest
+```
+
+`uv run openbb-api` serves the same commands over the REST API; `openbb-platform-api` is in the project's `dev` dependency group. If the project includes the on-command-output plugin, set `OPENBB_ALLOW_ON_COMMAND_OUTPUT=true` before importing `openbb` or starting the API.

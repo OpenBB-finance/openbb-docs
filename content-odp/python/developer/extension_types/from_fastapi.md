@@ -1,159 +1,71 @@
 ---
 title: From FastAPI
-sidebar_position: 2
-description: This page explains how to convert an existing FastAPI application to an ODP Python Package, without changing any code.
+sidebar_position: 3
+description: Register an existing FastAPI app or APIRouter as an OpenBB router extension, and what changes when its routes run in the Python Interface.
 keywords:
   - ODP
-  - Router
+  - OpenBB V5
   - FastAPI
   - APIRouter
-  - API
-  - Python
-  - Development
-  - OpenBB Platform
-  - extensions
+  - Flask
+  - openbb_core_extension
+  - router
   - how-to
 ---
 
 import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-<HeadTitle title="Converting FastAPI Apps - Developer | OpenBB Docs" />
+<HeadTitle title="From FastAPI | OpenBB Python (V5)" />
 
-This page explains how to convert an existing FastAPI application to an ODP Python Package, without changing any code.
+An existing FastAPI application becomes an OpenBB extension without code changes. Point an `openbb_core_extension` entry point at a configured `fastapi.FastAPI` or `fastapi.APIRouter` instance, install the package, and each route is served by the OpenBB REST API and generated as a method on `obb`. [Quick start (Developer)](../../quickstart/developer.mdx) walks through a minimal example; this page covers the details and the limits.
 
-All that's required is defining the entry point in `pyproject.toml`, directed to an instance of either, `fastapi.FastAPI` or `fastapi.APIRouter`.
+## Register the entry point
 
-:::tip
-If you are already familiar with FastAPI, this is an excellent way to get started making OpenBB Python Package extensions. 
-:::
-
-Each API route (GET or POST) will be added to the `obb` Python package under the assigned name - `i.e, obb.my_app.some_function` - and will be an equivalent to
-the REST API endpoint.
-The resulting app will be an independent module that does not require a server.
-They will combine and operate like any other ODP [router](/odp/python/developer/extension_types/router).
-
-## Add Dependency
-
-Add `openbb-core` (version pinning is not recommended, use the latest or `>=1.5.5`) to the project's dependencies.
-
-:::info
-If not already in your environment, this will introduce Numpy, Pandas, and Uvicorn.
-:::
-
-## Entry Point
-
-In, `pyproject.toml`, add a section where the object to the right of the colon is the configured instance of `FastAPI` or `APIRouter`.
-
-ODP Python uses Poetry as the build tool, but you can use any PEP 517-compliant build backend.
-
-### Poetry
+Add `openbb-core` to the project's dependencies and declare the entry point:
 
 ```toml
-[tool.poetry.plugins."openbb_core_extension"]
+[project]
+dependencies = ["openbb-core>=2.0.0"]
+
+[project.entry-points."openbb_core_extension"]
 my_app = "my_package.app:app"
 ```
 
-### Standard
+The object after the colon must exist when the module is imported. Factory functions are not called, so an entry point that resolves to a function is skipped. A `FastAPI` app contributes its router; an `APIRouter` is used directly. The entry-point name, `my_app` here, becomes the namespace: a route at `/prices` becomes `obb.my_app.prices()` and `/api/v1/my_app/prices`. Any build backend that writes standard entry-point metadata works.
 
-```toml
-[project.entry-points."openbb_core_extension"]
-my_app = "my_package.app.some_router:router"
-```
+## Install, build, and import
 
-:::note
-Factory functions are not supported. A configured instance must exist on package initialization.
-:::
-
-## Install
-
-The extension must be installed for it to be recognized, use your preferred method of installation. Installing as editable is recommended for development and testing.
-
-```sh
+```bash
 pip install -e .
-```
-
-## Build
-
-The API can be started [immediately](/odp/python/quickstart/rest_api); but, to use as a Python package, the static assets must be built.
-
-From the command line, enter:
-
-```sh
 openbb-build
 ```
 
-### Import
-
-Upon completion, it is ready to use. Import the package with:
-
-```sh
+```python
 from openbb import obb
 
-print(obb.my_app)
+obb.my_app
 ```
 
-## Known Limitations
+The REST API picks up the routes on its next start without a build. The build is only for the Python Interface. It generates each method's signature from the route's parameters and its docstring from the route's description and models, and it adds the routes to `obb.reference`. Pydantic models with field descriptions produce more useful docstrings than bare types.
 
-The Python interface will be nearly identical to its REST equivalent,
-with some notable differences and technical limitations.
+## How routes behave in the Python Interface
 
-Primarily, the client/server relationship does not exist within the Python interface.
+The Python Interface calls the route function directly, without an HTTP request, so anything that depends on the request needs attention.
 
-### Auth Hooks
+Dependencies declared with `Depends()` are resolved in-process when possible. A dependency whose own parameters are headers, cookies, query parameters, or plain values has those parameters added to the generated method and called with them, so an `x-api-key` header dependency becomes an `x_api_key` argument. A dependency that needs a `Request`, `Response`, or `WebSocket` object, or that nests another `Depends()`, cannot be resolved without a request. Avoid reading the request object inside handlers you want to call from Python.
 
-- Authorization hooks will not be injected into the Python static assets,
-functions are expected to operate without authorization.
+Authentication applied by the REST server does not run in the Python Interface; the caller is already inside the process.
 
-### Dependency Injections
+WebSocket routes are served by the REST API but are not generated in the Python Interface. A handler that returns a Starlette `StreamingResponse` is returned in Python as an [`OBBStream`](../../concepts/streaming.mdx) over the response body, and over REST the response is forwarded unchanged.
 
-- Request-bound dependnecies, or those returning `None`, will not be injected.
+The Python Interface identifies commands by path, so two routes with the same path and different HTTP methods produce one method. Give each operation its own path, or use a path parameter. Routes declared with `include_in_schema=False` are left out of the Python Interface.
 
-- Command execution may fail where endpoints require access to the `Request` or `Headers`.
-  - Additional handling may be required if endpoint code explicitly accesses these objects as locals.
+## Flask applications
 
-- All other dependencies are injected into the static assets as locals.
-
-### Streaming Endpoints
-
-- Websockets are not currently supported. They will still be part of the REST API, but no Swagger docs will be generated, and they will be excluded from the Python interface.
-
-- Streaming responses (one-way communication) will work, but are not officially supported and may have unexpected outcomes.
-
-### Multi-Method API Routes
-
-- API routes with multiple methods (e.g., `/my_app/some_function` has both `GET` and `POST` operations) may not generate correctly.
-  - Consider implementing the methods as API path parameters.
-
-## Tips & Workarounds
-
-If you are having trouble building the static assets for a full application, consider targeting individual routers or wrapping functions in an instance of `fastapi.APIRouter`. This will help isolate and identify any problematic endpoints. 
-
-Rich metadata for each function will be generated and stored under `obb.reference`.
-Parameters and Returns sections of docstrings will be automatically generated from model definitions and annotations.
-For best results, use descriptive Pydantic models.
+With the `flask` extra installed (`pip install "openbb-core[flask]"`), an `openbb_core_extension` entry point can also point to a Flask app. The REST API mounts it at `/api/v1/<entry-point name>` and merges its routes into the OpenAPI schema. Flask apps are not added to the Python Interface.
 
 ## Troubleshooting
 
-Some issues may be resolved by installing the latest version of `openbb-core`. 
+If `openbb-build` fails, set `OPENBB_DEBUG_MODE=true` and run it again for the full traceback. Errors usually point to an import that fails outside the server, or to a type annotation that cannot be written into generated code. Building from Python with `openbb.build(lint=False)` skips the ruff pass, which separates generation errors from lint errors. If the problem is hard to isolate in a large app, register one `APIRouter` at a time.
 
-If `openbb-build` results in an error and does not complete, check the error message for clues. For a verbose output, set the environment variable, `OPENBB_DEBUG_MODE='1'` and run it again.
-
-Encountered errors may be related to module imports, function signatures, docstrings, or type annotations.
-
-If `openbb-build` succeeds, and you encounter an import error, after `from openbb import obb`, the static assets may have been corrupted.
-Enable debug mode, run `openbb-build` again and inspect the final result.
-
-If build and import were successful but an error occurs on accessing the application property, there may have been a linting error.
-Try, `pip install -U ruff black`, and then run `openbb-build` again.
-If it persists, make note of the complete error and inspect the static assets. Adjust function annotations and types to further diagnose.
-
-### Static Assets Location
-
-You can inspect the resulting files, which are found in the `site-packages` folder of the environment. The relative path is:
-
-```sh
-/site-packages/openbb/package/
-```
-
-If the issue cannot be resolved with changes to your code, please open an issue on [GitHub](https://github.com/OpenBB-finance/OpenBB/issues)
-with the full error messages, original vs. generated snippets, along with any other environment and platform context.
+The generated files are in the environment's `site-packages/openbb/package/` directory, one module per path, and are safe to read when a generated signature looks wrong. Rebuilding replaces them. If a problem persists with the latest `openbb-core`, open an issue on [GitHub](https://github.com/OpenBB-finance/OpenBB/issues) with the error, the original route, and the generated code.

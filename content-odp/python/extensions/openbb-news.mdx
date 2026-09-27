@@ -1,0 +1,216 @@
+---
+title: openbb-news
+sidebar_position: 4
+description: The openbb-news extension - an RSS and Atom reader with 562 bundled feeds, configurable in openbb.toml, plus company news from installed providers.
+keywords:
+  - news
+  - RSS
+  - Atom
+  - feeds
+  - openbb.toml
+  - company news
+  - Workspace newsfeed
+---
+
+<!-- markdownlint-disable MD012 MD031 MD033 MD037 -->
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="openbb-news | OpenBB Python (V5)" />
+
+`openbb-news` adds the `obb.news` namespace. Its main command, `rss`, reads an RSS or Atom feed from a registry of named feeds and returns each article with its title, date, author, link, a short excerpt, and optionally the full article body as Markdown. The registry ships with 562 feeds grouped into 21 outlets, and you can replace or extend it from `openbb.toml`.
+
+The namespace also hosts `company`, a provider-backed command for news about specific tickers, served by whichever installed providers implement it.
+
+## Installation
+
+```sh
+pip install openbb-news
+openbb-build
+```
+
+The package depends on `openbb-core[pandas]`, `feedparser`, and `lxml`.
+
+## Commands
+
+| Command | Returns |
+| --- | --- |
+| `obb.news.rss(outlet=None, source=None, limit=20, fetch_body=True)` | Articles from one feed, newest first |
+| `obb.news.rss_providers()` | A list of `{"label", "value"}` pairs, one per active outlet |
+| `obb.news.rss_feeds(outlet=None)` | A list of `{"label", "value"}` pairs, one per feed in the outlet |
+| `obb.news.company(symbol, start_date, end_date, limit, provider)` | Company news from `nasdaq` or `tmx` |
+
+The feed commands have no `provider` argument and need no credentials. The word "provider" in `rss_providers` and in the `[news.rss_providers]` configuration table refers to a news outlet, not to an OpenBB data provider.
+
+## Reading a feed
+
+`source` selects a feed by its key. `outlet` selects an outlet and, when `source` is omitted, reads that outlet's default feed.
+
+```python
+from openbb import obb
+
+markets = obb.news.rss(outlet="benzinga")
+yahoo = obb.news.rss(source="yahoo_finance", limit=10, fetch_body=False)
+
+yahoo.to_df()
+```
+
+Each result has six fields: `title`, `date` (ISO 8601, UTC), `author` (the entry's author, or the feed's title when the entry has none), `url`, `excerpt` (plain text, cut at a word boundary near 280 characters), and `body`.
+
+With `fetch_body=True`, the default, the command requests every article URL concurrently and extracts the body from the page's JSON-LD `articleBody`, or from the largest `<article>` or `<main>` element after removing navigation, headers, footers, scripts, and forms. The body is Markdown with inline images. When a page is paywalled or yields fewer than two paragraphs, the body falls back to the feed's own summary followed by a link to the source. Set `fetch_body=False` to skip the per-article page requests; the body is then the feed summary and source link.
+
+A feed that cannot be reached, or that returns an HTTP error, produces an empty result rather than an exception. Calling `rss()` with neither `outlet` nor `source` also returns an empty result. An unknown `source` key raises an error that lists every valid key.
+
+To find keys, list the outlets and then the feeds within one:
+
+```python
+from openbb import obb
+
+outlets = obb.news.rss_providers()
+feeds = obb.news.rss_feeds(outlet="globenewswire")
+```
+
+Both return the active set, so feeds added in `openbb.toml` appear in them.
+
+## Bundled outlets
+
+| Outlet | Label | Default feed |
+| --- | --- | --- |
+| `axios` | Axios | `axios_main` |
+| `bbc` | BBC | `bbc_world` |
+| `benzinga` | Benzinga | `benzinga_markets` |
+| `brutalist_business` | Brutalist — Business | `brutalist_business_fortune` |
+| `brutalist_culture` | Brutalist — Culture | `brutalist_culture_vox` |
+| `brutalist_gaming` | Brutalist — Gaming | `brutalist_gaming_polygon` |
+| `brutalist_news` | Brutalist — News | `brutalist_news_guardian` |
+| `brutalist_politics` | Brutalist — Politics | `brutalist_politics_axios` |
+| `brutalist_science` | Brutalist — Science | `brutalist_science_scientificamerican` |
+| `brutalist_sports` | Brutalist — Sports | `brutalist_sports_yahoosports` |
+| `brutalist_tech` | Brutalist — Tech | `brutalist_tech_verge` |
+| `cbc` | CBC | `cbc_business` |
+| `drudge_report` | Drudge Report | `drudge_report` |
+| `drugs_com` | Drugs.com | `drugs_com_medical_news` |
+| `fortune` | Fortune | `fortune` |
+| `fox_news` | Fox News | `fox_news_latest` |
+| `globenewswire` | GlobeNewswire | `globenewswire_all` |
+| `google_news` | Google News | `google_news_us` |
+| `pr_newswire` | PR Newswire | `pr_newswire_global` |
+| `wired` | Wired | `wired_business` |
+| `yahoo_finance` | Yahoo Finance | `yahoo_finance` |
+
+Most of the 562 feeds come from two press-release services. GlobeNewswire contributes one feed per ICB industry and one per subject code, such as earnings releases, dividends, and mergers and acquisitions. PR Newswire contributes a global feed and feeds for eight regional editions, each also split by industry category. The eight `brutalist_*` outlets group the publishers aggregated by brutalist.report under its topics.
+
+## Configuring feeds in openbb.toml
+
+The feed registry reads the `[news]` table from the layered OpenBB configuration. The table can live in any of these files, and later files override earlier ones key by key:
+
+1. `[tool.openbb.news]` in the `pyproject.toml` of the working directory or its nearest parent that has one
+2. `~/.openbb_platform/openbb.toml`
+3. `openbb.toml` or `.openbb.toml` in the working directory or the nearest parent that has one
+4. The file named by the `OPENBB_CONFIG` environment variable
+
+The configuration is read on every call to `rss`, `rss_providers`, and `rss_feeds`, so edits take effect on the next request without restarting Python or the API server. The [openbb.toml](../user-guide/openbb-toml.mdx) page describes the rest of the file.
+
+### Adding feeds
+
+`[news.rss_feeds]` maps a feed key to a URL. In the short form, the value is the URL string; the feed is placed in an outlet named `custom`, and its label is the key with underscores replaced by spaces and title-cased.
+
+```toml
+[news.rss_feeds]
+internal_research = "https://research.example.com/feed.xml"
+team_blog = "https://blog.example.com/atom.xml"
+```
+
+The table form sets the outlet and label explicitly. Feeds that share an outlet value are grouped together in `rss_feeds` and in the Workspace widget. An entry without a `url` is ignored.
+
+```toml
+[news.rss_feeds.alpha_notes]
+url = "https://alpha.example.com/rss"
+provider = "acme_research"
+label = "Alpha Notes"
+
+[news.rss_feeds.beta_notes]
+url = "https://beta.example.com/rss"
+provider = "acme_research"
+label = "Beta Notes"
+```
+
+### Keeping the bundled feeds
+
+When `[news.rss_feeds]` contains any entries, it replaces the 562 bundled feeds. Set `merge_defaults = true` to keep them and add yours on top. A key that matches a bundled key replaces that feed's URL.
+
+```toml
+[news]
+merge_defaults = true
+
+[news.rss_feeds]
+internal_research = "https://research.example.com/feed.xml"
+```
+
+Without `merge_defaults`, only the configured outlets exist, and `rss(outlet="benzinga")` returns an empty result because the outlet has no feeds.
+
+### Naming outlets
+
+An outlet's display label defaults to its id, humanized: `acme_research` becomes "Acme Research". `[news.rss_providers]` sets the label explicitly, for your own outlets or for bundled ones.
+
+```toml
+[news.rss_providers]
+acme_research = "ACME Research Desk"
+benzinga = "Benzinga Wire"
+```
+
+A complete configuration that keeps the bundled feeds and adds a two-feed outlet:
+
+```toml
+[news]
+merge_defaults = true
+
+[news.rss_providers]
+acme_research = "ACME Research Desk"
+
+[news.rss_feeds.alpha_notes]
+url = "https://alpha.example.com/rss"
+provider = "acme_research"
+label = "Alpha Notes"
+
+[news.rss_feeds.beta_notes]
+url = "https://beta.example.com/rss"
+provider = "acme_research"
+label = "Beta Notes"
+```
+
+```python
+from openbb import obb
+
+obb.news.rss(outlet="acme_research", fetch_body=False)
+obb.news.rss(source="beta_notes")
+```
+
+The first call reads `alpha_notes`, the first feed of the outlet in label order, because configured outlets have no preset default feed.
+
+## Company news
+
+`obb.news.company` is a standard provider-backed command. In V5 the `nasdaq` and `tmx` providers implement it, so it appears once either package is installed. Both accept several comma-separated symbols, and TMX adds a `page` parameter for paging through results.
+
+```python
+from openbb import obb
+
+aapl = obb.news.company(symbol="AAPL", limit=10, provider="nasdaq")
+air_canada = obb.news.company(symbol="AC", provider="tmx")
+```
+
+Both return `date`, `title`, `author`, `excerpt`, `body`, `images`, `url`, and `symbols`. Nasdaq adds `publisher` and `topic`; TMX adds `source`.
+
+When `openbb-news` is not installed, the two providers register the same command in their own namespaces instead, as `obb.nasdaq.news.company` and `obb.tmx.news.company`.
+
+## REST API and Workspace
+
+Under [`openbb-api`](./interface/openbb-api.mdx), the feed commands are `GET` endpoints:
+
+```sh
+curl "http://127.0.0.1:6900/api/v1/news/rss?source=yahoo_finance&limit=5&fetch_body=false"
+```
+
+The `rss` endpoint is also exposed to OpenBB Workspace as the "RSS News Feed" newsfeed widget in the News category. Its Provider dropdown lists the outlets from `rss_providers`, its Feed dropdown lists the feeds from `rss_feeds` for the selected outlet, and it opens on Benzinga's Markets feed. Because both dropdowns call the configuration-aware endpoints, feeds added in `openbb.toml` appear in the widget.
+
+See the [reference](/odp/python/reference/news) for every parameter.

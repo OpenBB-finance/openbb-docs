@@ -1,42 +1,131 @@
 ---
 title: MCP Server
-sidebar_position: 3
-description: This page details the basics for getting started running the ODP Python Package as a MCP server.
+sidebar_position: 4
+description: >
+  Serve the installed OpenBB Python V5 commands as Model Context Protocol
+  tools with openbb-mcp, and connect Claude Desktop, Cursor, VS Code, or
+  OpenBB Workspace.
 keywords:
-  - ODP
-  - Python Package
-  - tutorial
   - MCP
-  - quickstart
-  - mcp_settings.json
+  - Model Context Protocol
+  - openbb-mcp
+  - openbb-mcp-server
+  - tool discovery
+  - streamable-http
+  - stdio
+  - openbb.toml
 ---
 
 import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-<HeadTitle title="MCP Server - Quick Start | OpenBB Docs" />
+<HeadTitle title="MCP Server Quickstart | OpenBB Python (V5)" />
 
-Install the package to get started using the ODP Python Package as a MCP server.
+`openbb-mcp` turns the routes of the OpenBB REST API into MCP tools. Each installed provider contributes its commands, so the tool list is whatever the environment has installed.
 
-```sh
-pip install openbb-mcp-server
+## Install
+
+Install the server with the providers the agent should use:
+
+```bash
+pip install openbb-mcp-server openbb-cboe openbb-imf
 ```
 
-## Start Server
+The `cli` extra adds four tools that run commands through `openbb-cli`, locally or against a remote `openbb-api` server:
 
-The server is started using the command line executable:
+```bash
+pip install "openbb-mcp-server[cli]"
+```
 
-```sh
+## Start the server
+
+```bash
 openbb-mcp
 ```
 
-This starts the server on http://127.0.0.1:8001 over the `streamable-http` transport and exposes all GET endpoints as MCP tools.
+The server listens on `http://127.0.0.1:8001/mcp` over the `streamable-http` transport. Tool names come from the route path after `/api/v1`, so `obb.cboe.equity.quote` is the tool `cboe_equity_quote`. Next to the command tools, every server has `run_pipeline` for chaining tools on the server, `list_prompts`, `get_prompt`, `list_resources`, and `read_resource` for clients without native prompt and resource support, and `install_skill`.
 
-## Add to Workspace
+On first start the server writes its defaults to `~/.openbb_platform/mcp_settings.json`.
 
-Follow the steps [here](/workspace/analysts/ai-features/mcp-tools) to connect the server with Workspace.
+## Choose the tools
 
-![workspace-mcp](https://openbb-cms.directus.app/assets/6d66dcf3-98c0-4150-aace-035a063df35a.png)
+A large installation produces hundreds of tools. Two flags keep the list manageable. `--allowed-categories` serves only the named categories, where a category is the first path segment after the prefix, which in V5 is usually the provider namespace:
 
-## Documentation
+```bash
+openbb-mcp --allowed-categories cboe,imf
+```
 
-Go to the [documentation](/odp/python/extensions/interface/openbb-mcp) for detailed information on configuration, development, and usage.
+`--tool-discovery` hides the command tools behind four discovery tools, `available_categories`, `available_tools`, `search_tools`, and `call_tool`, so the agent searches for what it needs instead of receiving every definition up front:
+
+```bash
+openbb-mcp --tool-discovery
+```
+
+Discovery keeps no per-session state, so several clients can share one server.
+
+## Pick a transport
+
+`--transport` accepts `streamable-http` (the default), `sse`, and `stdio`. Use `stdio` when the client launches the server as a subprocess, as Claude Desktop does:
+
+```json
+{
+  "mcpServers": {
+    "openbb-mcp": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "openbb-mcp-server",
+        "--with",
+        "openbb-cboe",
+        "--with",
+        "openbb-imf",
+        "openbb-mcp",
+        "--transport",
+        "stdio"
+      ]
+    }
+  }
+}
+```
+
+HTTP clients such as Cursor and VS Code take the URL of a running server:
+
+```json
+{
+  "mcpServers": {
+    "openbb-mcp": {
+      "url": "http://127.0.0.1:8001/mcp"
+    }
+  }
+}
+```
+
+## Save the configuration
+
+Command-line flags can live in an `[mcp]` table of an `openbb.toml` file, either in `~/.openbb_platform/`, in the working directory or one of its parents, or at a path passed with `--config-file`:
+
+```toml
+[mcp]
+host = "0.0.0.0"
+port = 8001
+allowed-categories = "cboe,imf"
+tool-discovery = true
+```
+
+Flags given on the command line still win over the file.
+
+## Add to OpenBB Workspace
+
+Follow the [MCP tools](/workspace/analysts/ai-features/mcp-tools) guide to connect the running server to OpenBB Workspace.
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="Adding the OpenBB MCP server to OpenBB Workspace"
+    src="https://openbb-cms.directus.app/assets/6d66dcf3-98c0-4150-aace-035a063df35a.png"
+    width="100%"
+  />
+</div>
+
+## Next steps
+
+The [openbb-mcp reference](../extensions/interface/openbb-mcp.mdx) covers every setting, authentication, prompts, skills, per-route `mcp_config`, and serving a `.spec` file as a proxy.

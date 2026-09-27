@@ -1,50 +1,54 @@
 ---
 title: Deprecating Endpoints
-sidebar_position: 7
-description: This guide provides detailed instructions on how to deprecate an endpoint in the ODP Python Package.
+sidebar_position: 8
+description: Mark a router command as deprecated with OpenBBDeprecationWarning so Python callers get a warning and the OpenAPI schema flags the route.
 keywords:
-- ODP
-- OpenBB Platform
-- Custom commands
-- API
-- Python Interface
-- Deprecation
-- Deprecated
-- Endpoint
+  - OpenBB V5
+  - deprecation
+  - deprecated
+  - OpenBBDeprecationWarning
+  - router.command
+  - endpoint
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-<HeadTitle title="Deprecating Endpoints - How-To | OpenBB Docs" />
+<HeadTitle title="Deprecating Endpoints | OpenBB Python (V5)" />
 
-Deprecating commands gives users advanced notice of breaking changes, and time to implement the changes.
+Deprecating a command before removing it gives users a release cycle to move to its replacement. Add the replacement first, then mark the old command with `deprecated=True` and a `deprecation` warning object in `@router.command`. Both arguments are required together; `deprecated=True` without `deprecation` fails when the router module is imported.
 
-1. Add the new endpoint that will replace the deprecated one.
+```python
+from typing import Any
 
-2. Add the deprecation warning
+from openbb_core.app.deprecation import OpenBBDeprecationWarning
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.router import Router
 
-    Navigate to the **router** where the endpoint to be deprecated exists. Set the `deprecated` flag to `True` and add `deprecation=OpenBBDeprecationWarning(…)` argument to the decorator. Refer to the example below:
+router = Router(prefix="", description="Utility commands.")
 
-    ```python
-    from openbb_core.app.deprecation import OpenBBDeprecationWarning
 
-        @router.command(
-            model="MarketIndices",
-            deprecated=True,
-            deprecation=OpenBBDeprecationWarning(
-                message="This endpoint is deprecated; use `/index/price/historical` instead.",
-                since=(4, 1),
-                expected_removal=(4, 5),
-            ),
-        )
-        async def market(
-            cc: CommandContext,
-            provider_choices: ProviderChoices,
-            standard_params: StandardParams,
-            extra_params: ExtraParams,
-        ) -> OBBject:
-            """Historical Market Indices."""
-        return await OBBject.from_query(Query(**locals()))
-    ```
+@router.command(methods=["GET"])
+async def quote_spread(bid: float, ask: float) -> OBBject[dict[str, Any]]:
+    """Calculate the mid price and spread of a quote."""
+    return OBBject(results={"mid": (bid + ask) / 2, "spread": ask - bid})
 
-3. Set a #TO-DO marker as a reminder to remove the endpoint on the indicated version release.
+
+@router.command(
+    methods=["GET"],
+    deprecated=True,
+    deprecation=OpenBBDeprecationWarning(
+        message="Use /my_tools/quote_spread instead.",
+        since=(5, 0),
+        expected_removal=(5, 2),
+    ),
+)
+async def spread(bid: float, ask: float) -> OBBject[dict[str, Any]]:
+    """Calculate the mid price and spread of a quote."""
+    return await quote_spread(bid, ask)
+```
+
+`OpenBBDeprecationWarning` builds its full message from the three values: `Use /my_tools/quote_spread instead. Deprecated in OpenBB Platform V5.0 to be removed in V5.2.` A trailing period on `message` is dropped first. `since` defaults to the major and minor version of the installed `openbb` package (or `openbb-core`, when `openbb` is not installed), and `expected_removal` defaults to the next major version.
+
+After `openbb-build`, the generated Python method is decorated as deprecated, so type checkers and IDEs flag calls to it, and every call emits a `DeprecationWarning` with the full message. In the REST API, the route is marked `deprecated` in the OpenAPI schema and the full message becomes its summary. The command keeps working until you remove it.
+
+Record the planned removal version in your changelog or issue tracker, and remove the command in that release.
