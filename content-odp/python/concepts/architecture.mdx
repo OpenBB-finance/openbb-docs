@@ -1,0 +1,60 @@
+---
+title: Architecture
+sidebar_position: 1
+description: >
+  The two surfaces openbb-core exposes — the Python Interface and the REST API
+  — and the entry-point groups they discover extensions through.
+keywords:
+  - openbb-core architecture
+  - Python Interface
+  - REST API
+  - openbb-build
+  - Router
+  - ExtensionLoader
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Architecture | OpenBB Python (V5)" />
+
+`openbb-core` exposes two surfaces:
+
+- **Python Interface** — `from openbb import obb`. A generated static package (see [Packaging and static assets](/odp/python/concepts/packaging)).
+- **REST API** — `openbb_core.api.rest_api:app`. A FastAPI app.
+
+Both invoke commands registered through the engine's routers. They share the engine; neither wraps the other.
+
+## Entry-point groups
+
+Extensions are discovered through four Python entry-point groups. See [Extension types](/odp/python/concepts/extensions) for the contract each group enforces.
+
+| Group | Adds |
+| ----- | ---- |
+| `openbb_core_extension` | Commands and a namespace on `obb.*` (plus REST routes). |
+| `openbb_provider_extension` | Data sources for standard models. |
+| `openbb_obbject_extension` | Methods/accessors on `OBBject`, or per-command callbacks. |
+| `openbb_charting_extension` | Chart-rendering view classes consumed by `openbb-charting`. |
+
+## Output type handling
+
+After a command runs, the Python Interface reads `user_settings.preferences.output_type`. When the value is `"OBBject"`, the `OBBject` is returned as-is. For any other value, the corresponding accessor is called: `getattr(obbject, "to_" + output_type)()`. The accepted values are listed under `Preferences` in [Settings & Configuration](/odp/python/settings).
+
+The REST API returns the JSON serialization of the `OBBject` regardless of this preference.
+
+Streaming commands (return annotation `OBBStream`) bypass `output_type` and the JSON envelope on both surfaces — the Python Interface returns the [`OBBStream`](/odp/python/concepts/streaming) handle directly, and the REST API returns a `starlette.responses.StreamingResponse` with `text/event-stream` chunks.
+
+## Source layout
+
+`openbb_platform/core/openbb_core/app/`:
+
+| Module | Public classes |
+| ------ | -------------- |
+| `command_runner.py` | `ExecutionContext`, `ParametersBuilder`, `StaticCommandRunner`, `CommandRunner` |
+| `router.py` | `Router`, `CommandMap`, `RouterLoader`, `SignatureInspector`, `OpenBBErrorResponse` |
+| `provider_interface.py` | `ProviderInterface`, `StandardParams`, `ExtraParams`, `StandardData`, `ExtraData`, `ProviderChoices` |
+| `static/container.py` | `Container` |
+| `static/package_builder/` | `PackageBuilder`, `ClassDefinition`, `DocstringGenerator`, `ImportDefinition`, `MethodDefinition`, `ModuleBuilder`, `PathHandler`, `ReferenceGenerator`, `FileLock`, `RouterLoader` |
+| `model/` | `obbject`, `user_settings`, `system_settings`, `api_settings`, `python_settings`, `credentials`, `defaults`, `preferences`, `extension`, plus `abstract/` (`error`, `warning`, `tagged`, `singleton`) |
+| `service/` | `user_service`, `system_service`, `auth_service` |
+| `config/loader.py` | `load_config`, `apply_config_to_services`, `load_env_files`, `apply_settings_to_env` |
+| `extension_loader.py` | `ExtensionLoader`, `OpenBBGroups` |

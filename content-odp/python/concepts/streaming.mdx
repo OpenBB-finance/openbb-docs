@@ -1,0 +1,240 @@
+---
+title: Streaming responses
+sidebar_position: 5
+description: >
+  V5 adds AsyncIterator-typed fetcher output. Streaming commands return an
+  OBBStream from the Python Interface and a Starlette StreamingResponse from
+  the REST API.
+keywords:
+  - OBBStream
+  - streaming
+  - AsyncIterator
+  - stream_data
+  - StreamingResponse
+  - text/event-stream
+  - websockets
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Streaming responses | OpenBB Python (V5)" />
+
+V5 adds a streaming-response pattern alongside the existing `OBBject` envelope. A streaming command yields an `AsyncIterator[<RowModel>]` from its fetcher; the engine wraps it in an `OBBStream` for the Python Interface and a `starlette.responses.StreamingResponse` for the REST API.
+
+## Fetcher contract
+
+A streaming fetcher overrides `stream_data` instead of `transform_data`. The return-type annotation is `AsyncIterator[<RowModel>]`:
+
+```python
+class MyFetcher(Fetcher[MyQueryParams, AsyncIterator[MyRowData]]):
+
+    @staticmethod
+    def transform_query(params: dict) -> MyQueryParams:
+        ...
+
+    @staticmethod
+    async def aextract_data(query, credentials, **kwargs) -> AsyncIterator[dict]:
+        # open the upstream (websocket, SSE, long-poll) and yield raw items
+        ...
+
+    @staticmethod
+    async def stream_data(query, data, **kwargs) -> AsyncIterator[MyRowData]:
+        # type each raw item; honor query.limit, filtering, etc.
+        async for record in data:
+            yield MyRowData(**record)
+```
+
+Detection — from `openbb_core.provider.abstract.fetcher.Fetcher`:
+
+| Member | Type | Purpose |
+| ------ | ---- | ------- |
+| `stream_data(query, data, **kwargs) -> R` | `@staticmethod` | Override with `async def` generator to make a fetcher streaming. Default raises `NotImplementedError`. |
+| `is_streaming` | `classproperty[bool]` | `True` when `stream_data` is overridden. |
+| `fetch_data(...)` | `classmethod` | Calls `stream_data` when `is_streaming`; otherwise `transform_data`. |
+
+`stream_data` receives the awaited result of `extract_data` / `aextract_data` and is expected to return an async iterator of typed rows. The fetcher's `aclose()`, if any, is awaited when the consumer drains.
+
+## Router contract
+
+A streaming command is annotated `-> OBBStream` and returns `await OBBStream.from_query(Query(**locals()))`:
+
+```python
+from openbb_core.app.model.stream import OBBStream
+from openbb_core.app.query import Query
+from openbb_core.app.router import Router
+
+router = Router(prefix="")
+
+@router.command(
+    model="MyRowData",
+    examples=[APIEx(parameters={"provider": "myprov", "symbol": "BTCUSDT"})],
+)
+async def book_ticker(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBStream:
+    """Stream best bid/ask updates."""
+    return await OBBStream.from_query(Query(**locals()))
+```
+
+`Router.command` detects an `OBBStream` return annotation and:
+
+- Clears `response_model` (no Pydantic validation against an iterator).
+- Adds an OpenAPI `200` response with `description = "Event stream"` and `content = {"text/event-stream": {"schema": {"type": "string"}}}`.
+
+## `OBBStream`
+
+`openbb_core.app.model.stream.OBBStream`.
+
+### Construction
+
+| Constructor | Returns |
+| ----------- | ------- |
+| `OBBStream(source)` | Wraps an object exposing `body_iterator`, or any async iterable. Raises `TypeError` otherwise. |
+| `await OBBStream.from_query(query)` | Awaits `query.execute()`, unwraps `AnnotatedResult` (results metadata → `extra["results_metadata"]`), wraps in `OBBStream`, and copies `query.provider` onto the handle. |
+
+### Attributes
+
+| Attribute | Type | Default / source |
+| --------- | ---- | ---------------- |
+| `id` | `str` | `uuid_extensions.uuid7str()` at construction. |
+| `provider` | `str \| None` | Copied from `query.provider` by `from_query`, or set by `CommandRunner._command`. |
+| `warnings` | `list \| None` | Populated by the engine when present. |
+| `extra` | `dict[str, Any]` | `{}` at construction; `from_query` writes `results_metadata` here when the underlying result is an `AnnotatedResult`. |
+| `media_type` | `str` | `getattr(source, "media_type", None)` or `"text/event-stream"`. |
+
+### Properties
+
+| Property | Type | Meaning |
+| -------- | ---- | ------- |
+| `started` | `bool` | `True` once `start()`, `__aiter__()`, `aiter()`, or `aiter_bytes()` has been called. |
+| `running` | `bool` | `True` while the background thread is alive. |
+
+### Iteration
+
+| Form | Notes |
+| ---- | ----- |
+| `async for row in stream:` | Calls `__aiter__()` and yields typed rows. |
+| `stream.aiter()` | Returns the underlying typed async iterator. |
+| `stream.aiter_bytes()` | Async-iterates serialized chunks as `bytes`, used by the REST surface. |
+
+The underlying iterator is single-use. Calling `start()` after any iteration mode has begun raises `RuntimeError("stream already started; the underlying iterator is single-use ...")`.
+
+### `start(output=None, handler=None) -> OBBStream`
+
+Drives the stream on a daemon background thread with its own event loop. Returns the handle.
+
+`output` resolution (`_resolve_sink`):
+
+| `output` argument | Sink | Closed by `OBBStream`? |
+| ----------------- | ---- | --------------------- |
+| `None` | `sys.stdout` | no |
+| `str` or `os.PathLike` | `open(output, "w", encoding="utf-8")` | yes |
+| Object with `write` or `sendall` | Used as-is | no |
+| anything else | `TypeError` | — |
+
+`handler` is called with each typed chunk before writing:
+
+- May be sync or async; coroutines are awaited.
+- Returning `None` drops the chunk.
+- Returning any other value writes that value instead of the original chunk.
+
+### `stop(timeout=5.0)`
+
+Sets the stop event, calls `loop.call_soon_threadsafe(self._cancel)` to cancel the consume task, joins the worker thread for up to `timeout` seconds, and removes the handle from the module-level `_ACTIVE` set.
+
+### `wait(timeout=None)`
+
+Blocks until the worker thread exits. Polls in 0.2-second slices so Python signal handlers run between waits.
+
+### Module-level lifecycle
+
+- `_ACTIVE` is a process-wide set of running `OBBStream` instances guarded by `_ACTIVE_LOCK`.
+- `stop_all(timeout=2.0)` calls `stop()` on every active stream.
+- `_install_shutdown_handlers()` (called by `start`) registers `atexit.register(stop_all)` once and installs SIGINT / SIGTERM handlers on the main thread, chaining to any pre-existing handler (so a user-installed handler still runs after the streams wind down).
+
+## Chunk serialization
+
+`OBBStream._serialize_chunk`:
+
+| Chunk shape | Output |
+| ----------- | ------ |
+| `bytes`, `bytearray`, `str` | Returned unchanged. |
+| Object with a callable `model_dump_json` | `chunk.model_dump_json() + "\n"`. |
+| Anything else | `json.dumps(chunk, default=str) + "\n"`. |
+
+`aiter_bytes` encodes strings to UTF-8 when the underlying serializer returned text.
+
+`_write` uses `sink.sendall(...)` when the sink looks like a socket, otherwise `sink.write(...)` followed by `sink.flush()` when available.
+
+## Python Interface return path
+
+In `openbb_core.app.static.container.Container._run`:
+
+```python
+obbject = self._command_runner.sync_run(*args, **kwargs)
+if not hasattr(obbject, "_results_only") and hasattr(obbject, "body_iterator"):
+    from openbb_core.app.model.stream import OBBStream
+    return OBBStream(obbject)
+```
+
+`output_type` from `Preferences` is bypassed for streaming results — the `OBBStream` handle is returned regardless of the configured output type.
+
+`CommandRunner._command` sets `obbject.provider` on both `OBBject` and `OBBStream` outputs when the command's `provider_choices` carries a provider.
+
+## REST API return path
+
+In `openbb_core.api.router.commands` (the dispatch loop that wraps each command):
+
+```python
+if isinstance(output, OBBStream):
+    stream_headers: dict[str, str] = {"X-OpenBB-Stream-Id": output.id}
+    if output.provider:
+        stream_headers["X-OpenBB-Provider"] = output.provider
+    if output.warnings:
+        stream_headers["X-OpenBB-Warning"] = json.dumps(
+            jsonable_encoder(output.warnings)
+        )
+    return StreamingResponse(
+        output.aiter_bytes(),
+        media_type=output.media_type or "text/event-stream",
+        headers=stream_headers,
+    )
+```
+
+| Header | Source |
+| ------ | ------ |
+| `X-OpenBB-Stream-Id` | `OBBStream.id` |
+| `X-OpenBB-Provider` | `OBBStream.provider` when set |
+| `X-OpenBB-Warning` | `json.dumps(jsonable_encoder(OBBStream.warnings))` when non-empty |
+
+The response body is the serialized chunks yielded by `aiter_bytes()` (see [Chunk serialization](#chunk-serialization)).
+
+A handler that returns a `starlette.responses.Response` (or subclass) directly bypasses the `OBBStream` branch and is forwarded as-is.
+
+## Use from Python
+
+```python
+from openbb import obb
+
+# 1) iterate inline
+async for row in obb.binance_stream.book_ticker(provider="binance", symbol="BTCUSDT"):
+    process(row)
+
+# 2) write to stdout on a background thread
+stream = obb.binance_stream.book_ticker(provider="binance", symbol="BTCUSDT")
+stream.start()
+...
+stream.stop()
+
+# 3) write to a file with a filter
+stream = obb.binance_stream.book_ticker(provider="binance")
+def keep_btc(row):
+    return row if row.symbol == "BTCUSDT" else None
+stream.start(output="ticks.ndjson", handler=keep_btc)
+stream.wait()
+```
+
+`start()` raises `RuntimeError` if the stream has already been started or iterated — the underlying iterator is single-use; construct a new call to restart.

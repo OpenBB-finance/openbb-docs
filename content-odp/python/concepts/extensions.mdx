@@ -1,0 +1,109 @@
+---
+title: Extension types
+sidebar_position: 3
+description: >
+  The four kinds of openbb-core extensions — router, provider, OBBject, and
+  charting — what each one does, which entry-point group it ships under, and
+  what target type the entry point must resolve to.
+keywords:
+  - extensions
+  - openbb_core_extension
+  - openbb_provider_extension
+  - openbb_obbject_extension
+  - openbb_charting_extension
+  - Router
+  - Provider
+  - Fetcher
+  - Extension
+  - views
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Extension types | OpenBB Python (V5)" />
+
+OpenBB discovers four kinds of extensions through Python entry-point groups. A single distribution can register entry points in any combination of them.
+
+## Router extensions — `openbb_core_extension`
+
+What it does: adds commands and a top-level namespace to `obb.*`, and registers the same commands as HTTP routes on the REST API. Each command resolves to a Python function decorated by `@router.command(...)` (or to a FastAPI handler when wrapping a `FastAPI` / `APIRouter` instance).
+
+Entry-point target: a `Router` instance, a `fastapi.FastAPI` instance, or a `fastapi.APIRouter` instance. A `FastAPI` uses its `.router`; an `APIRouter` is wrapped via `Router.from_fastapi`. Factory callables are not supported — the entry point must resolve to an already-constructed instance.
+
+`pyproject.toml`:
+
+```toml
+[project.entry-points."openbb_core_extension"]
+my_router = "my_package.my_router:router"
+```
+
+`my_router` is the name on `obb` (`obb.my_router.*`).
+
+## Provider extensions — `openbb_provider_extension`
+
+What it does: supplies data for one or more standard models. A provider declares a set of `Fetcher` subclasses, one per `(model_name → fetcher_class)` mapping. When a command runs, the engine selects a fetcher based on the `provider` argument and runs its `transform_query` / `extract_data` / `transform_data` pipeline.
+
+Streaming providers override `stream_data` (typed `AsyncIterator[<RowModel>]`) instead of `transform_data` — see [Streaming responses](/odp/python/concepts/streaming) for the contract.
+
+Entry-point target: a `Provider` instance with `name`, `description`, `credentials`, and `fetcher_dict` (the model → fetcher mapping).
+
+`pyproject.toml`:
+
+```toml
+[project.entry-points."openbb_provider_extension"]
+my_provider = "my_package.my_provider:provider"
+```
+
+`my_provider` is the value users pass as `provider="my_provider"` at call time.
+
+## OBBject extensions — `openbb_obbject_extension`
+
+What it does: attaches methods or whole helper classes to the `OBBject` return envelope, or runs callbacks against command output. The `Extension` instance carries flags that determine the extension's role:
+
+- Default form (`on_command_output=False`): registers a pandas-style accessor on `OBBject` so callers can write `obbject.<extension_name>.<method>(...)`. The accessor object is constructed lazily on first access.
+- `on_command_output=True`: the extension runs on every command output (gated by `system_settings.allow_on_command_output` and the `OPENBB_ALLOW_ON_COMMAND_OUTPUT` env var). Pair with:
+  - `command_output_paths` — restrict the callback to specific endpoint paths.
+  - `results_only=True` — the engine returns `obbject.results` directly instead of the envelope.
+  - `immutable=False` — allow the extension to modify the returned `OBBject` (gated by `system_settings.allow_mutable_extensions` and `OPENBB_ALLOW_MUTABLE_EXTENSIONS`).
+
+Entry-point target: an `openbb_core.app.model.extension.Extension` instance.
+
+`pyproject.toml`:
+
+```toml
+[project.entry-points."openbb_obbject_extension"]
+my_obbject = "my_package:ext"
+```
+
+## Charting / view extensions — `openbb_charting_extension`
+
+What it does: provides chart-rendering implementations for the routes registered by a router extension. `openbb-charting` discovers these at startup via `entry_points(group="openbb_charting_extension")` and dispatches by matching the command's route to a static method on the view class.
+
+Entry-point target: a class whose static methods are named after the command route with the leading `/` removed and the remaining `/` replaced by `_` — the route `/equity/price/historical` maps to a method `equity_price_historical`. Each method receives `**kwargs` and returns `tuple[OpenBBFigure, dict[str, Any]]`. Example:
+
+```python
+# openbb_equity/equity_views.py
+class EquityViews:
+    @staticmethod
+    def equity_price_historical(**kwargs) -> tuple["OpenBBFigure", dict[str, Any]]:
+        from openbb_charting.charts.price_historical import price_historical
+        return price_historical(**kwargs)
+```
+
+`pyproject.toml`:
+
+```toml
+[project.entry-points."openbb_charting_extension"]
+my_router = "my_package.views:MyViews"
+```
+
+The entry-point name typically matches the router extension's name — the charting layer pairs them by name when assembling chart capabilities for the router's routes.
+
+## Summary
+
+| Group | Adds | Entry-point target |
+| ----- | ---- | ------------------ |
+| `openbb_core_extension` | Commands and namespaces | `Router` / `FastAPI` / `APIRouter` |
+| `openbb_provider_extension` | Data sources for standard models | `Provider` |
+| `openbb_obbject_extension` | Methods/accessors on `OBBject`, or per-command callbacks | `Extension` |
+| `openbb_charting_extension` | Chart-rendering view classes | A class with static methods named after route paths |

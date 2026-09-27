@@ -1,0 +1,31 @@
+---
+title: User Guide
+sidebar_position: 0
+description: >
+  Task-oriented how-tos for callers of openbb-core — credentials,
+  configuration, output types, warnings, environment variables.
+keywords:
+  - user guide
+  - how-to
+  - configure
+  - credentials
+  - openbb.toml
+  - output types
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="User Guide | OpenBB Python (V5)" />
+
+These pages cover the day-to-day tasks of a USER — someone who calls commands through `from openbb import obb`, the REST API, or another surface. Each page is short and ends with a verification step.
+
+Pages will land here as the V5 docs build out:
+
+- **Configure credentials** — picking the right layer to set keys (file vs env vs runtime).
+- **Configure preferences and defaults** — set a default provider per command, change the default output type.
+- **Using `openbb.toml`** — when to use it vs JSON vs env vars.
+- **Output types** — `dataframe`, `polars`, `numpy`, `dict`, `chart`, `llm`. What requires what dependency.
+- **Handle warnings and errors** — `OpenBBError`, `OpenBBWarning`, suppression patterns.
+- **Environment variables** — table of every `OPENBB_*` and what it does.
+
+If you're embedding the engine into your own app instead of calling it as an end user, [Quick start (Developer)](/odp/python/quickstart/developer) is the right entry point.

@@ -1,0 +1,41 @@
+---
+title: Migration from V4
+sidebar_position: 9
+description: >
+  Breaking changes between V4 and V5, sourced directly from the V5 PR body
+  (OpenBB-finance/OpenBB#7489).
+keywords:
+  - V4 to V5
+  - migration
+  - breaking changes
+  - openbb.toml
+  - hatchling
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Migration from V4 | OpenBB Python (V5)" />
+
+V5 is a breaking release. This page lists items from the V5 PR — [OpenBB-finance/OpenBB#7489](https://github.com/OpenBB-finance/OpenBB/pull/7489). Other V5 changes will be added here as they're verified against the source.
+
+## Breaking changes (from the PR body)
+
+- The `openbb-stockgrid` provider extension was removed.
+- The `openbb-wsj` provider extension was removed.
+- The build system now uses `hatchling` and is fully PEP-compliant.
+- The CLI no longer defaults to interactive TTY mode. Use `openbb -i` for the legacy interactive shell.
+- POST parameters are now exclusively passed in the request body.
+- The IMF router path was renamed from `imf_utilities` to `imf`. `obb.economy.imf_utilities.*` → `obb.economy.imf.*`.
+
+## Additions (from the PR body)
+
+- `openbb.toml` config file and a layered settings loader. See [Settings & Configuration](/odp/python/settings).
+- Streaming responses — fetchers may return `AsyncIterator[<RowModel>]` via a new `Fetcher.stream_data` method; routers declare an `OBBStream` return type. The Python Interface returns an `OBBStream` handle; the REST API returns a Starlette `StreamingResponse` with `text/event-stream` chunks. See [Streaming responses](/odp/python/concepts/streaming).
+- `openbb-cli` adds `.spec` files and Python project codegen.
+- `openbb-cli` adds remote server dispatchers for ingestion / codegen / execution against OpenAPI and Socrata Soda APIs.
+- `openbb-api` adds support for `.spec` and config files.
+- `openbb-mcp` adds support for `.spec` and config files, plus CLI tools.
+- `openbb-agent-server` — turn-key agent server for OpenBB Workspace.
+- `openbb-technical` — endpoint expansion.
+- `openbb-quantitative` — adds a GARCH model and a heat-map chart for factor exposure.
+- `openbb-news` — adds a configurable RSS endpoint (configured in `openbb.toml`).

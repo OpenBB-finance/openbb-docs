@@ -1,0 +1,63 @@
+---
+title: Quick start — User
+sidebar_position: 1
+description: >
+  Minimal start for callers — install, set a credential, make a call.
+keywords:
+  - quickstart
+  - user
+  - from openbb import obb
+  - obb
+  - credentials
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Quick start (User) | OpenBB Python (V5)" />
+
+## 1. Install
+
+```bash
+pip install openbb
+```
+
+## 2. Set a credential
+
+Pick a provider you have an account with and add the key to your `openbb.toml`:
+
+```toml
+# ~/.openbb_platform/openbb.toml
+[user.credentials]
+fmp_api_key = "..."
+```
+
+Or set the corresponding environment variable. See [Settings & Configuration](/odp/python/settings) for the full resolution order.
+
+## 3. Make a call
+
+```python
+from openbb import obb
+
+obbject = obb.equity.price.historical("AAPL", provider="fmp")
+obbject.results
+```
+
+The return type is an `OBBject` by default. See [The OBBject envelope](/odp/python/concepts/obbject) for the fields and accessor methods.
+
+## 4. Pick an output type
+
+For a one-off conversion, call an accessor (e.g., `obbject.to_dataframe()`).
+
+To change the default for every command in the session, set the preference:
+
+```python
+obb.user.preferences.output_type = "dataframe"
+```
+
+Accepted values are declared by `Preferences.output_type` in `openbb_core/app/model/preferences.py`:
+
+```
+"OBBject", "dataframe", "polars", "numpy", "dict", "chart", "llm"
+```
+
+Default is `"OBBject"`.

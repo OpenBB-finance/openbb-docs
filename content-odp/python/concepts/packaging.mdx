@@ -1,0 +1,38 @@
+---
+title: Packaging and static assets
+sidebar_position: 4
+description: >
+  `openbb-build` generates the static `openbb` Python package locally from the
+  installed extensions' metadata.
+keywords:
+  - openbb-build
+  - static assets
+  - package_builder
+  - PackageBuilder
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Packaging and static assets | OpenBB Python (V5)" />
+
+The Python Interface (`from openbb import obb`) is generated into the `openbb` package inside the active environment's `site-packages/`. The generated files reflect the set of installed extensions in that environment; they are not shipped pre-built in a wheel.
+
+Trigger a build with the `openbb-build` console script or by calling `openbb_core.build:main`. Both invoke `openbb.build()`.
+
+## `package_builder` public surface
+
+`openbb_core.app.static.package_builder`:
+
+- `PackageBuilder`
+- `ClassDefinition`
+- `DocstringGenerator`
+- `ImportDefinition`
+- `MethodDefinition`
+- `ModuleBuilder`
+- `PathHandler`
+- `ReferenceGenerator`
+- `FileLock`
+- `RouterLoader`
+- `TAB`, `create_indent`
+
+Also re-exported at the same path: `CHARTING_INSTALLED`, `CORE_VERSION`, `VERSION`, `Console`, `DataProcessingSupportedTypes`, `Env`, `ExtensionLoader`, `Linters`, `OpenBBGroups`, `SystemService`.
