@@ -1,0 +1,68 @@
+---
+title: OpenBB Python (V5)
+sidebar_position: 0
+description: >
+  OpenBB Python documentation for V5 — installation, settings, quickstarts,
+  concepts, and migration notes from V4.
+keywords:
+  - ODP
+  - OpenBB Python
+  - openbb-core
+  - V5
+  - obb
+  - openbb
+  - about
+---
+
+<!-- markdownlint-disable MD012 MD031 MD033 MD037 -->
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
+
+<HeadTitle title="OpenBB Python (V5) | OpenBB Docs" />
+
+The ODP Python Package serves as scaffolding for a unified API that is standardized, consumable, and deployable across multiple mediums simultaneously - REST API, pure Python, Jupyter Notebook, MCP, Docker, OpenBB Workspace, Excel, etc. - from a single source of truth.
+
+With cross-compatibility out-of-the-box, its ready-to-use data connectors, and a wealth of extensions, it lets you concentrate on creating outstanding research reports and applications quickly and easily.
+
+:::important
+V5 of OpenBB Python is a breaking release. Some provider packages are no longer published, while others have been removed from the repository and are no longer included with, `pip install openbb`. 
+
+The complete list of breaking changes lives in [Migration from V4](/odp/python/migration-from-v4).
+:::
+
+
+## Browse by section
+
+<ul className="grid grid-cols-1 md:grid-cols-2 gap-4 -ml-6">
+  <NewReferenceCard
+    title="Installation"
+    description="Install openbb-core and related packages."
+    url="/odp/python/installation"
+  />
+  <NewReferenceCard
+    title="Settings & Configuration"
+    description="UserSettings, SystemSettings, the openbb.toml schema, the layered loader, environment variables."
+    url="/odp/python/settings"
+  />
+  <NewReferenceCard
+    title="Quickstart — User"
+    description="from openbb import obb in a few steps."
+    url="/odp/python/quickstart/user"
+  />
+  <NewReferenceCard
+    title="Quickstart — Developer"
+    description="Register a FastAPI app as an openbb_core_extension."
+    url="/odp/python/quickstart/developer"
+  />
+  <NewReferenceCard
+    title="Concepts"
+    description="Explanations of core concepts for users and developers."
+    url="/odp/python/concepts"
+  />
+  <NewReferenceCard
+    title="Migration from V4"
+    description="Breaking changes from PR #7489."
+    url="/odp/python/migration-from-v4"
+  />
+</ul>

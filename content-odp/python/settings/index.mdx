@@ -1,0 +1,337 @@
+---
+title: Settings & Configuration
+sidebar_position: 0
+description: >
+  Every settings field in OpenBB Python V5 — types, defaults, the openbb.toml
+  schema, the layered resolver, and recognized environment variables.
+keywords:
+  - openbb.toml
+  - settings
+  - UserSettings
+  - SystemSettings
+  - APISettings
+  - PythonSettings
+  - Preferences
+  - Defaults
+  - Credentials
+  - OBBSecretStr
+  - environment variables
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Settings & Configuration | OpenBB Python (V5)" />
+
+## Where settings come from
+
+Settings are resolved in this order — lowest priority first; later layers overwrite earlier ones:
+
+1. Pydantic field defaults on `SystemSettings` / `UserSettings`.
+2. `~/.openbb_platform/system_settings.json` and `~/.openbb_platform/user_settings.json`.
+3. `[tool.openbb]` in the nearest ancestor `pyproject.toml`, walking up from CWD.
+4. `~/.openbb_platform/openbb.toml` (or `.openbb.toml`).
+5. `openbb.toml` (or `.openbb.toml`) in the nearest ancestor directory of CWD.
+6. The file pointed at by `$OPENBB_CONFIG`.
+7. `.env` files: `~/.openbb_platform/.env` and the file at `$OPENBB_ENV_FILE`.
+8. `OPENBB_*` environment variables in the real shell.
+
+---
+
+## `UserSettings`
+
+| Field | Type | Default |
+| ----- | ---- | ------- |
+| `credentials` | `Credentials` | `Credentials()` |
+| `preferences` | `Preferences` | `Preferences()` |
+| `defaults` | `Defaults` | `Defaults()` |
+
+### `Credentials`
+
+`Credentials` is built dynamically from installed provider extensions. For each registered credential `<name>`:
+
+- Type: `Optional[OBBSecretStr]`.
+- Default: from `~/.openbb_platform/user_settings.json` if present, then from the matching environment variable if set.
+- The Pydantic alias is the field name uppercased — `fmp_api_key` accepts `FMP_API_KEY` from the environment.
+
+`OBBSecretStr`:
+
+```python
+OBBSecretStr = Annotated[
+    SecretStr,
+    PlainSerializer(
+        lambda x: x.get_secret_value(), return_type=str, when_used="json-unless-none"
+    ),
+]
+```
+
+Class attributes:
+
+- `origins: dict[str, list[str]]` — `<provider> → [<credential_names>]`.
+- `_env_defaults: dict[str, object]` — values pulled from the environment.
+
+Methods:
+
+- `show()` — print all credentials with the secret value unmasked.
+- `update(incoming)` — merge another `Credentials` into this one, skipping `None`.
+- `__repr__` — masked output.
+
+### `Preferences`
+
+`model_config = ConfigDict(validate_assignment=True)`.
+
+| Field | Type | Default |
+| ----- | ---- | ------- |
+| `cache_directory` | `str` | `str(Path.home() / "OpenBBUserData" / "cache")` |
+| `chart_style` | `Literal["dark", "light"]` | `"dark"` |
+| `data_directory` | `str` | `str(Path.home() / "OpenBBUserData")` |
+| `export_directory` | `str` | `str(Path.home() / "OpenBBUserData" / "exports")` |
+| `metadata` | `bool` | `True` |
+| `output_type` | `Literal["OBBject", "dataframe", "polars", "numpy", "dict", "chart", "llm"]` | `"OBBject"` |
+| `request_timeout` | `PositiveInt` | `60` |
+| `show_warnings` | `bool` | `False` |
+| `table_style` | `Literal["dark", "light"]` | `"dark"` |
+| `user_styles_directory` | `str` | `str(Path.home() / "OpenBBUserData" / "styles" / "user")` |
+
+`output_type` is validated at construction time (`validate_default=True`).
+
+### `Defaults`
+
+`model_config = ConfigDict(validate_assignment=True, populate_by_name=True)`.
+
+| Field | Type | Default |
+| ----- | ---- | ------- |
+| `commands` | `dict[str, dict[str, Any]]` | `{}` |
+
+The field accepts `routes` as a Pydantic alias. Setting `routes` still loads and emits an `OpenBBWarning` deprecation notice.
+
+Within each command dict, `provider` may be a string or a list of strings. A bare string is normalized to a single-element list.
+
+Keys are normalized to `key.strip("/").replace("/", ".")` — so `"/equity/price/historical"` is stored as `"equity.price.historical"`.
+
+`Defaults.update(incoming)` merges command dicts, dropping `None`.
+
+When a command is called, default values for the matching endpoint are applied to any standard or extra parameter the caller passed as `None`.
+
+---
+
+## `SystemSettings`
+
+`model_config = ConfigDict(validate_assignment=True, frozen=True)`.
+
+### Platform identification
+
+| Field | Type | Default |
+| ----- | ---- | ------- |
+| `os` | `str` | `str(platform.system())` |
+| `python_version` | `str` | `str(platform.python_version())` |
+| `platform` | `str` | `str(platform.platform())` |
+
+### OpenBB paths and versions
+
+| Field | Type | Default |
+| ----- | ---- | ------- |
+| `version` | `str` | `openbb_core.app.version.VERSION` |
+| `core` | `str` | `openbb_core.app.version.CORE_VERSION` |
+| `home_directory` | `str` | `str(HOME_DIRECTORY)` |
+| `openbb_directory` | `str` | `str(OPENBB_DIRECTORY)` |
+| `user_settings_path` | `str` | `str(USER_SETTINGS_PATH)` |
+| `system_settings_path` | `str` | `str(SYSTEM_SETTINGS_PATH)` |
+
+### Logging
+
+| Field | Type | Default |
+| ----- | ---- | ------- |
+| `logging_app_name` | `Literal["platform"]` | `"platform"` |
+| `logging_commit_hash` | `str \| None` | `None` |
+| `logging_frequency` | `Literal["D", "H", "M", "S"]` | `"H"` |
+| `logging_handlers` | `list[str]` | `["file"]` |
+| `logging_rolling_clock` | `bool` | `False` |
+| `logging_verbosity` | `int` | `20` |
+| `logging_sub_app` | `Literal["python", "api", "pro", "cli"]` | `"python"` |
+| `logging_suppress` | `bool` | `True` |
+
+Each entry of `logging_handlers` must be one of `"stdout"`, `"stderr"`, `"noop"`, `"file"`.
+
+### Sub-models
+
+| Field | Type | Default |
+| ----- | ---- | ------- |
+| `api_settings` | `APISettings` | `APISettings()` |
+| `python_settings` | `PythonSettings` | `PythonSettings()` |
+
+### Top-level toggles
+
+| Field | Type | Default |
+| ----- | ---- | ------- |
+| `debug_mode` | `bool` | `False` |
+| `test_mode` | `bool` | `False` |
+| `headless` | `bool` | `False` |
+| `allow_mutable_extensions` | `bool` | seeded from `OPENBB_ALLOW_MUTABLE_EXTENSIONS` |
+| `allow_on_command_output` | `bool` | seeded from `OPENBB_ALLOW_ON_COMMAND_OUTPUT` |
+
+### `APISettings`
+
+`model_config = ConfigDict(frozen=True)`.
+
+| Field | Type | Default |
+| ----- | ---- | ------- |
+| `version` | `str` | `"1"` |
+| `title` | `str` | `"OpenBB Platform API"` |
+| `description` | `str` | `"Investment research for everyone, anywhere."` |
+| `terms_of_service` | `str` | `"http://example.com/terms/"` |
+| `contact_name` | `str` | `"OpenBB Team"` |
+| `contact_url` | `str` | `"https://openbb.co"` |
+| `contact_email` | `str` | `"hello@openbb.co"` |
+| `license_name` | `str` | `"AGPLv3"` |
+| `license_url` | `str` | `"https://github.com/OpenBB-finance/OpenBB/blob/develop/LICENSE"` |
+| `servers` | `list[Servers]` | `[Servers()]` |
+| `cors` | `Cors` | `Cors()` |
+| `custom_headers` | `dict[str, str] \| None` | `None` |
+| `prefix` (computed) | `str` | `f"/api/v{version}"` |
+
+#### `Servers`
+
+`model_config = ConfigDict(frozen=True)`.
+
+| Field | Type | Default |
+| ----- | ---- | ------- |
+| `url` | `str` | `""` |
+| `description` | `str` | `"Local OpenBB development server"` |
+
+#### `Cors`
+
+`model_config = ConfigDict(frozen=True)`.
+
+| Field | Type | Default |
+| ----- | ---- | ------- |
+| `allow_origins` | `list[str]` | `["*"]` |
+| `allow_methods` | `list[str]` | `["*"]` |
+| `allow_headers` | `list[str]` | `["*"]` |
+
+In TOML these live under `[system.api_settings.cors]`.
+
+### `PythonSettings`
+
+`model_config = ConfigDict(extra="allow")`.
+
+| Field | Type | Default |
+| ----- | ---- | ------- |
+| `docstring_sections` | `list[str]` | `["description", "parameters", "returns", "examples"]` |
+| `docstring_max_length` | `PositiveInt \| None` | `None` |
+| `http` | `dict \| None` | `{}` |
+| `uvicorn` | `dict \| None` | `{}` |
+
+`docstring_sections` controls which sections are included in autogenerated docstrings.
+
+`docstring_max_length` caps the length of those docstrings. `None` means no cap.
+
+`http` is consumed by `openbb_core.provider.utils.helpers.{make_request, amake_request, amake_requests, get_requests_session, get_async_requests_session}`. Keys:
+
+| Key | Applies to | Purpose |
+| --- | ---------- | ------- |
+| `cafile` | both | Path to a CA certificate file. |
+| `certfile` | both | Path to a client certificate file. |
+| `keyfile` | both | Path to a client key file. |
+| `password` | aiohttp | Password for the client key file. |
+| `verify_ssl` | both | Verify SSL certificates. |
+| `fingerprint` | aiohttp | SSL fingerprint. |
+| `proxy` | both | Proxy URL. |
+| `proxy_auth` | aiohttp | Proxy authentication. |
+| `proxy_headers` | aiohttp | Proxy headers. |
+| `timeout` | both | Request timeout. |
+| `auth` | both | Basic authentication. |
+| `headers` | both | Request headers. |
+| `cookies` | both | Session cookies. |
+
+Additional keys are ignored unless explicitly implemented by custom code.
+
+`uvicorn` is passed directly to `uvicorn.run` when the FastAPI app is launched via `python -m openbb_core.api.rest_api` or `openbb-api`. CLI keyword arguments take priority over this configuration.
+
+---
+
+## `openbb.toml` schema
+
+```toml
+# Top-level convenience keys — equivalent to the matching entry under
+# [system]. Both forms accepted; top-level wins on conflict.
+debug-mode = true
+test-mode = false
+headless = false
+
+[system]
+debug_mode = true
+headless = false
+
+[system.api_settings]
+prefix = "/api/v1"
+
+[system.api_settings.cors]
+allow_origins = ["*"]
+
+[user]
+
+[user.credentials]
+fmp_api_key = "..."
+polygon_api_key = "..."
+
+[user.preferences]
+data_directory = "/data/openbb"
+output_type = "dataframe"
+
+[user.defaults]
+
+[user.defaults.commands."/equity/price/historical"]
+provider = "fmp"
+```
+
+Top-level convenience keys are folded into `[system]`:
+
+```
+debug_mode
+test_mode
+headless
+logging_suppress
+allow_mutable_extensions
+allow_on_command_output
+```
+
+Both kebab-case (`debug-mode`) and snake_case (`debug_mode`) work at the top level. Inside `[system]` / `[user]` tables, keys must match model field names exactly.
+
+---
+
+## Environment variables
+
+### Core
+
+| Variable | Type | Default |
+| -------- | ---- | ------- |
+| `OPENBB_API_AUTH` | bool | `False` |
+| `OPENBB_API_USERNAME` | `str \| None` | `None` |
+| `OPENBB_API_PASSWORD` | `str \| None` | `None` |
+| `OPENBB_API_AUTH_EXTENSION` | `str \| None` | `None` |
+| `OPENBB_AUTO_BUILD` | bool | `True` |
+| `OPENBB_DEBUG_MODE` | bool | `False` |
+| `OPENBB_DEV_MODE` | bool | `False` |
+| `OPENBB_ALLOW_MUTABLE_EXTENSIONS` | bool | `False` |
+| `OPENBB_ALLOW_ON_COMMAND_OUTPUT` | bool | `False` |
+
+Boolean coercion accepts `false / f / 0 / no / n` and `true / t / 1 / yes / y`, case-insensitive.
+
+`debug_mode`, `test_mode`, `headless`, and `logging_suppress` are set through `openbb.toml` (top-level keys or under `[system]`), not by dedicated environment variables. Of these, only `debug_mode` has a corresponding `Env` variable (`OPENBB_DEBUG_MODE`).
+
+### Loader
+
+| Variable | Purpose |
+| -------- | ------- |
+| `OPENBB_CONFIG` | Path to an extra TOML config file. |
+| `OPENBB_ENV_FILE` | Path to an additional `.env` beyond `~/.openbb_platform/.env`. |
+
+### Credentials
+
+Each credential field exposes the field name uppercased as an environment variable. Variables ending in `_API_KEY` are also picked up if their lowercased name matches a registered credential.
+
+`fmp_api_key` can be set via:
+
+- `~/.openbb_platform/user_settings.json` under `"credentials"`.
+- `[user.credentials] fmp_api_key = "..."` in `openbb.toml`.
+- `FMP_API_KEY` environment variable.
