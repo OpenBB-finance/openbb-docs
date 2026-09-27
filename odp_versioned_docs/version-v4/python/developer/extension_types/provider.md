@@ -120,7 +120,7 @@ empty_provider = Provider(
 
 ## Provider Model
 
-Provider data pipelines use the [`Fetcher`](/odp/python/developer/architecture_overview#fetcher-class) class to transform and validate user input, extract raw data from the source, and transform the data into serializable content.
+Provider data pipelines use the [`Fetcher`](../architecture_overview.mdx#fetcher-class) class to transform and validate user input, extract raw data from the source, and transform the data into serializable content.
 
 Transformed data will be ready to load into a database or use by downstream processes.
 
@@ -320,7 +320,7 @@ class EmptySomeTimeSeriesFetcher(
 
 ## Add to Endpoint
 
-Mapping the model to a router endpoint requires installing or building a [router extension](/odp/python/developer/extension_types/router).
+Mapping the model to a router endpoint requires installing or building a [router extension](./router.md).
 
 The function definition itself is copy/pastable and repeatable, where the only thing that changes is the metamodel referenced in the `@router.command` decorator.
 

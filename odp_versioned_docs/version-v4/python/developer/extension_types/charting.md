@@ -84,7 +84,7 @@ it is assumed that routers for specific endpoints are installed in the environme
 
 For example, `openbb-equity` should be installed if mapping to, `obb.equity.price.quote`.
 
-To not rely on `openbb-charting`, add the plugin definition to a [Router extension](/odp/python/developer/extension_types/router).
+To not rely on `openbb-charting`, add the plugin definition to a [Router extension](./router.md).
 This has the effect of making the extension optional, because endpoint views will only be accessible when `openbb-charting` is installed.
 :::
 
@@ -93,7 +93,7 @@ This has the effect of making the extension optional, because endpoint views wil
 In this example the extension code all lives inside `__init__.py`.
 
 :::info
-The example below uses [`openbb-empty-router`](/odp/python/developer/extension_types/router) as the router extension.
+The example below uses [`openbb-empty-router`](./router.md) as the router extension.
 
 ```python
 >>> from openbb import obb
@@ -224,10 +224,10 @@ dict_keys(
 ```
 
 - **`kwargs["obbject_item"]`**: The validated 'results' object in the final output.
-- **`kwargs["charting_settings"]`**: [User settings](/odp/python/settings/user_settings/preferences) are passed in for handling, if required.
+- **`kwargs["charting_settings"]`**: [User settings](../../settings/user_settings/preferences.mdx) are passed in for handling, if required.
 - **`kwargs["standard_params"]`**: Parameters handled by the standard model, if any.
 - **`kwargs["extra_params"]`**: All other parameters passed to the main function.
-- **`kwargs["extra"]`**: [Metadata](/odp/python/developer/how-to/annotated_results) returned by a [provider extension](/odp/python/developer/extension_types/provider).
+- **`kwargs["extra"]`**: [Metadata](../how-to/annotated_results.mdx) returned by a [provider extension](./provider.md).
 
 
 ## Conveying Parameters
@@ -254,4 +254,4 @@ empty_hello(**kwargs)
 
 ## Usage
 
-See the documentation [here](/odp/python/extensions/infrastructure/openbb-charting) for usage instructions and examples.
+See the documentation [here](../../extensions/infrastructure/openbb-charting/index.md) for usage instructions and examples.

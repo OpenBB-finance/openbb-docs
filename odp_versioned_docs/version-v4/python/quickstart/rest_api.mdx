@@ -28,7 +28,7 @@ uvicorn openbb_core.api.rest_api:app
 :::info
 This starts a server on `http://127.0.0.1:8000`
 
-See [System Settings](/odp/python/settings/system_settings) for API configuration and runtime settings.
+See [System Settings](../settings/system_settings.mdx) for API configuration and runtime settings.
 :::
 
 ## Running in a Container
@@ -54,13 +54,13 @@ Please note that some descriptions and parameter dropdown choices may appear inc
 
 ## API Authorization
 
-By default, no authorization is required. Data provider credentials must be configured in [`user_settings.json`](/odp/python/settings/user_settings/api_keys)
+By default, no authorization is required. Data provider credentials must be configured in [`user_settings.json`](../settings/user_settings/api_keys.mdx)
 
 :::warning
 Production environments should utilize access controls and HTTPS encryption.
 :::
 
-Basic authorization can be enabled with [environment variables](/odp/python/settings/environment_variables).
+Basic authorization can be enabled with [environment variables](../settings/environment_variables.mdx).
 
 ```.env
 OPENBB_API_AUTH="True"
@@ -107,7 +107,7 @@ Always run deployed servers over HTTPS.
 ## HTTPS
 
 Running localhost over HTTPS can appear to be trickier than it needs to be.
-The simplest method is to generate a self-signed certificate using the [OPD Desktop](/odp/desktop/backends#self-signed-certificate) feature.
+The simplest method is to generate a self-signed certificate using the [OPD Desktop](../../desktop/backends.md#self-signed-certificate) feature.
 
 Then use Uvicorn runtime arguments, or environment variables, pointing to the file locations.
 
@@ -120,4 +120,4 @@ UVICORN_SSL_KEYFILE = "/pathto/private_folder/private.key"
 
 `openbb-api` is a command line executable that imports the `app` instance and extends it by building and serving configuration files for OpenBB Workspace, converting API endpoints into interactive widgets.
 
-Go to the extension's [documentation](/odp/python/extensions/interface/openbb-api) for launch arguments and usage examples.
+Go to the extension's [documentation](../extensions/interface/openbb-api.mdx) for launch arguments and usage examples.

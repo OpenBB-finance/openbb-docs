@@ -29,7 +29,7 @@ This page provides information about how to write plugin extensions
 that intercept the application output immediately before returning to the user.
 They provide a way to conditionally alter the output of any command, including those you do not control.
 
-While OBBject [extensions](/odp/python/developer/extension_types/obbject) are post-return methods for the Python Interface,
+While OBBject [extensions](./obbject.md) are post-return methods for the Python Interface,
 OBBject plugins are compatible with both interfaces, REST API and Python, and execute before returning.
 They give the developer complete control of the application's last-mile delivery.
 Because of this, they are considered potentially dangerous, and may allow arbitrary code execution in the installed environment.
@@ -46,7 +46,7 @@ Tasks are performed in series or parallel, where series operations are blocking 
 
 
 
-In [system_settings.json](/odp/python/settings/system_settings), add:
+In [system_settings.json](../../settings/system_settings.mdx), add:
 
 ```json
 {

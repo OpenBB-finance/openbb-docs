@@ -68,7 +68,7 @@ For Linux systems, the PyWry dependency requires certain dependencies to be inst
 
 ## Set Theme
 
-The default theme setting is `dark`, and this can be changed to "light" in the [user preference](/odp/python/settings/user_settings/preferences)
+The default theme setting is `dark`, and this can be changed to "light" in the [user preference](../../../settings/user_settings/preferences.mdx)
 for both, `chart_style` and `table_style`.
 
 For the current Python session, set them with:
@@ -120,7 +120,7 @@ toggle_chart_style
 ## Usage
 
 :::important user_settings.json
-This extension requires that the [user preference](/odp/python/settings/user_settings/preferences) for `output_type` is set to, "OBBject", the default state.
+This extension requires that the [user preference](../../../settings/user_settings/preferences.mdx) for `output_type` is set to, "OBBject", the default state.
 :::
 
 To use, run any of the ODP Python Package endpoints with the `chart` argument set to `True`.

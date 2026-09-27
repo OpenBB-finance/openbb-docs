@@ -19,12 +19,12 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Configuration & Settings - | ODP CLI Docs" />
 
-In addition to the ODP's `user_settings.json` file, described [on the environment variables page](/odp/python/settings/environment_variables), there are settings and environment variables affecting the CLI only.
+In addition to the ODP's `user_settings.json` file, described [on the environment variables page](../python/settings/environment_variables.mdx), there are settings and environment variables affecting the CLI only.
 
 :::important
 API credentials are defined in the `user_settings.json` file.
 
-Find all the current data providers maintained in the OpenBB repository [on the extensions page](/odp/python/extensions/).
+Find all the current data providers maintained in the OpenBB repository [on the extensions page](../python/extensions/index.mdx).
 
 Define default data sources by following the pattern outlined [on the data sources page](data-sources)
 :::

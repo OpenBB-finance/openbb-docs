@@ -28,7 +28,7 @@ This section provides information resources for developers and advanced users.
   <NewReferenceCard
     title="Architecture Overview"
     description="A high level overview of the architecture behind `openbb-core` and the user interfaces."
-    url="/odp/python/developer/architecture_overview"
+    url="/odp/v4/python/developer/architecture_overview"
   />
 </ul>
 
@@ -36,7 +36,7 @@ This section provides information resources for developers and advanced users.
   <NewReferenceCard
     title="Standardization"
     description="A high level explanation of the applied standardization framework."
-    url="/odp/python/developer/standardization"
+    url="/odp/v4/python/developer/standardization"
   />
 </ul>
 
@@ -44,7 +44,7 @@ This section provides information resources for developers and advanced users.
   <NewReferenceCard
     title="Extension Types"
     description="Instructions for getting started building the different types of OpenBB Python Package Extensions."
-    url="/odp/python/developer/extension_types"
+    url="/odp/v4/python/developer/extension_types"
   />
 </ul>
 
@@ -52,6 +52,6 @@ This section provides information resources for developers and advanced users.
   <NewReferenceCard
     title="How-To"
     description="Quick how-to guides that cover key concepts and code snippets."
-    url="/odp/python/developer/how-to"
+    url="/odp/v4/python/developer/how-to"
   />
 </ul>

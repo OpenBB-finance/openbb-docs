@@ -18,7 +18,7 @@ import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
 <HeadTitle title="Build OBBject Extensions - Developer | OpenBB Docs" />
 
-OpenBB provides some basic methods for interacting with common data structures that will be seen in the results attribute of the [`OBBject`](/odp/python/basic_usage/response_model).
+OpenBB provides some basic methods for interacting with common data structures that will be seen in the results attribute of the [`OBBject`](../../basic_usage/response_model.mdx).
 
 If you are working with custom data, you may also want specific methods for interacting with the data, post-request.
 
@@ -124,7 +124,7 @@ If there are no provider or router extensions installed, the console will still 
 Failed to import extensions. Are any installed?
 ```
 
-This means there are no endpoints to run - i.e, `obb.equity.price.historical()`. The extension is applied only the output of the endpoints. You can try this example code in conjunction with the [router](/odp/python/developer/extension_types/router) extension example.
+This means there are no endpoints to run - i.e, `obb.equity.price.historical()`. The extension is applied only the output of the endpoints. You can try this example code in conjunction with the [router](./router.md) extension example.
 
 ## Use Extension
 

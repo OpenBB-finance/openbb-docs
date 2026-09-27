@@ -34,40 +34,40 @@ The CLI leverages the extendability of the ODP architecture in an easy-to-consum
 <NewReferenceCard
     title="Installation"
     description="An installation guide for the ODP CLI."
-    url="/odp/cli/installation"
+    url="/odp/v4/cli/installation"
 />
 <NewReferenceCard
     title="Quick Start"
     description="A quick start guide for the ODP CLI."
-    url="/odp/cli/quickstart"
+    url="/odp/v4/cli/quickstart"
 />
 <NewReferenceCard
     title="Configuration & Settings"
     description="An explanation of the settings and environment variables that customize the look and feel of the ODP CLI."
-    url="/odp/cli/configuration"
+    url="/odp/v4/cli/configuration"
 />
 <NewReferenceCard
     title="Data Sources"
     description="How-to switch providers for a command, and define the default source for a function."
-    url="/odp/cli/data-sources"
+    url="/odp/v4/cli/data-sources"
 />
 <NewReferenceCard
     title="OpenBBUserData Folder"
     description="The OpenBBUserData folder is where exports, routines, and other related files are saved."
-    url="/odp/cli/openbbuserdata"
+    url="/odp/v4/cli/openbbuserdata"
 />
 <NewReferenceCard
     title="Interactive Tables"
     description="Understand how to sort, filter, hide columns, display more rows or export data on our tables."
-    url="/odp/cli/interactive-tables"
+    url="/odp/v4/cli/interactive-tables"
 />
 <NewReferenceCard
     title="Interactive Charts"
     description="Explore how to overlay charts, change titles, draw lines, add text and much more on our charts."
-    url="/odp/cli/interactive-charts"
+    url="/odp/v4/cli/interactive-charts"
 />
 </ul>
 
 ---
 
-Want to contribute? Check out our [Development section](/odp/python/developer/architecture_overview).
+Want to contribute? Check out our [Development section](../python/developer/architecture_overview.mdx).

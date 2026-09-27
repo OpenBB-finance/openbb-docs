@@ -26,7 +26,7 @@ Many commands have multiple data sources associated with it. This page describes
 :::important
 API credentials are defined in the `user_settings.json` file.
 
-Find all the current data providers maintained in the OpenBB repository [here](/odp/python/extensions).
+Find all the current data providers maintained in the OpenBB repository [here](../python/extensions/index.mdx).
 :::
 
 ## Data Source In-Command

@@ -30,7 +30,7 @@ If you are already familiar with FastAPI, this is an excellent way to get starte
 Each API route (GET or POST) will be added to the `obb` Python package under the assigned name - `i.e, obb.my_app.some_function` - and will be an equivalent to
 the REST API endpoint.
 The resulting app will be an independent module that does not require a server.
-They will combine and operate like any other ODP [router](/odp/python/developer/extension_types/router).
+They will combine and operate like any other ODP [router](./router.md).
 
 ## Add Dependency
 
@@ -74,7 +74,7 @@ pip install -e .
 
 ## Build
 
-The API can be started [immediately](/odp/python/quickstart/rest_api); but, to use as a Python package, the static assets must be built.
+The API can be started [immediately](../../quickstart/rest_api.mdx); but, to use as a Python package, the static assets must be built.
 
 From the command line, enter:
 

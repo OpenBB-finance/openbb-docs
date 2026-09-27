@@ -16,7 +16,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 ## Launch
 
-- Configure any data provider credentials in the [`user_settings.json`](/odp/python/settings/user_settings/api_keys) file.
+- Configure any data provider credentials in the [`user_settings.json`](../python/settings/user_settings/api_keys.mdx) file.
 - Open a Terminal and activate the environment where the `openbb-cli` package was installed.
 - On the command line, enter: `openbb`
 

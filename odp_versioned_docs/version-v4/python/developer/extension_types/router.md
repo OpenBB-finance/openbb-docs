@@ -90,7 +90,7 @@ Router commands will be available under the namepsace, `obb.empty`
 
 ### Provider Interface Imports
 
-Routing an endpoint to the [Provider Interface](/odp/python/developer/extension_types/provider) requires other imports, and a distinct function signature.
+Routing an endpoint to the [Provider Interface](./provider.md) requires other imports, and a distinct function signature.
 
 ```python
 from openbb_core.app.model.command_context import CommandContext
@@ -171,13 +171,13 @@ async def hello(
 The `@router.command` decorator will accept:
 
 - **`methods`**: List of HTTP methods - typically `GET` or `POST`.
-- **`model`**: A metamodel associated with a [`Provider`](/odp/python/developer/extension_types/provider) extension endpoint.
-- **`deprecated`**: Instance of [`Deprecated`](/odp/python/developer/how-to/deprecating_endpoints).
-- **`examples`**: List of API or Python [Examples](/odp/python/developer/how-to/examples).
+- **`model`**: A metamodel associated with a [`Provider`](./provider.md) extension endpoint.
+- **`deprecated`**: Instance of [`Deprecated`](../how-to/deprecating_endpoints.mdx).
+- **`examples`**: List of API or Python [Examples](../how-to/examples.mdx).
 - **`exclude_from_api`**: Include endpoint only in Python Interface.
-- **`no_validate`**: Set as `True` to [ignore response validation](/odp/python/developer/how-to/disabling_output_validation) and treat as `Any`.
+- **`no_validate`**: Set as `True` to [ignore response validation](../how-to/disabling_output_validation.mdx) and treat as `Any`.
 - **`openapi_extra`**: Dictionary of additional metadata to include in `openapi.json`.
-  - Use this as an entrypoint for inline configurations of [`widget_config`](/odp/python/extensions/interface/openbb-api) or [`mcp_config`](/odp/python/extensions/interface/openbb-mcp)
+  - Use this as an entrypoint for inline configurations of [`widget_config`](../../extensions/interface/openbb-api.mdx) or [`mcp_config`](../../extensions/interface/openbb-mcp.mdx)
 
 
 ### Using `fastapi.APIRouter`

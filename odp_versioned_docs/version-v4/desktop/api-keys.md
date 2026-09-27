@@ -33,12 +33,12 @@ For example, if `openbb-fred` was selected, `fred_api_key` will appear on the sc
 
 ## Features
 
-- Interface for adding and modifying `credentials` entries stored in the [`user_settings.json`](/odp/python/settings/user_settings/api_keys) file.
+- Interface for adding and modifying `credentials` entries stored in the [`user_settings.json`](../python/settings/user_settings/api_keys.mdx) file.
   - Import key:value pairs from file (`.json` or `.env`).
 - Easy access to key ODP configuration files in the `~/.openbb_platform` directory, opening directly in the default text editor:
-  - `user_settings.json` (see the docs [here](/odp/python/settings/user_settings).)
-  - `system_settings.json` (see the docs [here](/odp/python/settings/system_settings).)
-  - `.env` (see the docs [here](/odp/python/settings/environment_variables).)
+  - `user_settings.json` (see the docs [here](../python/settings/user_settings/index.mdx).)
+  - `system_settings.json` (see the docs [here](../python/settings/system_settings.mdx).)
+  - `.env` (see the docs [here](../python/settings/environment_variables.mdx).)
 
 ## Edit, Save, & Remove
 
@@ -57,7 +57,7 @@ Backend servers and Python interpreters will need to be restarted for the change
 The button to the right of, `Import Keys`, is for opening ODP configuration files (listed above with documentation links).
 
 :::tip
-The `.env` file can be added to any [Backend](/odp/desktop/backends) configuration.
+The `.env` file can be added to any [Backend](./backends.md) configuration.
 :::
 
 Clicking the button will open it with the system's default text editor.

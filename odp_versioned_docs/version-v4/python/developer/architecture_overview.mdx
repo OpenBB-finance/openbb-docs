@@ -51,7 +51,7 @@ The `openbb-core` package comes with the ability to operate two, independent, in
 - REST API
   - An instance of FastAPI
 
-The application - both Python Interface and REST API - share core logic and models. It is the product of all installed [extensions](/odp/python/extensions).
+The application - both Python Interface and REST API - share core logic and models. It is the product of all installed [extensions](../extensions/index.mdx).
 
 All routes are a subclass of the Router class.
 
@@ -124,17 +124,17 @@ openbb-build
 The bare interface includes:
 
 - *Deprecated* /account: This module is deprecated and will be removed in a future version.
-- /user: The [`user_settings.json`](/odp/python/settings/environment_variables) object.
-- /system: The [`system_settings.json`](/odp/python/settings/system_settings) object.
+- /user: The [`user_settings.json`](../settings/environment_variables.mdx) object.
+- /system: The [`system_settings.json`](../settings/system_settings.mdx) object.
 - /coverage: Information and metadata about the data provider extensions and their definitions (providers, commands, command_model, command_schemas, reference)
 
 :::tip Python Settings
-See [`system_settings.json`](/odp/python/settings/system_settings) for configuring runtime parameters.
+See [`system_settings.json`](../settings/system_settings.mdx) for configuring runtime parameters.
 :::
 
 ### API Interface
 
-Items described immediately above will be included as routers by setting the [environment variable](/odp/python/settings/environment_variables), `OPENBB_DEV_MODE='1'`
+Items described immediately above will be included as routers by setting the [environment variable](../settings/environment_variables.mdx), `OPENBB_DEV_MODE='1'`
 
 The FastAPI instance, with all installed routers and extensions, can be imported with:
 
@@ -149,7 +149,7 @@ uvicorn openbb_core.rest_api:app
 ```
 
 :::tip API Settings
-See [`system_settings.json`](/odp/python/settings/system_settings) for configuring runtime parameters.
+See [`system_settings.json`](../settings/system_settings.mdx) for configuring runtime parameters.
 :::
 
 ## Providers
@@ -394,7 +394,7 @@ A `@router.command` decorator is exposed upon initialization, extending the func
 - `model`
   - A model name shared by all Provider extensions feeding the same input - i.e, "EquityHistorical"
 - `examples`
-  - Examples for use to include in documentation and Python docstring - see the page [here](/odp/python/developer/extension_types) for an explanation.
+  - Examples for use to include in documentation and Python docstring - see the page [here](./extension_types/index.md) for an explanation.
 - `no_validate`
   - A flag to disable response validation for the endpoint.
     - The output type is assigned as `Any`
@@ -487,7 +487,7 @@ class SomeExtension:
         print(f"Say Hello!")
 ```
 
-An example of this type of extension is, [`openbb-charting`](/odp/python/extensions/infrastructure/openbb-charting).
+An example of this type of extension is, [`openbb-charting`](../extensions/infrastructure/openbb-charting/index.md).
 
 ## Provider to Extension
 

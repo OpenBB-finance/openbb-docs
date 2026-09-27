@@ -1,0 +1,1128 @@
+---
+title: "quote"
+description: "Learn how to load stock data for a specific ticker with the Equity Quote  function. Discover the various parameters and data returned, including day low,  day high, date, symbol, name, price, volume, and more."
+keywords:
+- equity quote
+- stock data
+- ticker
+- parameters
+- symbol
+- provider
+- returns
+- data
+- day low
+- day high
+- date
+- fmp
+- intrinio
+- source
+- results
+- warnings
+- chart
+- metadata
+- price
+- changes percentage
+- change
+- year high
+- year low
+- market cap
+- price avg50
+- price avg200
+- volume
+- avg volume
+- exchange
+- open
+- previous close
+- eps
+- pe
+- earnings announcement
+- shares outstanding
+- last price
+- last time
+- last size
+- bid price
+- bid size
+- ask price
+- ask size
+- close price
+- high price
+- low price
+- exchange volume
+- market volume
+- updated on
+- listing venue
+- sales conditions
+- quote conditions
+- market center code
+- is darkpool
+- messages
+- security
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="equity/price/quote - Reference | OpenBB Docs" />
+
+<!-- markdownlint-disable MD012 MD031 MD033 -->
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Get the latest quote for a given stock. Quote includes price, volume, and other data.
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.equity.price.quote(symbol='AAPL')
+```
+
+## Parameters
+
+<Tabs>
+<TabItem value='standard' label='standard'>
+
+**symbol**: `str | list[str]`<br/>
+Symbol to get data for. Multiple items allowed for provider(s): cboe, fmp, intrinio, tmx, tradier, yfinance.
+
+</TabItem>
+<TabItem value='cboe' label='cboe'>
+
+**symbol**: `str | list[str]`<br/>
+Symbol to get data for. Multiple items allowed for provider(s): cboe, fmp, intrinio, tmx, tradier, yfinance.
+
+**use_cache**: `bool | None`<br/>
+*Default:* True<br/>
+When True, the company directories will be cached for 24 hours and are used to validate symbols. The results of the function are not cached. Set as False to bypass.
+
+</TabItem>
+<TabItem value='fmp' label='fmp'>
+
+**symbol**: `str | list[str]`<br/>
+Symbol to get data for. Multiple items allowed for provider(s): cboe, fmp, intrinio, tmx, tradier, yfinance.
+
+</TabItem>
+<TabItem value='intrinio' label='intrinio'>
+
+**symbol**: `str`<br/>
+A Security identifier (Ticker, FIGI, ISIN, CUSIP, Intrinio ID).
+
+**source**: `Literal['iex', 'bats', 'bats_delayed', 'utp_delayed', 'cta_a_delayed', 'cta_b_delayed', 'intrinio_mx', 'intrinio_mx_plus', 'delayed_sip'] | None`<br/>
+*Default:* iex<br/>
+Source of the data.
+
+</TabItem>
+<TabItem value='tmx' label='tmx'>
+
+**symbol**: `str | list[str]`<br/>
+Symbol to get data for. Multiple items allowed for provider(s): cboe, fmp, intrinio, tmx, tradier, yfinance.
+
+</TabItem>
+<TabItem value='tradier' label='tradier'>
+
+**symbol**: `str | list[str]`<br/>
+Symbol to get data for. Multiple items allowed for provider(s): cboe, fmp, intrinio, tmx, tradier, yfinance.
+
+</TabItem>
+<TabItem value='yfinance' label='yfinance'>
+
+**symbol**: `str | list[str]`<br/>
+Symbol to get data for. Multiple items allowed for provider(s): cboe, fmp, intrinio, tmx, tradier, yfinance.
+
+</TabItem>
+</Tabs>
+
+---
+
+## Returns
+
+**results**: `EquityQuote`
+
+Serializable results.
+
+**provider**: `Optional[Literal['cboe', 'fmp', 'intrinio', 'tmx', 'tradier', 'yfinance']]`
+
+Provider name.
+
+**warnings**: `Optional[list[Warning_]]`
+
+list of warnings.
+
+**chart**: `Optional[Chart]`
+
+Chart object.
+
+**extra**: `dict[str, Any]`
+
+Extra info.
+
+---
+## Data
+
+<Tabs>
+<TabItem value='standard' label='standard'>
+
+**symbol**: `str`<br/>
+Symbol representing the entity requested in the data.
+
+**asset_type**: `str | None`<br/>
+Type of asset - i.e, stock, ETF, etc.
+
+**name**: `str | None`<br/>
+Name of the company or asset.
+
+**exchange**: `str | None`<br/>
+The name or symbol of the venue where the data is from.
+
+**bid**: `float | None`<br/>
+Price of the top bid order.
+
+**bid_size**: `int | None`<br/>
+This represents the number of round lot orders at the given price. The normal round lot size is 100 shares. A size of 2 means there are 200 shares available at the given price.
+
+**bid_exchange**: `str | None`<br/>
+The specific trading venue where the purchase order was placed.
+
+**ask**: `float | None`<br/>
+Price of the top ask order.
+
+**ask_size**: `int | None`<br/>
+This represents the number of round lot orders at the given price. The normal round lot size is 100 shares. A size of 2 means there are 200 shares available at the given price.
+
+**ask_exchange**: `str | None`<br/>
+The specific trading venue where the sale order was placed.
+
+**quote_conditions**: `str | int | list[str] | list[int] | None`<br/>
+Conditions or condition codes applicable to the quote.
+
+**quote_indicators**: `str | int | list[str] | list[int] | None`<br/>
+Indicators or indicator codes applicable to the participant quote related to the price bands for the issue, or the affect the quote has on the NBBO.
+
+**sales_conditions**: `str | int | list[str] | list[int] | None`<br/>
+Conditions or condition codes applicable to the sale.
+
+**sequence_number**: `int | None`<br/>
+The sequence number represents the sequence in which message events happened. These are increasing and unique per ticker symbol, but will not always be sequential (e.g., 1, 2, 6, 9, 10, 11).
+
+**market_center**: `str | None`<br/>
+The ID of the UTP participant that originated the message.
+
+**participant_timestamp**: `datetime | None`<br/>
+Timestamp for when the quote was generated by the exchange.
+
+**trf_timestamp**: `datetime | None`<br/>
+Timestamp for when the TRF (Trade Reporting Facility) received the message.
+
+**sip_timestamp**: `datetime | None`<br/>
+Timestamp for when the SIP (Security Information Processor) received the message from the exchange.
+
+**last_price**: `float | None`<br/>
+Price of the last trade.
+
+**last_tick**: `str | None`<br/>
+Whether the last sale was an up or down tick.
+
+**last_size**: `int | None`<br/>
+Size of the last trade.
+
+**last_timestamp**: `datetime | None`<br/>
+Date and Time when the last price was recorded.
+
+**open**: `float | None`<br/>
+The open price.
+
+**high**: `float | None`<br/>
+The high price.
+
+**low**: `float | None`<br/>
+The low price.
+
+**close**: `float | None`<br/>
+The close price.
+
+**volume**: `int | float | None`<br/>
+The trading volume.
+
+**exchange_volume**: `int | float | None`<br/>
+Volume of shares exchanged during the trading day on the specific exchange.
+
+**prev_close**: `float | None`<br/>
+The previous close price.
+
+**change**: `float | None`<br/>
+Change in price from previous close.
+
+**change_percent**: `float | None`<br/>
+Change in price as a normalized percentage.
+
+**year_high**: `float | None`<br/>
+The one year high (52W High).
+
+**year_low**: `float | None`<br/>
+The one year low (52W Low).
+
+</TabItem>
+<TabItem value='cboe' label='cboe'>
+
+**symbol**: `str`<br/>
+Symbol representing the entity requested in the data.
+
+**asset_type**: `str | None`<br/>
+Type of asset - i.e, stock, ETF, etc.
+
+**name**: `str | None`<br/>
+Name of the company or asset.
+
+**exchange**: `str | None`<br/>
+The name or symbol of the venue where the data is from.
+
+**bid**: `float | None`<br/>
+Price of the top bid order.
+
+**bid_size**: `int | None`<br/>
+This represents the number of round lot orders at the given price. The normal round lot size is 100 shares. A size of 2 means there are 200 shares available at the given price.
+
+**bid_exchange**: `str | None`<br/>
+The specific trading venue where the purchase order was placed.
+
+**ask**: `float | None`<br/>
+Price of the top ask order.
+
+**ask_size**: `int | None`<br/>
+This represents the number of round lot orders at the given price. The normal round lot size is 100 shares. A size of 2 means there are 200 shares available at the given price.
+
+**ask_exchange**: `str | None`<br/>
+The specific trading venue where the sale order was placed.
+
+**quote_conditions**: `str | int | list[str] | list[int] | None`<br/>
+Conditions or condition codes applicable to the quote.
+
+**quote_indicators**: `str | int | list[str] | list[int] | None`<br/>
+Indicators or indicator codes applicable to the participant quote related to the price bands for the issue, or the affect the quote has on the NBBO.
+
+**sales_conditions**: `str | int | list[str] | list[int] | None`<br/>
+Conditions or condition codes applicable to the sale.
+
+**sequence_number**: `int | None`<br/>
+The sequence number represents the sequence in which message events happened. These are increasing and unique per ticker symbol, but will not always be sequential (e.g., 1, 2, 6, 9, 10, 11).
+
+**market_center**: `str | None`<br/>
+The ID of the UTP participant that originated the message.
+
+**participant_timestamp**: `datetime | None`<br/>
+Timestamp for when the quote was generated by the exchange.
+
+**trf_timestamp**: `datetime | None`<br/>
+Timestamp for when the TRF (Trade Reporting Facility) received the message.
+
+**sip_timestamp**: `datetime | None`<br/>
+Timestamp for when the SIP (Security Information Processor) received the message from the exchange.
+
+**last_price**: `float | None`<br/>
+Price of the last trade.
+
+**last_tick**: `str | None`<br/>
+Whether the last sale was an up or down tick.
+
+**last_size**: `int | None`<br/>
+Size of the last trade.
+
+**last_timestamp**: `datetime | None`<br/>
+Date and Time when the last price was recorded.
+
+**open**: `float | None`<br/>
+The open price.
+
+**high**: `float | None`<br/>
+The high price.
+
+**low**: `float | None`<br/>
+The low price.
+
+**close**: `float | None`<br/>
+The close price.
+
+**volume**: `int | float | None`<br/>
+The trading volume.
+
+**exchange_volume**: `int | float | None`<br/>
+Volume of shares exchanged during the trading day on the specific exchange.
+
+**prev_close**: `float | None`<br/>
+The previous close price.
+
+**change**: `float | None`<br/>
+Change in price from previous close.
+
+**change_percent**: `float | None`<br/>
+Change in price as a normalized percentage.
+
+**year_high**: `float | None`<br/>
+The one year high (52W High).
+
+**year_low**: `float | None`<br/>
+The one year low (52W Low).
+
+**iv30**: `float | None`<br/>
+The 30-day implied volatility of the stock.
+
+**iv30_change**: `float | None`<br/>
+Change in 30-day implied volatility of the stock.
+
+**iv30_change_percent**: `float | None`<br/>
+Change in 30-day implied volatility of the stock as a normalized percentage value.
+
+**iv30_annual_high**: `float | None`<br/>
+The 1-year high of 30-day implied volatility.
+
+**hv30_annual_high**: `float | None`<br/>
+The 1-year high of 30-day realized volatility.
+
+**iv30_annual_low**: `float | None`<br/>
+The 1-year low of 30-day implied volatility.
+
+**hv30_annual_low**: `float | None`<br/>
+The 1-year low of 30-dayrealized volatility.
+
+**iv60_annual_high**: `float | None`<br/>
+The 1-year high of 60-day implied volatility.
+
+**hv60_annual_high**: `float | None`<br/>
+The 1-year high of 60-day realized volatility.
+
+**iv60_annual_low**: `float | None`<br/>
+The 1-year low of 60-day implied volatility.
+
+**hv60_annual_low**: `float | None`<br/>
+The 1-year low of 60-day realized volatility.
+
+**iv90_annual_high**: `float | None`<br/>
+The 1-year high of 90-day implied volatility.
+
+**hv90_annual_high**: `float | None`<br/>
+The 1-year high of 90-day realized volatility.
+
+**iv90_annual_low**: `float | None`<br/>
+The 1-year low of 90-day implied volatility.
+
+**hv90_annual_low**: `float | None`<br/>
+The 1-year low of 90-day realized volatility.
+
+</TabItem>
+<TabItem value='fmp' label='fmp'>
+
+**symbol**: `str`<br/>
+Symbol representing the entity requested in the data.
+
+**asset_type**: `str | None`<br/>
+Type of asset - i.e, stock, ETF, etc.
+
+**name**: `str | None`<br/>
+Name of the company or asset.
+
+**exchange**: `str | None`<br/>
+The name or symbol of the venue where the data is from.
+
+**bid**: `float | None`<br/>
+Price of the top bid order.
+
+**bid_size**: `int | None`<br/>
+This represents the number of round lot orders at the given price. The normal round lot size is 100 shares. A size of 2 means there are 200 shares available at the given price.
+
+**bid_exchange**: `str | None`<br/>
+The specific trading venue where the purchase order was placed.
+
+**ask**: `float | None`<br/>
+Price of the top ask order.
+
+**ask_size**: `int | None`<br/>
+This represents the number of round lot orders at the given price. The normal round lot size is 100 shares. A size of 2 means there are 200 shares available at the given price.
+
+**ask_exchange**: `str | None`<br/>
+The specific trading venue where the sale order was placed.
+
+**quote_conditions**: `str | int | list[str] | list[int] | None`<br/>
+Conditions or condition codes applicable to the quote.
+
+**quote_indicators**: `str | int | list[str] | list[int] | None`<br/>
+Indicators or indicator codes applicable to the participant quote related to the price bands for the issue, or the affect the quote has on the NBBO.
+
+**sales_conditions**: `str | int | list[str] | list[int] | None`<br/>
+Conditions or condition codes applicable to the sale.
+
+**sequence_number**: `int | None`<br/>
+The sequence number represents the sequence in which message events happened. These are increasing and unique per ticker symbol, but will not always be sequential (e.g., 1, 2, 6, 9, 10, 11).
+
+**market_center**: `str | None`<br/>
+The ID of the UTP participant that originated the message.
+
+**participant_timestamp**: `datetime | None`<br/>
+Timestamp for when the quote was generated by the exchange.
+
+**trf_timestamp**: `datetime | None`<br/>
+Timestamp for when the TRF (Trade Reporting Facility) received the message.
+
+**sip_timestamp**: `datetime | None`<br/>
+Timestamp for when the SIP (Security Information Processor) received the message from the exchange.
+
+**last_price**: `float | None`<br/>
+Price of the last trade.
+
+**last_tick**: `str | None`<br/>
+Whether the last sale was an up or down tick.
+
+**last_size**: `int | None`<br/>
+Size of the last trade.
+
+**last_timestamp**: `datetime | None`<br/>
+Date and Time when the last price was recorded.
+
+**open**: `float | None`<br/>
+The open price.
+
+**high**: `float | None`<br/>
+The high price.
+
+**low**: `float | None`<br/>
+The low price.
+
+**close**: `float | None`<br/>
+The close price.
+
+**volume**: `int | float | None`<br/>
+The trading volume.
+
+**exchange_volume**: `int | float | None`<br/>
+Volume of shares exchanged during the trading day on the specific exchange.
+
+**prev_close**: `float | None`<br/>
+The previous close price.
+
+**change**: `float | None`<br/>
+Change in price from previous close.
+
+**change_percent**: `float | None`<br/>
+Change in price as a normalized percentage.
+
+**year_high**: `float | None`<br/>
+The one year high (52W High).
+
+**year_low**: `float | None`<br/>
+The one year low (52W Low).
+
+**ma50**: `float | None`<br/>
+50 day moving average price.
+
+**ma200**: `float | None`<br/>
+200 day moving average price.
+
+**market_cap**: `float | None`<br/>
+Market cap of the company.
+
+</TabItem>
+<TabItem value='intrinio' label='intrinio'>
+
+**symbol**: `str`<br/>
+Symbol representing the entity requested in the data.
+
+**asset_type**: `str | None`<br/>
+Type of asset - i.e, stock, ETF, etc.
+
+**name**: `str | None`<br/>
+Name of the company or asset.
+
+**exchange**: `str | None`<br/>
+The name or symbol of the venue where the data is from.
+
+**bid**: `float | None`<br/>
+Price of the top bid order.
+
+**bid_size**: `int | None`<br/>
+This represents the number of round lot orders at the given price. The normal round lot size is 100 shares. A size of 2 means there are 200 shares available at the given price.
+
+**bid_exchange**: `str | None`<br/>
+The specific trading venue where the purchase order was placed.
+
+**ask**: `float | None`<br/>
+Price of the top ask order.
+
+**ask_size**: `int | None`<br/>
+This represents the number of round lot orders at the given price. The normal round lot size is 100 shares. A size of 2 means there are 200 shares available at the given price.
+
+**ask_exchange**: `str | None`<br/>
+The specific trading venue where the sale order was placed.
+
+**quote_conditions**: `str | int | list[str] | list[int] | None`<br/>
+Conditions or condition codes applicable to the quote.
+
+**quote_indicators**: `str | int | list[str] | list[int] | None`<br/>
+Indicators or indicator codes applicable to the participant quote related to the price bands for the issue, or the affect the quote has on the NBBO.
+
+**sales_conditions**: `str | int | list[str] | list[int] | None`<br/>
+Conditions or condition codes applicable to the sale.
+
+**sequence_number**: `int | None`<br/>
+The sequence number represents the sequence in which message events happened. These are increasing and unique per ticker symbol, but will not always be sequential (e.g., 1, 2, 6, 9, 10, 11).
+
+**market_center**: `str | None`<br/>
+The ID of the UTP participant that originated the message.
+
+**participant_timestamp**: `datetime | None`<br/>
+Timestamp for when the quote was generated by the exchange.
+
+**trf_timestamp**: `datetime | None`<br/>
+Timestamp for when the TRF (Trade Reporting Facility) received the message.
+
+**sip_timestamp**: `datetime | None`<br/>
+Timestamp for when the SIP (Security Information Processor) received the message from the exchange.
+
+**last_price**: `float | None`<br/>
+Price of the last trade.
+
+**last_tick**: `str | None`<br/>
+Whether the last sale was an up or down tick.
+
+**last_size**: `int | None`<br/>
+Size of the last trade.
+
+**last_timestamp**: `datetime | None`<br/>
+Date and Time when the last price was recorded.
+
+**open**: `float | None`<br/>
+The open price.
+
+**high**: `float | None`<br/>
+The high price.
+
+**low**: `float | None`<br/>
+The low price.
+
+**close**: `float | None`<br/>
+The close price.
+
+**volume**: `int | float | None`<br/>
+The trading volume.
+
+**exchange_volume**: `int | float | None`<br/>
+Volume of shares exchanged during the trading day on the specific exchange.
+
+**prev_close**: `float | None`<br/>
+The previous close price.
+
+**change**: `float | None`<br/>
+Change in price from previous close.
+
+**change_percent**: `float | None`<br/>
+Change in price as a normalized percentage.
+
+**year_high**: `float | None`<br/>
+The one year high (52W High).
+
+**year_low**: `float | None`<br/>
+The one year low (52W Low).
+
+**is_darkpool**: `bool | None`<br/>
+Whether or not the current trade is from a darkpool.
+
+**source**: `str | None`<br/>
+Source of the Intrinio data.
+
+**updated_on**: `datetime`<br/>
+Date and Time when the data was last updated.
+
+**security**: `IntrinioSecurity | None`<br/>
+Security details related to the quote.
+
+</TabItem>
+<TabItem value='tmx' label='tmx'>
+
+**symbol**: `str`<br/>
+Symbol representing the entity requested in the data.
+
+**asset_type**: `str | None`<br/>
+Type of asset - i.e, stock, ETF, etc.
+
+**name**: `str | None`<br/>
+The name of the asset.
+
+**exchange**: `str | None`<br/>
+The listing exchange code.
+
+**bid**: `float | None`<br/>
+Price of the top bid order.
+
+**bid_size**: `int | None`<br/>
+This represents the number of round lot orders at the given price. The normal round lot size is 100 shares. A size of 2 means there are 200 shares available at the given price.
+
+**bid_exchange**: `str | None`<br/>
+The specific trading venue where the purchase order was placed.
+
+**ask**: `float | None`<br/>
+Price of the top ask order.
+
+**ask_size**: `int | None`<br/>
+This represents the number of round lot orders at the given price. The normal round lot size is 100 shares. A size of 2 means there are 200 shares available at the given price.
+
+**ask_exchange**: `str | None`<br/>
+The specific trading venue where the sale order was placed.
+
+**quote_conditions**: `str | int | list[str] | list[int] | None`<br/>
+Conditions or condition codes applicable to the quote.
+
+**quote_indicators**: `str | int | list[str] | list[int] | None`<br/>
+Indicators or indicator codes applicable to the participant quote related to the price bands for the issue, or the affect the quote has on the NBBO.
+
+**sales_conditions**: `str | int | list[str] | list[int] | None`<br/>
+Conditions or condition codes applicable to the sale.
+
+**sequence_number**: `int | None`<br/>
+The sequence number represents the sequence in which message events happened. These are increasing and unique per ticker symbol, but will not always be sequential (e.g., 1, 2, 6, 9, 10, 11).
+
+**market_center**: `str | None`<br/>
+The ID of the UTP participant that originated the message.
+
+**participant_timestamp**: `datetime | None`<br/>
+Timestamp for when the quote was generated by the exchange.
+
+**trf_timestamp**: `datetime | None`<br/>
+Timestamp for when the TRF (Trade Reporting Facility) received the message.
+
+**sip_timestamp**: `datetime | None`<br/>
+Timestamp for when the SIP (Security Information Processor) received the message from the exchange.
+
+**last_price**: `float | None`<br/>
+The last price of the asset.
+
+**last_tick**: `str | None`<br/>
+Whether the last sale was an up or down tick.
+
+**last_size**: `int | None`<br/>
+Size of the last trade.
+
+**last_timestamp**: `datetime | None`<br/>
+Date and Time when the last price was recorded.
+
+**open**: `float | None`<br/>
+The open price.
+
+**high**: `float | None`<br/>
+The high price.
+
+**low**: `float | None`<br/>
+The low price.
+
+**close**: `float | None`<br/>
+None
+
+**volume**: `int | None`<br/>
+Volume Weighted Average Price over the period.
+
+**exchange_volume**: `int | float | None`<br/>
+Volume of shares exchanged during the trading day on the specific exchange.
+
+**prev_close**: `float | None`<br/>
+The previous close price.
+
+**change**: `float | None`<br/>
+The change in price.
+
+**change_percent**: `float | None`<br/>
+The change in price as a normalized percent.
+
+**year_high**: `float | None`<br/>
+Fifty-two week high.
+
+**year_low**: `float | None`<br/>
+Fifty-two week low.
+
+**security_type**: `str | None`<br/>
+The issuance type of the asset.
+
+**sector**: `str | None`<br/>
+The sector of the asset.
+
+**industry_category**: `str | None`<br/>
+The industry category of the asset.
+
+**industry_group**: `str | None`<br/>
+The industry group of the asset.
+
+**vwap**: `float | None`<br/>
+Volume Weighted Average Price over the period.
+
+**ma_21**: `float | None`<br/>
+Twenty-one day moving average.
+
+**ma_50**: `float | None`<br/>
+Fifty day moving average.
+
+**ma_200**: `float | None`<br/>
+Two-hundred day moving average.
+
+**volume_avg_10d**: `int | None`<br/>
+Ten day average volume.
+
+**volume_avg_30d**: `int | None`<br/>
+Thirty day average volume.
+
+**volume_avg_50d**: `int | None`<br/>
+Fifty day average volume.
+
+**market_cap**: `int | None`<br/>
+Market capitalization.
+
+**market_cap_all_classes**: `int | None`<br/>
+Market capitalization of all share classes.
+
+**div_amount**: `float | None`<br/>
+The most recent dividend amount.
+
+**div_currency**: `str | None`<br/>
+The currency the dividend is paid in.
+
+**div_yield**: `float | None`<br/>
+The dividend yield as a normalized percentage.
+
+**div_freq**: `str | None`<br/>
+The frequency of dividend payments.
+
+**div_ex_date**: `date | None`<br/>
+The ex-dividend date.
+
+**div_pay_date**: `date | None`<br/>
+The next dividend ayment date.
+
+**div_growth_3y**: `float | str | None`<br/>
+The three year dividend growth as a normalized percentage.
+
+**div_growth_5y**: `float | str | None`<br/>
+The five year dividend growth as a normalized percentage.
+
+**pe**: `float | str | None`<br/>
+The price to earnings ratio.
+
+**eps**: `float | str | None`<br/>
+The earnings per share.
+
+**debt_to_equity**: `float | str | None`<br/>
+The debt to equity ratio.
+
+**price_to_book**: `float | str | None`<br/>
+The price to book ratio.
+
+**price_to_cf**: `float | str | None`<br/>
+The price to cash flow ratio.
+
+**return_on_equity**: `float | str | None`<br/>
+The return on equity, as a normalized percentage.
+
+**return_on_assets**: `float | str | None`<br/>
+The return on assets, as a normalized percentage.
+
+**beta**: `float | str | None`<br/>
+The beta relative to the TSX Composite.
+
+**alpha**: `float | str | None`<br/>
+The alpha relative to the TSX Composite.
+
+**shares_outstanding**: `int | None`<br/>
+The number of listed shares outstanding.
+
+**shares_escrow**: `int | None`<br/>
+The number of shares held in escrow.
+
+**shares_total**: `int | None`<br/>
+The total number of shares outstanding from all classes.
+
+</TabItem>
+<TabItem value='tradier' label='tradier'>
+
+**symbol**: `str`<br/>
+Symbol representing the entity requested in the data.
+
+**asset_type**: `str | None`<br/>
+Type of asset - i.e, stock, ETF, etc.
+
+**name**: `str | None`<br/>
+Name of the company or asset.
+
+**exchange**: `str | None`<br/>
+The name or symbol of the venue where the data is from.
+
+**bid**: `float | None`<br/>
+Price of the top bid order.
+
+**bid_size**: `int | None`<br/>
+This represents the number of round lot orders at the given price. The normal round lot size is 100 shares. A size of 2 means there are 200 shares available at the given price.
+
+**bid_exchange**: `str | None`<br/>
+The specific trading venue where the purchase order was placed.
+
+**ask**: `float | None`<br/>
+Price of the top ask order.
+
+**ask_size**: `int | None`<br/>
+This represents the number of round lot orders at the given price. The normal round lot size is 100 shares. A size of 2 means there are 200 shares available at the given price.
+
+**ask_exchange**: `str | None`<br/>
+The specific trading venue where the sale order was placed.
+
+**quote_conditions**: `str | int | list[str] | list[int] | None`<br/>
+Conditions or condition codes applicable to the quote.
+
+**quote_indicators**: `str | int | list[str] | list[int] | None`<br/>
+Indicators or indicator codes applicable to the participant quote related to the price bands for the issue, or the affect the quote has on the NBBO.
+
+**sales_conditions**: `str | int | list[str] | list[int] | None`<br/>
+Conditions or condition codes applicable to the sale.
+
+**sequence_number**: `int | None`<br/>
+The sequence number represents the sequence in which message events happened. These are increasing and unique per ticker symbol, but will not always be sequential (e.g., 1, 2, 6, 9, 10, 11).
+
+**market_center**: `str | None`<br/>
+The ID of the UTP participant that originated the message.
+
+**participant_timestamp**: `datetime | None`<br/>
+Timestamp for when the quote was generated by the exchange.
+
+**trf_timestamp**: `datetime | None`<br/>
+Timestamp for when the TRF (Trade Reporting Facility) received the message.
+
+**sip_timestamp**: `datetime | None`<br/>
+Timestamp for when the SIP (Security Information Processor) received the message from the exchange.
+
+**last_price**: `float | None`<br/>
+Price of the last trade.
+
+**last_tick**: `str | None`<br/>
+Whether the last sale was an up or down tick.
+
+**last_size**: `int | None`<br/>
+Size of the last trade.
+
+**last_timestamp**: `datetime | None`<br/>
+Date and Time when the last price was recorded.
+
+**open**: `float | None`<br/>
+The open price.
+
+**high**: `float | None`<br/>
+The high price.
+
+**low**: `float | None`<br/>
+The low price.
+
+**close**: `float | None`<br/>
+The close price.
+
+**volume**: `int | float | None`<br/>
+The trading volume.
+
+**exchange_volume**: `int | float | None`<br/>
+Volume of shares exchanged during the trading day on the specific exchange.
+
+**prev_close**: `float | None`<br/>
+The previous close price.
+
+**change**: `float | None`<br/>
+Change in price from previous close.
+
+**change_percent**: `float | None`<br/>
+Change in price as a normalized percentage.
+
+**year_high**: `float | None`<br/>
+The one year high (52W High).
+
+**year_low**: `float | None`<br/>
+The one year low (52W Low).
+
+**last_volume**: `int | None`<br/>
+The last trade volume.
+
+**volume_avg**: `int | None`<br/>
+The average daily trading volume.
+
+**bid_timestamp**: `datetime | None`<br/>
+Timestamp of the bid price.
+
+**ask_timestamp**: `datetime | None`<br/>
+Timestamp of the ask price.
+
+**greeks_timestamp**: `datetime | None`<br/>
+Timestamp of the greeks data.
+
+**underlying**: `str | None`<br/>
+The underlying symbol for the option.
+
+**root_symbol**: `str | None`<br/>
+The root symbol for the option.
+
+**option_type**: `Literal['call', 'put'] | None`<br/>
+Type of option - call or put.
+
+**contract_size**: `int | None`<br/>
+The number of shares in a standard contract.
+
+**expiration_type**: `str | None`<br/>
+The expiration type of the option - i.e, standard, weekly, etc.
+
+**expiration_date**: `date | None`<br/>
+The expiration date of the option.
+
+**strike**: `float | None`<br/>
+The strike price of the option.
+
+**open_interest**: `int | None`<br/>
+The number of open contracts for the option.
+
+**bid_iv**: `float | None`<br/>
+Implied volatility of the bid price.
+
+**ask_iv**: `float | None`<br/>
+Implied volatility of the ask price.
+
+**mid_iv**: `float | None`<br/>
+Mid-point implied volatility of the option.
+
+**orats_final_iv**: `float | None`<br/>
+ORATS final implied volatility of the option.
+
+**delta**: `float | None`<br/>
+Delta of the option.
+
+**gamma**: `float | None`<br/>
+Gamma of the option.
+
+**theta**: `float | None`<br/>
+Theta of the option.
+
+**vega**: `float | None`<br/>
+Vega of the option.
+
+**rho**: `float | None`<br/>
+Rho of the option.
+
+**phi**: `float | None`<br/>
+Phi of the option.
+
+</TabItem>
+<TabItem value='yfinance' label='yfinance'>
+
+**symbol**: `str`<br/>
+Symbol representing the entity requested in the data.
+
+**asset_type**: `str | None`<br/>
+Type of asset - i.e, stock, ETF, etc.
+
+**name**: `str | None`<br/>
+Name of the company or asset.
+
+**exchange**: `str | None`<br/>
+The name or symbol of the venue where the data is from.
+
+**bid**: `float | None`<br/>
+Price of the top bid order.
+
+**bid_size**: `int | None`<br/>
+This represents the number of round lot orders at the given price. The normal round lot size is 100 shares. A size of 2 means there are 200 shares available at the given price.
+
+**bid_exchange**: `str | None`<br/>
+The specific trading venue where the purchase order was placed.
+
+**ask**: `float | None`<br/>
+Price of the top ask order.
+
+**ask_size**: `int | None`<br/>
+This represents the number of round lot orders at the given price. The normal round lot size is 100 shares. A size of 2 means there are 200 shares available at the given price.
+
+**ask_exchange**: `str | None`<br/>
+The specific trading venue where the sale order was placed.
+
+**quote_conditions**: `str | int | list[str] | list[int] | None`<br/>
+Conditions or condition codes applicable to the quote.
+
+**quote_indicators**: `str | int | list[str] | list[int] | None`<br/>
+Indicators or indicator codes applicable to the participant quote related to the price bands for the issue, or the affect the quote has on the NBBO.
+
+**sales_conditions**: `str | int | list[str] | list[int] | None`<br/>
+Conditions or condition codes applicable to the sale.
+
+**sequence_number**: `int | None`<br/>
+The sequence number represents the sequence in which message events happened. These are increasing and unique per ticker symbol, but will not always be sequential (e.g., 1, 2, 6, 9, 10, 11).
+
+**market_center**: `str | None`<br/>
+The ID of the UTP participant that originated the message.
+
+**participant_timestamp**: `datetime | None`<br/>
+Timestamp for when the quote was generated by the exchange.
+
+**trf_timestamp**: `datetime | None`<br/>
+Timestamp for when the TRF (Trade Reporting Facility) received the message.
+
+**sip_timestamp**: `datetime | None`<br/>
+Timestamp for when the SIP (Security Information Processor) received the message from the exchange.
+
+**last_price**: `float | None`<br/>
+Price of the last trade.
+
+**last_tick**: `str | None`<br/>
+Whether the last sale was an up or down tick.
+
+**last_size**: `int | None`<br/>
+Size of the last trade.
+
+**last_timestamp**: `datetime | None`<br/>
+Date and Time when the last price was recorded.
+
+**open**: `float | None`<br/>
+The open price.
+
+**high**: `float | None`<br/>
+The high price.
+
+**low**: `float | None`<br/>
+The low price.
+
+**close**: `float | None`<br/>
+The close price.
+
+**volume**: `int | float | None`<br/>
+The trading volume.
+
+**exchange_volume**: `int | float | None`<br/>
+Volume of shares exchanged during the trading day on the specific exchange.
+
+**prev_close**: `float | None`<br/>
+The previous close price.
+
+**change**: `float | None`<br/>
+Change in price from previous close.
+
+**change_percent**: `float | None`<br/>
+Change in price as a normalized percentage.
+
+**year_high**: `float | None`<br/>
+The one year high (52W High).
+
+**year_low**: `float | None`<br/>
+The one year low (52W Low).
+
+**ma_50d**: `float | None`<br/>
+50-day moving average price.
+
+**ma_200d**: `float | None`<br/>
+200-day moving average price.
+
+**volume_average**: `float | None`<br/>
+Average daily trading volume.
+
+**volume_average_10d**: `float | None`<br/>
+Average daily trading volume in the last 10 days.
+
+**currency**: `str | None`<br/>
+Currency of the price.
+
+</TabItem>
+</Tabs>
+

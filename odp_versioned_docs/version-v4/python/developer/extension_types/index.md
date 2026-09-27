@@ -25,7 +25,7 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
   <NewReferenceCard
     title="Provider Extensions"
     description="Get started building OpenBB Provider Extensions."
-    url="/odp/python/developer/extension_types/provider"
+    url="/odp/v4/python/developer/extension_types/provider"
   />
 </ul>
 
@@ -33,7 +33,7 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
   <NewReferenceCard
     title="Router Extensions"
     description="Create new routes and endpoints with OpenBB Router Extensions."
-    url="/odp/python/developer/extension_types/router"
+    url="/odp/v4/python/developer/extension_types/router"
   />
 </ul>
 
@@ -41,7 +41,7 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
   <NewReferenceCard
     title="Convert FastAPI to ODP Python Package"
     description="Instantly convert FastAPI applications to OpenBB Router Extensions."
-    url="/odp/python/developer/extension_types/from_fastapi"
+    url="/odp/v4/python/developer/extension_types/from_fastapi"
   />
 </ul>
 
@@ -49,7 +49,7 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
   <NewReferenceCard
     title="OBBject"
     description="Add functionality to the OBBject response object."
-    url="/odp/python/developer/extension_types/obbject"
+    url="/odp/v4/python/developer/extension_types/obbject"
   />
 </ul>
 
@@ -57,7 +57,7 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
   <NewReferenceCard
     title="Charting"
     description="Add custom charts and views to OpenBB Router endpoints."
-    url="/odp/python/developer/extension_types/charting"
+    url="/odp/v4/python/developer/extension_types/charting"
   />
 </ul>
 
@@ -65,7 +65,7 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
   <NewReferenceCard
     title="Plugins"
     description="Plugin to the command execution loop and customize the output behavior with endpoint callbacks."
-    url="/odp/python/developer/extension_types/plugins"
+    url="/odp/v4/python/developer/extension_types/plugins"
   />
 </ul>
 

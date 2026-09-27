@@ -34,18 +34,18 @@ It consists of three main components:
   <NewReferenceCard
     title="ODP Desktop"
     description="A standalone desktop application providing a user-friendly interface for managing Python environments and application backend servers."
-    url="/odp/desktop"
+    url="/odp/v4/desktop"
   />
   <NewReferenceCard
     title="ODP Python"
     description="PyPI-installable Python packages for building and using Python SDKs, REST APIs, and MCP servers."
-    url="/odp/python"
+    url="/odp/v4/python"
   />
   <NewReferenceCard
     title="ODP CLI"
     description="A command-line interface wrapping the environnent's installed ODP Python packages.
 ."
-    url="/odp/cli"
+    url="/odp/v4/cli"
   />
 </ul>
 
