@@ -28,8 +28,7 @@ content/python/data_models/*
 content/python/reference/*
 content/workspace/widgets-library
 
-# Download Platform code from https://github.com/OpenBB-finance/OpenBBTerminal
-openbb_platform
+/openbb_v5
 
 # Code editor configurations
 .vscode/
