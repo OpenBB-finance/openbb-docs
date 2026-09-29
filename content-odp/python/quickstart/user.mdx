@@ -1,0 +1,100 @@
+---
+title: Quick start — User
+sidebar_position: 1
+description: >
+  Install a provider, set its API key, and make a first call with
+  from openbb import obb.
+keywords:
+  - quickstart
+  - user
+  - from openbb import obb
+  - obb
+  - credentials
+  - FRED
+  - fred_api_key
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Quick start (User) | OpenBB Python (V5)" />
+
+This walkthrough uses FRED, the Federal Reserve Bank of St. Louis economic database. In V5 each provider package adds its own namespace to `obb`, so FRED commands live under `obb.fred`.
+
+## 1. Install
+
+```bash
+pip install openbb-fred
+```
+
+`openbb-fred` depends on `openbb-core` with its pandas extra, and `openbb-core` provides the `openbb` package that `from openbb import obb` imports. Other ways to install are covered in [Installation](../installation.mdx).
+
+The first import builds the Python Interface for the installed extensions, which takes a moment and prints `Building...`. In containers and CI, run `openbb-build` right after installing instead; see [Packaging and static assets](../concepts/packaging.mdx).
+
+## 2. Set the FRED API key
+
+The provider declares one credential, `fred_api_key`. Request a key from your account at [fred.stlouisfed.org](https://fred.stlouisfed.org) under "My Account", then "API Keys".
+
+Export it in the shell that runs Python:
+
+```bash
+export FRED_API_KEY="YOUR_FRED_KEY"
+```
+
+Or store it in `~/.openbb_platform/user_settings.json`, which is created on the first import:
+
+```json
+{
+  "credentials": {
+    "fred_api_key": "YOUR_FRED_KEY"
+  },
+  "preferences": {},
+  "defaults": {
+    "commands": {}
+  }
+}
+```
+
+If both are set, the JSON value is used. [Configure credentials](../user-guide/credentials.mdx) explains the other options and how the REST API and MCP server read keys.
+
+## 3. Make a call
+
+```python
+from openbb import obb
+
+print(obb.fred.economy)
+```
+
+Printing a namespace lists its commands and sub-namespaces, including `fred_series`. Request a series by its FRED ID:
+
+```python
+gdp = obb.fred.economy.fred_series(symbol="GDP", start_date="2015-01-01")
+
+print(gdp.provider)
+print(gdp.extra["results_metadata"]["GDP"]["title"])
+print(gdp.to_dataframe())
+```
+
+The call returns an `OBBject`. `results` holds one record per date, `extra["results_metadata"]` carries each series' title, units, and frequency, and `to_dataframe()` returns a pandas DataFrame indexed by date. See [The OBBject envelope](../concepts/obbject.mdx) for the other fields and methods, and the [reference page](/odp/python/reference/fred/economy/fred_series) for every parameter.
+
+## 4. Pick an output type
+
+For a one-off conversion, call a method such as `to_dataframe()`, `to_dict()`, or `to_llm()` on the result. To change what every command returns in this session, set the preference:
+
+```python
+obb.user.preferences.output_type = "dataframe"
+```
+
+Accepted values are `"OBBject"` (the default), `"dataframe"`, `"numpy"`, `"dict"`, `"llm"`, and `"polars"`. [Output types](../user-guide/output-types.mdx) lists what each returns and which packages it needs.
+
+## 5. Verify
+
+In a new session, confirm the key is loaded and the call reaches FRED. The key prints as asterisks, and the provider is `fred`.
+
+```python
+from openbb import obb
+
+print(obb.user.credentials.fred_api_key)
+print(obb.fred.economy.fred_series(symbol="GDP", limit=5).provider)
+```
+
+A `Missing credential 'fred_api_key'` error means the key was not found; check the variable name or the JSON file. From here, the [User Guide](../user-guide/index.mdx) covers defaults, parameters, warnings, and errors, and the [REST API quickstart](rest_api.mdx) serves the same commands over HTTP.

@@ -1,0 +1,169 @@
+---
+title: openbb-technical
+sidebar_position: 3
+description: The openbb-technical extension - 59 commands covering overlays, oscillators, trend, volume, volatility, structure, and statistics indicators, event signals, and multi-symbol analysis.
+keywords:
+  - technical analysis
+  - indicators
+  - signals
+  - RSI
+  - MACD
+  - Bollinger Bands
+  - realized volatility
+  - relative rotation
+  - correlation
+  - screen
+  - pandas-ta
+---
+
+<!-- markdownlint-disable MD012 MD031 MD033 MD037 -->
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="openbb-technical | OpenBB Python (V5)" />
+
+`openbb-technical` adds the `obb.technical` namespace, and `obb.technical.signals` beneath it. It computes indicators and signals on price data you pass in, from any command's `results`, a DataFrame, or a list of dictionaries. It fetches nothing.
+
+V5 rewrote the extension. It has 59 commands, up from 27 in V4, and the indicator commands now return only the date and the indicator's own columns rather than the input bars with columns appended. Join results on `date` when you need both.
+
+## Installation
+
+```sh
+pip install openbb-technical
+openbb-build
+```
+
+The package depends on `openbb-core[pandas]`, `pandas-ta-openbb`, `scipy`, and `statsmodels`. Every command is also a `POST` endpoint under `/api/v1/technical/` when served with [`openbb-api`](../interface/openbb-api.mdx).
+
+## Commands
+
+| Category | Commands |
+| --- | --- |
+| Overlay | `sma`, `ema`, `wma`, `hma`, `zlma`, `dema`, `tema`, `kama`, `frama`, `vwma`, `bbands`, `donchian`, `kc`, `ichimoku`, `supertrend` |
+| Oscillator | `rsi`, `stoch`, `cci`, `fisher`, `cg`, `williams_r`, `mfi`, `trix`, `ultimate_oscillator`, `awesome_oscillator` |
+| Trend | `macd`, `adx`, `di`, `aroon`, `choppiness` |
+| Volume | `obv`, `ad`, `adosc`, `vwap` |
+| Volatility | `atr`, `realized_volatility`, `realized_volatility_compare`, `cones` |
+| Structure | `fib`, `demark`, `pivot_points` |
+| Statistics | `returns_stats`, `drawdown`, `stationarity`, `hurst`, `autocorrelation`, `clenow` |
+| Signal | `signals.crossovers`, `signals.oscillator_signals`, `signals.breakouts`, `signals.divergences`, `signals.candlestick_patterns`, `signals.regime` |
+| Multi | `correlation`, `correlation_matrix`, `relative_rotation`, `screen`, `multi`, `indicators` |
+
+Commands new in V5 include `dema`, `tema`, `kama`, `frama`, `vwma`, `supertrend`, `williams_r`, `mfi`, `trix`, `ultimate_oscillator`, `awesome_oscillator`, `di`, `choppiness`, `realized_volatility`, `realized_volatility_compare`, `pivot_points`, all of the statistics category except `clenow`, all six signals, and every multi command except `relative_rotation`.
+
+Most commands take `data`, `index` (default `"date"`), and, for single-column calculations, `target` (default `"close"`). Indicators that read high, low, or volume need those columns in `data`.
+
+## Single-symbol indicators
+
+The examples use daily bars from Cboe, which need no credentials.
+
+```python
+from openbb import obb
+
+spy = obb.cboe.equity.historical(symbol="SPY", start_date="2022-01-01").results
+
+rsi = obb.technical.rsi(data=spy, length=14)
+bands = obb.technical.bbands(data=spy, length=20, std=2.0)
+macd = obb.technical.macd(data=spy, fast=12, slow=26, signal=9)
+pivots = obb.technical.pivot_points(data=spy, method="camarilla", anchor="week")
+
+bands.to_df()
+```
+
+`bbands` returns `lower`, `middle`, `upper`, `bandwidth`, and `percent`; `macd` returns `macd`, `signal`, and `histogram`. `pivot_points` supports the `classic`, `fibonacci`, `woodie`, `camarilla`, and `demark` methods over `day`, `week`, or `month` anchors.
+
+`realized_volatility` estimates annualized volatility over a rolling `window` with one of six estimators: `std`, `parkinson`, `garman_klass`, `hodges_tompkins`, `rogers_satchell`, or `yang_zhang`, the default. `realized_volatility_compare` runs the estimators named in `models` side by side, and `cones` places current realized volatility within its historical range across several windows.
+
+```python
+rv = obb.technical.realized_volatility(data=spy, model="garman_klass", window=21)
+compare = obb.technical.realized_volatility_compare(
+    data=spy, models=["std", "parkinson", "yang_zhang"], window=30
+)
+cones = obb.technical.cones(data=spy, model="yang_zhang")
+```
+
+The statistics commands describe the series rather than smooth it: `returns_stats` for distribution and risk-adjusted return figures at a chosen `frequency`, `drawdown` for peak-to-trough losses, `stationarity` for ADF and KPSS tests with verdicts, `hurst` for the Hurst exponent by rescaled range or DFA, and `autocorrelation` for ACF and PACF.
+
+## Signals
+
+The signal commands turn indicators into events.
+
+| Command | Output | Key arguments |
+| --- | --- | --- |
+| `crossovers` | One row per moving-average cross, with `direction` `bullish` or `bearish` | `fast_length`, `slow_length`, `mamode` of `sma`, `ema`, `wma`, `hma`, or `zlma` |
+| `breakouts` | One row per close beyond a channel, with `direction` `upside` or `downside` | `method` of `donchian` or `bollinger`, `length`, `band_std` |
+| `divergences` | One row per price and oscillator divergence | `indicator` of `rsi`, `macd`, `stoch`, or `cci`; `lookback`; `min_swing_distance` |
+| `candlestick_patterns` | One row per detected pattern, with `direction` and `confidence` | `patterns`, or `None` for all |
+| `oscillator_signals` | One row per bar with a `regime` of `overbought`, `oversold`, or `neutral` and four boolean crossing flags | `indicator` of `rsi`, `mfi`, `stoch`, `williams_r`, or `cci`; optional thresholds |
+| `regime` | One row per bar classified as `strong_trend`, `weak_trend`, `ranging`, or `transition`, with a `regime_changed` flag | ADX and choppiness lengths and thresholds |
+
+```python
+golden_crosses = obb.technical.signals.crossovers(
+    data=spy, fast_length=50, slow_length=200, mamode="sma"
+)
+rsi_divergences = obb.technical.signals.divergences(data=spy, indicator="rsi", lookback=90)
+regime = obb.technical.signals.regime(data=spy)
+```
+
+## Multi-symbol analysis
+
+`correlation`, `correlation_matrix`, `relative_rotation`, and `screen` take long-format data for several symbols, with one row per symbol and date and a `symbol` column. A multi-symbol provider request returns that shape directly.
+
+```python
+basket = obb.cboe.equity.historical(
+    symbol="XLE,XLF,XLK,XLV,XLU,SPY", start_date="2022-01-01"
+).results
+
+matrix = obb.technical.correlation_matrix(data=basket, window=60, method="spearman")
+pairs = obb.technical.correlation(data=basket, window=60, pairs=[("XLE", "SPY"), ("XLK", "SPY")])
+rrg = obb.technical.relative_rotation(data=basket, benchmark="SPY")
+```
+
+`correlation_matrix` returns the symbol list and a nested-list matrix as of the last date, or `as_of_date`. `correlation` returns a rolling series per pair; leave `pairs` unset to compute every pair. `relative_rotation` returns JdK RS-Ratio and RS-Momentum series for each symbol against the benchmark, which must be one of the symbols in `data`. The `price` and `volume` studies need more than 252 daily observations, and the `volatility` study more than 504.
+
+`screen` computes indicators for each symbol and returns the symbols whose latest values satisfy the conditions. A condition names an indicator command, one of that command's output columns, an operator, and a value, with optional `indicator_params`. `gt`, `gte`, `lt`, `lte`, and `eq` compare against a number; `between` takes `(low, high)`; `crossed_above`, `crossed_below`, `made_high`, and `made_low` take `(threshold, lookback_bars)`. `combine="or"` returns symbols that meet any condition instead of all of them.
+
+```python
+oversold_uptrend = obb.technical.screen(
+    data=basket,
+    conditions=[
+        {"indicator": "rsi", "column": "rsi", "operator": "lt", "value": 45},
+        {"indicator": "adx", "column": "adx", "operator": "gt", "value": 20},
+    ],
+)
+```
+
+## Composition and discovery
+
+`multi` runs several indicator commands on one series and merges them by date. Each request names a command and its arguments. Each result row has a `date` and a `values` dictionary keyed `"<indicator>.<column>"`; unknown indicator names are skipped.
+
+```python
+features = obb.technical.multi(
+    data=spy,
+    indicators=[
+        {"indicator": "rsi", "params": {"length": 14}},
+        {"indicator": "atr", "params": {"length": 14}},
+        {"indicator": "bbands", "params": {"length": 20}},
+    ],
+)
+```
+
+`indicators` returns a catalog of the registered commands, optionally filtered by `category`: `overlay`, `oscillator`, `volatility`, `volume`, `trend`, `signal`, `structure`, `stats`, `multi`, or `all`. Each entry lists the command's name, category, description, required input columns, parameters with types, defaults, choices, and bounds, output columns, and an example call. It is intended for building parameter forms or tool definitions without hard-coding command names.
+
+```python
+catalog = obb.technical.indicators(category="oscillator").results
+[(entry.name, entry.requires_columns) for entry in catalog.indicators]
+```
+
+## Charts
+
+With [`openbb-charting`](../infrastructure/openbb-charting/index.md) installed, eleven commands accept `chart=True`: `sma`, `ema`, `wma`, `hma`, `zlma`, `rsi`, `macd`, `adx`, `aroon`, `cones`, and `relative_rotation`.
+
+`relative_rotation` draws the Relative Rotation Graph, RS-Ratio against RS-Momentum, with a trailing tail for each symbol. `cones` draws, for each window, the current realized volatility with the historical minimum, lower quantile, median, upper quantile, and maximum.
+
+```python
+rrg = obb.technical.relative_rotation(data=basket, benchmark="SPY", chart=True)
+rrg.show()
+```
+
+Go to the [reference](/odp/python/reference/technical) for every parameter and returned field.

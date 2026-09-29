@@ -1,0 +1,59 @@
+---
+title: Annotated Results
+sidebar_position: 4
+description: Return citations, dataset descriptions, or other metadata from a fetcher alongside its results with AnnotatedResult.
+keywords:
+  - OpenBB V5
+  - AnnotatedResult
+  - results_metadata
+  - metadata
+  - citation
+  - provider
+  - Fetcher
+  - transform_data
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Annotated Results | OpenBB Python (V5)" />
+
+Some sources return information about the data as well as the data: a dataset description, units, a citation, or the time the source last updated. That information does not belong in the result rows, where it would repeat on every row and show up as a column in tables and charts. `AnnotatedResult` lets a fetcher return it separately.
+
+```python
+from openbb_core.provider.abstract.annotated_result import AnnotatedResult
+```
+
+`AnnotatedResult` has two fields: `result`, the rows the fetcher would otherwise return, and `metadata`, a JSON-serializable dictionary.
+
+## Return it from transform_data
+
+Wrap the output of `transform_data` and change the return annotation to match. The fetcher's generic type parameters stay the same. This is a shortened version of the Fama-French breakpoints fetcher in `openbb-famafrench`, which attaches the dataset description:
+
+```python
+@staticmethod
+def transform_data(
+    query: FamaFrenchBreakpointQueryParams,
+    data: tuple,
+    **kwargs: Any,
+) -> AnnotatedResult[list[FamaFrenchBreakpointData]]:
+    """Transform the extracted data."""
+    dfs, meta = data
+    df = dfs[0]
+    return AnnotatedResult(
+        result=[FamaFrenchBreakpointData(**d) for d in df.to_dict(orient="records")],
+        metadata={"description": meta[0]},
+    )
+```
+
+The command's router function does not change. `OBBject.from_query` unwraps the annotated result: `results` gets the rows and `extra["results_metadata"]` gets the dictionary.
+
+## Read it
+
+```python
+from openbb import obb
+
+output = obb.famafrench.breakpoints(breakpoint_type="op")
+output.extra["results_metadata"]["description"]
+```
+
+The REST API includes the same dictionary under `extra.results_metadata` in the JSON response. For streaming commands, `OBBStream.from_query` stores it in the stream's `extra["results_metadata"]`.

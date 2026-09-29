@@ -1,0 +1,76 @@
+---
+title: Country Input
+sidebar_position: 2
+description: Accept country names, ISO 3166 codes, or snake_case names in a provider's parameters and normalize them with the Country type.
+keywords:
+  - OpenBB V5
+  - country
+  - ISO 3166
+  - Country
+  - QueryParams
+  - input validation
+  - develop
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Country Input | OpenBB Python (V5)" />
+
+`Country` is a `str` subclass that resolves any common way of naming a country to its ISO 3166-1 alpha-2 code, and carries the other codes and membership groups as properties. Use it as the type of a `country` parameter so every provider accepts the same inputs and receives the same normalized value.
+
+```python
+from openbb_core.provider.utils.country_utils import Country
+```
+
+## Accepted inputs
+
+The constructor accepts an alpha-2 code (`"US"` or `"us"`), an alpha-3 code (`"USA"`), the English name (`"United States"`), or the name in snake_case (`"united_states"`). Names with accents also match without them. Anything else raises `ValueError`.
+
+```python
+>>> c = Country("united_states")
+>>> c
+'US'
+>>> c == "US"
+True
+>>> c.alpha_3
+'USA'
+>>> c.name
+'United States'
+>>> c.numeric
+'840'
+>>> c.groups
+['G20', 'G7', 'NATO', 'OECD']
+>>> c.is_member_of("g7")
+True
+>>> Country("GBR").name
+'United Kingdom'
+```
+
+The value compares and serializes as the alpha-2 code. `alpha_2`, `alpha_3`, `name`, and `numeric` return the ISO codes and English name, `groups` lists memberships among G7, G20, EU, NATO, OECD, OPEC, and BRICS, and `is_member_of(group)` checks one group without regard to case.
+
+## Use it in a model
+
+`Country` works as a Pydantic field type, so validation happens in `transform_query` with no validator of your own:
+
+```python
+from openbb_core.provider.abstract.query_params import QueryParams
+from openbb_core.provider.utils.country_utils import Country
+from pydantic import Field
+
+
+class DemoCountryQueryParams(QueryParams):
+    """Query with a country parameter."""
+
+    country: Country = Field(description="Country name or ISO 3166 code.")
+```
+
+`DemoCountryQueryParams(country="japan")` stores `'JP'`, so `query.country.alpha_3` gives `'JPN'` for a source that wants three-letter codes, and `query.model_dump()` returns `{'country': 'JP'}`. An unknown country fails validation with a message listing the accepted formats.
+
+## Refresh the data
+
+The definitions ship with `openbb-core` in `country_data.json`. The module `openbb_core.provider.utils.update_country_data` regenerates that file from `pycountry` and the published member lists of each group. It needs `pycountry`, `beautifulsoup4`, and `requests`, and writes into the installed package unless `--output` names another path. `--dry-run` prints a summary without writing.
+
+```bash
+pip install pycountry beautifulsoup4 requests
+python -m openbb_core.provider.utils.update_country_data --dry-run
+```

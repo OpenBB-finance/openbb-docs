@@ -1,0 +1,94 @@
+---
+title: Environment variables
+sidebar_position: 7
+description: >
+  Set OPENBB_* variables and provider keys through the shell or .env files,
+  when they are read, and the variables used for common tasks.
+keywords:
+  - environment variables
+  - .env
+  - OPENBB_DEBUG_MODE
+  - OPENBB_AUTO_BUILD
+  - OPENBB_API_AUTH
+  - OPENBB_ENV_FILE
+  - OPENBB_CONFIG
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Environment variables | OpenBB Python (V5)" />
+
+Environment variables configure behavior that has to be known before settings files are read, such as debug output and REST API authentication, and they supply provider keys without writing them to disk. The complete list of recognized variables, with types and defaults, is in [Settings & Configuration](../settings/index.mdx).
+
+## Where to set them
+
+Export variables in the shell that starts Python or the server, pass them with `docker run -e`, or put them in `~/.openbb_platform/.env`. Every surface loads that file when `openbb-core` is imported, and a variable already present in the environment keeps its value.
+
+```env
+OPENBB_DEBUG_MODE=true
+FRED_API_KEY=YOUR_FRED_KEY
+```
+
+The `openbb-api` and `openbb-mcp` launchers also load the `.env` file named by `OPENBB_ENV_FILE`, again without replacing variables that are already set. The Python Interface does not read `OPENBB_ENV_FILE`.
+
+```bash
+OPENBB_ENV_FILE=./deploy/.env openbb-api
+```
+
+## When they are read
+
+`openbb-core` copies the environment once per process, the first time it is imported. Changing a variable afterwards has no effect until the process restarts. Inside Python, set variables before the first `openbb` import:
+
+```python
+import os
+
+os.environ["OPENBB_DEBUG_MODE"] = "true"
+
+from openbb import obb
+```
+
+Boolean variables accept `true`, `t`, `1`, `yes`, `y` and `false`, `f`, `0`, `no`, `n`, in any case. Any other value raises `ValueError` during import.
+
+## Common tasks
+
+**Provider keys.** Each credential reads its uppercased name, so `fred_api_key` reads `FRED_API_KEY`. A value in `user_settings.json` takes priority over the variable; see [Configure credentials](credentials.mdx).
+
+**Full tracebacks.** `OPENBB_DEBUG_MODE=true` stops commands from rewrapping exceptions as `OpenBBError`, raises some failures that are otherwise downgraded to warnings, prints build output, and makes the REST API re-raise errors so tracebacks reach the server log. See [Handle warnings and errors](warnings-and-errors.mdx).
+
+**Controlled builds.** On import, `openbb` compares the installed extensions with the ones the Python Interface was built for and rebuilds when they differ. `OPENBB_AUTO_BUILD=false` skips that check. Run `openbb-build` yourself after installing, upgrading, or removing extensions, for example as a step in a container image build. See [Packaging and static assets](../concepts/packaging.mdx).
+
+```bash
+openbb-build
+OPENBB_AUTO_BUILD=false python -c "from openbb import obb; print(obb)"
+```
+
+**REST API basic authentication.** With `OPENBB_API_AUTH=true`, every REST request must send HTTP Basic credentials that match `OPENBB_API_USERNAME` and `OPENBB_API_PASSWORD`. If either variable is unset, every request is rejected with `401`.
+
+```bash
+export OPENBB_API_AUTH=true
+export OPENBB_API_USERNAME=analyst
+export OPENBB_API_PASSWORD="choose-a-password"
+openbb-api
+```
+
+```bash
+curl -u analyst:choose-a-password "http://127.0.0.1:6900/api/v1/fred/economy/fred_series?symbol=GDP"
+```
+
+**Extensions that act on every result.** OBBject extensions that run on each command's output refuse to load unless `OPENBB_ALLOW_ON_COMMAND_OUTPUT=true`; those that also modify the output additionally need `OPENBB_ALLOW_MUTABLE_EXTENSIONS=true`. Both can also be set in `system_settings.json`. Only enable them for extensions from sources you trust.
+
+**Configuration files.** `OPENBB_CONFIG` points at an explicit `openbb.toml` for the server launchers; see [Use openbb.toml](openbb-toml.mdx).
+
+## Verify
+
+Debug mode changes the exception type, which makes it easy to check. Without the variable, a missing argument raises `OpenBBError`; with it, the traceback ends in Pydantic's `ValidationError`:
+
+```bash
+OPENBB_DEBUG_MODE=true python -c "from openbb import obb; obb.fred.economy.fred_series()"
+```
+
+For a provider key set through the environment, print it from a new session. It shows as asterisks when set and `None` when not:
+
+```bash
+python -c "from openbb import obb; print(obb.user.credentials.fred_api_key)"
+```

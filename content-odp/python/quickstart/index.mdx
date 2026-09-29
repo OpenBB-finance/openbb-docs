@@ -1,0 +1,53 @@
+---
+title: Quick start
+sidebar_position: 0
+description: >
+  Pick a starting point for OpenBB Python V5: calling commands from Python,
+  writing an extension, serving the REST API, running the MCP server, or
+  connecting OpenBB Workspace.
+keywords:
+  - quickstart
+  - getting started
+  - from openbb import obb
+  - REST API
+  - MCP
+  - Workspace
+  - openbb-core
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
+
+<HeadTitle title="Quick start | OpenBB Python (V5)" />
+
+The Python Interface, the REST API, the MCP server, and a Workspace backend all run the same commands, taken from the provider and extension packages installed in the environment. Start with the surface you plan to use, or with the developer guide if you are adding commands of your own.
+
+<ul className="grid grid-cols-1 md:grid-cols-2 gap-4 -ml-6">
+  <NewReferenceCard
+    title="User"
+    description="Install a provider, set its API key, and call it with from openbb import obb."
+    url="/odp/python/quickstart/user"
+  />
+  <NewReferenceCard
+    title="Developer"
+    description="Register a FastAPI router as an openbb_core_extension and call it from Python and REST."
+    url="/odp/python/quickstart/developer"
+  />
+  <NewReferenceCard
+    title="REST API"
+    description="Serve the installed commands over HTTP with FastAPI."
+    url="/odp/python/quickstart/rest_api"
+  />
+  <NewReferenceCard
+    title="MCP server"
+    description="Expose the installed commands as MCP tools with openbb-mcp."
+    url="/odp/python/quickstart/mcp"
+  />
+  <NewReferenceCard
+    title="Workspace"
+    description="Connect openbb-api to OpenBB Workspace as a custom backend."
+    url="/odp/python/quickstart/workspace"
+  />
+</ul>
+
+After the quickstart, the [User Guide](../user-guide/index.mdx) covers credentials, defaults, output types, and error handling, and [Settings & Configuration](../settings/index.mdx) lists every settings field.

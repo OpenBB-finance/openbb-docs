@@ -1,0 +1,104 @@
+---
+title: Introduction
+sidebar_position: 0
+description: The Python packages that make up an OpenBB V5 environment, grouped by role.
+keywords:
+  - ODP
+  - Python Package
+  - Extension
+  - Provider
+  - Router
+  - Charting
+  - Data Processing
+  - News
+---
+
+<!-- markdownlint-disable MD012 MD031 MD033 MD037 -->
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
+
+<HeadTitle title="Python Packages & Extensions | OpenBB Python (V5)" />
+
+An OpenBB environment is whatever set of packages is installed next to `openbb-core`. The core discovers each package through its entry points at import time, then builds the `obb` Python client and the REST API from what it finds. Nothing is hard-wired: install a package and run `openbb-build`, and its commands appear; uninstall it and they disappear.
+
+In V5, every data provider package registers its own namespace. FRED data is under `obb.fred`, Cboe data under `obb.cboe`, Treasury data under `obb.ustreasury`, and so on. A command lives with the package that serves it, rather than in a shared tree such as `obb.equity` or `obb.economy`.
+
+Anyone can build and publish an extension. The [extension types](../developer/extension_types/index.md) page covers the entry points and the base classes.
+
+## Core
+
+<ul className="grid grid-cols-1 gap-2 -ml-6">
+  <NewReferenceCard
+    title="openbb-core"
+    description="The runtime. Discovers installed extensions, generates the Python client, serves the REST API, and defines the Data, QueryParams, Fetcher, and OBBject models."
+    url="/odp/python/extensions/openbb-core"
+  />
+</ul>
+
+## Data
+
+<ul className="grid grid-cols-1 gap-2 -ml-6">
+  <NewReferenceCard
+    title="Provider extensions"
+    description="Seventeen provider packages, each with its own namespace under obb. Lists package names, namespaces, and credential names."
+    url="/odp/python/extensions/providers"
+  />
+  <NewReferenceCard
+    title="openbb-news"
+    description="The obb.news namespace: a configurable RSS reader with 562 bundled feeds, plus company news from installed providers."
+    url="/odp/python/extensions/openbb-news"
+  />
+</ul>
+
+## Data Processing
+
+These routers take data as input instead of fetching it, so their commands have no `provider` argument. Pass the `results` of any other command, a DataFrame, or a list of dictionaries.
+
+<ul className="grid grid-cols-1 gap-2 -ml-6">
+  <NewReferenceCard
+    title="openbb-econometrics"
+    description="Regression, regression diagnostics, stationarity and cointegration tests, Granger causality, GARCH-family volatility models, and panel estimators."
+    url="/odp/python/extensions/data-processing/econometrics"
+  />
+  <NewReferenceCard
+    title="openbb-quantitative"
+    description="Descriptive and rolling statistics, risk-adjusted performance ratios, CAPM, and multi-factor regression, attribution, and risk decomposition."
+    url="/odp/python/extensions/data-processing/quantitative"
+  />
+  <NewReferenceCard
+    title="openbb-technical"
+    description="Overlays, oscillators, trend, volume, volatility, and structure indicators, event signals, and multi-symbol correlation, screening, and relative rotation."
+    url="/odp/python/extensions/data-processing/technical"
+  />
+</ul>
+
+## Infrastructure
+
+<ul className="grid grid-cols-1 gap-2 -ml-6">
+  <NewReferenceCard
+    title="openbb-charting"
+    description="Adds a charting accessor to every OBBject, a chart parameter to commands that have a registered view, and Plotly chart builders for any data."
+    url="/odp/python/extensions/infrastructure/openbb-charting"
+  />
+</ul>
+
+## Interface
+
+<ul className="grid grid-cols-1 gap-2 -ml-6">
+  <NewReferenceCard
+    title="openbb-platform-api"
+    description="The openbb-api command. Serves the installed environment as a REST API and as an OpenBB Workspace backend."
+    url="/odp/python/extensions/interface/openbb-api"
+  />
+  <NewReferenceCard
+    title="openbb-mcp-server"
+    description="The openbb-mcp command. Serves the installed environment as an MCP server."
+    url="/odp/python/extensions/interface/openbb-mcp"
+  />
+  <NewReferenceCard
+    title="OpenBB CLI"
+    description="Run the installed environment from a command line interface."
+    url="/odp/cli"
+  />
+</ul>

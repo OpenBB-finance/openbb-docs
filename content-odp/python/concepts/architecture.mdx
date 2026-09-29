@@ -1,0 +1,61 @@
+---
+title: Architecture
+sidebar_position: 1
+description: >
+  How openbb-core turns installed extensions into the Python Interface and the
+  REST API, and how a command call moves through routers, providers, and the
+  OBBject envelope.
+keywords:
+  - openbb-core architecture
+  - Python Interface
+  - REST API
+  - Router
+  - Provider
+  - Fetcher
+  - TET pattern
+  - entry points
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Architecture | OpenBB Python (V5)" />
+
+`openbb-core` is the runtime. It ships no data sources and no commands of its own. When it starts, it reads Python entry points, loads every installed extension, and assembles them into two surfaces that share one engine: the Python Interface (`from openbb import obb`) and the REST API (the FastAPI app at `openbb_core.api.rest_api:app`). Neither surface wraps the other. Both dispatch to the same router functions through the same command runner.
+
+The core depends on FastAPI and Uvicorn for serving, Pydantic for models and validation, `requests` and `aiohttp` for outbound HTTP, and `websockets`. pandas is an optional extra: install `openbb-core[pandas]` to use `to_dataframe()` and `to_numpy()` on results, and add `polars` and `pyarrow` for `to_polars()`. The `openbb-core[flask]` extra lets a Flask app registered as an extension be mounted on the REST API.
+
+## What a bare install exposes
+
+With only `openbb-core` installed there are no commands. Importing the Python Interface prints `Failed to import extensions. Are any installed?`, and `obb` exposes only its utility properties: `obb.user` (user settings, including credentials and preferences), `obb.system` (system settings), `obb.coverage` (installed providers, commands, and their models), and `obb.reference` (the command metadata written at build time).
+
+The REST API serves every command under `/api/v1`; the version segment comes from `api_settings.version`. Once any command is installed it also serves `/api/v1/coverage/providers`, `/api/v1/coverage/commands`, and `/api/v1/coverage/command_model`. Setting `OPENBB_DEV_MODE=1` adds `/api/v1/system` and `/api/v1/user/me`. Run the bare app with any ASGI server:
+
+```bash
+uvicorn openbb_core.api.rest_api:app --host 127.0.0.1 --port 8000
+```
+
+The `openbb-api` launcher from `openbb-platform-api` wraps the same app with extra configuration; see [OpenBB API](../extensions/interface/openbb-api.mdx).
+
+## How a command runs
+
+A router extension registers plain Python functions with `@router.command`. The engine mounts each one at `/<entry-point name>/<function name>`, and the package builder writes a matching method on `obb`. The function `factors` in the router registered as `famafrench` becomes both `obb.famafrench.factors()` and `GET /api/v1/famafrench/factors`. Sub-routers included with a prefix add a path segment, which is how `obb.quantitative.stats.skew()` maps to `/quantitative/stats/skew`.
+
+When the Python method is called, the generated code validates the arguments, fills in per-command defaults from the user settings, resolves which provider to use, and hands the call to the command runner. The REST route applies the same per-command defaults to the request's parameters. From that point the two paths are identical: the runner calls the router function, attaches the provider name, captured warnings, and execution metadata (`extra["metadata"]`) to the returned [`OBBject`](obbject.mdx), builds a chart when `chart=True` was passed and a charting extension is installed, and then runs any OBBject extensions registered to act on command output.
+
+### The provider layer
+
+Commands declared with `model="<ModelName>"` contain no data-fetching code. Their body is normally the single line `return await OBBject.from_query(Query(**locals()))`. The engine collects every installed provider whose `fetcher_dict` has a `<ModelName>` key and builds the command's `provider` choices and parameters from those fetchers' models.
+
+Each provider implements a `Fetcher` for the model, built from two Pydantic models and three static methods. `QueryParams` describes the inputs and `Data` describes one output row. At call time, `transform_query` validates the parameters into the `QueryParams` model, `extract_data` (or the async `aextract_data`) retrieves the raw payload, and `transform_data` validates it into `Data` rows. This transform-extract-transform sequence is called the TET pattern. Credentials the provider declares are checked before the fetcher runs.
+
+Fields inherited from a standard model in `openbb_core.provider.standard_models` become named parameters shared by every provider of that model. Fields a provider adds itself are provider-specific. [Standardization](../developer/standardization.mdx) explains the rules, and [Provider extensions](../developer/extension_types/provider.md) walks through building one.
+
+## Output handling
+
+After a command runs, the Python Interface reads `user_settings.preferences.output_type`. When the value is `"OBBject"` (the default), the `OBBject` is returned as-is. For any other value, the matching accessor is called, for example `to_dataframe()` for `"dataframe"`. The REST API ignores this preference and returns the JSON serialization of the `OBBject`. Commands that return a Pydantic model or plain value instead of an `OBBject` are returned as the handler produced them; the `output_type` conversions exist only on `OBBject`.
+
+Streaming commands return an [`OBBStream`](streaming.mdx) handle from the Python Interface and a `text/event-stream` response from the REST API instead of an `OBBject`.
+
+## Where extensions plug in
+
+Router extensions add commands and namespaces, provider extensions add data sources for models, OBBject extensions add accessors to results or run callbacks on command output, and charting extensions add chart views for specific routes. Each kind is discovered through its own entry-point group; [Extension types](extensions.mdx) lists the groups and what each entry point must resolve to.

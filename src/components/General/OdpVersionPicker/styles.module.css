@@ -1,0 +1,81 @@
+.wrapper {
+	position: relative;
+	margin: 0 0 0.75rem 0;
+	width: 100%;
+}
+
+.button {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	padding: 0.4rem 0.75rem;
+	border: 1px solid var(--ifm-color-emphasis-300);
+	background: var(--ifm-background-surface-color);
+	color: var(--ifm-font-color-base);
+	border-radius: 6px;
+	font-size: 0.85rem;
+	font-weight: 600;
+	cursor: pointer;
+	text-align: left;
+}
+
+.button:hover {
+	border-color: var(--ifm-color-emphasis-500);
+	background: var(--ifm-color-emphasis-100);
+}
+
+.versionLabel {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4rem;
+}
+
+.versionLabel::before {
+	content: "Version";
+	font-weight: 400;
+	color: var(--ifm-color-emphasis-600);
+	font-size: 0.7rem;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+
+.chevron {
+	font-size: 0.7rem;
+	color: var(--ifm-color-emphasis-600);
+}
+
+.menu {
+	position: absolute;
+	top: calc(100% + 4px);
+	left: 0;
+	right: 0;
+	margin: 0;
+	padding: 4px;
+	list-style: none;
+	background: var(--ifm-background-surface-color);
+	border: 1px solid var(--ifm-color-emphasis-300);
+	border-radius: 6px;
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+	z-index: 50;
+}
+
+.menuItem {
+	display: block;
+	padding: 0.35rem 0.6rem;
+	border-radius: 4px;
+	font-size: 0.85rem;
+	color: var(--ifm-font-color-base);
+	text-decoration: none;
+}
+
+.menuItem:hover {
+	background: var(--ifm-color-emphasis-100);
+	color: var(--ifm-font-color-base);
+	text-decoration: none;
+}
+
+.menuItemActive {
+	background: var(--ifm-color-emphasis-200);
+	font-weight: 600;
+}

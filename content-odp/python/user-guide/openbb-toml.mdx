@@ -1,0 +1,84 @@
+---
+title: Use openbb.toml
+sidebar_position: 3
+description: >
+  Where openbb.toml is discovered, which processes read it, what it controls,
+  and when to use it instead of the JSON settings files or environment variables.
+keywords:
+  - openbb.toml
+  - OPENBB_CONFIG
+  - pyproject.toml
+  - tool.openbb
+  - layered configuration
+  - openbb-api
+  - openbb-mcp
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Use openbb.toml | OpenBB Python (V5)" />
+
+`openbb.toml` is a layered TOML configuration for server processes. The `openbb-api` and `openbb-mcp` launchers resolve it at startup, before the rest of `openbb-core` loads, and apply its `[system]` table and top-level flags to the server's system settings. Extensions can also read their own tables from it: `openbb-news` reads `[news]`, `openbb-api` reads `[launcher]`, and `openbb-mcp` reads `[mcp]`.
+
+`from openbb import obb` does not apply the file's `[system]` or `[user]` tables. The Python Interface takes its settings from `system_settings.json`, `user_settings.json`, and environment variables.
+
+## Choose where a setting belongs
+
+Credentials, preferences, and command defaults belong in `~/.openbb_platform/user_settings.json` or in environment variables. Every surface reads those, while command execution does not read the `[user]` tables of `openbb.toml`; see [Configure credentials](credentials.mdx) and [Configure preferences and defaults](preferences-and-defaults.mdx).
+
+Use environment variables for secrets in containers and CI, and for the `OPENBB_*` switches described in [Environment variables](environment-variables.mdx). Use `openbb.toml` for how a server runs: CORS origins, the API version prefix, logging, and launcher options. Because the file can live in a project directory or be selected per run, it suits keeping `staging.toml` and `prod.toml` side by side.
+
+## Where the file is found
+
+Layers are merged from lowest to highest priority. Nested tables merge key by key, while scalars and lists from a later layer replace earlier ones.
+
+1. The `[tool.openbb]` table of the nearest `pyproject.toml`, searching upward from the working directory. Only the first `pyproject.toml` found is checked.
+2. `~/.openbb_platform/openbb.toml`, or `.openbb.toml` in the same directory.
+3. The nearest `openbb.toml` or `.openbb.toml`, searching upward from the working directory.
+4. An explicit file: the `--config-file` flag of `openbb-api` and `openbb-mcp`, or the path in `OPENBB_CONFIG`. `openbb-api` also checks `OPENBB_API_CONFIG`, and `openbb-mcp` checks `OPENBB_MCP_CONFIG` and `OPENBB_API_CONFIG`, before `OPENBB_CONFIG`.
+
+A discovered file that fails to parse is skipped without an error. An explicit file passed to a launcher is parsed first, and a syntax error stops startup with `Malformed TOML at explicit config path`. A missing explicit file is ignored.
+
+```bash
+openbb-api --config-file ./staging.toml
+```
+
+```bash
+OPENBB_CONFIG=./prod.toml openbb-mcp
+```
+
+## Write the file
+
+Keys inside `[system]` and its sub-tables must match the settings field names exactly. The top-level keys `debug_mode`, `test_mode`, `headless`, `logging_suppress`, `allow_mutable_extensions`, and `allow_on_command_output` are shortcuts for the same fields under `[system]`, accept kebab-case or snake_case, and win when both forms are present.
+
+```toml
+debug-mode = false
+logging-suppress = false
+
+[system.api_settings]
+version = "1"
+
+[system.api_settings.cors]
+allow_origins = ["https://pro.openbb.co"]
+allow_methods = ["GET"]
+```
+
+Setting `logging-suppress = false` turns on command logging, which is off by default. The REST path prefix is computed from `version` as `/api/v{version}`; a `prefix` key under `[system.api_settings]` is ignored, so set `version` instead.
+
+Launchers also export the top-level flags as `OPENBB_<NAME>` environment variables, such as `OPENBB_DEBUG_MODE`, unless the variable is already set, so a shell export takes priority over the file. `.env` files are applied before the TOML layers are read: `~/.openbb_platform/.env` and, for the launchers, the file named by `OPENBB_ENV_FILE`.
+
+The full list of `[system]` fields and their defaults is in [Settings & Configuration](../settings/index.mdx). Launcher tables are documented with [openbb-api](../extensions/interface/openbb-api.mdx) and [openbb-mcp](../extensions/interface/openbb-mcp.mdx), and the `[news]` table with [openbb-news](../extensions/openbb-news.mdx).
+
+## Verify
+
+From the directory the server runs in, print the merged result of every layer. Keys that are missing from the output were not found in any file.
+
+```bash
+python -c "from openbb_core.app.config import load_config; print(load_config())"
+```
+
+With the example above in `./openbb.toml`, the output contains `'debug_mode': False` at the top level and the `system` table with `api_settings`. Pass a path to check an explicit file:
+
+```bash
+python -c "from openbb_core.app.config import load_config; print(load_config('./prod.toml'))"
+```

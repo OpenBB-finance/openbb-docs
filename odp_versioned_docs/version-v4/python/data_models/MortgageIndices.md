@@ -1,0 +1,141 @@
+---
+title: "Mortgage Indices"
+description: "Mortgage Indices"
+---
+
+<!-- markdownlint-disable MD012 MD031 MD033 -->
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+---
+
+## Implementation details
+
+### Class names
+
+| Model name | Parameters class | Data class |
+| ---------- | ---------------- | ---------- |
+| `MortgageIndices` | `MortgageIndicesQueryParams` | `MortgageIndicesData` |
+
+### Import Statement
+
+```python
+from openbb_core.provider.standard_models.mortgage_indices import (
+MortgageIndicesData,
+MortgageIndicesQueryParams,
+)
+```
+
+## Parameters
+
+<Tabs>
+<TabItem value='standard' label='standard'>
+
+**start_date**: `date | None | str`<br/>
+Start date of the data, in YYYY-MM-DD format.
+
+**end_date**: `date | None | str`<br/>
+End date of the data, in YYYY-MM-DD format.
+
+</TabItem>
+<TabItem value='fred' label='fred'>
+
+**start_date**: `date | None | str`<br/>
+Start date of the data, in YYYY-MM-DD format.
+
+**end_date**: `date | None | str`<br/>
+End date of the data, in YYYY-MM-DD format.
+
+**index**: `Literal['primary', 'ltv_lte_80', 'ltv_gt_80', 'conforming_30y', 'conforming_30y_na', 'jumbo_30y', 'fha_30y', 'va_30y', 'usda_30y', 'conforming_15y', 'ltv_lte80_fico_ge740', 'ltv_lte80_fico_a720b739', 'ltv_lte80_fico_a700b719', 'ltv_lte80_fico_a680b699', 'ltv_lte80_fico_lt680', 'ltv_gt80_fico_ge740', 'ltv_gt80_fico_a720b739', 'ltv_gt80_fico_a700b719', 'ltv_gt80_fico_a680b699', 'ltv_gt80_fico_lt680'] | None`<br/>
+*Default:* primary<br/>
+The specific index, or index group, to query. Default is the 'primary' group.
+
+**frequency**: `Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem'] | None`<br/>
+<details>
+<summary mdxType="summary">Description</summary>
+
+Frequency aggregation to convert daily data to lower frequency.<br/>
+            None = No change<br/>
+            a = Annual<br/>
+            q = Quarterly<br/>
+            m = Monthly<br/>
+            w = Weekly<br/>
+            d = Daily<br/>
+            wef = Weekly, Ending Friday<br/>
+            weth = Weekly, Ending Thursday<br/>
+            wew = Weekly, Ending Wednesday<br/>
+            wetu = Weekly, Ending Tuesday<br/>
+            wem = Weekly, Ending Monday<br/>
+            wesu = Weekly, Ending Sunday<br/>
+            wesa = Weekly, Ending Saturday<br/>
+            bwew = Biweekly, Ending Wednesday<br/>
+            bwem = Biweekly, Ending Monday<br/>
+</details>
+
+**aggregation_method**: `Literal['avg', 'sum', 'eop'] | None`<br/>
+*Default:* avg<br/>
+<details>
+<summary mdxType="summary">Description</summary>
+
+A key that indicates the aggregation method used for frequency aggregation.<br/>
+        This parameter has no affect if the frequency parameter is not set, default is 'avg'.<br/>
+            avg = Average<br/>
+            sum = Sum<br/>
+            eop = End of Period<br/>
+</details>
+
+**transform**: `Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log'] | None`<br/>
+<details>
+<summary mdxType="summary">Description</summary>
+
+Transformation type<br/>
+            None = No transformation<br/>
+            chg = Change<br/>
+            ch1 = Change from Year Ago<br/>
+            pch = Percent Change<br/>
+            pc1 = Percent Change from Year Ago<br/>
+            pca = Compounded Annual Rate of Change<br/>
+            cch = Continuously Compounded Rate of Change<br/>
+            cca = Continuously Compounded Annual Rate of Change<br/>
+            log = Natural Log<br/>
+</details>
+
+</TabItem>
+</Tabs>
+
+## Data
+
+<Tabs>
+<TabItem value='standard' label='standard'>
+
+**date**: `date | str`<br/>
+The date of the data.
+
+**symbol**: `str | None`<br/>
+Symbol representing the entity requested in the data.
+
+**name**: `str | None`<br/>
+Name of the index.
+
+**rate**: `float`<br/>
+Mortgage rate.
+
+</TabItem>
+<TabItem value='fred' label='fred'>
+
+**date**: `date | str`<br/>
+The date of the data.
+
+**symbol**: `str | None`<br/>
+Symbol representing the entity requested in the data.
+
+**name**: `str | None`<br/>
+Name of the index.
+
+**rate**: `float`<br/>
+Mortgage rate.
+
+</TabItem>
+</Tabs>
+

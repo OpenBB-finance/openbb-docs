@@ -4,6 +4,7 @@ import { useNavbarMobileSidebar } from "@docusaurus/theme-common/internal";
 import useGlobalData from "@docusaurus/useGlobalData";
 import NavbarColorModeToggle from "@theme/Navbar/ColorModeToggle";
 import { useState, useEffect, useMemo } from "react";
+import OdpVersionPicker from "@site/src/components/General/OdpVersionPicker";
 
 function ChevronIcon({ isExpanded }) {
 	return (
@@ -108,9 +109,8 @@ function SidebarCategory({ item, mobileSidebar, location, expandedItems, toggleE
 }
 
 function SidebarItem({ item, mobileSidebar, location, expandedItems, toggleExpanded, level = 0 }) {
-	// Handle type: "doc" - convert to link format
 	if (item.type === "doc") {
-		const href = docIdToHref(item.id);
+		const href = item.href || docIdToHref(item.id);
 		return (
 			<SidebarLink
 				item={{ ...item, href, label: item.label || item.id.split("/").pop() }}
@@ -300,6 +300,9 @@ export default function PrimaryMenu() {
 						<span className="mobile-menu-main-section-title">Home</span>
 					</Link>
 				</div>
+
+				<OdpVersionPicker />
+
 
 				<MainSection
 					title="Workspace"

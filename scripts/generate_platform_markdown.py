@@ -14,12 +14,12 @@ TAB_WIDTH = 4
 # Maximum number of commands to display on the cards
 MAX_COMMANDS = 8
 
-# Output paths
 WEBSITE_PATH = Path(__file__).parent.parent.absolute()
 SEO_METADATA_PATH = Path(WEBSITE_PATH / "metadata/platform_v4_seo_metadata.json")
-PLATFORM_CONTENT_PATH = Path(WEBSITE_PATH / "content/odp/python")
-PLATFORM_REFERENCE_PATH = Path(WEBSITE_PATH / "content/odp/python/reference")
-PLATFORM_DATA_MODELS_PATH = Path(WEBSITE_PATH / "content/odp/python/data_models")
+PLATFORM_CONTENT_PATH = Path(WEBSITE_PATH / "content-odp/python")
+PLATFORM_REFERENCE_PATH = Path(WEBSITE_PATH / "content-odp/python/reference")
+PLATFORM_DATA_MODELS_PATH = Path(WEBSITE_PATH / "content-odp/python/data_models")
+INDEX_COMMAND_FILE = "index_command.md"
 
 # Markdown imports and elements
 PLATFORM_REFERENCE_IMPORT = "import ReferenceCard from '@site/src/components/General/NewReferenceCard';"  # fmt: skip
@@ -30,33 +30,27 @@ PLATFORM_REFERENCE_UL_ELEMENT = '<ul className="grid grid-cols-1 md:grid-cols-2 
 
 
 def escape_mdx_curly_braces(text: Optional[str]) -> str:
-    """Escape curly braces so Docusaurus/MDX does not treat them as JSX expressions.
-
-    MDX interprets ``{...}`` in markdown as a JavaScript expression, which breaks the
-    build when docstring-derived text contains literal braces (e.g. ``{congress}``).
-    Braces inside fenced code blocks and inline code spans are left untouched, since
-    MDX does not evaluate expressions there.
+    """Escape curly braces and ``<`` outside code so MDX does not parse them as JSX.
 
     Parameters
     ----------
     text: Optional[str]
-        Text that may contain literal curly braces.
+        Text that may contain literal curly braces or ``<`` characters.
 
     Returns
     -------
     str
-        Text with curly braces outside of code escaped as HTML entities.
+        Text with ``{``, ``}``, and ``<`` outside code blocks and code spans replaced by HTML entities.
     """
-
     if not text:
         return text or ""
 
-    # Split keeping fenced code blocks and inline code spans as their own segments.
-    # Captured delimiters land at odd indices; plain text lands at even indices.
-    parts = re.split(r"(```.*?```|`[^`]*`)", text, flags=re.DOTALL)
+    parts = re.split(r"(```.*?```|``.*?``|`[^`]*`)", text, flags=re.DOTALL)
     for i, part in enumerate(parts):
         if i % 2 == 0:
-            parts[i] = part.replace("{", "&#123;").replace("}", "&#125;")
+            parts[i] = (
+                part.replace("{", "&#123;").replace("}", "&#125;").replace("<", "&lt;")
+            )
 
     return "".join(parts)
 
@@ -73,6 +67,22 @@ class Console:
 
 
 console = Console(verbose=True)
+
+
+def reference_command_name(file: Path) -> str:
+    """Return the command name of a generated reference file.
+
+    Parameters
+    ----------
+    file : Path
+        Generated reference markdown file.
+
+    Returns
+    -------
+    str
+        The file stem, or ``index`` for the file that holds a command named ``index``.
+    """
+    return "index" if file.name == INDEX_COMMAND_FILE else file.stem
 
 
 def create_reference_markdown_seo(path: str, description: str) -> str:
@@ -467,13 +477,9 @@ def generate_reference_index_files(reference_content: Dict[str, str]) -> None:
                 elif title == "Uscongress":
                     title = "USCongress"
 
-                # Get the relative path of the sub-directory from the platform reference path
-                # and convert it to POSIX style for consistency across OS
                 sub_dir_path = sub_dir.relative_to(PLATFORM_REFERENCE_PATH).as_posix()
-                # List all markdown files in the sub-directory, excluding the index.mdx file,
-                # to include in the description
                 sub_dir_markdown_files = [
-                    f.stem for f in sub_dir.glob("*.md") if f.name != "index.mdx"
+                    reference_command_name(f) for f in sub_dir.glob("*.md")
                 ]
                 # If there are markdown files found, append their names to the sub-directory
                 # description, separated by commas
@@ -494,17 +500,12 @@ def generate_reference_index_files(reference_content: Dict[str, str]) -> None:
             index_content += "### Commands\n"
             index_content += PLATFORM_REFERENCE_UL_ELEMENT + "\n"
             for file in markdown_files:
-                # Check if the current file is not the index file to avoid self-referencing
                 if file.name != "index.mdx":
-                    # Extract the file name without extension to use as a title
-                    title = file.stem.replace("_", " ")
-                    # Generate a relative file path from the PLATFORM_REFERENCE_PATH,
-                    # remove the file extension, and convert it to POSIX path format
-                    # for consistency across OS
-                    file_path = file.relative_to(PLATFORM_REFERENCE_PATH).with_suffix("").as_posix()  # fmt: skip
-                    # Attempt to fetch the file's description from reference_content
-                    # using its path,split by the first period to get the first sentence,
-                    # and default to an empty string if not found
+                    command = reference_command_name(file)
+                    title = command.replace("_", " ")
+                    file_path = (
+                        file.parent.relative_to(PLATFORM_REFERENCE_PATH) / command
+                    ).as_posix()
                     file_description = reference_content.get(f"/{file_path}", "").split(".")[0]  # fmt: skip
                     url = f"/odp/python/reference/{file_path}"
                     index_content += f'<ReferenceCard title="{title}" description="{file_description}" url="{url}" />\n'
@@ -518,8 +519,7 @@ def generate_reference_index_files(reference_content: Dict[str, str]) -> None:
         for i, sub_dir in enumerate(sub_dirs, start=1):
             generate_index_and_category(sub_dir, sub_dir.name.capitalize(), i)
 
-    # Start the recursive generation from the PLATFORM_REFERENCE_PATH
-    generate_index_and_category(PLATFORM_REFERENCE_PATH)
+    generate_index_and_category(PLATFORM_REFERENCE_PATH, position=8)
 
 
 def generate_reference_top_level_index() -> None:
@@ -536,9 +536,8 @@ def generate_reference_top_level_index() -> None:
         title = dir_path.name
         markdown_files = []
 
-        # Recursively find all markdown files in the directory and subdirectories
         for file in dir_path.rglob("*.md"):
-            markdown_files.append(file.stem)
+            markdown_files.append(reference_command_name(file))
 
         # Format description as a comma-separated string
         if len(markdown_files) <= MAX_COMMANDS:
@@ -621,8 +620,7 @@ def generate_data_models_index_files(content: str) -> None:
     with open(PLATFORM_DATA_MODELS_PATH / "index.mdx", "w", encoding="utf-8") as f:
         f.write(index_content)
 
-    # Generate the _category_.json file for the data_models directory
-    category_content = {"label": "Data Models", "position": 6}
+    category_content = {"label": "Data Models", "position": 11}
     with open(
         PLATFORM_DATA_MODELS_PATH / "_category_.json", "w", encoding="utf-8"
     ) as f:
@@ -647,11 +645,17 @@ def generate_markdown_file(path: str, markdown_content: str, directory: str) -> 
         If the content type is invalid
     """
 
-    # For reference, split the path to separate the
-    # directory structure from the file name
     if directory == "reference":
         parts = path.strip("/").split("/")
         file_name = f"{parts[-1]}.md"
+        if parts[-1] == "index":
+            file_name = INDEX_COMMAND_FILE
+            slug = "/" + PLATFORM_REFERENCE_PATH.relative_to(
+                WEBSITE_PATH / "content-odp"
+            ).joinpath(*parts).as_posix()
+            markdown_content = markdown_content.replace(
+                "---\n", f"---\nslug: {slug}\n", 1
+            )
         directory_path = PLATFORM_REFERENCE_PATH / "/".join(parts[:-1])
 
     # For data models, the file name is derived from the last

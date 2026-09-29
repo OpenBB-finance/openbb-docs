@@ -1,0 +1,110 @@
+---
+title: Pass query parameters
+sidebar_position: 5
+description: >
+  Find a command's parameters and pass providers, symbols, dates, choices, and
+  provider-specific options from Python or over the REST API.
+keywords:
+  - query parameters
+  - provider
+  - symbol
+  - start_date
+  - end_date
+  - kwargs
+  - choices
+  - REST API
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Pass query parameters | OpenBB Python (V5)" />
+
+Commands built on a standard model share parameter names and types. A date is a `start_date` or `end_date` in `YYYY-MM-DD` form everywhere, and `symbol` means the same thing across providers. Provider-specific options sit alongside them and are validated against the provider you select.
+
+## Find a command's parameters
+
+The generated docstring lists the standard parameters first, then `provider`, then the options only some providers accept, each tagged with `(provider: ...)`. The same content is published in the [reference pages](/odp/python/reference), for example [`fred/economy/fred_series`](/odp/python/reference/fred/economy/fred_series), with the returned fields under [Data Models](/odp/python/data_models).
+
+```python
+from openbb import obb
+
+help(obb.fred.economy.fred_series)
+```
+
+Your installation only contains the commands of the packages you installed. `obb.coverage.providers` maps each installed provider to its commands, and `obb.reference["paths"]` holds the parameters of every command, split into `standard` and one entry per provider:
+
+```python
+from openbb import obb
+
+print(obb.coverage.providers["fred"])
+print(obb.reference["paths"]["/news/company"]["parameters"].keys())
+```
+
+## Provider
+
+`provider` is optional. Without it, the command uses your configured default or the first eligible provider, as described in [Configure preferences and defaults](preferences-and-defaults.mdx). Names are lowercase with underscores, such as `federal_reserve`, and a name the command does not support fails validation with the list of accepted values.
+
+## Symbols
+
+`symbol` takes a string. Where the docstring says "Multiple comma separated items allowed" for the selected provider, it also takes a list or a comma-separated string, and a list is joined with commas before the request is made. Passing several symbols to a provider that accepts one raises `OpenBBError` with `symbol -> multiple items not allowed for '<provider>'`. Symbol formats, such as share-class separators and exchange suffixes, differ between data sources, so check the provider's conventions when a query returns nothing.
+
+## Dates, choices, and limits
+
+Dates accept a `YYYY-MM-DD` string or a `datetime.date`. Parameters with a fixed set of values are checked before any request is sent, and an invalid value raises `OpenBBError` listing the accepted values. `limit` and other counts are integers.
+
+```python
+from datetime import date
+
+from openbb import obb
+
+result = obb.fred.economy.fred_series(
+    symbol=["GDP", "UNRATE"],
+    start_date="2015-01-01",
+    end_date=date(2024, 12, 31),
+    frequency="q",
+    transform="pc1",
+)
+```
+
+`frequency` and `transform` are FRED-specific. Passing `frequency="x"` stops before the request with:
+
+```text
+[Error] -> Invalid value 'x' for 'frequency' (provider: 'fred'). Must be one of: ['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']
+```
+
+## Keyword arguments
+
+Every provider-backed command accepts extra keyword arguments, so parameters can be kept in a dictionary and unpacked:
+
+```python
+from openbb import obb
+
+params = {"symbol": "GDP", "start_date": "2020-01-01", "provider": "fred"}
+result = obb.fred.economy.fred_series(**params)
+```
+
+A name the command does not know is ignored and recorded as the warning `Parameter 'foo' not found.` An option that belongs to a different provider than the one selected is dropped with a warning such as `Parameter 'page' is not supported by nasdaq. Available for: tmx.` Both appear in `result.warnings`; see [Handle warnings and errors](warnings-and-errors.mdx).
+
+## Over the REST API
+
+The REST API uses the same names as query-string parameters, under the `/api/v1` prefix. Send several symbols as one comma-separated value. The examples use the default `openbb-api` address; see the [REST API quickstart](../quickstart/rest_api.mdx) to start a server.
+
+```bash
+curl "http://127.0.0.1:6900/api/v1/fred/economy/fred_series?symbol=GDP,UNRATE&start_date=2015-01-01&end_date=2024-12-31&frequency=q&transform=pc1"
+```
+
+An invalid choice or a missing required parameter returns `422` with the failing field under `detail`. Endpoints served by more than one provider require `provider` in the query string.
+
+## Verify
+
+Every result records the arguments it was called with, grouped into `provider_choices`, `standard_params`, and `extra_params`. Empty values are left out, and names that were ignored still appear here, so compare it with `result.warnings`.
+
+```python
+from openbb import obb
+
+result = obb.fred.economy.fred_series(symbol=["GDP", "UNRATE"], start_date="2020-01-01")
+print(result.extra["metadata"].arguments)
+print(result.warnings)
+```
+
+The arguments show `'symbol': 'GDP,UNRATE'`, confirming that the list was joined before the request.

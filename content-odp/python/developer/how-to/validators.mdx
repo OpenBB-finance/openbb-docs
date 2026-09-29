@@ -1,0 +1,91 @@
+---
+title: Validators
+sidebar_position: 6
+description: Use Pydantic field and model validators in QueryParams and Data models to parse dates, normalize percents, set dynamic defaults, and clean source values.
+keywords:
+  - OpenBB V5
+  - Pydantic
+  - field_validator
+  - model_validator
+  - QueryParams
+  - Data
+  - Fetcher
+  - validation
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Validators | OpenBB Python (V5)" />
+
+`QueryParams` and `Data` are Pydantic models, so Pydantic validators are the place to clean inputs and outputs. A validator on a `QueryParams` model runs when `transform_query` builds the query; a validator on a `Data` model runs when `transform_data` validates each row. Putting the logic there keeps fetcher methods short and applies it wherever the model is used.
+
+```python
+from pydantic import field_validator, model_validator
+```
+
+A `field_validator` sees one field's value. A `model_validator` sees the whole input, which a `QueryParams` model needs when one field's default depends on another, and a `Data` model needs when a correction spans several fields. With `mode="before"`, both run on the raw input before type coercion, which is usually what source data needs. The snippets below are methods inside the model class.
+
+## Parse timestamps
+
+Convert Unix timestamps from the source into `datetime` values. `safe_fromtimestamp` from `openbb_core.provider.utils.helpers` behaves like `datetime.fromtimestamp` but also handles negative timestamps on Windows.
+
+```python
+@field_validator("last_trade_timestamp", mode="before", check_fields=False)
+@classmethod
+def parse_timestamp(cls, v):
+    """Convert a Unix timestamp in seconds."""
+    from openbb_core.provider.utils.helpers import safe_fromtimestamp
+
+    return safe_fromtimestamp(v) if v else None
+```
+
+`check_fields=False` lets the validator live on a parent model that does not declare the field itself.
+
+## Normalize percent values
+
+OpenBB represents percents as decimals, so 1% is `0.01`. For a source that returns whole-number percentages, divide in the `Data` model:
+
+```python
+@field_validator("change_percent", mode="before", check_fields=False)
+@classmethod
+def normalize_percent(cls, v):
+    """Convert a whole-number percent to a decimal."""
+    return float(v) / 100 if v is not None else None
+```
+
+## Set a dynamic default
+
+A default that depends on today's date cannot be a static `default=`. Declare the field with `default=None` and fill it in a `model_validator` on the `QueryParams` model:
+
+```python
+@model_validator(mode="before")
+@classmethod
+def default_dates(cls, values):
+    """Default to the last 90 days."""
+    from datetime import date, timedelta
+
+    if isinstance(values, dict):
+        if values.get("start_date") is None:
+            values["start_date"] = date.today() - timedelta(days=90)
+        if values.get("end_date") is None:
+            values["end_date"] = date.today()
+    return values
+```
+
+## Replace placeholder values
+
+Some sources send `"-"`, `"N/A"`, or an empty string where a value is missing. Convert them to `None` for the whole row so the output stays consistent and JSON-serializable:
+
+```python
+@model_validator(mode="before")
+@classmethod
+def replace_placeholders(cls, values):
+    """Treat placeholder values as missing."""
+    if not isinstance(values, dict):
+        return values
+    return {k: None if v in ("-", "N/A", "") else v for k, v in values.items()}
+```
+
+If a source uses `0` for missing values, handle those fields individually, since `0` is a real value for most numeric fields.
+
+For country and exchange parameters, the [Country](country_input.mdx) and [Exchange](exchange_input.mdx) types validate and normalize input without a custom validator.

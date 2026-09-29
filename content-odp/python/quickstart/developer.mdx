@@ -1,0 +1,128 @@
+---
+title: Quick start — Developer
+sidebar_position: 2
+description: >
+  Register a FastAPI APIRouter as an openbb_core_extension and call it as a
+  method on obb and as a REST endpoint.
+keywords:
+  - quickstart
+  - developer
+  - FastAPI
+  - APIRouter
+  - openbb_core_extension
+  - openbb-build
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Quick start (Developer) | OpenBB Python (V5)" />
+
+Any `FastAPI` app or `APIRouter` registered under the `openbb_core_extension` entry-point group becomes an OpenBB extension. Its routes are served by the OpenBB REST API and generated as methods on `obb`. This page registers a one-route router and calls it both ways.
+
+## 1. Install openbb-core
+
+```bash
+pip install openbb-core
+```
+
+FastAPI and Uvicorn are installed with it.
+
+## 2. Write the router
+
+Create a project directory with an empty `my_extension/__init__.py` and this `my_extension/app.py`:
+
+```python
+from fastapi import APIRouter
+from pydantic import BaseModel
+
+
+class GreetResponse(BaseModel):
+    message: str
+
+
+router = APIRouter()
+
+
+@router.get("/greet")
+def greet(name: str = "world") -> GreetResponse:
+    """Return a greeting."""
+    return GreetResponse(message=f"hello, {name}")
+```
+
+This is an ordinary FastAPI router with no OpenBB imports.
+
+## 3. Register the entry point
+
+`pyproject.toml` in the project directory:
+
+```toml
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "openbb-my-app"
+version = "0.1.0"
+requires-python = ">=3.10"
+dependencies = ["openbb-core"]
+
+[project.entry-points."openbb_core_extension"]
+my_app = "my_extension.app:router"
+
+[tool.hatch.build.targets.wheel]
+packages = ["my_extension"]
+```
+
+The entry-point name, `my_app`, becomes the namespace on `obb` and the path segment in the REST API. The value must point to an already-created `FastAPI` or `APIRouter` instance; factory functions are not called.
+
+## 4. Install the package
+
+From the project directory:
+
+```bash
+pip install -e .
+```
+
+## 5. Build the Python Interface
+
+```bash
+openbb-build
+```
+
+This generates the `obb.my_app` methods. Importing `openbb` also rebuilds on its own when it detects a newly installed extension; [Packaging and static assets](../concepts/packaging.mdx) explains when each applies.
+
+## 6. Call it from Python
+
+```python
+from openbb import obb
+
+obb.my_app.greet(name="analyst")
+```
+
+```text
+GreetResponse(message='hello, analyst')
+```
+
+The Python Interface returns whatever the route returns. OpenBB does not wrap it in an `OBBject`, so the `to_dataframe()` family of methods is not available on this result. To get them, annotate the route's return type as `OBBject[...]` and return `OBBject(results=...)`; see [The OBBject envelope](../concepts/obbject.mdx).
+
+## 7. Call it over REST
+
+Start the API with Uvicorn, which serves commands under `/api/v1`:
+
+```bash
+uvicorn openbb_core.api.rest_api:app --host 127.0.0.1 --port 8000
+```
+
+In another terminal:
+
+```bash
+curl "http://127.0.0.1:8000/api/v1/my_app/greet?name=analyst"
+```
+
+```json
+{"message":"hello, analyst"}
+```
+
+The `openbb-api` launcher from `openbb-platform-api` serves the same routes on port 6900 by default and adds OpenBB Workspace support; see [Quick start (REST API)](rest_api.mdx).
+
+If `openbb-build` fails, set `OPENBB_DEBUG_MODE=true` and run it again for the full error. [From FastAPI](../developer/extension_types/from_fastapi.md) covers how dependencies, streaming responses, and other FastAPI features behave in the Python Interface, and the [Developer](../developer/index.md) section covers building providers and native OpenBB routers.

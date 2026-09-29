@@ -8,7 +8,7 @@ const PlayIcon = ({
   title,
   titleId,
   ...props
-}: SVGProps<SVGSVGElement> & SVGRProps) => (
+}: React.SVGProps<SVGSVGElement> & SVGRProps) => (
   <svg
     viewBox="0 0 24 24"
     width={24}

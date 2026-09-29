@@ -1,0 +1,100 @@
+---
+title: Extension types
+sidebar_position: 3
+description: >
+  The four kinds of openbb-core extensions (router, provider, OBBject, and
+  charting), the entry-point group each ships under, and what the entry point
+  must resolve to.
+keywords:
+  - extensions
+  - openbb_core_extension
+  - openbb_provider_extension
+  - openbb_obbject_extension
+  - openbb_charting_extension
+  - Router
+  - Provider
+  - Fetcher
+  - Extension
+  - views
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Extension types | OpenBB Python (V5)" />
+
+OpenBB discovers extensions through Python entry points declared in each package's `pyproject.toml`. A single distribution can register entry points in any combination of groups. Every V5 data package does this: it registers a provider under `openbb_provider_extension` and its own command namespace under `openbb_core_extension`, so installing `openbb-famafrench` adds both the `famafrench` provider and `obb.famafrench`.
+
+## Router extensions: `openbb_core_extension`
+
+A router extension adds a top-level namespace to `obb` and the same commands as HTTP routes under `/api/v1/<name>`. Each command is a function decorated with `@router.command(...)`.
+
+The entry point must resolve to an already-constructed `openbb_core.app.router.Router`, `fastapi.FastAPI`, or `fastapi.APIRouter` instance. A `FastAPI` app contributes its `.router`, and an `APIRouter` is wrapped in a `Router`. Factory functions are not called; an entry point that resolves to anything else is skipped.
+
+```toml
+[project.entry-points."openbb_core_extension"]
+my_router = "my_package.my_router:router"
+```
+
+The entry-point name becomes the namespace: `obb.my_router.*` and `/api/v1/my_router/*`.
+
+With the `openbb-core[flask]` extra installed, an entry point in this group can also resolve to a Flask application. Flask apps are mounted on the REST API at `/api/v1/<name>` and their routes are merged into the OpenAPI schema; they do not appear in the Python Interface.
+
+## Provider extensions: `openbb_provider_extension`
+
+A provider extension supplies data for one or more models. It declares a `Provider` whose `fetcher_dict` maps model names to `Fetcher` subclasses. A router command declared with `model="<ModelName>"` offers every installed provider that has that key, and at call time the engine runs the selected provider's fetcher. Streaming providers implement `stream_data` instead of `transform_data`; see [Streaming responses](streaming.mdx).
+
+The entry point must resolve to an `openbb_core.provider.abstract.provider.Provider` instance.
+
+```toml
+[project.entry-points."openbb_provider_extension"]
+my_provider = "my_package:my_provider"
+```
+
+Callers select the provider with `provider="<name>"`, where `<name>` is the `name` argument given to `Provider(...)`. Keep the entry-point name the same to avoid confusion; `openbb-us-eia` is an exception, registering the entry point `us_eia` for a provider named `eia`.
+
+## OBBject extensions: `openbb_obbject_extension`
+
+An OBBject extension attaches an accessor to every `OBBject`, or runs a callback on command output. The entry point must resolve to an `openbb_core.app.model.extension.Extension` instance; other objects are ignored.
+
+```toml
+[project.entry-points."openbb_obbject_extension"]
+my_accessor = "my_package:ext"
+```
+
+By default an extension registers a pandas-style accessor, so callers write `obbject.<extension name>.<method>(...)`. The accessor object is created on first access and cached on that `OBBject`. [OBBject extensions](../developer/extension_types/obbject.md) shows both the class and function forms.
+
+Setting `on_command_output=True` turns the extension into a callback that runs after matching commands, on both the Python Interface and the REST API. It only loads when `allow_on_command_output` is enabled in the system settings or `OPENBB_ALLOW_ON_COMMAND_OUTPUT` is set. `command_output_paths` limits it to specific routes, `results_only=True` makes the command return only `results`, and `immutable=False` lets it modify the returned `OBBject`, which additionally requires `allow_mutable_extensions` or `OPENBB_ALLOW_MUTABLE_EXTENSIONS`. [OBBject plugins](../developer/extension_types/plugins.md) covers the details.
+
+## Charting extensions: `openbb_charting_extension`
+
+A charting extension provides chart views for routes registered by router extensions. `openbb-charting` loads every entry point in this group and matches views to commands by method name; the entry-point name is not used for matching.
+
+The entry point must resolve to a class. Each public static method defined in that class's module is a view, named after the route it charts: the leading `/` is dropped and the remaining `/` become `_`. The IMF provider's view for `/imf/portwatch/country_activity` is `ImfViews.imf_portwatch_country_activity`:
+
+```python
+class ImfViews:
+    """IMF chart views."""
+
+    @staticmethod
+    def imf_portwatch_country_activity(**kwargs):
+        """Chart port activity for a country."""
+        ...
+```
+
+```toml
+[project.entry-points."openbb_charting_extension"]
+imf = "openbb_imf.imf_views:ImfViews"
+```
+
+A view receives keyword arguments that include the command's results as `obbject_item`, and returns a `Chart` model, a figure, or a `(figure, content)` tuple. Installing a view adds a `chart` parameter to the command after the next build. [Charting extensions](../developer/extension_types/charting.md) has the full contract.
+
+`openbb-core` also resolves two charting groups of its own: `openbb_charting_hooks` for `ChartingHook` subclasses that run at stages of chart creation, and `openbb_charting_backend` for a rendering backend selected by the `charting_backend` system setting.
+
+## Summary
+
+| Group | Adds | Entry-point target |
+| ----- | ---- | ------------------ |
+| `openbb_core_extension` | Commands and namespaces | `Router`, `FastAPI`, or `APIRouter` instance (or a Flask app, REST only) |
+| `openbb_provider_extension` | Data sources for models | `Provider` instance |
+| `openbb_obbject_extension` | Accessors on `OBBject`, or command-output callbacks | `Extension` instance |
+| `openbb_charting_extension` | Chart views for routes | A class whose static methods are named after routes |

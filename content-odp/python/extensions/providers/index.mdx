@@ -1,0 +1,114 @@
+---
+title: Providers
+sidebar_position: 1
+description: The V5 data provider packages, the namespace each one registers, and the credentials each one reads.
+keywords:
+  - provider
+  - data source
+  - namespace
+  - credentials
+  - API key
+  - extension
+  - pip install
+---
+
+<!-- markdownlint-disable MD012 MD031 MD033 MD037 -->
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Providers | OpenBB Python (V5)" />
+
+A provider package connects one data source to OpenBB. In V5 each package registers two entry points: a provider, which is the value passed as `provider=`, and a router, which becomes a namespace on `obb` and a path prefix on the REST API. Commands live in the namespace of the package that serves them, so `pip install openbb-fred` adds `obb.fred` and nothing else.
+
+```python
+from openbb import obb
+
+spy = obb.cboe.equity.historical(symbol="SPY", start_date="2024-01-01")
+factors = obb.famafrench.factors(frequency="daily", start_date="2024-01-01")
+```
+
+Each package installs independently and can be removed without affecting the others. After installing or removing one, run `openbb-build` or restart the Python session so the `obb` client is regenerated.
+
+:::important
+OpenBB does not host or serve data. Provider packages are connectors to public or third-party services, and coverage, rate limits, and terms of use are set by those services. Report connector bugs on [GitHub](https://github.com/OpenBB-finance/OpenBB/issues/new/choose).
+:::
+
+## Available providers
+
+| Package | Namespace | `provider=` | Source | Credentials |
+| --- | --- | --- | --- | --- |
+| `openbb-bls` | `obb.bls` | `bls` | [U.S. Bureau of Labor Statistics](https://www.bls.gov/developers/) | `bls_api_key`, optional |
+| `openbb-cboe` | `obb.cboe` | `cboe` | [Cboe](https://www.cboe.com) delayed equity, index, futures, and options data | None |
+| `openbb-cftc` | `obb.cftc` | `cftc` | [CFTC](https://cftc.gov/) Commitments of Traders and DTCC swap data | `cftc_app_token`, optional |
+| `openbb-deribit` | `obb.deribit` | `deribit` | [Deribit](https://deribit.com/) public crypto derivatives market data | None |
+| `openbb-ecb` | `obb.ecb` | `ecb` | [European Central Bank Data Portal](https://data.ecb.europa.eu) | None |
+| `openbb-us-eia` | `obb.eia` | `eia` | [U.S. Energy Information Administration](https://www.eia.gov/opendata/) | `eia_api_key` |
+| `openbb-famafrench` | `obb.famafrench` | `famafrench` | [Kenneth French Data Library](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html) | None |
+| `openbb-federal-reserve` | `obb.federal_reserve` | `federal_reserve` | [Federal Reserve](https://www.federalreserve.gov/data.htm) Board, FOMC, and regional banks | None |
+| `openbb-finra` | `obb.finra` | `finra` | [FINRA](https://www.finra.org/finra-data) | None |
+| `openbb-fred` | `obb.fred` | `fred` | [FRED](https://fred.stlouisfed.org), Federal Reserve Bank of St. Louis | `fred_api_key` |
+| `openbb-government-us` | `obb.uscongress`, `obb.ustreasury`, `obb.usda` | `congress_gov`, `us_treasury`, `usda` | [GovInfo](https://www.govinfo.gov) and Congress.gov, [U.S. Treasury](https://fiscaldata.treasury.gov), [USDA](https://www.usda.gov) | `congress_gov_api_key`, optional |
+| `openbb-imf` | `obb.imf` | `imf` | [International Monetary Fund](https://data.imf.org) | None |
+| `openbb-jodi` | `obb.jodi` | `jodi` | [JODI](https://www.jodidata.org) Oil and Gas World Databases | None |
+| `openbb-nasdaq` | `obb.nasdaq` | `nasdaq` | [Nasdaq](https://www.nasdaq.com) public website data, US, Nordic, and Baltic markets | None |
+| `openbb-oecd` | `obb.oecd` | `oecd` | [OECD Data Explorer](https://data-explorer.oecd.org/) | None |
+| `openbb-sec` | `obb.sec` | `sec` | [SEC](https://www.sec.gov/data) EDGAR | None |
+| `openbb-tmx` | `obb.tmx` | `tmx` | [TMX](https://www.tmx.com) Canadian markets data, unofficial | None |
+
+Install any of them by package name:
+
+```sh
+pip install openbb-fred openbb-cboe
+```
+
+`openbb-government-us` is the only package that registers more than one provider. Its three agencies each get their own namespace and `provider=` value.
+
+The generated [API reference](/odp/python/reference) documents every command, parameter, and returned field for these namespaces.
+
+## Credentials
+
+Credential names follow the pattern `<provider>_<credential>`. Five are defined, and only two are required for the commands that use them.
+
+`fred_api_key` is required by the FRED commands. Request a free key from your account page at [fred.stlouisfed.org](https://fred.stlouisfed.org).
+
+`eia_api_key` is required by the EIA commands that call the EIA API. Register for a free key at [eia.gov/opendata/register.php](https://www.eia.gov/opendata/register.php).
+
+`bls_api_key` is optional. The BLS API accepts 25 series and 10 years per request without a key, and 50 series and 20 years with one; `obb.bls.series` splits larger queries into as many requests as the limits require. Register at [data.bls.gov/registrationEngine](https://data.bls.gov/registrationEngine/).
+
+`cftc_app_token` is optional. Commitments of Traders requests made without a token may be throttled by IP address, and the DTCC swap endpoints never need one. Create a Socrata account, then generate the token from the CFTC Public Reporting developer settings.
+
+`congress_gov_api_key` is needed only for requests about Congresses before the 108th (2003). Later Congresses are read from keyless GovInfo bulk data. Sign up at [api.congress.gov/sign-up](https://api.congress.gov/sign-up/).
+
+Set a credential for the current session:
+
+```python
+from openbb import obb
+
+obb.user.credentials.fred_api_key = "REPLACE_WITH_YOUR_KEY"
+```
+
+To keep a credential across sessions, store it under `credentials` in `~/.openbb_platform/user_settings.json`, or export an environment variable with the credential's name in upper case, such as `FRED_API_KEY`. The [credentials](../../user-guide/credentials.mdx) page covers these methods and the `openbb.toml` options.
+
+## Provider coverage
+
+The installed providers, and the commands each one serves, are available from the Python client:
+
+```python
+from openbb import obb
+
+obb.coverage.providers
+```
+
+The result is a dictionary keyed by provider name. When a command is missing from `obb`, its package is usually not installed, or the client has not been rebuilt since installation.
+
+## Providers removed in V5
+
+These V4 provider packages are not part of V5: `openbb-alpha-vantage`, `openbb-benzinga`, `openbb-biztoc`, `openbb-econdb`, `openbb-finviz`, `openbb-fmp`, `openbb-intrinio`, `openbb-multpl`, `openbb-seeking-alpha`, `openbb-stockgrid`, `openbb-tiingo`, `openbb-tradier`, `openbb-tradingeconomics`, `openbb-wsj`, and `openbb-yfinance`. Their last V4 releases require `openbb-core` 1.x, so they cannot be installed alongside `openbb-core` 2.
+
+`openbb-congress-gov` was merged into `openbb-government-us`. Its data is now served under `obb.uscongress` with `provider="congress_gov"`.
+
+The shared routers that V4 providers fed into, such as `obb.equity`, `obb.economy`, and `obb.fixedincome`, are not installed with the V5 provider packages and are not covered by this documentation. Code written against them should move to the provider namespaces. The [migration guide](../../migration-from-v4.mdx) lists the changes.
+
+## Building a provider
+
+Anyone can publish a provider package. The [provider extension](../../developer/extension_types/provider.md) guide walks through the `Provider` and `Fetcher` classes and the entry points a package needs. Search [PyPI](https://pypi.org/search/?q=openbb-) for community packages.

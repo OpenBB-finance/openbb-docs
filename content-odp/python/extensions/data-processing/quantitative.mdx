@@ -1,0 +1,160 @@
+---
+title: openbb-quantitative
+sidebar_position: 2
+description: The openbb-quantitative extension - descriptive and rolling statistics, performance ratios, CAPM, and multi-factor regression, attribution, and risk decomposition with chart views.
+keywords:
+  - quantitative
+  - statistics
+  - rolling
+  - Sharpe ratio
+  - Sortino ratio
+  - Omega ratio
+  - CAPM
+  - factor regression
+  - factor exposure
+  - risk decomposition
+  - return attribution
+  - Fama-French
+---
+
+<!-- markdownlint-disable MD012 MD031 MD033 MD037 -->
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="openbb-quantitative | OpenBB Python (V5)" />
+
+`openbb-quantitative` adds the `obb.quantitative` namespace for statistics on a single series and for multi-factor analysis of a return series against a factor matrix. Like the other data-processing extensions, it takes data as input, from any command's `results`, a DataFrame, or a list of dictionaries, and returns an `OBBject`.
+
+## Installation
+
+```sh
+pip install openbb-quantitative
+openbb-build
+```
+
+The package depends on `openbb-core[pandas]`, `numpy`, `scipy`, and `statsmodels`. Every command is also a `POST` endpoint under `/api/v1/quantitative/` when served with [`openbb-api`](../interface/openbb-api.mdx).
+
+## Commands
+
+| Command | Returns |
+| --- | --- |
+| `summary` | Count, mean, standard deviation, variance, minimum, quartiles, and maximum of `target` |
+| `normality` | Statistics and p-values for the kurtosis, skewness, Jarque-Bera, Shapiro-Wilk, and Kolmogorov-Smirnov tests |
+| `unitroot_test` | ADF and KPSS results in one row |
+| `capm` | Beta, systematic risk (R²), and idiosyncratic risk (1 - R²) against the Fama-French market factor |
+| `stats.mean`, `stats.stdev`, `stats.variance`, `stats.skew`, `stats.kurtosis`, `stats.quantile` | The statistic over the whole series |
+| `rolling.mean`, `rolling.stdev`, `rolling.variance`, `rolling.skew`, `rolling.kurtosis`, `rolling.quantile` | One value per date over a moving `window`, default 21 |
+| `performance.sharpe_ratio` | Rolling Sharpe ratio, default window 252 |
+| `performance.sortino_ratio` | Rolling Sortino ratio, default window 252; `adjusted=True` divides by √2 for comparison with Sharpe |
+| `performance.omega_ratio` | Omega ratio at `bins` thresholds between `threshold_start` and `threshold_end` |
+| `factors` | OLS of the target on a factor matrix for each named look-back period |
+| `risk_decomposition` | Share of the target's variance attributed to each factor and to the residual |
+| `attribution` | The period's total target return split into factor contributions, alpha, and residual |
+| `rolling.factors` | Factor betas and t-statistics refit over a sliding window |
+
+`capm` computes monthly returns from the `target` price column and downloads the monthly Fama-French research factors from the Kenneth French Data Library for the regression, so it needs network access but no other extension. `sharpe_ratio` and `sortino_ratio` also start from prices and compute percent changes of `target`, while `omega_ratio` treats `target` as a return series already. The `rolling.quantile` and `stats.quantile` commands take `quantile_pct` between 0 and 1 and also return the median.
+
+```python
+from openbb import obb
+
+spy = obb.cboe.equity.historical(symbol="SPY", start_date="2020-01-01").results
+
+obb.quantitative.summary(data=spy, target="close")
+obb.quantitative.unitroot_test(data=spy, target="close", fuller_reg="ct")
+obb.quantitative.rolling.stdev(data=spy, target="close", window=63)
+obb.quantitative.performance.sharpe_ratio(data=spy, target="close", window=252)
+obb.quantitative.capm(data=spy, target="close")
+```
+
+## Factor analysis
+
+The four factor commands share one input contract. `data` holds the target series, `factors_data` holds one column per factor, and both are aligned on the `index` column, `date` by default, keeping only dates present in both. When `risk_free_column` names a column of `factors_data`, the target is converted to excess returns by subtracting it, and the column is dropped from the regressors. Every remaining column of `factors_data` is used as a factor. Pass `factors_data` as a list of records, such as a command's `results`; unlike `data`, it is not converted from a DataFrame.
+
+The target should be a return series in the same units as the factors. Fama-French factors from [`openbb-famafrench`](../providers/index.mdx) are in percent, so the example below scales daily price changes by 100.
+
+`factors`, `risk_decomposition`, and `attribution` regress over named look-back periods measured back from the latest aligned date. The accepted values are `1 Month`, `3 Month`, `YTD`, `1 Year`, `3 Year`, and `Max`. In the Python client, `periods` is a required argument; pass the list explicitly. A period with no more observations than regressors plus one is skipped.
+
+```python
+from openbb import obb
+
+prices = obb.cboe.equity.historical(symbol="XLE", start_date="2021-01-01").to_df()
+returns = prices["close"].pct_change().mul(100).dropna().rename("xle").to_frame()
+
+factors = obb.famafrench.factors(
+    factor="5_factors", frequency="daily", start_date="2021-01-01"
+).results
+
+periods = ["3 Month", "YTD", "1 Year", "3 Year", "Max"]
+
+exposures = obb.quantitative.factors(
+    data=returns,
+    factors_data=factors,
+    target="xle",
+    risk_free_column="rf",
+    periods=periods,
+)
+exposures.to_df()
+```
+
+`factors` returns one row per period and factor, including the intercept `const`, with the coefficient, p-value, 95% confidence interval, and the period's R².
+
+`risk_decomposition` splits the target's variance with the identity Var(y) = Σ βᵢ·Cov(fᵢ, y) + Var(residual). Each factor's share is its covariance contribution divided by Var(y); the factor shares sum to R² and the `Residual` row holds 1 - R². Measuring each factor through its covariance with the target keeps the shares additive when factors are correlated.
+
+`attribution` splits the period's cumulative target return with Σ yₜ = α·n + Σ βᵢ·Σ fᵢₜ + Σ residualₜ, returning one row per factor plus `Alpha` and `Residual`. The `share` column divides each contribution by the total return. The identity holds for arithmetic returns; convert to log returns first if compounding matters.
+
+```python
+obb.quantitative.risk_decomposition(
+    data=returns, factors_data=factors, target="xle", risk_free_column="rf", periods=periods
+).to_df()
+
+obb.quantitative.attribution(
+    data=returns, factors_data=factors, target="xle", risk_free_column="rf", periods=periods
+).to_df()
+```
+
+`rolling.factors` replaces named periods with a sliding window. It refits the regression on the trailing `window` observations, default 252, at every `step` observations, default 21, and returns each factor's coefficient and t-statistic dated at the window end. Use it to see exposures drift over time.
+
+```python
+rolling = obb.quantitative.rolling.factors(
+    data=returns,
+    factors_data=factors,
+    target="xle",
+    risk_free_column="rf",
+    window=126,
+    step=5,
+)
+```
+
+## Charts
+
+With [`openbb-charting`](../infrastructure/openbb-charting/index.md) installed, the four factor commands accept `chart=True`. Each chart is built from the command's results.
+
+| Command | Chart |
+| --- | --- |
+| `factors` | Factor-exposure heat map: one row per period, one column per factor, each cell showing the coefficient and colored by its p-value |
+| `risk_decomposition` | Horizontal stacked bars of variance share per period, with `Residual` last; each bar sums to 100% |
+| `attribution` | Horizontal bars of each component's share of the period return, with signs preserved and `Alpha` and `Residual` last |
+| `rolling.factors` | Stacked area of rolling betas by window end, largest average exposure at the base; the intercept is left out |
+
+The heat map colors run from blue for p-values near zero, through cyan at 0.05 and orange at 0.10, to red at 0.25 and dark red toward 1, so statistically significant exposures stand out as cool cells.
+
+```python
+heatmap = obb.quantitative.factors(
+    data=returns,
+    factors_data=factors,
+    target="xle",
+    risk_free_column="rf",
+    periods=periods,
+    chart=True,
+)
+heatmap.show()
+```
+
+A result that was created without `chart=True` can be charted afterward, and a charted one redrawn, with `to_chart` on the charting accessor. Keyword arguments pass through to the chart view: all four accept `title` and `layout_kwargs`, and the `rolling.factors` view also accepts `include_intercept=True`.
+
+```python
+heatmap.charting.to_chart(title="XLE Fama-French 5-Factor Exposures")
+rolling.charting.to_chart(include_intercept=True)
+```
+
+Go to the [reference](/odp/python/reference/quantitative) for every parameter and returned field.

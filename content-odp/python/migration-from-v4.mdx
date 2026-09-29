@@ -1,0 +1,268 @@
+---
+title: Migration from V4
+sidebar_position: 9
+description: >
+  What to change when moving code, configuration, and deployments from OpenBB
+  V4 to V5: license, removed providers, provider-owned namespaces, openbb.toml,
+  packaging, the CLI, the REST API, and the API and MCP launchers.
+keywords:
+  - V4 to V5
+  - migration
+  - breaking changes
+  - provider namespaces
+  - openbb.toml
+  - hatchling
+  - uv
+  - dev_install.py
+  - Apache-2.0
+  - openbb-cli
+  - REST API
+  - openbb-api
+  - openbb-mcp
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Migration from V4 | OpenBB Python (V5)" />
+
+V5 is a breaking release. `openbb-core` moves to 2.0.0, most command paths change, fifteen provider packages are gone, and packaging, the CLI, and the REST API all behave differently. This page walks through what a V4 user has to change. The V4 documentation stays available at [/odp/v4/python](/odp/v4/python).
+
+Install V5 into a new virtual environment instead of upgrading a V4 one in place. Shared router packages such as `openbb-economy` or `openbb-equity`, whether left over from V4 or installed with `dev_install.py --routers`, change which commands the V5 providers register, as explained under [provider-owned namespaces](#provider-owned-namespaces). The [installation guide](./installation.mdx) covers the setup.
+
+## License
+
+V4 packages were licensed AGPL-3.0-only. V5 relicenses the repository and every package in it under Apache-2.0 (OpenBB-finance/OpenBB#7677), and the `license_name` in the REST API's OpenAPI document now reads `Apache-2.0`. See the [license FAQ](./faqs/license.mdx).
+
+## Removed providers and extensions
+
+These provider packages were deleted from the repository and have no V5 counterpart: `openbb-alpha-vantage`, `openbb-benzinga`, `openbb-biztoc`, `openbb-econdb`, `openbb-finviz`, `openbb-fmp`, `openbb-intrinio`, `openbb-multpl`, `openbb-seeking-alpha`, `openbb-stockgrid`, `openbb-tiingo`, `openbb-tradier`, `openbb-tradingeconomics`, `openbb-wsj`, and `openbb-yfinance`. Code that passes one of their names as `provider=` has to move to a different source or be dropped.
+
+Two packages were folded into others. `openbb-congress-gov` now ships inside `openbb-government-us` (#7604), which still registers `obb.uscongress`. The `openbb-regulators` extension is gone, and its `obb.regulators.sec.*` commands are registered by `openbb-sec` under `obb.sec.*`.
+
+A command whose providers were all removed disappears with them. `obb.news.world` is the visible case: Benzinga, Biztoc, FMP, Intrinio, and Tiingo were its only V4 providers, so V5 does not generate it. `obb.news.company` remains, backed by `nasdaq` and `tmx`.
+
+## Provider-owned namespaces
+
+V4 put most data commands into shared asset-class routers such as `obb.equity`, `obb.economy`, `obb.fixedincome`, `obb.derivatives`, and `obb.commodity`, and picked the source with `provider=`. The V5 documentation does not cover those router packages. In V5 each provider package registers its own namespace and arranges its commands beneath it, so the source is part of the path and `provider=` is only needed when a command has more than one source.
+
+| Namespace | Package |
+| --- | --- |
+| `obb.bls` | `openbb-bls` |
+| `obb.cboe` | `openbb-cboe` |
+| `obb.cftc` | `openbb-cftc` |
+| `obb.deribit` | `openbb-deribit` |
+| `obb.ecb` | `openbb-ecb` |
+| `obb.eia` | `openbb-us-eia` |
+| `obb.famafrench` | `openbb-famafrench` |
+| `obb.federal_reserve` | `openbb-federal-reserve` |
+| `obb.finra` | `openbb-finra` |
+| `obb.fred` | `openbb-fred` |
+| `obb.imf` | `openbb-imf` |
+| `obb.jodi` | `openbb-jodi` |
+| `obb.nasdaq` | `openbb-nasdaq` |
+| `obb.oecd` | `openbb-oecd` |
+| `obb.sec` | `openbb-sec` |
+| `obb.tmx` | `openbb-tmx` |
+| `obb.uscongress`, `obb.usda`, `obb.ustreasury` | `openbb-government-us` |
+| `obb.news` | `openbb-news` |
+| `obb.econometrics` | `openbb-econometrics` |
+| `obb.quantitative` | `openbb-quantitative` |
+| `obb.technical` | `openbb-technical` |
+
+The calls below show the pattern. Arguments are elided because some parameters changed between versions; check each command's reference page before porting a call.
+
+| V4 | V5 |
+| --- | --- |
+| `obb.economy.fred_series(..., provider="fred")` | `obb.fred.economy.fred_series(...)` |
+| `obb.economy.cpi(..., provider="imf")` | `obb.imf.cpi(...)` |
+| `obb.imf_utils.presentation_table(...)` | `obb.imf.presentation_table(...)` |
+| `obb.equity.price.historical(..., provider="cboe")` | `obb.cboe.equity.historical(...)` |
+| `obb.derivatives.options.chains(..., provider="cboe")` | `obb.cboe.options.chains(...)` |
+| `obb.equity.fundamental.filings(..., provider="sec")` | `obb.sec.company_filings(...)` |
+| `obb.regulators.sec.cik_map(...)` | `obb.sec.cik_map(...)` |
+| `obb.fixedincome.government.treasury_auctions(..., provider="government_us")` | `obb.ustreasury.treasury_auctions(...)` |
+| `obb.commodity.psd_data(..., provider="government_us")` | `obb.usda.psd_data(...)` |
+| `obb.commodity.petroleum_status_report(..., provider="eia")` | `obb.eia.petroleum_status_report(...)` |
+
+For everything else, browse the [Python reference](/odp/python/reference) by namespace. REST paths follow the same structure, so `/api/v1/economy/fred_series` becomes `/api/v1/fred/economy/fred_series`, and any client that calls the API by path needs updating.
+
+Data model names change along with the paths. A command registered under a provider namespace uses a provider-prefixed model, so the V4 `ConsumerPriceIndex` model appears as `FredConsumerPriceIndex`, `ImfConsumerPriceIndex`, and `OecdConsumerPriceIndex` in the [data model reference](/odp/python/data_models/FredConsumerPriceIndex).
+
+Several providers, `openbb-fred`, `openbb-cboe`, and `openbb-sec` among them, check at import time whether the matching shared router package (`openbb-economy`, `openbb-equity`, `openbb-derivatives`, and so on) is importable, whatever its version. When it is, the provider leaves those commands to the router and skips registering them under its own namespace. A shared router in the environment therefore hides commands that the reference lists under `obb.fred`, `obb.cboe`, or `obb.sec`. Start from a new environment, and leave out `--routers` when installing from source, to avoid the problem.
+
+## Other renamed namespaces and commands
+
+The IMF router was renamed. `obb.imf_utils.*` is now `obb.imf.*`, and the REST prefix `/api/v1/imf_utils/` is now `/api/v1/imf/`. IMF data that V4 served through the shared routers, such as `obb.economy.cpi(provider="imf")`, sits in the same namespace, and the PortWatch shipping data has its own group at `obb.imf.portwatch`.
+
+V4's single `government_us` provider is split into three providers inside `openbb-government-us`: `us_treasury` behind `obb.ustreasury`, `usda` behind `obb.usda`, and `congress_gov` behind `obb.uscongress`. Replace every `provider="government_us"` argument. Congress data from the 108th Congress (2003) onward now comes from keyless GovInfo bulk files; only earlier Congresses fall back to the Congress.gov API and need `congress_gov_api_key`.
+
+EIA commands that V4 placed in `obb.commodity`, `petroleum_status_report` and `short_term_energy_outlook`, now live in `obb.eia` next to the EIA API coverage added in V5. The package is still `openbb-us-eia` and the provider name is still `eia`. OECD had no namespace of its own in V4; its data came only through the shared routers. V5 adds `obb.oecd`.
+
+`openbb-sec` keeps its HTTP responses in a single disk cache. The folder defaults to the `sec` subfolder of the `cache_directory` preference (`~/OpenBBUserData/cache/sec`); `OPENBB_SEC_CACHE_DIR` overrides it, and `OPENBB_SEC_CACHE_SIZE_LIMIT` caps its size (default 8 GB). The package installs an `openbb-sec` command that manages the cache and serves the provider as an OpenBB Workspace backend when run without a subcommand.
+
+```bash
+openbb-sec info
+openbb-sec clear
+```
+
+Technical indicators return different rows. V4 appended the indicator columns to the input records and returned the combined frame. V5 returns typed rows with the date and the indicator's own fields only: `obb.technical.rsi` yields `date` and `rsi`, and `obb.technical.bbands` yields `date`, `lower`, `middle`, `upper`, `bandwidth`, and `percent`. Join the result back to your prices if you relied on the combined output. Parameter order also changed for some commands (V4 `rsi` took `target` before `index`, V5 reverses them), so pass arguments by keyword.
+
+## Configuration: openbb.toml
+
+V5 adds a TOML configuration file and a layered loader in `openbb-core` (#7492). The V4 files `~/.openbb_platform/user_settings.json` and `system_settings.json` keep working; they form the base that the TOML layers merge on top of. Later layers override earlier ones:
+
+| Order | Source |
+| --- | --- |
+| 1 | Model defaults |
+| 2 | `~/.openbb_platform/system_settings.json` and `user_settings.json` |
+| 3 | `[tool.openbb]` in the nearest `pyproject.toml`, searching upward from the working directory |
+| 4 | `~/.openbb_platform/openbb.toml` or `.openbb.toml` |
+| 5 | `openbb.toml` or `.openbb.toml` in the working directory or the nearest parent that has one |
+| 6 | The file named by `OPENBB_CONFIG`, or by `--config-file` for `openbb-api` and `openbb-mcp` |
+
+After the TOML layers, the loader reads `~/.openbb_platform/.env` and the file named by `OPENBB_ENV_FILE` into the environment. Neither the `.env` files nor the TOML ever overwrite a variable already exported in the shell.
+
+`[system]` and `[user]` map onto the settings models, with `[user.credentials]`, `[user.preferences]`, and `[user.defaults]` under the latter. A few system flags can also be set at the top level in kebab case: `debug-mode`, `test-mode`, `headless`, `logging-suppress`, `allow-mutable-extensions`, and `allow-on-command-output`.
+
+```toml
+debug-mode = false
+
+[user.credentials]
+fred_api_key = "REPLACE_ME"
+
+[user.preferences]
+output_type = "dataframe"
+```
+
+Not every entry point applies the file. `openbb-api` and `openbb-mcp` run the loader at startup, before `openbb-core` is imported. `openbb-news` reads its `[news]` table, and `openbb-sec` consults the layers to resolve its cache folder. A Python session that runs `from openbb import obb` does not load `openbb.toml` on import; it reads the JSON settings files and `~/.openbb_platform/.env` as V4 did. The CLI has a loader of its own, described in the [CLI section](#cli). Full details are in the [openbb.toml guide](./user-guide/openbb-toml.mdx) and the [settings reference](./settings/index.mdx).
+
+## Build and packaging
+
+Every V5 package declares its metadata in the standard `[project]` table and builds with hatchling. The `[tool.poetry]` sections are gone, and each package directory carries its own `uv.lock`. Extension authors have to port their `pyproject.toml` the same way. Entry points move from Poetry plugin tables to `[project.entry-points]`, with unchanged group names. A V4 provider declared:
+
+```toml
+[tool.poetry.plugins."openbb_provider_extension"]
+my_provider = "my_package:my_provider"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+```
+
+The V5 equivalent:
+
+```toml
+[project.entry-points."openbb_provider_extension"]
+my_provider = "my_package:my_provider"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+```
+
+The `openbb-cookiecutter` template generates projects in this layout, depending on `openbb-core[pandas]>=2.0.0`. See [Packaging](./concepts/packaging.mdx) and [provider extensions](./developer/extension_types/provider.md).
+
+pandas is no longer a hard dependency of `openbb-core`. It moved to the `pandas` extra, which every V5 provider package already requires. With `openbb-core` installed alone, `to_dataframe()` and `to_df()` raise an `OpenBBError` whose message includes the install command.
+
+```bash
+pip install "openbb-core[pandas]"
+```
+
+From a source checkout, `openbb_platform/dev_install.py` now uses uv instead of Poetry and fails if uv is not installed. Run it from an activated environment. It installs every package tracked under `openbb_platform/core`, `extensions`, `obbject_extensions`, `providers`, and `cli` in editable mode with all extras and each package's `dev` dependency group, then builds the `openbb` package. The V4 `-e`/`--extras` and `-c`/`--cli` switches are gone. Router extensions in `openbb_platform/extensions`, which include `openbb-technical`, `openbb-quantitative`, and `openbb-econometrics`, are installed only when you pass `--routers`; `openbb-news` is always installed. `--routers` also installs the shared asset-class routers described under [provider-owned namespaces](#provider-owned-namespaces), so install the three data-processing extensions on their own instead, as shown in the [installation guide](./installation.mdx#install-from-source).
+
+`openbb-build` still regenerates the static `openbb` package after extensions are installed or removed.
+
+## CLI
+
+`openbb-cli` 2.0.0 changes what `openbb` does with no flags. In V4 it opened the interactive shell. In V5 it runs a single command in-process and exits: the command path is the dotted Python path under `obb`, parameters are `--key value` pairs, and the result is written to stdout as one JSON line with `ok`, `result`, and, on failure, `error`. The exit code is 0 on success and 1 when the command fails.
+
+```bash
+openbb sec.cik_map --symbol MSFT
+```
+
+Pass `-i` (`--interactive`) to get the V4-style shell. In that mode output defaults to Rich tables.
+
+```bash
+openbb -i
+```
+
+`--batch` reads newline-delimited JSON requests from stdin and writes one response line per request, running up to eight at a time (`--batch-concurrency` or `OPENBB_CLI_BATCH_CONCURRENCY` changes the limit).
+
+```bash
+echo '{"id": "1", "command": "sec.cik_map", "params": {"symbol": "MSFT"}}' | openbb --batch
+```
+
+The package no longer pulls in the whole platform. V4 `openbb-cli` depended on `openbb[all]`; V5 depends on `openbb-core[pandas]`, so install the provider packages you want to call next to it. The `charting`, `interactive`, and `all` extras add `openbb-charting` and PyWry.
+
+The CLI can also work against other servers. `--server URL` (or `OPENBB_SERVER_URL`) dispatches commands to a running `openbb-api` instead of the in-process `obb`. `--generate-spec` reads the OpenAPI document from `--server` (`--openapi-path` points at a non-default location), or walks a Socrata story with `--socrata-story`, and writes a `.spec` file. `--spec [NAME=]PATH` runs commands from that file without fetching OpenAPI again; repeat it with `NAME=` to mount several specs under separate namespaces. `--list-commands` and `--describe COMMAND` print what a spec contains, and `--generate-extension` turns a spec into an installable OpenBB extension, with `--include` and `--exclude` glob filters on command names.
+
+```bash
+openbb --server https://api.example.com --generate-spec --output example.spec
+openbb --spec example.spec --list-commands
+openbb --spec example.spec --generate-extension --output ./openbb_example
+```
+
+`--generate-extension` prints the install and build commands for the generated project when it finishes.
+
+CLI settings come from the same `openbb.toml` locations as `openbb-core`, but the CLI reads `[tool.openbb-cli]` from `pyproject.toml`, takes its explicit file from `--config` or `OPENBB_CLI_CONFIG`, and loads an extra `.env` from `--env-file` or `OPENBB_CLI_ENV_FILE`. Its keys include `server`, `spec`, `[specs.NAME]`, `[headers]`, `[query]`, and `[settings]`. `openbb --show-config` prints the merged result and `openbb --print-config-template` prints a commented template. See [CLI modes](../cli/modes.md), [code generation](../cli/codegen.md), and [CLI configuration](../cli/configuration.md).
+
+## REST API
+
+POST commands read all of their parameters from the JSON request body. In V4 a data-processing command such as `/api/v1/technical/rsi` took the `data` records in the body and its scalar options (`target`, `length`, and so on) from the query string. In V5 the body is one JSON object holding the records and the options together:
+
+```bash
+curl -X POST "http://127.0.0.1:6900/api/v1/technical/rsi" \
+  -H "Content-Type: application/json" \
+  -d '{"length": 2, "data": [{"date": "2024-01-02", "close": 185.6}, {"date": "2024-01-03", "close": 184.2}, {"date": "2024-01-04", "close": 181.9}, {"date": "2024-01-05", "close": 181.2}, {"date": "2024-01-08", "close": 185.6}]}'
+```
+
+The `chart` flag that `openbb-charting` adds to charted routes is still a query parameter. In the Python interface nothing changes for callers: the generated method exposes the same keyword arguments.
+
+Commands can now stream. A router that declares an `OBBStream` return type, backed by a fetcher that implements `stream_data`, is served as a `text/event-stream` response. Because the body carries the events, the stream id, provider, and warnings travel in the `X-OpenBB-Stream-Id`, `X-OpenBB-Provider`, and `X-OpenBB-Warning` headers. In Python the same command returns an `OBBStream` handle instead of an `OBBject`, and the one-shot CLI follows the stream to stdout until it ends or you press Ctrl+C. See [Streaming responses](./concepts/streaming.mdx).
+
+The REST app can also host Flask applications. A Flask app registered directly under the `openbb_core_extension` entry-point group is mounted at `/api/v1/<entry point name>`, and its routes are merged into `openapi.json`. This needs the `flask` extra of `openbb-core`.
+
+## openbb-api and openbb-mcp
+
+`openbb-api` (`openbb-platform-api`) and `openbb-mcp` (`openbb-mcp-server`) run the layered loader before anything else starts, so the `[system]` and `[user]` sections of `openbb.toml` apply to the server. Both accept `--config-file PATH` as the explicit layer. Without the flag, `openbb-api` checks `OPENBB_API_CONFIG` and then `OPENBB_CONFIG`, and `openbb-mcp` checks `OPENBB_MCP_CONFIG`, `OPENBB_API_CONFIG`, and `OPENBB_CONFIG`.
+
+Each launcher reads its own table of flag defaults, `[launcher]` for `openbb-api` and `[mcp]` for `openbb-mcp`; flags on the command line still win. An `[env]` table sets environment variables before `openbb-core` loads, skips any already set in the shell, and expands `$VAR` and `${VAR}` references against the current environment.
+
+```toml
+[launcher]
+host = "0.0.0.0"
+port = 6900
+
+[env]
+FRED_API_KEY = "$FRED_KEY"
+```
+
+Both launchers accept `--spec PATH` with a `.spec` file generated by the CLI. Instead of the installed commands, they serve a proxy whose routes forward to the spec's upstream `base_url`, which `openbb-api` exposes to OpenBB Workspace and `openbb-mcp` turns into MCP tools. `--spec` and `--app` are mutually exclusive. The `[spec]` table (`[mcp.spec]` for the MCP server) sets `path`, an optional `base_url` override, a `content_sha256` pin, and `headers` injected on upstream requests; `[spec.NAME]` subtables (`[mcp.spec.NAME]` for the MCP server) mount several specs at once. Middleware and authentication hooks are listed under `[middleware]` for `openbb-api` and `[mcp.middleware]` and `[mcp.auth]` for `openbb-mcp`.
+
+When `openbb-cli` is installed, `openbb-mcp` also registers the `openbb_dispatch`, `openbb_batch_dispatch`, `openbb_list_commands`, and `openbb_describe_command` tools, which wrap the CLI dispatcher. `--enable-cli-tools false` turns them off. Details are on the [openbb-api](./extensions/interface/openbb-api.mdx) and [openbb-mcp](./extensions/interface/openbb-mcp.mdx) pages.
+
+## Extension additions
+
+`openbb-technical` 2.0.0 keeps every V4 indicator and adds more, including `supertrend`, `williams_r`, `mfi`, `kama`, `tema`, `pivot_points`, `realized_volatility`, and `hurst`. It also adds `multi` to run several indicators over one series, `screen` to filter a basket of symbols by indicator conditions, `indicators` to list what is registered, and the `obb.technical.signals` group for crossovers, divergences, breakouts, candlestick patterns, oscillator signals, and regime detection. See [openbb-technical](./extensions/data-processing/technical.mdx).
+
+`openbb-quantitative` adds factor analysis: `factors` regresses a return series on a factor matrix and charts the exposures as a heat map, `attribution` splits total return into factor contributions and alpha, `risk_decomposition` splits variance by factor, and `rolling.factors` runs the regression over a moving window. The GARCH model lives in `openbb-econometrics` as `obb.econometrics.garch`, next to the new `kpss`, `cointegration_johansen`, `heteroskedasticity`, `normality`, and `summary_statistics` commands. See [openbb-quantitative](./extensions/data-processing/quantitative.mdx) and [openbb-econometrics](./extensions/data-processing/econometrics.mdx).
+
+`openbb-news` adds `obb.news.rss`, which reads RSS and Atom feeds from a bundled registry and from feeds you define in the `[news]` table of `openbb.toml`. By default your `[news.rss_feeds]` entries replace the bundled registry; set `merge_defaults = true` to keep it.
+
+```toml
+[news]
+merge_defaults = true
+
+[news.rss_feeds]
+my_feed = "https://example.com/feed.rss"
+```
+
+```python
+from openbb import obb
+
+obb.news.rss(source="yahoo_finance")
+```
+
+See [openbb-news](./extensions/openbb-news.mdx).
+
+`openbb-core` no longer imports `openbb-charting` by name. The charting engine is the OBBject extension named by the `charting_extension` system setting, falling back to the default `charting` accessor, and rendering backends and lifecycle hooks register through the `openbb_charting_backend` and `openbb_charting_hooks` entry-point groups. `openbb-charting` 4.0.0 remains the default engine; see [openbb-charting](./extensions/infrastructure/openbb-charting/index.md).

@@ -1,0 +1,64 @@
+---
+title: User Guide
+sidebar_position: 0
+description: >
+  Task-oriented guides for calling OpenBB commands from Python, the REST API,
+  or the MCP server: credentials, preferences, openbb.toml, output types,
+  parameters, warnings and errors, and environment variables.
+keywords:
+  - user guide
+  - how-to
+  - credentials
+  - preferences
+  - openbb.toml
+  - output types
+  - query parameters
+  - environment variables
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
+
+<HeadTitle title="User Guide | OpenBB Python (V5)" />
+
+These guides are for people who call commands, whether through `from openbb import obb`, the REST API, or the MCP server. Each one covers a single task, notes where the surfaces behave differently, and ends with a check you can run. Examples use the FRED provider (`openbb-fred`) with the key set up in [Quick start (User)](../quickstart/user.mdx), plus `openbb-news`, `openbb-nasdaq`, and `openbb-tmx` where a command needs more than one provider.
+
+<ul className="grid grid-cols-1 md:grid-cols-2 gap-4 -ml-6">
+  <NewReferenceCard
+    title="Configure credentials"
+    description="Set provider keys in user_settings.json, environment variables, or the session, and see which value wins."
+    url="/odp/python/user-guide/credentials"
+  />
+  <NewReferenceCard
+    title="Configure preferences and defaults"
+    description="Change preferences, pick a default provider per command, and pre-fill parameters."
+    url="/odp/python/user-guide/preferences-and-defaults"
+  />
+  <NewReferenceCard
+    title="Use openbb.toml"
+    description="Discovery order, what the launchers apply from it, and when to use JSON or environment variables instead."
+    url="/odp/python/user-guide/openbb-toml"
+  />
+  <NewReferenceCard
+    title="Output types"
+    description="DataFrame, NumPy, dict, Polars, and LLM output, per call or per session, and what each requires."
+    url="/odp/python/user-guide/output-types"
+  />
+  <NewReferenceCard
+    title="Pass query parameters"
+    description="Providers, symbols, dates, choices, and provider-specific keyword arguments in Python and over REST."
+    url="/odp/python/user-guide/query-parameters"
+  />
+  <NewReferenceCard
+    title="Handle warnings and errors"
+    description="Read, silence, or escalate warnings; catch OpenBBError; map REST status codes."
+    url="/odp/python/user-guide/warnings-and-errors"
+  />
+  <NewReferenceCard
+    title="Environment variables"
+    description="Set OPENBB_* variables and provider keys, and when each process reads them."
+    url="/odp/python/user-guide/environment-variables"
+  />
+</ul>
+
+If you are embedding the engine in your own application or writing an extension, start with [Quick start (Developer)](../quickstart/developer.mdx) instead.

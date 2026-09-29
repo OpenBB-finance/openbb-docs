@@ -1,0 +1,57 @@
+---
+title: Disabling Output Validation
+sidebar_position: 7
+description: Turn off response validation for a router command with no_validate=True, and what changes in the REST API and the Python Interface.
+keywords:
+  - OpenBB V5
+  - no_validate
+  - validation
+  - router.command
+  - response model
+  - Pydantic
+  - FastAPI
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Disabling Output Validation | OpenBB Python (V5)" />
+
+By default the REST API validates each command's return value against its declared return type, the way FastAPI validates any `response_model`. A command whose output cannot be described by a fixed model, such as rows whose columns change between calls or a reshaped provider result, can turn that off with `no_validate=True` in `@router.command`.
+
+```python
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.router import Router
+
+router = Router(prefix="", description="Utility commands.")
+
+
+@router.command(methods=["GET"], no_validate=True)
+async def snapshot() -> OBBject:
+    """Return rows whose columns vary by symbol."""
+    return OBBject(
+        results=[
+            {"symbol": "ABC", "price": 101.5},
+            {"symbol": "XYZ", "volume": 1200},
+        ]
+    )
+```
+
+With `no_validate=True`, the REST route has no response model. An `OBBject` is serialized as it is, without the model's field filtering, and any other return value is passed to FastAPI to serialize. For commands without a `model`, the generated Python method is annotated as returning `Any`.
+
+Provider-backed commands accept the flag too, which lets the router function change the result after the fetcher runs. This command reuses the `DemoPrices` model and imports from [Provider extensions](../extension_types/provider.md):
+
+```python
+@router.command(model="DemoPrices", no_validate=True)
+async def closes(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Return only the closing prices, keyed by date."""
+    output = await OBBject.from_query(Query(**locals()))
+    output.results = {row.date.isoformat(): row.close for row in output.results}
+    return output
+```
+
+The fetcher's `Data` model still validates each row in `transform_data`; `no_validate` only affects the command's response. Reshaping `results` inside the returned `OBBject`, as above, keeps the provider name, warnings, metadata, and conversion methods.

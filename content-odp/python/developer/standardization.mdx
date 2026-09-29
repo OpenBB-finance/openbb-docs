@@ -1,0 +1,64 @@
+---
+title: Standardization
+sidebar_position: 1
+description: How standard models, provider-specific models, and field conventions give every OpenBB command consistent parameters and output across providers.
+keywords:
+  - ODP
+  - OpenBB V5
+  - standardization
+  - standard models
+  - QueryParams
+  - Data
+  - __alias_dict__
+  - __json_schema_extra__
+  - provider
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Standardization | OpenBB Python (V5)" />
+
+Every provider-backed command is defined by two Pydantic models: a `QueryParams` subclass for its inputs and a `Data` subclass for one row of output. Standardization is the set of rules that decides which of those fields are shared across providers and how values are formatted, so that the same command returns comparable data whichever provider serves it.
+
+## Standard and provider-specific fields
+
+`openbb-core` ships standard models in `openbb_core.provider.standard_models`, one module per dataset, for example `EquityHistoricalQueryParams` and `EquityHistoricalData` in `openbb_core.provider.standard_models.equity_historical`. A provider's models may inherit from them and add fields of their own.
+
+The engine classifies each field by where it is declared. Fields declared on a class inside the standard models package are standard; fields declared on the provider's own subclass are provider-specific. The generated Python method takes standard parameters as named arguments and accepts provider-specific parameters as keyword arguments, which are still validated by the provider's model and listed in the docstring. Over REST, both kinds are ordinary query parameters.
+
+The Cboe provider shows both kinds. `CboeEquityHistoricalQueryParams` inherits `symbol`, `start_date`, and `end_date` from `EquityHistoricalQueryParams` and adds `interval` and `use_cache`, so the generated `obb.cboe.equity.historical` has `symbol`, `start_date`, `end_date`, and `provider` in its signature and takes `interval` and `use_cache` through `**kwargs`. Models with no standard parent, such as those in `openbb-famafrench`, expose all of their parameters as keyword arguments.
+
+## Model names
+
+The key in a provider's `fetcher_dict` is the model name, and a router command selects fetchers by that name with `@router.command(model="...")`. Every installed provider that registers the same model name becomes a `provider` choice on every command that uses it, and the first provider registered for a name supplies its standard fields.
+
+Most V5 provider packages register names prefixed with the provider, such as `CboeEquityHistorical` or `FamaFrenchFactors`, and route their own router commands to them. The models can still inherit from a standard model, so the fields keep their standard names and descriptions while `obb.cboe.*` only lists `cboe` as a provider. Use a shared name only when several of your own providers should serve one command. The generated data model pages, such as [CboeEquityHistorical](/odp/python/data_models/CboeEquityHistorical), document each registered model.
+
+## Field conventions
+
+Parameter and field names are `lower_snake_case`. Map source names to model names at the model level with `__alias_dict__`, whose direction differs between the two model types. On `Data`, keys are model field names and values are source keys, so `{"close": "c"}` reads the source's `c` into `close`. On `QueryParams`, keys are field names and values are the names sent to the source, so `{"symbol": "ticker"}` makes `query.model_dump()` return `ticker`. `Data` also accepts camelCase source keys for snake_case fields without any mapping, so `changePercent` populates `change_percent`.
+
+Percent values are normalized: 1% is `0.01`. Standard model descriptions say "normalized percent" where this applies, and providers that return whole-number percentages divide by 100 in a validator. Missing values should be `None` rather than `NaN`, empty strings, or placeholder text, which keeps output JSON-serializable. A field that only some providers of a standard model return is declared optional with a `None` default.
+
+`QueryParams` models can declare per-field behavior with `__json_schema_extra__` instead of per-field `json_schema_extra`:
+
+```python
+from openbb_core.provider.abstract.query_params import QueryParams
+from pydantic import Field
+
+
+class ExampleQueryParams(QueryParams):
+    """Example query."""
+
+    __json_schema_extra__ = {
+        "symbol": {"multiple_items_allowed": True},
+        "frequency": {"choices": ["daily", "monthly"]},
+    }
+
+    symbol: str = Field(description="Symbol, or a comma-separated list of symbols.")
+    frequency: str = Field(default="daily", description="Data frequency.")
+```
+
+With `multiple_items_allowed`, the Python Interface accepts a list for the field and joins it into a comma-separated string before the fetcher sees it, so the fetcher splits on commas. `choices` restricts the accepted values for this provider and is shown in the generated docstring. When several providers serve one model, each provider's settings are recorded separately.
+
+Any field can have a Pydantic `field_validator`, and a whole model can have a `model_validator`; [Validators](how-to/validators.mdx) has examples. For country and exchange inputs, the built-in [Country](how-to/country_input.mdx) and [Exchange](how-to/exchange_input.mdx) types normalize values to ISO codes.

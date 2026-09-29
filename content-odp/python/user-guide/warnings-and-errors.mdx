@@ -1,0 +1,128 @@
+---
+title: Handle warnings and errors
+sidebar_position: 6
+description: >
+  Read the warnings captured on each result, show, silence, or escalate them,
+  and catch OpenBBError in Python or map REST status codes.
+keywords:
+  - OpenBBError
+  - OpenBBWarning
+  - warnings
+  - show_warnings
+  - EmptyDataError
+  - UnauthorizedError
+  - OPENBB_DEBUG_MODE
+  - error handling
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Handle warnings and errors | OpenBB Python (V5)" />
+
+A command that completes returns its warnings on the result. A command that cannot complete raises an exception in Python, or returns an error status over the REST API.
+
+## Read captured warnings
+
+Warnings raised while a command runs are recorded in `result.warnings` as a list of `Warning_` objects with `category` and `message` fields; it is `None` when there were none. `openbb-core` uses `OpenBBWarning`, and warnings from third-party libraries used during the call are recorded too, under their own category name.
+
+The following call requires `openbb-news` and `openbb-nasdaq`. It passes `page`, which only the `tmx` provider accepts:
+
+```python
+from openbb import obb
+
+result = obb.news.company(symbol="RY", provider="nasdaq", page=2, limit=5)
+print(result.warnings)
+```
+
+```text
+[Warning_(category='OpenBBWarning', message="Parameter 'page' is not supported by nasdaq. Available for: tmx.")]
+```
+
+Captured warnings are not printed by default. Set `obb.user.preferences.show_warnings = True`, or `"show_warnings": true` under `preferences` in `user_settings.json`, to print them to stderr when the command finishes. They are still stored on the result.
+
+## Silence or escalate warnings
+
+Standard `warnings` filters apply to commands. An `"ignore"` filter for `OpenBBWarning` keeps those warnings out of `result.warnings`, either for the whole process or inside a `catch_warnings` block:
+
+```python
+import warnings
+
+from openbb import obb
+from openbb_core.app.model.abstract.warning import OpenBBWarning
+
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore", category=OpenBBWarning)
+    result = obb.news.company(symbol="RY", provider="nasdaq", page=2, limit=5)
+```
+
+An `"error"` filter turns the warning into a failure. The command then raises `OpenBBError` with a message that starts with `[Unexpected Error] -> OpenBBWarning ->`, which is useful in tests that should fail on ignored parameters.
+
+## Catch errors in Python
+
+Every generated command re-raises failures as `OpenBBError`, with the traceback shortened to the frame where the failure happened. The message prefix tells you the kind of failure:
+
+| Prefix | Cause |
+| --- | --- |
+| `[Error] ->` followed by `N validations error(s)` | An argument failed validation. Each line reads `[Arg] <name> -> input: <value> -> <reason>`. |
+| `[Error] ->` | `openbb-core` or the provider raised `OpenBBError`, for example for a missing credential or an invalid choice. When the provider rejected the credentials, the exception is an `UnauthorizedError`. |
+| `[Empty] ->` | The provider returned no data. The exception is an `EmptyDataError`. |
+| `[Unexpected Error] -> <ExceptionType> ->` | Any other exception, such as a network failure or a bug. |
+
+`EmptyDataError` and `UnauthorizedError` subclass `OpenBBError`, so one `except` clause covers all of them. Catch a subclass first when it needs different handling. A FRED search with no matches, for example, raises `EmptyDataError`:
+
+```python
+from openbb import obb
+from openbb_core.app.model.abstract.error import OpenBBError
+from openbb_core.provider.utils.errors import EmptyDataError
+
+try:
+    result = obb.fred.economy.fred_search(query="zzzz no such series")
+except EmptyDataError:
+    result = None
+except OpenBBError as error:
+    print(error)
+    raise
+```
+
+Calling a command without a required argument shows the validation format:
+
+```text
+[Error] -> 1 validations error(s)
+[Arg] symbol -> input: ... -> Missing required argument
+```
+
+## Get the full traceback
+
+Set `OPENBB_DEBUG_MODE=true` before the process starts to disable the rewrapping. The original exception is raised with its complete traceback, so a missing argument surfaces as a Pydantic `ValidationError` instead of `OpenBBError`. Debug mode also turns some warnings, such as chart creation failures and extension loading problems, into exceptions. See [Environment variables](environment-variables.mdx).
+
+## Errors over the REST API
+
+The REST API maps exceptions to status codes and returns the message under `detail`:
+
+| Status | Cause |
+| --- | --- |
+| `400` | `OpenBBError`, such as a missing credential. `detail` is the message. |
+| `422` | Invalid or missing query parameters, including a missing `provider` on endpoints with several providers. `detail` lists the failing fields. |
+| `204` | `EmptyDataError`. The response has no body. |
+| `502` | `UnauthorizedError` from the provider. |
+| `500` | Any other exception, as `Unexpected Error -> <ExceptionType> -> <message>`. |
+
+Successful responses include captured warnings in the `warnings` field of the JSON body. With `OPENBB_DEBUG_MODE=true` on the server, the handlers re-raise the exception so the full traceback is written to the server log.
+
+For recurring problems, such as import failures or build errors, see the [Errors FAQ](../faqs/errors.mdx).
+
+## Verify
+
+Call a command in a way that fails before any request is sent and confirm the exception type and message:
+
+```python
+from openbb import obb
+from openbb_core.app.model.abstract.error import OpenBBError
+
+try:
+    obb.fred.economy.fred_series(symbol="GDP", frequency="x")
+except OpenBBError as error:
+    print(type(error).__name__, error)
+```
+
+The output starts with `OpenBBError` followed by `[Error] -> Invalid value 'x' for 'frequency'`.

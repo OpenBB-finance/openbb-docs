@@ -1,0 +1,8 @@
+{
+    "label": "ODP CLI",
+    "position": 3,
+    "link": {
+        "type": "doc",
+        "id": "cli/index"
+    }
+}

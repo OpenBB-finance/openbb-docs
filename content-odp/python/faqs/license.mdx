@@ -1,0 +1,60 @@
+---
+title: License
+sidebar_position: 1
+description: How Open Data Platform V5 is licensed under Apache-2.0, what changed from the AGPL-licensed V4, and how the license applies to extensions and provider data.
+keywords:
+  - license
+  - Apache-2.0
+  - Apache License 2.0
+  - AGPL
+  - open source
+  - commercial use
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="License FAQ | OpenBB Python (V5)" />
+
+<details>
+<summary mdxType="summary">How is ODP V5 licensed?</summary>
+
+Every file in the OpenBB repository, and every package published from it for V5, is licensed under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0). That includes `openbb-core`, the provider and extension packages, `openbb-platform-api`, `openbb-mcp-server`, `openbb-cli`, and ODP Desktop. The full text is in the [LICENSE](https://github.com/OpenBB-finance/OpenBB/blob/develop/LICENSE) file of the repository, and the text of the license governs where it differs from this summary.
+
+</details>
+
+<details>
+<summary mdxType="summary">What changed from V4?</summary>
+
+V4 and earlier releases were licensed under the GNU Affero General Public License v3.0 (AGPL-3.0-only). V5 changes the license to Apache-2.0 (OpenBB-finance/OpenBB#7677). Releases made under the AGPL keep that license; the V4 licensing FAQ remains in the [V4 documentation](/odp/v4/python/faqs/license).
+
+The REST API reports the new license as well: the default `license_name` in the OpenAPI document served by `openbb-core` is `Apache-2.0`.
+
+</details>
+
+<details>
+<summary mdxType="summary">Can I use ODP in a commercial or proprietary product?</summary>
+
+Yes. Apache-2.0 permits use, modification, and redistribution, including in closed-source products and hosted services, without a separate commercial license and without publishing your changes. When you redistribute ODP or a modified version of it, include a copy of the license, keep the existing copyright, patent, trademark, and attribution notices, mark the files you changed, and carry over the contents of any `NOTICE` file. The license also grants a patent license from each contributor and does not grant rights to the OpenBB trademarks.
+
+</details>
+
+<details>
+<summary mdxType="summary">Do my extensions have to use the same license?</summary>
+
+No. An extension that registers through the ODP entry points is your own package and can use any license, including a proprietary one. The same applies to FastAPI apps served with `openbb-api` and to projects generated with `openbb --generate-extension`.
+
+</details>
+
+<details>
+<summary mdxType="summary">Does the license cover the data returned by providers?</summary>
+
+No. The license covers the software. Provider packages connect to public or third-party services, and the data they return is subject to each source's own terms of use, which may restrict storage, redistribution, or commercial use. Check those terms before redistributing data.
+
+</details>
+
+<details>
+<summary mdxType="summary">Who can I contact about licensing?</summary>
+
+Send questions to [licensing@openbb.co](mailto:licensing@openbb.co).
+
+</details>

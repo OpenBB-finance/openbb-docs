@@ -1,0 +1,123 @@
+---
+title: Data and Data Providers
+sidebar_position: 2
+description: Frequently asked questions about V5 data providers, namespaces, credentials, and missing commands.
+keywords:
+  - provider
+  - data
+  - source
+  - namespace
+  - API key
+  - credentials
+  - coverage
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Data Providers FAQ | OpenBB Python (V5)" />
+
+<details>
+<summary mdxType="summary">Which data sources are available?</summary>
+
+V5 has seventeen provider packages, covering U.S. and international statistical agencies, central banks, regulators, and several exchanges. Each installs its own namespace, such as `obb.fred`, `obb.sec`, or `obb.cboe`. The [providers](../extensions/providers/index.mdx) page lists every package with its namespace and credentials, and the [API reference](/odp/python/reference) documents every command.
+
+If the data you need is not covered, send a [feature request](https://openbb.co/request-a-feature) describing the use case.
+
+</details>
+
+<details>
+<summary mdxType="summary">Where did obb.equity, obb.economy, and the other shared namespaces go?</summary>
+
+V5 provider packages do not feed shared asset-class routers. Every command lives in the namespace of the provider package that serves it, so equity price history from Cboe is `obb.cboe.equity.historical` and from Nasdaq is `obb.nasdaq.equity.historical`. Code written for V4 needs to move to the provider namespaces; the [migration guide](../migration-from-v4.mdx) lists the changes.
+
+</details>
+
+<details>
+<summary mdxType="summary">What happened to yfinance, FMP, Intrinio, and the other V4 providers?</summary>
+
+They were removed from V5: `openbb-alpha-vantage`, `openbb-benzinga`, `openbb-biztoc`, `openbb-econdb`, `openbb-finviz`, `openbb-fmp`, `openbb-intrinio`, `openbb-multpl`, `openbb-seeking-alpha`, `openbb-stockgrid`, `openbb-tiingo`, `openbb-tradier`, `openbb-tradingeconomics`, `openbb-wsj`, and `openbb-yfinance`. Their last releases require `openbb-core` 1.x and cannot be installed with V5. `openbb-congress-gov` was merged into `openbb-government-us`, whose Congress data is under `obb.uscongress`.
+
+</details>
+
+<details>
+<summary mdxType="summary">Which providers need an API key?</summary>
+
+Only FRED and the EIA require one: set `fred_api_key` and `eia_api_key`. Three others take an optional credential. `bls_api_key` raises the BLS API's per-request limits, `cftc_app_token` avoids throttling on Commitments of Traders requests, and `congress_gov_api_key` is needed only for Congresses before the 108th. Every other provider is keyless.
+
+```python
+from openbb import obb
+
+obb.user.credentials.fred_api_key = "REPLACE_WITH_YOUR_KEY"
+```
+
+The [credentials](../user-guide/credentials.mdx) page covers storing keys between sessions.
+
+</details>
+
+<details>
+<summary mdxType="summary">A namespace or command is missing from obb.</summary>
+
+Namespaces and commands come from the installed packages. If `openbb-technical` is not installed, `obb.technical` does not exist; if `openbb-cboe` is not installed, neither does `obb.cboe`. Install the package by name, then rebuild the Python client:
+
+```sh
+pip install openbb-cboe
+openbb-build
+```
+
+Importing `openbb` also rebuilds automatically when it detects that extensions were added or removed, but an already running Python session must be restarted to pick up the change.
+
+To see what the environment serves, list the installed providers and their commands:
+
+```python
+from openbb import obb
+
+obb.coverage.providers
+```
+
+A few commands depend on a second package. `obb.news.company`, for example, appears only when `openbb-news` and at least one of `openbb-nasdaq` or `openbb-tmx` are installed.
+
+</details>
+
+<details>
+<summary mdxType="summary">Why doesn't the returned data match the start and end dates I requested?</summary>
+
+A provider returns what its source publishes. The source may not have data for the whole period, may publish with a delay, or may limit how far back a given interval goes. For example, `obb.cboe.equity.historical(symbol="SPY", interval="1m")` returns one-minute bars for the most recent trading day only.
+
+If a result looks wrong for a technical reason, search the [GitHub issues](https://github.com/OpenBB-finance/OpenBB/issues/new/choose) and open one if it is not already reported. Include the command, its parameters, the installed package versions, and the full error message.
+
+</details>
+
+<details>
+<summary mdxType="summary">How do I get data for listings outside the U.S.?</summary>
+
+Coverage depends on the provider. `openbb-tmx` serves Canadian listings under `obb.tmx`, and `openbb-nasdaq` serves Nasdaq Nordic and Baltic markets under `obb.nasdaq.nordic`. Symbol conventions differ by source, so look a symbol up with the provider's own search before requesting data:
+
+```python
+from openbb import obb
+
+obb.tmx.equity.search(query="royal bank")
+obb.tmx.equity.historical(symbol="RY", start_date="2024-01-01")
+```
+
+</details>
+
+<details>
+<summary mdxType="summary">How can I request a data provider or function?</summary>
+
+Please [request a feature](https://openbb.co/request-a-feature) and describe your use case.
+
+</details>
+
+<details>
+<summary mdxType="summary">Can I contribute my own data provider extension?</summary>
+
+Yes. A provider is a Python package that registers a `Provider` and a router through entry points. The [provider extension](../developer/extension_types/provider.md) guide covers the structure, and the [developer quickstart](../quickstart/developer.mdx) walks through a first package.
+
+</details>
+
+<details>
+<summary mdxType="summary">Can my company become a data partner?</summary>
+
+Yes. Visit the [data vendors](https://openbb.co/use-cases/data-vendors) page and fill out the form.
+
+</details>

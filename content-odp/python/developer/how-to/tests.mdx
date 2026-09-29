@@ -1,0 +1,116 @@
+---
+title: Tests
+sidebar_position: 10
+description: Test OpenBB fetchers with Fetcher.test, record HTTP cassettes with pytest-recorder, and generate unit and integration tests in the OpenBB repository.
+keywords:
+  - OpenBB V5
+  - tests
+  - pytest
+  - pytest-recorder
+  - record_http
+  - vcr
+  - Fetcher.test
+  - integration tests
+  - openbb-devtools
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Tests | OpenBB Python (V5)" />
+
+OpenBB extensions are tested with pytest. The `openbb-devtools` package installs the tools the OpenBB repository uses, including `pytest`, `pytest-asyncio`, `pytest-recorder` for HTTP cassettes, `ruff`, and `ty`:
+
+```bash
+pip install openbb-devtools
+```
+
+## Check a fetcher with Fetcher.test
+
+Every `Fetcher` has a `test(params, credentials)` class method. It runs `transform_query`, the extract step, and `transform_data`, and asserts that the query has the declared `QueryParams` type and holds the values passed in, that the raw data is non-empty and not yet validated, and that the transformed rows are non-empty instances of the declared `Data` type with every declared field. It returns `None` when everything passes and raises `AssertionError` or the fetcher's own error otherwise. For a streaming fetcher it consumes the first row and checks its type.
+
+```python
+from openbb_demo.models.prices import DemoPricesFetcher
+
+DemoPricesFetcher.test({"symbol": "ABC"}, {})
+```
+
+Pass credentials as the second argument when the provider needs them. `UserService` reads them from the user settings as plain strings:
+
+```python
+from openbb_core.app.service.user_service import UserService
+
+test_credentials = UserService().default_user_settings.credentials.model_dump(mode="json")
+```
+
+## Record HTTP cassettes
+
+A fetcher that calls a live source should be tested against a recording. Mark the test with `record_http`, and `pytest-recorder` saves every HTTP interaction to a YAML cassette the first time and replays it afterwards, so the test runs offline and does not depend on the source's current data. This is the pattern the V5 provider packages use:
+
+```python
+import pytest
+from openbb_core.app.service.user_service import UserService
+
+from openbb_famafrench.models.factors import FamaFrenchFactorsFetcher
+
+test_credentials = UserService().default_user_settings.credentials.model_dump(mode="json")
+
+
+@pytest.fixture(scope="module")
+def vcr_config():
+    """Remove request details that should not be stored."""
+    return {"filter_headers": [("User-Agent", None)]}
+
+
+@pytest.mark.record_http
+def test_famafrench_factors(credentials=test_credentials):
+    """Test the Fama-French factors fetcher."""
+    params = {"region": "america", "factor": "3_factors", "frequency": "annual"}
+    fetcher = FamaFrenchFactorsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+```
+
+The `vcr_config` fixture is passed to `vcrpy`, so any of its options apply. Add `"filter_query_parameters": [("api_key", "MOCK_API_KEY")]` or a matching `filter_headers` entry for sources that authenticate, so real keys never reach the cassette.
+
+Record, or re-record, with the `--record` option:
+
+```bash
+pytest tests/test_famafrench_fetchers.py --record http
+```
+
+Cassettes are written to `tests/record/http/<test module>/<test name>_urllib3_v<major>.yaml`, next to the test file. A plain `pytest` run replays them and never calls the network. A marked test without a cassette fails with an error naming the missing file. `--record all` records every record type the plugin supports, and `--record-no-overwrite` keeps cassettes that already exist.
+
+## Tests in the OpenBB repository
+
+Contributors to the OpenBB repository have generators for the repetitive parts. From the repository root, this adds a `record_http` test for every fetcher of each provider that is missing one:
+
+```bash
+python openbb_platform/providers/tests/utils/unit_tests_generator.py
+```
+
+Generated tests sometimes need manual edits, such as specific parameters for a fetcher.
+
+Integration tests exercise each command through both interfaces and live in each package's `integration` folder. These scripts generate them for the Python Interface and the REST API from the installed commands and their examples:
+
+```bash
+python openbb_platform/extensions/tests/utils/integration_tests_generator.py
+python openbb_platform/extensions/tests/utils/integration_tests_api_generator.py
+```
+
+The REST API tests expect a server on port 8000:
+
+```bash
+uvicorn openbb_core.api.rest_api:app --host 127.0.0.1 --port 8000
+```
+
+Integration tests are marked `integration`. From a package directory, `pytest tests` runs the unit tests and `pytest integration -m integration` runs the integration tests.
+
+## Import time
+
+Keep module-level imports light; the V5 packages import heavy dependencies such as pandas inside the functions that use them. To see where import time goes, profile the import and view it with `tuna`:
+
+```bash
+pip install tuna
+python -X importtime -c "import openbb" 2> import.log
+tuna import.log
+```

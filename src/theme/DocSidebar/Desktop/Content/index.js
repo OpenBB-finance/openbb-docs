@@ -10,6 +10,7 @@ import DocSidebarItems from "@theme/DocSidebarItems";
 import styles from "./styles.module.css";
 import { useIFrameContext } from "@site/src/theme/Root";
 import SearchBar from "@site/src/theme/SearchBar";
+import OdpVersionPicker from "@site/src/components/General/OdpVersionPicker";
 function useShowAnnouncementBar() {
   const { isActive } = useAnnouncementBar();
   const [showAnnouncementBar, setShowAnnouncementBar] = useState(isActive);
@@ -54,6 +55,7 @@ export default function DocSidebarDesktopContent({ path, sidebar, className }) {
         className
       )}
     >
+      <OdpVersionPicker />
       <ul className={clsx(ThemeClassNames.docs.docSidebarMenu, "menu__list")}>
         <DocSidebarItems items={filteredSidebar} activePath={path} level={1} />
       </ul>

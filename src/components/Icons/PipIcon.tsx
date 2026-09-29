@@ -32,8 +32,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#e9e9ff",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -49,7 +47,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         transform="matrix(2.92733 0 0 2.92733 564.377 -156.012)"
       />
@@ -66,8 +63,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#353564",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -83,7 +78,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         transform="matrix(2.92733 0 0 2.92733 564.377 -156.012)"
       />
@@ -100,8 +94,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#afafde",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -117,7 +109,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         transform="matrix(2.92733 0 0 2.92733 564.377 -156.012)"
       />
@@ -184,8 +175,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#e9e9ff",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -201,7 +190,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         d="m-186.329 59.726 3.185 1.16v3.742l-3.185-1.159z"
         transform="matrix(2.92733 0 0 2.92733 573.74 -163.673)"
@@ -218,8 +206,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#353564",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -235,7 +221,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         d="M-189.56 60.903v3.743l3.231-1.177v-3.743z"
         transform="matrix(2.92733 0 0 2.92733 573.74 -163.673)"
@@ -252,8 +237,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#afafde",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -269,7 +252,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         d="m-189.56 64.646 3.184 1.159 3.232-1.177-3.185-1.159z"
         transform="matrix(2.92733 0 0 2.92733 573.74 -163.673)"
@@ -338,8 +320,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#e9e9ff",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -355,7 +335,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         transform="matrix(2.92733 0 0 2.92733 555.014 -141.542)"
       />
@@ -372,8 +351,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#353564",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -389,7 +366,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         transform="matrix(2.92733 0 0 2.92733 555.014 -141.542)"
       />
@@ -406,8 +382,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#afafde",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -423,7 +397,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         transform="matrix(2.92733 0 0 2.92733 555.014 -141.542)"
       />
@@ -490,8 +463,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#e9e9ff",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -507,7 +478,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         d="m-186.329 59.726 3.185 1.16v3.742l-3.185-1.159z"
         transform="matrix(2.92733 0 0 2.92733 564.377 -138.137)"
@@ -524,8 +494,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#353564",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -541,7 +509,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         d="M-189.56 60.903v3.743l3.231-1.177v-3.743z"
         transform="matrix(2.92733 0 0 2.92733 564.377 -138.137)"
@@ -558,8 +525,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#afafde",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -575,7 +540,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         d="m-189.56 64.646 3.184 1.159 3.232-1.177-3.185-1.159z"
         transform="matrix(2.92733 0 0 2.92733 564.377 -138.137)"
@@ -644,8 +608,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#e9e9ff",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -661,7 +623,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         transform="matrix(2.92733 0 0 2.92733 564.377 -149.203)"
       />
@@ -678,8 +639,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#353564",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -695,7 +654,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         transform="matrix(2.92733 0 0 2.92733 564.377 -149.203)"
       />
@@ -712,8 +670,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#afafde",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -729,7 +685,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         transform="matrix(2.92733 0 0 2.92733 564.377 -149.203)"
       />
@@ -796,8 +751,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#e9e9ff",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -813,7 +766,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         d="m-186.329 59.726 3.185 1.16v3.742l-3.185-1.159z"
         transform="matrix(2.92733 0 0 2.92733 601.83 -144.947)"
@@ -830,8 +782,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#353564",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -847,7 +797,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         d="M-189.56 60.903v3.743l3.231-1.177v-3.743z"
         transform="matrix(2.92733 0 0 2.92733 601.83 -144.947)"
@@ -864,8 +813,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#afafde",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -881,7 +828,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         d="m-189.56 64.646 3.184 1.159 3.232-1.177-3.185-1.159z"
         transform="matrix(2.92733 0 0 2.92733 601.83 -144.947)"
@@ -950,8 +896,6 @@ const PipIcon = (props) => (
             mixBlendMode: "normal",
             colorInterpolation: "sRGB",
             colorInterpolationFilters: "linearRGB",
-            solidColor: "#000",
-            solidOpacity: 1,
             fill: "#e9e9ff",
             fillOpacity: 1,
             fillRule: "nonzero",
@@ -967,7 +911,6 @@ const PipIcon = (props) => (
             imageRendering: "auto",
             shapeRendering: "auto",
             textRendering: "auto",
-            enableBackground: "accumulate",
           }}
           d="m-186.329 59.726 3.185 1.16v3.742l-3.185-1.159z"
           transform="translate(3492.218 570.342) scale(4.49135)"
@@ -984,8 +927,6 @@ const PipIcon = (props) => (
             mixBlendMode: "normal",
             colorInterpolation: "sRGB",
             colorInterpolationFilters: "linearRGB",
-            solidColor: "#000",
-            solidOpacity: 1,
             fill: "#353564",
             fillOpacity: 1,
             fillRule: "nonzero",
@@ -1001,7 +942,6 @@ const PipIcon = (props) => (
             imageRendering: "auto",
             shapeRendering: "auto",
             textRendering: "auto",
-            enableBackground: "accumulate",
           }}
           d="M-189.56 60.903v3.743l3.231-1.177v-3.743z"
           transform="translate(3492.218 570.342) scale(4.49135)"
@@ -1018,8 +958,6 @@ const PipIcon = (props) => (
             mixBlendMode: "normal",
             colorInterpolation: "sRGB",
             colorInterpolationFilters: "linearRGB",
-            solidColor: "#000",
-            solidOpacity: 1,
             fill: "#afafde",
             fillOpacity: 1,
             fillRule: "nonzero",
@@ -1035,7 +973,6 @@ const PipIcon = (props) => (
             imageRendering: "auto",
             shapeRendering: "auto",
             textRendering: "auto",
-            enableBackground: "accumulate",
           }}
           d="m-189.56 64.646 3.184 1.159 3.232-1.177-3.185-1.159z"
           transform="translate(3492.218 570.342) scale(4.49135)"
@@ -1115,8 +1052,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#e9e9ff",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -1132,7 +1067,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         transform="matrix(2.92733 0 0 2.92733 583.104 -138.137)"
       />
@@ -1149,8 +1083,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#353564",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -1166,7 +1098,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         transform="matrix(2.92733 0 0 2.92733 583.104 -138.137)"
       />
@@ -1183,8 +1114,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#afafde",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -1200,7 +1129,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         transform="matrix(2.92733 0 0 2.92733 583.104 -138.137)"
       />
@@ -1267,8 +1195,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#e9e9ff",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -1284,7 +1210,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         d="m-186.329 59.726 3.185 1.16v3.742l-3.185-1.159z"
         transform="matrix(2.92733 0 0 2.92733 573.74 -134.732)"
@@ -1301,8 +1226,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#353564",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -1318,7 +1241,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         d="M-189.56 60.903v3.743l3.231-1.177v-3.743z"
         transform="matrix(2.92733 0 0 2.92733 573.74 -134.732)"
@@ -1335,8 +1257,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#afafde",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -1352,7 +1272,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         d="m-189.56 64.646 3.184 1.159 3.232-1.177-3.185-1.159z"
         transform="matrix(2.92733 0 0 2.92733 573.74 -134.732)"
@@ -1421,8 +1340,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#e9e9ff",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -1438,7 +1355,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         transform="matrix(2.92733 0 0 2.92733 601.83 -156.012)"
       />
@@ -1455,8 +1371,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#353564",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -1472,7 +1386,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         transform="matrix(2.92733 0 0 2.92733 601.83 -156.012)"
       />
@@ -1489,8 +1402,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#afafde",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -1506,7 +1417,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         transform="matrix(2.92733 0 0 2.92733 601.83 -156.012)"
       />
@@ -1573,8 +1483,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#e9e9ff",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -1590,7 +1498,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         d="m-186.329 59.726 3.185 1.16v3.742l-3.185-1.159z"
         transform="matrix(2.92733 0 0 2.92733 601.83 -167.078)"
@@ -1607,8 +1514,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#353564",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -1624,7 +1529,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         d="M-189.56 60.903v3.743l3.231-1.177v-3.743z"
         transform="matrix(2.92733 0 0 2.92733 601.83 -167.078)"
@@ -1641,8 +1545,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#afafde",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -1658,7 +1560,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         d="m-189.56 64.646 3.184 1.159 3.232-1.177-3.185-1.159z"
         transform="matrix(2.92733 0 0 2.92733 601.83 -167.078)"
@@ -1726,8 +1627,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#e9e9ff",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -1743,7 +1642,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         d="m-186.329 59.726 3.185 1.16v3.742l-3.185-1.159z"
         transform="matrix(2.92733 0 0 2.92733 592.467 -152.608)"
@@ -1760,8 +1658,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#353564",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -1777,7 +1673,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         d="M-189.56 60.903v3.743l3.231-1.177v-3.743z"
         transform="matrix(2.92733 0 0 2.92733 592.467 -152.608)"
@@ -1794,8 +1689,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#afafde",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -1811,7 +1704,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         d="m-189.56 64.646 3.184 1.159 3.232-1.177-3.185-1.159z"
         transform="matrix(2.92733 0 0 2.92733 592.467 -152.608)"
@@ -1880,8 +1772,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#e9e9ff",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -1897,7 +1787,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         transform="matrix(2.92733 0 0 2.92733 592.467 -163.673)"
       />
@@ -1914,8 +1803,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#353564",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -1931,7 +1818,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         transform="matrix(2.92733 0 0 2.92733 592.467 -163.673)"
       />
@@ -1948,8 +1834,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#afafde",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -1965,7 +1849,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         transform="matrix(2.92733 0 0 2.92733 592.467 -163.673)"
       />
@@ -2032,8 +1915,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#e9e9ff",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -2049,7 +1930,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         d="m-186.329 59.726 3.185 1.16v3.742l-3.185-1.159z"
         transform="matrix(2.92733 0 0 2.92733 592.467 -174.739)"
@@ -2066,8 +1946,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#353564",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -2083,7 +1961,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         d="M-189.56 60.903v3.743l3.231-1.177v-3.743z"
         transform="matrix(2.92733 0 0 2.92733 592.467 -174.739)"
@@ -2100,8 +1977,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#afafde",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -2117,7 +1992,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         d="m-189.56 64.646 3.184 1.159 3.232-1.177-3.185-1.159z"
         transform="matrix(2.92733 0 0 2.92733 592.467 -174.739)"
@@ -2186,8 +2060,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#e9e9ff",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -2203,7 +2075,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         transform="matrix(2.92733 0 0 2.92733 583.104 -149.203)"
       />
@@ -2220,8 +2091,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#353564",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -2237,7 +2106,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         transform="matrix(2.92733 0 0 2.92733 583.104 -149.203)"
       />
@@ -2254,8 +2122,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#afafde",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -2271,7 +2137,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         transform="matrix(2.92733 0 0 2.92733 583.104 -149.203)"
       />
@@ -2338,8 +2203,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#e9e9ff",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -2355,7 +2218,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         d="m-186.329 59.726 3.185 1.16v3.742l-3.185-1.159z"
         transform="matrix(2.92733 0 0 2.92733 583.104 -160.268)"
@@ -2372,8 +2234,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#353564",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -2389,7 +2249,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         d="M-189.56 60.903v3.743l3.231-1.177v-3.743z"
         transform="matrix(2.92733 0 0 2.92733 583.104 -160.268)"
@@ -2406,8 +2265,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#afafde",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -2423,7 +2280,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         d="m-189.56 64.646 3.184 1.159 3.232-1.177-3.185-1.159z"
         transform="matrix(2.92733 0 0 2.92733 583.104 -160.268)"
@@ -2491,8 +2347,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#e9e9ff",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -2508,7 +2362,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         d="m-186.329 59.726 3.185 1.16v3.742l-3.185-1.159z"
         transform="matrix(2.92733 0 0 2.92733 573.74 -145.798)"
@@ -2525,8 +2378,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#353564",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -2542,7 +2393,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         d="M-189.56 60.903v3.743l3.231-1.177v-3.743z"
         transform="matrix(2.92733 0 0 2.92733 573.74 -145.798)"
@@ -2559,8 +2409,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#afafde",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -2576,7 +2424,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         d="m-189.56 64.646 3.184 1.159 3.232-1.177-3.185-1.159z"
         transform="matrix(2.92733 0 0 2.92733 573.74 -145.798)"
@@ -2645,8 +2492,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#e9e9ff",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -2662,7 +2507,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         transform="matrix(2.92733 0 0 2.92733 573.74 -156.864)"
       />
@@ -2679,8 +2523,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#353564",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -2696,7 +2538,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         transform="matrix(2.92733 0 0 2.92733 573.74 -156.864)"
       />
@@ -2713,8 +2554,6 @@ const PipIcon = (props) => (
           mixBlendMode: "normal",
           colorInterpolation: "sRGB",
           colorInterpolationFilters: "linearRGB",
-          solidColor: "#000",
-          solidOpacity: 1,
           fill: "#afafde",
           fillOpacity: 1,
           fillRule: "nonzero",
@@ -2730,7 +2569,6 @@ const PipIcon = (props) => (
           imageRendering: "auto",
           shapeRendering: "auto",
           textRendering: "auto",
-          enableBackground: "accumulate",
         }}
         transform="matrix(2.92733 0 0 2.92733 573.74 -156.864)"
       />
@@ -2798,8 +2636,6 @@ const PipIcon = (props) => (
             mixBlendMode: "normal",
             colorInterpolation: "sRGB",
             colorInterpolationFilters: "linearRGB",
-            solidColor: "#000",
-            solidOpacity: 1,
             fill: "#e9e9ff",
             fillOpacity: 1,
             fillRule: "nonzero",
@@ -2815,7 +2651,6 @@ const PipIcon = (props) => (
             imageRendering: "auto",
             shapeRendering: "auto",
             textRendering: "auto",
-            enableBackground: "accumulate",
           }}
           d="m-186.329 59.726 3.185 1.16v3.742l-3.185-1.159z"
           transform="translate(3477.852 524.633) scale(4.49135)"
@@ -2832,8 +2667,6 @@ const PipIcon = (props) => (
             mixBlendMode: "normal",
             colorInterpolation: "sRGB",
             colorInterpolationFilters: "linearRGB",
-            solidColor: "#000",
-            solidOpacity: 1,
             fill: "#353564",
             fillOpacity: 1,
             fillRule: "nonzero",
@@ -2849,7 +2682,6 @@ const PipIcon = (props) => (
             imageRendering: "auto",
             shapeRendering: "auto",
             textRendering: "auto",
-            enableBackground: "accumulate",
           }}
           d="M-189.56 60.903v3.743l3.231-1.177v-3.743z"
           transform="translate(3477.852 524.633) scale(4.49135)"
@@ -2866,8 +2698,6 @@ const PipIcon = (props) => (
             mixBlendMode: "normal",
             colorInterpolation: "sRGB",
             colorInterpolationFilters: "linearRGB",
-            solidColor: "#000",
-            solidOpacity: 1,
             fill: "#afafde",
             fillOpacity: 1,
             fillRule: "nonzero",
@@ -2883,7 +2713,6 @@ const PipIcon = (props) => (
             imageRendering: "auto",
             shapeRendering: "auto",
             textRendering: "auto",
-            enableBackground: "accumulate",
           }}
           d="m-189.56 64.646 3.184 1.159 3.232-1.177-3.185-1.159z"
           transform="translate(3477.852 524.633) scale(4.49135)"

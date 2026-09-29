@@ -1,0 +1,142 @@
+---
+title: Workspace Integration
+sidebar_position: 5
+description: >
+  Connect OpenBB Python V5 to OpenBB Workspace as a custom backend with
+  openbb-api, using the installed providers, your own FastAPI app, or a
+  .spec file that proxies a remote deployment.
+keywords:
+  - OpenBB Workspace
+  - custom backend
+  - openbb-api
+  - openbb-platform-api
+  - widgets.json
+  - FastAPI
+  - data connectors
+  - .spec
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Workspace Quickstart | OpenBB Python (V5)" />
+
+OpenBB Workspace loads data from [custom backends](/workspace/developers/data-integration): HTTP servers that describe their widgets in a `widgets.json` file. The `openbb-api` launcher, from the `openbb-platform-api` package, generates that file from a FastAPI app's routes and serves it next to the data. The app can be the installed OpenBB commands, a FastAPI file of your own, or a proxy built from a `.spec` file.
+
+## Serve the installed commands
+
+```bash
+pip install openbb-platform-api openbb-cboe
+openbb-api
+```
+
+The server starts on `http://127.0.0.1:6900`. Each command of each installed provider becomes a widget, shaped by any `widget_config` its router declares. Commands from `openbb-econometrics`, `openbb-quantitative`, and `openbb-technical` are left out, since they transform data passed in by the caller rather than fetch it.
+
+To add the server to Workspace, sign in at [pro.openbb.co](https://pro.openbb.co), open **Data Connectors** from the sidebar, and click **Add Data**. Enter a name and the server address printed in the terminal, click **Test**, then **Add**. The widgets appear in the Workspace search.
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="The Add Data dialog in OpenBB Workspace"
+    src="https://github.com/user-attachments/assets/770e6d6c-6cd7-4073-a874-af0850f404cc"
+    width="100%"
+  />
+</div>
+
+:::tip
+If **Test** fails, the browser may be blocking requests from the HTTPS Workspace page to an HTTP server. The launcher's startup message recommends Chrome. Otherwise, [serve the API over HTTPS](rest_api.mdx#serve-over-https).
+:::
+
+## Serve your own app
+
+`--app` replaces the installed commands with the routes of a FastAPI app. The app can still call `obb`; only its own routes become widgets.
+
+```python
+from fastapi import FastAPI
+from openbb import obb
+
+app = FastAPI()
+
+
+@app.get("/quote_summary")
+def quote_summary(symbol: str = "AAPL") -> str:
+    """Delayed Cboe quote with 30-day implied volatility."""
+    quote = obb.cboe.equity.quote(symbol=symbol, provider="cboe").results[0]
+    return (
+        f"## {quote.name}\n\n"
+        f"Last price: {quote.last_price}\n\n"
+        f"30-day implied volatility: {quote.iv30}"
+    )
+```
+
+Save it as `quote_app.py` and launch it:
+
+```bash
+openbb-api --app quote_app.py --reload
+```
+
+The route returns a string, so the widget is a Markdown widget. Its name comes from the path, its description from the docstring, and the `symbol` argument becomes a text parameter with `AAPL` as the default.
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <img
+    className="pro-border-gradient"
+    alt="A Markdown widget generated from a custom FastAPI route"
+    src="https://github.com/user-attachments/assets/150b214e-468e-45bf-b28e-6fb1e1a7a5c2"
+    width="514"
+  />
+</div>
+
+The app does not have to call `obb`. With only `openbb-platform-api` installed and no providers, any FastAPI file works, and the return annotation picks the widget type: a `str` becomes a Markdown widget, and a list of dictionaries or Pydantic models becomes a table.
+
+```python
+from typing import Literal
+
+from fastapi import FastAPI
+from pydantic import BaseModel, Field
+
+app = FastAPI()
+
+
+class Row(BaseModel):
+    """One row of the table."""
+
+    label: str = Field(title="Label", description="Row label.")
+    change: float = Field(
+        title="Change",
+        description="Change as a fraction.",
+        json_schema_extra={
+            "x-widget_config": {
+                "formatterFn": "normalizedPercent",
+                "renderFn": "greenRed",
+            }
+        },
+    )
+
+
+@app.get("/greeting")
+async def greeting(
+    language: Literal["English", "French", "Spanish"] = "English",
+) -> str:
+    """Markdown widget with a dropdown parameter."""
+    greetings = {"English": "Hello", "French": "Bonjour", "Spanish": "Hola"}
+    return f"# {greetings[language]}"
+
+
+@app.get("/changes")
+async def changes() -> list[Row]:
+    """Table widget with column definitions from the model."""
+    return [Row(label="A", change=0.0125), Row(label="B", change=-0.004)]
+```
+
+The `Literal` argument becomes a dropdown. The `Row` fields become column definitions, with each `title` as the header, each `description` as the header tooltip, and the `x-widget_config` values merged into the column. The [openbb-api reference](../extensions/interface/openbb-api.mdx) covers metric, PDF, chart, Omni, form, and server-side row model widgets, and the `openapi_extra` overrides for any generated field.
+
+## Proxy a remote deployment
+
+A `.spec` file generated by `openbb-cli` records the routes of an OpenBB API server and its address. `openbb-api --spec` builds a backend whose routes forward each request to that server, so Workspace can reach a remote deployment through a launcher with no provider packages installed:
+
+```bash
+pip install openbb-cli
+openbb --generate-spec --server https://api.example.com --output api.spec
+openbb-api --spec api.spec
+```
+
+Widgets are generated from the parameter and response schemas in the spec, and their source label is the spec's file name. See the [openbb-api reference](../extensions/interface/openbb-api.mdx#spec-proxy-mode) for credentials, integrity checks, and mounting several specs, and [Codegen](../../cli/codegen.md) for generating spec files.

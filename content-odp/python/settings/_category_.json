@@ -1,0 +1,10 @@
+{
+  "label": "Settings & Configuration",
+  "position": 2,
+  "collapsible": true,
+  "collapsed": false,
+  "link": {
+    "type": "doc",
+    "id": "python/settings/index"
+  }
+}
