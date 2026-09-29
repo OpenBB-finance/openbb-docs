@@ -28,7 +28,5 @@ content/python/data_models/*
 content/python/reference/*
 content/workspace/widgets-library
 
-/openbb_v5
-
 # Code editor configurations
 .vscode/
