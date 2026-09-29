@@ -2,8 +2,9 @@
 title: Installation
 sidebar_position: 1
 description: >
-  Install OpenBB Python V5 from PyPI as openbb-core plus the provider and
-  interface packages you need, or from source with dev_install.py.
+  Install OpenBB Python V5 from PyPI with the openbb package or with
+  openbb-core and individual provider packages, or from source with
+  dev_install.py.
 keywords:
   - installation
   - openbb-core
@@ -21,7 +22,7 @@ import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
 <HeadTitle title="Installation | OpenBB Python (V5)" />
 
-OpenBB Python V5 is a set of separately published packages. `openbb-core` is the runtime: it contains the `openbb` import package, the REST API app, and the `openbb-build` command, but no data. Each provider package adds a data source and its own namespace on `obb`. You install the runtime together with the providers you want, and the `openbb` package is generated from whatever is installed.
+OpenBB Python V5 is a set of separately published packages. `openbb-core` is the runtime: it contains the `openbb` import package, the REST API app, and the `openbb-build` command, but no data. Each provider package adds a data source and its own namespace on `obb`. The `openbb` distribution installs the runtime with every provider and interface package, or you can install the runtime with only the providers you want. Either way, the `openbb` import package is generated from whatever is installed.
 
 ## Requirements
 
@@ -41,7 +42,23 @@ For a graphical installer that manages the environment for you, see [ODP Desktop
 
 ## Install from PyPI
 
-Install `openbb-core` and one or more provider packages:
+`pip install openbb` installs V5:
+
+```bash
+pip install openbb
+```
+
+The `openbb` package contains no code of its own. It installs `openbb-core` with its `flask` and `pandas` extras, every provider package in the [package reference](#package-reference), `openbb-news`, `openbb-charting` with PyWry, `openbb-cli`, `openbb-platform-api`, `openbb-mcp-server`, and `openbb-devtools`. It does not install `openbb-econometrics`, `openbb-quantitative`, or `openbb-technical`; add those separately:
+
+```bash
+pip install openbb-econometrics openbb-quantitative openbb-technical
+```
+
+The `routers` extra, `pip install "openbb[routers]"`, installs those three together with the shared asset-class routers such as `openbb-equity` and `openbb-economy`. This documentation does not cover the shared routers, and several providers leave commands to them when they are installed, so the provider namespaces lose commands that the [reference](/odp/python/reference) lists. [Migrating from V4](migration-from-v4.mdx#provider-owned-namespaces) explains the interaction.
+
+### Install individual packages
+
+For a smaller environment, install `openbb-core` with only the provider packages you need:
 
 ```bash
 pip install openbb-core openbb-cboe openbb-imf
@@ -91,16 +108,9 @@ quote.to_dataframe()
 
 Some providers need an API key before their commands return data. See [Credentials](user-guide/credentials.mdx) for where to put them, and [Providers](extensions/providers/index.mdx) for what each provider covers. The CLI has its own [installation guide](../cli/installation.md).
 
-### The `openbb` meta-package
+### Upgrading from V4
 
-Do not use `pip install openbb` to get V5. The `openbb` meta-package defined in the V5 repository is still version 4.7.3. It requires `openbb-core` 1.x, lists providers that V5 removed, such as `openbb-fmp` and `openbb-yfinance`, and ships its own copy of the `openbb` import package. If an environment already has it, uninstall it and reinstall `openbb-core`:
-
-```bash
-pip uninstall openbb
-pip install --force-reinstall openbb-core
-```
-
-[Migrating from V4](migration-from-v4.mdx) lists the other changes to expect.
+Install V5 into a new virtual environment instead of upgrading a V4 one. The V4 releases of providers that V5 removed, such as `openbb-fmp` and `openbb-yfinance`, require `openbb-core` 1.x and cannot be installed next to V5. [Migrating from V4](migration-from-v4.mdx) lists the other changes to expect.
 
 ## Build the Python interface
 
@@ -116,16 +126,23 @@ openbb-build
 
 ## Install from source
 
-The source install puts every package from the repository into the active environment in editable mode. It needs Git, Python 3.10 or newer, and [uv](https://docs.astral.sh/uv/getting-started/installation/). `dev_install.py` uses the `uv` module of the running interpreter when it is installed, and the `uv` executable on `PATH` otherwise.
+The source install puts every package from the repository into the active environment in editable mode. V5 is on the repository's default branch, `develop`. The install needs Git, Python 3.10 or newer, and [uv](https://docs.astral.sh/uv/getting-started/installation/). `dev_install.py` uses the `uv` module of the running interpreter when it is installed, and the `uv` executable on `PATH` otherwise.
+
+Five providers, `openbb-bls`, `openbb-ecb`, `openbb-imf`, `openbb-oecd`, and `openbb-us-eia`, generate metadata files from their upstream APIs when they are built, and the generators import `openbb-core`. Those files are not tracked in Git, so on a fresh clone `openbb-core` has to be installed first and uv's build isolation turned off. The EIA catalog also needs an EIA API key in `EIA_API_KEY`.
 
 ```bash
 git clone https://github.com/OpenBB-finance/OpenBB.git
 cd OpenBB
-git checkout v5
 python3 -m venv .venv
 source .venv/bin/activate
-python openbb_platform/dev_install.py
+python -m pip install uv
+python -m uv pip install "hatchling>=1.25" "requests>=2.31" editables
+python -m uv pip install --editable "openbb_platform/core[pandas]"
+export EIA_API_KEY="YOUR_EIA_KEY"
+UV_NO_BUILD_ISOLATION=true python openbb_platform/dev_install.py
 ```
+
+The first build downloads the provider metadata and can take a long time. Later builds reuse the generated files.
 
 The script lists the tracked `pyproject.toml` files under `openbb_platform/core`, `openbb_platform/extensions`, `openbb_platform/obbject_extensions`, `openbb_platform/providers`, and `cli`, then runs `uv pip install` against the interpreter that launched it with each package as `--editable`, including all optional extras and each package's `dev` dependency group. It finishes by building the `openbb` package, so no separate `openbb-build` is needed. Because packages are found with `git ls-files`, a new package directory is picked up only once its `pyproject.toml` is tracked by Git.
 
