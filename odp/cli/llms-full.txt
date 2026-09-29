@@ -1,266 +1,329 @@
 ---
-title: Commands And Arguments
-sidebar_position: 4
-description: This page explains how to enter commands and arguments into the ODP CLI.
-keywords:
-- help arguments
-- auto-complete
-- global commands
-- support command
-- reset command
-- command line interface
-- metadata
-- cli
-- parameters
-- functions
-- commands
-- options
----
-
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="Commands And Arguments | ODP CLI Docs" />
-
-Commands are displayed on-screen in a lighter colour, compared with menu items, and they will not be prefaced with, `>`.
-
-Functions have a variety of parameters that differ by endpoint and provider. The --help dialogue will provide guidance on nuances of any particular command.
-
-The available data sources for each command are displayed on the right side of the screen, and are selected with the `--provider` argument.
-
-## Help arguments
-
-The `help` command shows the current menu. The screen will display all the commands and menus that exist, including a short description for each of these.
-
-Adding `--help`, or `-h`, to any command will display the description and parameters for that particular function.
-
-## Entering Parameters
-
-Parameters are all defined through the same pattern, --argument, followed by a space, and then the value.
-
-If the parameter is a boolean (true/false), there is no value to enter. Adding the --argument flags the parameter to be the opposite of its default state.
-
-Use the auto-complete to prompt choices and reduce the amount of keystrokes required to run a complex function.
-
-## Auto-complete
-
-The ODP CLI is equipped with an auto completion engine that presents choices based on the current menu and command. Whenever you start typing, suggestion prompts will appear for existing commands and menus. When the command contains arguments, pressing the `space bar` after typing the command will present the list of available arguments.
-
-This functionality dramatically reduces the number of key strokes required to perform tasks and, in many cases, eliminates the need to consult the help dialogue for reminders. Choices - where they are bound by a defined list - are scrollable with the up and down arrow keys.
-
-## Global commands
-
-These are commands that can be used throughout the CLI and will work regardless of the menu where they belong.
-
-### Help
-
-`--help`, or `-h` can be attached to any command, as described above.
-
-### CLS
-
-The `cls` command clears the entire CLI screen.
-
-### Quit
-
-The `quit` command (can also use `q` or `..`) allows to leave the current menu to go one menu above. If the user is on the root, that will mean leaving the CLI.
-
-### Exit
-
-The `exit` command allows the user to exit the CLI.
-
-### Reset
-
-The `reset` command will reset the CLI to its default state. This is specially useful for development so you can refresh the CLI without having to close and open it again.
-
-### Results
-
-The `results` command will display the stack of `OBBjects` that have been generated during the session, which can be later injected on the data processing commands.
-
-
----
-
----
-title: Configuration & Settings
-sidebar_position: 5
-description: This documentation page details the various settings and feature flags used to customize the ODP CLI.
-keywords:
-- Settings Menu
-- Feature Flags Menu
-- customize CLI
-- alter CLI behaviour
-- environment variables
-- Documentation
-- ODP CLI
-- OpenBB Platform CLI
-- preferences
-- user
----
-
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="Configuration & Settings - | ODP CLI Docs" />
-
-In addition to the ODP's `user_settings.json` file, described [on the environment variables page](/odp/python/settings/environment_variables), there are settings and environment variables affecting the CLI only.
-
-:::important
-API credentials are defined in the `user_settings.json` file.
-
-Find all the current data providers maintained in the OpenBB repository [on the extensions page](/odp/python/extensions/).
-
-Define default data sources by following the pattern outlined [on the data sources page](data-sources)
-:::
-
-## Settings Menu
-
-The `/settings` menu provides methods for customizing the look and feel of the CLI. The menu is divided into two sections:
-
-- Feature Flags
-  - On/Off status is reflected by red/green text.
-  - Status is toggled by entering the item as a command.
-- Preferences
-  - Choices and options will be presented as a typical function.
-
-### Feature Flags
-
-| Feature Flags  |                                                      Description |
-| :-----------   | :--------------------------------------------------------------- |
-| `interactive`  | Enable/disable interactive tables.  Disabling prints the table directly on the CLI screen. |
-| `cls`          |                                     Clear the screen after each command.  Default state is off. |
-| `promptkit`    |                                         Enable auto complete and history.  Default state is on. |
-| `richpanel`    |                                           Displays a border around menus.  Default state is on. |
-| `tbhint`       |                                Display usage hints in the bottom toolbar.  Default state is on. |
-| `exithelp`     |           Automatically print the screen after navigating back one menu.  Default state is off. |
-| `overwrite`    |               Automatically overwrite exported files with the same name.  Default state is off. |
-| `obbject_msg`  |       Displays a message whenever a new result is added to the registry.  Default state is off. |
-| `version`      |                     Displays the currently installed version number in the bottom right corner. |
-
-### Preferences
-
-| Preferences    |                                                      Description |
-| :-----------   | :--------------------------------------------------------------- |
-| `console_style`           | apply a custom rich style to the CLI  |
-| `flair`                   | choose flair icon      |
-| `timezone`                | pick timezone |
-| `language`                | translation language |
-| `n_rows`                  | number of rows to show on non interactive tables |
-| `n_cols`                  | number of columns to show on non interactive tables |
-| `obbject_res`             | define the maximum number of obbjects allowed in the registry  |
-| `obbject_display`         | define the maximum number of cached results to display on the help menu  |
-
-
----
-
----
-title: Data Sources
+title: Authentication
 sidebar_position: 7
-description: This page explains how to select a provider for any specific command, and set a default source for a route.
+description: >
+  Static headers, query parameters, and importable auth hooks for the HTTP
+  backends, with the AuthContext and AuthDecision contract used for RBAC and
+  per-request credentials.
 keywords:
-- Workspace
-- CLI
-- provider
-- API keys
-- FinancialModelingPrep
-- Polygon
-- AlphaVantage
-- Intrinio
-- YahooFinance
-- source
-- data
-- default
+  - openbb-cli auth
+  - AuthContext
+  - AuthDecision
+  - auth-hook
+  - RBAC
+  - headers
+  - query parameters
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+Credentials for HTTP backends (`--server`, a single spec, or several specs) come from three places: static headers, static query parameters, and an importable auth hook that runs before every request. The in-process backend makes no HTTP calls and ignores all three; it reads provider credentials from the OpenBB user settings, as described in [Data Sources](./repl/data-sources.md).
 
-<HeadTitle title="Data Sources | ODP CLI Docs" />
+## Static headers
 
-Many commands have multiple data sources associated with it. This page describes how to select from multiple providers.
-
-:::important
-API credentials are defined in the `user_settings.json` file.
-
-Find all the current data providers maintained in the OpenBB repository [here](/odp/python/extensions).
-:::
-
-## Data Source In-Command
-
-To specify the data vendor for that particular command, use the `--provider` argument.
-
-Parameter choices can be viewed from the help dialogue, `-h` or `--help`.
-
-```console
-/equity/price/historical -h
+```bash
+openbb --server http://127.0.0.1:6900 \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "X-Tenant: acme" \
+  oecd.gdp_real --country japan
 ```
 
-```console
-usage: historical --symbol SYMBOL [SYMBOL ...] [--interval INTERVAL] [--start_date START_DATE] [--end_date END_DATE] [--chart]
-                  [--provider {fmp,intrinio,polygon,tiingo,yfinance}] [--start_time START_TIME] [--end_time END_TIME] [--timezone TIMEZONE]
-                  [--source {realtime,delayed,nasdaq_basic}] [--sort {asc,desc}] [--limit LIMIT] [--extended_hours] [--include_actions]
-                  [--adjustment {splits_and_dividends,unadjusted,splits_only}] [--adjusted] [--prepost] [-h] [--export EXPORT]
-                  [--sheet-name SHEET_NAME [SHEET_NAME ...]]
+`-H` accepts `KEY=VALUE` and `KEY: VALUE`, splitting at whichever separator comes first, and can be repeated. The same headers are sent when the CLI downloads a server's OpenAPI document.
 
-Get historical price data for a given stock. This includes open, high, low, close, and volume.
+Headers are merged key by key from the `[headers]` table in `openbb.toml`, then the JSON object in `--header-file`, then `-H` flags, with later sources winning. With several specs mounted, a flag written as `-H NS:KEY=VALUE` and the `[specs.NS.headers]` table apply only to namespace `NS` and override global headers of the same name there.
 
-options:
-  --interval INTERVAL   Time interval of the data to return.
-  --start_date START_DATE
-                        Start date of the data, in YYYY-MM-DD format.
-  --end_date END_DATE   End date of the data, in YYYY-MM-DD format.
-  --chart               Whether to create a chart or not, by default False.
-  --provider {fmp,intrinio,polygon,tiingo,yfinance}
-                        The provider to use for the query, by default None.
-                            If None, the provider specified in defaults is selected or 'fmp' if there is
-                            no default.
-  --extended_hours      Include Pre and Post market data. (provider: polygon, yfinance)
-  --adjustment {splits_and_dividends,unadjusted,splits_only}
-                        The adjustment factor to apply. Default is splits only. (provider: polygon, yfinance)
-  -h, --help            show this help message
-  --export EXPORT       Export raw data into csv, json, xlsx and figure into png or jpg
-  --sheet-name SHEET_NAME [SHEET_NAME ...]
-                        Name of excel sheet to save data to. Only valid for .xlsx files.
+## Static query parameters
 
-required arguments:
-  --symbol SYMBOL [SYMBOL ...]
-                        Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, polygon, tiingo, yfinance.
-
-intrinio:
-  --start_time START_TIME
-                        Return intervals starting at the specified time on the `start_date` formatted as 'HH:MM:SS'.
-  --end_time END_TIME   Return intervals stopping at the specified time on the `end_date` formatted as 'HH:MM:SS'.
-  --timezone TIMEZONE   Timezone of the data, in the IANA format (Continent/City).
-  --source {realtime,delayed,nasdaq_basic}
-                        The source of the data.
-
-polygon:
-  --sort {asc,desc}     Sort order of the data. This impacts the results in combination with the 'limit' parameter. The results are always returned in ascending order by date.
-  --limit LIMIT         The number of data entries to return.
-
-yfinance:
-  --include_actions     Include dividends and stock splits in results.
+```bash
+openbb --spec api.spec -Q api_key="$API_KEY" some.command
 ```
 
-:::note
-Provider-specific parameters are listed at the bottom of the print out. They are ignored when entered, if it is not supported by the selected provider.
-:::
+`-Q` takes `KEY=VALUE` and can be repeated. Query parameters are merged from the `[query]` table, then `--query-param-file`, then environment variables named `OPENBB_HTTP_QUERY_<NAME>`, then `-Q` flags. The part of the variable name after the prefix is lower-cased, so `OPENBB_HTTP_QUERY_API_KEY=xxx` sends `api_key=xxx`. Namespace scoping works as for headers, with `-Q NS:KEY=VALUE` and `[specs.NS.query]`.
 
-## Setting The Default Source
+## Auth hooks
 
-The default data providers for each command can be defined within the user configuration file: `/home/your-user/.openbb_platform/user_settings.json`. You can set a single provider or a priority list. If a list is set, the command will use the first provider for which all required credentials set.
+An auth hook is a Python callable that the CLI imports by `module.path:attribute` and calls before each HTTP request. Use it for tokens that expire, credentials held in a vault, or rules about which user may call which command. Hooks are configured in `openbb.toml`, either at the top level for every backend or inside a `[specs.NAME]` table, where the namespace's hook replaces the top-level one:
 
-See the example below for `obb.equity.price.historical` command:
+```toml
+auth-hook = "myapp.auth:default_hook"
+
+[specs.nyfed]
+path = "/srv/specs/nyfed.spec"
+auth-hook = "myapp.auth:nyfed_hook"
+
+[specs.internal]
+path = "/srv/specs/internal.spec"
+auth-hook = "myapp.auth:rbac_hook"
+```
+
+The hook receives an `AuthContext` and returns an `AuthDecision`, both frozen dataclasses importable from `openbb_cli.auth`.
+
+| `AuthContext` field | Type | Value |
+| ------------------- | ---- | ----- |
+| `namespace` | `str \| None` | The spec namespace, or `None` for `--server` and a single unnamed spec. |
+| `command` | `str` | Dotted command path within that namespace. |
+| `params` | `dict[str, Any]` | The request parameters. |
+| `method` | `str` | `get` or `post` for a dispatch, `list` during `--list-commands`, and `schema` during `--describe`. |
+
+| `AuthDecision` field | Type | Default | Effect |
+| -------------------- | ---- | ------- | ------ |
+| `headers` | `dict[str, str] \| None` | `None` | Headers added to this request. |
+| `query_params` | `dict[str, str] \| None` | `None` | Query parameters added to this request. |
+| `allow` | `bool` | `True` | `False` denies the request. |
+| `deny_reason` | `str \| None` | `None` | Message returned with the denial. |
+
+The following hook, saved as `myapp/auth.py` on the Python path, denies commands the current user may not call and adds a bearer token otherwise. `current_user` and `get_token` stand in for your own identity code.
+
+```python
+from openbb_cli.auth import AuthContext, AuthDecision
+
+from myapp.identity import current_user, get_token
+
+
+def rbac_hook(ctx: AuthContext) -> AuthDecision:
+    user = current_user()
+    if not user.can_access(ctx.namespace, ctx.command):
+        return AuthDecision(allow=False, deny_reason=f"{user.role} cannot call {ctx.command}")
+    return AuthDecision(headers={"Authorization": f"Bearer {get_token(user)}"})
+```
+
+Hooks can be plain functions or coroutines; the CLI awaits the result when needed. Headers and query parameters from the decision take precedence over the static ones, and parameters that the command itself sends in the query string or as headers take precedence over the hook's. A decision with `allow=False` ends the request with an `AccessDenied` error and no network call. A hook that raises, or returns anything other than an `AuthDecision`, is treated as a denial, with the exception or the wrong type named in the message.
+
+Configured hooks are imported on every invocation, before the selected mode runs, even for `--show-config`, `--print-config-template`, and the in-process backend. A malformed `module.path:attribute` string, a module that cannot be imported, a missing attribute, or an attribute that is not callable stops the CLI with exit status 2. Hooks are not called when the CLI downloads an OpenAPI document; only static headers and query parameters are sent then.
+
+## Hooks and the command catalog
+
+`--list-commands` and the `__commands__` batch command call the hook once for every command and leave out the ones it denies. `--describe` and `__schema__` return `AccessDenied` for a denied command. A hook that hides a command therefore hides it from listing, description, and dispatch alike.
+
+
+---
+
+---
+title: Backends
+sidebar_position: 4
+description: >
+  How openbb-cli resolves commands in-process, against an openbb-api or other
+  OpenAPI 3.x server, from a .spec file, and across several specs mounted
+  under namespaces.
+keywords:
+  - openbb-cli backends
+  - in-process
+  - openbb-api
+  - .spec
+  - OpenAPI
+  - multi-spec
+---
+
+A backend decides where the commands come from and how they run. The CLI picks one per invocation. Any configured spec wins: `--spec`, `[specs.<name>]` tables or a `spec` key in `openbb.toml`, the `OPENBB_SPEC_PATH` variable, or `--socrata-story` used without `--generate-spec`. Without a spec, `--server` (or `OPENBB_SERVER_URL`, or `server` in `openbb.toml`) selects a live server. With neither, commands run in-process.
+
+## In-process
+
+The in-process backend imports the `openbb` package from the current Python environment and resolves the dotted command path as attributes under `obb`, so `oecd.gdp_real` calls `obb.oecd.gdp_real(...)`. The available commands are exactly the installed extensions, and the import happens again on every invocation. Results are the command's `OBBject`, serialized with unset and null fields removed.
+
+Because nothing goes over HTTP, headers, query parameters, and auth hooks are not applied. There is also no schema to read, so `--list-commands`, `--describe`, and the `__commands__` and `__schema__` batch commands are unavailable, and flags are parsed with the generic rules described in [Modes](./modes.md#one-shot).
+
+## Server
+
+With `--server URL`, the CLI downloads `<URL>/openapi.json` at the start of every invocation, with a 10-second timeout, and accepts JSON or YAML. If that request fails or does not return an OpenAPI document, it loads `<URL>/` and looks for an OpenAPI document embedded as JSON in the page, which is how some API portals publish their schema. External `$ref` documents on the same origin are fetched and inlined; references to other origins are rejected. Headers and query parameters from `-H`, `-Q`, and the configuration apply to these requests, but auth hooks do not.
+
+The downloaded document is converted into the same structure as a `.spec` file, and each command request then goes to the server with a 60-second timeout. The server can be an `openbb-api` instance or any other service that publishes OpenAPI 3.x.
+
+`--openapi-path` is only read by `--generate-spec`. For an API that publishes its schema somewhere other than `/openapi.json` or its landing page, generate a spec with `--openapi-path` once and dispatch with `--spec`.
+
+## Spec files
+
+A `.spec` file is the converted OpenAPI document saved as compact JSON by `--generate-spec` (see [Codegen](./codegen.md)). Dispatching from it skips the schema download. The file records the base URL, so `--server` is not needed. On load, the CLI checks the format version, validates the structure, and recomputes the SHA-256 digest stored in the file; a file edited after generation fails the check and must be regenerated.
+
+| Field | Type | Contents |
+| ----- | ---- | -------- |
+| `version` | integer | Format version, currently `5`. Other versions are rejected. |
+| `base_url` | string | Base URL requests are sent to. When the OpenAPI `servers` entry adds a path, it is included. |
+| `api_prefix` | string | Leading path shared by every operation, removed when naming commands. |
+| `commands` | object | One entry per dotted command, with `url_path`, `url_templates` when several URLs map to the same name, `method`, `description`, `parameters`, `providers`, `request_body_schema`, and `response_schema`. |
+| `routers` | object | Every dotted prefix mapped to `menu` or `command`; the REPL builds its menus from it. |
+| `reference` | object | Descriptions for commands (`paths`) and menus (`routers`), taken from operation descriptions and OpenAPI tag descriptions. |
+| `generated_at` | string | ISO 8601 timestamp of generation. |
+| `generator` | string | `openbb-cli==<version>`. |
+| `source_url` | string | Where the OpenAPI document was read from. |
+| `api_version` | string | The `openapi` or `swagger` value of the source document. |
+| `content_sha256` | string | SHA-256 of every other field, written last. |
+
+## From OpenAPI paths to commands
+
+The same conversion runs for `--server` and `--generate-spec`. The CLI strips the longest leading path that all operations share, joins the remaining segments with dots, drops `{placeholder}` segments, and replaces a `.` inside a segment with `_`, so `/api/v1/oecd/gdp_real` becomes `oecd.gdp_real`. A path with both GET and POST is mapped to its GET operation. Paths that differ only in placeholders, such as `/items/{id}` and `/items/{id}/{version}`, merge into one command, and at call time the CLI uses the longest URL whose placeholders are all supplied.
+
+Parameters come from the operation, from the path item, and from the fields of a JSON request body; body fields that hold objects take a JSON string on the command line. API keys declared as `apiKey` security schemes become optional parameters.
+
+Responses are decoded as JSON when the server says so and returned as text otherwise. When the body is an object that holds one list of records, such as the `results` list of an OpenBB response, the records become the result and the remaining fields are kept as metadata. String values are converted to numbers or booleans where the response schema declares those types, and a Plotly figure payload is returned as a chart.
+
+## OpenBB providers
+
+An operation that declares a `provider` parameter with a fixed set of values is treated as an OpenBB command with those providers. Parameters are assigned to providers from the `(provider: ...)` tags in their descriptions. On the command line and in the REPL, `--provider NAME` then limits the accepted flags to the shared ones plus that provider's, and a flag belonging to another provider is an error. `--describe` groups the parameters and response schema by provider, and `--describe COMMAND:PROVIDER` returns a single provider's group. Operations without a `provider` parameter accept every declared flag, and the `:PROVIDER` suffix has no effect on them.
+
+## Multiple specs
+
+`--spec NAME=PATH` mounts a spec under the namespace `NAME`, and the flag can be repeated. When more than one spec is given, every entry must be named. Commands are addressed as `<namespace>.<command>`, and the namespace is stripped before the request reaches that spec's backend. A command that does not start with a mounted namespace fails with `UnknownNamespace`.
+
+```bash
+openbb --spec platform=platform.spec --spec nyfed=nyfed.spec platform.oecd.gdp_real --country japan
+```
+
+Each namespace keeps its own base URL, headers, query parameters, and auth hook. A header or query token written as `NS:KEY=VALUE` applies only to namespace `NS`; the prefix is recognized only when `NS` is a mounted namespace.
+
+| Source | Applies to |
+| ------ | ---------- |
+| `-H KEY=VALUE`, `--header-file`, `[headers]` | Every namespace. |
+| `-H NS:KEY=VALUE`, `[specs.NS.headers]` | Namespace `NS`, overriding a global header with the same name. |
+| `-Q KEY=VALUE`, `--query-param-file`, `OPENBB_HTTP_QUERY_*`, `[query]` | Every namespace. |
+| `-Q NS:KEY=VALUE`, `[specs.NS.query]` | Namespace `NS`, overriding a global parameter with the same name. |
+| Top-level `auth-hook` | Every namespace without a hook of its own. |
+| `auth-hook` inside `[specs.NS]` | Namespace `NS`, replacing the top-level hook. |
+
+`--list-commands` returns the commands of every namespace with the namespace prefix, and `--describe NS.command[:PROVIDER]` is forwarded to the right spec.
+
+`--socrata-story` also works as a backend: without `--generate-spec`, it builds a temporary spec for the current run. On its own it gives the flat command set; next to named specs it is mounted as `socrata`.
+
+
+---
+
+---
+title: Codegen
+sidebar_position: 8
+description: >
+  Save an OpenAPI document or a Socrata story as a .spec file, and generate an
+  installable OpenBB extension project from a .spec file.
+keywords:
+  - openbb-cli codegen
+  - --generate-spec
+  - --generate-extension
+  - .spec
+  - --socrata-story
+  - OpenBB extension
+---
+
+The CLI has two generators. `--generate-spec` reads an OpenAPI 3.x document, or a Socrata story, and writes a `.spec` file that the CLI can dispatch from. `--generate-extension` reads one `.spec` file and writes a Python project that installs as an OpenBB extension. Both are modes: they run, write their output, and exit.
+
+## `--generate-spec` from an OpenAPI document
+
+```bash
+openbb --generate-spec --server https://markets.newyorkfed.org \
+  --openapi-path /static/docs/markets-api.yml \
+  --output nyfed.spec
+```
+
+The source is `--server` (or `OPENBB_SERVER_URL`, or `server` in `openbb.toml`). Without `--openapi-path`, the CLI reads `<URL>/openapi.json` and falls back to an OpenAPI document embedded in the page at `<URL>/`. `--openapi-path` takes a path appended to the server URL or a full URL, and is needed when the document lives elsewhere, as it does for the NY Fed Markets API above. JSON and YAML are both accepted. Headers and query parameters from `-H`, `-Q`, `--header-file`, `--query-param-file`, and `openbb.toml` are sent with the download, which helps when the API requires a key even for its schema.
+
+The file is written to `--output`, `openbb.spec` by default. A single positional argument after the flags is accepted as the output path when `--output` is not given. On success the CLI prints `wrote <N> commands to <path>`. When the document has no GET or POST operations it can map, nothing is written and the exit status is 2.
+
+[Backends](./backends.md#spec-files) describes the fields of a `.spec` file and how OpenAPI paths become command names. The file is compact JSON with a SHA-256 digest of its contents, so regenerate it rather than editing it by hand.
+
+## `--generate-spec` from a Socrata story
+
+```bash
+openbb --generate-spec --socrata-story "https://<portal>/stories/s/<xxxx-xxxx>" --output portal.spec
+```
+
+`--socrata-story` accepts the browser URL of a story, to which `.json` is appended, a story JSON file on disk, or the URL of a single dataset in the form `https://<portal>/resource/<uid>.json` or `https://<portal>/api/views/<uid>`. A story file must name its portal in `dataSource.domainCName`. When both `--socrata-story` and `--server` are set, the story is used.
+
+The generator collects every `datasetUid` in the story and fetches each view's metadata from the portal. Datasets and filtered views become commands, a derived view is followed to the dataset behind it, and other asset types are skipped and counted in the summary line, `wrote <N> dataset commands to <path> (skipped <M> non-dataset views)`.
+
+Command names come from the dataset names, converted to snake_case. Datasets whose names share a run of two or more words are grouped under a menu named after those words, and each takes the rest of its name as the command name, or `query` when nothing is left. Other datasets become top-level commands.
+
+Each column other than a date column becomes a filter flag named after the column, with a fixed list of choices when the column has few enough distinct values. Date columns get no flag of their own; instead, `--start_date` and `--end_date` filter the first date column inclusively. `--limit`, default 1000, and `--offset` map to Socrata's `$limit` and `$offset`, and `--limit 0` pages through the whole dataset. When a dataset has a date or time column, results are sorted newest first and `--limit N` returns every row for the N most recent dates rather than N rows.
+
+Without `--generate-spec`, `--socrata-story` builds the same spec in a temporary file and dispatches against it, as described in [Backends](./backends.md#multiple-specs).
+
+## `--generate-extension`
+
+```bash
+openbb --generate-extension --spec nyfed.spec --provider-name nyfed --output ./build
+```
+
+The command needs exactly one `--spec`, named or not, and a spec with at least one command. Pass `--output` explicitly: it is the parent directory of the project, and without it the default `openbb.spec` is used as a directory name.
+
+Names derive from one slug. `--provider-name` is converted to snake_case to form it; without the flag, the name of the `--output` directory is used, so `--output ./openbb-nyfed` alone would give the slug `openbb_nyfed`. From the slug `nyfed`, the defaults are the project name `openbb-nyfed`, the package `openbb_nyfed`, and the namespace `obb.nyfed`, and the project is written to `./build/openbb-nyfed/`.
+
+| Flag | Default | Effect |
+| ---- | ------- | ------ |
+| `--output`, `-o` | `openbb.spec` | Parent directory for the project. |
+| `--provider-name` | name of the `--output` directory | Source of the slug used for the provider, namespace, and default names. |
+| `--project-name` | `openbb-<slug>` | Distribution name in `pyproject.toml` and the project directory name. |
+| `--package-name` | `openbb_<slug>` | Python package directory. |
+| `--router-name` | none | Accepted, but not used by the v5 generator; the namespace is always the slug. |
+| `--include PATTERN` | `None` | Keep only commands whose dotted name matches the pattern. Repeatable. When set, `--exclude` is ignored. |
+| `--exclude PATTERN` | `None` | Drop commands whose dotted name matches the pattern. Repeatable. |
+
+Patterns are case-sensitive shell-style globs matched against the full dotted command name. For a spec generated from an `openbb-api` server, `--include 'fred.*'` keeps only the FRED commands, and `--exclude 'fred.fixedincome.*'` drops that subtree. When a filter is active the CLI prints how many commands it kept, and if none match it exits with status 2.
+
+If the spec declares OpenBB providers, the project gets one provider per declared provider, and each command's fetcher is generated for every provider that serves it. Otherwise there is a single provider named after the slug. POST operations with a JSON request body are generated as command functions under a `tools` provider. Commands under a top-level `coverage` namespace are skipped.
+
+### Project layout
+
+```text
+build/
+└── openbb-nyfed/
+    ├── pyproject.toml
+    ├── README.md
+    ├── tests/
+    │   ├── __init__.py
+    │   └── test_nyfed_fetchers.py
+    └── openbb_nyfed/
+        ├── __init__.py
+        ├── utils.py
+        ├── providers/
+        │   ├── __init__.py
+        │   ├── nyfed/
+        │   │   ├── __init__.py
+        │   │   └── models/
+        │   │       ├── __init__.py
+        │   │       └── <command>.py
+        │   └── tools/
+        │       ├── __init__.py
+        │       └── models/
+        │           ├── __init__.py
+        │           └── <command>.py
+        └── routers/
+            ├── __init__.py
+            ├── nyfed.py
+            └── <namespace>.py
+```
+
+`pyproject.toml` builds with Hatchling, depends on `openbb-core>=2.0.0`, and registers each provider under the `openbb_provider_extension` entry point group and the root router, `routers/nyfed.py`, under `openbb_core_extension`. A `[tool.openbb-codegen]` table records the spec's source URL, API version, generator, timestamp, format version, and SHA-256. The generated `README.md` lists every command with its provider, and the credentials each provider needs.
+
+Each provider package declares a `Provider` with its credentials and a fetcher map. Its `models/` directory holds one module per command, named after the dotted path with dots replaced by underscores, and each module defines the command's query parameters, its data model, and a fetcher that calls the upstream URL. `utils.py` carries the response-unwrapping helpers the fetchers share. `routers/` holds one module per namespace in the spec plus the root router that mounts them. The `tools/` directory appears only when the spec has POST operations with a request body, and `tests/` only when at least one command has values for all of its required parameters in the spec's examples, defaults, or choices; the tests are marked `record_http` and scrub credentials from recorded requests.
+
+When `ruff` is installed in the running Python environment or on `PATH`, the generator runs `ruff check --fix --unsafe-fixes` and `ruff format` over the project.
+
+### Summary and installation
+
+The command prints a summary with the install steps:
+
+```text
+wrote project to build/openbb-nyfed
+  providers (<N>): <provider>, ...
+  routers (1): nyfed
+  fetchers: <N> GET (across all providers)
+  POST:     <N> local-compute commands
+  install:  pip install -e build/openbb-nyfed
+  build:    openbb-build
+```
+
+```bash
+pip install -e build/openbb-nyfed
+openbb-build
+```
+
+The commands then appear under `obb.nyfed` in Python and as `nyfed.<command>` for the CLI's in-process backend.
+
+### Credentials
+
+Parameters that carry credentials are removed from the command signatures and registered as provider credentials. A parameter counts as a credential when its name, lower-cased with hyphens turned into underscores, is one of `api_key`, `api_token`, `apikey`, `x_api_key`, `x_apikey`, `key`, `subscription_key`, `ocp_apim_subscription_key`, `app_id`, `app_key`, `app_token`, `appid`, `client_id`, `client_secret`, `client_token`, `token`, `access_token`, `auth_token`, `x_auth_token`, `bearer_token`, `secret`, `secret_key`, `authorization`, `consumer_key`, `consumer_secret`, `private_key`, or `session_token`. Required header and cookie parameters count as credentials whatever their name.
+
+At run time each fetcher reads `<provider>_<name>` from the OpenBB credentials, for example `nyfed_api_key`, and sends the value in the parameter's original place: query string, header, or cookie. Store the value in `~/.openbb_platform/user_settings.json` under `credentials`, or in an environment variable with the same name in upper case, such as `NYFED_API_KEY`.
 
 ```json
-# user_settings.json
 {
-    "defaults": {
-        "commands": {
-            "equity.price.historical": {
-                "provider": "fmp"
-            },
-            "equity.fundamental.balance": {
-                "provider": ["intrinio", "fmp", "polygon"]
-            },
-            ...
-        }
-    }
+  "credentials": {
+    "nyfed_api_key": "..."
+  }
 }
 ```
 
@@ -268,825 +331,998 @@ See the example below for `obb.equity.price.historical` command:
 ---
 
 ---
-title: Introduction
-sidebar_position: 0
-description: The ODP CLI is a command line interface wrapping the Open Data Platform by OpenBB. It offers a convenient way to interact with the Platform and its extensions, as well as automate data collection via OpenBB Routine Scripts. No experience with Python, or other programming languages, is required.
+title: Configuration
+sidebar_position: 5
+description: >
+  How openbb-cli combines openbb.toml files, pyproject.toml, .env files,
+  environment variables, and flags, and which keys each source accepts.
 keywords:
-- OpenBB
-- CLI
-- Platform
-- data connectors
-- data access
-- data processing
-- third-party data providers
-- introduction
+  - openbb-cli configuration
+  - openbb.toml
+  - OPENBB_CLI_CONFIG
+  - .env
+  - environment variables
 ---
 
-<!-- markdownlint-disable MD012 MD031 MD033 -->
+Backend, auth, and codegen options can come from TOML files, `.env` files, environment variables, and flags. REPL display settings such as the output mode or flair are stored separately, in `~/.openbb_platform/.cli.env`, and are changed from the REPL; see [Settings](./settings.md).
 
-import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+## TOML files
 
-<HeadTitle title="ODP CLI Docs" />
+The CLI reads up to four TOML sources and deep-merges them, with later sources overriding earlier ones key by key:
 
-## Overview
+1. The `[tool.openbb-cli]` table of the nearest `pyproject.toml`, searching upward from the working directory.
+2. `~/.openbb_platform/openbb.toml`, or `~/.openbb_platform/.openbb.toml`.
+3. The first `openbb.toml` or `.openbb.toml` found searching upward from the working directory.
+4. The file named by `--config PATH`, or by `OPENBB_CLI_CONFIG` when the flag is absent.
 
-The ODP CLI is a command line interface wrapping the Open Data Platform by OpenBB. It offers a convenient way to interact with the Platform and its extensions, as well as automate data collection via OpenBB Routine Scripts.
+A missing file, or one that fails to parse, is skipped without a message. `openbb --show-config` prints the merged result as JSON, which is the quickest way to see what the CLI actually loaded. Top-level keys may be written in kebab-case or snake_case; keys inside tables keep their spelling.
 
-The CLI leverages the extendability of the ODP architecture in an easy-to-consume and script format.
+`openbb --print-config-template` prints a commented template that lists the supported keys with their flag and environment variable. Keys that already have a value in the merged configuration are printed uncommented with that value, so the output can be saved as a starting point:
 
-![CLI Home](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/d1617c3b-c83d-4491-a7bc-986321fd7230)
+```bash
+openbb --print-config-template > ~/.openbb_platform/openbb.toml
+```
 
-## Guides & Documentation
+## Keys
 
-<ul className="grid grid-cols-1 gap-4 -ml-6">
-<NewReferenceCard
-    title="Installation"
-    description="An installation guide for the ODP CLI."
-    url="/odp/cli/installation"
-/>
-<NewReferenceCard
-    title="Quick Start"
-    description="A quick start guide for the ODP CLI."
-    url="/odp/cli/quickstart"
-/>
-<NewReferenceCard
-    title="Configuration & Settings"
-    description="An explanation of the settings and environment variables that customize the look and feel of the ODP CLI."
-    url="/odp/cli/configuration"
-/>
-<NewReferenceCard
-    title="Data Sources"
-    description="How-to switch providers for a command, and define the default source for a function."
-    url="/odp/cli/data-sources"
-/>
-<NewReferenceCard
-    title="OpenBBUserData Folder"
-    description="The OpenBBUserData folder is where exports, routines, and other related files are saved."
-    url="/odp/cli/openbbuserdata"
-/>
-<NewReferenceCard
-    title="Interactive Tables"
-    description="Understand how to sort, filter, hide columns, display more rows or export data on our tables."
-    url="/odp/cli/interactive-tables"
-/>
-<NewReferenceCard
-    title="Interactive Charts"
-    description="Explore how to overlay charts, change titles, draw lines, add text and much more on our charts."
-    url="/odp/cli/interactive-charts"
-/>
-</ul>
+```toml
+server = "http://127.0.0.1:6900"
+openapi-path = "/openapi.json"
+header-file = "/etc/openbb/headers.json"
+query-param-file = "/etc/openbb/query.json"
+auth-hook = "myapp.auth:default_hook"
+
+[headers]
+Authorization = "Bearer ..."
+"X-Tenant" = "acme"
+
+[query]
+api_key = "..."
+
+[specs.platform]
+path = "/srv/specs/platform.spec"
+
+[specs.nyfed]
+path = "/srv/specs/nyfed.spec"
+auth-hook = "myapp.auth:nyfed_hook"
+
+[specs.nyfed.headers]
+Authorization = "Bearer ..."
+
+[specs.nyfed.query]
+api_key = "..."
+```
+
+| Key | Flag | Environment variable | Notes |
+| --- | ---- | -------------------- | ----- |
+| `server` | `--server` | `OPENBB_SERVER_URL` | Server for dispatch and `--generate-spec`. |
+| `spec` | `--spec PATH` | `OPENBB_SPEC_PATH` | One unnamed spec. Ignored when `[specs]` tables exist. |
+| `[specs.NAME]` | `--spec NAME=PATH` | none | Needs `path`; may hold `auth-hook` and `headers` and `query` tables. |
+| `openapi-path` | `--openapi-path` | none | Only used by `--generate-spec`. |
+| `header-file` | `--header-file` | `OPENBB_HEADER_FILE` | JSON object of header names and values. |
+| `query-param-file` | `--query-param-file` | `OPENBB_QUERY_PARAM_FILE` | JSON object of query parameter names and values. |
+| `[headers]` | `-H` | none | Headers for every HTTP backend. |
+| `[query]` | `-Q` | `OPENBB_HTTP_QUERY_<NAME>` | Query parameters for every HTTP backend. |
+| `auth-hook` | none | none | `module.path:attribute` of an importable hook; see [Authentication](./auth.md). |
+| `output`, `batch-concurrency` | `--output`, `--batch-concurrency` | `OPENBB_CLI_BATCH_CONCURRENCY` | Read into the merged configuration but not applied in v5, because both flags have built-in defaults. Pass the flag or set the variable. |
+
+Paths in `spec`, `[specs.NAME]`, `header-file`, and `query-param-file` are used as written, without `~` expansion, so give absolute paths or paths relative to the working directory. `--config` and `--env-file` do expand `~`.
+
+## Precedence
+
+For `server`, `header-file`, and `query-param-file`, a flag beats the environment variable, which beats the TOML value. `openapi-path` has no variable, so the flag beats TOML.
+
+Specs are chosen as a whole rather than merged. `--spec` flags replace every spec in the configuration; without them, `[specs.NAME]` tables are used, then a top-level `spec` key, then `OPENBB_SPEC_PATH`. `[specs.NAME]` headers, query tables, and auth hooks still apply when `--spec NAME=PATH` uses the same name. When any spec is in effect, `server` is ignored for dispatch.
+
+Headers are merged key by key, from lowest to highest priority: `[headers]`, the `--header-file` object, then `-H` flags. Query parameters follow the same order with `OPENBB_HTTP_QUERY_*` variables inserted before `-Q` flags: `[query]`, `--query-param-file`, the environment, then `-Q`. In a multi-spec setup, the per-namespace values from `[specs.NAME.headers]`, `[specs.NAME.query]`, and `NAME:`-prefixed flags are applied on top of the merged global values.
+
+## .env files and environment variables
+
+Before reading any TOML, the CLI loads `~/.openbb_platform/.env` and then the file named by `--env-file` or `OPENBB_CLI_ENV_FILE`. A variable that is already set is never replaced, so a shell export beats both files, and the user-global `.env` beats `--env-file` for the same name. Apart from `OPENBB_CLI_ENV_FILE` itself, any variable in the table below can be set in these files.
+
+| Variable | Effect |
+| -------- | ------ |
+| `OPENBB_CLI_CONFIG` | TOML file used when `--config` is not passed. |
+| `OPENBB_CLI_ENV_FILE` | `.env` file used when `--env-file` is not passed. |
+| `OPENBB_SERVER_URL` | Default for `--server`. |
+| `OPENBB_SPEC_PATH` | Spec used when no `--spec` flag, `[specs]` table, or `spec` key is present. |
+| `OPENBB_HEADER_FILE` | Default for `--header-file`. |
+| `OPENBB_QUERY_PARAM_FILE` | Default for `--query-param-file`. |
+| `OPENBB_CLI_BATCH_CONCURRENCY` | Default for `--batch-concurrency`. Built-in default is 8. |
+| `OPENBB_HTTP_QUERY_<NAME>` | Adds the query parameter `<name>` in lower case to every HTTP request, so `OPENBB_HTTP_QUERY_API_KEY=xxx` sends `api_key=xxx`. |
+
+## Display keys and the `[settings]` table
+
+The loader also accepts four top-level display keys and a `[settings]` table, and `--print-config-template` lists them:
+
+```toml
+output-mode = "rich"
+flair = ":rocket"
+timezone = "America/New_York"
+rich-style = "dark"
+
+[settings]
+use-prompt-toolkit = true
+toolbar-hint = false
+```
+
+In v5 these entries only reach the process environment. Each `[settings]` entry is exported as `OPENBB_<KEY>` in upper snake case unless that variable is already set, and the four top-level keys are exported as `OPENBB_OUTPUT_MODE`, `OPENBB_FLAIR`, `OPENBB_TIMEZONE`, and `OPENBB_RICH_STYLE`, replacing any existing value. The REPL's settings model does not read the process environment; it loads `~/.openbb_platform/.cli.env` only. Neither these TOML entries nor `OPENBB_*` exports in your shell change the REPL, so use the `/settings` menu, which writes to `.cli.env`, as described in [Settings](./settings.md).
+
 
 ---
 
-Want to contribute? Check out our [Development section](/odp/python/developer/architecture_overview).
+---
+title: ODP CLI
+sidebar_position: 0
+description: >
+  Command-line client for the OpenBB Platform and any OpenAPI 3.x server, with
+  one-shot dispatch, NDJSON batch mode, an interactive REPL, and extension
+  code generation.
+keywords:
+  - openbb-cli
+  - openbb
+  - command line
+  - REPL
+  - batch
+  - .spec
+  - OpenAPI
+---
+
+`openbb-cli` installs the `openbb` command, a client for the OpenBB Platform and for any service that publishes an OpenAPI 3.x document. The same set of commands can be driven three ways. By default, `openbb <command> --key value` runs one command, writes a single JSON line to stdout, and exits with a status that reflects the outcome, which suits scripts, CI jobs, and agents. `openbb --batch` reads NDJSON requests from stdin and writes one NDJSON response per request as each finishes. `openbb -i` opens an interactive REPL with menus, tab completion, a registry of cached results, and routine scripts.
+
+```bash
+openbb oecd.gdp_real --country japan --frequency annual
+```
+
+Where the commands come from depends on the backend. Without a backend flag, the CLI imports the local `openbb` package and calls the extensions installed in that Python environment, so the command above needs `openbb-oecd`. `--server URL` reads the OpenAPI document of an `openbb-api` server, or of any other OpenAPI 3.x service, and sends each command over HTTP. `--spec PATH` does the same from a `.spec` file saved with `--generate-spec`, skipping the schema download on every call. Passing `--spec NAME=PATH` more than once mounts several APIs side by side, each under its own namespace and with its own headers, query parameters, and auth hook.
+
+A `.spec` file can also be turned into an installable OpenBB extension with `--generate-extension`. The generated project registers a provider, holds a fetcher module for each GET command, and mounts routers that mirror the API's paths; after `pip install` and `openbb-build`, its commands appear under `obb.<namespace>` in Python.
+
+## Pages in this section
+
+Start with [Installation](./installation.md) and the [Quickstart](./quickstart.md), which walks through one-shot, batch, and REPL use. [Modes](./modes.md) covers argument parsing, the NDJSON wire format, and exit codes. [Backends](./backends.md) explains how each backend resolves commands and what a `.spec` file contains. [Configuration](./configuration.md) describes `openbb.toml`, `.env` files, environment variables, and their precedence, while [Settings](./settings.md) lists the REPL display settings stored in `~/.openbb_platform/.cli.env`. [Authentication](./auth.md) covers static headers, query parameters, and importable auth hooks. [Codegen](./codegen.md) documents `--generate-spec`, `--socrata-story`, and `--generate-extension`. Every flag is listed in the [CLI flags reference](./reference/cli-flags.md).
+
+The interactive REPL has its own section. [Structure and Navigation](./repl/structure-and-navigation.md) explains menus, paths, and the global commands, [Commands and Arguments](./repl/commands-and-arguments.md) covers help output, flags, and completion, and [Data Sources](./repl/data-sources.md) shows how providers and credentials are selected. Cached results, the `load` command, and the `/feature` table tools are described in [Results Registry](./repl/results.md). Display options are covered in [Interactive Tables](./repl/interactive-tables.md) and [Interactive Charts](./repl/interactive-charts.md), file locations in [OpenBBUserData Folder](./repl/openbbuserdata.md), and scripted sessions in [Routines](./repl/routines/introduction-to-routines.md).
 
 
 ---
 
 ---
 title: Installation
-sidebar_position: 2
-description: This page provides installation instructions for the ODP CLI.
+sidebar_position: 1
+description: >
+  Install openbb-cli with pip, add the OpenBB extensions that supply commands,
+  and choose the charting and interactive-window extras.
 keywords:
-- Open Data Platform by OpenBB
-- ODP
-- OpenBB Platform
-- Python
-- CLI
-- installation
-- pip
-- pypi
-
+  - openbb-cli install
+  - pip
+  - extensions
+  - charting
+  - interactive
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+## pip
 
-<HeadTitle title="Installation | ODP CLI Docs" />
-
-## Pre-Requisites
-
-ODP CLI is a wrapper around the [OpenBB Python Package](/odp/python), and should be installed along side an existing OpenBB installation.
-
-- A Python virtual environment with a version between 3.10 and 3.14, inclusive, is required.
-
-Please refer to the [Python install documentation](/odp/python/installation) for instructions and more information.
-
-:::info
-If the ODP python package is not already installed, the `openbb-cli` package  will install all available components.
-:::
-
-### Windows
-
-The machine may need to have an installation of Visual C++ Build Tools available. Download the elements highlighted in the images below.
-
-<details>
-<summary mdxType="summary">"Microsoft Visual C++ 14.0 or greater is required"</summary>
-
-Download and install [C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/), restart the machine, then continue.
-
-![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/ceb57be0-6dae-42f2-aca6-bf62ce7d6135)
-
-![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/f8aef8fc-a080-4164-bd36-460714ec44f3)
-
-</details>
-
-### Linux Requirements
-
-Linux users will need to take additional steps prior to installation.
-
-#### Rust
-
-Rust and Cargo must be installed, system-level, and in the PATH. Follow the instructions on-screen to install and add to PATH in the shell profile.
+`openbb-cli` needs Python 3.10 or newer.
 
 ```bash
-curl --proto '=https' --tlsv1.3 https://sh.rustup.rs -sSf | sh
-```
-
-#### Webkit
-
-Next, install webkit.
-
-- Debian-based / Ubuntu / Mint: `sudo apt install libwebkit2gtk-4.0-dev`
-
-- Arch Linux / Manjaro: `sudo pacman -S webkit2gtk`
-
-- Fedora: `sudo dnf install gtk3-devel webkit2gtk3-devel`
-
-## PyPI
-
-Within your existing OpenBB environment, install `openbb-cli` with:
-
-```console
 pip install openbb-cli
 ```
 
-The installation script adds `openbb` to the PATH within your Python environment. The application can be launched from any path, as long as the environment is active.
+The package provides the `openbb` console script. Its dependencies are `openbb-core[pandas]`, `prompt-toolkit`, `rich`, `python-dotenv`, `openpyxl`, `httpx`, and `pyyaml`, plus `tomli` on Python 3.10.
 
-```console
-openbb
+## Extensions for the in-process backend
 
-Welcome to Open Data Platform CLI v1.0.0
-```
-
-## Source
-
-Follow the instructions [here](/odp/python/installation#source) to clone the GitHub repo and install the Open Data Platform from the source code.
-
-Next, navigate into the folder: `~/OpenBB/openbb_platform`
-
-:::tip
-The Python environment should have `poetry` installed.
+`openbb-core` ships the `openbb` Python package but no data commands. When the CLI runs without `--server` or `--spec`, it calls whatever OpenBB extensions are installed in the same environment, so install the ones you plan to use:
 
 ```bash
-pip install poetry
+pip install openbb-oecd openbb-cboe openbb-technical
 ```
 
+Each provider package adds its own top-level namespace, such as `oecd` or `cboe`. Commands sent through `--server` or `--spec` run on the remote API instead, and need no local extensions.
+
+## Optional extras
+
+Two extras affect the interactive REPL. The `charting` extra installs `openbb-charting`, which builds charts for commands that accept `--chart` and for `results --chart`. The `interactive` extra installs `pywry`, which draws tables and charts in a separate window. The `all` extra installs both.
+
+```bash
+pip install "openbb-cli[all]"
+```
+
+Install the two together. With `openbb-charting` present but `pywry` missing, the REPL still hands command results to the window, which cannot open, so in the `rich` and `html` output modes those results are not shown; [Interactive Tables](./repl/interactive-tables.md) explains how to switch the window off.
+
+## Verify
+
+```bash
+openbb --help
+```
+
+The command prints the flag list and exits with status 0. To confirm that the in-process backend can import `openbb`, run:
+
+```bash
+python -c "from openbb import obb; print(type(obb).__name__)"
+```
+
+
+---
+
+---
+title: Modes
+sidebar_position: 3
+description: >
+  One-shot dispatch, NDJSON batch, and the interactive REPL, with argument
+  parsing rules, the request and response wire format, and exit codes.
+keywords:
+  - openbb-cli modes
+  - non-TTY
+  - batch
+  - REPL
+  - NDJSON
+  - exit codes
+---
+
+`openbb` runs in one mode per invocation. `-i`, `--batch`, `--generate-spec`, `--generate-extension`, `--list-commands`, `--describe`, `--print-config-template`, and `--show-config` form one mutually exclusive group, so passing two of them is an argument error. With none of them, the CLI runs the command given on the command line and exits.
+
+## One-shot
+
+```bash
+openbb <command.path> [--key value | --key=value ...]
+```
+
+The first positional argument is the dotted command path. How the flags after it are parsed depends on the backend.
+
+With the in-process backend, the parser is generic. `--key value` and `--key=value` both work, hyphens in keys become underscores (`--start-date` is passed as `start_date`), and a flag with no value is passed as `true`. Values are matched against the JSON literals `true`, `false`, and `null` first, then read as Python literals, so `5` arrives as an integer, a quoted `'[1,2]'` as a list, and anything that is not a literal, such as `japan` or `2024-01-01`, as a string. A token that does not start with `--` where a key is expected stops the run with an error.
+
+With `--spec` or `--server`, the CLI builds an argument parser for the command from its schema. Flag names match the parameter names exactly, types and choices are enforced, required parameters must be present, list parameters take space-separated values, and boolean parameters accept `--name` or `--no-name`. When the command declares OpenBB providers, `--provider NAME` removes the flags that belong to other providers, and passing one of them is an error.
+
+```bash
+openbb --spec platform.spec cboe.equity.historical --symbol SPY --interval 1d
+```
+
+The result is written to stdout as one JSON line holding a response object. When the command returns a stream, the CLI writes the stream's lines to stdout until the stream ends or you press Ctrl+C.
+
+## Batch
+
+```bash
+openbb --batch
+```
+
+Batch mode reads NDJSON from stdin, one request per line, and writes one response line per request to stdout. Up to `--batch-concurrency` requests (default 8, or `OPENBB_CLI_BATCH_CONCURRENCY`) run at once, and each response is written as soon as its request finishes, so output order can differ from input order. Blank lines are skipped. A line that is not valid JSON or does not match the request schema produces a response with `ok` set to false and an error of type `RequestParseError`, and the batch continues with the next line.
+
+With `--spec` or `--server`, two reserved commands expose the catalog. `__commands__` returns a list of `{name, description}` objects sorted by name. `__schema__` takes `{"name": "<command>"}`, optionally with `"provider"`, and returns that command's parameters and response schema. The in-process backend does not implement them.
+
+```bash
+cat <<'EOF' | openbb --spec platform.spec --batch
+{"id":"1","command":"__commands__"}
+{"id":"2","command":"__schema__","params":{"name":"oecd.gdp_real"}}
+{"id":"3","command":"oecd.gdp_real","params":{"country":"japan"}}
+EOF
+```
+
+## Wire format
+
+Requests reject fields that are not listed here.
+
+| Request field | Type | Required | Meaning |
+| ------------- | ---- | -------- | ------- |
+| `id` | string | no | Correlation id copied onto the response. |
+| `command` | string | yes | Dotted command path, for example `oecd.gdp_real`. |
+| `params` | object | no | Keyword arguments for the command. Defaults to `{}`. |
+
+Response lines leave out fields whose value is null, so a successful line carries `ok` and `result`, and a failed line carries `ok` and `error`. The one exception is the `RequestParseError` line, which lists every field.
+
+| Response field | Type | Meaning |
+| -------------- | ---- | ------- |
+| `id` | string | The request's `id`, when one was sent. |
+| `ok` | boolean | Whether the command succeeded. |
+| `result` | any | The command's output. The in-process backend returns the serialized `OBBject`; HTTP backends return the unwrapped response body. |
+| `error` | object | `{"type": ..., "message": ...}` on failure. |
+
+| Error type | Raised when |
+| ---------- | ----------- |
+| `CommandNotFound` | The in-process backend cannot resolve the command path under `obb`. |
+| `HTTP<status>` | The upstream answered with an error status, for example `HTTP404`; the message holds the response body. |
+| `AccessDenied` | An auth hook denied the request, raised an exception, or returned something other than an `AuthDecision`. |
+| `UnknownNamespace` | With multiple specs, the command does not start with a mounted namespace. |
+| `UnknownCommand`, `MissingParameter`, `UnknownProvider` | `__schema__` was called for a command that is not in the spec, without `name`, or with a provider the command does not declare. |
+| `RequestParseError` | A batch input line could not be parsed. |
+
+Any other failure uses the exception's class name as the type.
+
+## Exit codes
+
+| Status | Meaning |
+| ------ | ------- |
+| 0 | One-shot: `ok` was true, or a streamed result ended. Batch: every response had `ok` true. |
+| 1 | One-shot: `ok` was false. Batch: at least one response had `ok` false. The in-process parser also exits with 1 when the argument list is malformed. |
+| 2 | The run stopped before dispatch: no command given, a command or flag the spec parser rejected, a malformed `--spec` or `--query-param` value, an unreadable `--header-file` or `--query-param-file`, an auth hook that failed to import, `--generate-spec` without a source or with no mappable operations, or `--generate-extension` without exactly one spec or with filters that match nothing. |
+
+## Interactive REPL
+
+```bash
+openbb -i [--spec PATH | --server URL] [initial input]
+```
+
+`-i` opens the REPL described in the [Interactive REPL section](./repl/structure-and-navigation.md). With `--spec` or `--server`, the menus are built from that API; otherwise they come from the installed extensions. Anything after the flags runs as the first input, written as a REPL path such as `/oecd/gdp_real --country japan`.
+
+At launch the REPL adjusts two settings for the session without saving them. If the output mode is `tsv`, it switches to `rich`, and if interactive tables are off, it turns them on. Because the stored value cannot be told apart from the default, a `tsv` or `False` saved in `~/.openbb_platform/.cli.env` is overridden on every launch; change them for the session with `/settings/output` and `/settings/interactive`. `--debug` and `--dev` set the `DEBUG_MODE` and `DEV_BACKEND` settings and only take effect together with `-i`.
+
+## Helper modes
+
+| Flag | Effect |
+| ---- | ------ |
+| `--list-commands` | Print the command catalog as a JSON response, then exit. Needs `--spec` or `--server`. |
+| `--describe COMMAND[:PROVIDER]` | Print one command's parameters and response schema as a JSON response, then exit. Needs `--spec` or `--server`. When the command declares providers, the output groups parameters by provider, and the `:PROVIDER` suffix returns a single provider's slice; for other commands the suffix is ignored. |
+| `--print-config-template` | Print a TOML configuration template, then exit. Options without a resolved value are commented out. |
+| `--show-config` | Print the merged TOML configuration as JSON, then exit. |
+| `--generate-spec` | Write a `.spec` file built from `--server` or `--socrata-story`, then exit. |
+| `--generate-extension` | Write an installable OpenBB extension project built from one `.spec` file, then exit. |
+
+
+---
+
+---
+title: Quickstart
+sidebar_position: 2
+description: >
+  Run one command in-process, through an openbb-api server, and from a .spec
+  file, send a batch over stdin, and open the REPL.
+keywords:
+  - openbb-cli quickstart
+  - one-shot
+  - batch
+  - interactive
+  - .spec
+---
+
+The examples use the OECD and Cboe provider extensions, which need no API key. Install them next to the CLI with `pip install openbb-oecd openbb-cboe`.
+
+## One command, in-process
+
+Without a backend flag, the CLI imports the local `openbb` package and calls the matching function under `obb`:
+
+```bash
+openbb oecd.gdp_real --country japan --frequency annual
+```
+
+The first argument is the dotted command path, and each `--key value` pair becomes a keyword argument. The output is one JSON line on stdout with `ok`, plus `result` on success or `error` on failure. The exit status is 0 when `ok` is true and 1 when it is false. [Modes](./modes.md) describes the full wire format and how values are parsed.
+
+## One command, through a server
+
+`openbb-api`, from the `openbb-platform-api` package, serves every installed extension over HTTP on `http://127.0.0.1:6900` by default. Start it in one terminal and point the CLI at it from another:
+
+```bash
+openbb-api
+```
+
+```bash
+openbb --server http://127.0.0.1:6900 oecd.gdp_real --country japan
+```
+
+On each invocation the CLI downloads `<URL>/openapi.json`, builds an argument parser for the requested command from the schema, validates the flags against it, and sends the request.
+
+## One command, from a `.spec` file
+
+A `.spec` file stores the processed OpenAPI document on disk, so later calls skip the download:
+
+```bash
+openbb --generate-spec --server http://127.0.0.1:6900 --output platform.spec
+openbb --spec platform.spec oecd.gdp_real --country japan
+```
+
+The file records the server URL it was generated against, so `--server` is not needed alongside `--spec`.
+
+## Batch
+
+`--batch` reads one JSON request per line from stdin and writes one JSON response per line to stdout:
+
+```bash
+cat <<'EOF' | openbb --spec platform.spec --batch
+{"id":"gdp","command":"oecd.gdp_real","params":{"country":"japan"}}
+{"id":"spy","command":"cboe.equity.historical","params":{"symbol":"SPY"}}
+EOF
+```
+
+Requests run concurrently, eight at a time unless `--batch-concurrency` or `OPENBB_CLI_BATCH_CONCURRENCY` says otherwise, and responses are written in completion order. Each response echoes the request's `id`, which is how you match them up.
+
+## Interactive REPL
+
+```bash
+openbb -i
+```
+
+The REPL presents the installed extensions as menus. With `--spec platform.spec` or `--server URL`, the menus mirror that API instead. Anything after `-i` runs as the first input, using the REPL's slash-separated paths:
+
+```bash
+openbb -i /oecd/gdp_real --country japan
+```
+
+See [Structure and Navigation](./repl/structure-and-navigation.md) for how menus and paths work.
+
+## Inspect the command catalog
+
+`--list-commands` prints a JSON response whose `result` lists the name and short description of every command in a spec or on a server. `--describe` does the same for the parameters and response schema of one command.
+
+```bash
+openbb --spec platform.spec --list-commands
+openbb --spec platform.spec --describe oecd.gdp_real
+```
+
+Both need `--spec` or `--server`; the in-process backend has no catalog to read. In batch mode, the same information is available through the reserved commands `__commands__` and `__schema__`.
+
+
+---
+
+---
+title: CLI flags
+sidebar_position: 0
+description: >
+  Every flag accepted by openbb, with its default, environment variable
+  fallback, and behavior.
+keywords:
+  - openbb-cli flags
+  - --server
+  - --spec
+  - --batch
+  - --generate-extension
+---
+
+`openbb -h` prints the same list. Flags that take a value accept both `--flag value` and `--flag=value`.
+
+## Modes
+
+These flags are mutually exclusive. Without any of them, the CLI runs the command given as positional arguments and exits; see [Modes](../modes.md).
+
+| Flag | Effect |
+| ---- | ------ |
+| `-i`, `--interactive` | Open the interactive REPL. |
+| `--batch` | Read NDJSON requests from stdin and write NDJSON responses to stdout, up to `--batch-concurrency` at a time. |
+| `--generate-spec` | Write a `.spec` file built from `--server`, with optional `--openapi-path`, or from `--socrata-story`, then exit. |
+| `--generate-extension` | Write an installable OpenBB extension project built from one `--spec` into `--output`, then exit. See [Codegen](../codegen.md). |
+| `--list-commands` | Print the command catalog as a JSON response, the same as the `__commands__` batch command. Needs `--spec` or `--server`. |
+| `--describe COMMAND[:PROVIDER]` | Print one command's parameters and response schema as a JSON response, the same as `__schema__`. Needs `--spec` or `--server`. The `:PROVIDER` suffix selects one provider's parameters for commands that declare providers. |
+| `--print-config-template` | Print a commented TOML configuration template. |
+| `--show-config` | Print the merged TOML configuration as JSON. |
+
+## Backend
+
+| Flag | Default | Environment | Notes |
+| ---- | ------- | ----------- | ----- |
+| `--server URL` | none | `OPENBB_SERVER_URL` | Dispatch over HTTP to an `openbb-api` or other OpenAPI 3.x server. Ignored for dispatch when a spec is configured. |
+| `--spec [NAME=]PATH` | none | `OPENBB_SPEC_PATH` | Dispatch from a `.spec` file. Repeatable; with more than one, every entry needs a `NAME=` namespace. The variable is used only when no spec is set by flag or `openbb.toml`. |
+| `--openapi-path PATH` | none | none | Path appended to the server URL, or a full URL, of the OpenAPI document. When unset, `/openapi.json` is tried. Read only by `--generate-spec`. |
+| `--socrata-story URL_OR_PATH` | none | none | Build a spec from a Socrata story or dataset. With `--generate-spec` it is saved; otherwise it is used for this run only. |
+
+With no spec and no server, commands run in-process against the installed `openbb` extensions. [Backends](../backends.md) covers the selection rules.
+
+## Auth
+
+| Flag | Default | Environment | Notes |
+| ---- | ------- | ----------- | ----- |
+| `-H KEY=VALUE`, `--header KEY=VALUE` | none | none | HTTP header for every request and for the OpenAPI download. `KEY: VALUE` also works. Repeatable. `NS:KEY=VALUE` limits it to namespace `NS`. |
+| `--header-file PATH` | none | `OPENBB_HEADER_FILE` | JSON object of headers. `-H` flags win on conflicts. |
+| `-Q KEY=VALUE`, `--query-param KEY=VALUE` | none | `OPENBB_HTTP_QUERY_<NAME>` | Query parameter for every request. Repeatable. `NS:KEY=VALUE` limits it to namespace `NS`. Each `OPENBB_HTTP_QUERY_<NAME>` variable adds `<name>` in lower case. |
+| `--query-param-file PATH` | none | `OPENBB_QUERY_PARAM_FILE` | JSON object of query parameters. `OPENBB_HTTP_QUERY_*` variables and `-Q` flags win on conflicts. |
+
+Auth hooks have no flag; they are configured in `openbb.toml`. See [Authentication](../auth.md).
+
+## Codegen
+
+| Flag | Default | Used by | Notes |
+| ---- | ------- | ------- | ----- |
+| `--output PATH`, `-o PATH` | `openbb.spec` | `--generate-spec`, `--generate-extension` | Spec file path, or the parent directory of the generated project. The `output` key in `openbb.toml` is not applied in v5. |
+| `--provider-name NAME` | name of the `--output` directory | `--generate-extension` | Source of the snake_case slug for the provider, namespace, and default names. |
+| `--project-name NAME` | `openbb-<slug>` | `--generate-extension` | Distribution name and project directory. |
+| `--package-name NAME` | `openbb_<slug>` | `--generate-extension` | Python package directory. |
+| `--router-name NAME` | none | `--generate-extension` | Accepted but not used in v5; the namespace is the slug. |
+| `--include PATTERN` | `None` | `--generate-extension` | Keep only commands whose dotted name matches the glob. Repeatable. Overrides `--exclude`. |
+| `--exclude PATTERN` | `None` | `--generate-extension` | Drop commands whose dotted name matches the glob. Repeatable. Ignored when `--include` is set. |
+
+## Configuration files
+
+| Flag | Default | Environment | Notes |
+| ---- | ------- | ----------- | ----- |
+| `--config PATH` | none | `OPENBB_CLI_CONFIG` | TOML file merged over `pyproject.toml`, the user-global `openbb.toml`, and the project `openbb.toml`. See [Configuration](../configuration.md). |
+| `--env-file PATH` | none | `OPENBB_CLI_ENV_FILE` | `.env` file loaded into the environment after `~/.openbb_platform/.env`. Variables that are already set are kept. |
+
+## Runtime
+
+| Flag | Default | Environment | Notes |
+| ---- | ------- | ----------- | ----- |
+| `--batch-concurrency N` | `8` | `OPENBB_CLI_BATCH_CONCURRENCY` | Maximum number of batch requests in flight. The `batch-concurrency` key in `openbb.toml` is not applied in v5. |
+| `--dev` | off | none | Sets `DEV_BACKEND` for the REPL session. Only used with `-i`. |
+| `--debug` | off | none | Sets `DEBUG_MODE` for the REPL session. Only used with `-i`. |
+
+## Positional arguments
+
+Everything after the flags is collected as the command: the dotted command path followed by `--key value` or `--key=value` pairs. With `-i`, it is run as the first REPL input instead, written as a REPL path such as `/oecd/gdp_real --country japan`. With `--generate-spec`, a single positional argument is taken as the output path when `--output` is not given. [Modes](../modes.md#one-shot) explains how the pairs are parsed for each backend.
+
+
+---
+
+---
+title: Commands and Arguments
+sidebar_position: 2
+description: >
+  Reading command help, passing parameters, the flags the REPL adds to every
+  data command, and tab completion and history in the ODP CLI REPL.
+keywords:
+  - openbb-cli REPL
+  - command help
+  - parameters
+  - flags
+  - auto-complete
+  - history
+---
+
+## Help for a command
+
+Add `-h` or `--help` to any command to print its usage and description instead of running it:
+
+```text
+/oecd/gdp_real -h
+```
+
+Required parameters are listed under `required arguments`. In the in-process mode, parameters that only one provider supports are grouped under that provider's name, and a parameter that several providers support is listed once with a `(provider: ...)` note naming them. With `--spec` or `--server`, the remaining parameters appear under `optional arguments`.
+
+## Passing parameters
+
+Parameters take the form `--name value` or `--name=value`, and the names are the command's parameter names as written in its signature or schema, including underscores:
+
+```text
+/cboe/equity/historical --symbol SPY --start_date 2024-01-01 --interval 1d
+```
+
+A parameter with a fixed set of values only accepts those values, and the help lists them. Wrap values that contain spaces or a `/` in quotes. Boolean parameters take no value: in the in-process mode, adding the flag sets it to true; with `--spec` or `--server`, use `--name` or `--no-name`. Where a command accepts several values for one parameter, its help says so, usually as a comma-separated list such as `--symbol SPY,QQQ`.
+
+## Flags the REPL adds
+
+Every data command accepts four extra flags on top of its own parameters.
+
+| Flag | Effect |
+| ---- | ------ |
+| `--register_obbject` | Do not add this result to the registry. By default every result is added. |
+| `--register_key KEY` | Store the result under a name as well as an index. The name cannot contain `OBB` and must not already be in use; a duplicate is ignored with a warning. |
+| `--export FORMAT` | Write the result to the export folder instead of displaying it. Formats are `csv`, `json`, `xlsx`, `png`, `jpg`, `db`, `sqlite`, and `sqlite3`. |
+| `--sheet-name NAME` | Sheet to write when exporting to `xlsx`. |
+
+:::note
+In v5, `--export` on a data command writes a file only when the command returns a plain dictionary. Most commands return an `OBBject`, and for those the REPL prints `No data to export.` To save any cached result, use `save` in the [`/feature` menu](./results.md#the-feature-menu).
 :::
 
-Finally, enter:
+Commands that can draw a chart also accept `--chart`; see [Interactive Charts](./interactive-charts.md). Data-processing commands in `/technical`, `/quantitative`, and `/econometrics` take their input through `--data`, which refers to a cached result as described in [Results Registry](./results.md).
 
-```console
-python dev_install.py -e --cli
+## Completion and history
+
+While you type, the prompt suggests the commands and menus of the current menu. After a command and a space, it suggests that command's flags, and after a flag with fixed values, those values. `--data` completes to the cached results, `load --file` to the data files in the OpenBBUserData folder, and `exe --file` to the saved routines.
+
+Each line you enter is saved to `~/.openbb_platform/.cli.his` and can be recalled with the arrow keys. Values that follow `--password`, `--email`, or `--pat` are masked in the file; everything else is stored as typed, including credentials set in `/user/credentials`.
+
+Completion, history, and the bottom toolbar all come from prompt-toolkit. `/settings/promptkit` turns them off and falls back to a plain input line.
+
+
+---
+
+---
+title: Data Sources
+sidebar_position: 3
+description: >
+  How providers map to menus in the ODP CLI REPL, when --provider matters,
+  and where provider credentials and default parameters come from.
+keywords:
+  - openbb-cli REPL
+  - provider
+  - credentials
+  - API keys
+  - user_settings.json
+  - defaults
+---
+
+In V5, each provider package owns its own namespace, so the data source is usually implied by the menu: `/oecd` commands come from the OECD, `/cboe` commands from Cboe, `/fred` commands from FRED. In the in-process mode, the menu listing shows each command's provider in brackets. The available providers are whatever OpenBB extensions are installed; the [extensions overview](../../python/extensions/index.mdx) lists the packages.
+
+## Choosing a provider
+
+Commands still accept `--provider`, but most list a single choice. A few commands are served by more than one provider, for example `/news/company`, which accepts `nasdaq` or `tmx`:
+
+```text
+/news/company --symbol AAPL --provider nasdaq
 ```
 
-## Installing New Modules
+Parameters that only one provider supports are grouped under that provider's name in the command help. In the in-process mode, when `--provider` is given, flags that belong to other providers are dropped before the call; with `--spec` or `--server`, passing one of them is an error. Without `--provider`, the provider comes from the default list described below.
 
-New extensions, or removals, are automatically added (removed) to the CLI on the next launch.
+## Credentials
+
+Providers that need an API key read it from the OpenBB credentials, under a name made of the provider and the credential, such as `fred_api_key`. The in-process mode takes them from the `credentials` object in `~/.openbb_platform/user_settings.json`, or from an environment variable with the same name in upper case, such as `FRED_API_KEY`.
+
+```json
+{
+  "credentials": {
+    "fred_api_key": "..."
+  }
+}
+```
+
+For the current session only, set a credential in the `/user/credentials` menu. Its help screen lists every credential the installed providers declare and whether each one is set; enter the credential's name with `-v` to set it:
+
+```text
+/user/credentials/fred_api_key -v YOUR_KEY
+```
+
+Nothing set in `/user/credentials` is written to `user_settings.json`, but the line you typed is saved in the prompt history file, `~/.openbb_platform/.cli.his`. Put long-lived keys in `user_settings.json` instead.
+
+With `--server`, commands run on the server and use the server's credentials. With a spec for a non-OpenBB API, keys travel as headers or query parameters; see [Authentication](../auth.md).
+
+## Default providers and parameters
+
+`user_settings.json` can also set defaults per command under `defaults.commands`, keyed by the dotted command path. A `provider` list sets the order in which providers are tried when `--provider` is omitted: the first one whose required credentials are all set is used. Other keys set default values for parameters that you do not pass.
+
+```json
+{
+  "defaults": {
+    "commands": {
+      "news.company": {
+        "provider": ["tmx", "nasdaq"]
+      },
+      "oecd.gdp_real": {
+        "country": "japan",
+        "frequency": "annual"
+      }
+    }
+  }
+}
+```
+
+The `/user` menu shows the OpenBB preferences, such as the data and export folders or the chart style, and changes them for the current session only.
 
 
 ---
 
 ---
 title: Interactive Charts
-sidebar_position: 9
-description: This page provides a detailed explanation of the OpenBB Interactive Charts. Understand various capabilities including annotation, color modification, drawing tools, data export, and supplementary data overlay.
+sidebar_position: 6
+description: >
+  Drawing charts in the ODP CLI REPL with --chart and results --chart, what
+  the chart window offers, and what the charting and interactive extras add.
 keywords:
-- interactive charts
-- PyWry
-- annotation
-- drawing
-- lines
-- modebar
-- plotly
-- data export
-- data overlay
-- editing chart title
-- Toolbar
-- Text Tools
-- Draw Tools
-- Export Tools
+  - openbb-cli REPL
+  - interactive charts
+  - --chart
+  - openbb-charting
+  - PyWry
+  - Plotly
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+Charts need the `openbb-charting` extension, installed by the `charting` extra, and open in a PyWry window when `pywry` from the `interactive` extra is also installed. `pip install "openbb-cli[all]"` installs both.
 
-<HeadTitle title="Interactive Charts - | ODP CLI Docs" />
+## Drawing a chart
 
-Interactive charts open in a separate window ([PyWry](https://github.com/OpenBB-finance/pywry)). The OpenBB charting library provides interactive and highly customizable charts.
+Commands that can produce a chart list a `--chart` flag in their help. Among the V5 extensions these are a subset of the `/technical`, `/quantitative`, and `/econometrics` commands, including `/technical/ema`:
 
-:::tip
-Not all commands have a charting output, the ones that do, will display a chart argument (`--chart`), which will trigger the charting output instead of the default table output.
+```text
+/cboe/equity/historical --symbol SPY --start_date 2024-01-01
+/technical/ema --data OBB0 --length 20 --chart
+```
 
-Example: `equity/price/historical --symbol AAPL --chart`
-:::
+In the `rich` output mode, the chart is shown in place of the table. The result still enters the registry with its data, so the table remains available through `results`.
 
-<details>
-<summary>Charting cheat sheet </summary>
+Any cached result can be charted afterwards:
 
-![Group 653](https://user-images.githubusercontent.com/85772166/234313541-3d725e1c-ce48-4413-9267-b03571e0eccd.png)
+```text
+results --index 0 --chart
+```
 
-</details>
+If the result already carries a chart, that chart is shown. Otherwise `openbb-charting` builds one from the data, falling back to a generic line chart when the command has no chart of its own.
 
-## Toolbar
+## The chart window
 
-![Chart Tools](https://user-images.githubusercontent.com/85772166/233247997-55c03cbd-9ca9-4f5e-b3fb-3e5a9c63b6eb.png)
+The window shows an interactive Plotly figure; scrolling zooms the view. The header bar has a button that switches between light and dark themes, and the window opens in the theme set by the `chart_style` preference, which the `/user` menu changes for the session. Without `pywry`, the figure is handed to Plotly's default renderer instead, which usually opens it in the browser.
 
-The toolbar is located at the bottom of the window, and provides methods for:
-
-- Panning and zooming.
-- Modifying the title and axis labels.
-- Adjusting the hover read out.
-- Toggling light/dark mode.
-- Annotating and drawing.
-- Exporting raw data.
-- Saving the chart as an image.
-- Adding supplementary external data as an overlay.
-
-The label for each tool is displayed by holding the mouse over it.
-
-The toolbar's visibility can be toggled utilizing the `ctrl + h` shortcut.
-
-## Text Tools
-
-Annotate a chart by clicking on the `Add Text` button, or with the keyboard, `ctrl + t`.
-
-![Annotate Charts](https://user-images.githubusercontent.com/85772166/233248056-d459d7a0-ba2d-4533-896a-79406ded859e.png)
-
-Enter some text, make any adjustments to the options, then `submit`.  Place the crosshairs over the desired data point and click to place the text.
-
-![Place Text](https://user-images.githubusercontent.com/85772166/233728645-74734241-4da2-4cff-af17-b68a62e95113.png)
-
-After placement, the text can be updated or deleted by clicking on it again.
-
-![Delete Annotation](https://user-images.githubusercontent.com/85772166/233728428-55d2a8e5-a68a-4cd1-9dbf-4c1cd697187e.png)
-
-## Change Titles
-
-The title of the chart is edited by clicking the button, `Change Titles`, near the middle center of the toolbar, immediately to the right of the `Add Text` button.
-
-## Draw Tools
-
-![Edit Colors](https://user-images.githubusercontent.com/85772166/233729318-8af947fa-ce2a-43e2-85ab-657e583ac8b1.png)
-
-The fourth group of icons on the toolbar are for drawing lines and shapes.
-
-- Edit the colors.
-- Draw a straight line.
-- Draw a freeform line.
-- Draw a circle.
-- Draw a rectangle.
-- Erase a shape.
-
-To draw on the chart, select one of the four drawing buttons and drag the mouse over the desired area. Click on any existing shape to modify it by dragging with the mouse and editing the color, or remove it by clicking the toolbar button, `Erase Active Shape`. The edit colors button will pop up as a floating icon, and clicking on that will display the color palette.
-
-## Export Tools
-
-The two buttons at the far-right of the toolbar are for saving the raw data or, to save an image file of the chart at the current panned and zoomed view.
-
-![Export Tools](https://user-images.githubusercontent.com/85772166/233248436-08a2a463-403b-4b1b-b7d8-80cd5af7bee3.png)
-
-## Overlay
-
-The button, `Overlay chart from CSV`, provides an easy import method for supplementing a chart with additional data.  Clicking on the button opens a pop-up dialogue to select the file, column, and whether the overlay should be a bar, candlestick, or line chart.  As a candlestick, the CSV file must contain OHLC data.  The import window can also be opened with the keyboard, `ctrl-o`.
-
-![Overlay CSV](https://user-images.githubusercontent.com/85772166/233248522-16b539f4-b0ae-4c30-8c72-dfa59d0c0cfb.png)
-
-After choosing the file to overlay, select what to show and then click on `Submit`.
-
-![Overlay Options](https://user-images.githubusercontent.com/85772166/233250634-44864da0-0936-4d3c-8de2-c8374d26c1d2.png)
-
-![Overlay Chart](https://user-images.githubusercontent.com/85772166/233248639-6d12b16d-471f-4550-a8ab-8d8c18eeabb3.png)
+To keep the data behind a chart, save the result from the [`/feature` menu](./results.md#the-feature-menu).
 
 
 ---
 
 ---
 title: Interactive Tables
-sidebar_position: 10
-description: This page explains how to navigate and utilize OpenBB's interactive tables. Understand how to sort and filter columns, hide or remove columns, select number of rows per page, freeze index and column headers, and export the data.
+sidebar_position: 5
+description: >
+  How the ODP CLI REPL displays results in each output mode, when tables open
+  in a PyWry window, and how to filter a table with the Pandas Query toolbar.
 keywords:
-- interactive tables
-- PyWry technology
-- sorting columns
-- filtering columns
-- hiding columns
-- rows per page
-- freeze index
-- freeze column headers
-- exporting data
-- data visualization
-- customizing tables
+  - openbb-cli REPL
+  - interactive tables
+  - output mode
+  - PyWry
+  - pandas query
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+Where a result appears depends on two [settings](../settings.md): the output mode, set with `/settings/output -v MODE`, and the `interactive` flag, toggled with `/settings/interactive`.
 
-<HeadTitle title="Interactive Tables - | ODP CLI Docs" />
+| Output mode | Display |
+| ----------- | ------- |
+| `rich` | A formatted table in the terminal, limited to the first 1000 rows, with decimals shown to two places. |
+| `json` | The result rows as indented JSON. |
+| `tsv` | The complete table as tab-separated text, suitable for copying into other tools. |
+| `html` | An HTML table written to a temporary file and opened in the default browser. The file path is printed. |
 
+## The table window
 
-Interactive tables open in a separate window ([PyWry](https://github.com/OpenBB-finance/pywry)). These provide methods for searching, sorting, filtering, exporting and even adapting settings directly on the table.
+When `interactive` is on and `openbb-charting` is installed, the `rich` and `html` modes send results to a separate window drawn by PyWry instead; `json` and `tsv` always print to the terminal. The REPL turns `interactive` on at every launch, so the window is the default whenever both packages are present. Install them with `pip install "openbb-cli[all]"`.
 
-:::tip
-All ODP CLI results are displayed in interactive tables by default, unless the interactive model is disabled from the `/settings` menu.
-:::
+Without `openbb-charting`, results print in the terminal regardless of the flag. With `openbb-charting` but without `pywry`, the window cannot open, and in the `rich` and `html` modes the results of data commands are not shown; run `/settings/interactive` to turn the window off for the session, or install `pywry`.
 
-<details>
-<summary>Table cheat sheet </summary>
+The window title names the command that produced the table. The header bar has a button that switches between light and dark themes; the window opens in the theme set by the `chart_style` preference, which the `/user` menu changes for the session.
 
-![Chart Intro (5)](https://user-images.githubusercontent.com/85772166/234315026-de098953-111b-4b69-9124-31530c01407a.png)
+## Pandas Query toolbar
 
-</details>
+Above the table, a collapsible toolbar labeled Pandas Query filters or reshapes the table without leaving the window. Type a Python expression in which `df` is the full table and `pd` is pandas, then press Submit:
 
-## Sorting
+```python
+df.query('close > 200').nlargest(10, 'volume')
+```
 
-Columns can be sorted ascending/descending/unsorted, by clicking the controls to the right of each header title.  The status of the filtering is shown as a blue indicator.
+The expression must return a DataFrame, which replaces the rows and columns in view. Reset restores the original table. Expressions that contain `import`, `exec`, `eval`, `compile`, `open`, `__`, `getattr`, `setattr`, `delattr`, `globals`, `locals`, `os.`, `sys.`, `subprocess`, `shutil`, `pathlib`, `breakpoint`, `exit`, or `quit` are refused with an error message.
 
-![Sort Columns](https://user-images.githubusercontent.com/85772166/233248754-20c18390-a7af-490c-9571-876447b1b0ae.png)
-
-## Filtering
-
-The settings button, at the lower-left corner, displays choices for customizing the table. By selecting the `Type` to be `Advanced`, columns become filterable.
-
-![Table Settings](https://user-images.githubusercontent.com/85772166/233248876-0d788ff4-974d-4d92-8186-56864469870a.png)
-
-The columns can be filtered with min/max values or by letters, depending on the content of each column.
-
-![Filtered Tables](https://user-images.githubusercontent.com/85772166/233248923-45873bf1-de6b-40f8-a4aa-05e7c3d21ab0.png)
-
-## Hiding columns
-
-The table will scroll to the right as far as there are columns.  Columns can be removed from the table by clicking the icon to the right of the settings button and unchecking it from the list.
-
-![Select Columns](https://user-images.githubusercontent.com/85772166/233248976-849791a6-c126-437c-bb54-454ba6ea4fa2.png)
-
-## Select rows per page
-
-The number of rows per page is defined in the drop down selection near the center, at the bottom.
-
-![Rows per Page](https://user-images.githubusercontent.com/85772166/233249018-8269896d-72f7-4e72-a4d4-2715d1f11b96.png)
-
-## Freeze the Index and Column Headers
-
-Right-click on the index name to enable/disable freezing when scrolling to the right. Column headers are frozen by default.
-
-![Index Freeze](https://user-images.githubusercontent.com/85772166/234103702-0965dfbd-24ca-4a66-8c76-9fac28abcff8.png)
-
-## Exporting Data
-
-At the bottom-right corner of the table window, there is a button for exporting the data.  To the left, the drop down selection for `Type` can be defined as a CSV, XLSX, or PNG file.  Exporting the table as a PNG file will create a screenshot of the table at its current view, and data that is not visible will not be captured.
-
-![Export Data](https://user-images.githubusercontent.com/85772166/233249065-60728dd1-612e-4684-b196-892f3604c0f4.png)
+The toolbar changes only what the window shows. To keep a filtered table in the registry or write it to a file, use `query --save` and `save` in the [`/feature` menu](./results.md#the-feature-menu).
 
 
 ---
 
 ---
 title: OpenBBUserData Folder
-sidebar_position: 8
-description: The OpenBBUserData folder is where exports, routines, and other user-related content is saved and stored. Its default location is the home of the system user account.
+sidebar_position: 7
+description: >
+  Where the ODP CLI REPL reads and writes files: the OpenBBUserData folders
+  set in the OpenBB user preferences, and the CLI's own files in
+  ~/.openbb_platform.
 keywords:
-- OpenBBUserData folder
-- settings
-- data
-- preferences
-- exports
-- CLI
-- save
-- routines
-- xlsx
-- csv
-- user_settings.json
+  - OpenBBUserData folder
+  - data directory
+  - export directory
+  - routines
+  - user_settings.json
+  - .cli.env
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+The REPL reads and writes user files in folders defined by the OpenBB user preferences, which default to an `OpenBBUserData` folder in the home directory: `/Users/<name>/OpenBBUserData` on macOS, `C:\Users\<name>\OpenBBUserData` on Windows, and `/home/<name>/OpenBBUserData` on Linux and inside WSL.
 
-<HeadTitle title="OpenBBUserData Folder | ODP CLI Docs" />
+| Preference | Default | What the REPL does there |
+| ---------- | ------- | ------------------------ |
+| `data_directory` | `~/OpenBBUserData` | `load --file` reads paths relative to it, and `save` in the `/feature` menu writes to it. |
+| `export_directory` | `~/OpenBBUserData/exports` | `--export` writes files here. Routines live in its `routines` subfolder: `record` and `stop` save there, and `exe --file` completes and resolves any `.openbb` file below it. |
 
-The OpenBBUserData folder is where exports, routines, and other user-related content is saved and stored.
+Completion lists for `load --file` and `exe --file` are rebuilt whenever the home screen's help is printed, so after adding a file, run `help` at the home screen to see it offered.
 
-:::info
-If a new file is placed in the folder (like a Routine) the CLI will need to be reset before auto complete will recognize it.
-:::
+## Changing the folders
 
-## Default Location
-
-Its default location is the home of the system user account, similar to the following paths:
-- macOS: `Macintosh HD/Users/<YOUR_USERNAME>/OpenBBUserData`
-- Windows: `C:/Users/<YOUR_USERNAME>/OpenBBUserData`
-
-This folder contains all things user-created. For example:
-
-- Exported files
-- Styles and themes
-- Routines
-- Logs
-
-:::note
-**Note:** With a WSL-enabled Windows installation, this folder will be under the Linux partition
-:::
-
-## Update Folder Location
-
-The location of this folder can be set by the user by changing the user configuration file: `/home/your-user/.openbb_platform/user_settings.json`.
+Set the preferences in `~/.openbb_platform/user_settings.json` to move the folders permanently:
 
 ```json
 {
-...
-"preferences": {
-    "data_directory": "/path/to/NewOpenBBUserData",
-    "export_directory": "/path/to/NewOpenBBUserData"
-},
-...
+  "preferences": {
+    "data_directory": "/data/OpenBBUserData",
+    "export_directory": "/data/OpenBBUserData/exports"
+  }
 }
 ```
 
+For the current session only, use the `/user` menu, for example `/user/export_directory -v "/tmp/openbb-exports"`; the quotes keep the REPL from reading the slashes as menu steps. Changes made there are not saved.
+
+## Files in ~/.openbb_platform
+
+The CLI keeps its own files next to the OpenBB user settings.
+
+| File | Contents |
+| ---- | -------- |
+| `.cli.env` | REPL settings changed through `/settings`. See [Settings](../settings.md). |
+| `.cli.his` | Prompt history. |
+| `openbb.toml` | Optional user-global CLI configuration. See [Configuration](../configuration.md). |
+| `.env` | Optional environment variables loaded at startup. |
+| `user_settings.json` | OpenBB credentials, preferences, and command defaults, shared with the Python package. |
+
 
 ---
 
 ---
-title: Quick Start
-sidebar_position: 2
-description: This page is a quick start guide for the ODP CLI.
+title: Results Registry
+sidebar_position: 4
+description: >
+  How the ODP CLI REPL caches command results, how to reuse them as input,
+  load files into the cache, and reshape or save cached tables in the
+  /feature menu.
 keywords:
-- quickstart
-- quick start
-- tutorial
-- getting started
-- cli
+  - openbb-cli REPL
+  - results
+  - OBBject registry
+  - --data OBB0
+  - load
+  - feature
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+Each data command's result is added to a registry for the rest of the session, unless the command ran with `--register_obbject`. Results are numbered from the newest: `OBB0` is the latest, `OBB1` the one before, and so on, so the numbers shift each time a new result arrives. A result stored with `--register_key NAME` can also be addressed by that name, which does not change.
 
-<HeadTitle title="Quick Start - Usage | ODP CLI Docs" />
+The registry keeps 10 results and drops the oldest when it is full; the `obbject_res` setting changes the limit. Help screens list the most recent five, a number set by `obbject_display`, with the command that produced each one.
 
-## Launch
+## Viewing results
 
-- Configure any data provider credentials in the [`user_settings.json`](/odp/python/settings/user_settings/api_keys) file.
-- Open a Terminal and activate the environment where the `openbb-cli` package was installed.
-- On the command line, enter: `openbb`
+`results` on its own lists the cached results with their metadata. `--index N` or `--key NAME` shows one result's data, and `--chart` draws it instead; see [Interactive Charts](./interactive-charts.md).
 
-![CLI Home](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/d1617c3b-c83d-4491-a7bc-986321fd7230)
-
-## Menus
-
-:::info
-Menus are distinguishable from commands by the character, `>`, on the left of the screen.
-:::
-
-Enter a menu by typing it out and pressing return.
-
-```console
-economy
-```
-
-![Economy Menu](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/b68491fc-d6c3-42a7-80db-bfe2aa848a5a)
-
-### Go Back One Level
-
-Return to the parent menu by entering either:
-
-- `..`
-- `q`
-
-### Go Back To Home
-
-Return to the base menu by entering either:
-
-- `/`
-- `home`
-
-### Jump Between Menus
-
-Use absolute paths to navigate from anywhere, to anywhere.
-
-From:
-
-```console
-/equity/calendar/earnings
-```
-
-To:
-
-```console
-/economy/calendar
-```
-
-## Commands
-
-Commands are displayed on-screen in a lighter colour, compared with menu items, and they will not have, `>`.
-
-Functions have a variety of parameters that differ by endpoint and provider. Use the `--help` dialogue to understand the nuances of any particular command.
-
-### How To Enter Parameters
-
-Parameters are all defined through the same pattern, `--argument`, followed by a space, and then the value.
-
-If the parameter is a boolean (true/false), there is no value to enter. Adding the `--argument` flags the parameter to be the opposite of its default state.
-
-:::danger
-The use of positional arguments is not supported.
-
-❌ `historical AAPL --start_date 2024-01-01`
-
-✅ `historical --symbol AAPL --start_date 2024-01-01`
-:::
-
-### Use Auto Complete
-
-The auto completion engine is triggered when the spacebar is pressed following any command, or parameter with a defined set of choices.
-
-After the first parameter has been set, remaining parameters will be triggered by entering `--`.
-
-```console
-historical --symbol AAPL --start_date 2024-01-01 --
-```
-
-![Auto Complete](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/78e68bbd-094e-4558-bce0-92b8d556fcaf)
-
-### Data Processing Commands
-
-Data processing extensions, like `openbb-technical` accept `--data` as an input.
-
-:::info
-Command outputs are cached. These can be check using the `results` command and are selected with the `--data` parameter.
-:::
-
-```console
-# Store the command output
-/equity/price/historical --symbol SPY --start_date 2024-01-01 --provider yfinance
-
-# Check results content
+```text
 results
-
-# Use the results
-/technical/rsi --data OBB0 --chart
+results --index 0
+results --key spy_daily --chart
 ```
 
-![SPY RSI](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/b480da04-92e6-48e2-bccf-cebc16fb083a)
+## Using a result as input
 
-## Help Dialogues
+Commands that take a `data` parameter, which includes most of `/technical`, `/quantitative`, and `/econometrics`, accept a cached result by index label or by key:
 
-Display the help dialogue by attaching, `--help` or `-h`, to any command.
-
-:::info
-Use this to identify the providers compatible with each parameter, if applicable.
-:::
-
-```console
-calendar --help
+```text
+/cboe/equity/historical --symbol SPY --start_date 2024-01-01 --register_key spy_daily
+/technical/ema --data OBB0 --length 20
+/technical/rsi --data spy_daily
 ```
 
-```console
-usage: calendar [--start_date START_DATE] [--end_date END_DATE] [--provider {fmp,nasdaq,tradingeconomics}] [--country COUNTRY] [--importance {Low,Medium,High}]
-                [--group {interest rate,inflation,bonds,consumer,gdp,government,housing,labour,markets,money,prices,trade,business}] [-h] [--export EXPORT]
-                [--sheet-name SHEET_NAME [SHEET_NAME ...]]
+The `--data` choices are refreshed as results arrive, so tab completion offers the labels and keys that currently exist.
 
-Get the upcoming, or historical, economic calendar of global events.
+## Loading files
 
-options:
-  --start_date START_DATE
-                        Start date of the data, in YYYY-MM-DD format.
-  --end_date END_DATE   End date of the data, in YYYY-MM-DD format.
-  --provider {fmp,nasdaq,tradingeconomics}
-                        The provider to use for the query, by default None.
-                            If None, the provider specified in defaults is selected or 'fmp' if there is
-                            no default.
-  --country COUNTRY     Country of the event. (provider: nasdaq, tradingeconomics)
-  -h, --help            show this help message
-  --export EXPORT       Export raw data into csv, json, xlsx and figure into png or jpg
-  --sheet-name SHEET_NAME [SHEET_NAME ...]
-                        Name of excel sheet to save data to. Only valid for .xlsx files.
+`load --file PATH` reads a file into the registry. The path is relative to the OpenBB data folder, `~/OpenBBUserData` by default, and tab completion lists the supported files found there. CSV, JSON, and Excel files (`.xlsx`, `.xls`) become one result each; `--sheet-name` picks an Excel sheet, and the first sheet is read otherwise. SQLite files (`.db`, `.sqlite`, `.sqlite3`) add one result per table, each registered under the key `<file name without extension>_<table>`, and the rows are read only when the table is used. `--register_key NAME` names a CSV, JSON, or Excel result, or a database with a single table.
 
-tradingeconomics:
-  --importance {Low,Medium,High}
-                        Importance of the event.
-  --group {interest rate,inflation,bonds,consumer,gdp,government,housing,labour,markets,money,prices,trade,business}
-                        Grouping of events
-
+```text
+load --file prices/spy.csv --register_key spy_file
 ```
 
-If the source selected was Nasdaq, `--provider nasdaq`, the `--importance` and `--group` parameters will be ignored.
+## The feature menu
 
-```console
-/economy/calendar --provider nasdaq --country united_states
+`/feature` works on one cached table at a time. `list` shows the cached results with their row and column counts, and `select N` picks one by the index that `list` prints, or by its key. The other commands act on the selected table.
+
+| Command | Effect |
+| ------- | ------ |
+| `list` | List cached tables and mark the selected one. |
+| `select N` | Select a table by index or key. |
+| `info` | Show the shape and each column's type and null count. |
+| `view` | Display the table; `--head N` or `--tail N` limits the rows. |
+| `colname` | List column names and types. |
+| `coltype COLUMN DTYPE` | Convert a column to a pandas dtype such as `float64`, `datetime64[ns]`, or `category`; `--categories` and `--ordered` apply to `category`. |
+| `addcol NAME EXPRESSION` | Add a column computed with `DataFrame.eval`, for example `addcol spread high - low`. |
+| `modifycol NAME EXPRESSION` | Replace a column with the result of a `DataFrame.eval` expression, for example `modifycol close close * 2`. |
+| `dropcol COLUMN ...` | Remove one or more columns. |
+| `renamecol OLD NEW` | Rename a column. |
+| `query EXPRESSION` | Evaluate a pandas expression in which `df` is the table and each column is available by name. `--save` replaces the table with a DataFrame result. |
+| `join N` | Merge with another cached table on `--on`, on `--left-on` and `--right-on`, or on the index when neither is given. `--type` is `inner` (default), `left`, `right`, or `outer`. Shows the first 20 rows unless `--save` replaces the selected table. |
+| `copy NAME` | Register a copy of the table under a new key. |
+| `save FILE` | Write the table to the OpenBB data folder as `.csv`, `.json`, `.xlsx`, `.xls`, `.db`, `.sqlite`, or `.sqlite3`. |
+| `delete N` | Remove a table from the registry. |
+
+Column changes and `--save` results replace the cached table in place, so later `--data` references see the modified data. Wrap an expression that contains quotes in double quotes, and avoid commas inside it, because the REPL splits positional arguments at commas even when they are quoted:
+
+```text
+/feature/select 0
+query "df.query('close > 500')"
+addcol range high - low
+save spy_filtered.csv
 ```
 
-| date                | country       | event                    | actual   | previous   | consensus   | description   |
-|:--------------------|:--------------|:-------------------------|:---------|:-----------|:------------|:--------------|
-| 2024-05-08 13:30:00 | United States | Fed Governor Cook Speaks | -        | -          | -           |               |
-| cont... | | | | | | |
-
-## Export Data
-
-Data can be exported as a CSV, JSON, or XLSX file, and can also be exported directly from the interactive tables and charts.
-
-### Named File
-
-This command exports the Nasdaq directory as a specific CSV file. The path to the file is displayed on-screen.
-
-```console
-/equity/search --provider nasdaq --export nasdaq_directory.csv
-```
-
-```console
-Saved file: /Users/myusername/OpenBBUserData/nasdaq_directory.csv
-```
-
-### Unnamed File
-
-If only supplied with the file type, the export will be given a generic name beginning with the date and time.
-
-```console
-/equity/search --provider nasdaq --export csv
-```
-
-```
-Saved file: /Users/myusername/OpenBBUserData/20240508_145308_controllers_search.csv
-```
-
-### Specify Sheet Name
-
-Exports can share the same `.xlsx` file by providing a `--sheet-name`.
-
-```console
-/equity/search --provider nasdaq --export directory.xlsx --sheet-name nasdaq
-```
-
-## Run Multiple Commands
-
-A chain of commands can be run from a single line, separate each process with `/`. The example below will draw two charts and can be pasted as a single line.
-
-```console
-/equity/price/historical --symbol AAPL,MSFT,GOOGL,AMZN,META,NVDA,NFLX,TSLA,QQQ --start_date 2022-01-01 --provider yfinance --chart/performance --symbol AAPL,MSFT,GOOGL,AMZN,META,NVDA,NFLX,TSLA,QQQ --provider finviz --chart
-```
-
-## Example Routine
-
-To demonstrate how multiple commands are sequenced as a script, try running the example Routine.
-
-```console
-/exe --example
-```
+`save` takes `--index` to include the DataFrame index. For Excel files, `--sheet-name` sets the sheet, `Sheet1` by default. For SQLite files, `--table` sets the table name, `data` by default, and `--mode` is `replace` (default), `append`, or `fail`.
 
 
 ---
 
 ---
 title: Advanced Routines
-sidebar_position: 5
-description: This page provides guidance on creating and running advanced workflows in the ODP CLI by
-  introducing variables and arguments for routines. It explains input variables,
-  relative time keyword variables, internal script variables and creating loops for
-  batch execution.
+sidebar_position: 3
+description: >
+  Parameterize ODP CLI routines with input arguments, variables, relative
+  date keywords, and foreach loops.
 keywords:
-- automated workflows
-- routines
-- arguments
-- variables
-- relative time keywords
-- internal script variables
-- loops
-- batch execution
-- Tutorial
-- Running Scripts
-- Executing Commands
+  - openbb-cli routines
+  - $ARGV
+  - variables
+  - relative dates
+  - foreach
+  - loops
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+Before a routine runs, `exe` replaces every word that starts with `$` and expands loops. If a variable is undefined, an index is out of range, or a loop is not closed, it prints an error and runs nothing.
 
-<HeadTitle title="Advanced Routines - Routines | ODP CLI Docs" />
+## Input arguments
 
-## Input Variables
-
-Arguments are variables referenced within the `.openbb` script as `$ARGV` or `$ARGV[0]`, `$ARGV[1]`, and so on. They are provided in the CLI when running `exe` by adding the `--input` flag, followed by the variables separated by commas.
-
-### Example
+`exe --input` (or `-i`) passes a comma-separated list into the routine as `$ARGV`. `$ARGV` on its own expands to the whole list joined with commas, `$ARGV[0]` to the first value, `$ARGV[1]` to the second, and a slice such as `$ARGV[1:]` or `$ARGV[:2]` to part of the list joined with commas.
 
 ```text
-# This script requires you to use arguments. This can be done with the following:
-# exe --file routines_template_with_input.openbb -i TSLA
-# Replace the name of the file with your file.
-
-# Navigate to the menu
-/equity/price
-
-# Load the data and display a chart
-historical --symbol $ARGV --chart
+/cboe/equity/historical --symbol $ARGV[0] --start_date $1YEARSAGO
+/technical/rsi --data OBB0
 ```
 
-## Set Variables
-
-In addition to external variables using the keyword, `ARGV`, internal variables can be defined with the, `$`, character.
-
-Note that the variable can have a single element or can be constituted by an array where elements are separated using a comma “,”.
-
-### Internal Variables Example
+Saved as `rsi_check.openbb`, the routine runs for any symbol:
 
 ```text
-# Example routine with internal variables.
-
-$TICKERS = XLE,XOP,XLB,XLI,XLP,XLY,XHE,XLV,XLF,KRE,XLK,XLC,XLU,XLRE
-
-/equity
-
-price
-
-historical --symbol $TICKERS --provider yfinance --start_date 2024-01-01 --chart
-
-home
+exe --file rsi_check.openbb -i SPY
 ```
 
-## Relative Time Keyword Variables
+To pass a comma-separated value as a single argument, wrap it in square brackets. With `-i [SPY,QQQ],IWM`, `$ARGV[0]` is `SPY,QQQ` and `$ARGV[1]` is `IWM`. Bracketed groups always come first in `$ARGV`, followed by the remaining values in order.
 
-In addition to the powerful variables discussed earlier, OpenBB also supports the usage of relative keywords, particularly for working with dates. These relative keywords provide flexibility when specifying dates about the current day. There are four types of relative keywords:
+## Variables
 
-1. **AGO**: Denotes a time in the past relative to the present day. Valid examples include `$365DAYSAGO`, `$12MONTHSAGO`, `$1YEARSAGO`.
-
-2. **FROMNOW**: Denotes a time in the future relative to the present day. Valid examples include `$365DAYSFROMNOW`, `$12MONTHSFROMNOW`, `$1YEARSFROMNOW`.
-
-3. **LAST**: Refers to the last specific day of the week or month that has occurred. Valid examples include `$LASTMONDAY`, `$LASTJUNE`.
-
-4. **NEXT**: Refers to the next specific day of the week or month that will occur. Valid examples include `$NEXTFRIDAY`, `$NEXTNOVEMBER`.
-
-The result will be a date with the conventional date associated with OpenBB, i.e. `YYYY-MM-DD`.
-
-### Relative Time Example
+A line of the form `$NAME = value` defines a variable and is not run itself. A value with commas becomes a list. Names use letters, digits, and underscores, and values may contain letters, digits, underscores, hyphens, periods, and spaces. References follow the same rules as `$ARGV`: `$NAME` expands to the value, or to a list joined with commas, and `$NAME[1]` or `$NAME[1:]` select from a list.
 
 ```text
-$TICKERS = XLE,XOP,XLB,XLI,XLP,XLY,XHE,XLV,XLF,KRE,XLK,XLC,XLU,XLRE
-
-/equity
-
-price
-
-historical --symbol $TICKERS --provider yfinance --start_date $3MONTHSAGO --chart
-
-..
-
-calendar
-
-earnings --start_date $NEXTMONDAY --end_date $NEXTFRIDAY --provider nasdaq
-
-home
+$SYMBOLS = SPY,QQQ,IWM
+$START = 2024-01-01
+/cboe/equity/historical --symbol $SYMBOLS[0] --start_date $START
 ```
 
-## Foreach Loop
+## Relative dates
 
-Finally, what scripting language would this be if there were no loops? For this, we were inspired by MatLab. The loops in OpenBB utilize the foreach and end convention, allowing for iteration through a list of variables or arguments to execute a sequence of commands.
+Some `$` words expand to a date in `YYYY-MM-DD` form, computed when the routine runs. They are written in upper case.
 
-To create a foreach loop, you need to follow these steps:
-
-1. Create the loop header using the syntax: `foreach $$VAR in X` where `X` represents either an argument or a list of variables. It's worth noting that you can choose alternative names for the `$$VAR` variable, as long as the `$$` convention is maintained.
-
-2. Insert the commands you wish to repeat on the subsequent lines.
-
-3. Conclude the loop with the keyword `end`.
-
-### Loop Example
+| Keyword | Expands to |
+| ------- | ---------- |
+| `$<N>DAYSAGO`, `$<N>MONTHSAGO`, `$<N>YEARSAGO` | The date N days, months, or years before today, such as `$30DAYSAGO` or `$1YEARSAGO`. The unit is always plural. |
+| `$<N>DAYSFROMNOW`, `$<N>MONTHSFROMNOW`, `$<N>YEARSFROMNOW` | The date N units after today. |
+| `$LAST<WEEKDAY>` | The most recent such weekday before today, such as `$LASTMONDAY`. |
+| `$NEXT<WEEKDAY>` | The next such weekday after today, such as `$NEXTFRIDAY`. |
+| `$LAST<MONTH>` | The first day of the most recent such month that has already ended, such as `$LASTJUNE`. The current month counts as not yet ended. |
+| `$NEXT<MONTH>` | The first day of the next such month that has not started, such as `$NEXTNOVEMBER`. |
 
 ```text
-# Iterates through ARGV elements.
-foreach $$VAR in $ARGV[1:]
-    /equity/fundamental/filings --symbol $$VAR --provider sec
+/cboe/equity/historical --symbol SPY --start_date $3MONTHSAGO
+/news/company --symbol SPY --start_date $LASTMONDAY --provider nasdaq
+```
+
+## Foreach loops
+
+A loop starts with `foreach $$NAME in LIST` and ends with a line that contains only `end`. `LIST` is a comma-separated list or anything that expands to one, such as `$SYMBOLS`, `$ARGV`, or `$ARGV[1:]`, and its items may contain only letters, digits, hyphens, and periods. The lines in between are repeated once per item, with `$$NAME` replaced by the item; indenting them is optional. The loop variable's name uses letters and underscores, and loops cannot be nested.
+
+```text
+$SYMBOLS = SPY,QQQ,IWM
+
+foreach $$S in $SYMBOLS
+    /cboe/equity/historical --symbol $$S --start_date $6MONTHSAGO --register_key $$S
 end
+
+/technical/ema --data IWM --length 20
 ```
+
+Each pass stores its result under the symbol as the registry key, so the last line can refer to the IWM prices by name. A line inside the loop that uses a different `$$` name is an error, and a loop whose body never uses its variable runs anyway with a warning.
 
 
 ---
 
 ---
 title: Routines
+description: >
+  Script ODP CLI REPL sessions as .openbb routine files, record them from a
+  live session, and parameterize them with inputs, variables, dates, and
+  loops.
+keywords:
+  - openbb-cli routines
+  - .openbb
+  - exe
+  - record
+  - automation
 ---
 
 import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
-import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-<HeadTitle title="Routines - | ODP CLI Docs" />
+A routine is a plain-text `.openbb` file of REPL commands that `exe` runs as one sequence.
 
 <ul className="grid grid-cols-1 gap-4 -ml-6">
   <NewReferenceCard
     title="Introduction to Routines"
-    description="Create repeatable workflows with OpenBB routines that you can share with colleagues."
-    url="routines/introduction-to-routines"
+    description="File format, running a routine with exe, and a first example."
+    url="/odp/cli/repl/routines/introduction-to-routines"
   />
   <NewReferenceCard
     title="Routine Macro Recorder"
-    description="Leverage the macro recorder to quickly build your favourite workflow routines."
-    url="routines/routine-macro-recorder"
+    description="Record commands from a live session into a routine file with record and stop."
+    url="/odp/cli/repl/routines/routine-macro-recorder"
   />
   <NewReferenceCard
     title="Advanced Routines"
-    description="Become an ODP CLI power user by understanding routines inputs, setting variables, creating loops and more."
-    url="routines/advanced-routines"
+    description="Input arguments, variables, relative dates, and foreach loops."
+    url="/odp/cli/repl/routines/advanced-routines"
   />
 </ul>
 
@@ -1096,224 +1332,267 @@ import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 ---
 title: Introduction to Routines
 sidebar_position: 1
-description: The page provides a detailed introduction to OpenBB Routines, which allow
-  users to automate processes and repetitive tasks in financial analysis and data
-  collection. It explains conventions, basic scripts, routine execution, and guides users on getting
-  started with an example.
+description: >
+  The .openbb routine format, how the REPL turns a routine into one sequence
+  of steps, and how to run a routine with exe.
 keywords:
-- OpenBB Routines
-- automated processes
-- repetitive tasks
-- data collection
-- basic script
-- routine execution
-- automation
-- routines
-- cli
+  - openbb-cli routines
+  - .openbb
+  - exe
+  - automation
+  - REPL scripts
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+A routine is a plain-text file with the `.openbb` extension that holds REPL input, one entry per line. `exe` joins the lines with `/` and runs the result as a single path from the home screen, the same way it would run a long line typed at the prompt. A relative line continues from the menu the previous line left you in, and a line that starts with `/` starts again from the home screen. Any line may itself be a pipeline such as `/cboe/equity/historical --symbol SPY/home/technical/ema --data OBB0 --length 20`.
 
-<HeadTitle title="Introduction to Routines - Routines | ODP CLI Docs" />
+Blank lines are ignored. A line that contains `#` anywhere is skipped entirely, which makes `#` the comment marker but also means a command cannot use the character. Lines that contain the word `reset`, or consist of `r`, are skipped as well. Words that start with `$` are variables, described in [Advanced Routines](./advanced-routines.md).
 
-## Overview
+## A first routine
 
-OpenBB Routines allows users to capture and write simple scripts for automating processes and repetitive tasks. In essence, these are text plain-text files that can be created or modified in any basic text editor with the only difference being the `.openbb` extension.
+Save the following as `spy_indicators.openbb` in the routines folder, which is `~/OpenBBUserData/exports/routines` unless the OpenBB export folder has been moved (see [OpenBBUserData Folder](../openbbuserdata.md)):
 
-Other software like STATA, SPSS, and R-Studio share similar functionality in the area of Econometrics and the OpenBB routine scripts venture into the area of financial analysis and data collection to speed up the process.
-
-Routines make it easy to automate a series of processes, and this includes mining and dumping large amounts of data to organized spreadsheets.  Making use of `--export` and `--sheet-name`, data collection is more efficient and reliable, with results that are easily replicable.
-
-## Pipeline of Commands
-
-One of the main objectives of the ODP CLI is to automate a user's investment research workflow - not just a single command, but the complete process.  This is where the pipeline of commands comes in,  running a sequence of commands.
-
-An example of a pipeline of commands is:
-
-```console
-/equity/price/historical --symbol AAPL/../../technical/ema --data OBB0 --length 50
-```
-
-Which will perform a exponential moving average (`ema`) on the historical price of Apple (`AAPL`).
-
-### Step-by-Step Explanation
-
-This will do the following:
-
-1. `equity` - Go into `equity` menu.
-
-2. `price` - Go into `price` sub-menu.
-
-3. `historical --symbol AAPL` - Load historical price data for Apple.
-
-4. `..` (X2) will walk back to the root menu.
-
-5. `technical` -  Go into Technical Analysis (`technical`) menu.
-
-6. `ema --data OBB0 --length 50` - Run the exponential moving average indicator with windows of length 50 (`--length 50`) on the last cached result (`--data OBB0`)
-
-## Routine execution
-
-Run a routine file from the main menu, with the `exe` command. Try, `exe --example`, to get a sense of what this functionality does. Below, the `--help` dialogue is displayed.
-
-```console
-/exe -h
-```
-
-```console
-usage: exe [--file FILE [FILE ...]] [-i ROUTINE_ARGS] [-e] [--url URL] [-h]
-
-Execute automated routine script. For an example, please use `exe --example` and for documentation and to learn how create your own script type `about exe`.
-
-optional arguments:
-  --file FILE [FILE ...], -f FILE [FILE ...]
-                        The path or .openbb file to run. (default: None)
-  -i ROUTINE_ARGS, --input ROUTINE_ARGS
-                        Select multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD (default: None)
-  -e, --example         Run an example script to understand how routines can be used. (default: False)
-  --url URL             URL to run openbb script from. (default: None)
-  -h, --help            show this help message (default: False)
-
-For more information and examples, use 'about exe' to access the related guide.
-```
-
-## Basic Script
-
-The most basic script style contains 2 main elements:
-
-- **Comments**: any text after a hashtag (`#`) is referred to as a comment. This is used to explain what is happening within the line below and is ignored when the file is executed.
-- **Commands**: any text *without* a hashtag is being run inside the CLI as if the user had prompted that line in the terminal. Note that this means that you are able to create a pipeline of commands in a single line, i.e. `equity/price/historical --symbol AAPL --provider fmp` is a valid line for the script.
-
-For instance, the text below corresponds to the example file that OpenBB provides.
-
-```console
-# Navigate into the price sub-menu of the equity module.
-equity/price
-
-# Load a company ticker, e.g. Apple
-historical --symbol AAPL --provider yfinance
-
-# Show a candle chart with a 20 day Moving Average
-/technical/ema --data OBB0 --length 20
-
-# Switch over to the Fundamental Analysis menu
-/equity/fundamental
-
-# Show balance sheet
-balance --symbol aapl --provider yfinance
-
-# Show cash flow statement
-cash --symbol aapl --provider yfinance
-
-# Show income statement
-income --symbol aapl --provider yfinance
-
-# Return to home
+```text
+/cboe/equity
+historical --symbol SPY --start_date 2024-01-01 --register_key spy
+/technical/ema --data spy --length 20
+/technical/rsi --data spy
 home
 ```
 
-## Getting started
+The first two lines open `/cboe/equity` and fetch daily prices for SPY, storing the result under the key `spy`. The next two lines run two indicators on that cached result from the `/technical` menu, and the last line returns to the home screen. Using a key instead of `OBB0` keeps each indicator pointed at the price data, because every new result shifts the `OBB` numbers. Keys must be unique within a session, so running the routine a second time stores the new prices without the key and the indicators read the first run's data.
 
-As a starting point, let's use the example above.
+## Running a routine
 
-1. Create a new text file with the name `routines_template.openbb` and copy and paste the routine above.
+`exe` belongs to the home screen; from another menu, prefix it with `/`.
 
-2. Move the file inside the `routines` folder within the [OpenBBUserData](/odp/cli/openbbuserdata) folder and, optionally, adjust the name to your liking.
+```text
+exe --file spy_indicators.openbb
+```
 
-3. Open up the CLI, and type `exe --file routines_template`.  If you changed the name of the file, then replace, `routines_template`, with that.  As long as the file remains in the `~/OpenBBUserData/routines` folder, the CLI's auto-completer will provide it as a choice.
+With prompt-toolkit enabled, `--file` accepts the name of any `.openbb` file below the routines folder, including subfolders, and Tab completes the names. Otherwise, or for a file elsewhere, pass its path. `--file` may be omitted when the file name comes first, as in `exe spy_indicators.openbb`.
+
+| Flag | Effect |
+| ---- | ------ |
+| `--file`, `-f` | Routine name or path. |
+| `--input`, `-i` | Comma-separated values made available to the routine as `$ARGV`; see [Advanced Routines](./advanced-routines.md#input-arguments). |
+| `--example`, `-e` | Run the sample routine bundled with the CLI. It calls commands of the `equity` router, which is not among the V5 extensions, so it fails without that router. |
+
+After the last step the prompt stays in whatever menu the routine ended in. A routine can also run as the REPL starts:
+
+```bash
+openbb -i /exe --file spy_indicators.openbb
+```
+
+If a step fails, for example because a flag is invalid, the REPL prints the error and continues with the next step.
 
 
 ---
 
 ---
 title: Routine Macro Recorder
-sidebar_position: 4
-description: Learn how to use the macro recorder in OpenBB to start saving commands
-  and automate common tasks with scripts. This page guides you through the process
-  of recording, saving, and accessing your recorded routines.
+sidebar_position: 2
+description: >
+  Record the steps of a live ODP CLI REPL session into a .openbb routine with
+  record and stop, and where the recorded file is saved.
 keywords:
-- macro recorder
-- script routines
-- global commands
-- command recording
-- routine script
-- workspace main menu
-- exe --file
-- OpenBBUserData
-- routines folder
-- cli
-- record
-- stop
+  - openbb-cli routines
+  - macro recorder
+  - record
+  - stop
+  - .openbb
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+Instead of writing a routine by hand, you can record one. `record` starts capturing the steps you run, and `stop` writes them to a routine file.
 
-<HeadTitle title="Routine Macro Recorder - Routines - Usage | ODP CLI Docs" />
-
-OpenBB script routines can be captured with the macro recorder, controlled with global commands. Enter, `record`, to start saving commands, and then, `stop`, terminates the recording. This means that any command you run will be captured in the script; and on `stop`, it will be saved to the `~/OpenBBUserData/routines/` folder.
-
-For example:
-
-```console
-record -n sample
-
-/equity/price/historical --symbol SPY --provider cboe --interval 1m/home/derivatives/options/chains --symbol SPY --provider cboe/home/stop/r
+```text
+record -n spy study
+/cboe/equity/historical --symbol SPY --start_date 2024-01-01
+/technical/ema --data OBB0 --length 20
+stop
 ```
 
-The final command after `stop`, `r`, resets the CLI so that the routine is presented as a choice in the `exe` command.
+`record` works at the home screen, and `stop` works from any menu. Each step is stored as its own line, so a path typed in one go is split into its parts. The session above produces these lines:
 
-It can now be played back by entering:
-
-```console
-/exe --file sample.openbb
+```text
+home
+cboe
+equity
+historical --symbol SPY --start_date 2024-01-01
+home
+technical
+ema --data OBB0 --length 20
 ```
 
-:::tip
-The routine can be edited to replace parameter values with input variables - e.g, `$ARGV[0]`, `$ARGV[1]`, etc.
-:::
+A name that no menu recognizes is not recorded, but a known command with invalid arguments is, so review the file before sharing it.
+
+## record options
+
+| Flag | Effect |
+| ---- | ------ |
+| `-n`, `--name` | Routine title; required. Letters, digits, and spaces only. The flag can be left out when the title comes first, as in `record spy study`. |
+| `-d`, `--description` | Description written into the file. Defaults to the time the recording started. |
+| `--tag1`, `--tag2`, `--tag3` | Up to three tags from the fixed list that `record -h` prints, such as `technical analysis` or `macro`. |
+
+## Saving
+
+`stop` refuses to save until at least four steps have been recorded. The file is named after the title, with spaces replaced by underscores, so the example becomes `spy_study.openbb` in the routines folder, `~/OpenBBUserData/exports/routines` by default. If a routine with that name exists, `stop` asks whether to overwrite it; answering no saves the new one with a `YYYYMMDD_HHMMSS_` timestamp prefix. The file starts with header lines for the title, tags, and description, each beginning with `#`, which `exe` skips.
+
+After the next `help` at the home screen, the new routine is offered by `exe --file`:
+
+```text
+exe --file spy_study.openbb
+```
+
+Recorded routines replay the exact values you typed. To reuse one with other symbols or dates, edit the file and replace those values with input arguments, variables, or relative dates, as described in [Advanced Routines](./advanced-routines.md).
 
 
 ---
 
 ---
 title: Structure and Navigation
-sidebar_position: 3
-description: This page describes the layout and structure of the ODP CLI, as well as how to navigate it.
+sidebar_position: 1
+description: >
+  How the ODP CLI REPL is organized into menus and commands, how to move
+  between them with relative and absolute paths, and which commands work
+  everywhere.
 keywords:
-- CLI application
-- ODP CLI
-- OpenBB Platform CLI
-- structure
-- navigation
-- Command Line Interface
-- navigating
-- Home
-- commands
-- menus
-- Absolute paths
+  - openbb-cli REPL
+  - menus
+  - navigation
+  - absolute paths
+  - global commands
+  - home
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+`openbb -i` starts the interactive REPL. In the default in-process mode, every installed extension becomes a menu: `openbb-oecd` adds `/oecd`, `openbb-cboe` adds `/cboe` with sub-menus such as `/cboe/equity`, and so on. Started with `--spec PATH` or `--server URL`, the REPL builds the same kind of menu tree from the paths of that API. The first time the REPL starts without an initial command and with an empty `~/.openbb_platform/.cli.env`, it also opens the CLI documentation in the default browser.
 
-<HeadTitle title="Structure and Navigation | ODP CLI Docs" />
+The prompt shows the date and time, the flair, and the current menu path:
 
-## Structure
+```text
+2026 Sep 27, 14:05 (🦋) /cboe/equity/ $
+```
 
-The ODP CLI is a Command Line Interface (CLI) application. Functions (commands) are called through the keyboard with results returned as charts, tables, or text.  Charts and tables (if enabled) are displayed in a new window, and are fully interactive, while text prints directly to the Terminal screen.
+The clock, its time zone, and the flair are [settings](../settings.md).
 
-A menu is a collection of commands (and sub-menus). A menu can be distinguished from a command because the former has a `>` on the left. The color of a command and a menu also differ.
+## Menus and commands
 
-## Navigation
+Entering a menu by name prints its help screen, and `help` prints it again. Sub-menus are marked with `>` and drawn in a different color from commands. In the in-process mode, the provider that serves each command appears in brackets at the right of its line. When results have been cached, the help screen ends with the most recent ones, labeled `OBB0`, `OBB1`, and so on; see [Results Registry](./results.md).
 
-Navigating through the CLI menus is similar to traversing folders from any operating system's command line prompt. The `/home` screen is the main directory where everything begins, and the menus are paths branched from the main. Instead of `C:\Users\OpenBB\Documents`, you'll have something like `/equity/price`. Instead of `cd ..`, you can do `..` to return the menu right above. To go back to the root menu you can do `/`.
+The home screen is grouped by purpose. `settings` holds the REPL's own settings, and `user` holds the OpenBB user preferences and credentials for the current session. `record`, `stop`, and `exe` handle [routines](./routines/introduction-to-routines.md). The data menus follow, with `technical`, `quantitative`, and `econometrics` listed separately because they work on data you have already fetched. The last group has `feature`, `load`, and `results`, which manage cached results.
 
-### Absolute Paths
+## Moving between menus
 
-Absolute paths are also valid to-and-from any point. From the `/equity/price` menu, you can go directly to `crypto` menu with: `/crypto`. Note the forward slash at the start to denote the "absolute" path.
+Enter a menu by typing its name. `..`, `q`, or `quit` goes up one level, and at the home screen they leave the REPL. `home` or `/` returns to the home screen from any depth.
 
-### Home
+A path that starts with `/` is absolute, so `/fred/fixedincome` opens that menu from wherever you are. Steps separated by `/` run in order, and the last step can be a command:
 
-Return to the Home screen from anywhere by entering any of the following:
+```text
+/cboe/equity/historical --symbol SPY --start_date 2024-01-01
+```
 
-- `/`
-- `home`
+This enters `/cboe`, then `/cboe/equity`, runs `historical`, and leaves you at the `/cboe/equity/` prompt. Steps can also be `..` or `home`, which lets one line fetch data and then process it in another menu:
+
+```text
+/cboe/equity/historical --symbol SPY/home/technical/ema --data OBB0 --length 20
+```
+
+Because `/` separates steps, wrap an argument value that contains a slash in quotes.
+
+If you type a name that does not exist in the current menu, the REPL reports it and, when a command or menu name is close enough, runs that one instead and prints `Replacing by '<name>'`.
+
+## Commands available everywhere
+
+| Command | Aliases | Effect |
+| ------- | ------- | ------ |
+| `help` | `h`, `?` | Print the current menu's help screen. |
+| `quit` | `q`, `..` | Go up one level; at the home screen, leave the REPL. |
+| `home` | `/` | Return to the home screen. |
+| `exit` | `e` | Leave the REPL from any menu. Ctrl+C and Ctrl+D at the prompt do the same. |
+| `reset` | `r` | Reload the CLI and return to the current menu. |
+| `cls` | none | Clear the screen. |
+| `results` | none | List or show cached results. |
+| `load` | none | Load a CSV, JSON, Excel, or SQLite file from the OpenBBUserData folder into the registry. |
+| `stop` | none | Stop recording a routine and save it. |
+
+`settings`, `user`, `feature`, `record`, and `exe` belong to the home screen. From a sub-menu, reach them with an absolute path such as `/settings` or `/exe --file my_routine.openbb`.
+
+
+---
+
+---
+title: Settings
+sidebar_position: 6
+description: >
+  REPL display and behavior settings, where they are stored, how to change
+  them from the /settings menu, and what each one does.
+keywords:
+  - openbb-cli settings
+  - /settings
+  - .cli.env
+  - output mode
+  - feature flags
+  - preferences
+---
+
+The interactive REPL keeps its display and behavior settings in `~/.openbb_platform/.cli.env`, one `OPENBB_<FIELD>` line per setting. The file is read when the REPL starts and rewritten whenever a setting changes in the `/settings` menu. It is the only source: v5 does not read these settings from `OPENBB_*` variables in the process environment or from `openbb.toml` (see [Configuration](./configuration.md#display-keys-and-the-settings-table)). One-shot and batch runs write JSON and do not use these settings at all.
+
+## Changing a setting
+
+Open `/settings` in the REPL. The help screen lists the feature flags, shown in green when on and red when off, followed by the preferences. Entering a feature flag's command toggles it. A preference takes its new value with `-v` or `--value`, and entering it without a value prints the current one.
+
+```text
+/settings/datetime
+/settings/output -v json
+/settings/flair -v :rocket
+/settings/timezone
+```
+
+Every change is saved to `.cli.env` immediately. The file can also be edited while the REPL is closed:
+
+```text
+OPENBB_OUTPUT_MODE='json'
+OPENBB_FLAIR=':rocket'
+OPENBB_USE_DATETIME='False'
+```
+
+Two settings are adjusted at every launch without being saved. If `OUTPUT_MODE` is `tsv`, the REPL switches it to `rich`, and if `USE_INTERACTIVE_DF` is off, it turns it on. A stored `tsv` or `False` therefore only lasts until the next launch; change them again from `/settings` during the session when needed.
+
+## Feature flags
+
+| Field | `/settings` command | Default | Effect when on |
+| ----- | ------------------- | ------- | -------------- |
+| `FILE_OVERWRITE` | `overwrite` | `False` | Exports replace an existing file without asking. |
+| `SHOW_VERSION` | `version` | `True` | The CLI version appears in the lower-right corner of the menu panel. |
+| `USE_INTERACTIVE_DF` | `interactive` | `False` | Result tables open in a separate window; see [Interactive Tables](./repl/interactive-tables.md). Turned on at every launch. |
+| `USE_CLEAR_AFTER_CMD` | `cls` | `False` | The screen is cleared before each command's output. Inside `/settings`, `cls` toggles this flag instead of clearing the screen. |
+| `USE_DATETIME` | `datetime` | `True` | The prompt starts with the date and time in the configured time zone. |
+| `USE_PROMPT_TOOLKIT` | `promptkit` | `True` | Completion, history, and the bottom toolbar are active. When off, the prompt is a plain input line. |
+| `ENABLE_EXIT_AUTO_HELP` | `exithelp` | `True` | Returning to a menu prints that menu's help screen. |
+| `ENABLE_RICH_PANEL` | `richpanel` | `True` | Menu help screens are drawn inside a bordered panel. |
+| `TOOLBAR_HINT` | `tbhint` | `True` | The bottom toolbar lists the help, back, and exit keys. |
+| `SHOW_MSG_OBBJECT_REGISTRY` | `obbject_msg` | `False` | A message is printed each time a result is added to the registry. |
+
+## Preferences
+
+| Field | `/settings` command | Default | Values and effect |
+| ----- | ------------------- | ------- | ----------------- |
+| `OUTPUT_MODE` | `output` | `tsv` | `rich` prints a formatted table, `json` prints the results as indented JSON, `tsv` prints tab-separated text, and `html` opens a table in the default browser. With interactive tables on, `rich` and `html` use the window instead. Switched from `tsv` to `rich` at launch. |
+| `TIMEZONE` | `timezone` | `America/New_York` | Any IANA time zone name. Used for the clock in the prompt. |
+| `FLAIR` | `flair` | `:openbb` | Symbol shown in the prompt. One of `:openbb`, `:bug`, `:rocket`, `:diamond`, `:stars`, `:baseball`, `:boat`, `:phone`, `:mercury`, `:hidden`, `:sun`, `:moon`, `:nuke`, `:hazard`, `:tunder`, `:king`, `:queen`, `:knight`, `:recycle`, `:scales`, `:ball`, `:golf`, `:peace`, `:yy`. `:hidden` shows nothing. |
+| `N_TO_KEEP_OBBJECT_REGISTRY` | `obbject_res` | `10` | Number of results the registry keeps before dropping the oldest. |
+| `N_TO_DISPLAY_OBBJECT_REGISTRY` | `obbject_display` | `5` | Number of cached results listed on help screens. |
+| `RICH_STYLE` | `console_style` | `dark` | Terminal color theme, one of `dark`, `light`, or `openbb`. The console picks up the theme when the REPL starts, so a change shows after a restart. |
+| `ALLOWED_NUMBER_OF_ROWS` | `n_rows` | `20` | Stored, but not read by the v5 display code. |
+| `ALLOWED_NUMBER_OF_COLUMNS` | `n_cols` | `5` | Stored, but not read by the v5 display code. |
+
+## Other fields
+
+These fields are part of the same model and file but have no `/settings` command.
+
+| Field | Default | Meaning |
+| ----- | ------- | ------- |
+| `VERSION` | installed `openbb-cli` version | Shown when `SHOW_VERSION` is on. |
+| `TEST_MODE` | `False` | Prints plain text without the rich panel. Set to `False` at every REPL launch. |
+| `DEBUG_MODE` | `False` | Set for the session by `openbb -i --debug`. |
+| `DEV_BACKEND` | `False` | Set for the session by `openbb -i --dev`. |
+| `PREVIOUS_USE` | `False` | Set to `True` the first time the REPL starts with an empty `.cli.env`, which is also when it opens the CLI documentation in a browser. |
