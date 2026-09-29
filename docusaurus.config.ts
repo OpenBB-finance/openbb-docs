@@ -11,6 +11,42 @@ import katex from "rehype-katex";
 import math from "remark-math";
 import tailwind from "tailwindcss";
 
+function collectOdpGeneratedRoutes(): Set<string> {
+	const contentDir = path.join(__dirname, "content-odp");
+	const routes = new Set<string>();
+	const walk = (dir: string) => {
+		let entries: fs.Dirent[];
+		try {
+			entries = fs.readdirSync(dir, { withFileTypes: true });
+		} catch {
+			return;
+		}
+		for (const entry of entries) {
+			const fullPath = path.join(dir, entry.name);
+			if (entry.isDirectory()) {
+				walk(fullPath);
+				continue;
+			}
+			if (!/\.mdx?$/.test(entry.name)) {
+				continue;
+			}
+			const frontMatter = fs.readFileSync(fullPath, "utf8").match(/^---\n([\s\S]*?)\n---/);
+			const slug = frontMatter?.[1].match(/^slug:\s*(\/\S+)\s*$/m);
+			if (slug) {
+				routes.add(`/odp${slug[1]}`);
+				continue;
+			}
+			const relative = path.relative(contentDir, fullPath).split(path.sep).join("/");
+			routes.add(`/odp/${relative.replace(/\.mdx?$/, "").replace(/\/index$/, "")}`);
+		}
+	};
+	walk(path.join(contentDir, "python", "reference"));
+	walk(path.join(contentDir, "python", "data_models"));
+	return routes;
+}
+
+const odpGeneratedRoutes = collectOdpGeneratedRoutes();
+
 export default {
 	title: "OpenBB Docs",
 	tagline: "OpenBB Docs",
@@ -138,7 +174,20 @@ export default {
 					},
 				],
 				createRedirects: (existingPath) => {
-					// Redirect old paths to new /odp/* structure
+					const v4Generated = existingPath.match(
+						/^\/odp\/v4\/python\/((?:reference|data_models)(?:\/.*)?)$/,
+					);
+					if (v4Generated) {
+						const currentPath = `/odp/python/${v4Generated[1]}`;
+						if (odpGeneratedRoutes.has(currentPath)) {
+							return undefined;
+						}
+						return [
+							currentPath,
+							`/python/${v4Generated[1]}`,
+							`/platform/${v4Generated[1]}`,
+						];
+					}
 					if (existingPath.startsWith("/odp/desktop/")) {
 						return existingPath.replace("/odp/desktop/", "/desktop/");
 					}
